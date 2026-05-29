@@ -17,7 +17,7 @@ import (
 	"github.com/AllenDang/cimgui-go/imgui"
 	implglfw "github.com/AllenDang/cimgui-go/impl/glfw"
 	implogl3 "github.com/AllenDang/cimgui-go/impl/opengl3"
-	"github.com/go-gl/gl/v2.1/gl"
+	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
@@ -43,11 +43,13 @@ func New(config *Config) (Platform, error) {
 	io := imgui.CurrentIO()
 	io.SetBackendFlags(io.BackendFlags() | imgui.BackendFlagsHasMouseCursors)
 
-	// Request an OpenGL 2.1 context (GLSL 1.20), matching vice. This keeps
-	// the ImGui OpenGL3 backend on the widely-supported legacy path and lines
-	// up with the renderer that will be ported for the scopes later.
-	glfw.WindowHint(glfw.ContextVersionMajor, 2)
-	glfw.WindowHint(glfw.ContextVersionMinor, 1)
+	// Request an OpenGL 3.3 core context. The scope renderer is shader-based and
+	// follows the existing NAScope OpenGL 3.3 renderer rather than vice's older
+	// OpenGL 2.1 backend.
+	glfw.WindowHint(glfw.ContextVersionMajor, 3)
+	glfw.WindowHint(glfw.ContextVersionMinor, 3)
+	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
 
 	vm := glfw.GetPrimaryMonitor().GetVideoMode()
 
@@ -105,7 +107,7 @@ func New(config *Config) (Platform, error) {
 	// install_callbacks=true lets the backend handle mouse, keyboard, scroll,
 	// and character input on its own. The menu needs nothing custom here.
 	implglfw.InitForOpenGL(implWindow, true)
-	implogl3.InitV("#version 120")
+	implogl3.InitV("#version 330 core")
 
 	// v-sync on.
 	glfw.SwapInterval(1)
