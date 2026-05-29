@@ -1,0 +1,103 @@
+{
+  "airport": "ATL",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "WEST",
+      "arrivalRunwayIds": [
+        "26R",
+        "27L",
+        "28"
+      ],
+      "departureRunwayIds": [
+        "26L",
+        "27R"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "EAST",
+      "arrivalRunwayIds": [
+        "10",
+        "8L",
+        "9R"
+      ],
+      "departureRunwayIds": [
+        "8R",
+        "9L"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "W FTD",
+      "arrivalRunwayIds": [
+        "26R",
+        "27L",
+        "28"
+      ],
+      "departureRunwayIds": [
+        "26L",
+        "27R",
+        "28"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "E FTD",
+      "arrivalRunwayIds": [
+        "10",
+        "8L",
+        "9R"
+      ],
+      "departureRunwayIds": [
+        "10",
+        "8R",
+        "9L"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "LC1",
+      "runwayIds": [
+        "8L-26R"
+      ]
+    },
+    {
+      "name": "LC2",
+      "runwayIds": [
+        "8R-26L"
+      ]
+    },
+    {
+      "name": "LC3",
+      "runwayIds": [
+        "9L-27R"
+      ]
+    },
+    {
+      "name": "LC4",
+      "runwayIds": [
+        "9R-27L"
+      ]
+    },
+    {
+      "name": "LC5",
+      "runwayIds": [
+        "10-28"
+      ]
+    },
+    {
+      "name": "GC",
+      "runwayIds": [],
+      "default": true
+    }
+  ]
+}

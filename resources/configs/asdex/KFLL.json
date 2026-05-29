@@ -1,0 +1,55 @@
+{
+  "airport": "FLL",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "10L/10R",
+      "arrivalRunwayIds": [
+        "10L",
+        "10R"
+      ],
+      "departureRunwayIds": [
+        "10L",
+        "10R"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "28L/28R",
+      "arrivalRunwayIds": [
+        "10L",
+        "10R"
+      ],
+      "departureRunwayIds": [
+        "10L",
+        "10R"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "LCN",
+      "runwayIds": [
+        "10L-28R"
+      ]
+    },
+    {
+      "name": "LCS",
+      "runwayIds": [
+        "10R-28L"
+      ]
+    },
+    {
+      "name": "GC",
+      "runwayIds": [],
+      "default": true
+    }
+  ]
+}

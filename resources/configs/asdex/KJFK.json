@@ -1,0 +1,82 @@
+{
+  "airport": "JFK",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "4LR",
+      "arrivalRunwayIds": [
+        "4L",
+        "4R"
+      ],
+      "departureRunwayIds": [
+        "31L",
+        "4L"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "22LR",
+      "arrivalRunwayIds": [
+        "22L",
+        "22R"
+      ],
+      "departureRunwayIds": [
+        "22R",
+        "31L"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "13LR",
+      "arrivalRunwayIds": [
+        "13L",
+        "13R",
+        "22L"
+      ],
+      "departureRunwayIds": [
+        "13L",
+        "13R"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "31LR",
+      "arrivalRunwayIds": [
+        "31L",
+        "31R"
+      ],
+      "departureRunwayIds": [
+        "31L",
+        "31R"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "GC",
+      "runwayIds": [],
+      "default": true
+    },
+    {
+      "name": "LC1 ",
+      "runwayIds": [
+        "13L-31R",
+        "4R-22L"
+      ]
+    },
+    {
+      "name": "LC2",
+      "runwayIds": [
+        "13R-31L",
+        "4L-22R"
+      ]
+    }
+  ]
+}

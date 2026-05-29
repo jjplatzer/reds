@@ -1,0 +1,258 @@
+{
+  "airport": "BOS",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "4/9 4L",
+      "arrivalRunwayIds": [
+        "4L",
+        "4R"
+      ],
+      "departureRunwayIds": [
+        "15R",
+        "4L",
+        "4R",
+        "9"
+      ],
+      "holdShortRunwayPairs": [
+        {
+          "id": "01KKFQYDQHC12QJT9B5T4SZFNV",
+          "arrivalRunwayId": "4L",
+          "holdShortId": "33R"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "name": "4/9",
+      "arrivalRunwayIds": [
+        "4R"
+      ],
+      "departureRunwayIds": [
+        "15R",
+        "4L",
+        "4R",
+        "9"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "22/22",
+      "arrivalRunwayIds": [
+        "22L",
+        "22R"
+      ],
+      "departureRunwayIds": [
+        "15R",
+        "22L",
+        "22R"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "27/22",
+      "arrivalRunwayIds": [
+        "22L",
+        "27"
+      ],
+      "departureRunwayIds": [
+        "15R",
+        "22L",
+        "22R"
+      ],
+      "holdShortRunwayPairs": [
+        {
+          "id": "01GW00GZF736SS4C60B0BCGS1C",
+          "arrivalRunwayId": "22L",
+          "holdShortId": "27"
+        },
+        {
+          "id": "01KKFQYK8HN0PTMQDBRZAZBNCQ",
+          "arrivalRunwayId": "27",
+          "holdShortId": "22L"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "name": "27/33",
+      "arrivalRunwayIds": [
+        "27"
+      ],
+      "departureRunwayIds": [
+        "27",
+        "33L"
+      ]
+    },
+    {
+      "number": 6,
+      "name": "273233L",
+      "arrivalRunwayIds": [
+        "27",
+        "32"
+      ],
+      "departureRunwayIds": [
+        "27",
+        "33L"
+      ]
+    },
+    {
+      "number": 7,
+      "name": "33/27 V",
+      "arrivalRunwayIds": [
+        "33L",
+        "33R"
+      ],
+      "departureRunwayIds": [
+        "27",
+        "33L"
+      ]
+    },
+    {
+      "number": 8,
+      "name": "33/27 I",
+      "arrivalRunwayIds": [
+        "33L"
+      ],
+      "departureRunwayIds": [
+        "27",
+        "33L"
+      ]
+    },
+    {
+      "number": 9,
+      "name": "4/4",
+      "arrivalRunwayIds": [
+        "4L",
+        "4R"
+      ],
+      "departureRunwayIds": [
+        "4L",
+        "4R"
+      ]
+    },
+    {
+      "number": 10,
+      "name": "4/15",
+      "arrivalRunwayIds": [
+        "4R"
+      ],
+      "departureRunwayIds": [
+        "15R",
+        "4R"
+      ]
+    },
+    {
+      "number": 11,
+      "name": "15/9",
+      "arrivalRunwayIds": [
+        "15R"
+      ],
+      "departureRunwayIds": [
+        "14",
+        "15R",
+        "9"
+      ],
+      "holdShortRunwayPairs": [
+        {
+          "id": "01KKFQY7F36SSPDEMVVG4XXH9E",
+          "arrivalRunwayId": "15R",
+          "holdShortId": "9"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "name": "15/15",
+      "arrivalRunwayIds": [
+        "15R"
+      ],
+      "departureRunwayIds": [
+        "14",
+        "15R",
+        "9"
+      ]
+    },
+    {
+      "number": 13,
+      "name": "22/15",
+      "arrivalRunwayIds": [
+        "22L",
+        "22R"
+      ],
+      "departureRunwayIds": [
+        "15R",
+        "22L",
+        "22R"
+      ]
+    },
+    {
+      "number": 14,
+      "name": "27/27",
+      "arrivalRunwayIds": [
+        "27"
+      ],
+      "departureRunwayIds": [
+        "27",
+        "33L"
+      ]
+    },
+    {
+      "number": 15,
+      "name": "33+32",
+      "arrivalRunwayIds": [
+        "32",
+        "33L"
+      ],
+      "departureRunwayIds": [
+        "33L"
+      ]
+    },
+    {
+      "number": 16,
+      "name": "33/33",
+      "arrivalRunwayIds": [
+        "33L"
+      ],
+      "departureRunwayIds": [
+        "27",
+        "33L"
+      ]
+    },
+    {
+      "number": 17,
+      "name": "33/15",
+      "arrivalRunwayIds": [
+        "33L"
+      ],
+      "departureRunwayIds": [
+        "15R"
+      ]
+    },
+    {
+      "number": 18,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "GC",
+      "runwayIds": [],
+      "default": true
+    },
+    {
+      "name": "LC",
+      "runwayIds": [
+        "14-32",
+        "15L-33R",
+        "15R-33L",
+        "4L-22R",
+        "4R-22L",
+        "9-27"
+      ]
+    }
+  ]
+}

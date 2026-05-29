@@ -1,0 +1,93 @@
+{
+  "airport": "PHL",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "E/35",
+      "arrivalRunwayIds": [
+        "35",
+        "9L",
+        "9R"
+      ],
+      "departureRunwayIds": [
+        "35",
+        "8",
+        "9L",
+        "9R"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "E/17",
+      "arrivalRunwayIds": [
+        "17",
+        "9L",
+        "9R"
+      ],
+      "departureRunwayIds": [
+        "17",
+        "8",
+        "9L",
+        "9R"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "W/35",
+      "arrivalRunwayIds": [
+        "26",
+        "27L",
+        "27R",
+        "35"
+      ],
+      "departureRunwayIds": [
+        "27L",
+        "27R",
+        "35"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "W/17",
+      "arrivalRunwayIds": [
+        "17",
+        "26",
+        "27L",
+        "27R"
+      ],
+      "departureRunwayIds": [
+        "17",
+        "27L",
+        "27R"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "GC",
+      "runwayIds": [],
+      "default": true
+    },
+    {
+      "name": "LCE",
+      "runwayIds": [
+        "17-35",
+        "8-26",
+        "9L-27R"
+      ]
+    },
+    {
+      "name": "LCW",
+      "runwayIds": [
+        "9R-27L"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "airport": "CLT",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "NORTH",
+      "arrivalRunwayIds": [
+        "36C",
+        "36L",
+        "36R"
+      ],
+      "departureRunwayIds": [
+        "36C",
+        "36R"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "SOUTH",
+      "arrivalRunwayIds": [
+        "18C",
+        "18L",
+        "18R"
+      ],
+      "departureRunwayIds": [
+        "18C",
+        "18L"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "GC",
+      "runwayIds": [
+        "5-23"
+      ],
+      "default": true
+    },
+    {
+      "name": "LC-E",
+      "runwayIds": [
+        "36R-18L"
+      ]
+    },
+    {
+      "name": "LC-C",
+      "runwayIds": [
+        "36C-18C"
+      ]
+    },
+    {
+      "name": "LC-W",
+      "runwayIds": [
+        "36L-18R"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "airport": "DCA",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "NORTH",
+      "arrivalRunwayIds": [
+        "1",
+        "33",
+        "4"
+      ],
+      "departureRunwayIds": [
+        "1",
+        "33",
+        "4"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "SOUTH",
+      "arrivalRunwayIds": [
+        "15",
+        "19",
+        "22"
+      ],
+      "departureRunwayIds": [
+        "15",
+        "19",
+        "22"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "CG",
+      "runwayIds": [
+        "1-19",
+        "15-33",
+        "4-22"
+      ]
+    },
+    {
+      "name": "HC",
+      "runwayIds": []
+    },
+    {
+      "name": "LC",
+      "runwayIds": [
+        "1-19",
+        "15-33",
+        "4-22"
+      ],
+      "default": true
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "airport": "LAX",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "WEST",
+      "arrivalRunwayIds": [
+        "24R",
+        "25L"
+      ],
+      "departureRunwayIds": [
+        "24L",
+        "25L",
+        "25R"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "EAST",
+      "arrivalRunwayIds": [
+        "6L",
+        "7R"
+      ],
+      "departureRunwayIds": [
+        "6R",
+        "7L",
+        "7R"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "NOISE",
+      "arrivalRunwayIds": [
+        "6R"
+      ],
+      "departureRunwayIds": [
+        "25R"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "LC1",
+      "runwayIds": [
+        "7L-25R",
+        "7R-25L"
+      ],
+      "default": true
+    },
+    {
+      "name": "LC2",
+      "runwayIds": [
+        "6L-24R",
+        "6R-24L"
+      ]
+    },
+    {
+      "name": "GC1",
+      "runwayIds": [
+        "7L-25R",
+        "7R-25L"
+      ]
+    },
+    {
+      "name": "GC2",
+      "runwayIds": [
+        "6R-24L"
+      ]
+    },
+    {
+      "name": "ALL",
+      "runwayIds": [
+        "6L-24R",
+        "6R-24L",
+        "7L-25R",
+        "7R-25L"
+      ]
+    }
+  ]
+}

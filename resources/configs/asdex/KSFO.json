@@ -1,0 +1,116 @@
+{
+  "airport": "SFO",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "L28D01",
+      "arrivalRunwayIds": [
+        "1L",
+        "1R",
+        "28L",
+        "28R"
+      ],
+      "departureRunwayIds": [
+        "1L",
+        "1R",
+        "28L",
+        "28R"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "L28D28",
+      "arrivalRunwayIds": [
+        "28L",
+        "28R"
+      ],
+      "departureRunwayIds": [
+        "28L",
+        "28R"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "L19D10",
+      "arrivalRunwayIds": [
+        "10L",
+        "10R",
+        "19L",
+        "19R"
+      ],
+      "departureRunwayIds": [
+        "10L",
+        "10R",
+        "19L",
+        "19R"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "L19D19",
+      "arrivalRunwayIds": [
+        "10L",
+        "19L",
+        "19R",
+        "28R"
+      ],
+      "departureRunwayIds": [
+        "10L",
+        "19L",
+        "19R",
+        "28R"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "L10D10",
+      "arrivalRunwayIds": [
+        "10L",
+        "10R"
+      ],
+      "departureRunwayIds": [
+        "10L",
+        "10R"
+      ]
+    },
+    {
+      "number": 6,
+      "name": "L01D01",
+      "arrivalRunwayIds": [
+        "1L",
+        "1R",
+        "28L",
+        "28R"
+      ],
+      "departureRunwayIds": [
+        "1L",
+        "1R",
+        "28L",
+        "28R"
+      ]
+    },
+    {
+      "number": 7,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "LC",
+      "runwayIds": [
+        "1L-19R",
+        "1R-19L",
+        "28L-10R",
+        "28R-10L"
+      ]
+    },
+    {
+      "name": "GC",
+      "runwayIds": [],
+      "default": true
+    }
+  ]
+}

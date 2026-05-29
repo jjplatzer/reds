@@ -1,0 +1,69 @@
+{
+  "airport": "BWI",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "EAST",
+      "arrivalRunwayIds": [
+        "10",
+        "15L",
+        "15R"
+      ],
+      "departureRunwayIds": [
+        "10",
+        "15L",
+        "15R"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "WEST",
+      "arrivalRunwayIds": [
+        "28",
+        "33L",
+        "33R"
+      ],
+      "departureRunwayIds": [
+        "28",
+        "33L",
+        "33R"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "GC1",
+      "runwayIds": [
+        "10-28",
+        "15R-33L"
+      ]
+    },
+    {
+      "name": "GC2",
+      "runwayIds": [
+        "15L-33R"
+      ]
+    },
+    {
+      "name": "LC1",
+      "runwayIds": [
+        "10-28",
+        "15R-33L"
+      ],
+      "default": true
+    },
+    {
+      "name": "LC2",
+      "runwayIds": [
+        "15L-33R"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "airport": "EWR",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "SW",
+      "arrivalRunwayIds": [
+        "22L"
+      ],
+      "departureRunwayIds": [
+        "22R"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "NE",
+      "arrivalRunwayIds": [
+        "4R"
+      ],
+      "departureRunwayIds": [
+        "4L"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "SW+29",
+      "arrivalRunwayIds": [
+        "29"
+      ],
+      "departureRunwayIds": [
+        "22R"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "NE+29",
+      "arrivalRunwayIds": [
+        "29"
+      ],
+      "departureRunwayIds": [
+        "4L"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "GC",
+      "runwayIds": [],
+      "default": true
+    },
+    {
+      "name": "LCL",
+      "runwayIds": [
+        "11-29",
+        "4L-22R",
+        "4R-22L"
+      ]
+    }
+  ]
+}

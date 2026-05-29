@@ -1,0 +1,109 @@
+{
+  "airport": "IAD",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "NORTH",
+      "arrivalRunwayIds": [
+        "1C",
+        "1L",
+        "1R"
+      ],
+      "departureRunwayIds": [
+        "1C",
+        "1R",
+        "30"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "SOUTH",
+      "arrivalRunwayIds": [
+        "19C",
+        "19L",
+        "19R"
+      ],
+      "departureRunwayIds": [
+        "19C",
+        "19L",
+        "30"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "SW12",
+      "arrivalRunwayIds": [
+        "12",
+        "19C",
+        "19L"
+      ],
+      "departureRunwayIds": [
+        "19C",
+        "19L"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "LAND30",
+      "arrivalRunwayIds": [
+        "1R",
+        "30"
+      ],
+      "departureRunwayIds": [
+        "1C",
+        "1R",
+        "30"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "GC1",
+      "runwayIds": [
+        "1R-19L"
+      ]
+    },
+    {
+      "name": "GC2",
+      "runwayIds": [
+        "12-30",
+        "1C-19C"
+      ]
+    },
+    {
+      "name": "GC3",
+      "runwayIds": [
+        "12-30",
+        "1C-19C",
+        "1L-19R"
+      ]
+    },
+    {
+      "name": "LC1",
+      "runwayIds": [
+        "1R-19L"
+      ]
+    },
+    {
+      "name": "LC2",
+      "runwayIds": [
+        "1C-19C"
+      ]
+    },
+    {
+      "name": "LC3",
+      "runwayIds": [
+        "12-30",
+        "1L-19R"
+      ],
+      "default": true
+    }
+  ]
+}

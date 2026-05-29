@@ -1,0 +1,93 @@
+{
+  "airport": "MIA",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "EAST",
+      "arrivalRunwayIds": [
+        "12",
+        "8L",
+        "8R",
+        "9"
+      ],
+      "departureRunwayIds": [
+        "12",
+        "8L",
+        "8R",
+        "9"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "WEST",
+      "arrivalRunwayIds": [
+        "26L",
+        "26R",
+        "27",
+        "30"
+      ],
+      "departureRunwayIds": [
+        "26L",
+        "26R",
+        "27",
+        "30"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "E LAHSO",
+      "arrivalRunwayIds": [
+        "12",
+        "8L",
+        "8R",
+        "9"
+      ],
+      "departureRunwayIds": [
+        "12",
+        "8L",
+        "8R",
+        "9"
+      ],
+      "holdShortRunwayPairs": [
+        {
+          "id": "01HBJ0B19A3FP0R9XWYHKT1H27",
+          "arrivalRunwayId": "12",
+          "holdShortId": "9"
+        },
+        {
+          "id": "01HBJ0B7THHF7H2NFZKMZD4HE8",
+          "arrivalRunwayId": "9",
+          "holdShortId": "12"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "LCN",
+      "runwayIds": [
+        "8L-26R",
+        "8R-26L"
+      ]
+    },
+    {
+      "name": "LCS",
+      "runwayIds": [
+        "12-30",
+        "9-27"
+      ]
+    },
+    {
+      "name": "GC",
+      "runwayIds": [],
+      "default": true
+    }
+  ]
+}

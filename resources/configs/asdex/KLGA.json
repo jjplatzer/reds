@@ -1,0 +1,122 @@
+{
+  "airport": "LGA",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "D31L22",
+      "arrivalRunwayIds": [
+        "22"
+      ],
+      "departureRunwayIds": [
+        "31"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "D4L31",
+      "arrivalRunwayIds": [
+        "31"
+      ],
+      "departureRunwayIds": [
+        "4"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "D31L4",
+      "arrivalRunwayIds": [
+        "4"
+      ],
+      "departureRunwayIds": [
+        "31"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "D13L4",
+      "arrivalRunwayIds": [
+        "4"
+      ],
+      "departureRunwayIds": [
+        "13"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "D4L13",
+      "arrivalRunwayIds": [
+        "13"
+      ],
+      "departureRunwayIds": [
+        "4"
+      ]
+    },
+    {
+      "number": 6,
+      "name": "D13L22",
+      "arrivalRunwayIds": [
+        "22"
+      ],
+      "departureRunwayIds": [
+        "13"
+      ]
+    },
+    {
+      "number": 7,
+      "name": "D22L22",
+      "arrivalRunwayIds": [
+        "22"
+      ],
+      "departureRunwayIds": [
+        "22"
+      ]
+    },
+    {
+      "number": 8,
+      "name": "D4L4",
+      "arrivalRunwayIds": [
+        "4"
+      ],
+      "departureRunwayIds": [
+        "4"
+      ]
+    },
+    {
+      "number": 9,
+      "name": "D13L13",
+      "arrivalRunwayIds": [
+        "13"
+      ],
+      "departureRunwayIds": [
+        "13"
+      ]
+    },
+    {
+      "number": 10,
+      "name": "D31L31",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": []
+    },
+    {
+      "number": 11,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "GC",
+      "runwayIds": [],
+      "default": true
+    },
+    {
+      "name": "LCL",
+      "runwayIds": [
+        "13-31",
+        "4-22"
+      ]
+    }
+  ]
+}

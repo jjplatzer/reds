@@ -1,0 +1,51 @@
+{
+  "airport": "SAN",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "WEST",
+      "arrivalRunwayIds": [
+        "27"
+      ],
+      "departureRunwayIds": [
+        "27"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "EAST",
+      "arrivalRunwayIds": [
+        "9"
+      ],
+      "departureRunwayIds": [
+        "9"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "ODO",
+      "arrivalRunwayIds": [
+        "9"
+      ],
+      "departureRunwayIds": [
+        "27"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "LC",
+      "runwayIds": [
+        "9-27"
+      ],
+      "default": true
+    }
+  ]
+}

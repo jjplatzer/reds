@@ -1,0 +1,114 @@
+{
+  "airport": "DTW",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "22R21L",
+      "arrivalRunwayIds": [
+        "21L",
+        "22R"
+      ],
+      "departureRunwayIds": [
+        "21R",
+        "22L"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "04L03R",
+      "arrivalRunwayIds": [
+        "3R",
+        "4L"
+      ],
+      "departureRunwayIds": [
+        "3L",
+        "4R"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "22LR21L",
+      "arrivalRunwayIds": [
+        "21L",
+        "22L",
+        "22R"
+      ],
+      "departureRunwayIds": [
+        "21R",
+        "22L"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "04LR03R",
+      "arrivalRunwayIds": [
+        "3R",
+        "4L",
+        "4R"
+      ],
+      "departureRunwayIds": [
+        "3L",
+        "4R"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "27LR",
+      "arrivalRunwayIds": [
+        "27L",
+        "27R"
+      ],
+      "departureRunwayIds": [
+        "27L",
+        "27R"
+      ]
+    },
+    {
+      "number": 6,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "LC-NW",
+      "runwayIds": [
+        "4R-22L"
+      ]
+    },
+    {
+      "name": "LC-NE",
+      "runwayIds": [
+        "3L-21R",
+        "9L-27R"
+      ]
+    },
+    {
+      "name": "LC-SE",
+      "runwayIds": [
+        "3R-21L",
+        "9R-27L"
+      ]
+    },
+    {
+      "name": "LC-SW",
+      "runwayIds": [
+        "4L-22R"
+      ]
+    },
+    {
+      "name": "LC-ALL",
+      "runwayIds": [
+        "3L-21R",
+        "3R-21L",
+        "4L-22R",
+        "4R-22L",
+        "9L-27R",
+        "9R-27L"
+      ],
+      "default": true
+    }
+  ]
+}

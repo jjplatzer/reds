@@ -1,0 +1,233 @@
+{
+  "airport": "ORD",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "WEST",
+      "arrivalRunwayIds": [
+        "27C",
+        "27R",
+        "28C"
+      ],
+      "departureRunwayIds": [
+        "22L",
+        "27L",
+        "28R"
+      ],
+      "holdShortRunwayPairs": [
+        {
+          "id": "01H53S4XY64NDWQQNQ55TYXHJX",
+          "arrivalRunwayId": "27C",
+          "holdShortId": "VV"
+        },
+        {
+          "id": "01H6DAPQ4HPRM9HYBM867630GX",
+          "arrivalRunwayId": "28C",
+          "holdShortId": "Z"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "name": "EAST",
+      "arrivalRunwayIds": [
+        "10C",
+        "10R",
+        "9C",
+        "9L"
+      ],
+      "departureRunwayIds": [
+        "10L",
+        "9R"
+      ],
+      "holdShortRunwayPairs": [
+        {
+          "id": "01H6DAQBB2KC4RJJ5YCMT3ZKJP",
+          "arrivalRunwayId": "9C",
+          "holdShortId": "TT"
+        },
+        {
+          "id": "01H6DAQGKYT23NJD4892Y0P0E3",
+          "arrivalRunwayId": "10C",
+          "holdShortId": "GG"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "name": "4R ONLY",
+      "arrivalRunwayIds": [
+        "4R"
+      ],
+      "departureRunwayIds": [
+        "4L"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "22S",
+      "arrivalRunwayIds": [
+        "22L",
+        "22R"
+      ],
+      "departureRunwayIds": [
+        "22L"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "EAST NA",
+      "arrivalRunwayIds": [
+        "9C"
+      ],
+      "departureRunwayIds": [
+        "10L"
+      ]
+    },
+    {
+      "number": 6,
+      "name": "WEST NA",
+      "arrivalRunwayIds": [
+        "27C"
+      ],
+      "departureRunwayIds": [
+        "28R"
+      ]
+    },
+    {
+      "number": 7,
+      "name": "22 NA",
+      "arrivalRunwayIds": [
+        "22R"
+      ],
+      "departureRunwayIds": [
+        "22L",
+        "28R"
+      ]
+    },
+    {
+      "number": 8,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "GC",
+      "runwayIds": [],
+      "default": true
+    },
+    {
+      "name": "LC ALL",
+      "runwayIds": [
+        "10C-28C",
+        "10L-28R",
+        "10R-28L",
+        "4L-22R",
+        "4R-22L",
+        "9C-27C",
+        "9L-27R",
+        "9R-27L"
+      ]
+    },
+    {
+      "name": "LCN",
+      "runwayIds": [
+        "9L-27R"
+      ]
+    },
+    {
+      "name": "NLC D W",
+      "runwayIds": [
+        "10L-28R",
+        "9C-27C",
+        "9R-27L"
+      ]
+    },
+    {
+      "name": "NLC C W",
+      "runwayIds": [
+        "10L-28R",
+        "9C-27C",
+        "9L-27R",
+        "9R-27L"
+      ]
+    },
+    {
+      "name": "NLC D E",
+      "runwayIds": [
+        "9C-27C",
+        "9R-27L"
+      ]
+    },
+    {
+      "name": "NLC C E",
+      "runwayIds": [
+        "9C-27C",
+        "9L-27R",
+        "9R-27L"
+      ]
+    },
+    {
+      "name": "LCS",
+      "runwayIds": [
+        "10R-28L"
+      ]
+    },
+    {
+      "name": "SLC W",
+      "runwayIds": [
+        "10C-28C",
+        "10R-28L",
+        "4R-22L"
+      ]
+    },
+    {
+      "name": "SLC D E",
+      "runwayIds": [
+        "10C-28C",
+        "10L-28R"
+      ]
+    },
+    {
+      "name": "SLC C E",
+      "runwayIds": [
+        "10C-28C",
+        "10L-28R",
+        "10R-28L"
+      ]
+    },
+    {
+      "name": "NLC 4S",
+      "runwayIds": [
+        "4L-22R"
+      ]
+    },
+    {
+      "name": "SLC 4S",
+      "runwayIds": [
+        "4R-22L"
+      ]
+    },
+    {
+      "name": "NLC 22S",
+      "runwayIds": [
+        "4L-22R"
+      ]
+    },
+    {
+      "name": "SLC 22S",
+      "runwayIds": [
+        "4R-22L"
+      ]
+    },
+    {
+      "name": "3LC",
+      "runwayIds": [
+        "10L-28R"
+      ]
+    }
+  ]
+}

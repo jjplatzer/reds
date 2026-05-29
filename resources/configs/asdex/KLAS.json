@@ -1,0 +1,129 @@
+{
+  "airport": "LAS",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "CFG 1",
+      "arrivalRunwayIds": [
+        "19L",
+        "19R",
+        "26L"
+      ],
+      "departureRunwayIds": [
+        "19L",
+        "19R",
+        "26R"
+      ],
+      "holdShortRunwayPairs": [
+        {
+          "id": "01GV9EPTY23VWTBFHSSCVANEJ6",
+          "arrivalRunwayId": "19L",
+          "holdShortId": "26R"
+        },
+        {
+          "id": "01GV9ER68DADK9T96DKHB2F4VV",
+          "arrivalRunwayId": "19R",
+          "holdShortId": "26R"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "name": "CFG 2",
+      "arrivalRunwayIds": [
+        "1L",
+        "1R"
+      ],
+      "departureRunwayIds": [
+        "8L"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "CFG 3",
+      "arrivalRunwayIds": [
+        "1L",
+        "26L"
+      ],
+      "departureRunwayIds": [
+        "1L",
+        "1R"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "CFG 4",
+      "arrivalRunwayIds": [
+        "19L",
+        "19R",
+        "8R"
+      ],
+      "departureRunwayIds": [
+        "8L"
+      ],
+      "holdShortRunwayPairs": [
+        {
+          "id": "01GV9EZDBV01S7DD44FAS5J452",
+          "arrivalRunwayId": "19R",
+          "holdShortId": "8L"
+        },
+        {
+          "id": "01GV9EZVQGQZMXMW1CGPYBJT26",
+          "arrivalRunwayId": "19L",
+          "holdShortId": "8L"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "LC1",
+      "runwayIds": [
+        "8L-26R",
+        "8R-26L"
+      ],
+      "default": true
+    },
+    {
+      "name": "LC2",
+      "runwayIds": [
+        "1L-19R",
+        "1R-19L"
+      ]
+    },
+    {
+      "name": "GCE",
+      "runwayIds": [
+        "8L-26R",
+        "8R-26L"
+      ]
+    },
+    {
+      "name": "GCW",
+      "runwayIds": [
+        "1L-19R",
+        "1R-19L"
+      ]
+    },
+    {
+      "name": "ALL",
+      "runwayIds": [
+        "1L-19R",
+        "1R-19L",
+        "8L-26R",
+        "8R-26L"
+      ]
+    },
+    {
+      "name": "NONE",
+      "runwayIds": []
+    }
+  ]
+}

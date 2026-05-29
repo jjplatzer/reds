@@ -1,0 +1,74 @@
+{
+  "airport": "BDL",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "6/33",
+      "arrivalRunwayIds": [
+        "33",
+        "6"
+      ],
+      "departureRunwayIds": [
+        "33",
+        "6"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "6/15",
+      "arrivalRunwayIds": [
+        "15",
+        "6"
+      ],
+      "departureRunwayIds": [
+        "15",
+        "6"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "24/33",
+      "arrivalRunwayIds": [
+        "24",
+        "33"
+      ],
+      "departureRunwayIds": [
+        "24",
+        "33"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "24/15",
+      "arrivalRunwayIds": [
+        "15",
+        "24"
+      ],
+      "departureRunwayIds": [
+        "15",
+        "24"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "GC",
+      "runwayIds": [],
+      "default": true
+    },
+    {
+      "name": "LC",
+      "runwayIds": [
+        "15-33",
+        "6-24"
+      ]
+    }
+  ]
+}
