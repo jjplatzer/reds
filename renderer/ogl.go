@@ -210,7 +210,21 @@ func (r *OpenGLRenderer) RenderCmdBuffer(cb *CmdBuffer) RendererStats {
 }
 
 func (r *OpenGLRenderer) RenderZCmdBuffer(zcb *ZCmdBuffer) RendererStats {
-	return zcb.Render(r)
+	var stats RendererStats
+	if !r.ready || zcb == nil || zcb.Empty() {
+		return stats
+	}
+
+	reset := true
+	for _, z := range zcb.keys {
+		cb := zcb.buffers[z]
+		if cb == nil || cb.Empty() {
+			continue
+		}
+		stats.Add(r.renderCmdBuffer(cb, reset))
+		reset = false
+	}
+	return stats
 }
 
 func (r *OpenGLRenderer) renderCmdBuffer(cb *CmdBuffer, reset bool) RendererStats {

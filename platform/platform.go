@@ -50,6 +50,13 @@ type Platform interface {
 	// WindowSize returns the window size in screen coordinates as ints.
 	WindowSize() [2]int
 
+	// GetMouse returns the current frame's mouse state in logical window
+	// coordinates.
+	GetMouse() MouseState
+
+	// GetKeyboard returns the current frame's tracked keyboard state.
+	GetKeyboard() KeyboardState
+
 	// DPIScale is the framebuffer-to-window scale factor (1.0 on a standard
 	// display, 2.0 on a typical Retina display).
 	DPIScale() float32

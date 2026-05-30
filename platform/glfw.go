@@ -2,10 +2,9 @@
 //
 // glfwPlatform implements Platform using GLFW for windowing and the
 // cimgui-go GLFW + OpenGL3 backends for Dear ImGui. It is adapted from
-// vice's platform/glfw.go, stripped down to the single-window menu case:
-// we let the ImGui GLFW backend install its own input callbacks
-// (InitForOpenGL with install_callbacks=true) instead of chaining our own,
-// so there is no manual mouse/keyboard forwarding to maintain yet.
+// vice's platform/glfw.go, stripped down to the single-window menu/scope case.
+// ImGui still owns the primary GLFW callbacks; REDS polls mouse/buttons/keys
+// and chains the scroll callback so panes can receive frame-local input.
 
 package platform
 
@@ -13,6 +12,8 @@ import (
 	"fmt"
 	"runtime"
 	"unsafe"
+
+	redsmath "github.com/juliusplatzer/reds/math"
 
 	"github.com/AllenDang/cimgui-go/imgui"
 	implglfw "github.com/AllenDang/cimgui-go/impl/glfw"
@@ -30,6 +31,14 @@ type glfwPlatform struct {
 	window  *glfw.Window
 	imguiIO *imgui.IO
 	config  *Config
+
+	mouse             MouseState
+	prevMouseButtons  [MouseButtonCount]bool
+	pendingMouseWheel redsmath.Vec2
+	inputInitialized  bool
+
+	keyboard    KeyboardState
+	prevKeyDown map[Key]bool
 }
 
 // New creates the window and wires up the ImGui backends. An ImGui context
@@ -104,19 +113,34 @@ func New(config *Config) (Platform, error) {
 	rawPtr := *(*unsafe.Pointer)(unsafe.Pointer(window))
 	implWindow := implglfw.NewGLFWwindowFromC(rawPtr)
 
-	// install_callbacks=true lets the backend handle mouse, keyboard, scroll,
-	// and character input on its own. The menu needs nothing custom here.
+	// install_callbacks=true lets the backend handle mouse, keyboard, and
+	// character input. We chain our scroll callback below so panes can also see
+	// wheel deltas without breaking ImGui.
 	implglfw.InitForOpenGL(implWindow, true)
 	implogl3.InitV("#version 330 core")
+
+	p := &glfwPlatform{
+		window:      window,
+		imguiIO:     io,
+		config:      config,
+		prevKeyDown: make(map[Key]bool),
+	}
+
+	var previousScroll glfw.ScrollCallback
+	previousScroll = window.SetScrollCallback(func(w *glfw.Window, xoff, yoff float64) {
+		if previousScroll != nil {
+			previousScroll(w, xoff, yoff)
+		}
+		p.pendingMouseWheel = p.pendingMouseWheel.Add(redsmath.Vec2{X: float32(xoff), Y: float32(yoff)})
+	})
+
+	// Prime input so the first frame does not report a huge cursor delta.
+	p.updateInput()
 
 	// v-sync on.
 	glfw.SwapInterval(1)
 
-	return &glfwPlatform{
-		window:  window,
-		imguiIO: io,
-		config:  config,
-	}, nil
+	return p, nil
 }
 
 func (g *glfwPlatform) ShouldStop() bool {
@@ -125,6 +149,7 @@ func (g *glfwPlatform) ShouldStop() bool {
 
 func (g *glfwPlatform) ProcessEvents() {
 	glfw.PollEvents()
+	g.updateInput()
 }
 
 func (g *glfwPlatform) NewFrame() {
@@ -160,6 +185,104 @@ func (g *glfwPlatform) FramebufferSize() [2]float32 {
 func (g *glfwPlatform) WindowSize() [2]int {
 	w, h := g.window.GetSize()
 	return [2]int{w, h}
+}
+
+func (g *glfwPlatform) GetMouse() MouseState {
+	return g.mouse
+}
+
+func (g *glfwPlatform) GetKeyboard() KeyboardState {
+	return g.keyboard
+}
+
+func (g *glfwPlatform) updateInput() {
+	g.updateMouse()
+	g.updateKeyboard()
+}
+
+func (g *glfwPlatform) updateMouse() {
+	x, y := g.window.GetCursorPos()
+	pos := redsmath.Vec2{X: float32(x), Y: float32(y)}
+	if !g.inputInitialized {
+		g.mouse.Pos = pos
+		g.inputInitialized = true
+	}
+
+	next := MouseState{
+		Pos:   pos,
+		Delta: pos.Sub(g.mouse.Pos),
+		Wheel: g.pendingMouseWheel,
+	}
+	g.pendingMouseWheel = redsmath.Vec2{}
+
+	buttons := [...]glfw.MouseButton{
+		glfw.MouseButtonLeft,
+		glfw.MouseButtonRight,
+		glfw.MouseButtonMiddle,
+	}
+	for i, button := range buttons {
+		down := g.window.GetMouseButton(button) == glfw.Press
+		next.Down[i] = down
+		next.Pressed[i] = down && !g.prevMouseButtons[i]
+		next.Released[i] = !down && g.prevMouseButtons[i]
+		g.prevMouseButtons[i] = down
+	}
+
+	g.mouse = next
+}
+
+type trackedKey struct {
+	key  Key
+	glfw glfw.Key
+}
+
+var trackedKeys = []trackedKey{
+	{KeyEscape, glfw.KeyEscape},
+	{KeyEnter, glfw.KeyEnter},
+	{KeyKeypadEnter, glfw.KeyKPEnter},
+	{KeyLeft, glfw.KeyLeft},
+	{KeyRight, glfw.KeyRight},
+	{KeyUp, glfw.KeyUp},
+	{KeyDown, glfw.KeyDown},
+	{KeyF1, glfw.KeyF1},
+	{KeyF2, glfw.KeyF2},
+	{KeyF3, glfw.KeyF3},
+	{KeyF4, glfw.KeyF4},
+	{KeyF5, glfw.KeyF5},
+	{KeyF6, glfw.KeyF6},
+	{KeyF7, glfw.KeyF7},
+	{KeyF8, glfw.KeyF8},
+	{KeyF9, glfw.KeyF9},
+	{KeyF10, glfw.KeyF10},
+	{KeyF11, glfw.KeyF11},
+	{KeyF12, glfw.KeyF12},
+}
+
+func (g *glfwPlatform) updateKeyboard() {
+	down := make(map[Key]bool, len(trackedKeys))
+	pressed := make(map[Key]bool)
+	released := make(map[Key]bool)
+
+	for _, tk := range trackedKeys {
+		isDown := g.window.GetKey(tk.glfw) == glfw.Press
+		wasDown := g.prevKeyDown[tk.key]
+		if isDown {
+			down[tk.key] = true
+		}
+		if isDown && !wasDown {
+			pressed[tk.key] = true
+		}
+		if !isDown && wasDown {
+			released[tk.key] = true
+		}
+	}
+
+	g.prevKeyDown = down
+	g.keyboard = KeyboardState{
+		Down:     down,
+		Pressed:  pressed,
+		Released: released,
+	}
 }
 
 func (g *glfwPlatform) DPIScale() float32 {
