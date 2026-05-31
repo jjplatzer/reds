@@ -179,15 +179,16 @@ func (p *ASDEXPane) consumeMouseEvents(
 	}
 
 	if mouse.Wheel.Y != 0 && paneLocal.Contains(mouse.Pos) {
-		mouseWorld := transforms.WorldFromWindowP(mouse.Pos)
-
 		oldRange := p.rangeFeet
 		p.rangeFeet = p.zoomedRange(mouse.Wheel.Y)
 		newRange := p.rangeFeet
 
 		if oldRange > 0 && newRange > 0 && newRange != oldRange {
-			scale := newRange / oldRange
-			p.center = mouseWorld.Add(p.center.Sub(mouseWorld).Mul(scale))
+			if ctx.Keyboard != nil && ctx.Keyboard.IsDown(platform.KeyAlt) {
+				mouseWorld := transforms.WorldFromWindowP(mouse.Pos)
+				scale := newRange / oldRange
+				p.center = mouseWorld.Add(p.center.Sub(mouseWorld).Mul(scale))
+			}
 			changed = true
 		}
 	}

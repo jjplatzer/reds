@@ -18,7 +18,12 @@ import (
 	implogl3 "github.com/AllenDang/cimgui-go/impl/opengl3"
 )
 
-const uiFontSize = 18 // logical px
+const (
+	uiFontSize = 18 // logical px
+
+	asdexWindowWidth  = 1280
+	asdexWindowHeight = 800
+)
 
 type appMode int
 
@@ -112,6 +117,7 @@ func launchScope(sel Selection, plat platform.Platform) (panes.Pane, error) {
 	switch sel.Mode {
 	case DisplayASDEX:
 		plat.SetWindowTitle("REDS ASDE-X " + sel.Airport)
+		plat.SetWindowSizeCentered(asdexWindowWidth, asdexWindowHeight)
 		return asdex.NewPane(sel.Airport)
 	default:
 		return nil, fmt.Errorf("%s scope is not implemented yet", sel.Mode)
