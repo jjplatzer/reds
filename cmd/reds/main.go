@@ -70,6 +70,8 @@ func main() {
 
 	mode := appModeMenu
 	var active panes.Pane
+	consumer := &smesConsumer{}
+	defer consumer.Stop()
 
 	bg := colDialogBg
 	for !plat.ShouldStop() {
@@ -87,7 +89,7 @@ func main() {
 
 			switch res {
 			case menuConfirmed:
-				pane, err := launchScope(m.selection, plat)
+				pane, err := launchScope(m.selection, plat, consumer)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "reds: %v\n", err)
 					plat.SetWindowTitle("reds")
@@ -113,12 +115,20 @@ func main() {
 	}
 }
 
-func launchScope(sel Selection, plat platform.Platform) (panes.Pane, error) {
+func launchScope(sel Selection, plat platform.Platform, consumer *smesConsumer) (panes.Pane, error) {
 	switch sel.Mode {
 	case DisplayASDEX:
+		if err := consumer.Start(sel.Airport); err != nil {
+			return nil, err
+		}
+		pane, err := asdex.NewPane(sel.Airport)
+		if err != nil {
+			consumer.Stop()
+			return nil, err
+		}
 		plat.SetWindowTitle("REDS ASDE-X " + sel.Airport)
 		plat.SetWindowSizeCentered(asdexWindowWidth, asdexWindowHeight)
-		return asdex.NewPane(sel.Airport)
+		return pane, nil
 	default:
 		return nil, fmt.Errorf("%s scope is not implemented yet", sel.Mode)
 	}
