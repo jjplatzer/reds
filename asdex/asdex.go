@@ -57,6 +57,7 @@ type ASDEXPane struct {
 	airport  string
 	mode     Mode
 	videomap *VideoMap
+	targets  TargetStore
 
 	center          redsmath.Vec2
 	rangeFeet       float32
@@ -79,6 +80,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		airport:  airport,
 		mode:     ModeDay,
 		videomap: vm,
+		targets:  NewTargetStore(),
 	}, nil
 }
 
@@ -118,6 +120,21 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	transforms.LoadWorldViewingMatrices(cb)
 	DrawVideoMap(p.videomap, cb, p.mode)
 	cb.DisableScissor()
+
+	targetCB := zcb.At(windowZ(0, zTargets))
+	targetCB.Viewport(x, y, w, h)
+	targetCB.Scissor(x, y, w, h)
+	transforms.LoadWorldViewingMatrices(targetCB)
+	DrawTargets(
+		p.targets.All(),
+		p.targets.History(),
+		targetCB,
+		TargetDrawOptions{
+			VectorSeconds: 3,
+			Brightness:    brightnessDefault,
+		},
+	)
+	targetCB.DisableScissor()
 }
 
 func (p *ASDEXPane) initView(rect redsmath.Rect) {
