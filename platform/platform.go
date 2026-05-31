@@ -40,6 +40,10 @@ type Platform interface {
 	// SetWindowTitle sets the OS window title.
 	SetWindowTitle(title string)
 
+	// SetWindowSizeCentered resizes the OS window while keeping its current
+	// center point fixed.
+	SetWindowSizeCentered(width, height int)
+
 	// DisplaySize returns the window size in screen (logical) coordinates.
 	DisplaySize() [2]float32
 

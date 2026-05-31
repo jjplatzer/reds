@@ -172,6 +172,24 @@ func (g *glfwPlatform) SetWindowTitle(title string) {
 	g.window.SetTitle(title)
 }
 
+func (g *glfwPlatform) SetWindowSizeCentered(width, height int) {
+	if width <= 0 || height <= 0 {
+		return
+	}
+
+	x, y := g.window.GetPos()
+	oldW, oldH := g.window.GetSize()
+
+	cx := x + oldW/2
+	cy := y + oldH/2
+
+	g.window.SetSize(width, height)
+	g.window.SetPos(cx-width/2, cy-height/2)
+
+	// Avoid a large mouse delta after the window changes size and position.
+	g.updateInput()
+}
+
 func (g *glfwPlatform) DisplaySize() [2]float32 {
 	w, h := g.window.GetSize()
 	return [2]float32{float32(w), float32(h)}
@@ -256,6 +274,7 @@ var trackedKeys = []trackedKey{
 	{KeyF10, glfw.KeyF10},
 	{KeyF11, glfw.KeyF11},
 	{KeyF12, glfw.KeyF12},
+	{KeyAlt, glfw.KeyLeftAlt},
 }
 
 func (g *glfwPlatform) updateKeyboard() {
@@ -264,7 +283,7 @@ func (g *glfwPlatform) updateKeyboard() {
 	released := make(map[Key]bool)
 
 	for _, tk := range trackedKeys {
-		isDown := g.window.GetKey(tk.glfw) == glfw.Press
+		isDown := g.isKeyDown(tk)
 		wasDown := g.prevKeyDown[tk.key]
 		if isDown {
 			down[tk.key] = true
@@ -283,6 +302,14 @@ func (g *glfwPlatform) updateKeyboard() {
 		Pressed:  pressed,
 		Released: released,
 	}
+}
+
+func (g *glfwPlatform) isKeyDown(tk trackedKey) bool {
+	if tk.key == KeyAlt {
+		return g.window.GetKey(glfw.KeyLeftAlt) == glfw.Press ||
+			g.window.GetKey(glfw.KeyRightAlt) == glfw.Press
+	}
+	return g.window.GetKey(tk.glfw) == glfw.Press
 }
 
 func (g *glfwPlatform) DPIScale() float32 {
