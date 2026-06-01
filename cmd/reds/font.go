@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	menuFontPath     = "fonts/ClearSans-Regular.ttf.zst"
-	menuBoldFontPath = "fonts/ClearSans-Bold.ttf.zst"
+	menuFontPath     = "fonts/Inter-Regular.ttf.zst"
+	menuBoldFontPath = "fonts/Inter-Bold.ttf.zst"
 )
 
 // fontPinner keeps decompressed font bytes pinned so the GC can't move them
