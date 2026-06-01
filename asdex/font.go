@@ -7,7 +7,7 @@ import (
 	"github.com/juliusplatzer/reds/util"
 )
 
-const asdexFontPath = "asdex/assets/font.bin"
+const asdexFontPath = "asdex/assets/font.bin.zst"
 
 type fontCache struct {
 	font     *renderer.BitmapFont
