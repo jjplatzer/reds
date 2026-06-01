@@ -63,6 +63,9 @@ type ASDEXPane struct {
 	smes     *redsnet.SmesClient
 	fonts    fontCache
 
+	cursors    CursorSet
+	cursorMode CursorMode
+
 	datablockSettings DataBlockSettings
 
 	highlightedTargetID    string
@@ -113,6 +116,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		return
 	}
 
+	p.ensureCursorsLoaded(ctx)
 	p.consumeNetworkFrames()
 	p.initView(ctx.PaneRect)
 	if !p.viewInitialized {
@@ -136,6 +140,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		)
 	}
 	p.updateHighlightedTarget(ctx, transforms)
+	p.applyCurrentCursor(ctx)
 
 	cb := zcb.At(windowZ(0, zVideoMap))
 	x, y, w, h := ctx.PaneFramebufferRect()
@@ -180,6 +185,50 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		},
 	)
 	dbCB.DisableScissor()
+}
+
+func (p *ASDEXPane) ensureCursorsLoaded(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Platform == nil || p.cursors.loaded {
+		return
+	}
+	if err := p.cursors.Load(ctx.Platform); err != nil {
+		fmt.Fprintf(os.Stderr, "reds: %v\n", err)
+	}
+}
+
+func (p *ASDEXPane) applyCurrentCursor(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Platform == nil || ctx.Mouse == nil {
+		return
+	}
+
+	paneLocal := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
+	if !paneLocal.Contains(ctx.Mouse.Pos) {
+		return
+	}
+	p.applyCursorMode(ctx, p.resolveCursorMode(ctx))
+}
+
+func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
+	if ctx != nil && ctx.Mouse != nil && ctx.Mouse.IsDown(platform.MouseButtonRight) {
+		return CursorModeHidden
+	}
+	return CursorModeScope
+}
+
+func (p *ASDEXPane) applyCursorMode(ctx *panes.Context, mode CursorMode) {
+	if p == nil || ctx == nil || ctx.Platform == nil {
+		return
+	}
+
+	p.cursorMode = mode
+	cursor, hidden := p.cursors.CursorForMode(mode)
+	if hidden {
+		ctx.Platform.SetCursorHiddenOverride()
+		return
+	}
+	if cursor != nil {
+		ctx.Platform.SetCursorOverride(cursor)
+	}
 }
 
 func (p *ASDEXPane) updateHighlightedTarget(

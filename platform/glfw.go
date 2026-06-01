@@ -39,6 +39,11 @@ type glfwPlatform struct {
 
 	keyboard    KeyboardState
 	prevKeyDown map[Key]bool
+
+	cursorOverride       *glfw.Cursor
+	cursorHiddenOverride bool
+	currentCursor        *glfw.Cursor
+	loadedCursors        []*glfw.Cursor
 }
 
 // New creates the window and wires up the ImGui backends. An ImGui context
@@ -324,6 +329,10 @@ func (g *glfwPlatform) DPIScale() float32 {
 func (g *glfwPlatform) Dispose() {
 	implogl3.Shutdown()
 	implglfw.Shutdown()
+	for _, cursor := range g.loadedCursors {
+		cursor.Destroy()
+	}
+	g.loadedCursors = nil
 	g.window.Destroy()
 	glfw.Terminate()
 }

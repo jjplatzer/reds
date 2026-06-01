@@ -68,9 +68,15 @@ func DrawPane(
 	opts DrawOptions,
 ) renderer.RendererStats {
 	var stats renderer.RendererStats
-	if pane == nil || plat == nil || r == nil {
+	if plat == nil {
 		return stats
 	}
+	plat.ClearCursorOverride()
+
+	if pane == nil || r == nil {
+		return stats
+	}
+
 	fb := plat.FramebufferSize()
 	if fb[0] <= 0 || fb[1] <= 0 {
 		return stats

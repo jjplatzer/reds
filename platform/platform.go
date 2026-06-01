@@ -5,10 +5,10 @@
 // of vice's platform package (github.com/mmp/vice/platform).
 //
 // This is deliberately a trimmed-down version: it has exactly what the
-// startup menu needs (a window, the ImGui GLFW + OpenGL3 backends, input via
-// the backend's installed callbacks, and frame lifecycle). Audio, speech,
-// mouse capture, multi-viewport support, and custom cursor handling all live
-// in vice's version and will be ported alongside the scopes that need them.
+// startup menu and first ASDE-X scope need: a window, the ImGui GLFW + OpenGL3
+// backends, input via the backend's installed callbacks, frame lifecycle, and
+// native cursor overrides. Audio, speech, mouse capture, and multi-viewport
+// support remain in vice's fuller version.
 
 package platform
 
@@ -43,6 +43,16 @@ type Platform interface {
 	// SetWindowSizeCentered resizes the OS window while keeping its current
 	// center point fixed.
 	SetWindowSizeCentered(width, height int)
+
+	// LoadCursorFromBytes decodes a Windows .cur resource and creates a native
+	// cursor suitable for the current display scale.
+	LoadCursorFromBytes(name string, data []byte) (*Cursor, error)
+
+	// Cursor overrides are frame-local pane decisions. Panes clear an old
+	// override before drawing and apply the current override during Draw.
+	SetCursorOverride(cursor *Cursor)
+	SetCursorHiddenOverride()
+	ClearCursorOverride()
 
 	// DisplaySize returns the window size in screen (logical) coordinates.
 	DisplaySize() [2]float32
