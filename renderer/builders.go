@@ -3,6 +3,8 @@ package renderer
 import (
 	"math"
 	"sync"
+
+	redsmath "github.com/juliusplatzer/reds/math"
 )
 
 // LinesBuilder accumulates position-only line geometry that shares the current
@@ -221,12 +223,138 @@ func (b *TexturedTrianglesBuilder) GenerateCommands(cb *CmdBuffer, textureID Tex
 	cb.DrawTexturedTriangles(textureID, b.points, b.indices)
 }
 
+type TextStyle struct {
+	Size       int
+	Color      RGBA
+	Background RGBA
+}
+
+type TextDrawBuilder struct {
+	font *BitmapFont
+
+	points  []FontVertex
+	indices []uint32
+}
+
+func (td *TextDrawBuilder) Reset() {
+	td.font = nil
+	td.points = td.points[:0]
+	td.indices = td.indices[:0]
+}
+
+func (td *TextDrawBuilder) SetFont(font *BitmapFont) {
+	td.font = font
+}
+
+func (td *TextDrawBuilder) AddText(text string, pos redsmath.Vec2, style TextStyle) {
+	if td == nil || td.font == nil || text == "" {
+		return
+	}
+
+	fs := td.font.Size(style.Size)
+	if fs == nil {
+		return
+	}
+
+	codepoints := []rune(text)
+	lastGlyphOnLine := func(index int) bool {
+		for _, codepoint := range codepoints[index+1:] {
+			switch codepoint {
+			case '\r':
+				continue
+			case '\n':
+				return true
+			}
+			if _, ok := fs.Glyph(codepoint); ok {
+				return false
+			}
+		}
+		return true
+	}
+
+	penX := float32(0)
+	penY := float32(0)
+	for i, codepoint := range codepoints {
+		switch codepoint {
+		case '\r':
+			continue
+		case '\n':
+			penX = 0
+			penY += float32(fs.LineHeight)
+			continue
+		}
+
+		glyph, ok := fs.Glyph(codepoint)
+		if !ok {
+			continue
+		}
+
+		td.appendGlyph(
+			fs,
+			glyph,
+			redsmath.Vec2{
+				X: pos.X + penX + float32(glyph.BearingX),
+				Y: pos.Y + penY + float32(fs.LineHeight-glyph.BearingY),
+			},
+			style,
+		)
+		if lastGlyphOnLine(i) {
+			penX += float32(glyph.Width)
+		} else {
+			penX += float32(glyph.Advance)
+		}
+	}
+}
+
+func (td *TextDrawBuilder) appendGlyph(
+	fs *BitmapFontSize,
+	glyph *BitmapGlyph,
+	topLeft redsmath.Vec2,
+	style TextStyle,
+) {
+	if fs == nil || glyph == nil || glyph.Width <= 0 || glyph.Height <= 0 {
+		return
+	}
+
+	x0 := topLeft.X
+	y0 := topLeft.Y
+	x1 := x0 + float32(glyph.Width)
+	y1 := y0 + float32(glyph.Height)
+
+	invW := 1 / float32(fs.AtlasWidth)
+	invH := 1 / float32(fs.AtlasHeight)
+	u0 := float32(glyph.TextureOffset) * invW
+	u1 := float32(glyph.TextureOffset+glyph.Width) * invW
+	v0 := float32(0)
+	v1 := float32(glyph.Height) * invH
+
+	base := uint32(len(td.points))
+	td.points = append(td.points,
+		FontVertex{X: x0, Y: y0, U: u0, V: v0, Color: style.Color, Background: style.Background},
+		FontVertex{X: x1, Y: y0, U: u1, V: v0, Color: style.Color, Background: style.Background},
+		FontVertex{X: x1, Y: y1, U: u1, V: v1, Color: style.Color, Background: style.Background},
+		FontVertex{X: x0, Y: y1, U: u0, V: v1, Color: style.Color, Background: style.Background},
+	)
+	td.indices = append(td.indices,
+		base, base+1, base+2,
+		base, base+2, base+3,
+	)
+}
+
+func (td *TextDrawBuilder) GenerateCommands(cb *CmdBuffer, textureID TextureID) {
+	if td == nil || cb == nil || len(td.points) == 0 || len(td.indices) == 0 || textureID == 0 {
+		return
+	}
+	cb.DrawFontTriangles(textureID, td.points, td.indices)
+}
+
 var (
 	linesBuilderPool             = sync.Pool{New: func() any { return &LinesBuilder{} }}
 	coloredLinesBuilderPool      = sync.Pool{New: func() any { return &ColoredLinesBuilder{} }}
 	trianglesBuilderPool         = sync.Pool{New: func() any { return &TrianglesBuilder{} }}
 	coloredTrianglesBuilderPool  = sync.Pool{New: func() any { return &ColoredTrianglesBuilder{} }}
 	texturedTrianglesBuilderPool = sync.Pool{New: func() any { return &TexturedTrianglesBuilder{} }}
+	textDrawBuilderPool          = sync.Pool{New: func() any { return &TextDrawBuilder{} }}
 )
 
 func GetLinesBuilder() *LinesBuilder { return linesBuilderPool.Get().(*LinesBuilder) }
@@ -263,4 +391,15 @@ func GetTexturedTrianglesBuilder() *TexturedTrianglesBuilder {
 func ReturnTexturedTrianglesBuilder(b *TexturedTrianglesBuilder) {
 	b.Reset()
 	texturedTrianglesBuilderPool.Put(b)
+}
+
+func GetTextDrawBuilder() *TextDrawBuilder {
+	return textDrawBuilderPool.Get().(*TextDrawBuilder)
+}
+func ReturnTextDrawBuilder(td *TextDrawBuilder) {
+	if td == nil {
+		return
+	}
+	td.Reset()
+	textDrawBuilderPool.Put(td)
 }

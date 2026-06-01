@@ -61,6 +61,9 @@ type ASDEXPane struct {
 	videomap *VideoMap
 	targets  TargetStore
 	smes     *redsnet.SmesClient
+	fonts    fontCache
+
+	datablockSettings DataBlockSettings
 
 	center          redsmath.Vec2
 	rangeFeet       float32
@@ -79,6 +82,11 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		return nil, err
 	}
 
+	fonts, err := loadFontCache()
+	if err != nil {
+		return nil, err
+	}
+
 	client := redsnet.NewSmesClient(targetWebSocketURL())
 	client.SetAirport(airport)
 	client.Start()
@@ -89,6 +97,9 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		videomap: vm,
 		targets:  NewTargetStore(),
 		smes:     client,
+		fonts:    fonts,
+
+		datablockSettings: DefaultDataBlockSettings(),
 	}, nil
 }
 
@@ -144,6 +155,25 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		},
 	)
 	targetCB.DisableScissor()
+
+	dbCB := zcb.At(windowZ(0, zDatablocks))
+	dbCB.Viewport(x, y, w, h)
+	dbCB.Scissor(x, y, w, h)
+	DrawDatablocks(
+		p.targets.All(),
+		dbCB,
+		transforms,
+		DataBlockDrawOptions{
+			Font: p.fonts.font,
+			FontTextureForSize: func(size int) renderer.TextureID {
+				return p.fonts.textureForSize(ctx.Renderer, size)
+			},
+			SettingsForTarget: func(_ *Target) DataBlockSettings {
+				return p.datablockSettings
+			},
+		},
+	)
+	dbCB.DisableScissor()
 }
 
 func targetWebSocketURL() string {

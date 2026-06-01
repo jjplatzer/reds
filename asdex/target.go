@@ -56,12 +56,10 @@ type Target struct {
 }
 
 func (t *Target) EffectiveShowDB() bool {
-	switch classifyTarget(t) {
-	case targetClassVehicle, targetClassAircraft, targetClassHeavyAircraft:
-		return t.ShowDB
-	default:
+	if t == nil || !t.ShowDB {
 		return false
 	}
+	return targetHasDatablock(classifyTarget(t))
 }
 
 type TargetHistoryPoint struct {
@@ -384,12 +382,13 @@ const (
 )
 
 func classifyTarget(t *Target) targetClass {
-	if t == nil || t.TargetType == nil || *t.TargetType == "" {
+	if t == nil || t.TargetType == nil || strings.TrimSpace(*t.TargetType) == "" {
 		return targetClassUnknown
 	}
 
-	if *t.TargetType == "VEH" {
-		if t.Callsign != "" && t.Callsign != "UNKN" {
+	if strings.EqualFold(strings.TrimSpace(*t.TargetType), "VEH") {
+		callsign := strings.TrimSpace(t.Callsign)
+		if callsign != "" && !strings.EqualFold(callsign, "UNKN") {
 			return targetClassVehicle
 		}
 		return targetClassUnknown
@@ -399,6 +398,16 @@ func classifyTarget(t *Target) targetClass {
 		return targetClassHeavyAircraft
 	}
 	return targetClassAircraft
+}
+
+func targetUsesUnknownPolygon(class targetClass) bool {
+	return class == targetClassUnknown || class == targetClassVehicle
+}
+
+func targetHasDatablock(class targetClass) bool {
+	return class == targetClassVehicle ||
+		class == targetClassAircraft ||
+		class == targetClassHeavyAircraft
 }
 
 func isHeavyCWT(cwt string) bool {
@@ -591,11 +600,10 @@ func addTargetSymbols(targets []*Target, cb *renderer.CmdBuffer, brightness int)
 		class := classifyTarget(target)
 		mesh := unknownMesh
 		scale := float32(1)
-		switch class {
-		case targetClassAircraft:
+		if !targetUsesUnknownPolygon(class) {
 			mesh = aircraftMesh
-		case targetClassHeavyAircraft:
-			mesh = aircraftMesh
+		}
+		if class == targetClassHeavyAircraft {
 			scale = 1.5
 		}
 
