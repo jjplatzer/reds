@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	uiFontSize = 18 // logical px
+	uiFontSize = 16 // logical px
 
 	asdexWindowWidth  = 1280
 	asdexWindowHeight = 800
