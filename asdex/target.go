@@ -71,7 +71,9 @@ type TargetStore struct {
 	targets map[string]*Target
 	order   []string
 
-	history map[string][]TargetHistoryPoint
+	history       map[string][]TargetHistoryPoint
+	highlightedID string
+	hoverRevision uint64
 }
 
 func NewTargetStore() TargetStore {
@@ -98,14 +100,18 @@ func (s *TargetStore) Upsert(t Target) {
 				PosFeet: existing.PosFeet,
 			})
 			s.trimHistory(t.ID)
+			s.hoverRevision++
 		}
+		t.Highlighted = t.ID == s.highlightedID
 		*existing = t
 		return
 	}
 
+	t.Highlighted = false
 	targetCopy := t
 	s.targets[t.ID] = &targetCopy
 	s.order = append(s.order, t.ID)
+	s.hoverRevision++
 }
 
 func (s *TargetStore) Remove(id string) {
@@ -118,21 +124,29 @@ func (s *TargetStore) Remove(id string) {
 
 	delete(s.targets, id)
 	delete(s.history, id)
+	if s.highlightedID == id {
+		s.highlightedID = ""
+	}
 	for i, orderedID := range s.order {
 		if orderedID == id {
 			s.order = append(s.order[:i], s.order[i+1:]...)
 			break
 		}
 	}
+	s.hoverRevision++
 }
 
 func (s *TargetStore) Clear() {
 	if s == nil {
 		return
 	}
+	if len(s.targets) > 0 {
+		s.hoverRevision++
+	}
 	clear(s.targets)
 	clear(s.history)
 	s.order = s.order[:0]
+	s.highlightedID = ""
 }
 
 func (s *TargetStore) All() []*Target {
@@ -156,12 +170,21 @@ func (s *TargetStore) History() map[string][]TargetHistoryPoint {
 	return s.history
 }
 
+func (s *TargetStore) HoverRevision() uint64 {
+	if s == nil {
+		return 0
+	}
+	return s.hoverRevision
+}
+
 const maxTargetHoverRangeFeet = float32(150)
 
 func (s *TargetStore) HighlightNearest(posFeet redsmath.Vec2) string {
 	if s == nil || len(s.targets) == 0 {
 		return ""
 	}
+
+	s.ClearHighlight()
 
 	maxDistance2 := maxTargetHoverRangeFeet * maxTargetHoverRangeFeet
 	bestDistance2 := maxDistance2
@@ -172,8 +195,6 @@ func (s *TargetStore) HighlightNearest(posFeet redsmath.Vec2) string {
 		if target == nil {
 			continue
 		}
-
-		target.Highlighted = false
 
 		delta := target.PosFeet.Sub(posFeet)
 		distance2 := delta.X*delta.X + delta.Y*delta.Y
@@ -186,6 +207,7 @@ func (s *TargetStore) HighlightNearest(posFeet redsmath.Vec2) string {
 	if target := s.targets[bestID]; target != nil {
 		target.Highlighted = true
 	}
+	s.highlightedID = bestID
 	return bestID
 }
 
@@ -194,11 +216,10 @@ func (s *TargetStore) ClearHighlight() {
 		return
 	}
 
-	for _, target := range s.targets {
-		if target != nil {
-			target.Highlighted = false
-		}
+	if target := s.targets[s.highlightedID]; target != nil {
+		target.Highlighted = false
 	}
+	s.highlightedID = ""
 }
 
 func (s *TargetStore) trimHistory(id string) {

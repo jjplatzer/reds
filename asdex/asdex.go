@@ -65,7 +65,10 @@ type ASDEXPane struct {
 
 	datablockSettings DataBlockSettings
 
-	highlightedTargetID string
+	highlightedTargetID    string
+	highlightMouseWorld    redsmath.Vec2
+	highlightStoreRevision uint64
+	highlightQueryValid    bool
 
 	center          redsmath.Vec2
 	rangeFeet       float32
@@ -195,7 +198,17 @@ func (p *ASDEXPane) updateHighlightedTarget(
 	}
 
 	mouseWorld := transforms.WorldFromWindowP(ctx.Mouse.Pos)
+	storeRevision := p.targets.HoverRevision()
+	if p.highlightQueryValid &&
+		p.highlightMouseWorld == mouseWorld &&
+		p.highlightStoreRevision == storeRevision {
+		return
+	}
+
 	p.highlightedTargetID = p.targets.HighlightNearest(mouseWorld)
+	p.highlightMouseWorld = mouseWorld
+	p.highlightStoreRevision = storeRevision
+	p.highlightQueryValid = true
 }
 
 func (p *ASDEXPane) clearHighlightedTarget() {
@@ -203,7 +216,12 @@ func (p *ASDEXPane) clearHighlightedTarget() {
 		return
 	}
 
+	if !p.highlightQueryValid && p.highlightedTargetID == "" {
+		return
+	}
+
 	p.highlightedTargetID = ""
+	p.highlightQueryValid = false
 	p.targets.ClearHighlight()
 }
 
