@@ -20,14 +20,17 @@ type SmesClient struct {
 
 	incoming      chan SmesFrame
 	errors        chan error
+	status        chan SmesStatusEvent
 	airportChange chan struct{}
 	close         chan struct{}
 
 	startOnce sync.Once
 	closeOnce sync.Once
 
-	mu      sync.RWMutex
-	airport string
+	mu             sync.RWMutex
+	airport        string
+	statusReported bool
+	lastStatus     SmesStatus
 }
 
 func NewSmesClient(url string) *SmesClient {
@@ -35,6 +38,7 @@ func NewSmesClient(url string) *SmesClient {
 		url:           url,
 		incoming:      make(chan SmesFrame, 256),
 		errors:        make(chan error, 16),
+		status:        make(chan SmesStatusEvent, 1),
 		airportChange: make(chan struct{}, 1),
 		close:         make(chan struct{}),
 	}
@@ -88,6 +92,13 @@ func (c *SmesClient) Errors() <-chan error {
 	return c.errors
 }
 
+func (c *SmesClient) Status() <-chan SmesStatusEvent {
+	if c == nil {
+		return nil
+	}
+	return c.status
+}
+
 func (c *SmesClient) run() {
 	for {
 		select {
@@ -99,6 +110,7 @@ func (c *SmesClient) run() {
 		conn, _, err := websocket.DefaultDialer.Dial(c.url, nil)
 		if err != nil {
 			c.reportError(fmt.Errorf("connect SMES websocket %s: %w", c.url, err))
+			c.reportStatus(SmesStatusDisconnected, err)
 			if !c.waitToReconnect() {
 				return
 			}
@@ -107,6 +119,7 @@ func (c *SmesClient) run() {
 
 		err = c.serve(conn)
 		_ = conn.Close()
+		c.reportStatus(SmesStatusDisconnected, err)
 		if err != nil && !errors.Is(err, errSmesClientClosed) {
 			c.reportError(fmt.Errorf("SMES websocket %s: %w", c.url, err))
 		}
@@ -120,6 +133,7 @@ func (c *SmesClient) serve(conn *websocket.Conn) error {
 	if err := c.writeAirport(conn); err != nil {
 		return err
 	}
+	c.reportStatus(SmesStatusConnected, nil)
 
 	readError := make(chan error, 1)
 	go func() {
@@ -182,6 +196,33 @@ func (c *SmesClient) writeAirport(conn *websocket.Conn) error {
 func (c *SmesClient) reportError(err error) {
 	select {
 	case c.errors <- err:
+	default:
+	}
+}
+
+func (c *SmesClient) reportStatus(status SmesStatus, err error) {
+	c.mu.Lock()
+	if c.statusReported && c.lastStatus == status {
+		c.mu.Unlock()
+		return
+	}
+	c.statusReported = true
+	c.lastStatus = status
+	c.mu.Unlock()
+
+	event := SmesStatusEvent{Status: status, Err: err}
+	select {
+	case c.status <- event:
+		return
+	default:
+	}
+
+	select {
+	case <-c.status:
+	default:
+	}
+	select {
+	case c.status <- event:
 	default:
 	}
 }

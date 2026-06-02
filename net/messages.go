@@ -2,6 +2,18 @@ package net
 
 import "encoding/json"
 
+type SmesStatus int
+
+const (
+	SmesStatusDisconnected SmesStatus = iota
+	SmesStatusConnected
+)
+
+type SmesStatusEvent struct {
+	Status SmesStatus
+	Err    error
+}
+
 type SmesFrame struct {
 	Type      string                     `json:"type,omitempty"`
 	Key       string                     `json:"key,omitempty"`
