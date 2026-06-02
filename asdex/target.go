@@ -177,6 +177,20 @@ func (s *TargetStore) HoverRevision() uint64 {
 	return s.hoverRevision
 }
 
+func (s *TargetStore) TargetByID(id string) *Target {
+	if s == nil || s.targets == nil || id == "" {
+		return nil
+	}
+	return s.targets[id]
+}
+
+func (s *TargetStore) HighlightedTarget() *Target {
+	if s == nil {
+		return nil
+	}
+	return s.TargetByID(s.highlightedID)
+}
+
 const maxTargetHoverRangeFeet = float32(150)
 
 func (s *TargetStore) HighlightNearest(posFeet redsmath.Vec2) string {

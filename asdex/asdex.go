@@ -69,6 +69,8 @@ type ASDEXPane struct {
 	datablockSettings DataBlockSettings
 	previewArea       PreviewArea
 
+	commandMode CommandMode
+
 	highlightedTargetID    string
 	highlightMouseWorld    redsmath.Vec2
 	highlightStoreRevision uint64
@@ -85,6 +87,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	if airport == "" {
 		return nil, fmt.Errorf("empty ASDE-X airport")
 	}
+	InitCommands()
 
 	vm, err := LoadVideoMap(airport)
 	if err != nil {
@@ -148,6 +151,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		)
 	}
 	p.updateHighlightedTarget(ctx, transforms)
+	p.consumeCommandClicks(ctx, transforms)
 	p.applyCurrentCursor(ctx)
 
 	cb := zcb.At(windowZ(0, zVideoMap))
@@ -295,6 +299,16 @@ func (p *ASDEXPane) clearHighlightedTarget() {
 	p.highlightedTargetID = ""
 	p.highlightQueryValid = false
 	p.targets.ClearHighlight()
+}
+
+func (p *ASDEXPane) highlightedTarget() *Target {
+	if p == nil {
+		return nil
+	}
+	if target := p.targets.HighlightedTarget(); target != nil {
+		return target
+	}
+	return p.targets.TargetByID(p.highlightedTargetID)
 }
 
 func targetWebSocketURL() string {

@@ -1,0 +1,504 @@
+package asdex
+
+import (
+	"fmt"
+	"reflect"
+	"strings"
+	"sync"
+
+	redsmath "github.com/juliusplatzer/reds/math"
+	"github.com/juliusplatzer/reds/panes"
+	"github.com/juliusplatzer/reds/platform"
+	"github.com/juliusplatzer/reds/radar"
+)
+
+type CommandMode int
+
+const (
+	CommandModeNone CommandMode = iota
+)
+
+type CommandClear int
+
+const (
+	ClearAll CommandClear = iota
+	ClearInput
+	ClearNone
+)
+
+type CommandStatus struct {
+	Clear CommandClear
+
+	Output    string
+	HasOutput bool
+}
+
+func commandOutput(text string) CommandStatus {
+	return CommandStatus{
+		Output:    text,
+		HasOutput: true,
+	}
+}
+
+type CommandInput struct {
+	text string
+
+	clickedTarget *Target
+	hasClick      bool
+
+	mousePosition redsmath.Vec2
+	transforms    radar.ScopeTransformations
+}
+
+type matchResult struct {
+	values    []any
+	remaining string
+	matched   bool
+	priority  int
+}
+
+type matcher interface {
+	match(ap *ASDEXPane, ctx *panes.Context, input *CommandInput, text string) (*matchResult, error)
+	validate() error
+	goType() reflect.Type
+	consumesClick() bool
+}
+
+type literalMatcher struct {
+	text string
+}
+
+func (m literalMatcher) match(
+	_ *ASDEXPane,
+	_ *panes.Context,
+	_ *CommandInput,
+	text string,
+) (*matchResult, error) {
+	if !strings.HasPrefix(text, m.text) {
+		return nil, nil
+	}
+	return &matchResult{
+		remaining: text[len(m.text):],
+		matched:   true,
+		priority:  -len(m.text),
+	}, nil
+}
+
+func (m literalMatcher) validate() error {
+	if m.text == "" {
+		return fmt.Errorf("empty literal matcher")
+	}
+	return nil
+}
+
+func (literalMatcher) goType() reflect.Type { return nil }
+func (literalMatcher) consumesClick() bool  { return false }
+
+type slewMatcher struct{}
+
+func (slewMatcher) match(
+	_ *ASDEXPane,
+	_ *panes.Context,
+	input *CommandInput,
+	text string,
+) (*matchResult, error) {
+	if input == nil || !input.hasClick || input.clickedTarget == nil {
+		return nil, nil
+	}
+	return &matchResult{
+		values:    []any{input.clickedTarget},
+		remaining: text,
+		matched:   true,
+	}, nil
+}
+
+func (slewMatcher) validate() error      { return nil }
+func (slewMatcher) goType() reflect.Type { return reflect.TypeFor[*Target]() }
+func (slewMatcher) consumesClick() bool  { return true }
+
+type handlerArgumentKind int
+
+const (
+	handlerArgumentPane handlerArgumentKind = iota
+	handlerArgumentContext
+	handlerArgumentMatcher
+)
+
+type handlerArgument struct {
+	kind         handlerArgumentKind
+	matcherIndex int
+}
+
+type userCommand struct {
+	cmd           string
+	handlerFunc   reflect.Value
+	matchers      []matcher
+	arguments     []handlerArgument
+	consumesClick bool
+}
+
+var (
+	initCommandsOnce sync.Once
+
+	userCommands       = make(map[CommandMode][]userCommand)
+	registeredCommands = make(map[CommandMode]map[string]bool)
+)
+
+func InitCommands() {
+	initCommandsOnce.Do(func() {
+		registerSlewCommands()
+	})
+}
+
+func registerCommand(mode CommandMode, spec string, handler any) {
+	if registeredCommands[mode] == nil {
+		registeredCommands[mode] = make(map[string]bool)
+	}
+
+	for _, alternative := range splitCommands(spec) {
+		if registeredCommands[mode][alternative] {
+			panic(fmt.Sprintf("duplicate command registration in mode %v: %s", mode, alternative))
+		}
+
+		command, err := makeUserCommand(alternative, handler)
+		if err != nil {
+			panic(fmt.Sprintf("register command %q: %v", alternative, err))
+		}
+		userCommands[mode] = append(userCommands[mode], command)
+		registeredCommands[mode][alternative] = true
+	}
+}
+
+func splitCommands(spec string) []string {
+	parts := strings.Split(spec, "|")
+	commands := make([]string, 0, len(parts))
+	for _, part := range parts {
+		part = strings.ToUpper(strings.TrimSpace(part))
+		if part == "" {
+			panic(fmt.Sprintf("empty command alternative in %q", spec))
+		}
+		commands = append(commands, part)
+	}
+	return commands
+}
+
+func makeUserCommand(spec string, handler any) (userCommand, error) {
+	matchers, err := makeMatchers(spec)
+	if err != nil {
+		return userCommand{}, err
+	}
+
+	arguments, err := bindHandlerArguments(handler, matchers)
+	if err != nil {
+		return userCommand{}, err
+	}
+
+	command := userCommand{
+		cmd:         spec,
+		handlerFunc: reflect.ValueOf(handler),
+		matchers:    matchers,
+		arguments:   arguments,
+	}
+	for _, matcher := range matchers {
+		if matcher.consumesClick() {
+			command.consumesClick = true
+		}
+	}
+	return command, nil
+}
+
+func makeMatchers(spec string) ([]matcher, error) {
+	var matchers []matcher
+	remaining := spec
+
+	for len(remaining) > 0 {
+		if remaining[0] == '[' {
+			end := strings.IndexByte(remaining, ']')
+			if end == -1 {
+				return nil, fmt.Errorf("unclosed [ in spec %q", spec)
+			}
+
+			switch name := remaining[1:end]; name {
+			case "SLEW":
+				matchers = append(matchers, slewMatcher{})
+			default:
+				return nil, fmt.Errorf("unknown command matcher [%s]", name)
+			}
+			remaining = remaining[end+1:]
+			continue
+		}
+
+		end := strings.IndexByte(remaining, '[')
+		if end == -1 {
+			end = len(remaining)
+		}
+		matchers = append(matchers, literalMatcher{text: remaining[:end]})
+		remaining = remaining[end:]
+	}
+
+	for index, matcher := range matchers {
+		if err := matcher.validate(); err != nil {
+			return nil, fmt.Errorf("invalid matcher in %q: %w", spec, err)
+		}
+		if index < len(matchers)-1 && matcher.consumesClick() {
+			return nil, fmt.Errorf("click-consuming matcher must be last in %q", spec)
+		}
+	}
+	return matchers, nil
+}
+
+var (
+	asdexPaneType      = reflect.TypeFor[*ASDEXPane]()
+	panesContextType   = reflect.TypeFor[*panes.Context]()
+	commandStatusType  = reflect.TypeFor[CommandStatus]()
+	errorInterfaceType = reflect.TypeFor[error]()
+)
+
+func bindHandlerArguments(handler any, matchers []matcher) ([]handlerArgument, error) {
+	handlerType := reflect.TypeOf(handler)
+	if handlerType == nil || handlerType.Kind() != reflect.Func {
+		return nil, fmt.Errorf("handler must be a function")
+	}
+	if err := validateHandlerReturns(handlerType); err != nil {
+		return nil, err
+	}
+
+	matcherBound := make([]bool, len(matchers))
+	var paneBound, contextBound bool
+	arguments := make([]handlerArgument, 0, handlerType.NumIn())
+
+	for index := 0; index < handlerType.NumIn(); index++ {
+		argumentType := handlerType.In(index)
+		switch argumentType {
+		case asdexPaneType:
+			if paneBound {
+				return nil, fmt.Errorf("handler has duplicate *ASDEXPane argument")
+			}
+			paneBound = true
+			arguments = append(arguments, handlerArgument{kind: handlerArgumentPane})
+		case panesContextType:
+			if contextBound {
+				return nil, fmt.Errorf("handler has duplicate *panes.Context argument")
+			}
+			contextBound = true
+			arguments = append(arguments, handlerArgument{kind: handlerArgumentContext})
+		default:
+			matcherIndex := firstUnboundMatcherOfType(matchers, matcherBound, argumentType)
+			if matcherIndex == -1 {
+				return nil, fmt.Errorf("unsupported handler argument %s", argumentType)
+			}
+			matcherBound[matcherIndex] = true
+			arguments = append(arguments, handlerArgument{
+				kind:         handlerArgumentMatcher,
+				matcherIndex: matcherIndex,
+			})
+		}
+	}
+
+	for index, matcher := range matchers {
+		if matcher.goType() != nil && !matcherBound[index] {
+			return nil, fmt.Errorf("handler does not accept matcher argument %s", matcher.goType())
+		}
+	}
+	return arguments, nil
+}
+
+func firstUnboundMatcherOfType(matchers []matcher, bound []bool, target reflect.Type) int {
+	for index, matcher := range matchers {
+		if !bound[index] && matcher.goType() == target {
+			return index
+		}
+	}
+	return -1
+}
+
+func validateHandlerReturns(handlerType reflect.Type) error {
+	switch handlerType.NumOut() {
+	case 0:
+		return nil
+	case 1:
+		if result := handlerType.Out(0); result == commandStatusType || result == errorInterfaceType {
+			return nil
+		}
+	case 2:
+		if handlerType.Out(0) == commandStatusType && handlerType.Out(1) == errorInterfaceType {
+			return nil
+		}
+	}
+	return fmt.Errorf("unsupported handler return signature")
+}
+
+func (command userCommand) match(
+	ap *ASDEXPane,
+	ctx *panes.Context,
+	input *CommandInput,
+) ([]any, bool, error) {
+	if input == nil {
+		return nil, false, nil
+	}
+	if input.hasClick != command.consumesClick {
+		return nil, false, nil
+	}
+
+	text := input.text
+	var values []any
+	for _, matcher := range command.matchers {
+		result, err := matcher.match(ap, ctx, input, text)
+		if err != nil {
+			return nil, false, err
+		}
+		if result == nil || !result.matched {
+			return nil, false, nil
+		}
+		values = append(values, result.values...)
+		text = result.remaining
+	}
+	return values, text == "", nil
+}
+
+func (command userCommand) call(
+	ap *ASDEXPane,
+	ctx *panes.Context,
+	values []any,
+) (CommandStatus, error) {
+	matcherValues := make(map[int]any)
+	valueIndex := 0
+	for matcherIndex, matcher := range command.matchers {
+		if matcher.goType() == nil {
+			continue
+		}
+		if valueIndex >= len(values) {
+			return CommandStatus{}, fmt.Errorf("command %q did not produce matcher arguments", command.cmd)
+		}
+		matcherValues[matcherIndex] = values[valueIndex]
+		valueIndex++
+	}
+
+	args := make([]reflect.Value, 0, len(command.arguments))
+	for _, argument := range command.arguments {
+		switch argument.kind {
+		case handlerArgumentPane:
+			args = append(args, reflect.ValueOf(ap))
+		case handlerArgumentContext:
+			args = append(args, reflect.ValueOf(ctx))
+		case handlerArgumentMatcher:
+			args = append(args, reflect.ValueOf(matcherValues[argument.matcherIndex]))
+		}
+	}
+
+	results := command.handlerFunc.Call(args)
+	switch len(results) {
+	case 0:
+		return CommandStatus{}, nil
+	case 1:
+		if results[0].Type() == commandStatusType {
+			return results[0].Interface().(CommandStatus), nil
+		}
+		return CommandStatus{}, reflectedError(results[0])
+	case 2:
+		return results[0].Interface().(CommandStatus), reflectedError(results[1])
+	default:
+		panic("validated command handler returned an unexpected result count")
+	}
+}
+
+func reflectedError(value reflect.Value) error {
+	if value.IsNil() {
+		return nil
+	}
+	return value.Interface().(error)
+}
+
+func (ap *ASDEXPane) tryExecuteUserCommand(
+	ctx *panes.Context,
+	cmd string,
+	clickedTarget *Target,
+	hasClick bool,
+	mousePosition redsmath.Vec2,
+	transforms radar.ScopeTransformations,
+) (CommandStatus, error, bool) {
+	if ap == nil {
+		return CommandStatus{}, nil, false
+	}
+
+	input := &CommandInput{
+		text:          strings.ToUpper(cmd),
+		clickedTarget: clickedTarget,
+		hasClick:      hasClick,
+		mousePosition: mousePosition,
+		transforms:    transforms,
+	}
+	return ap.dispatchCommand(ctx, userCommands[ap.commandMode], input)
+}
+
+func (ap *ASDEXPane) dispatchCommand(
+	ctx *panes.Context,
+	commands []userCommand,
+	input *CommandInput,
+) (CommandStatus, error, bool) {
+	for _, command := range commands {
+		values, matched, err := command.match(ap, ctx, input)
+		if err != nil {
+			return CommandStatus{}, err, true
+		}
+		if !matched {
+			continue
+		}
+
+		status, err := command.call(ap, ctx, values)
+		return status, err, true
+	}
+	return CommandStatus{}, nil, false
+}
+
+func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
+	if ap == nil {
+		return
+	}
+	if status.HasOutput {
+		ap.previewArea.SetSystemResponse(status.Output)
+	}
+
+	switch status.Clear {
+	case ClearAll:
+		ap.commandMode = CommandModeNone
+	case ClearInput:
+		// Text input is added with keyboard command entry.
+	case ClearNone:
+	}
+}
+
+func (ap *ASDEXPane) consumeCommandClicks(
+	ctx *panes.Context,
+	transforms radar.ScopeTransformations,
+) bool {
+	if ap == nil || ctx == nil || ctx.Mouse == nil {
+		return false
+	}
+
+	mouse := ctx.Mouse
+	if !mouse.WasReleased(platform.MouseButtonLeft) {
+		return false
+	}
+
+	paneLocal := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
+	if !paneLocal.Contains(mouse.Pos) {
+		return false
+	}
+
+	target := ap.highlightedTarget()
+	if target == nil {
+		return false
+	}
+
+	status, err, handled := ap.tryExecuteUserCommand(ctx, "", target, true, mouse.Pos, transforms)
+	if err != nil {
+		ap.previewArea.SetSystemResponse(err.Error())
+		return true
+	}
+	if handled {
+		ap.applyCommandStatus(status)
+		return true
+	}
+	return false
+}
