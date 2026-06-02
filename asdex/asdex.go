@@ -57,12 +57,13 @@ func windowZ(stackIndex int, localZ renderer.Z) renderer.Z {
 }
 
 type ASDEXPane struct {
-	airport  string
-	mode     Mode
-	videomap *VideoMap
-	targets  TargetStore
-	smes     *redsnet.SmesClient
-	fonts    fontCache
+	airport       string
+	mode          Mode
+	videomap      *VideoMap
+	targets       TargetStore
+	smes          *redsnet.SmesClient
+	fonts         fontCache
+	eramTextFonts fontCache
 
 	cursors    CursorSet
 	cursorMode CursorMode
@@ -101,6 +102,10 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	if err != nil {
 		return nil, err
 	}
+	eramTextFonts, err := loadEramTextFontCache()
+	if err != nil {
+		return nil, err
+	}
 
 	preview := NewPreviewArea()
 	if err := preview.LoadDefaultStateFromAirportConfig(airport); err != nil {
@@ -114,12 +119,13 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	client.Start()
 
 	return &ASDEXPane{
-		airport:  airport,
-		mode:     ModeDay,
-		videomap: vm,
-		targets:  NewTargetStore(),
-		smes:     client,
-		fonts:    fonts,
+		airport:       airport,
+		mode:          ModeDay,
+		videomap:      vm,
+		targets:       NewTargetStore(),
+		smes:          client,
+		fonts:         fonts,
+		eramTextFonts: eramTextFonts,
 
 		datablockSettings: DefaultDataBlockSettings(),
 		previewArea:       preview,
@@ -221,7 +227,15 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		td.GenerateCommands(listCB, coastTextureID)
 		renderer.ReturnTextDrawBuilder(td)
 	}
-	p.coastList.RenderArrows(listCB, p.fonts.font, ctx.PaneSize())
+	p.coastList.RenderOverflowArrows(
+		listCB,
+		p.fonts.font,
+		p.eramTextFonts.font,
+		ctx.PaneSize(),
+		func(size int) renderer.TextureID {
+			return p.eramTextFonts.textureForSize(ctx.Renderer, size)
+		},
+	)
 
 	textureID := p.fonts.textureForSize(ctx.Renderer, p.previewArea.FontSize())
 	if textureID != 0 {
@@ -260,7 +274,7 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 		return CursorModeHidden
 	}
 	if p != nil && p.showCoastList && ctx != nil && ctx.Mouse != nil {
-		hit := p.coastList.HitTest(ctx.Mouse.Pos, p.fonts.font, ctx.PaneSize())
+		hit := p.coastList.HitTest(ctx.Mouse.Pos, p.fonts.font, p.eramTextFonts.font, ctx.PaneSize())
 		if hit.Kind == CoastListHitEntry && hit.Status == CoastListEntrySuspended {
 			return CursorModeSelect
 		}
@@ -383,7 +397,7 @@ func (p *ASDEXPane) consumeCoastListClicks(ctx *panes.Context) bool {
 		return false
 	}
 
-	hit := p.coastList.HitTest(ctx.Mouse.Pos, p.fonts.font, ctx.PaneSize())
+	hit := p.coastList.HitTest(ctx.Mouse.Pos, p.fonts.font, p.eramTextFonts.font, ctx.PaneSize())
 	if !hit.Hit {
 		return false
 	}

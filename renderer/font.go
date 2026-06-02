@@ -71,7 +71,7 @@ func LoadBitmapFontBytes(data []byte) (*BitmapFont, error) {
 		if err != nil {
 			return nil, err
 		}
-		if size <= 0 || lineHeight <= 0 || atlasWidth <= 0 || atlasHeight <= 0 {
+		if size < 0 || lineHeight <= 0 || atlasWidth <= 0 || atlasHeight <= 0 {
 			return nil, fmt.Errorf("invalid font size entry")
 		}
 
@@ -192,4 +192,19 @@ func (f *BitmapFont) LineHeight(size int) int {
 		return 0
 	}
 	return fs.LineHeight
+}
+
+func (f *BitmapFont) CharSize(size int) (width int, height int) {
+	fs := f.Size(size)
+	if fs == nil {
+		return 0, 0
+	}
+
+	if glyph, ok := fs.Glyph(' '); ok {
+		return glyph.Advance, fs.LineHeight
+	}
+	if glyph, ok := fs.Glyph('0'); ok {
+		return glyph.Advance, fs.LineHeight
+	}
+	return 0, fs.LineHeight
 }

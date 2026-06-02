@@ -197,6 +197,13 @@ const (
 	CoastListEntryDropped
 )
 
+const (
+	coastListArrowFontSize = 1
+
+	eramCharUpArrow   = rune(128)
+	eramCharDownArrow = rune(129)
+)
+
 type CoastListEntry struct {
 	Status CoastListEntryStatus
 
@@ -477,8 +484,47 @@ func (l *CoastList) headerBounds(font *renderer.BitmapFont, displaySize redsmath
 
 	location := l.LocationForDisplay(displaySize)
 	width, _ := font.MeasureText(padLeft("01/02/06", 12), l.FontSize())
+	if listWidth := l.listWidth(font); listWidth > float32(width) {
+		width = int(listWidth)
+	}
 	height := float32(font.LineHeight(l.FontSize()))*2.8 + 5
 	return redsmath.NewRect(location.X, location.Y, location.X+float32(width), location.Y+height)
+}
+
+func (l *CoastList) listWidth(font *renderer.BitmapFont) float32 {
+	if l == nil || font == nil {
+		return 0
+	}
+
+	width, _ := font.MeasureText(strings.Repeat(" ", 15), l.FontSize())
+	return float32(width)
+}
+
+func (l *CoastList) listBottomY(font *renderer.BitmapFont, displaySize redsmath.Vec2) float32 {
+	if l == nil || font == nil {
+		return 0
+	}
+
+	header := l.headerBounds(font, displaySize)
+	if header.Empty() {
+		return 0
+	}
+
+	ordered := l.orderedEntries()
+	pageSize := l.visibleEntryCount(font, displaySize)
+	if pageSize <= 0 {
+		return header.Max.Y
+	}
+
+	page := l.clampedOffset(len(ordered), pageSize)
+	start := page * pageSize
+	count := min(pageSize, len(ordered)-start)
+	if count <= 0 {
+		return header.Max.Y
+	}
+
+	rowStep := font.LineHeight(l.FontSize()) + l.list.style.LineSpacing
+	return header.Max.Y + float32(count*rowStep) - float32(l.list.style.LineSpacing)
 }
 
 func (l *CoastList) entryRowBounds(
@@ -496,39 +542,57 @@ func (l *CoastList) entryRowBounds(
 	}
 
 	location := l.LocationForDisplay(displaySize)
-	rowWidth, _ := font.MeasureText("S ABC NO DATA ", l.FontSize())
+	rowWidth := l.listWidth(font)
 	rowStep := lineHeight + l.list.style.LineSpacing
 	y := location.Y + 2*float32(rowStep) + float32(visibleIndex*rowStep)
-	return redsmath.NewRect(location.X, y, location.X+float32(rowWidth), y+float32(lineHeight))
+	return redsmath.NewRect(location.X, y, location.X+rowWidth, y+float32(lineHeight))
 }
 
-func (l *CoastList) upArrowBounds(font *renderer.BitmapFont, displaySize redsmath.Vec2) redsmath.Rect {
-	if l == nil || font == nil {
+func (l *CoastList) upArrowBounds(
+	asdexFont *renderer.BitmapFont,
+	eramTextFont *renderer.BitmapFont,
+	displaySize redsmath.Vec2,
+) redsmath.Rect {
+	if l == nil || asdexFont == nil || eramTextFont == nil {
 		return redsmath.Rect{}
 	}
 
 	ordered := l.orderedEntries()
-	pageSize := l.visibleEntryCount(font, displaySize)
+	pageSize := l.visibleEntryCount(asdexFont, displaySize)
 	page := l.clampedOffset(len(ordered), pageSize)
 	if page <= 0 {
 		return redsmath.Rect{}
 	}
 
-	firstRow := l.entryRowBounds(0, font, displaySize)
-	if firstRow.Empty() {
+	header := l.headerBounds(asdexFont, displaySize)
+	if header.Empty() {
 		return redsmath.Rect{}
 	}
-	size := float32(max(font.LineHeight(l.FontSize()), 6))
-	return redsmath.NewRect(firstRow.Max.X-size, firstRow.Min.Y, firstRow.Max.X, firstRow.Min.Y+size)
+
+	location := l.LocationForDisplay(displaySize)
+	listWidth := l.listWidth(asdexFont)
+	asdexCharWidth, _ := asdexFont.CharSize(l.FontSize())
+	eramArrowWidth, eramArrowHeight := eramTextFont.CharSize(coastListArrowFontSize)
+	if listWidth <= 0 || asdexCharWidth <= 0 || eramArrowWidth <= 0 || eramArrowHeight <= 0 {
+		return redsmath.Rect{}
+	}
+
+	x := location.X + listWidth - float32(asdexCharWidth)
+	y := header.Max.Y
+	return redsmath.NewRect(x, y, x+float32(eramArrowWidth), y+float32(eramArrowHeight))
 }
 
-func (l *CoastList) downArrowBounds(font *renderer.BitmapFont, displaySize redsmath.Vec2) redsmath.Rect {
-	if l == nil || font == nil {
+func (l *CoastList) downArrowBounds(
+	asdexFont *renderer.BitmapFont,
+	eramTextFont *renderer.BitmapFont,
+	displaySize redsmath.Vec2,
+) redsmath.Rect {
+	if l == nil || asdexFont == nil || eramTextFont == nil {
 		return redsmath.Rect{}
 	}
 
 	ordered := l.orderedEntries()
-	pageSize := l.visibleEntryCount(font, displaySize)
+	pageSize := l.visibleEntryCount(asdexFont, displaySize)
 	if pageSize <= 0 {
 		return redsmath.Rect{}
 	}
@@ -540,34 +604,40 @@ func (l *CoastList) downArrowBounds(font *renderer.BitmapFont, displaySize redsm
 		return redsmath.Rect{}
 	}
 
-	lastRow := l.entryRowBounds(count-1, font, displaySize)
-	if lastRow.Empty() {
+	location := l.LocationForDisplay(displaySize)
+	listWidth := l.listWidth(asdexFont)
+	asdexCharWidth, _ := asdexFont.CharSize(l.FontSize())
+	eramArrowWidth, eramArrowHeight := eramTextFont.CharSize(coastListArrowFontSize)
+	if listWidth <= 0 || asdexCharWidth <= 0 || eramArrowWidth <= 0 || eramArrowHeight <= 0 {
 		return redsmath.Rect{}
 	}
-	size := float32(max(font.LineHeight(l.FontSize()), 6))
-	return redsmath.NewRect(lastRow.Max.X-size, lastRow.Min.Y, lastRow.Max.X, lastRow.Min.Y+size)
+
+	x := location.X + listWidth - float32(asdexCharWidth)
+	y := l.listBottomY(asdexFont, displaySize) - float32(eramArrowHeight)
+	return redsmath.NewRect(x, y, x+float32(eramArrowWidth), y+float32(eramArrowHeight))
 }
 
 func (l *CoastList) HitTest(
 	point redsmath.Vec2,
-	font *renderer.BitmapFont,
+	asdexFont *renderer.BitmapFont,
+	eramTextFont *renderer.BitmapFont,
 	displaySize redsmath.Vec2,
 ) CoastListEntryHit {
-	if l == nil || !l.visible || font == nil {
+	if l == nil || !l.visible || asdexFont == nil {
 		return CoastListEntryHit{}
 	}
-	if l.headerBounds(font, displaySize).Contains(point) {
+	if l.headerBounds(asdexFont, displaySize).Contains(point) {
 		return CoastListEntryHit{Hit: true, Kind: CoastListHitHeader}
 	}
-	if bounds := l.upArrowBounds(font, displaySize); !bounds.Empty() && bounds.Contains(point) {
+	if bounds := l.upArrowBounds(asdexFont, eramTextFont, displaySize); !bounds.Empty() && bounds.Contains(point) {
 		return CoastListEntryHit{Hit: true, Kind: CoastListHitUpArrow}
 	}
-	if bounds := l.downArrowBounds(font, displaySize); !bounds.Empty() && bounds.Contains(point) {
+	if bounds := l.downArrowBounds(asdexFont, eramTextFont, displaySize); !bounds.Empty() && bounds.Contains(point) {
 		return CoastListEntryHit{Hit: true, Kind: CoastListHitDownArrow}
 	}
 
 	ordered := l.orderedEntries()
-	pageSize := l.visibleEntryCount(font, displaySize)
+	pageSize := l.visibleEntryCount(asdexFont, displaySize)
 	if pageSize <= 0 {
 		return CoastListEntryHit{}
 	}
@@ -575,7 +645,7 @@ func (l *CoastList) HitTest(
 	start := page * pageSize
 	count := min(pageSize, len(ordered)-start)
 	for index := 0; index < count; index++ {
-		if !l.entryRowBounds(index, font, displaySize).Contains(point) {
+		if !l.entryRowBounds(index, asdexFont, displaySize).Contains(point) {
 			continue
 		}
 
@@ -604,34 +674,38 @@ func (l *CoastList) Render(
 	l.list.Render(td, font, l.buildFullBlock(time.Now().UTC(), font, displaySize))
 }
 
-func (l *CoastList) RenderArrows(
+func (l *CoastList) RenderOverflowArrows(
 	cb *renderer.CmdBuffer,
-	font *renderer.BitmapFont,
+	asdexFont *renderer.BitmapFont,
+	eramTextFont *renderer.BitmapFont,
 	displaySize redsmath.Vec2,
+	textureForEramSize func(size int) renderer.TextureID,
 ) {
-	if l == nil || !l.visible || cb == nil || font == nil {
+	if l == nil || !l.visible || cb == nil || asdexFont == nil || eramTextFont == nil || textureForEramSize == nil {
 		return
 	}
 
-	up := l.upArrowBounds(font, displaySize)
-	down := l.downArrowBounds(font, displaySize)
-	if up.Empty() && down.Empty() {
+	textureID := textureForEramSize(coastListArrowFontSize)
+	if textureID == 0 {
 		return
 	}
 
-	builder := renderer.GetLinesBuilder()
-	defer renderer.ReturnLinesBuilder(builder)
-
-	if !up.Empty() {
-		addUpChevron(builder, up)
-	}
-	if !down.Empty() {
-		addDownChevron(builder, down)
+	style := renderer.TextStyle{
+		Size:  coastListArrowFontSize,
+		Color: applyBrightness(l.list.style.BaseTextColor, l.list.style.Brightness, l.list.style.MinBrightness).ToRGBA(),
 	}
 
-	cb.SetRGB(applyBrightness(l.list.style.BaseTextColor, l.list.style.Brightness, l.list.style.MinBrightness))
-	cb.LineWidth(1)
-	builder.GenerateCommands(cb)
+	td := renderer.GetTextDrawBuilder()
+	defer renderer.ReturnTextDrawBuilder(td)
+
+	td.SetFont(eramTextFont)
+	if bounds := l.downArrowBounds(asdexFont, eramTextFont, displaySize); !bounds.Empty() {
+		td.AddText(string(eramCharDownArrow), bounds.Min, style)
+	}
+	if bounds := l.upArrowBounds(asdexFont, eramTextFont, displaySize); !bounds.Empty() {
+		td.AddText(string(eramCharUpArrow), bounds.Min, style)
+	}
+	td.GenerateCommands(cb, textureID)
 }
 
 func coastListEntryRank(status CoastListEntryStatus) int {
@@ -645,42 +719,6 @@ func coastListEntryRank(status CoastListEntryStatus) int {
 	default:
 		return 3
 	}
-}
-
-func addUpChevron(builder *renderer.LinesBuilder, rect redsmath.Rect) {
-	left := redsmath.Vec2{
-		X: rect.Min.X + rect.Width()*0.2,
-		Y: rect.Max.Y - rect.Height()*0.25,
-	}
-	top := redsmath.Vec2{
-		X: (rect.Min.X + rect.Max.X) * 0.5,
-		Y: rect.Min.Y + rect.Height()*0.25,
-	}
-	right := redsmath.Vec2{
-		X: rect.Max.X - rect.Width()*0.2,
-		Y: rect.Max.Y - rect.Height()*0.25,
-	}
-
-	builder.AddLine(listPointVertex(left), listPointVertex(top))
-	builder.AddLine(listPointVertex(top), listPointVertex(right))
-}
-
-func addDownChevron(builder *renderer.LinesBuilder, rect redsmath.Rect) {
-	left := redsmath.Vec2{
-		X: rect.Min.X + rect.Width()*0.2,
-		Y: rect.Min.Y + rect.Height()*0.25,
-	}
-	bottom := redsmath.Vec2{
-		X: (rect.Min.X + rect.Max.X) * 0.5,
-		Y: rect.Max.Y - rect.Height()*0.25,
-	}
-	right := redsmath.Vec2{
-		X: rect.Max.X - rect.Width()*0.2,
-		Y: rect.Min.Y + rect.Height()*0.25,
-	}
-
-	builder.AddLine(listPointVertex(left), listPointVertex(bottom))
-	builder.AddLine(listPointVertex(bottom), listPointVertex(right))
 }
 
 type PreviewAreaState struct {
@@ -989,10 +1027,6 @@ func clampListInt(value, lo, hi int) int {
 		return hi
 	}
 	return value
-}
-
-func listPointVertex(point redsmath.Vec2) renderer.PointVertex {
-	return renderer.PointVertex{X: point.X, Y: point.Y}
 }
 
 func padLeft(value string, width int) string {
