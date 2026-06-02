@@ -67,6 +67,7 @@ type ASDEXPane struct {
 	cursorMode CursorMode
 
 	datablockSettings DataBlockSettings
+	previewArea       PreviewArea
 
 	highlightedTargetID    string
 	highlightMouseWorld    redsmath.Vec2
@@ -95,6 +96,12 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		return nil, err
 	}
 
+	preview := NewPreviewArea()
+	if err := preview.LoadDefaultStateFromAirportConfig(airport); err != nil {
+		fmt.Fprintf(os.Stderr, "reds: %v\n", err)
+	}
+	preview.SetSystemResponse("CRITICAL FAULT START")
+
 	client := redsnet.NewSmesClient(targetWebSocketURL())
 	client.SetAirport(airport)
 	client.Start()
@@ -108,6 +115,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		fonts:    fonts,
 
 		datablockSettings: DefaultDataBlockSettings(),
+		previewArea:       preview,
 	}, nil
 }
 
@@ -117,7 +125,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 
 	p.ensureCursorsLoaded(ctx)
-	p.consumeNetworkFrames()
+	p.consumeNetworkEvents()
 	p.initView(ctx.PaneRect)
 	if !p.viewInitialized {
 		return
@@ -185,6 +193,21 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		},
 	)
 	dbCB.DisableScissor()
+
+	previewCB := zcb.At(windowZ(0, zPreviewArea))
+	previewCB.Viewport(x, y, w, h)
+	previewCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(previewCB)
+
+	textureID := p.fonts.textureForSize(ctx.Renderer, p.previewArea.FontSize())
+	if textureID != 0 {
+		td := renderer.GetTextDrawBuilder()
+		td.SetFont(p.fonts.font)
+		p.previewArea.Render(td, p.fonts.font, ctx.PaneSize())
+		td.GenerateCommands(previewCB, textureID)
+		renderer.ReturnTextDrawBuilder(td)
+	}
+	previewCB.DisableScissor()
 }
 
 func (p *ASDEXPane) ensureCursorsLoaded(ctx *panes.Context) {
@@ -288,13 +311,15 @@ func targetWebSocketURL() string {
 	return "ws://localhost:" + port + "/ws"
 }
 
-func (p *ASDEXPane) consumeNetworkFrames() {
+func (p *ASDEXPane) consumeNetworkEvents() {
 	if p == nil || p.smes == nil {
 		return
 	}
 
 	for {
 		select {
+		case status := <-p.smes.Status():
+			p.applySmesStatus(status)
 		case frame := <-p.smes.Frames():
 			if !frame.Removed && frame.Airport != "" && !strings.EqualFold(frame.Airport, p.airport) {
 				continue
@@ -303,6 +328,19 @@ func (p *ASDEXPane) consumeNetworkFrames() {
 		default:
 			return
 		}
+	}
+}
+
+func (p *ASDEXPane) applySmesStatus(status redsnet.SmesStatusEvent) {
+	if p == nil {
+		return
+	}
+
+	switch status.Status {
+	case redsnet.SmesStatusConnected:
+		p.previewArea.SetSystemResponse("CRITICAL FAULT END")
+	case redsnet.SmesStatusDisconnected:
+		p.previewArea.SetSystemResponse("CRITICAL FAULT START")
 	}
 }
 

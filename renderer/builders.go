@@ -227,6 +227,7 @@ type TextStyle struct {
 	Size       int
 	Color      RGBA
 	Background RGBA
+	Underlined bool
 }
 
 type TextDrawBuilder struct {
