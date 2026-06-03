@@ -104,11 +104,12 @@ func main() {
 			}
 
 		case appModeScope:
-			titlebarCaptured := drawScopeTitleBar(
+			titlebarCaptured, titlebarAction := drawScopeTitleBar(
 				plat,
 				scopeTitle,
 				plat.DisplaySize(),
 			)
+
 			io := imgui.CurrentIO()
 			panes.DrawPane(active, plat, r, panes.DrawOptions{
 				MenuBarHeight:    scopeTitleBarHeight,
@@ -119,6 +120,10 @@ func main() {
 			imgui.Render()
 			implogl3.RenderDrawData(imgui.CurrentDrawData())
 			plat.PostRender()
+
+			if titlebarAction == titleBarActionSwitchFacility {
+				switchToMenu(&mode, &active, &scopeTitle, plat, consumer, m)
+			}
 		}
 	}
 }
@@ -140,5 +145,41 @@ func launchScope(sel Selection, plat platform.Platform, consumer *smesConsumer) 
 		return pane, nil
 	default:
 		return nil, fmt.Errorf("%s scope is not implemented yet", sel.Mode)
+	}
+}
+
+func switchToMenu(
+	mode *appMode,
+	active *panes.Pane,
+	scopeTitle *string,
+	plat platform.Platform,
+	consumer *smesConsumer,
+	m *menu,
+) {
+	if consumer != nil {
+		consumer.Stop()
+	}
+	if active != nil {
+		if pane := *active; pane != nil {
+			if disposable, ok := pane.(interface{ Dispose() }); ok {
+				disposable.Dispose()
+			}
+		}
+		*active = nil
+	}
+	if scopeTitle != nil {
+		*scopeTitle = ""
+	}
+	if plat != nil {
+		plat.ClearCursorOverride()
+		plat.SetWindowDecorated(true)
+		plat.SetWindowTitle("REDS")
+		plat.SetWindowSizeCentered(200, 350)
+	}
+	if m != nil {
+		m.firstFrame = true
+	}
+	if mode != nil {
+		*mode = appModeMenu
 	}
 }

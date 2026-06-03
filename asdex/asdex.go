@@ -144,6 +144,17 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	}, nil
 }
 
+func (p *ASDEXPane) Dispose() {
+	if p == nil {
+		return
+	}
+	if p.smes != nil {
+		p.smes.Close()
+		p.smes = nil
+	}
+	p.targets.Clear()
+}
+
 func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if ctx == nil || zcb == nil || p == nil {
 		return

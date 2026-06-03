@@ -11,6 +11,9 @@ import (
 const (
 	scopeTitleBarHeight = 24
 
+	titleBarMenuButtonWidth = 28
+	titleBarMenuIconSize    = 24
+
 	titleBarButtonWidth = 36
 	titleBarIconSize    = 16
 	titleBarIconStroke  = 1.5
@@ -21,6 +24,13 @@ var (
 	titleBarFg         = imgui.Vec4{X: 1, Y: 1, Z: 1, W: 1}
 	titleBarHover      = imgui.Vec4{X: 37.0 / 255.0, Y: 37.0 / 255.0, Z: 37.0 / 255.0, W: 1}
 	titleBarCloseHover = imgui.Vec4{X: 232.0 / 255.0, Y: 17.0 / 255.0, Z: 35.0 / 255.0, W: 1}
+)
+
+type titleBarAction int
+
+const (
+	titleBarActionNone titleBarAction = iota
+	titleBarActionSwitchFacility
 )
 
 type titleBarButtonKind int
@@ -35,9 +45,9 @@ func drawScopeTitleBar(
 	plat platform.Platform,
 	title string,
 	displaySize [2]float32,
-) bool {
+) (bool, titleBarAction) {
 	if plat == nil || displaySize[0] <= 0 {
-		return false
+		return false, titleBarActionNone
 	}
 
 	imgui.SetNextWindowPosV(imgui.Vec2{X: 0, Y: 0}, imgui.CondAlways, imgui.Vec2{})
@@ -63,6 +73,7 @@ func drawScopeTitleBar(
 	imgui.BeginV("##scope-titlebar", nil, flags)
 
 	drawTitleBarBackground(displaySize[0])
+	menuCaptured, menuAction := drawTitleBarMenuButton()
 	drawTitleBarTitle(title)
 	capturedButtons := drawTitleBarButtons(plat, displaySize[0])
 	capturedDrag := handleTitleBarDrag(plat, displaySize[0])
@@ -72,7 +83,7 @@ func drawScopeTitleBar(
 	imgui.PopStyleColor()
 	imgui.PopStyleVarV(5)
 
-	return capturedButtons || capturedDrag
+	return menuCaptured || capturedButtons || capturedDrag, menuAction
 }
 
 func drawTitleBarBackground(width float32) {
@@ -86,7 +97,7 @@ func drawTitleBarBackground(width float32) {
 }
 
 func drawTitleBarTitle(title string) {
-	const titlePaddingX = 8
+	const titleMarginLeft = 6
 
 	textY := (float32(scopeTitleBarHeight) - imgui.FontSize()) * 0.5
 	if textY < 0 {
@@ -94,10 +105,141 @@ func drawTitleBarTitle(title string) {
 	}
 
 	imgui.WindowDrawList().AddTextVec2(
-		imgui.Vec2{X: titlePaddingX, Y: textY},
+		imgui.Vec2{X: titleBarMenuButtonWidth + titleMarginLeft, Y: textY},
 		imgui.ColorU32Vec4(titleBarFg),
 		title,
 	)
+}
+
+func drawTitleBarMenuButton() (bool, titleBarAction) {
+	min := imgui.Vec2{X: 0, Y: 0}
+	max := imgui.Vec2{X: titleBarMenuButtonWidth, Y: scopeTitleBarHeight}
+
+	imgui.SetCursorScreenPos(min)
+	clicked := imgui.InvisibleButtonV(
+		"##titlebar-menu-button",
+		imgui.Vec2{X: max.X - min.X, Y: max.Y - min.Y},
+		imgui.ButtonFlagsMouseButtonLeft,
+	)
+
+	hovered := imgui.IsItemHovered()
+	if hovered {
+		imgui.WindowDrawList().AddRectFilledV(
+			min,
+			max,
+			imgui.ColorU32Vec4(titleBarHover),
+			0,
+			imgui.DrawFlagsNone,
+		)
+	}
+
+	drawBurgerIcon(min, max)
+
+	if clicked {
+		imgui.OpenPopupStrV("##titlebar-menu-popup", imgui.PopupFlagsNone)
+	}
+
+	action := drawTitleBarMenuPopup(min, max)
+	captured := hovered ||
+		imgui.IsItemActive() ||
+		imgui.IsPopupOpenStr("##titlebar-menu-popup")
+	return captured, action
+}
+
+func drawBurgerIcon(min, max imgui.Vec2) {
+	dl := imgui.WindowDrawList()
+
+	x0 := (min.X + max.X - titleBarMenuIconSize) * 0.5
+	y0 := (min.Y + max.Y - titleBarMenuIconSize) * 0.5
+
+	color := imgui.ColorU32Vec4(titleBarFg)
+	rect := func(x, y, w, h float32) {
+		dl.AddRectFilledV(
+			imgui.Vec2{X: x0 + x, Y: y0 + y},
+			imgui.Vec2{X: x0 + x + w, Y: y0 + y + h},
+			color,
+			0,
+			imgui.DrawFlagsNone,
+		)
+	}
+
+	rect(3, 5, 18, 2)
+	rect(3, 11, 18, 2)
+	rect(3, 17, 18, 2)
+}
+
+func drawTitleBarMenuPopup(buttonMin, buttonMax imgui.Vec2) titleBarAction {
+	const (
+		popupWidth = 160
+		itemHeight = 24
+		textPadX   = 10
+	)
+
+	imgui.SetNextWindowPosV(
+		imgui.Vec2{X: buttonMin.X, Y: buttonMax.Y},
+		imgui.CondAlways,
+		imgui.Vec2{},
+	)
+	imgui.SetNextWindowSizeV(
+		imgui.Vec2{X: popupWidth, Y: itemHeight},
+		imgui.CondAlways,
+	)
+
+	flags := imgui.WindowFlagsNoTitleBar |
+		imgui.WindowFlagsNoResize |
+		imgui.WindowFlagsNoMove |
+		imgui.WindowFlagsNoSavedSettings |
+		imgui.WindowFlagsNoScrollbar
+
+	imgui.PushStyleVarVec2(imgui.StyleVarWindowPadding, imgui.Vec2{})
+	imgui.PushStyleVarVec2(imgui.StyleVarItemSpacing, imgui.Vec2{})
+	imgui.PushStyleVarFloat(imgui.StyleVarPopupRounding, 0)
+	imgui.PushStyleVarFloat(imgui.StyleVarPopupBorderSize, 1)
+	imgui.PushStyleColorVec4(imgui.ColPopupBg, titleBarBg)
+	imgui.PushStyleColorVec4(imgui.ColBorder, titleBarBg)
+
+	action := titleBarActionNone
+	if imgui.BeginPopupV("##titlebar-menu-popup", flags) {
+		imgui.SetCursorPos(imgui.Vec2{X: 0, Y: 0})
+		clicked := imgui.InvisibleButtonV(
+			"##switch-facility-menu-item",
+			imgui.Vec2{X: popupWidth, Y: itemHeight},
+			imgui.ButtonFlagsMouseButtonLeft,
+		)
+
+		rowMin := imgui.ItemRectMin()
+		rowMax := imgui.ItemRectMax()
+		if imgui.IsItemHovered() {
+			imgui.WindowDrawList().AddRectFilledV(
+				rowMin,
+				rowMax,
+				imgui.ColorU32Vec4(titleBarHover),
+				0,
+				imgui.DrawFlagsNone,
+			)
+		}
+
+		textY := rowMin.Y + (itemHeight-imgui.FontSize())*0.5
+		if textY < rowMin.Y {
+			textY = rowMin.Y
+		}
+		imgui.WindowDrawList().AddTextVec2(
+			imgui.Vec2{X: rowMin.X + textPadX, Y: textY},
+			imgui.ColorU32Vec4(titleBarFg),
+			"Switch Facility",
+		)
+
+		if clicked {
+			action = titleBarActionSwitchFacility
+			imgui.CloseCurrentPopup()
+		}
+
+		imgui.EndPopup()
+	}
+
+	imgui.PopStyleColorV(2)
+	imgui.PopStyleVarV(4)
+	return action
 }
 
 func drawTitleBarButtons(plat platform.Platform, windowWidth float32) bool {
@@ -205,12 +347,13 @@ func drawTitleBarIcon(kind titleBarButtonKind, min, max imgui.Vec2) {
 }
 
 func handleTitleBarDrag(plat platform.Platform, windowWidth float32) bool {
-	dragWidth := windowWidth - 3*titleBarButtonWidth
+	dragStartX := float32(titleBarMenuButtonWidth)
+	dragWidth := windowWidth - dragStartX - 3*titleBarButtonWidth
 	if plat == nil || dragWidth <= 0 {
 		return false
 	}
 
-	imgui.SetCursorScreenPos(imgui.Vec2{X: 0, Y: 0})
+	imgui.SetCursorScreenPos(imgui.Vec2{X: dragStartX, Y: 0})
 	imgui.InvisibleButtonV(
 		"##titlebar-drag-region",
 		imgui.Vec2{X: dragWidth, Y: scopeTitleBarHeight},
