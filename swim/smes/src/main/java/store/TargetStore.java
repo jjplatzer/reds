@@ -80,6 +80,7 @@ public final class TargetStore extends AbstractVerticle {
             if (s.airport == null || !active.contains(s.airport)) continue;
 
             JsonObject changed = new JsonObject();
+            if (s.positionReportTime != null) changed.put("positionReportTime", s.positionReportTime);
             if (s.tgtType  != null) changed.put("tgtType",  s.tgtType);
             if (s.callsign != null) changed.put("callsign", s.callsign);
             if (s.acType   != null) changed.put("acType",   s.acType);
@@ -158,6 +159,8 @@ public final class TargetStore extends AbstractVerticle {
         Instant updatedAt;
         final String airport;
 
+        String positionReportTime;
+
         // Identity
         String tgtType, callsign, acType, squawk, exitFix, wake, scratchpad1, scratchpad2;
 
@@ -181,6 +184,7 @@ public final class TargetStore extends AbstractVerticle {
             JsonObject changed = new JsonObject();
 
             if (obs.isFull()) {
+                positionReportTime = trackFull(changed, "positionReportTime", positionReportTime, obs.positionReportTime());
                 tgtType  = trackFull(changed, "tgtType",  tgtType,  obs.tgtType());
                 callsign = trackFull(changed, "callsign", callsign, obs.callsign());
                 acType   = trackFull(changed, "acType",   acType,   obs.acType());
@@ -195,6 +199,7 @@ public final class TargetStore extends AbstractVerticle {
                 speed    = trackFull(changed, "speed",    speed,    obs.speed());
                 heading  = trackFull(changed, "heading",  heading,  obs.heading());
             } else {
+                positionReportTime = track(changed, "positionReportTime", positionReportTime, obs.positionReportTime());
                 tgtType  = track(changed, "tgtType",  tgtType,  obs.tgtType());
                 callsign = track(changed, "callsign", callsign, obs.callsign());
                 acType   = track(changed, "acType",   acType,   obs.acType());

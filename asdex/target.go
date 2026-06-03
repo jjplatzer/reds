@@ -2,7 +2,9 @@ package asdex
 
 import (
 	"encoding/json"
+	"fmt"
 	stdmath "math"
+	"strconv"
 	"strings"
 	"time"
 
@@ -55,6 +57,9 @@ type Target struct {
 
 	Live bool
 
+	PositionReportTime time.Time
+	LastSmesFrameTime  time.Time
+
 	CoastListID  string
 	CoastUntil   time.Time
 	SuspendUntil time.Time
@@ -66,7 +71,7 @@ type Target struct {
 }
 
 func (t *Target) EffectiveShowDB() bool {
-	if t == nil || !t.ShowDB || t.Suspended {
+	if t == nil || !t.ShowDB || t.Suspended || t.Dropped {
 		return false
 	}
 	return targetHasDatablock(classifyTarget(t))
@@ -224,6 +229,9 @@ func (s *TargetStore) RemoveLive(id string) {
 		s.hoverRevision++
 		return
 	}
+	if target.Coasting || target.Dropped {
+		return
+	}
 
 	s.Remove(id)
 }
@@ -319,6 +327,31 @@ func (s *TargetStore) NextAvailableSuspendedTrackID() string {
 	return ""
 }
 
+func (s *TargetStore) NextAvailableNumericCoastListID() string {
+	if s == nil {
+		return ""
+	}
+
+	used := make(map[int]bool)
+	for _, target := range s.targets {
+		if target == nil || (!target.Coasting && !target.Dropped) {
+			continue
+		}
+
+		value, err := strconv.Atoi(strings.TrimSpace(target.CoastListID))
+		if err == nil && value >= 1 && value <= 999 {
+			used[value] = true
+		}
+	}
+
+	for i := 1; i <= 999; i++ {
+		if !used[i] {
+			return fmt.Sprintf("%03d", i)
+		}
+	}
+	return ""
+}
+
 func (s *TargetStore) SuspendTarget(targetID string, coastListID string, until time.Time) {
 	target := s.TargetByID(targetID)
 	if target == nil {
@@ -352,6 +385,16 @@ func (s *TargetStore) UnsuspendTarget(targetID string) {
 	s.hoverRevision++
 }
 
+func (s *TargetStore) TerminateCoastDropTrack(targetID string) {
+	target := s.TargetByID(targetID)
+	if target == nil {
+		return
+	}
+	if target.Coasting || target.Dropped {
+		s.Remove(targetID)
+	}
+}
+
 func (s *TargetStore) ExpireSuspendedTracks(now time.Time) {
 	if s == nil {
 		return
@@ -382,6 +425,79 @@ func (s *TargetStore) ExpireSuspendedTracks(now time.Time) {
 	}
 }
 
+func (s *TargetStore) UpdateCoastDropTracks(
+	now time.Time,
+	coastDelay time.Duration,
+	lifetime time.Duration,
+	isDestination func(*Target) bool,
+) {
+	if s == nil {
+		return
+	}
+
+	var remove []string
+	for _, target := range s.targets {
+		if target == nil {
+			continue
+		}
+		if target.Suspended {
+			continue
+		}
+
+		if target.Coasting || target.Dropped {
+			if !target.CoastUntil.IsZero() && !target.CoastUntil.After(now) {
+				remove = append(remove, target.ID)
+			}
+			continue
+		}
+		if !target.Live {
+			continue
+		}
+		if !targetHasDatablock(classifyTarget(target)) {
+			continue
+		}
+
+		last := target.PositionReportTime
+		if last.IsZero() {
+			last = target.LastSmesFrameTime
+		}
+		if last.IsZero() || now.Sub(last) < coastDelay {
+			continue
+		}
+
+		coastID := s.NextAvailableNumericCoastListID()
+		if coastID == "" {
+			continue
+		}
+
+		target.Live = false
+		target.CoastListID = coastID
+		target.CoastUntil = now.Add(lifetime)
+		target.Suspended = false
+
+		if isDestination != nil && isDestination(target) {
+			target.Dropped = true
+			target.Coasting = false
+			target.ShowDB = false
+			if target.Highlighted {
+				target.Highlighted = false
+				if s.highlightedID == target.ID {
+					s.highlightedID = ""
+				}
+			}
+		} else {
+			target.Coasting = true
+			target.Dropped = false
+			target.ShowDB = true
+		}
+		s.hoverRevision++
+	}
+
+	for _, id := range remove {
+		s.Remove(id)
+	}
+}
+
 const maxTargetHoverRangeFeet = float32(150)
 
 func (s *TargetStore) HighlightNearest(posFeet redsmath.Vec2) string {
@@ -397,7 +513,7 @@ func (s *TargetStore) HighlightNearest(posFeet redsmath.Vec2) string {
 
 	for _, id := range s.order {
 		target := s.targets[id]
-		if target == nil {
+		if target == nil || target.Dropped {
 			continue
 		}
 
@@ -456,9 +572,11 @@ func (s *TargetStore) ApplySmesFrame(frame redsnet.SmesFrame, vm *VideoMap) {
 		return
 	}
 
+	now := time.Now().UTC()
 	target := Target{
-		ID:     frame.Key,
-		ShowDB: true,
+		ID:                frame.Key,
+		ShowDB:            true,
+		LastSmesFrameTime: now,
 	}
 	if existing := s.targets[frame.Key]; existing != nil {
 		target = *existing
@@ -466,6 +584,14 @@ func (s *TargetStore) ApplySmesFrame(frame redsnet.SmesFrame, vm *VideoMap) {
 
 	applySmesChanged(&target, frame.Changed, vm)
 	target.Live = true
+	target.LastSmesFrameTime = now
+	if !target.Suspended && (target.Coasting || target.Dropped) {
+		target.Coasting = false
+		target.Dropped = false
+		target.CoastListID = ""
+		target.CoastUntil = time.Time{}
+		target.ShowDB = true
+	}
 	s.Upsert(target)
 }
 
@@ -491,6 +617,13 @@ func applySmesChanged(target *Target, changed map[string]json.RawMessage, vm *Vi
 	}
 	if value, present, clear := changedString(changed, "scratchpad2"); present {
 		target.Scratchpad2 = normalizeScratchpad(clearedString(value, clear))
+	}
+	if value, present, clear := changedTime(changed, "positionReportTime"); present {
+		if clear {
+			target.PositionReportTime = time.Time{}
+		} else {
+			target.PositionReportTime = value
+		}
 	}
 
 	if value, present, clear := changedString(changed, "acType"); present {
@@ -590,6 +723,33 @@ func changedFloat64(changed map[string]json.RawMessage, key string) (float64, bo
 		return 0, false, false
 	}
 	return value, true, false
+}
+
+func changedTime(changed map[string]json.RawMessage, key string) (time.Time, bool, bool) {
+	raw, present := changed[key]
+	if !present {
+		return time.Time{}, false, false
+	}
+	if isJSONNull(raw) {
+		return time.Time{}, true, true
+	}
+
+	var value string
+	if err := json.Unmarshal(raw, &value); err != nil {
+		return time.Time{}, false, false
+	}
+
+	value = strings.TrimSpace(value)
+	if value == "" {
+		return time.Time{}, true, true
+	}
+	if parsed, err := time.Parse(time.RFC3339Nano, value); err == nil {
+		return parsed.UTC(), true, false
+	}
+	if parsed, err := time.Parse(time.RFC3339, value); err == nil {
+		return parsed.UTC(), true, false
+	}
+	return time.Time{}, false, false
 }
 
 func isJSONNull(raw json.RawMessage) bool {
@@ -885,7 +1045,7 @@ func addHighlightRings(targets []*Target, cb *renderer.CmdBuffer, brightness int
 	defer renderer.ReturnLinesBuilder(builder)
 
 	for _, target := range targets {
-		if target == nil || !target.Highlighted || target.Suspended {
+		if target == nil || !target.Highlighted || target.Suspended || target.Dropped {
 			continue
 		}
 
@@ -921,7 +1081,7 @@ func addTargetSymbols(targets []*Target, cb *renderer.CmdBuffer, brightness int)
 	}()
 
 	for _, target := range targets {
-		if target == nil || target.Suspended {
+		if target == nil || target.Suspended || target.Dropped {
 			continue
 		}
 
@@ -971,7 +1131,7 @@ func addSuspendedTargetIcons(
 
 	inverseRotation := -float32(scopeRotationDeg)
 	for _, target := range targets {
-		if target == nil || !target.Suspended {
+		if target == nil || !target.Suspended || target.Dropped {
 			continue
 		}
 
@@ -1052,7 +1212,7 @@ func DrawSuspendedTargetLabels(
 	}
 
 	for _, target := range targets {
-		if target == nil || !target.Suspended || strings.TrimSpace(target.CoastListID) == "" {
+		if target == nil || !target.Suspended || target.Dropped || strings.TrimSpace(target.CoastListID) == "" {
 			continue
 		}
 
@@ -1158,7 +1318,7 @@ func addTargetVectors(
 
 	vectorSeconds := ClampedTargetVectorSeconds(opts.VectorSeconds)
 	for _, target := range targets {
-		if target == nil || target.Suspended || target.Coasting || target.GroundSpeedKt <= 0 {
+		if target == nil || target.Suspended || target.Coasting || target.Dropped || target.GroundSpeedKt <= 0 {
 			continue
 		}
 		if opts.VectorVisible != nil && !opts.VectorVisible(target) {
@@ -1209,7 +1369,7 @@ func addHistoryDots(
 		builder := renderer.GetTrianglesBuilder()
 
 		for _, target := range targets {
-			if target == nil {
+			if target == nil || target.Dropped {
 				continue
 			}
 

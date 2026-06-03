@@ -43,6 +43,14 @@ func (ap *ASDEXPane) cmdBareAircraftSlew(
 		}
 	}
 
+	if target.Coasting || target.Dropped {
+		ap.targets.TerminateCoastDropTrack(target.ID)
+		return CommandStatus{
+			Output:    "",
+			HasOutput: true,
+		}
+	}
+
 	if !targetHasDatablock(classifyTarget(target)) {
 		return CommandStatus{}
 	}
@@ -76,7 +84,7 @@ func targetCanEditDBFields(target *Target) bool {
 	if target == nil {
 		return false
 	}
-	if target.Suspended || target.Coasting {
+	if target.Suspended || target.Coasting || target.Dropped {
 		return false
 	}
 	return targetHasDatablock(classifyTarget(target))

@@ -1,6 +1,7 @@
 package asdex
 
 import (
+	"encoding/json"
 	"fmt"
 	stdmath "math"
 	"os"
@@ -13,6 +14,7 @@ import (
 	"github.com/juliusplatzer/reds/platform"
 	"github.com/juliusplatzer/reds/radar"
 	"github.com/juliusplatzer/reds/renderer"
+	"github.com/juliusplatzer/reds/util"
 )
 
 type Mode int
@@ -29,6 +31,9 @@ const (
 	brightnessFloorDefault = 20
 
 	rightSlewDragThresholdPixels = float32(5)
+
+	aircraftCoastDelay = 60 * time.Second
+	coastDropLifetime  = 45 * time.Second
 )
 
 const (
@@ -60,13 +65,14 @@ func windowZ(stackIndex int, localZ renderer.Z) renderer.Z {
 }
 
 type ASDEXPane struct {
-	airport       string
-	mode          Mode
-	videomap      *VideoMap
-	targets       TargetStore
-	smes          *redsnet.SmesClient
-	fonts         fontCache
-	eramTextFonts fontCache
+	airport           string
+	configAirportCode string
+	mode              Mode
+	videomap          *VideoMap
+	targets           TargetStore
+	smes              *redsnet.SmesClient
+	fonts             fontCache
+	eramTextFonts     fontCache
 
 	cursors    CursorSet
 	cursorMode CursorMode
@@ -123,19 +129,21 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	}
 	preview.SetSystemResponse("CRITICAL FAULT START")
 	coastList := NewCoastList()
+	configAirport := loadConfigAirportCode(airport)
 
 	client := redsnet.NewSmesClient(targetWebSocketURL())
 	client.SetAirport(airport)
 	client.Start()
 
 	return &ASDEXPane{
-		airport:       airport,
-		mode:          ModeDay,
-		videomap:      vm,
-		targets:       NewTargetStore(),
-		smes:          client,
-		fonts:         fonts,
-		eramTextFonts: eramTextFonts,
+		airport:           airport,
+		configAirportCode: configAirport,
+		mode:              ModeDay,
+		videomap:          vm,
+		targets:           NewTargetStore(),
+		smes:              client,
+		fonts:             fonts,
+		eramTextFonts:     eramTextFonts,
 
 		datablockSettings:       DefaultDataBlockSettings(),
 		datablockTimeshareStart: time.Now(),
@@ -179,6 +187,12 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	now := time.Now().UTC()
 	p.targets.ExpireSuspendedTracks(now)
+	p.targets.UpdateCoastDropTracks(
+		now,
+		aircraftCoastDelay,
+		coastDropLifetime,
+		p.isDestinationCurrentAirport,
+	)
 	p.consumeOpsHotkeys(ctx, transforms)
 	p.coastList.SetVisible(p.showCoastList)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
@@ -345,6 +359,54 @@ func (p *ASDEXPane) timesharePrimary(now time.Time) bool {
 		elapsed = 0
 	}
 	return int(elapsed/interval)%2 == 0
+}
+
+func loadConfigAirportCode(airport string) string {
+	airport = strings.ToUpper(strings.TrimSpace(airport))
+	if airport == "" {
+		return ""
+	}
+
+	fallback := strings.TrimPrefix(airport, "K")
+	path := "resources/configs/asdex/" + airport + ".json"
+	if !util.ResourceExists(path) {
+		return fallback
+	}
+
+	var cfg struct {
+		Airport string `json:"airport"`
+	}
+	if err := json.Unmarshal(util.LoadResourceBytes(path), &cfg); err != nil {
+		return fallback
+	}
+
+	code := strings.ToUpper(strings.TrimSpace(cfg.Airport))
+	if code != "" {
+		return code
+	}
+	return fallback
+}
+
+func (p *ASDEXPane) isDestinationCurrentAirport(target *Target) bool {
+	if p == nil || target == nil {
+		return false
+	}
+
+	fix := strings.ToUpper(strings.TrimSpace(target.Fix))
+	if fix == "" {
+		return false
+	}
+
+	configAirport := strings.ToUpper(strings.TrimSpace(p.configAirportCode))
+	airport := strings.ToUpper(strings.TrimSpace(p.airport))
+	airportNoK := airport
+	if len(airportNoK) == 4 && strings.HasPrefix(airportNoK, "K") {
+		airportNoK = airportNoK[1:]
+	}
+
+	return (configAirport != "" && fix == configAirport) ||
+		fix == airportNoK ||
+		fix == airport
 }
 
 func (p *ASDEXPane) ensureCursorsLoaded(ctx *panes.Context) {

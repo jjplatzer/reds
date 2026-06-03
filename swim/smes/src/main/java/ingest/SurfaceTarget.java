@@ -15,6 +15,8 @@ public record SurfaceTarget(
         String  stid,       // from <stid> — part of composite key
         boolean isFull,     // from positionReport[@full="true"]
 
+        String  positionReportTime, // from positionReport/time or adsb basicReport/time
+
         // Identity
         String  tgtType,    // "aircraft", "vehicle", or "unknown"
         String  callsign,   // flightId/aircraftId (UNKN filtered out)
