@@ -44,6 +44,14 @@ type Platform interface {
 	// center point fixed.
 	SetWindowSizeCentered(width, height int)
 
+	// Native window controls used by undecorated scope windows.
+	SetWindowDecorated(decorated bool)
+	MinimizeWindow()
+	ToggleMaximizeWindow()
+	CloseWindow()
+	MoveWindowBy(dx, dy float32)
+	IsWindowMaximized() bool
+
 	// LoadCursorFromBytes decodes a Windows .cur resource and creates a native
 	// cursor suitable for the current display scale.
 	LoadCursorFromBytes(name string, data []byte) (*Cursor, error)

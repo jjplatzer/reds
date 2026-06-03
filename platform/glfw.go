@@ -10,6 +10,7 @@ package platform
 
 import (
 	"fmt"
+	stdmath "math"
 	"runtime"
 	"unsafe"
 
@@ -204,6 +205,61 @@ func (g *glfwPlatform) SetWindowSizeCentered(width, height int) {
 
 	// Avoid a large mouse delta after the window changes size and position.
 	g.updateInput()
+}
+
+func (g *glfwPlatform) SetWindowDecorated(decorated bool) {
+	if g == nil || g.window == nil {
+		return
+	}
+	if decorated {
+		g.window.SetAttrib(glfw.Decorated, glfw.True)
+	} else {
+		g.window.SetAttrib(glfw.Decorated, glfw.False)
+	}
+}
+
+func (g *glfwPlatform) MinimizeWindow() {
+	if g == nil || g.window == nil {
+		return
+	}
+	g.window.Iconify()
+}
+
+func (g *glfwPlatform) ToggleMaximizeWindow() {
+	if g == nil || g.window == nil {
+		return
+	}
+	if g.IsWindowMaximized() {
+		g.window.Restore()
+		return
+	}
+	g.window.Maximize()
+}
+
+func (g *glfwPlatform) CloseWindow() {
+	if g == nil || g.window == nil {
+		return
+	}
+	g.window.SetShouldClose(true)
+}
+
+func (g *glfwPlatform) MoveWindowBy(dx, dy float32) {
+	if g == nil || g.window == nil || (dx == 0 && dy == 0) {
+		return
+	}
+
+	x, y := g.window.GetPos()
+	g.window.SetPos(
+		x+int(stdmath.Round(float64(dx))),
+		y+int(stdmath.Round(float64(dy))),
+	)
+}
+
+func (g *glfwPlatform) IsWindowMaximized() bool {
+	if g == nil || g.window == nil {
+		return false
+	}
+	return g.window.GetAttrib(glfw.Maximized) == glfw.True
 }
 
 func (g *glfwPlatform) DisplaySize() [2]float32 {

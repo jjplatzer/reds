@@ -39,7 +39,7 @@ func main() {
 	imgui.CurrentIO().SetIniFilename("") // no imgui.ini side file
 
 	plat, err := platform.New(&platform.Config{
-		Title:             "reds",
+		Title:             "REDS",
 		InitialWindowSize: [2]int{200, 350},
 		MinWindowSize:     [2]int{200, 200},
 		Resizable:         true,
@@ -70,6 +70,7 @@ func main() {
 
 	mode := appModeMenu
 	var active panes.Pane
+	scopeTitle := ""
 	consumer := &smesConsumer{}
 	defer consumer.Stop()
 
@@ -92,19 +93,26 @@ func main() {
 				pane, err := launchScope(m.selection, plat, consumer)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "reds: %v\n", err)
-					plat.SetWindowTitle("reds")
+					plat.SetWindowTitle("REDS")
 					continue
 				}
 				active = pane
+				scopeTitle = m.selection.Airport + " ASDE-X"
 				mode = appModeScope
 			case menuCancelled:
 				return
 			}
 
 		case appModeScope:
+			titlebarCaptured := drawScopeTitleBar(
+				plat,
+				scopeTitle,
+				plat.DisplaySize(),
+			)
 			io := imgui.CurrentIO()
 			panes.DrawPane(active, plat, r, panes.DrawOptions{
-				MouseCaptured:    io.WantCaptureMouse(),
+				MenuBarHeight:    scopeTitleBarHeight,
+				MouseCaptured:    io.WantCaptureMouse() || titlebarCaptured,
 				KeyboardCaptured: io.WantCaptureKeyboard(),
 			})
 
@@ -126,7 +134,8 @@ func launchScope(sel Selection, plat platform.Platform, consumer *smesConsumer) 
 			consumer.Stop()
 			return nil, err
 		}
-		plat.SetWindowTitle("REDS ASDE-X " + sel.Airport)
+		plat.SetWindowTitle(sel.Airport + " ASDE-X")
+		plat.SetWindowDecorated(false)
 		plat.SetWindowSizeCentered(asdexWindowWidth, asdexWindowHeight)
 		return pane, nil
 	default:
