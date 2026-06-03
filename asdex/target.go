@@ -8,6 +8,7 @@ import (
 
 	redsmath "github.com/juliusplatzer/reds/math"
 	redsnet "github.com/juliusplatzer/reds/net"
+	"github.com/juliusplatzer/reds/radar"
 	"github.com/juliusplatzer/reds/renderer"
 )
 
@@ -52,6 +53,8 @@ type Target struct {
 
 	ShowDB bool
 
+	Live bool
+
 	CoastListID  string
 	CoastUntil   time.Time
 	SuspendUntil time.Time
@@ -63,7 +66,7 @@ type Target struct {
 }
 
 func (t *Target) EffectiveShowDB() bool {
-	if t == nil || !t.ShowDB {
+	if t == nil || !t.ShowDB || t.Suspended {
 		return false
 	}
 	return targetHasDatablock(classifyTarget(t))
@@ -207,6 +210,24 @@ func (s *TargetStore) Remove(id string) {
 	s.hoverRevision++
 }
 
+func (s *TargetStore) RemoveLive(id string) {
+	if s == nil || s.targets == nil {
+		return
+	}
+
+	target := s.targets[id]
+	if target == nil {
+		return
+	}
+	if target.Suspended {
+		target.Live = false
+		s.hoverRevision++
+		return
+	}
+
+	s.Remove(id)
+}
+
 func (s *TargetStore) Clear() {
 	if s == nil {
 		return
@@ -261,6 +282,102 @@ func (s *TargetStore) HighlightedTarget() *Target {
 		return nil
 	}
 	return s.TargetByID(s.highlightedID)
+}
+
+func (s *TargetStore) SuspendedCount() int {
+	if s == nil {
+		return 0
+	}
+
+	count := 0
+	for _, target := range s.targets {
+		if target != nil && target.Suspended {
+			count++
+		}
+	}
+	return count
+}
+
+func (s *TargetStore) NextAvailableSuspendedTrackID() string {
+	if s == nil {
+		return ""
+	}
+
+	used := make(map[string]bool)
+	for _, target := range s.targets {
+		if target != nil && target.Suspended && target.CoastListID != "" {
+			used[target.CoastListID] = true
+		}
+	}
+
+	for ch := 'A'; ch <= 'Z'; ch++ {
+		id := string(ch)
+		if !used[id] {
+			return id
+		}
+	}
+	return ""
+}
+
+func (s *TargetStore) SuspendTarget(targetID string, coastListID string, until time.Time) {
+	target := s.TargetByID(targetID)
+	if target == nil {
+		return
+	}
+
+	target.Suspended = true
+	target.Coasting = false
+	target.Dropped = false
+	target.CoastListID = strings.TrimSpace(coastListID)
+	target.SuspendUntil = until
+	target.CoastUntil = time.Time{}
+	target.ShowDB = false
+	s.hoverRevision++
+}
+
+func (s *TargetStore) UnsuspendTarget(targetID string) {
+	target := s.TargetByID(targetID)
+	if target == nil {
+		return
+	}
+	if !target.Live {
+		s.Remove(targetID)
+		return
+	}
+
+	target.Suspended = false
+	target.CoastListID = ""
+	target.SuspendUntil = time.Time{}
+	s.hoverRevision++
+}
+
+func (s *TargetStore) ExpireSuspendedTracks(now time.Time) {
+	if s == nil {
+		return
+	}
+
+	var remove []string
+	for _, target := range s.targets {
+		if target == nil || !target.Suspended {
+			continue
+		}
+		if target.SuspendUntil.IsZero() || target.SuspendUntil.After(now) {
+			continue
+		}
+
+		if target.Live {
+			target.Suspended = false
+			target.CoastListID = ""
+			target.SuspendUntil = time.Time{}
+			s.hoverRevision++
+		} else {
+			remove = append(remove, target.ID)
+		}
+	}
+
+	for _, id := range remove {
+		s.Remove(id)
+	}
 }
 
 const maxTargetHoverRangeFeet = float32(150)
@@ -333,7 +450,7 @@ func (s *TargetStore) ApplySmesFrame(frame redsnet.SmesFrame, vm *VideoMap) {
 		return
 	}
 	if frame.Removed {
-		s.Remove(frame.Key)
+		s.RemoveLive(frame.Key)
 		return
 	}
 
@@ -346,6 +463,7 @@ func (s *TargetStore) ApplySmesFrame(frame redsnet.SmesFrame, vm *VideoMap) {
 	}
 
 	applySmesChanged(&target, frame.Changed, vm)
+	target.Live = true
 	s.Upsert(target)
 }
 
@@ -523,6 +641,7 @@ func DrawTargets(
 	addHistoryDots(targets, history, cb, opts)
 	addHighlightRings(targets, cb, opts.Brightness)
 	addTargetSymbols(targets, cb, opts.Brightness)
+	addSuspendedTargetIcons(targets, cb, opts.Brightness, opts.ScopeRotationDeg)
 	addTargetVectors(targets, cb, opts)
 }
 
@@ -702,6 +821,12 @@ const highlightRingRadiusFeet = 0.012 * feetPerNM
 
 var highlightRingPolygon = regularRingPolygon(20, highlightRingRadiusFeet)
 
+const (
+	suspendedOuterHalfSizeFeet = float32(65)
+	suspendedInnerHalfSizeFeet = float32(55)
+	suspendedLabelFontSize     = 2
+)
+
 func regularRingPolygon(sides int, radiusFeet float32) []redsmath.Vec2 {
 	if sides < 3 || radiusFeet <= 0 {
 		return nil
@@ -827,6 +952,119 @@ func addTargetSymbols(targets []*Target, cb *renderer.CmdBuffer, brightness int)
 		cb.SetRGB(targetClassRGB(class, brightness))
 		builders[class].GenerateCommands(cb, renderer.DrawSolid, 0)
 	}
+}
+
+func addSuspendedTargetIcons(
+	targets []*Target,
+	cb *renderer.CmdBuffer,
+	brightness int,
+	scopeRotationDeg int,
+) {
+	outerBuilder := renderer.GetTrianglesBuilder()
+	innerBuilder := renderer.GetTrianglesBuilder()
+	selectedInnerBuilder := renderer.GetTrianglesBuilder()
+	defer renderer.ReturnTrianglesBuilder(outerBuilder)
+	defer renderer.ReturnTrianglesBuilder(innerBuilder)
+	defer renderer.ReturnTrianglesBuilder(selectedInnerBuilder)
+
+	inverseRotation := -float32(scopeRotationDeg)
+	for _, target := range targets {
+		if target == nil || !target.Suspended {
+			continue
+		}
+
+		outer := screenAlignedSquare(target.PosFeet, suspendedOuterHalfSizeFeet, inverseRotation)
+		inner := screenAlignedSquare(target.PosFeet, suspendedInnerHalfSizeFeet, inverseRotation)
+
+		outerBuilder.AddQuad(
+			pointVertex(outer[0]),
+			pointVertex(outer[1]),
+			pointVertex(outer[2]),
+			pointVertex(outer[3]),
+		)
+
+		fillBuilder := innerBuilder
+		if target.Highlighted {
+			fillBuilder = selectedInnerBuilder
+		}
+		fillBuilder.AddQuad(
+			pointVertex(inner[0]),
+			pointVertex(inner[1]),
+			pointVertex(inner[2]),
+			pointVertex(inner[3]),
+		)
+	}
+
+	cb.SetRGB(targetRGB(targetRGBSuspendedOuter, brightness))
+	outerBuilder.GenerateCommands(cb, renderer.DrawSolid, 0)
+
+	cb.SetRGB(targetRGB(targetRGBSuspendedInner, brightness))
+	innerBuilder.GenerateCommands(cb, renderer.DrawSolid, 0)
+
+	cb.SetRGB(targetRGB(targetRGBSuspendedSelectedInner, brightness))
+	selectedInnerBuilder.GenerateCommands(cb, renderer.DrawSolid, 0)
+}
+
+func screenAlignedSquare(
+	center redsmath.Vec2,
+	halfSizeFeet float32,
+	inverseRotationDeg float32,
+) []redsmath.Vec2 {
+	corners := []redsmath.Vec2{
+		{X: -halfSizeFeet, Y: -halfSizeFeet},
+		{X: halfSizeFeet, Y: -halfSizeFeet},
+		{X: halfSizeFeet, Y: halfSizeFeet},
+		{X: -halfSizeFeet, Y: halfSizeFeet},
+	}
+
+	out := make([]redsmath.Vec2, 0, len(corners))
+	for _, corner := range corners {
+		out = append(out, rotateScaleTranslate(corner, center, inverseRotationDeg, 1))
+	}
+	return out
+}
+
+func pointVertex(point redsmath.Vec2) renderer.PointVertex {
+	return renderer.PointVertex{X: point.X, Y: point.Y}
+}
+
+func DrawSuspendedTargetLabels(
+	targets []*Target,
+	cb *renderer.CmdBuffer,
+	transforms radar.ScopeTransformations,
+	font *renderer.BitmapFont,
+	textureID renderer.TextureID,
+) {
+	if cb == nil || font == nil || textureID == 0 {
+		return
+	}
+
+	td := renderer.GetTextDrawBuilder()
+	defer renderer.ReturnTextDrawBuilder(td)
+
+	td.SetFont(font)
+	lineHeight := font.LineHeight(suspendedLabelFontSize)
+	style := renderer.TextStyle{
+		Size:  suspendedLabelFontSize,
+		Color: renderer.RGB8(0, 0, 0).ToRGBA(),
+	}
+
+	for _, target := range targets {
+		if target == nil || !target.Suspended || strings.TrimSpace(target.CoastListID) == "" {
+			continue
+		}
+
+		label := truncateRunes(strings.TrimSpace(target.CoastListID), 1)
+		width, _ := font.MeasureText(label, suspendedLabelFontSize)
+		center := transforms.WindowFromWorldP(target.PosFeet)
+		topLeft := redsmath.Vec2{
+			X: center.X - float32(width)/2,
+			Y: center.Y - float32(lineHeight)/2,
+		}
+		td.AddText(label, topLeft, style)
+	}
+
+	td.GenerateCommands(cb, textureID)
 }
 
 func addTransformedIndexed(

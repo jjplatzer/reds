@@ -35,7 +35,14 @@ func (ap *ASDEXPane) cmdBareAircraftSlew(
 		return CommandStatus{}
 	}
 
-	// Later passes add suspended and dropped target precedence here.
+	if target.Suspended {
+		ap.targets.UnsuspendTarget(target.ID)
+		return CommandStatus{
+			Output:    "",
+			HasOutput: true,
+		}
+	}
+
 	if !targetHasDatablock(classifyTarget(target)) {
 		return CommandStatus{}
 	}

@@ -17,6 +17,7 @@ type CommandMode int
 const (
 	CommandModeNone CommandMode = iota
 	CommandModeEditDatablockFields
+	CommandModeTrackSuspend
 )
 
 type CommandClear int
@@ -177,6 +178,7 @@ var (
 
 func InitCommands() {
 	initCommandsOnce.Do(func() {
+		registerOpsCommands()
 		registerSlewCommands()
 	})
 }
@@ -255,7 +257,7 @@ func makeMatchers(spec string) ([]matcher, error) {
 			case "R SLEW":
 				matchers = append(matchers, rightSlewMatcher{})
 			default:
-				return nil, fmt.Errorf("unknown command matcher [%s]", name)
+				matchers = append(matchers, literalMatcher{text: "[" + name + "]"})
 			}
 			remaining = remaining[end+1:]
 			continue
@@ -501,6 +503,36 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 	}
 }
 
+func (ap *ASDEXPane) consumeOpsHotkeys(
+	ctx *panes.Context,
+	transforms radar.ScopeTransformations,
+) bool {
+	if ap == nil || ctx == nil || ctx.Keyboard == nil || ap.datablockEdit != nil {
+		return false
+	}
+	if !ctx.Keyboard.WasPressed(platform.KeyF4) {
+		return false
+	}
+
+	status, err, handled := ap.tryExecuteUserCommand(
+		ctx,
+		"[TRK SUSP]",
+		nil,
+		CommandClickNone,
+		redsmath.Vec2{},
+		transforms,
+	)
+	if err != nil {
+		ap.previewArea.SetSystemResponse(err.Error())
+		return true
+	}
+	if handled {
+		ap.applyCommandStatus(status)
+		return true
+	}
+	return false
+}
+
 func (ap *ASDEXPane) consumeCommandClicks(
 	ctx *panes.Context,
 	transforms radar.ScopeTransformations,
@@ -535,6 +567,14 @@ func (ap *ASDEXPane) consumeCommandClicks(
 
 	target := ap.highlightedTarget()
 	if target == nil {
+		if ap.commandMode == CommandModeTrackSuspend && clickKind == CommandClickLeft {
+			ap.applyCommandStatus(CommandStatus{
+				Clear:     ClearAll,
+				Output:    "NO SLEW",
+				HasOutput: true,
+			})
+			return true
+		}
 		return false
 	}
 

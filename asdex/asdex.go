@@ -41,8 +41,9 @@ const (
 	zTempMapText    renderer.Z = -680
 	zDBAreas        renderer.Z = -600
 
-	zTargets    renderer.Z = -500
-	zDatablocks renderer.Z = -480
+	zTargets         renderer.Z = -500
+	zSuspendedLabels renderer.Z = -499
+	zDatablocks      renderer.Z = -480
 
 	zWindowBorders renderer.Z = -300
 	zAlertMessage  renderer.Z = -210
@@ -176,8 +177,11 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		p.rotation,
 	)
 
+	now := time.Now().UTC()
+	p.targets.ExpireSuspendedTracks(now)
+	p.consumeOpsHotkeys(ctx, transforms)
 	p.coastList.SetVisible(p.showCoastList)
-	p.coastList.SetEntries(p.buildCoastSuspendEntries(time.Now().UTC()))
+	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
 	p.updateRightClickGesture(ctx)
 
 	if p.datablockEdit != nil {
@@ -198,6 +202,8 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		}
 	}
 	p.applyCurrentCursor(ctx)
+	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
+	targets := p.targets.All()
 
 	cb := zcb.At(windowZ(0, zVideoMap))
 	x, y, w, h := ctx.PaneFramebufferRect()
@@ -214,22 +220,36 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	targetCB.Scissor(x, y, w, h)
 	transforms.LoadWorldViewingMatrices(targetCB)
 	DrawTargets(
-		p.targets.All(),
+		targets,
 		p.targets.History(),
 		targetCB,
 		TargetDrawOptions{
-			VectorSeconds: 3,
-			Brightness:    brightnessDefault,
+			VectorSeconds:    3,
+			Brightness:       brightnessDefault,
+			ScopeRotationDeg: int(p.rotation),
 		},
 	)
 	targetCB.DisableScissor()
+
+	suspendedLabelCB := zcb.At(windowZ(0, zSuspendedLabels))
+	suspendedLabelCB.Viewport(x, y, w, h)
+	suspendedLabelCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(suspendedLabelCB)
+	DrawSuspendedTargetLabels(
+		targets,
+		suspendedLabelCB,
+		transforms,
+		p.fonts.font,
+		p.fonts.textureForSize(ctx.Renderer, suspendedLabelFontSize),
+	)
+	suspendedLabelCB.DisableScissor()
 
 	datablockSettings := p.dataBlockSettings()
 	dbCB := zcb.At(windowZ(0, zDatablocks))
 	dbCB.Viewport(x, y, w, h)
 	dbCB.Scissor(x, y, w, h)
 	DrawDatablocks(
-		p.targets.All(),
+		targets,
 		dbCB,
 		transforms,
 		DataBlockDrawOptions{
@@ -441,10 +461,16 @@ func (p *ASDEXPane) highlightedTarget() *Target {
 }
 
 func (p *ASDEXPane) activeCommandLines() []string {
-	if p == nil || p.datablockEdit == nil {
+	if p == nil {
 		return nil
 	}
-	return p.datablockEdit.DisplayLines()
+	if p.datablockEdit != nil {
+		return p.datablockEdit.DisplayLines()
+	}
+	if p.commandMode == CommandModeTrackSuspend {
+		return []string{"TRK SUSP"}
+	}
+	return nil
 }
 
 func (p *ASDEXPane) cancelDatablockEdit() {
@@ -613,7 +639,26 @@ func (p *ASDEXPane) consumeCoastListClicks(ctx *panes.Context) bool {
 	case CoastListHitDownArrow:
 		p.coastList.PageDown(p.fonts.font, ctx.PaneSize())
 	case CoastListHitEntry:
-		// List slew precedence is added with retained coast/drop state.
+		target := p.targets.TargetByID(hit.TargetID)
+		if target == nil {
+			return true
+		}
+
+		status, err, handled := p.tryExecuteUserCommand(
+			ctx,
+			"",
+			target,
+			CommandClickLeft,
+			ctx.Mouse.Pos,
+			radar.ScopeTransformations{},
+		)
+		if err != nil {
+			p.previewArea.SetSystemResponse(err.Error())
+			return true
+		}
+		if handled {
+			p.applyCommandStatus(status)
+		}
 	}
 	return true
 }
