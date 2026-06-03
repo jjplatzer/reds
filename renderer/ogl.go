@@ -313,14 +313,14 @@ func (r *OpenGLRenderer) drawPoints(vertices []PointVertex, indices []uint32, tr
 
 	r.bindIndexedBuffers(len(vertices)*int(unsafe.Sizeof(PointVertex{})), unsafe.Pointer(&vertices[0]), indices)
 	gl.EnableVertexAttribArray(0)
-	gl.VertexAttribPointer(0, 2, gl.FLOAT, false, int32(unsafe.Sizeof(PointVertex{})), unsafe.Pointer(uintptr(0)))
+	gl.VertexAttribPointerWithOffset(0, 2, gl.FLOAT, false, int32(unsafe.Sizeof(PointVertex{})), 0)
 
 	if triangles {
-		gl.DrawElements(gl.TRIANGLES, int32(len(indices)), gl.UNSIGNED_INT, unsafe.Pointer(uintptr(0)))
+		gl.DrawElementsWithOffset(gl.TRIANGLES, int32(len(indices)), gl.UNSIGNED_INT, 0)
 		stats.Triangles += len(indices) / 3
 	} else {
 		gl.LineWidth(r.lineWidth)
-		gl.DrawElements(gl.LINES, int32(len(indices)), gl.UNSIGNED_INT, unsafe.Pointer(uintptr(0)))
+		gl.DrawElementsWithOffset(gl.LINES, int32(len(indices)), gl.UNSIGNED_INT, 0)
 		stats.Lines += len(indices) / 2
 	}
 	gl.DisableVertexAttribArray(0)
@@ -340,16 +340,16 @@ func (r *OpenGLRenderer) drawColored(vertices []ColoredVertex, indices []uint32,
 	r.bindIndexedBuffers(len(vertices)*int(unsafe.Sizeof(ColoredVertex{})), unsafe.Pointer(&vertices[0]), indices)
 	stride := int32(unsafe.Sizeof(ColoredVertex{}))
 	gl.EnableVertexAttribArray(0)
-	gl.VertexAttribPointer(0, 2, gl.FLOAT, false, stride, unsafe.Pointer(uintptr(unsafe.Offsetof(ColoredVertex{}.X))))
+	gl.VertexAttribPointerWithOffset(0, 2, gl.FLOAT, false, stride, uintptr(unsafe.Offsetof(ColoredVertex{}.X)))
 	gl.EnableVertexAttribArray(1)
-	gl.VertexAttribPointer(1, 3, gl.FLOAT, false, stride, unsafe.Pointer(uintptr(unsafe.Offsetof(ColoredVertex{}.Color))))
+	gl.VertexAttribPointerWithOffset(1, 3, gl.FLOAT, false, stride, uintptr(unsafe.Offsetof(ColoredVertex{}.Color)))
 
 	if triangles {
-		gl.DrawElements(gl.TRIANGLES, int32(len(indices)), gl.UNSIGNED_INT, unsafe.Pointer(uintptr(0)))
+		gl.DrawElementsWithOffset(gl.TRIANGLES, int32(len(indices)), gl.UNSIGNED_INT, 0)
 		stats.Triangles += len(indices) / 3
 	} else {
 		gl.LineWidth(r.lineWidth)
-		gl.DrawElements(gl.LINES, int32(len(indices)), gl.UNSIGNED_INT, unsafe.Pointer(uintptr(0)))
+		gl.DrawElementsWithOffset(gl.LINES, int32(len(indices)), gl.UNSIGNED_INT, 0)
 		stats.Lines += len(indices) / 2
 	}
 	gl.DisableVertexAttribArray(0)
@@ -373,10 +373,10 @@ func (r *OpenGLRenderer) drawTextured(textureID TextureID, vertices []TexturedVe
 	r.bindIndexedBuffers(len(vertices)*int(unsafe.Sizeof(TexturedVertex{})), unsafe.Pointer(&vertices[0]), indices)
 	stride := int32(unsafe.Sizeof(TexturedVertex{}))
 	gl.EnableVertexAttribArray(0)
-	gl.VertexAttribPointer(0, 2, gl.FLOAT, false, stride, unsafe.Pointer(uintptr(unsafe.Offsetof(TexturedVertex{}.X))))
+	gl.VertexAttribPointerWithOffset(0, 2, gl.FLOAT, false, stride, uintptr(unsafe.Offsetof(TexturedVertex{}.X)))
 	gl.EnableVertexAttribArray(1)
-	gl.VertexAttribPointer(1, 2, gl.FLOAT, false, stride, unsafe.Pointer(uintptr(unsafe.Offsetof(TexturedVertex{}.U))))
-	gl.DrawElements(gl.TRIANGLES, int32(len(indices)), gl.UNSIGNED_INT, unsafe.Pointer(uintptr(0)))
+	gl.VertexAttribPointerWithOffset(1, 2, gl.FLOAT, false, stride, uintptr(unsafe.Offsetof(TexturedVertex{}.U)))
+	gl.DrawElementsWithOffset(gl.TRIANGLES, int32(len(indices)), gl.UNSIGNED_INT, 0)
 	gl.DisableVertexAttribArray(0)
 	gl.DisableVertexAttribArray(1)
 	gl.BindTexture(gl.TEXTURE_2D, 0)
@@ -400,14 +400,14 @@ func (r *OpenGLRenderer) drawFont(textureID TextureID, vertices []FontVertex, in
 	r.bindIndexedBuffers(len(vertices)*int(unsafe.Sizeof(FontVertex{})), unsafe.Pointer(&vertices[0]), indices)
 	stride := int32(unsafe.Sizeof(FontVertex{}))
 	gl.EnableVertexAttribArray(0)
-	gl.VertexAttribPointer(0, 2, gl.FLOAT, false, stride, unsafe.Pointer(uintptr(unsafe.Offsetof(FontVertex{}.X))))
+	gl.VertexAttribPointerWithOffset(0, 2, gl.FLOAT, false, stride, uintptr(unsafe.Offsetof(FontVertex{}.X)))
 	gl.EnableVertexAttribArray(1)
-	gl.VertexAttribPointer(1, 2, gl.FLOAT, false, stride, unsafe.Pointer(uintptr(unsafe.Offsetof(FontVertex{}.U))))
+	gl.VertexAttribPointerWithOffset(1, 2, gl.FLOAT, false, stride, uintptr(unsafe.Offsetof(FontVertex{}.U)))
 	gl.EnableVertexAttribArray(2)
-	gl.VertexAttribPointer(2, 4, gl.FLOAT, false, stride, unsafe.Pointer(uintptr(unsafe.Offsetof(FontVertex{}.Color))))
+	gl.VertexAttribPointerWithOffset(2, 4, gl.FLOAT, false, stride, uintptr(unsafe.Offsetof(FontVertex{}.Color)))
 	gl.EnableVertexAttribArray(3)
-	gl.VertexAttribPointer(3, 4, gl.FLOAT, false, stride, unsafe.Pointer(uintptr(unsafe.Offsetof(FontVertex{}.Background))))
-	gl.DrawElements(gl.TRIANGLES, int32(len(indices)), gl.UNSIGNED_INT, unsafe.Pointer(uintptr(0)))
+	gl.VertexAttribPointerWithOffset(3, 4, gl.FLOAT, false, stride, uintptr(unsafe.Offsetof(FontVertex{}.Background)))
+	gl.DrawElementsWithOffset(gl.TRIANGLES, int32(len(indices)), gl.UNSIGNED_INT, 0)
 	gl.DisableVertexAttribArray(0)
 	gl.DisableVertexAttribArray(1)
 	gl.DisableVertexAttribArray(2)
