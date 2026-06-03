@@ -82,6 +82,7 @@ type ASDEXPane struct {
 	previewArea             PreviewArea
 	coastList               CoastList
 	showCoastList           bool
+	hoveredCoastListTarget  string
 
 	commandMode     CommandMode
 	datablockEdit   *DatablockEditCommand
@@ -196,6 +197,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.consumeOpsHotkeys(ctx, transforms)
 	p.coastList.SetVisible(p.showCoastList)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
+	p.updateCoastListHover(ctx)
 	p.updateRightClickGesture(ctx)
 
 	if p.datablockEdit != nil {
@@ -683,7 +685,7 @@ func (p *ASDEXPane) buildCoastSuspendEntries(now time.Time) []CoastListEntry {
 		case target.Suspended:
 			entry.Status = CoastListEntrySuspended
 			entry.TimeoutSeconds = targetTimeoutSeconds(target.SuspendUntil, now)
-			entry.Selected = target.Highlighted
+			entry.Selected = target.Highlighted || target.ID == p.hoveredCoastListTarget
 		default:
 			continue
 		}
@@ -691,6 +693,21 @@ func (p *ASDEXPane) buildCoastSuspendEntries(now time.Time) []CoastListEntry {
 		entries = append(entries, entry)
 	}
 	return entries
+}
+
+func (p *ASDEXPane) updateCoastListHover(ctx *panes.Context) {
+	if p == nil {
+		return
+	}
+	p.hoveredCoastListTarget = ""
+	if ctx == nil || ctx.Mouse == nil || !p.showCoastList {
+		return
+	}
+
+	hit := p.coastList.HitTest(ctx.Mouse.Pos, p.fonts.font, p.eramTextFonts.font, ctx.PaneSize())
+	if hit.Kind == CoastListHitEntry && hit.Status == CoastListEntrySuspended {
+		p.hoveredCoastListTarget = hit.TargetID
+	}
 }
 
 func (p *ASDEXPane) consumeCoastListClicks(ctx *panes.Context) bool {
