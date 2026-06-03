@@ -348,6 +348,7 @@ func (s *TargetStore) UnsuspendTarget(targetID string) {
 	target.Suspended = false
 	target.CoastListID = ""
 	target.SuspendUntil = time.Time{}
+	target.ShowDB = true
 	s.hoverRevision++
 }
 
@@ -369,6 +370,7 @@ func (s *TargetStore) ExpireSuspendedTracks(now time.Time) {
 			target.Suspended = false
 			target.CoastListID = ""
 			target.SuspendUntil = time.Time{}
+			target.ShowDB = true
 			s.hoverRevision++
 		} else {
 			remove = append(remove, target.ID)

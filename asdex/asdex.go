@@ -474,12 +474,16 @@ func (p *ASDEXPane) activeCommandLines() []string {
 }
 
 func (p *ASDEXPane) cancelDatablockEdit() {
+	p.cancelActiveCommand()
+}
+
+func (p *ASDEXPane) cancelActiveCommand() {
 	if p == nil {
 		return
 	}
+	p.commandMode = CommandModeNone
 	p.datablockEdit = nil
 	p.editingTargetID = ""
-	p.commandMode = CommandModeNone
 	p.previewArea.SetSystemResponse("")
 }
 
@@ -489,6 +493,15 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.datablockEdit != nil {
 		return p.handleDatablockEditKeyboard(ctx)
+	}
+	if p.commandMode != CommandModeNone {
+		keyboard := ctx.Keyboard
+		if keyboard.WasPressed(platform.KeyEscape) ||
+			keyboard.WasPressed(platform.KeyBackspace) ||
+			keyboard.WasPressed(platform.KeyDelete) {
+			p.cancelActiveCommand()
+			return true
+		}
 	}
 	return false
 }
