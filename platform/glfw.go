@@ -44,6 +44,7 @@ type glfwPlatform struct {
 	cursorOverride       *glfw.Cursor
 	cursorHiddenOverride bool
 	currentCursor        *glfw.Cursor
+	currentCursorHidden  bool
 	loadedCursors        []*glfw.Cursor
 }
 
@@ -56,6 +57,7 @@ func New(config *Config) (Platform, error) {
 	}
 
 	io := imgui.CurrentIO()
+	io.SetConfigFlags(io.ConfigFlags() | imgui.ConfigFlagsNoMouseCursorChange)
 	io.SetBackendFlags(io.BackendFlags() | imgui.BackendFlagsHasMouseCursors)
 
 	// Request an OpenGL 3.3 core context. The scope renderer is shader-based and
@@ -178,6 +180,7 @@ func (g *glfwPlatform) Clear(r, gn, b float32) {
 }
 
 func (g *glfwPlatform) PostRender() {
+	g.applyCursorState()
 	g.window.SwapBuffers()
 }
 

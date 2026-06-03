@@ -48,8 +48,10 @@ type Platform interface {
 	// cursor suitable for the current display scale.
 	LoadCursorFromBytes(name string, data []byte) (*Cursor, error)
 
-	// Cursor overrides are frame-local pane decisions. Panes clear an old
-	// override before drawing and apply the current override during Draw.
+	// Cursor overrides are frame-local pane decisions. Panes clear the desired
+	// override before drawing and apply the current desired override during
+	// Draw; the platform installs the native cursor once at the end of the
+	// frame.
 	SetCursorOverride(cursor *Cursor)
 	SetCursorHiddenOverride()
 	ClearCursorOverride()

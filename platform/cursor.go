@@ -72,18 +72,10 @@ func (g *glfwPlatform) SetCursorOverride(cursor *Cursor) {
 	g.cursorHiddenOverride = false
 	if cursor == nil || cursor.cursor == nil {
 		g.cursorOverride = nil
-		g.currentCursor = nil
-		g.window.SetCursor(nil)
-		g.window.SetInputMode(glfw.CursorMode, glfw.CursorNormal)
 		return
 	}
 
 	g.cursorOverride = cursor.cursor
-	if g.currentCursor != cursor.cursor {
-		g.currentCursor = cursor.cursor
-		g.window.SetCursor(cursor.cursor)
-	}
-	g.window.SetInputMode(glfw.CursorMode, glfw.CursorNormal)
 }
 
 func (g *glfwPlatform) SetCursorHiddenOverride() {
@@ -93,24 +85,40 @@ func (g *glfwPlatform) SetCursorHiddenOverride() {
 
 	g.cursorOverride = nil
 	g.cursorHiddenOverride = true
-	g.currentCursor = nil
-	g.window.SetCursor(nil)
-	g.window.SetInputMode(glfw.CursorMode, glfw.CursorHidden)
 }
 
 func (g *glfwPlatform) ClearCursorOverride() {
 	if g == nil || g.window == nil {
 		return
 	}
-	if g.cursorOverride == nil && !g.cursorHiddenOverride && g.currentCursor == nil {
-		return
-	}
 
 	g.cursorOverride = nil
 	g.cursorHiddenOverride = false
-	g.currentCursor = nil
-	g.window.SetCursor(nil)
-	g.window.SetInputMode(glfw.CursorMode, glfw.CursorNormal)
+}
+
+func (g *glfwPlatform) applyCursorState() {
+	if g == nil || g.window == nil {
+		return
+	}
+
+	if g.cursorHiddenOverride {
+		if !g.currentCursorHidden {
+			g.window.SetCursor(nil)
+			g.window.SetInputMode(glfw.CursorMode, glfw.CursorHidden)
+			g.currentCursor = nil
+			g.currentCursorHidden = true
+		}
+		return
+	}
+
+	if g.currentCursorHidden {
+		g.window.SetInputMode(glfw.CursorMode, glfw.CursorNormal)
+		g.currentCursorHidden = false
+	}
+	if g.currentCursor != g.cursorOverride {
+		g.currentCursor = g.cursorOverride
+		g.window.SetCursor(g.cursorOverride)
+	}
 }
 
 func loadCurBytes(name string, data []byte, targetSize int) (*image.RGBA, [2]int, error) {
