@@ -929,7 +929,7 @@ func (p *PreviewArea) SetTowerRunwayAssignmentsActive(active bool) {
 	p.state.TowerRunwayAssignmentsActive = active
 }
 
-func (p *PreviewArea) BuildTextBlock() TextBlock {
+func (p *PreviewArea) BuildTextBlock(commandLines []string) TextBlock {
 	if p == nil {
 		return TextBlock{}
 	}
@@ -941,10 +941,19 @@ func (p *PreviewArea) BuildTextBlock() TextBlock {
 		"RWY CFG: " + strings.TrimSpace(p.state.RunwayConfigName),
 		"TWR CFG:" + strings.Join(p.state.TowerPositions, ","),
 		p.state.SystemResponse,
-		p.state.SafetyLine1,
-		p.state.SafetyLine2,
-		p.state.FeedbackLine1,
-		p.state.FeedbackLine2,
+	}
+	if strings.TrimSpace(p.state.SafetyLine1) != "" {
+		lines = append(lines, p.state.SafetyLine1)
+	}
+	if strings.TrimSpace(p.state.SafetyLine2) != "" {
+		lines = append(lines, p.state.SafetyLine2)
+	}
+	lines = append(lines, commandLines...)
+	if strings.TrimSpace(p.state.FeedbackLine1) != "" {
+		lines = append(lines, p.state.FeedbackLine1)
+	}
+	if strings.TrimSpace(p.state.FeedbackLine2) != "" {
+		lines = append(lines, p.state.FeedbackLine2)
 	}
 
 	block := TextBlock{LineSpacing: p.list.style.LineSpacing}
@@ -972,13 +981,71 @@ func (p *PreviewArea) Render(
 	td *renderer.TextDrawBuilder,
 	font *renderer.BitmapFont,
 	displaySize redsmath.Vec2,
+	commandLines []string,
 ) {
 	if p == nil || td == nil || font == nil {
 		return
 	}
 
 	p.list.SetLocation(p.location.Location(displaySize, p.list.style.RepositionSize))
-	p.list.Render(td, font, p.BuildTextBlock())
+	p.list.Render(td, font, p.BuildTextBlock(commandLines))
+}
+
+func (p *PreviewArea) BaseLineCount() int {
+	if p == nil {
+		return 0
+	}
+
+	count := 3
+	if strings.TrimSpace(p.state.SafetyLine1) != "" {
+		count++
+	}
+	if strings.TrimSpace(p.state.SafetyLine2) != "" {
+		count++
+	}
+	return count
+}
+
+func (p *PreviewArea) TextRGB() renderer.RGB {
+	if p == nil {
+		return renderer.RGB{}
+	}
+	return applyBrightness(p.list.style.BaseTextColor, p.list.style.Brightness, p.list.style.MinBrightness)
+}
+
+func (p *PreviewArea) RenderCommandCursor(
+	builder *renderer.LinesBuilder,
+	font *renderer.BitmapFont,
+	displaySize redsmath.Vec2,
+	cursorLine int,
+	cursorColumn int,
+	baseLineCount int,
+) {
+	if p == nil || builder == nil || font == nil || cursorLine <= 0 || cursorColumn < 0 {
+		return
+	}
+
+	location := p.location.Location(displaySize, p.list.style.RepositionSize)
+	p.list.SetLocation(location)
+
+	charWidth, _ := font.CharSize(p.list.FontSize())
+	lineHeight := font.LineHeight(p.list.FontSize())
+	fontSpacing := font.FontSpacing(p.list.FontSize())
+	if charWidth <= 0 || lineHeight <= 0 {
+		return
+	}
+
+	x := location.X +
+		float32(charWidth*cursorColumn) +
+		float32(fontSpacing*max(0, cursorColumn-1))
+	y := location.Y +
+		float32(lineHeight+p.list.style.LineSpacing)*
+			float32(cursorLine+baseLineCount)
+
+	builder.AddLine(
+		renderer.PointVertex{X: x, Y: y},
+		renderer.PointVertex{X: x + float32(charWidth), Y: y},
+	)
 }
 
 func defaultRunwayConfigName(configs []previewRunwayConfiguration) string {

@@ -78,14 +78,77 @@ type TargetStore struct {
 	order   []string
 
 	history       map[string][]TargetHistoryPoint
+	overrides     map[string]DatablockFieldOverride
 	highlightedID string
 	hoverRevision uint64
 }
 
 func NewTargetStore() TargetStore {
 	return TargetStore{
-		targets: make(map[string]*Target),
-		history: make(map[string][]TargetHistoryPoint),
+		targets:   make(map[string]*Target),
+		history:   make(map[string][]TargetHistoryPoint),
+		overrides: make(map[string]DatablockFieldOverride),
+	}
+}
+
+type DatablockFieldOverride struct {
+	Callsign    string
+	Beacon      string
+	CWT         string
+	TargetType  string
+	Fix         string
+	Scratchpad1 string
+	Scratchpad2 string
+
+	// Active means the override applies even when a value is empty.
+	Active bool
+}
+
+func (s *TargetStore) SetDatablockOverride(targetID string, override DatablockFieldOverride) {
+	if s == nil || targetID == "" {
+		return
+	}
+	if s.overrides == nil {
+		s.overrides = make(map[string]DatablockFieldOverride)
+	}
+
+	override.Active = true
+	s.overrides[targetID] = override
+
+	if target := s.TargetByID(targetID); target != nil {
+		applyDatablockOverride(target, override)
+	}
+}
+
+func (s *TargetStore) applyDatablockOverrides(target *Target) {
+	if s == nil || target == nil || s.overrides == nil {
+		return
+	}
+
+	override, ok := s.overrides[target.ID]
+	if !ok {
+		return
+	}
+	applyDatablockOverride(target, override)
+}
+
+func applyDatablockOverride(target *Target, override DatablockFieldOverride) {
+	if target == nil || !override.Active {
+		return
+	}
+
+	target.Callsign = override.Callsign
+	target.Beacon = override.Beacon
+	target.CWT = override.CWT
+	target.Fix = override.Fix
+	target.Scratchpad1 = override.Scratchpad1
+	target.Scratchpad2 = override.Scratchpad2
+
+	targetType := strings.TrimSpace(override.TargetType)
+	if targetType == "" {
+		target.TargetType = nil
+	} else {
+		target.TargetType = stringPointer(targetType)
 	}
 }
 
@@ -99,6 +162,7 @@ func (s *TargetStore) Upsert(t Target) {
 	if s.history == nil {
 		s.history = make(map[string][]TargetHistoryPoint)
 	}
+	s.applyDatablockOverrides(&t)
 
 	if existing := s.targets[t.ID]; existing != nil {
 		if existing.PosFeet != t.PosFeet {
@@ -130,6 +194,7 @@ func (s *TargetStore) Remove(id string) {
 
 	delete(s.targets, id)
 	delete(s.history, id)
+	delete(s.overrides, id)
 	if s.highlightedID == id {
 		s.highlightedID = ""
 	}
@@ -151,6 +216,7 @@ func (s *TargetStore) Clear() {
 	}
 	clear(s.targets)
 	clear(s.history)
+	clear(s.overrides)
 	s.order = s.order[:0]
 	s.highlightedID = ""
 }

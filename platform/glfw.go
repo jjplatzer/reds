@@ -39,6 +39,7 @@ type glfwPlatform struct {
 
 	keyboard    KeyboardState
 	prevKeyDown map[Key]bool
+	pendingText []rune
 
 	cursorOverride       *glfw.Cursor
 	cursorHiddenOverride bool
@@ -137,6 +138,13 @@ func New(config *Config) (Platform, error) {
 			previousScroll(w, xoff, yoff)
 		}
 		p.pendingMouseWheel = p.pendingMouseWheel.Add(redsmath.Vec2{X: float32(xoff), Y: float32(yoff)})
+	})
+	var previousChar glfw.CharCallback
+	previousChar = window.SetCharCallback(func(w *glfw.Window, char rune) {
+		if previousChar != nil {
+			previousChar(w, char)
+		}
+		p.pendingText = append(p.pendingText, char)
 	})
 
 	// Prime input so the first frame does not report a huge cursor delta.
@@ -263,6 +271,8 @@ var trackedKeys = []trackedKey{
 	{KeyEscape, glfw.KeyEscape},
 	{KeyEnter, glfw.KeyEnter},
 	{KeyKeypadEnter, glfw.KeyKPEnter},
+	{KeyBackspace, glfw.KeyBackspace},
+	{KeyDelete, glfw.KeyDelete},
 	{KeyLeft, glfw.KeyLeft},
 	{KeyRight, glfw.KeyRight},
 	{KeyUp, glfw.KeyUp},
@@ -286,6 +296,8 @@ func (g *glfwPlatform) updateKeyboard() {
 	down := make(map[Key]bool, len(trackedKeys))
 	pressed := make(map[Key]bool)
 	released := make(map[Key]bool)
+	text := append([]rune(nil), g.pendingText...)
+	g.pendingText = g.pendingText[:0]
 
 	for _, tk := range trackedKeys {
 		isDown := g.isKeyDown(tk)
@@ -306,6 +318,7 @@ func (g *glfwPlatform) updateKeyboard() {
 		Down:     down,
 		Pressed:  pressed,
 		Released: released,
+		Text:     text,
 	}
 }
 

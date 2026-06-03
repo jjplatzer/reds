@@ -16,6 +16,7 @@ type CommandMode int
 
 const (
 	CommandModeNone CommandMode = iota
+	CommandModeEditDatablockFields
 )
 
 type CommandClear int
@@ -40,11 +41,19 @@ func commandOutput(text string) CommandStatus {
 	}
 }
 
+type CommandClickKind int
+
+const (
+	CommandClickNone CommandClickKind = iota
+	CommandClickLeft
+	CommandClickRight
+)
+
 type CommandInput struct {
 	text string
 
 	clickedTarget *Target
-	hasClick      bool
+	clickKind     CommandClickKind
 
 	mousePosition redsmath.Vec2
 	transforms    radar.ScopeTransformations
@@ -102,7 +111,7 @@ func (slewMatcher) match(
 	input *CommandInput,
 	text string,
 ) (*matchResult, error) {
-	if input == nil || !input.hasClick || input.clickedTarget == nil {
+	if input == nil || input.clickKind != CommandClickLeft || input.clickedTarget == nil {
 		return nil, nil
 	}
 	return &matchResult{
@@ -115,6 +124,28 @@ func (slewMatcher) match(
 func (slewMatcher) validate() error      { return nil }
 func (slewMatcher) goType() reflect.Type { return reflect.TypeFor[*Target]() }
 func (slewMatcher) consumesClick() bool  { return true }
+
+type rightSlewMatcher struct{}
+
+func (rightSlewMatcher) match(
+	_ *ASDEXPane,
+	_ *panes.Context,
+	input *CommandInput,
+	text string,
+) (*matchResult, error) {
+	if input == nil || input.clickKind != CommandClickRight || input.clickedTarget == nil {
+		return nil, nil
+	}
+	return &matchResult{
+		values:    []any{input.clickedTarget},
+		remaining: text,
+		matched:   true,
+	}, nil
+}
+
+func (rightSlewMatcher) validate() error      { return nil }
+func (rightSlewMatcher) goType() reflect.Type { return reflect.TypeFor[*Target]() }
+func (rightSlewMatcher) consumesClick() bool  { return true }
 
 type handlerArgumentKind int
 
@@ -221,6 +252,8 @@ func makeMatchers(spec string) ([]matcher, error) {
 			switch name := remaining[1:end]; name {
 			case "SLEW":
 				matchers = append(matchers, slewMatcher{})
+			case "R SLEW":
+				matchers = append(matchers, rightSlewMatcher{})
 			default:
 				return nil, fmt.Errorf("unknown command matcher [%s]", name)
 			}
@@ -336,7 +369,7 @@ func (command userCommand) match(
 	if input == nil {
 		return nil, false, nil
 	}
-	if input.hasClick != command.consumesClick {
+	if (input.clickKind != CommandClickNone) != command.consumesClick {
 		return nil, false, nil
 	}
 
@@ -413,7 +446,7 @@ func (ap *ASDEXPane) tryExecuteUserCommand(
 	ctx *panes.Context,
 	cmd string,
 	clickedTarget *Target,
-	hasClick bool,
+	clickKind CommandClickKind,
 	mousePosition redsmath.Vec2,
 	transforms radar.ScopeTransformations,
 ) (CommandStatus, error, bool) {
@@ -424,7 +457,7 @@ func (ap *ASDEXPane) tryExecuteUserCommand(
 	input := &CommandInput{
 		text:          strings.ToUpper(cmd),
 		clickedTarget: clickedTarget,
-		hasClick:      hasClick,
+		clickKind:     clickKind,
 		mousePosition: mousePosition,
 		transforms:    transforms,
 	}
@@ -463,7 +496,7 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 	case ClearAll:
 		ap.commandMode = CommandModeNone
 	case ClearInput:
-		// Text input is added with keyboard command entry.
+		// Later command-entry text can be cleared without leaving the mode.
 	case ClearNone:
 	}
 }
@@ -475,9 +508,23 @@ func (ap *ASDEXPane) consumeCommandClicks(
 	if ap == nil || ctx == nil || ctx.Mouse == nil {
 		return false
 	}
+	if ap.datablockEdit != nil {
+		return false
+	}
 
 	mouse := ctx.Mouse
-	if !mouse.WasReleased(platform.MouseButtonLeft) {
+	rightReleased := mouse.WasReleased(platform.MouseButtonRight)
+	if rightReleased {
+		defer ap.clearRightClickGesture()
+	}
+
+	clickKind := CommandClickNone
+	if mouse.WasReleased(platform.MouseButtonLeft) {
+		clickKind = CommandClickLeft
+	} else if rightReleased && ap.rightClickCandidate && !ap.rightClickDragged {
+		clickKind = CommandClickRight
+	}
+	if clickKind == CommandClickNone {
 		return false
 	}
 
@@ -491,7 +538,7 @@ func (ap *ASDEXPane) consumeCommandClicks(
 		return false
 	}
 
-	status, err, handled := ap.tryExecuteUserCommand(ctx, "", target, true, mouse.Pos, transforms)
+	status, err, handled := ap.tryExecuteUserCommand(ctx, "", target, clickKind, mouse.Pos, transforms)
 	if err != nil {
 		ap.previewArea.SetSystemResponse(err.Error())
 		return true

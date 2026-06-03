@@ -208,3 +208,17 @@ func (f *BitmapFont) CharSize(size int) (width int, height int) {
 	}
 	return 0, fs.LineHeight
 }
+
+func (f *BitmapFont) FontSpacing(size int) int {
+	fs := f.Size(size)
+	if fs == nil {
+		return 0
+	}
+
+	if glyph, ok := fs.Glyph('0'); ok {
+		if spacing := glyph.Advance - glyph.Width; spacing > 0 {
+			return spacing
+		}
+	}
+	return 0
+}

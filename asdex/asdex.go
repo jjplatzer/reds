@@ -27,6 +27,8 @@ const (
 	brightnessMax          = 99
 	brightnessDefault      = 95
 	brightnessFloorDefault = 20
+
+	rightSlewDragThresholdPixels = float32(5)
 )
 
 const (
@@ -68,12 +70,19 @@ type ASDEXPane struct {
 	cursors    CursorSet
 	cursorMode CursorMode
 
-	datablockSettings DataBlockSettings
-	previewArea       PreviewArea
-	coastList         CoastList
-	showCoastList     bool
+	datablockSettings       DataBlockSettings
+	datablockTimeshareStart time.Time
+	previewArea             PreviewArea
+	coastList               CoastList
+	showCoastList           bool
 
-	commandMode CommandMode
+	commandMode     CommandMode
+	datablockEdit   *DatablockEditCommand
+	editingTargetID string
+
+	rightClickStart     redsmath.Vec2
+	rightClickCandidate bool
+	rightClickDragged   bool
 
 	highlightedTargetID    string
 	highlightMouseWorld    redsmath.Vec2
@@ -127,10 +136,11 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		fonts:         fonts,
 		eramTextFonts: eramTextFonts,
 
-		datablockSettings: DefaultDataBlockSettings(),
-		previewArea:       preview,
-		coastList:         coastList,
-		showCoastList:     true,
+		datablockSettings:       DefaultDataBlockSettings(),
+		datablockTimeshareStart: time.Now(),
+		previewArea:             preview,
+		coastList:               coastList,
+		showCoastList:           true,
 	}, nil
 }
 
@@ -141,6 +151,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	p.ensureCursorsLoaded(ctx)
 	p.consumeNetworkEvents()
+	p.consumeCommandKeyboard(ctx)
 	p.initView(ctx.PaneRect)
 	if !p.viewInitialized {
 		return
@@ -154,19 +165,26 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		p.rotation,
 	)
 
-	if p.consumeMouseEvents(ctx, transforms) {
-		transforms = radar.GetScopeTransformations(
-			paneExtent,
-			p.center,
-			p.rangeFeet,
-			p.rotation,
-		)
-	}
-	p.updateHighlightedTarget(ctx, transforms)
 	p.coastList.SetVisible(p.showCoastList)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(time.Now().UTC()))
-	if !p.consumeCoastListClicks(ctx) {
-		p.consumeCommandClicks(ctx, transforms)
+	p.updateRightClickGesture(ctx)
+
+	if p.datablockEdit != nil {
+		p.clearHighlightedTarget()
+		p.consumeDatablockEditWheel(ctx)
+	} else {
+		if p.consumeMouseEvents(ctx, transforms) {
+			transforms = radar.GetScopeTransformations(
+				paneExtent,
+				p.center,
+				p.rangeFeet,
+				p.rotation,
+			)
+		}
+		p.updateHighlightedTarget(ctx, transforms)
+		if !p.consumeCoastListClicks(ctx) {
+			p.consumeCommandClicks(ctx, transforms)
+		}
 	}
 	p.applyCurrentCursor(ctx)
 
@@ -195,6 +213,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	)
 	targetCB.DisableScissor()
 
+	datablockSettings := p.dataBlockSettings()
 	dbCB := zcb.At(windowZ(0, zDatablocks))
 	dbCB.Viewport(x, y, w, h)
 	dbCB.Scissor(x, y, w, h)
@@ -208,7 +227,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				return p.fonts.textureForSize(ctx.Renderer, size)
 			},
 			SettingsForTarget: func(_ *Target) DataBlockSettings {
-				return p.datablockSettings
+				return datablockSettings
 			},
 		},
 	)
@@ -241,11 +260,60 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if textureID != 0 {
 		td := renderer.GetTextDrawBuilder()
 		td.SetFont(p.fonts.font)
-		p.previewArea.Render(td, p.fonts.font, ctx.PaneSize())
+		p.previewArea.Render(td, p.fonts.font, ctx.PaneSize(), p.activeCommandLines())
 		td.GenerateCommands(listCB, textureID)
 		renderer.ReturnTextDrawBuilder(td)
 	}
 	listCB.DisableScissor()
+
+	if p.datablockEdit != nil {
+		cursorCB := zcb.At(windowZ(0, zPreviewCursor))
+		cursorCB.Viewport(x, y, w, h)
+		cursorCB.Scissor(x, y, w, h)
+		transforms.LoadWindowViewingMatrices(cursorCB)
+		cursorCB.SetRGB(p.previewArea.TextRGB())
+		cursorCB.LineWidth(1)
+
+		builder := renderer.GetLinesBuilder()
+		p.previewArea.RenderCommandCursor(
+			builder,
+			p.fonts.font,
+			ctx.PaneSize(),
+			p.datablockEdit.CursorLine(),
+			p.datablockEdit.CursorColumn(),
+			p.previewArea.BaseLineCount(),
+		)
+		builder.GenerateCommands(cursorCB)
+		renderer.ReturnLinesBuilder(builder)
+		cursorCB.DisableScissor()
+	}
+}
+
+func (p *ASDEXPane) dataBlockSettings() DataBlockSettings {
+	settings := DefaultDataBlockSettings()
+	if p == nil {
+		return settings
+	}
+
+	settings = p.datablockSettings
+	settings.TimesharePrimary = p.timesharePrimary(time.Now())
+	return settings
+}
+
+func (p *ASDEXPane) timesharePrimary(now time.Time) bool {
+	if p == nil {
+		return true
+	}
+	if p.datablockTimeshareStart.IsZero() {
+		p.datablockTimeshareStart = now
+	}
+
+	const interval = 2 * time.Second
+	elapsed := now.Sub(p.datablockTimeshareStart)
+	if elapsed < 0 {
+		elapsed = 0
+	}
+	return int(elapsed/interval)%2 == 0
 }
 
 func (p *ASDEXPane) ensureCursorsLoaded(ctx *panes.Context) {
@@ -258,7 +326,14 @@ func (p *ASDEXPane) ensureCursorsLoaded(ctx *panes.Context) {
 }
 
 func (p *ASDEXPane) applyCurrentCursor(ctx *panes.Context) {
-	if p == nil || ctx == nil || ctx.Platform == nil || ctx.Mouse == nil {
+	if p == nil || ctx == nil || ctx.Platform == nil {
+		return
+	}
+	if p.datablockEdit != nil {
+		p.applyCursorMode(ctx, CursorModeHidden)
+		return
+	}
+	if ctx.Mouse == nil {
 		return
 	}
 
@@ -270,6 +345,9 @@ func (p *ASDEXPane) applyCurrentCursor(ctx *panes.Context) {
 }
 
 func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
+	if p != nil && p.datablockEdit != nil {
+		return CursorModeHidden
+	}
 	if ctx != nil && ctx.Mouse != nil && ctx.Mouse.IsDown(platform.MouseButtonRight) {
 		return CursorModeHidden
 	}
@@ -349,6 +427,120 @@ func (p *ASDEXPane) highlightedTarget() *Target {
 		return target
 	}
 	return p.targets.TargetByID(p.highlightedTargetID)
+}
+
+func (p *ASDEXPane) activeCommandLines() []string {
+	if p == nil || p.datablockEdit == nil {
+		return nil
+	}
+	return p.datablockEdit.DisplayLines()
+}
+
+func (p *ASDEXPane) cancelDatablockEdit() {
+	if p == nil {
+		return
+	}
+	p.datablockEdit = nil
+	p.editingTargetID = ""
+	p.commandMode = CommandModeNone
+	p.previewArea.SetSystemResponse("")
+}
+
+func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+	if p.datablockEdit != nil {
+		return p.handleDatablockEditKeyboard(ctx)
+	}
+	return false
+}
+
+func (p *ASDEXPane) handleDatablockEditKeyboard(ctx *panes.Context) bool {
+	if p == nil || p.datablockEdit == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	keyboard := ctx.Keyboard
+	edit := p.datablockEdit
+	switch {
+	case keyboard.WasPressed(platform.KeyEscape):
+		p.cancelDatablockEdit()
+		return true
+	case keyboard.WasPressed(platform.KeyEnter), keyboard.WasPressed(platform.KeyKeypadEnter):
+		if edit.Enter() {
+			p.submitDatablockEdit()
+		}
+		return true
+	case keyboard.WasPressed(platform.KeyLeft):
+		edit.MoveLeft()
+		return true
+	case keyboard.WasPressed(platform.KeyRight):
+		edit.MoveRight()
+		return true
+	case keyboard.WasPressed(platform.KeyUp):
+		edit.MoveUp()
+		return true
+	case keyboard.WasPressed(platform.KeyDown):
+		edit.MoveDown()
+		return true
+	case keyboard.WasPressed(platform.KeyBackspace):
+		edit.Backspace()
+		return true
+	case keyboard.WasPressed(platform.KeyDelete):
+		edit.DeleteForward()
+		return true
+	}
+
+	handled := false
+	for _, r := range keyboard.Text {
+		edit.Insert(r)
+		handled = true
+	}
+	return handled
+}
+
+func (p *ASDEXPane) consumeDatablockEditWheel(ctx *panes.Context) bool {
+	if p == nil || p.datablockEdit == nil || ctx == nil || ctx.Mouse == nil {
+		return false
+	}
+	if ctx.Mouse.Wheel.Y > 0 {
+		p.datablockEdit.MoveUp()
+		return true
+	}
+	if ctx.Mouse.Wheel.Y < 0 {
+		p.datablockEdit.MoveDown()
+		return true
+	}
+	return false
+}
+
+func (p *ASDEXPane) updateRightClickGesture(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Mouse == nil {
+		return
+	}
+
+	mouse := ctx.Mouse
+	if mouse.WasPressed(platform.MouseButtonRight) {
+		p.rightClickStart = mouse.Pos
+		p.rightClickCandidate = true
+		p.rightClickDragged = false
+	}
+	if mouse.IsDown(platform.MouseButtonRight) && p.rightClickCandidate {
+		delta := mouse.Pos.Sub(p.rightClickStart)
+		threshold2 := rightSlewDragThresholdPixels * rightSlewDragThresholdPixels
+		if delta.X*delta.X+delta.Y*delta.Y > threshold2 {
+			p.rightClickDragged = true
+		}
+	}
+}
+
+func (p *ASDEXPane) clearRightClickGesture() {
+	if p == nil {
+		return
+	}
+	p.rightClickCandidate = false
+	p.rightClickDragged = false
 }
 
 func (p *ASDEXPane) buildCoastSuspendEntries(now time.Time) []CoastListEntry {
@@ -536,7 +728,9 @@ func (p *ASDEXPane) consumeMouseEvents(
 		return false
 	}
 
-	if mouse.IsDown(platform.MouseButtonRight) && (mouse.Delta.X != 0 || mouse.Delta.Y != 0) {
+	if mouse.IsDown(platform.MouseButtonRight) &&
+		(!p.rightClickCandidate || p.rightClickDragged) &&
+		(mouse.Delta.X != 0 || mouse.Delta.Y != 0) {
 		deltaWorld := transforms.WorldFromWindowV(mouse.Delta)
 		p.center = p.center.Sub(deltaWorld)
 		changed = true

@@ -53,6 +53,8 @@ const (
 	KeyEscape Key = iota
 	KeyEnter
 	KeyKeypadEnter
+	KeyBackspace
+	KeyDelete
 	KeyLeft
 	KeyRight
 	KeyUp
@@ -77,6 +79,8 @@ type KeyboardState struct {
 	Down     map[Key]bool
 	Pressed  map[Key]bool
 	Released map[Key]bool
+
+	Text []rune
 }
 
 func (k KeyboardState) IsDown(key Key) bool     { return k.Down[key] }
