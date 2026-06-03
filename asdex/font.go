@@ -7,7 +7,10 @@ import (
 	"github.com/juliusplatzer/reds/util"
 )
 
-const asdexFontPath = "asdex/assets/font.bin.zst"
+const (
+	asdexFontPath    = "resources/bitmaps/asdex/fonts/font.bin.zst"
+	eramTextFontPath = "resources/bitmaps/eram/fonts/EramText.bin.zst"
+)
 
 type fontCache struct {
 	font     *renderer.BitmapFont
@@ -15,13 +18,21 @@ type fontCache struct {
 }
 
 func loadFontCache() (fontCache, error) {
-	if !util.ResourceExists(asdexFontPath) {
-		return fontCache{}, fmt.Errorf("ASDE-X font resource %s not found", asdexFontPath)
+	return loadFontCacheFrom(asdexFontPath, "ASDE-X")
+}
+
+func loadEramTextFontCache() (fontCache, error) {
+	return loadFontCacheFrom(eramTextFontPath, "ERAM text")
+}
+
+func loadFontCacheFrom(path string, label string) (fontCache, error) {
+	if !util.ResourceExists(path) {
+		return fontCache{}, fmt.Errorf("%s font resource %s not found", label, path)
 	}
 
-	font, err := renderer.LoadBitmapFontBytes(util.LoadResourceBytes(asdexFontPath))
+	font, err := renderer.LoadBitmapFontBytes(util.LoadResourceBytes(path))
 	if err != nil {
-		return fontCache{}, fmt.Errorf("load ASDE-X font: %w", err)
+		return fontCache{}, fmt.Errorf("load %s font: %w", label, err)
 	}
 	return newFontCache(font), nil
 }

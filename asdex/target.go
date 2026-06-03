@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	stdmath "math"
 	"strings"
+	"time"
 
 	redsmath "github.com/juliusplatzer/reds/math"
 	redsnet "github.com/juliusplatzer/reds/net"
@@ -51,8 +52,13 @@ type Target struct {
 
 	ShowDB bool
 
+	CoastListID  string
+	CoastUntil   time.Time
+	SuspendUntil time.Time
+
 	Suspended   bool
 	Coasting    bool
+	Dropped     bool
 	Highlighted bool
 }
 

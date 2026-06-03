@@ -19,10 +19,10 @@ import (
 )
 
 // rootMarkers are directories that, if present, identify the project root.
-// Mirrors the C++ check for "resources/videomaps" or "asdex/assets".
+// Mirrors the C++ check for "resources/videomaps" or "resources/bitmaps".
 var rootMarkers = []string{
 	filepath.Join("resources", "videomaps"),
-	filepath.Join("asdex", "assets"),
+	filepath.Join("resources", "bitmaps"),
 }
 
 var (

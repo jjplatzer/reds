@@ -40,13 +40,13 @@ type cursorFile struct {
 }
 
 var cursorFiles = []cursorFile{
-	{CursorScope, "asdex/assets/Asdex.cur.zst", "Asdex.cur"},
-	{CursorDcb, "asdex/assets/AsdexDcb.cur.zst", "AsdexDcb.cur"},
-	{CursorCaptured, "asdex/assets/AsdexCaptured.cur.zst", "AsdexCaptured.cur"},
-	{CursorSelect, "asdex/assets/AsdexSelect.cur.zst", "AsdexSelect.cur"},
-	{CursorMove, "asdex/assets/AsdexMove.cur.zst", "AsdexMove.cur"},
-	{CursorUpDown, "asdex/assets/AsdexUpDown.cur.zst", "AsdexUpDown.cur"},
-	{CursorLeftRight, "asdex/assets/AsdexLeftRight.cur.zst", "AsdexLeftRight.cur"},
+	{CursorScope, "resources/bitmaps/asdex/cursors/Asdex.cur.zst", "Asdex.cur"},
+	{CursorDcb, "resources/bitmaps/asdex/cursors/AsdexDcb.cur.zst", "AsdexDcb.cur"},
+	{CursorCaptured, "resources/bitmaps/asdex/cursors/AsdexCaptured.cur.zst", "AsdexCaptured.cur"},
+	{CursorSelect, "resources/bitmaps/asdex/cursors/AsdexSelect.cur.zst", "AsdexSelect.cur"},
+	{CursorMove, "resources/bitmaps/asdex/cursors/AsdexMove.cur.zst", "AsdexMove.cur"},
+	{CursorUpDown, "resources/bitmaps/asdex/cursors/AsdexUpDown.cur.zst", "AsdexUpDown.cur"},
+	{CursorLeftRight, "resources/bitmaps/asdex/cursors/AsdexLeftRight.cur.zst", "AsdexLeftRight.cur"},
 }
 
 type CursorSet struct {

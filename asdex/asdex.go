@@ -5,6 +5,7 @@ import (
 	stdmath "math"
 	"os"
 	"strings"
+	"time"
 
 	redsmath "github.com/juliusplatzer/reds/math"
 	redsnet "github.com/juliusplatzer/reds/net"
@@ -56,18 +57,21 @@ func windowZ(stackIndex int, localZ renderer.Z) renderer.Z {
 }
 
 type ASDEXPane struct {
-	airport  string
-	mode     Mode
-	videomap *VideoMap
-	targets  TargetStore
-	smes     *redsnet.SmesClient
-	fonts    fontCache
+	airport       string
+	mode          Mode
+	videomap      *VideoMap
+	targets       TargetStore
+	smes          *redsnet.SmesClient
+	fonts         fontCache
+	eramTextFonts fontCache
 
 	cursors    CursorSet
 	cursorMode CursorMode
 
 	datablockSettings DataBlockSettings
 	previewArea       PreviewArea
+	coastList         CoastList
+	showCoastList     bool
 
 	commandMode CommandMode
 
@@ -98,27 +102,35 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	if err != nil {
 		return nil, err
 	}
+	eramTextFonts, err := loadEramTextFontCache()
+	if err != nil {
+		return nil, err
+	}
 
 	preview := NewPreviewArea()
 	if err := preview.LoadDefaultStateFromAirportConfig(airport); err != nil {
 		fmt.Fprintf(os.Stderr, "reds: %v\n", err)
 	}
 	preview.SetSystemResponse("CRITICAL FAULT START")
+	coastList := NewCoastList()
 
 	client := redsnet.NewSmesClient(targetWebSocketURL())
 	client.SetAirport(airport)
 	client.Start()
 
 	return &ASDEXPane{
-		airport:  airport,
-		mode:     ModeDay,
-		videomap: vm,
-		targets:  NewTargetStore(),
-		smes:     client,
-		fonts:    fonts,
+		airport:       airport,
+		mode:          ModeDay,
+		videomap:      vm,
+		targets:       NewTargetStore(),
+		smes:          client,
+		fonts:         fonts,
+		eramTextFonts: eramTextFonts,
 
 		datablockSettings: DefaultDataBlockSettings(),
 		previewArea:       preview,
+		coastList:         coastList,
+		showCoastList:     true,
 	}, nil
 }
 
@@ -151,7 +163,11 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		)
 	}
 	p.updateHighlightedTarget(ctx, transforms)
-	p.consumeCommandClicks(ctx, transforms)
+	p.coastList.SetVisible(p.showCoastList)
+	p.coastList.SetEntries(p.buildCoastSuspendEntries(time.Now().UTC()))
+	if !p.consumeCoastListClicks(ctx) {
+		p.consumeCommandClicks(ctx, transforms)
+	}
 	p.applyCurrentCursor(ctx)
 
 	cb := zcb.At(windowZ(0, zVideoMap))
@@ -198,20 +214,38 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	)
 	dbCB.DisableScissor()
 
-	previewCB := zcb.At(windowZ(0, zPreviewArea))
-	previewCB.Viewport(x, y, w, h)
-	previewCB.Scissor(x, y, w, h)
-	transforms.LoadWindowViewingMatrices(previewCB)
+	listCB := zcb.At(windowZ(0, zPreviewArea))
+	listCB.Viewport(x, y, w, h)
+	listCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(listCB)
+
+	coastTextureID := p.fonts.textureForSize(ctx.Renderer, p.coastList.FontSize())
+	if coastTextureID != 0 {
+		td := renderer.GetTextDrawBuilder()
+		td.SetFont(p.fonts.font)
+		p.coastList.Render(td, p.fonts.font, ctx.PaneSize())
+		td.GenerateCommands(listCB, coastTextureID)
+		renderer.ReturnTextDrawBuilder(td)
+	}
+	p.coastList.RenderOverflowArrows(
+		listCB,
+		p.fonts.font,
+		p.eramTextFonts.font,
+		ctx.PaneSize(),
+		func(size int) renderer.TextureID {
+			return p.eramTextFonts.textureForSize(ctx.Renderer, size)
+		},
+	)
 
 	textureID := p.fonts.textureForSize(ctx.Renderer, p.previewArea.FontSize())
 	if textureID != 0 {
 		td := renderer.GetTextDrawBuilder()
 		td.SetFont(p.fonts.font)
 		p.previewArea.Render(td, p.fonts.font, ctx.PaneSize())
-		td.GenerateCommands(previewCB, textureID)
+		td.GenerateCommands(listCB, textureID)
 		renderer.ReturnTextDrawBuilder(td)
 	}
-	previewCB.DisableScissor()
+	listCB.DisableScissor()
 }
 
 func (p *ASDEXPane) ensureCursorsLoaded(ctx *panes.Context) {
@@ -238,6 +272,12 @@ func (p *ASDEXPane) applyCurrentCursor(ctx *panes.Context) {
 func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 	if ctx != nil && ctx.Mouse != nil && ctx.Mouse.IsDown(platform.MouseButtonRight) {
 		return CursorModeHidden
+	}
+	if p != nil && p.showCoastList && ctx != nil && ctx.Mouse != nil {
+		hit := p.coastList.HitTest(ctx.Mouse.Pos, p.fonts.font, p.eramTextFonts.font, ctx.PaneSize())
+		if hit.Kind == CoastListHitEntry && hit.Status == CoastListEntrySuspended {
+			return CursorModeSelect
+		}
 	}
 	return CursorModeScope
 }
@@ -309,6 +349,92 @@ func (p *ASDEXPane) highlightedTarget() *Target {
 		return target
 	}
 	return p.targets.TargetByID(p.highlightedTargetID)
+}
+
+func (p *ASDEXPane) buildCoastSuspendEntries(now time.Time) []CoastListEntry {
+	if p == nil {
+		return nil
+	}
+
+	var entries []CoastListEntry
+	for _, target := range p.targets.All() {
+		if target == nil {
+			continue
+		}
+
+		entry := CoastListEntry{
+			TargetID: target.ID,
+			TrackID:  coastListTrackID(target),
+			Callsign: target.Callsign,
+			Beacon:   target.Beacon,
+		}
+
+		switch {
+		case target.Dropped:
+			entry.Status = CoastListEntryDropped
+			entry.TimeoutSeconds = targetTimeoutSeconds(target.CoastUntil, now)
+		case target.Coasting:
+			entry.Status = CoastListEntryCoasting
+			entry.TimeoutSeconds = targetTimeoutSeconds(target.CoastUntil, now)
+		case target.Suspended:
+			entry.Status = CoastListEntrySuspended
+			entry.TimeoutSeconds = targetTimeoutSeconds(target.SuspendUntil, now)
+			entry.Selected = target.Highlighted
+		default:
+			continue
+		}
+
+		entries = append(entries, entry)
+	}
+	return entries
+}
+
+func (p *ASDEXPane) consumeCoastListClicks(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || ctx.Mouse == nil || !p.showCoastList {
+		return false
+	}
+	if !ctx.Mouse.WasReleased(platform.MouseButtonLeft) {
+		return false
+	}
+
+	hit := p.coastList.HitTest(ctx.Mouse.Pos, p.fonts.font, p.eramTextFonts.font, ctx.PaneSize())
+	if !hit.Hit {
+		return false
+	}
+
+	switch hit.Kind {
+	case CoastListHitHeader:
+		p.coastList.ToggleExpanded()
+	case CoastListHitUpArrow:
+		p.coastList.PageUp()
+	case CoastListHitDownArrow:
+		p.coastList.PageDown(p.fonts.font, ctx.PaneSize())
+	case CoastListHitEntry:
+		// List slew precedence is added with retained coast/drop state.
+	}
+	return true
+}
+
+func coastListTrackID(target *Target) string {
+	if target == nil {
+		return ""
+	}
+	if id := strings.TrimSpace(target.CoastListID); id != "" {
+		return id
+	}
+
+	id := strings.TrimSpace(target.ID)
+	if separator := strings.LastIndexByte(id, ':'); separator != -1 {
+		id = id[separator+1:]
+	}
+	return id
+}
+
+func targetTimeoutSeconds(until, now time.Time) float64 {
+	if until.IsZero() {
+		return 0
+	}
+	return until.Sub(now).Seconds()
 }
 
 func targetWebSocketURL() string {
