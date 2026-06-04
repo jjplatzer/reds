@@ -87,7 +87,8 @@ type ASDEXPane struct {
 	commandMode      CommandMode
 	datablockEdit    *DatablockEditCommand
 	editingTargetID  string
-	initControlEntry *InitControlEntryCommand
+	initControlEntry *CoastListIDEntryCommand
+	termControlEntry *CoastListIDEntryCommand
 
 	rightClickStart     redsmath.Vec2
 	rightClickCandidate bool
@@ -449,7 +450,9 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 	}
 	if p != nil && p.showCoastList && ctx != nil && ctx.Mouse != nil {
 		hit := p.coastList.HitTest(ctx.Mouse.Pos, p.fonts.font, p.eramTextFonts.font, ctx.PaneSize())
-		if hit.Kind == CoastListHitEntry && hit.Status == CoastListEntrySuspended {
+		if hit.Kind == CoastListHitEntry &&
+			(hit.Status == CoastListEntrySuspended ||
+				p.commandMode == CommandModeTerminateControl) {
 			return CursorModeSelect
 		}
 	}
@@ -535,6 +538,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	if p.initControlEntry != nil {
 		return p.initControlEntry.DisplayLines()
 	}
+	if p.termControlEntry != nil {
+		return p.termControlEntry.DisplayLines()
+	}
 	if p.commandMode == CommandModeTrackSuspend {
 		return []string{"TRK SUSP"}
 	}
@@ -551,6 +557,9 @@ func (p *ASDEXPane) activeCommandCursor() (line int, column int, ok bool) {
 	if p.initControlEntry != nil {
 		return p.initControlEntry.CursorLine(), p.initControlEntry.CursorColumn(), true
 	}
+	if p.termControlEntry != nil {
+		return p.termControlEntry.CursorLine(), p.termControlEntry.CursorColumn(), true
+	}
 	return 0, 0, false
 }
 
@@ -566,6 +575,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.datablockEdit = nil
 	p.editingTargetID = ""
 	p.initControlEntry = nil
+	p.termControlEntry = nil
 	p.previewArea.SetSystemResponse("")
 }
 
@@ -578,6 +588,9 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.initControlEntry != nil {
 		return p.handleInitControlKeyboard(ctx)
+	}
+	if p.termControlEntry != nil {
+		return p.handleTerminateControlKeyboard(ctx)
 	}
 	if p.commandMode != CommandModeNone {
 		keyboard := ctx.Keyboard
@@ -648,6 +661,43 @@ func (p *ASDEXPane) handleInitControlKeyboard(ctx *panes.Context) bool {
 		return true
 	case keyboard.WasPressed(platform.KeyEnter), keyboard.WasPressed(platform.KeyKeypadEnter):
 		p.submitInitControlEntry()
+		return true
+	case keyboard.WasPressed(platform.KeyLeft):
+		entry.MoveLeft()
+		return true
+	case keyboard.WasPressed(platform.KeyRight):
+		entry.MoveRight()
+		return true
+	case keyboard.WasPressed(platform.KeyBackspace):
+		entry.Backspace()
+		return true
+	case keyboard.WasPressed(platform.KeyDelete):
+		entry.DeleteForward()
+		return true
+	}
+
+	handled := false
+	for _, r := range keyboard.Text {
+		entry.Insert(r)
+		p.previewArea.SetSystemResponse("")
+		handled = true
+	}
+	return handled
+}
+
+func (p *ASDEXPane) handleTerminateControlKeyboard(ctx *panes.Context) bool {
+	if p == nil || p.termControlEntry == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	keyboard := ctx.Keyboard
+	entry := p.termControlEntry
+	switch {
+	case keyboard.WasPressed(platform.KeyEscape):
+		p.cancelActiveCommand()
+		return true
+	case keyboard.WasPressed(platform.KeyEnter), keyboard.WasPressed(platform.KeyKeypadEnter):
+		p.submitTerminateControlEntry()
 		return true
 	case keyboard.WasPressed(platform.KeyLeft):
 		entry.MoveLeft()
@@ -743,11 +793,14 @@ func (p *ASDEXPane) buildCoastSuspendEntries(now time.Time) []CoastListEntry {
 		case target.Suspended:
 			entry.Status = CoastListEntrySuspended
 			entry.TimeoutSeconds = targetTimeoutSeconds(target.SuspendUntil, now)
-			entry.Selected = target.Highlighted || target.ID == p.hoveredCoastListTarget
+			entry.Selected = target.Highlighted
 		default:
 			continue
 		}
 
+		if target.ID == p.hoveredCoastListTarget {
+			entry.Selected = true
+		}
 		entries = append(entries, entry)
 	}
 	return entries
@@ -763,7 +816,9 @@ func (p *ASDEXPane) updateCoastListHover(ctx *panes.Context) {
 	}
 
 	hit := p.coastList.HitTest(ctx.Mouse.Pos, p.fonts.font, p.eramTextFonts.font, ctx.PaneSize())
-	if hit.Kind == CoastListHitEntry && hit.Status == CoastListEntrySuspended {
+	if hit.Kind == CoastListHitEntry &&
+		(hit.Status == CoastListEntrySuspended ||
+			p.commandMode == CommandModeTerminateControl) {
 		p.hoveredCoastListTarget = hit.TargetID
 	}
 }
@@ -789,12 +844,31 @@ func (p *ASDEXPane) consumeCoastListClicks(ctx *panes.Context) bool {
 	case CoastListHitDownArrow:
 		p.coastList.PageDown(p.fonts.font, ctx.PaneSize())
 	case CoastListHitEntry:
-		if hit.Status != CoastListEntrySuspended {
+		target := p.targets.TargetByID(hit.TargetID)
+		if target == nil {
 			return true
 		}
 
-		target := p.targets.TargetByID(hit.TargetID)
-		if target == nil {
+		if p.commandMode == CommandModeTerminateControl {
+			status, err, handled := p.tryExecuteUserCommand(
+				ctx,
+				"",
+				target,
+				CommandClickLeft,
+				ctx.Mouse.Pos,
+				radar.ScopeTransformations{},
+			)
+			if err != nil {
+				p.previewArea.SetSystemResponse(err.Error())
+				return true
+			}
+			if handled {
+				p.applyCommandStatus(status)
+			}
+			return true
+		}
+
+		if hit.Status != CoastListEntrySuspended {
 			return true
 		}
 

@@ -33,6 +33,22 @@ func registerOpsCommands() {
 
 	registerCommand(
 		CommandModeNone,
+		"[TERM CNTL]",
+		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
+			return ap.cmdTerminateControl(ctx)
+		},
+	)
+
+	registerCommand(
+		CommandModeTerminateControl,
+		"[SLEW]",
+		func(ap *ASDEXPane, ctx *panes.Context, target *Target) CommandStatus {
+			return ap.cmdTerminateControlSlew(ctx, target)
+		},
+	)
+
+	registerCommand(
+		CommandModeNone,
 		"[TRK SUSP]",
 		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
 			return ap.cmdTrackSuspend(ctx)
@@ -57,6 +73,7 @@ func (ap *ASDEXPane) cmdTrackSuspend(_ *panes.Context) CommandStatus {
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.initControlEntry = nil
+	ap.termControlEntry = nil
 	ap.clearHighlightedTarget()
 	ap.previewArea.SetSystemResponse("")
 
@@ -113,33 +130,40 @@ func commandOutputClearAll(text string) CommandStatus {
 	}
 }
 
-type InitControlEntryCommand struct {
+type CoastListIDEntryCommand struct {
+	title  string
 	value  string
 	cursor int
 }
 
-func (command *InitControlEntryCommand) DisplayLines() []string {
+func NewCoastListIDEntryCommand(title string) *CoastListIDEntryCommand {
+	return &CoastListIDEntryCommand{
+		title: strings.ToUpper(strings.TrimSpace(title)),
+	}
+}
+
+func (command *CoastListIDEntryCommand) DisplayLines() []string {
 	if command == nil {
 		return nil
 	}
 	return []string{
-		"INIT CNTL",
+		command.title,
 		command.value,
 	}
 }
 
-func (command *InitControlEntryCommand) CursorLine() int {
+func (command *CoastListIDEntryCommand) CursorLine() int {
 	return 2
 }
 
-func (command *InitControlEntryCommand) CursorColumn() int {
+func (command *CoastListIDEntryCommand) CursorColumn() int {
 	if command == nil {
 		return 0
 	}
 	return command.cursor
 }
 
-func (command *InitControlEntryCommand) Insert(r rune) {
+func (command *CoastListIDEntryCommand) Insert(r rune) {
 	if command == nil {
 		return
 	}
@@ -160,7 +184,7 @@ func (command *InitControlEntryCommand) Insert(r rune) {
 	command.cursor++
 }
 
-func (command *InitControlEntryCommand) Backspace() {
+func (command *CoastListIDEntryCommand) Backspace() {
 	if command == nil || command.cursor <= 0 {
 		return
 	}
@@ -178,7 +202,7 @@ func (command *InitControlEntryCommand) Backspace() {
 	command.value = string(value)
 }
 
-func (command *InitControlEntryCommand) DeleteForward() {
+func (command *CoastListIDEntryCommand) DeleteForward() {
 	if command == nil {
 		return
 	}
@@ -193,7 +217,7 @@ func (command *InitControlEntryCommand) DeleteForward() {
 	command.value = string(value)
 }
 
-func (command *InitControlEntryCommand) MoveLeft() {
+func (command *CoastListIDEntryCommand) MoveLeft() {
 	if command == nil {
 		return
 	}
@@ -202,7 +226,7 @@ func (command *InitControlEntryCommand) MoveLeft() {
 	}
 }
 
-func (command *InitControlEntryCommand) MoveRight() {
+func (command *CoastListIDEntryCommand) MoveRight() {
 	if command == nil {
 		return
 	}
@@ -212,7 +236,7 @@ func (command *InitControlEntryCommand) MoveRight() {
 	}
 }
 
-func (command *InitControlEntryCommand) Value() string {
+func (command *CoastListIDEntryCommand) Value() string {
 	if command == nil {
 		return ""
 	}
@@ -225,7 +249,8 @@ func (ap *ASDEXPane) cmdInitControl(_ *panes.Context) CommandStatus {
 	}
 
 	ap.commandMode = CommandModeInitiateControl
-	ap.initControlEntry = &InitControlEntryCommand{}
+	ap.initControlEntry = NewCoastListIDEntryCommand("INIT CNTL")
+	ap.termControlEntry = nil
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.clearHighlightedTarget()
@@ -330,6 +355,83 @@ func (ap *ASDEXPane) finishInitControl(response string) {
 
 	ap.commandMode = CommandModeNone
 	ap.initControlEntry = nil
+	ap.previewArea.SetSystemResponse(response)
+	ap.clearHighlightedTarget()
+}
+
+func (ap *ASDEXPane) cmdTerminateControl(_ *panes.Context) CommandStatus {
+	if ap == nil {
+		return CommandStatus{}
+	}
+
+	ap.commandMode = CommandModeTerminateControl
+	ap.termControlEntry = NewCoastListIDEntryCommand("TERM CNTL")
+	ap.initControlEntry = nil
+	ap.datablockEdit = nil
+	ap.editingTargetID = ""
+	ap.clearHighlightedTarget()
+	ap.previewArea.SetSystemResponse("")
+
+	return CommandStatus{Clear: ClearNone}
+}
+
+func (ap *ASDEXPane) cmdTerminateControlSlew(
+	_ *panes.Context,
+	target *Target,
+) CommandStatus {
+	if ap == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+
+	ap.termControlEntry = nil
+	if target == nil {
+		return commandOutputClearAll("NO SLEW")
+	}
+
+	if target.Live &&
+		classifyTarget(target) == targetClassUnknown &&
+		!target.Suspended &&
+		!target.Coasting &&
+		!target.Dropped {
+		return commandOutputClearAll("NO SLEW")
+	}
+
+	ap.targets.TerminateTrack(target.ID)
+	return CommandStatus{
+		Clear:     ClearAll,
+		Output:    "",
+		HasOutput: true,
+	}
+}
+
+func (ap *ASDEXPane) submitTerminateControlEntry() {
+	if ap == nil || ap.termControlEntry == nil {
+		return
+	}
+
+	entry := ap.termControlEntry.Value()
+	if entry == "" {
+		ap.finishTerminateControl("INVALID ENTRY")
+		return
+	}
+
+	target := ap.targets.TargetByCoastListID(entry)
+	if target == nil {
+		ap.finishTerminateControl("NO STORED DATA")
+		return
+	}
+
+	ap.targets.TerminateTrack(target.ID)
+	ap.finishTerminateControl("")
+}
+
+func (ap *ASDEXPane) finishTerminateControl(response string) {
+	if ap == nil {
+		return
+	}
+
+	ap.commandMode = CommandModeNone
+	ap.termControlEntry = nil
 	ap.previewArea.SetSystemResponse(response)
 	ap.clearHighlightedTarget()
 }

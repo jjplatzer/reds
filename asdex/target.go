@@ -88,6 +88,7 @@ type TargetStore struct {
 	history            map[string][]TargetHistoryPoint
 	overrides          map[string]DatablockFieldOverride
 	manualAssociations map[string]ManualAssociationOverride
+	terminatedTracks   map[string]bool
 	highlightedID      string
 	hoverRevision      uint64
 }
@@ -98,6 +99,7 @@ func NewTargetStore() TargetStore {
 		history:            make(map[string][]TargetHistoryPoint),
 		overrides:          make(map[string]DatablockFieldOverride),
 		manualAssociations: make(map[string]ManualAssociationOverride),
+		terminatedTracks:   make(map[string]bool),
 	}
 }
 
@@ -140,6 +142,7 @@ func (s *TargetStore) SetDatablockOverride(targetID string, override DatablockFi
 	if target := s.TargetByID(targetID); target != nil {
 		applyDatablockOverride(target, override)
 		s.applyManualAssociations(target)
+		s.applyTerminationOverride(target)
 	}
 }
 
@@ -207,6 +210,28 @@ func applyManualAssociation(target *Target, override ManualAssociationOverride) 
 	}
 }
 
+func (s *TargetStore) applyTerminationOverride(target *Target) {
+	if s == nil || target == nil || s.terminatedTracks == nil || !s.terminatedTracks[target.ID] {
+		return
+	}
+
+	target.Callsign = ""
+	target.Beacon = ""
+	target.CWT = ""
+	target.Fix = ""
+	target.TargetType = nil
+	target.Scratchpad1 = ""
+	target.Scratchpad2 = ""
+
+	target.ShowDB = false
+	target.Suspended = false
+	target.Coasting = false
+	target.Dropped = false
+	target.CoastListID = ""
+	target.CoastUntil = time.Time{}
+	target.SuspendUntil = time.Time{}
+}
+
 func (s *TargetStore) Upsert(t Target) {
 	if s == nil || t.ID == "" {
 		return
@@ -219,6 +244,7 @@ func (s *TargetStore) Upsert(t Target) {
 	}
 	s.applyDatablockOverrides(&t)
 	s.applyManualAssociations(&t)
+	s.applyTerminationOverride(&t)
 
 	if existing := s.targets[t.ID]; existing != nil {
 		if existing.PosFeet != t.PosFeet {
@@ -252,6 +278,7 @@ func (s *TargetStore) Remove(id string) {
 	delete(s.history, id)
 	delete(s.overrides, id)
 	delete(s.manualAssociations, id)
+	delete(s.terminatedTracks, id)
 	if s.highlightedID == id {
 		s.highlightedID = ""
 	}
@@ -296,6 +323,7 @@ func (s *TargetStore) Clear() {
 	clear(s.history)
 	clear(s.overrides)
 	clear(s.manualAssociations)
+	clear(s.terminatedTracks)
 	s.order = s.order[:0]
 	s.highlightedID = ""
 }
@@ -436,6 +464,23 @@ func (s *TargetStore) CoastDropTargetByCoastListID(id string) *Target {
 	return nil
 }
 
+func (s *TargetStore) TargetByCoastListID(id string) *Target {
+	id = strings.ToUpper(strings.TrimSpace(id))
+	if s == nil || id == "" {
+		return nil
+	}
+
+	for _, target := range s.targets {
+		if target == nil {
+			continue
+		}
+		if strings.EqualFold(strings.TrimSpace(target.CoastListID), id) {
+			return target
+		}
+	}
+	return nil
+}
+
 func (s *TargetStore) SuspendTarget(targetID string, coastListID string, until time.Time) {
 	target := s.TargetByID(targetID)
 	if target == nil {
@@ -488,6 +533,7 @@ func (s *TargetStore) AssociateCoastDropTrackWithUnknown(
 	if s.manualAssociations == nil {
 		s.manualAssociations = make(map[string]ManualAssociationOverride)
 	}
+	delete(s.terminatedTracks, dest.ID)
 	s.manualAssociations[dest.ID] = override
 	applyManualAssociation(dest, override)
 
@@ -512,6 +558,49 @@ func (s *TargetStore) AssociateCoastDropTrackWithUnknown(
 
 	s.hoverRevision++
 	return true
+}
+
+func (s *TargetStore) TerminateTrack(targetID string) {
+	target := s.TargetByID(targetID)
+	if target == nil {
+		return
+	}
+
+	if target.Coasting || target.Dropped {
+		s.Remove(targetID)
+		return
+	}
+
+	if target.Suspended {
+		if !target.Live {
+			s.Remove(targetID)
+			return
+		}
+		s.returnLiveTrackToUnknown(target)
+		return
+	}
+
+	if target.Live && targetHasDatablock(classifyTarget(target)) {
+		s.returnLiveTrackToUnknown(target)
+		return
+	}
+}
+
+func (s *TargetStore) returnLiveTrackToUnknown(target *Target) {
+	if s == nil || target == nil {
+		return
+	}
+
+	delete(s.overrides, target.ID)
+	delete(s.manualAssociations, target.ID)
+	if s.terminatedTracks == nil {
+		s.terminatedTracks = make(map[string]bool)
+	}
+	s.terminatedTracks[target.ID] = true
+	s.applyTerminationOverride(target)
+
+	target.Live = true
+	s.hoverRevision++
 }
 
 func (s *TargetStore) UnsuspendTarget(targetID string) {

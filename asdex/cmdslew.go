@@ -71,6 +71,7 @@ func (ap *ASDEXPane) cmdRSlew(
 	ap.editingTargetID = target.ID
 	ap.datablockEdit = &edit
 	ap.initControlEntry = nil
+	ap.termControlEntry = nil
 	ap.previewArea.SetSystemResponse("")
 	ap.clearHighlightedTarget()
 

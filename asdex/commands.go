@@ -19,6 +19,7 @@ const (
 	CommandModeEditDatablockFields
 	CommandModeTrackSuspend
 	CommandModeInitiateControl
+	CommandModeTerminateControl
 )
 
 type CommandClear int
@@ -499,6 +500,7 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 	case ClearAll:
 		ap.commandMode = CommandModeNone
 		ap.initControlEntry = nil
+		ap.termControlEntry = nil
 	case ClearInput:
 		// Later command-entry text can be cleared without leaving the mode.
 	case ClearNone:
@@ -522,6 +524,8 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 		command = "[INIT CNTL]"
 	case ctx.Keyboard.WasPressed(platform.KeyF4):
 		command = "[TRK SUSP]"
+	case ctx.Keyboard.WasPressed(platform.KeyF5):
+		command = "[TERM CNTL]"
 	default:
 		return false
 	}
@@ -586,6 +590,10 @@ func (ap *ASDEXPane) consumeCommandClicks(
 				return true
 			case CommandModeInitiateControl:
 				ap.initControlEntry = nil
+				ap.applyCommandStatus(commandOutputClearAll("NO SLEW"))
+				return true
+			case CommandModeTerminateControl:
+				ap.termControlEntry = nil
 				ap.applyCommandStatus(commandOutputClearAll("NO SLEW"))
 				return true
 			}
