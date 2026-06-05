@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	menuFontPath     = "fonts/SegoeUI-Regular.ttf.zst"
-	menuBoldFontPath = "fonts/SegoeUI-Bold.ttf.zst"
+	menuFontPath     = "fonts/B612-Regular.ttf.zst"
+	menuBoldFontPath = "fonts/B612-Bold.ttf.zst"
 )
 
 // fontPinner keeps decompressed font bytes pinned so the GC can't move them
