@@ -5,6 +5,7 @@ import (
 	"fmt"
 	stdmath "math"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 	"unicode"
@@ -99,6 +100,7 @@ type ASDEXPane struct {
 	previewReposition   *PreviewRepositionCommand
 	coastListReposition *CoastListRepositionCommand
 	mapReposition       *MapRepositionCommand
+	mapRotate           *MapRotateCommand
 
 	rightClickStart     redsmath.Vec2
 	rightClickCandidate bool
@@ -540,6 +542,9 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 	if p != nil && p.mapReposition != nil {
 		return CursorModeHidden
 	}
+	if p != nil && p.mapRotate != nil {
+		return CursorModeHidden
+	}
 	if p != nil && p.listRepositionActive() {
 		return CursorModeMove
 	}
@@ -651,6 +656,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	if p.mapReposition != nil {
 		return p.mapReposition.DisplayLines()
 	}
+	if p.mapRotate != nil {
+		return p.mapRotate.DisplayLines()
+	}
 	if p.commandMode == CommandModeTrackSuspend {
 		return []string{"TRK SUSP"}
 	}
@@ -676,6 +684,9 @@ func (p *ASDEXPane) activeCommandCursor() (line int, column int, ok bool) {
 	if p.multiFunction != nil {
 		return p.multiFunction.CursorLine(), p.multiFunction.CursorColumn(), true
 	}
+	if p.mapRotate != nil {
+		return p.mapRotate.CursorLine(), p.mapRotate.CursorColumn(), true
+	}
 	if !p.commandEntry.Empty() {
 		return p.commandEntry.CursorLine(), p.commandEntry.CursorColumn(), true
 	}
@@ -693,6 +704,9 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	if p.mapReposition != nil && p.mapReposition.initialized {
 		p.center = p.mapReposition.originalCenter
 	}
+	if p.mapRotate != nil {
+		p.rotation = p.mapRotate.originalRotation
+	}
 	p.commandMode = CommandModeNone
 	p.datablockEdit = nil
 	p.editingTargetID = ""
@@ -702,6 +716,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.previewReposition = nil
 	p.coastListReposition = nil
 	p.mapReposition = nil
+	p.mapRotate = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 }
@@ -721,6 +736,9 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.multiFunction != nil {
 		return p.handleMultiFunctionKeyboard(ctx)
+	}
+	if p.mapRotate != nil {
+		return p.handleMapRotateKeyboard(ctx)
 	}
 	if p.commandMode != CommandModeNone {
 		keyboard := ctx.Keyboard
@@ -928,6 +946,63 @@ func (p *ASDEXPane) startMultiCoastListReposition() {
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) handleMapRotateKeyboard(ctx *panes.Context) bool {
+	if p == nil || p.mapRotate == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	keyboard := ctx.Keyboard
+	command := p.mapRotate
+	switch {
+	case keyboard.WasPressed(platform.KeyEscape):
+		p.cancelActiveCommand()
+		return true
+	case keyboard.WasPressed(platform.KeyEnter), keyboard.WasPressed(platform.KeyKeypadEnter):
+		p.submitMapRotate()
+		return true
+	case keyboard.WasPressed(platform.KeyLeft):
+		command.MoveLeft()
+		return true
+	case keyboard.WasPressed(platform.KeyRight):
+		command.MoveRight()
+		return true
+	case keyboard.WasPressed(platform.KeyBackspace):
+		command.Backspace()
+		return true
+	case keyboard.WasPressed(platform.KeyDelete):
+		command.DeleteForward()
+		return true
+	}
+
+	handled := false
+	for _, r := range keyboard.Text {
+		command.Insert(r)
+		p.previewArea.SetSystemResponse("")
+		handled = true
+	}
+	return handled
+}
+
+func (p *ASDEXPane) submitMapRotate() {
+	if p == nil || p.mapRotate == nil {
+		return
+	}
+
+	value, err := strconv.Atoi(p.mapRotate.Value())
+	if err != nil || value < 0 || value > 359 {
+		p.mapRotate = nil
+		p.applyCommandStatus(commandOutputClearAll("INVALID ENTRY"))
+		return
+	}
+
+	p.rotation = normalizeRotation(float32(value))
+	p.applyCommandStatus(CommandStatus{
+		Clear:     ClearAll,
+		Output:    "",
+		HasOutput: true,
+	})
 }
 
 func (p *ASDEXPane) handleNormalCommandKeyboard(ctx *panes.Context) bool {
@@ -1483,6 +1558,14 @@ func (p *ASDEXPane) consumeMouseEvents(
 		changed = true
 	}
 
+	if (mouse.Wheel.X != 0 || mouse.Wheel.Y != 0) &&
+		ctx.Keyboard != nil &&
+		ctx.Keyboard.IsDown(platform.KeyShift) &&
+		paneLocal.Contains(mouse.Pos) {
+		p.rotateFromWheel(mouse.Wheel)
+		return true
+	}
+
 	if mouse.Wheel.Y != 0 && paneLocal.Contains(mouse.Pos) {
 		oldRange := p.rangeFeet
 		p.rangeFeet = p.zoomedRange(mouse.Wheel.Y)
@@ -1499,6 +1582,46 @@ func (p *ASDEXPane) consumeMouseEvents(
 	}
 
 	return changed
+}
+
+func (p *ASDEXPane) rotateFromWheel(wheel redsmath.Vec2) {
+	if p == nil {
+		return
+	}
+
+	var delta float32
+	switch {
+	case wheel.Y > 0:
+		delta = 1
+	case wheel.Y < 0:
+		delta = -1
+	case wheel.X > 0:
+		delta = 1
+	case wheel.X < 0:
+		delta = -1
+	}
+	if delta == 0 {
+		return
+	}
+
+	p.rotateByDegrees(delta)
+}
+
+func (p *ASDEXPane) rotateByDegrees(delta float32) {
+	if p == nil {
+		return
+	}
+	p.rotation = normalizeRotation(p.rotation + delta)
+}
+
+func normalizeRotation(value float32) float32 {
+	for value >= 360 {
+		value -= 360
+	}
+	for value < 0 {
+		value += 360
+	}
+	return value
 }
 
 func (p *ASDEXPane) zoomedRange(wheel float32) float32 {

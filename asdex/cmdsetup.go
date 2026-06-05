@@ -112,6 +112,112 @@ func (command *MapRepositionCommand) DisplayLines() []string {
 	return []string{"MAP RPOS"}
 }
 
+type MapRotateCommand struct {
+	value            string
+	cursor           int
+	originalRotation float32
+}
+
+func NewMapRotateCommand(rotation float32) *MapRotateCommand {
+	return &MapRotateCommand{
+		originalRotation: rotation,
+	}
+}
+
+func (command *MapRotateCommand) DisplayLines() []string {
+	if command == nil {
+		return nil
+	}
+	return []string{"ROTATE", command.value}
+}
+
+func (command *MapRotateCommand) CursorLine() int {
+	return 2
+}
+
+func (command *MapRotateCommand) CursorColumn() int {
+	if command == nil {
+		return 0
+	}
+	return command.cursor
+}
+
+func (command *MapRotateCommand) Insert(r rune) {
+	if command == nil || !unicode.IsDigit(r) {
+		return
+	}
+
+	value := []rune(command.value)
+	if len(value) >= 3 {
+		return
+	}
+	command.cursor = clampInt(command.cursor, 0, len(value))
+
+	value = append(value[:command.cursor], append([]rune{r}, value[command.cursor:]...)...)
+	command.value = string(value)
+	command.cursor++
+}
+
+func (command *MapRotateCommand) Backspace() {
+	if command == nil || command.cursor <= 0 {
+		return
+	}
+
+	value := []rune(command.value)
+	if command.cursor > len(value) {
+		command.cursor = len(value)
+	}
+	if command.cursor <= 0 {
+		return
+	}
+
+	command.cursor--
+	value = append(value[:command.cursor], value[command.cursor+1:]...)
+	command.value = string(value)
+}
+
+func (command *MapRotateCommand) DeleteForward() {
+	if command == nil {
+		return
+	}
+
+	value := []rune(command.value)
+	command.cursor = clampInt(command.cursor, 0, len(value))
+	if command.cursor >= len(value) {
+		return
+	}
+
+	value = append(value[:command.cursor], value[command.cursor+1:]...)
+	command.value = string(value)
+}
+
+func (command *MapRotateCommand) MoveLeft() {
+	if command == nil {
+		return
+	}
+	if command.cursor > 0 {
+		command.cursor--
+	}
+}
+
+func (command *MapRotateCommand) MoveRight() {
+	if command == nil {
+		return
+	}
+
+	value := []rune(command.value)
+	if command.cursor < len(value) {
+		command.cursor++
+	}
+}
+
+func (command *MapRotateCommand) Value() string {
+	if command == nil {
+		return ""
+	}
+	return strings.TrimSpace(command.value)
+}
+
 func registerSetupCommands() {
 	registerCommand(
 		CommandModeNone,
@@ -134,6 +240,14 @@ func registerSetupCommands() {
 		"[MAP RPOS]",
 		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
 			return ap.cmdMapReposition(ctx)
+		},
+	)
+
+	registerCommand(
+		CommandModeNone,
+		"[MAP ROTATE]",
+		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
+			return ap.cmdMapRotate(ctx)
 		},
 	)
 
@@ -223,6 +337,7 @@ func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
+	ap.mapRotate = nil
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.initControlEntry = nil
@@ -244,6 +359,7 @@ func (ap *ASDEXPane) cmdMapReposition(ctx *panes.Context) CommandStatus {
 	ap.multiFunction = nil
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
+	ap.mapRotate = nil
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.initControlEntry = nil
@@ -252,6 +368,28 @@ func (ap *ASDEXPane) cmdMapReposition(ctx *panes.Context) CommandStatus {
 	ap.previewArea.SetSystemResponse("")
 	ap.clearHighlightedTarget()
 	ap.centerMapRepositionCursor(ctx)
+
+	return CommandStatus{Clear: ClearNone}
+}
+
+func (ap *ASDEXPane) cmdMapRotate(_ *panes.Context) CommandStatus {
+	if ap == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+
+	ap.commandMode = CommandModeMapRotate
+	ap.mapRotate = NewMapRotateCommand(ap.rotation)
+	ap.mapReposition = nil
+	ap.multiFunction = nil
+	ap.previewReposition = nil
+	ap.coastListReposition = nil
+	ap.datablockEdit = nil
+	ap.editingTargetID = ""
+	ap.initControlEntry = nil
+	ap.termControlEntry = nil
+	ap.commandEntry.Clear()
+	ap.previewArea.SetSystemResponse("")
+	ap.clearHighlightedTarget()
 
 	return CommandStatus{Clear: ClearNone}
 }

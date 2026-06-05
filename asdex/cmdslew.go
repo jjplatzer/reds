@@ -84,6 +84,7 @@ func (ap *ASDEXPane) cmdRSlew(
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
+	ap.mapRotate = nil
 	ap.previewArea.SetSystemResponse("")
 	ap.clearHighlightedTarget()
 

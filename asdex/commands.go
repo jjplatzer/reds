@@ -26,6 +26,7 @@ const (
 	CommandModePreviewReposition
 	CommandModeCoastListReposition
 	CommandModeMapReposition
+	CommandModeMapRotate
 )
 
 type CommandClear int
@@ -966,6 +967,7 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 		ap.previewReposition = nil
 		ap.coastListReposition = nil
 		ap.mapReposition = nil
+		ap.mapRotate = nil
 		ap.commandEntry.Clear()
 	case ClearInput:
 		ap.commandEntry.Clear()
