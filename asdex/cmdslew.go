@@ -80,6 +80,9 @@ func (ap *ASDEXPane) cmdRSlew(
 	ap.datablockEdit = &edit
 	ap.initControlEntry = nil
 	ap.termControlEntry = nil
+	ap.multiFunction = nil
+	ap.previewReposition = nil
+	ap.coastListReposition = nil
 	ap.previewArea.SetSystemResponse("")
 	ap.clearHighlightedTarget()
 
