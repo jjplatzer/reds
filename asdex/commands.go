@@ -42,13 +42,31 @@ const maxManualTagAircraftIDLength = 7
 
 type AircraftID string
 
+type CommandTextEntryKind int
+
+const (
+	CommandTextEntryNone CommandTextEntryKind = iota
+	CommandTextEntryACID
+	CommandTextEntryLeaderDirection
+)
+
 type CommandTextEntry struct {
+	kind   CommandTextEntryKind
 	value  string
 	cursor int
 }
 
 func (entry *CommandTextEntry) Empty() bool {
-	return entry == nil || strings.TrimSpace(entry.value) == ""
+	return entry == nil ||
+		entry.kind == CommandTextEntryNone ||
+		strings.TrimSpace(entry.value) == ""
+}
+
+func (entry *CommandTextEntry) Kind() CommandTextEntryKind {
+	if entry == nil {
+		return CommandTextEntryNone
+	}
+	return entry.kind
 }
 
 func (entry *CommandTextEntry) Value() string {
@@ -59,14 +77,25 @@ func (entry *CommandTextEntry) Value() string {
 }
 
 func (entry *CommandTextEntry) DisplayLines() []string {
-	if entry == nil || entry.Empty() {
+	if entry == nil || entry.kind == CommandTextEntryNone {
 		return nil
 	}
-	return []string{entry.value}
+
+	switch entry.kind {
+	case CommandTextEntryACID:
+		return []string{"ACID", entry.value}
+	case CommandTextEntryLeaderDirection:
+		return []string{"LDR DIR", entry.value}
+	default:
+		return nil
+	}
 }
 
 func (entry *CommandTextEntry) CursorLine() int {
-	return 1
+	if entry == nil || entry.kind == CommandTextEntryNone {
+		return 0
+	}
+	return 2
 }
 
 func (entry *CommandTextEntry) CursorColumn() int {
@@ -82,6 +111,39 @@ func (entry *CommandTextEntry) Insert(r rune) {
 	}
 
 	r = unicode.ToUpper(r)
+
+	if entry.kind == CommandTextEntryNone {
+		if unicode.IsLetter(r) {
+			entry.StartACID(r)
+		}
+		return
+	}
+
+	switch entry.kind {
+	case CommandTextEntryACID:
+		entry.insertACIDRune(r)
+	case CommandTextEntryLeaderDirection:
+		// Reserved for leader-direction command input.
+	}
+}
+
+func (entry *CommandTextEntry) StartACID(r rune) {
+	if entry == nil {
+		return
+	}
+
+	entry.Clear()
+	r = unicode.ToUpper(r)
+	if !unicode.IsLetter(r) {
+		return
+	}
+
+	entry.kind = CommandTextEntryACID
+	entry.value = string(r)
+	entry.cursor = 1
+}
+
+func (entry *CommandTextEntry) insertACIDRune(r rune) {
 	if !unicode.IsLetter(r) && !unicode.IsDigit(r) {
 		return
 	}
@@ -112,6 +174,10 @@ func (entry *CommandTextEntry) Backspace() {
 
 	entry.cursor--
 	value = append(value[:entry.cursor], value[entry.cursor+1:]...)
+	if len(value) == 0 {
+		entry.Clear()
+		return
+	}
 	entry.value = string(value)
 }
 
@@ -127,6 +193,10 @@ func (entry *CommandTextEntry) DeleteForward() {
 	}
 
 	value = append(value[:entry.cursor], value[entry.cursor+1:]...)
+	if len(value) == 0 {
+		entry.Clear()
+		return
+	}
 	entry.value = string(value)
 }
 
@@ -153,6 +223,7 @@ func (entry *CommandTextEntry) Clear() {
 	if entry == nil {
 		return
 	}
+	entry.kind = CommandTextEntryNone
 	entry.value = ""
 	entry.cursor = 0
 }
@@ -285,6 +356,9 @@ func (acidMatcher) match(
 
 	runes := []rune(text)
 	if len(runes) > maxManualTagAircraftIDLength {
+		return nil, nil
+	}
+	if !unicode.IsLetter(runes[0]) {
 		return nil, nil
 	}
 	for _, r := range runes {
@@ -765,7 +839,9 @@ func (ap *ASDEXPane) consumeCommandClicks(
 	}
 
 	cmdText := ""
-	if ap.commandMode == CommandModeNone && clickKind == CommandClickLeft {
+	if ap.commandMode == CommandModeNone &&
+		clickKind == CommandClickLeft &&
+		ap.commandEntry.Kind() == CommandTextEntryACID {
 		cmdText = ap.commandEntry.Value()
 	}
 
