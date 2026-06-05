@@ -3,6 +3,7 @@ package asdex
 import (
 	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 	"sync"
 	"unicode"
@@ -40,11 +41,20 @@ type CommandStatus struct {
 
 const maxManualTagAircraftIDLength = 7
 
+const (
+	leaderLengthMin = 0
+	leaderLengthMax = 15
+)
+
 type AircraftID string
 
 type LeaderDirectionInput struct {
 	Digit     rune
 	Direction LeaderDirection
+}
+
+type LeaderLengthInput struct {
+	Value int
 }
 
 type CommandTextEntryKind int
@@ -53,6 +63,7 @@ const (
 	CommandTextEntryNone CommandTextEntryKind = iota
 	CommandTextEntryACID
 	CommandTextEntryLeaderDirection
+	CommandTextEntryLeaderLength
 )
 
 type CommandTextEntry struct {
@@ -62,9 +73,7 @@ type CommandTextEntry struct {
 }
 
 func (entry *CommandTextEntry) Empty() bool {
-	return entry == nil ||
-		entry.kind == CommandTextEntryNone ||
-		strings.TrimSpace(entry.value) == ""
+	return entry == nil || entry.kind == CommandTextEntryNone
 }
 
 func (entry *CommandTextEntry) Kind() CommandTextEntryKind {
@@ -91,6 +100,8 @@ func (entry *CommandTextEntry) DisplayLines() []string {
 		return []string{"ACID", entry.value}
 	case CommandTextEntryLeaderDirection:
 		return []string{"LDR DIR", entry.value}
+	case CommandTextEntryLeaderLength:
+		return []string{"LDR LNG", entry.value}
 	default:
 		return nil
 	}
@@ -119,6 +130,8 @@ func (entry *CommandTextEntry) Insert(r rune) {
 
 	if entry.kind == CommandTextEntryNone {
 		switch {
+		case r == '/':
+			entry.StartLeaderLength()
 		case unicode.IsLetter(r):
 			entry.StartACID(r)
 		case unicode.IsDigit(r):
@@ -132,6 +145,8 @@ func (entry *CommandTextEntry) Insert(r rune) {
 		entry.insertACIDRune(r)
 	case CommandTextEntryLeaderDirection:
 		entry.insertLeaderDirectionRune(r)
+	case CommandTextEntryLeaderLength:
+		entry.insertLeaderLengthRune(r)
 	}
 }
 
@@ -190,6 +205,33 @@ func (entry *CommandTextEntry) insertLeaderDirectionRune(r rune) {
 
 	value := []rune(entry.value)
 	if len(value) >= 1 {
+		return
+	}
+	entry.cursor = clampInt(entry.cursor, 0, len(value))
+
+	value = append(value[:entry.cursor], append([]rune{r}, value[entry.cursor:]...)...)
+	entry.value = string(value)
+	entry.cursor++
+}
+
+func (entry *CommandTextEntry) StartLeaderLength() {
+	if entry == nil {
+		return
+	}
+
+	entry.Clear()
+	entry.kind = CommandTextEntryLeaderLength
+	entry.value = ""
+	entry.cursor = 0
+}
+
+func (entry *CommandTextEntry) insertLeaderLengthRune(r rune) {
+	if !unicode.IsDigit(r) {
+		return
+	}
+
+	value := []rune(entry.value)
+	if len(value) >= 2 {
 		return
 	}
 	entry.cursor = clampInt(entry.cursor, 0, len(value))
@@ -285,6 +327,7 @@ const (
 
 type CommandInput struct {
 	text string
+	kind CommandTextEntryKind
 
 	clickedTarget *Target
 	clickKind     CommandClickKind
@@ -386,9 +429,15 @@ type ldrDirMatcher struct{}
 func (ldrDirMatcher) match(
 	_ *ASDEXPane,
 	_ *panes.Context,
-	_ *CommandInput,
+	cmdInput *CommandInput,
 	text string,
 ) (*matchResult, error) {
+	if cmdInput != nil &&
+		cmdInput.kind != CommandTextEntryNone &&
+		cmdInput.kind != CommandTextEntryLeaderDirection {
+		return nil, nil
+	}
+
 	input, ok := parseLeaderDirectionInput(text)
 	if !ok {
 		return nil, nil
@@ -432,6 +481,53 @@ func parseLeaderDirectionInput(text string) (LeaderDirectionInput, bool) {
 	default:
 		return LeaderDirectionInput{}, false
 	}
+}
+
+type ldrLengthMatcher struct{}
+
+func (ldrLengthMatcher) match(
+	_ *ASDEXPane,
+	_ *panes.Context,
+	cmdInput *CommandInput,
+	text string,
+) (*matchResult, error) {
+	if cmdInput != nil &&
+		cmdInput.kind != CommandTextEntryNone &&
+		cmdInput.kind != CommandTextEntryLeaderLength {
+		return nil, nil
+	}
+
+	input, ok := parseLeaderLengthInput(text)
+	if !ok {
+		return nil, nil
+	}
+
+	return &matchResult{
+		values:    []any{input},
+		remaining: "",
+		matched:   true,
+	}, nil
+}
+
+func (ldrLengthMatcher) validate() error      { return nil }
+func (ldrLengthMatcher) goType() reflect.Type { return reflect.TypeFor[LeaderLengthInput]() }
+func (ldrLengthMatcher) consumesClick() bool  { return false }
+
+func parseLeaderLengthInput(text string) (LeaderLengthInput, bool) {
+	text = strings.TrimSpace(text)
+	if text == "" {
+		return LeaderLengthInput{}, false
+	}
+
+	value, err := strconv.Atoi(text)
+	if err != nil {
+		return LeaderLengthInput{}, false
+	}
+	if value < leaderLengthMin || value > leaderLengthMax {
+		return LeaderLengthInput{}, false
+	}
+
+	return LeaderLengthInput{Value: value}, true
 }
 
 type acidMatcher struct{}
@@ -580,6 +676,8 @@ func makeMatchers(spec string) ([]matcher, error) {
 				matchers = append(matchers, acidMatcher{})
 			case "LDR DIR":
 				matchers = append(matchers, ldrDirMatcher{})
+			case "LDR LNG":
+				matchers = append(matchers, ldrLengthMatcher{})
 			case "SLEW":
 				matchers = append(matchers, slewMatcher{})
 			case "R SLEW":
@@ -784,8 +882,14 @@ func (ap *ASDEXPane) tryExecuteUserCommand(
 		return CommandStatus{}, nil, false
 	}
 
+	entryKind := CommandTextEntryNone
+	if ap.commandMode == CommandModeNone {
+		entryKind = ap.commandEntry.Kind()
+	}
+
 	input := &CommandInput{
 		text:          strings.ToUpper(cmd),
+		kind:          entryKind,
 		clickedTarget: clickedTarget,
 		clickKind:     clickKind,
 		mousePosition: mousePosition,
@@ -936,10 +1040,18 @@ func (ap *ASDEXPane) consumeCommandClicks(
 		return false
 	}
 
+	if ap.commandMode == CommandModeNone &&
+		clickKind == CommandClickLeft &&
+		ap.commandEntry.Kind() == CommandTextEntryLeaderLength &&
+		ap.commandEntry.Value() == "" {
+		ap.applyCommandStatus(commandOutputClearAll("INVALID LNG"))
+		return true
+	}
+
 	cmdText := ""
 	if ap.commandMode == CommandModeNone && clickKind == CommandClickLeft {
 		switch ap.commandEntry.Kind() {
-		case CommandTextEntryACID, CommandTextEntryLeaderDirection:
+		case CommandTextEntryACID, CommandTextEntryLeaderDirection, CommandTextEntryLeaderLength:
 			cmdText = ap.commandEntry.Value()
 		}
 	}
@@ -961,7 +1073,11 @@ func (ap *ASDEXPane) consumeCommandClicks(
 		return true
 	}
 	if ap.commandMode == CommandModeNone && clickKind == CommandClickLeft && !ap.commandEntry.Empty() {
-		ap.applyCommandStatus(commandOutputClearAll("INVALID ENTRY"))
+		if ap.commandEntry.Kind() == CommandTextEntryLeaderLength {
+			ap.applyCommandStatus(commandOutputClearAll("INVALID LNG"))
+		} else {
+			ap.applyCommandStatus(commandOutputClearAll("INVALID ENTRY"))
+		}
 		return true
 	}
 	return false

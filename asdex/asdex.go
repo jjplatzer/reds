@@ -80,6 +80,7 @@ type ASDEXPane struct {
 	datablockSettings       DataBlockSettings
 	datablockTimeshareStart time.Time
 	leaderDirectionByTarget map[string]LeaderDirection
+	leaderLengthByTarget    map[string]int
 	previewArea             PreviewArea
 	coastList               CoastList
 	showCoastList           bool
@@ -153,6 +154,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		datablockSettings:       DefaultDataBlockSettings(),
 		datablockTimeshareStart: time.Now(),
 		leaderDirectionByTarget: make(map[string]LeaderDirection),
+		leaderLengthByTarget:    make(map[string]int),
 		previewArea:             preview,
 		coastList:               coastList,
 		showCoastList:           true,
@@ -283,6 +285,9 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				if target != nil {
 					if direction, ok := p.leaderDirectionByTarget[target.ID]; ok {
 						settings.LeaderDirection = direction
+					}
+					if length, ok := p.leaderLengthByTarget[target.ID]; ok {
+						settings.LeaderLength = length
 					}
 				}
 				return settings
@@ -756,7 +761,10 @@ func (p *ASDEXPane) handleNormalCommandKeyboard(ctx *panes.Context) bool {
 		}
 		return false
 	case keyboard.WasPressed(platform.KeyEnter), keyboard.WasPressed(platform.KeyKeypadEnter):
-		if p.commandEntry.Kind() != CommandTextEntryLeaderDirection {
+		kind := p.commandEntry.Kind()
+		switch kind {
+		case CommandTextEntryLeaderDirection, CommandTextEntryLeaderLength:
+		default:
 			return false
 		}
 
@@ -779,7 +787,11 @@ func (p *ASDEXPane) handleNormalCommandKeyboard(ctx *panes.Context) bool {
 		}
 
 		p.commandEntry.Clear()
-		p.previewArea.SetSystemResponse("INVALID ENTRY")
+		if kind == CommandTextEntryLeaderLength {
+			p.previewArea.SetSystemResponse("INVALID LNG")
+		} else {
+			p.previewArea.SetSystemResponse("INVALID ENTRY")
+		}
 		return true
 	case keyboard.WasPressed(platform.KeyLeft):
 		p.commandEntry.MoveLeft()
