@@ -98,6 +98,7 @@ type ASDEXPane struct {
 	multiFunction       *MultiFunctionCommand
 	previewReposition   *PreviewRepositionCommand
 	coastListReposition *CoastListRepositionCommand
+	mapReposition       *MapRepositionCommand
 
 	rightClickStart     redsmath.Vec2
 	rightClickCandidate bool
@@ -254,14 +255,28 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.consumeOpsHotkeys(ctx, transforms)
 	p.coastList.SetVisible(p.showCoastList)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
-	if !p.listRepositionActive() {
+	if p.mapReposition == nil && !p.listRepositionActive() {
 		p.updateCoastListHover(ctx)
 	} else {
 		p.hoveredCoastListTarget = ""
 	}
-	p.updateRightClickGesture(ctx)
+	if p.mapReposition == nil {
+		p.updateRightClickGesture(ctx)
+	} else {
+		p.clearRightClickGesture()
+	}
 
-	if p.listRepositionActive() {
+	if p.mapReposition != nil {
+		p.clearHighlightedTarget()
+		if p.consumeMapRepositionMouse(ctx, transforms) {
+			transforms = radar.GetScopeTransformations(
+				paneExtent,
+				p.center,
+				p.rangeFeet,
+				p.rotation,
+			)
+		}
+	} else if p.listRepositionActive() {
 		p.clearHighlightedTarget()
 		p.clampListRepositionCursor(ctx)
 		p.consumeListRepositionClick(ctx)
@@ -522,6 +537,9 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 	if p != nil && p.datablockEdit != nil {
 		return CursorModeHidden
 	}
+	if p != nil && p.mapReposition != nil {
+		return CursorModeHidden
+	}
 	if p != nil && p.listRepositionActive() {
 		return CursorModeMove
 	}
@@ -630,6 +648,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	if p.coastListReposition != nil {
 		return p.coastListReposition.DisplayLines()
 	}
+	if p.mapReposition != nil {
+		return p.mapReposition.DisplayLines()
+	}
 	if p.commandMode == CommandModeTrackSuspend {
 		return []string{"TRK SUSP"}
 	}
@@ -669,6 +690,9 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	if p == nil {
 		return
 	}
+	if p.mapReposition != nil && p.mapReposition.initialized {
+		p.center = p.mapReposition.originalCenter
+	}
 	p.commandMode = CommandModeNone
 	p.datablockEdit = nil
 	p.editingTargetID = ""
@@ -677,6 +701,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.multiFunction = nil
 	p.previewReposition = nil
 	p.coastListReposition = nil
+	p.mapReposition = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 }
@@ -992,6 +1017,64 @@ func (p *ASDEXPane) consumeDatablockEditWheel(ctx *panes.Context) bool {
 
 func (p *ASDEXPane) listRepositionActive() bool {
 	return p != nil && (p.previewReposition != nil || p.coastListReposition != nil)
+}
+
+func mapRepositionCursorCenter(ctx *panes.Context) redsmath.Vec2 {
+	if ctx == nil {
+		return redsmath.Vec2{}
+	}
+	size := ctx.PaneSize()
+	return redsmath.Vec2{
+		X: size.X * 0.5,
+		Y: size.Y * 0.5,
+	}
+}
+
+func (p *ASDEXPane) centerMapRepositionCursor(ctx *panes.Context) {
+	if p == nil || p.mapReposition == nil || ctx == nil || ctx.Platform == nil {
+		return
+	}
+
+	center := mapRepositionCursorCenter(ctx)
+	ctx.Platform.SetMousePosition(ctx.PaneRect.Min.Add(center))
+	if ctx.Mouse != nil {
+		ctx.Mouse.Pos = center
+		ctx.Mouse.Delta = redsmath.Vec2{}
+	}
+}
+
+func (p *ASDEXPane) consumeMapRepositionMouse(
+	ctx *panes.Context,
+	transforms radar.ScopeTransformations,
+) bool {
+	if p == nil || p.mapReposition == nil || ctx == nil || ctx.Mouse == nil || ctx.Platform == nil {
+		return false
+	}
+
+	mouse := ctx.Mouse
+	if mouse.WasPressed(platform.MouseButtonLeft) || mouse.WasReleased(platform.MouseButtonLeft) {
+		p.applyCommandStatus(CommandStatus{
+			Clear:     ClearAll,
+			Output:    "",
+			HasOutput: true,
+		})
+		return true
+	}
+
+	center := mapRepositionCursorCenter(ctx)
+	delta := mouse.Pos.Sub(center)
+	if delta.X == 0 && delta.Y == 0 {
+		return true
+	}
+
+	deltaWorld := transforms.WorldFromWindowV(delta)
+	p.center = p.center.Sub(deltaWorld)
+
+	ctx.Platform.SetMousePosition(ctx.PaneRect.Min.Add(center))
+	mouse.Pos = center
+	mouse.Delta = redsmath.Vec2{}
+
+	return true
 }
 
 func (p *ASDEXPane) activeRepositionSize() redsmath.Vec2 {
