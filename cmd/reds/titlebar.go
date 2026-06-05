@@ -11,12 +11,18 @@ import (
 const (
 	scopeTitleBarHeight = 24
 
-	titleBarMenuButtonWidth = 28
-	titleBarMenuIconSize    = 16
+	titleBarMenuButtonWidth  = 28
+	titleBarButtonWidth      = 36
+	titleBarMenuSymbolSize   = 12
+	titleBarButtonSymbolSize = 8
+)
 
-	titleBarButtonWidth = 36
-	titleBarIconSize    = 16
-	titleBarIconStroke  = 1.5
+const (
+	titleBarGlyphMenu     = "\ue700"
+	titleBarGlyphMinimize = "\ue949"
+	titleBarGlyphMaximize = "\ue15b"
+	titleBarGlyphRestore  = "\ue158"
+	titleBarGlyphClose    = "\ue106"
 )
 
 var (
@@ -152,26 +158,14 @@ func drawTitleBarMenuButton() (bool, titleBarAction) {
 }
 
 func drawBurgerIcon(min, max imgui.Vec2) {
-	dl := imgui.WindowDrawList()
-
-	x0 := (min.X + max.X - titleBarMenuIconSize) * 0.5
-	y0 := (min.Y + max.Y - titleBarMenuIconSize) * 0.5
-	scale := float32(titleBarMenuIconSize) / 24
-
-	color := imgui.ColorU32Vec4(titleBarFg)
-	rect := func(x, y, w, h float32) {
-		dl.AddRectFilledV(
-			imgui.Vec2{X: x0 + x*scale, Y: y0 + y*scale},
-			imgui.Vec2{X: x0 + (x+w)*scale, Y: y0 + (y+h)*scale},
-			color,
-			0,
-			imgui.DrawFlagsNone,
-		)
-	}
-
-	rect(3, 5, 18, 2)
-	rect(3, 11, 18, 2)
-	rect(3, 17, 18, 2)
+	drawTitleBarSymbolGlyph(
+		titleBarGlyphMenu,
+		symbolsFont12,
+		titleBarMenuSymbolSize,
+		min,
+		max,
+		titleBarFg,
+	)
 }
 
 func drawTitleBarMenuPopup(buttonMin, buttonMax imgui.Vec2) titleBarAction {
@@ -304,7 +298,7 @@ func drawTitleBarButton(
 		)
 	}
 
-	drawTitleBarIcon(kind, min, max)
+	drawTitleBarIcon(plat, kind, min, max)
 
 	if clicked {
 		switch kind {
@@ -320,36 +314,63 @@ func drawTitleBarButton(
 	return hovered || imgui.IsItemActive()
 }
 
-func drawTitleBarIcon(kind titleBarButtonKind, min, max imgui.Vec2) {
-	dl := imgui.WindowDrawList()
-
-	x0 := (min.X + max.X - titleBarIconSize) * 0.5
-	y0 := (min.Y + max.Y - titleBarIconSize) * 0.5
-
-	p := func(x, y float32) imgui.Vec2 {
-		return imgui.Vec2{X: x0 + x, Y: y0 + y}
-	}
-
-	color := imgui.ColorU32Vec4(titleBarFg)
+func drawTitleBarIcon(
+	plat platform.Platform,
+	kind titleBarButtonKind,
+	min, max imgui.Vec2,
+) {
+	glyph := titleBarGlyphMinimize
 
 	switch kind {
 	case titleBarButtonMinimize:
-		dl.AddLineV(p(3, 8), p(13, 8), color, titleBarIconStroke)
+		glyph = titleBarGlyphMinimize
 
 	case titleBarButtonMaximize:
-		dl.AddRectV(
-			p(3, 3),
-			p(13, 13),
-			color,
-			0,
-			imgui.DrawFlagsNone,
-			titleBarIconStroke,
-		)
+		if plat != nil && plat.IsWindowMaximized() {
+			glyph = titleBarGlyphRestore
+		} else {
+			glyph = titleBarGlyphMaximize
+		}
 
 	case titleBarButtonClose:
-		dl.AddLineV(p(4, 4), p(12, 12), color, titleBarIconStroke)
-		dl.AddLineV(p(12, 4), p(4, 12), color, titleBarIconStroke)
+		glyph = titleBarGlyphClose
 	}
+
+	drawTitleBarSymbolGlyph(
+		glyph,
+		symbolsFont8,
+		titleBarButtonSymbolSize,
+		min,
+		max,
+		titleBarFg,
+	)
+}
+
+func drawTitleBarSymbolGlyph(
+	glyph string,
+	font *imgui.Font,
+	fontSize float32,
+	min, max imgui.Vec2,
+	color imgui.Vec4,
+) {
+	if glyph == "" || font == nil {
+		return
+	}
+
+	imgui.PushFont(font, fontSize)
+	defer imgui.PopFont()
+
+	textSize := imgui.CalcTextSize(glyph)
+	pos := imgui.Vec2{
+		X: min.X + (max.X-min.X-textSize.X)*0.5,
+		Y: min.Y + (max.Y-min.Y-textSize.Y)*0.5,
+	}
+
+	imgui.WindowDrawList().AddTextVec2(
+		pos,
+		imgui.ColorU32Vec4(color),
+		glyph,
+	)
 }
 
 func handleTitleBarDrag(plat platform.Platform, windowWidth float32) bool {
