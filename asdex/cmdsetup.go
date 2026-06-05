@@ -93,6 +93,25 @@ func (command *CoastListRepositionCommand) DisplayLines() []string {
 	return []string{"MULT C"}
 }
 
+type MapRepositionCommand struct {
+	originalCenter redsmath.Vec2
+	initialized    bool
+}
+
+func NewMapRepositionCommand(center redsmath.Vec2) *MapRepositionCommand {
+	return &MapRepositionCommand{
+		originalCenter: center,
+		initialized:    true,
+	}
+}
+
+func (command *MapRepositionCommand) DisplayLines() []string {
+	if command == nil {
+		return nil
+	}
+	return []string{"MAP RPOS"}
+}
+
 func registerSetupCommands() {
 	registerCommand(
 		CommandModeNone,
@@ -107,6 +126,14 @@ func registerSetupCommands() {
 		"[MULT FUNC]",
 		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
 			return ap.cmdMultiFunction(ctx)
+		},
+	)
+
+	registerCommand(
+		CommandModeNone,
+		"[MAP RPOS]",
+		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
+			return ap.cmdMapReposition(ctx)
 		},
 	)
 
@@ -195,6 +222,7 @@ func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
 	ap.multiFunction = NewMultiFunctionCommand()
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
+	ap.mapReposition = nil
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.initControlEntry = nil
@@ -202,6 +230,28 @@ func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
 	ap.commandEntry.Clear()
 	ap.previewArea.SetSystemResponse("")
 	ap.clearHighlightedTarget()
+
+	return CommandStatus{Clear: ClearNone}
+}
+
+func (ap *ASDEXPane) cmdMapReposition(ctx *panes.Context) CommandStatus {
+	if ap == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+
+	ap.commandMode = CommandModeMapReposition
+	ap.mapReposition = NewMapRepositionCommand(ap.center)
+	ap.multiFunction = nil
+	ap.previewReposition = nil
+	ap.coastListReposition = nil
+	ap.datablockEdit = nil
+	ap.editingTargetID = ""
+	ap.initControlEntry = nil
+	ap.termControlEntry = nil
+	ap.commandEntry.Clear()
+	ap.previewArea.SetSystemResponse("")
+	ap.clearHighlightedTarget()
+	ap.centerMapRepositionCursor(ctx)
 
 	return CommandStatus{Clear: ClearNone}
 }

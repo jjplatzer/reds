@@ -25,6 +25,7 @@ const (
 	CommandModeMultiFunction
 	CommandModePreviewReposition
 	CommandModeCoastListReposition
+	CommandModeMapReposition
 )
 
 type CommandClear int
@@ -964,6 +965,7 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 		ap.multiFunction = nil
 		ap.previewReposition = nil
 		ap.coastListReposition = nil
+		ap.mapReposition = nil
 		ap.commandEntry.Clear()
 	case ClearInput:
 		ap.commandEntry.Clear()
@@ -992,6 +994,8 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 		command = "[TERM CNTL]"
 	case ctx.Keyboard.WasPressed(platform.KeyF7):
 		command = "[MULT FUNC]"
+	case ctx.Keyboard.WasPressed(platform.KeyF8):
+		command = "[MAP RPOS]"
 	case ctx.Keyboard.WasPressed(platform.KeyF10):
 		command = "[MAP THEME]"
 	default:
