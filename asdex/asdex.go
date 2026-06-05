@@ -51,10 +51,11 @@ const (
 	zSuspendedLabels renderer.Z = -499
 	zDatablocks      renderer.Z = -480
 
-	zWindowBorders renderer.Z = -300
-	zAlertMessage  renderer.Z = -210
-	zPreviewArea   renderer.Z = -200
-	zPreviewCursor renderer.Z = -190
+	zWindowBorders            renderer.Z = -300
+	zAlertMessage             renderer.Z = -210
+	zPreviewArea              renderer.Z = -200
+	zPreviewCursor            renderer.Z = -190
+	zPreviewRepositionOutline renderer.Z = -189
 
 	zDCBBackground renderer.Z = -100
 	zDCBButtons    renderer.Z = -99
@@ -339,6 +340,8 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		renderer.ReturnTextDrawBuilder(td)
 	}
 	listCB.DisableScissor()
+
+	p.renderPreviewRepositionOutline(ctx, zcb, transforms)
 
 	if cursorLine, cursorColumn, ok := p.activeCommandCursor(); ok {
 		cursorCB := zcb.At(windowZ(0, zPreviewCursor))
@@ -962,6 +965,52 @@ func (p *ASDEXPane) consumePreviewRepositionClick(ctx *panes.Context) bool {
 	}
 
 	return false
+}
+
+func (p *ASDEXPane) renderPreviewRepositionOutline(
+	ctx *panes.Context,
+	zcb *renderer.ZCmdBuffer,
+	transforms radar.ScopeTransformations,
+) {
+	if p == nil || p.previewReposition == nil || ctx == nil || ctx.Mouse == nil || zcb == nil {
+		return
+	}
+
+	size := p.previewArea.RepositionSize()
+	if size.X <= 0 || size.Y <= 0 {
+		return
+	}
+
+	pos := clampListRepositionPoint(
+		ctx.Mouse.Pos,
+		ctx.PaneSize(),
+		size,
+	)
+
+	x, y, w, h := ctx.PaneFramebufferRect()
+	cb := zcb.At(windowZ(0, zPreviewRepositionOutline))
+	cb.Viewport(x, y, w, h)
+	cb.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(cb)
+
+	cb.SetRGB(previewRepositionOutlineColor(brightnessDefault))
+	cb.LineWidth(1)
+
+	builder := renderer.GetLinesBuilder()
+	builder.AddLineLoop([]renderer.PointVertex{
+		{X: pos.X, Y: pos.Y},
+		{X: pos.X + size.X, Y: pos.Y},
+		{X: pos.X + size.X, Y: pos.Y + size.Y},
+		{X: pos.X, Y: pos.Y + size.Y},
+	})
+	builder.GenerateCommands(cb)
+	renderer.ReturnLinesBuilder(builder)
+
+	cb.DisableScissor()
+}
+
+func previewRepositionOutlineColor(brightness int) renderer.RGB {
+	return applyBrightness(renderer.RGB8(0, 255, 255), brightness, brightnessFloorDefault)
 }
 
 func (p *ASDEXPane) updateRightClickGesture(ctx *panes.Context) {
