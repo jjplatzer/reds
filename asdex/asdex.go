@@ -88,14 +88,15 @@ type ASDEXPane struct {
 	showCoastList           bool
 	hoveredCoastListTarget  string
 
-	commandMode       CommandMode
-	commandEntry      CommandTextEntry
-	datablockEdit     *DatablockEditCommand
-	editingTargetID   string
-	initControlEntry  *CoastListIDEntryCommand
-	termControlEntry  *CoastListIDEntryCommand
-	multiFunction     *MultiFunctionCommand
-	previewReposition *PreviewRepositionCommand
+	commandMode         CommandMode
+	commandEntry        CommandTextEntry
+	datablockEdit       *DatablockEditCommand
+	editingTargetID     string
+	initControlEntry    *CoastListIDEntryCommand
+	termControlEntry    *CoastListIDEntryCommand
+	multiFunction       *MultiFunctionCommand
+	previewReposition   *PreviewRepositionCommand
+	coastListReposition *CoastListRepositionCommand
 
 	rightClickStart     redsmath.Vec2
 	rightClickCandidate bool
@@ -208,17 +209,17 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.consumeOpsHotkeys(ctx, transforms)
 	p.coastList.SetVisible(p.showCoastList)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
-	if p.previewReposition == nil {
+	if !p.listRepositionActive() {
 		p.updateCoastListHover(ctx)
 	} else {
 		p.hoveredCoastListTarget = ""
 	}
 	p.updateRightClickGesture(ctx)
 
-	if p.previewReposition != nil {
+	if p.listRepositionActive() {
 		p.clearHighlightedTarget()
-		p.clampPreviewRepositionCursor(ctx)
-		p.consumePreviewRepositionClick(ctx)
+		p.clampListRepositionCursor(ctx)
+		p.consumeListRepositionClick(ctx)
 	} else if p.datablockEdit != nil {
 		p.clearHighlightedTarget()
 		p.consumeDatablockEditWheel(ctx)
@@ -341,7 +342,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 	listCB.DisableScissor()
 
-	p.renderPreviewRepositionOutline(ctx, zcb, transforms)
+	p.renderListRepositionOutline(ctx, zcb, transforms)
 
 	if cursorLine, cursorColumn, ok := p.activeCommandCursor(); ok {
 		cursorCB := zcb.At(windowZ(0, zPreviewCursor))
@@ -473,7 +474,7 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 	if p != nil && p.datablockEdit != nil {
 		return CursorModeHidden
 	}
-	if p != nil && p.previewReposition != nil {
+	if p != nil && p.listRepositionActive() {
 		return CursorModeMove
 	}
 	if ctx != nil && ctx.Mouse != nil && ctx.Mouse.IsDown(platform.MouseButtonRight) {
@@ -578,6 +579,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	if p.previewReposition != nil {
 		return p.previewReposition.DisplayLines()
 	}
+	if p.coastListReposition != nil {
+		return p.coastListReposition.DisplayLines()
+	}
 	if p.commandMode == CommandModeTrackSuspend {
 		return []string{"TRK SUSP"}
 	}
@@ -624,6 +628,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.termControlEntry = nil
 	p.multiFunction = nil
 	p.previewReposition = nil
+	p.coastListReposition = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 }
@@ -802,9 +807,15 @@ func (p *ASDEXPane) handleMultiFunctionKeyboard(ctx *panes.Context) bool {
 
 	for _, r := range keyboard.Text {
 		r = unicode.ToUpper(r)
-		if p.multiFunction.Value() == "" && r == 'P' {
-			p.startMultiPreviewReposition()
-			return true
+		if p.multiFunction.Value() == "" {
+			switch r {
+			case 'P':
+				p.startMultiPreviewReposition()
+				return true
+			case 'C':
+				p.startMultiCoastListReposition()
+				return true
+			}
 		}
 
 		p.multiFunction.Insert(r)
@@ -823,6 +834,21 @@ func (p *ASDEXPane) startMultiPreviewReposition() {
 	p.commandMode = CommandModePreviewReposition
 	p.multiFunction = nil
 	p.previewReposition = NewMultiPreviewRepositionCommand()
+	p.coastListReposition = nil
+	p.commandEntry.Clear()
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) startMultiCoastListReposition() {
+	if p == nil {
+		return
+	}
+
+	p.commandMode = CommandModeCoastListReposition
+	p.multiFunction = nil
+	p.previewReposition = nil
+	p.coastListReposition = NewMultiCoastListRepositionCommand()
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -913,8 +939,30 @@ func (p *ASDEXPane) consumeDatablockEditWheel(ctx *panes.Context) bool {
 	return false
 }
 
-func (p *ASDEXPane) clampPreviewRepositionCursor(ctx *panes.Context) {
-	if p == nil || p.previewReposition == nil || ctx == nil || ctx.Mouse == nil || ctx.Platform == nil {
+func (p *ASDEXPane) listRepositionActive() bool {
+	return p != nil && (p.previewReposition != nil || p.coastListReposition != nil)
+}
+
+func (p *ASDEXPane) activeRepositionSize() redsmath.Vec2 {
+	if p == nil {
+		return redsmath.Vec2{}
+	}
+	if p.previewReposition != nil {
+		return p.previewArea.RepositionSize()
+	}
+	if p.coastListReposition != nil {
+		return p.coastList.RepositionSize()
+	}
+	return redsmath.Vec2{}
+}
+
+func (p *ASDEXPane) clampListRepositionCursor(ctx *panes.Context) {
+	if p == nil || !p.listRepositionActive() || ctx == nil || ctx.Mouse == nil || ctx.Platform == nil {
+		return
+	}
+
+	size := p.activeRepositionSize()
+	if size.X <= 0 || size.Y <= 0 {
 		return
 	}
 
@@ -922,7 +970,7 @@ func (p *ASDEXPane) clampPreviewRepositionCursor(ctx *panes.Context) {
 	clamped := clampListRepositionPoint(
 		local,
 		ctx.PaneSize(),
-		p.previewArea.RepositionSize(),
+		size,
 	)
 	if clamped == local {
 		return
@@ -933,18 +981,23 @@ func (p *ASDEXPane) clampPreviewRepositionCursor(ctx *panes.Context) {
 	ctx.Mouse.Delta = redsmath.Vec2{}
 }
 
-func (p *ASDEXPane) consumePreviewRepositionClick(ctx *panes.Context) bool {
-	if p == nil || p.previewReposition == nil || ctx == nil || ctx.Mouse == nil {
+func (p *ASDEXPane) consumeListRepositionClick(ctx *panes.Context) bool {
+	if p == nil || !p.listRepositionActive() || ctx == nil || ctx.Mouse == nil {
 		return false
 	}
 	if !ctx.Mouse.WasReleased(platform.MouseButtonLeft) {
 		return false
 	}
 
+	size := p.activeRepositionSize()
+	if size.X <= 0 || size.Y <= 0 {
+		return false
+	}
+
 	point := clampListRepositionPoint(
 		ctx.Mouse.Pos,
 		ctx.PaneSize(),
-		p.previewArea.RepositionSize(),
+		size,
 	)
 
 	status, err, handled := p.tryExecuteUserCommand(
@@ -967,16 +1020,16 @@ func (p *ASDEXPane) consumePreviewRepositionClick(ctx *panes.Context) bool {
 	return false
 }
 
-func (p *ASDEXPane) renderPreviewRepositionOutline(
+func (p *ASDEXPane) renderListRepositionOutline(
 	ctx *panes.Context,
 	zcb *renderer.ZCmdBuffer,
 	transforms radar.ScopeTransformations,
 ) {
-	if p == nil || p.previewReposition == nil || ctx == nil || ctx.Mouse == nil || zcb == nil {
+	if p == nil || !p.listRepositionActive() || ctx == nil || ctx.Mouse == nil || zcb == nil {
 		return
 	}
 
-	size := p.previewArea.RepositionSize()
+	size := p.activeRepositionSize()
 	if size.X <= 0 || size.Y <= 0 {
 		return
 	}

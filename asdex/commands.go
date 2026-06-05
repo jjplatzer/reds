@@ -24,6 +24,7 @@ const (
 	CommandModeTerminateControl
 	CommandModeMultiFunction
 	CommandModePreviewReposition
+	CommandModeCoastListReposition
 )
 
 type CommandClear int
@@ -962,6 +963,7 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 		ap.termControlEntry = nil
 		ap.multiFunction = nil
 		ap.previewReposition = nil
+		ap.coastListReposition = nil
 		ap.commandEntry.Clear()
 	case ClearInput:
 		ap.commandEntry.Clear()

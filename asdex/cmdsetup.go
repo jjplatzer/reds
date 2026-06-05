@@ -80,6 +80,19 @@ func (command *PreviewRepositionCommand) DisplayLines() []string {
 	return []string{"MULT P"}
 }
 
+type CoastListRepositionCommand struct{}
+
+func NewMultiCoastListRepositionCommand() *CoastListRepositionCommand {
+	return &CoastListRepositionCommand{}
+}
+
+func (command *CoastListRepositionCommand) DisplayLines() []string {
+	if command == nil {
+		return nil
+	}
+	return []string{"MULT C"}
+}
+
 func registerSetupCommands() {
 	registerCommand(
 		CommandModeNone,
@@ -102,6 +115,14 @@ func registerSetupCommands() {
 		"[DISPLAY SLEW]",
 		func(ap *ASDEXPane, ctx *panes.Context, point DisplayPoint) CommandStatus {
 			return ap.cmdPreviewRepositionSlew(ctx, point)
+		},
+	)
+
+	registerCommand(
+		CommandModeCoastListReposition,
+		"[DISPLAY SLEW]",
+		func(ap *ASDEXPane, ctx *panes.Context, point DisplayPoint) CommandStatus {
+			return ap.cmdCoastListRepositionSlew(ctx, point)
 		},
 	)
 
@@ -165,6 +186,7 @@ func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
 	ap.commandMode = CommandModeMultiFunction
 	ap.multiFunction = NewMultiFunctionCommand()
 	ap.previewReposition = nil
+	ap.coastListReposition = nil
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.initControlEntry = nil
@@ -190,6 +212,28 @@ func (ap *ASDEXPane) cmdPreviewRepositionSlew(
 		ap.previewArea.RepositionSize(),
 	)
 	ap.previewArea.SetLocation(pos, ctx.PaneSize())
+
+	return CommandStatus{
+		Clear:     ClearAll,
+		Output:    "",
+		HasOutput: true,
+	}
+}
+
+func (ap *ASDEXPane) cmdCoastListRepositionSlew(
+	ctx *panes.Context,
+	point DisplayPoint,
+) CommandStatus {
+	if ap == nil || ctx == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+
+	pos := clampListRepositionPoint(
+		redsmath.Vec2(point),
+		ctx.PaneSize(),
+		ap.coastList.RepositionSize(),
+	)
+	ap.coastList.SetLocation(pos, ctx.PaneSize())
 
 	return CommandStatus{
 		Clear:     ClearAll,

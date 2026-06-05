@@ -75,6 +75,9 @@ func (ap *ASDEXPane) cmdTrackSuspend(_ *panes.Context) CommandStatus {
 	ap.editingTargetID = ""
 	ap.initControlEntry = nil
 	ap.termControlEntry = nil
+	ap.multiFunction = nil
+	ap.previewReposition = nil
+	ap.coastListReposition = nil
 	ap.clearHighlightedTarget()
 	ap.previewArea.SetSystemResponse("")
 
@@ -253,6 +256,9 @@ func (ap *ASDEXPane) cmdInitControl(_ *panes.Context) CommandStatus {
 	ap.commandEntry.Clear()
 	ap.initControlEntry = NewCoastListIDEntryCommand("INIT CNTL")
 	ap.termControlEntry = nil
+	ap.multiFunction = nil
+	ap.previewReposition = nil
+	ap.coastListReposition = nil
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.clearHighlightedTarget()
@@ -370,6 +376,9 @@ func (ap *ASDEXPane) cmdTerminateControl(_ *panes.Context) CommandStatus {
 	ap.commandEntry.Clear()
 	ap.termControlEntry = NewCoastListIDEntryCommand("TERM CNTL")
 	ap.initControlEntry = nil
+	ap.multiFunction = nil
+	ap.previewReposition = nil
+	ap.coastListReposition = nil
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.clearHighlightedTarget()
