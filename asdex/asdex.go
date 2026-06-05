@@ -79,6 +79,7 @@ type ASDEXPane struct {
 
 	datablockSettings       DataBlockSettings
 	datablockTimeshareStart time.Time
+	leaderDirectionByTarget map[string]LeaderDirection
 	previewArea             PreviewArea
 	coastList               CoastList
 	showCoastList           bool
@@ -151,6 +152,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 
 		datablockSettings:       DefaultDataBlockSettings(),
 		datablockTimeshareStart: time.Now(),
+		leaderDirectionByTarget: make(map[string]LeaderDirection),
 		previewArea:             preview,
 		coastList:               coastList,
 		showCoastList:           true,
@@ -276,8 +278,14 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			FontTextureForSize: func(size int) renderer.TextureID {
 				return p.fonts.textureForSize(ctx.Renderer, size)
 			},
-			SettingsForTarget: func(_ *Target) DataBlockSettings {
-				return datablockSettings
+			SettingsForTarget: func(target *Target) DataBlockSettings {
+				settings := datablockSettings
+				if target != nil {
+					if direction, ok := p.leaderDirectionByTarget[target.ID]; ok {
+						settings.LeaderDirection = direction
+					}
+				}
+				return settings
 			},
 		},
 	)
@@ -747,6 +755,32 @@ func (p *ASDEXPane) handleNormalCommandKeyboard(ctx *panes.Context) bool {
 			return true
 		}
 		return false
+	case keyboard.WasPressed(platform.KeyEnter), keyboard.WasPressed(platform.KeyKeypadEnter):
+		if p.commandEntry.Kind() != CommandTextEntryLeaderDirection {
+			return false
+		}
+
+		status, err, handled := p.tryExecuteUserCommand(
+			ctx,
+			p.commandEntry.Value(),
+			nil,
+			CommandClickNone,
+			redsmath.Vec2{},
+			radar.ScopeTransformations{},
+		)
+		if err != nil {
+			p.commandEntry.Clear()
+			p.previewArea.SetSystemResponse(err.Error())
+			return true
+		}
+		if handled {
+			p.applyCommandStatus(status)
+			return true
+		}
+
+		p.commandEntry.Clear()
+		p.previewArea.SetSystemResponse("INVALID ENTRY")
+		return true
 	case keyboard.WasPressed(platform.KeyLeft):
 		p.commandEntry.MoveLeft()
 		return !p.commandEntry.Empty()
