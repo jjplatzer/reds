@@ -229,6 +229,14 @@ func registerSetupCommands() {
 
 	registerCommand(
 		CommandModeNone,
+		"[DB ON/OFF]",
+		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
+			return ap.cmdDataBlocksOnOff(ctx)
+		},
+	)
+
+	registerCommand(
+		CommandModeNone,
 		"[MULT FUNC]",
 		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
 			return ap.cmdMultiFunction(ctx)
@@ -319,6 +327,20 @@ func (ap *ASDEXPane) cmdMapTheme(_ *panes.Context) CommandStatus {
 	default:
 		ap.mode = ModeDay
 	}
+
+	return CommandStatus{
+		Clear:     ClearAll,
+		Output:    "",
+		HasOutput: true,
+	}
+}
+
+func (ap *ASDEXPane) cmdDataBlocksOnOff(_ *panes.Context) CommandStatus {
+	if ap == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+
+	ap.datablockSettings.ShowDataBlocks = !ap.datablockSettings.ShowDataBlocks
 
 	return CommandStatus{
 		Clear:     ClearAll,

@@ -994,6 +994,8 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 		command = "[TRK SUSP]"
 	case ctx.Keyboard.WasPressed(platform.KeyF5):
 		command = "[TERM CNTL]"
+	case ctx.Keyboard.WasPressed(platform.KeyF6):
+		command = "[DB ON/OFF]"
 	case ctx.Keyboard.WasPressed(platform.KeyF7):
 		command = "[MULT FUNC]"
 	case ctx.Keyboard.WasPressed(platform.KeyF8):
