@@ -87,6 +87,7 @@ type ASDEXPane struct {
 	showBeaconUntilByTargetID map[string]time.Time
 	previewArea               PreviewArea
 	coastList                 CoastList
+	dcb                       Dcb
 	showCoastList             bool
 	hoveredCoastListTarget    string
 
@@ -167,6 +168,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		showBeaconUntilByTargetID: make(map[string]time.Time),
 		previewArea:               preview,
 		coastList:                 coastList,
+		dcb:                       NewDcb(),
 		showCoastList:             true,
 	}, nil
 }
@@ -430,6 +432,33 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		renderer.ReturnLinesBuilder(builder)
 		cursorCB.DisableScissor()
 	}
+
+	p.renderDcb(ctx, zcb, transforms)
+}
+
+func (p *ASDEXPane) renderDcb(
+	ctx *panes.Context,
+	zcb *renderer.ZCmdBuffer,
+	transforms radar.ScopeTransformations,
+) {
+	if p == nil || ctx == nil || zcb == nil {
+		return
+	}
+
+	layout := p.dcb.Layout(ctx.PaneSize(), p.fonts.font)
+	if layout.Bounds.Empty() {
+		return
+	}
+
+	x, y, w, h := ctx.PaneFramebufferRect()
+	cb := zcb.At(windowZ(0, zDCBBackground))
+	cb.Viewport(x, y, w, h)
+	cb.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(cb)
+
+	p.dcb.DrawBackground(cb, layout)
+
+	cb.DisableScissor()
 }
 
 func (p *ASDEXPane) dataBlockSettings() DataBlockSettings {
