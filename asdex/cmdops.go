@@ -80,6 +80,7 @@ func (ap *ASDEXPane) cmdTrackSuspend(_ *panes.Context) CommandStatus {
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
 	ap.mapRotate = nil
+	ap.dcbSpinner = nil
 	ap.clearHighlightedTarget()
 	ap.previewArea.SetSystemResponse("")
 
@@ -263,6 +264,7 @@ func (ap *ASDEXPane) cmdInitControl(_ *panes.Context) CommandStatus {
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
 	ap.mapRotate = nil
+	ap.dcbSpinner = nil
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.clearHighlightedTarget()
@@ -385,6 +387,7 @@ func (ap *ASDEXPane) cmdTerminateControl(_ *panes.Context) CommandStatus {
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
 	ap.mapRotate = nil
+	ap.dcbSpinner = nil
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.clearHighlightedTarget()

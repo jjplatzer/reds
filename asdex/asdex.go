@@ -88,6 +88,7 @@ type ASDEXPane struct {
 	previewArea               PreviewArea
 	coastList                 CoastList
 	dcb                       Dcb
+	dcbSpinner                *DcbSpinner
 	showCoastList             bool
 	hoveredCoastListTarget    string
 
@@ -287,8 +288,9 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	} else if p.datablockEdit != nil {
 		p.clearHighlightedTarget()
 		p.consumeDatablockEditWheel(ctx)
-	} else {
-		if p.consumeMouseEvents(ctx, transforms) {
+	} else if p.dcbSpinner != nil {
+		p.clearHighlightedTarget()
+		if p.consumeDcbSpinnerInput(ctx) {
 			transforms = radar.GetScopeTransformations(
 				paneExtent,
 				p.center,
@@ -296,9 +298,25 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				p.rotation,
 			)
 		}
-		p.updateHighlightedTarget(ctx, transforms)
-		if !p.consumeCoastListClicks(ctx) {
-			p.consumeCommandClicks(ctx, transforms)
+	} else {
+		if p.consumeDcbInput(ctx) {
+			p.clearHighlightedTarget()
+		} else if p.consumeMouseEvents(ctx, transforms) {
+			transforms = radar.GetScopeTransformations(
+				paneExtent,
+				p.center,
+				p.rangeFeet,
+				p.rotation,
+			)
+			p.updateHighlightedTarget(ctx, transforms)
+			if !p.consumeCoastListClicks(ctx) {
+				p.consumeCommandClicks(ctx, transforms)
+			}
+		} else {
+			p.updateHighlightedTarget(ctx, transforms)
+			if !p.consumeCoastListClicks(ctx) {
+				p.consumeCommandClicks(ctx, transforms)
+			}
 		}
 	}
 	p.applyCurrentCursor(ctx)
@@ -496,15 +514,158 @@ func (p *ASDEXPane) dcbState() DcbState {
 		rangeNM = 0
 	}
 
+	activeSpinnerFunction := DcbFunctionVacant
+	rangeDisplay := ""
+	if p.dcbSpinner != nil {
+		activeSpinnerFunction = p.dcbSpinner.Function
+		if p.dcbSpinner.Function == DcbFunctionRange {
+			rangeDisplay = p.dcbSpinner.InputText()
+		}
+	}
+
 	settings := p.dataBlockSettings()
 	return DcbState{
-		RangeNM:      rangeNM,
-		Mode:         p.mode,
-		VectorOn:     true,
-		VectorLength: 3,
-		LeaderLength: settings.LeaderLength,
-		DataBlocksOn: settings.ShowDataBlocks,
+		RangeNM:               rangeNM,
+		RangeDisplay:          rangeDisplay,
+		Mode:                  p.mode,
+		VectorOn:              true,
+		VectorLength:          3,
+		LeaderLength:          settings.LeaderLength,
+		DataBlocksOn:          settings.ShowDataBlocks,
+		ActiveSpinnerFunction: activeSpinnerFunction,
 	}
+}
+
+func (p *ASDEXPane) consumeDcbInput(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || ctx.Mouse == nil {
+		return false
+	}
+
+	hit := p.dcb.HitTest(ctx.Mouse.Pos, ctx.PaneSize(), p.fonts.font, p.dcbState())
+	if !hit.OverDcb {
+		return false
+	}
+
+	mouse := ctx.Mouse
+	if mouse.WasReleased(platform.MouseButtonLeft) && hit.HasFunction {
+		return p.activateDcbFunction(ctx, hit.Function)
+	}
+
+	return mouse.WasReleased(platform.MouseButtonLeft) ||
+		mouse.WasReleased(platform.MouseButtonRight) ||
+		mouse.Wheel.X != 0 ||
+		mouse.Wheel.Y != 0 ||
+		hit.OverDcb
+}
+
+func (p *ASDEXPane) activateDcbFunction(_ *panes.Context, function DcbFunction) bool {
+	if p == nil {
+		return false
+	}
+
+	switch function {
+	case DcbFunctionRange:
+		p.startRangeSpinner()
+		return true
+	default:
+		return true
+	}
+}
+
+func (p *ASDEXPane) startRangeSpinner() {
+	if p == nil {
+		return
+	}
+
+	currentRange := int(stdmath.Round(float64(p.rangeFeet / redsmath.FeetPerNM)))
+
+	p.commandMode = CommandModeNone
+	p.datablockEdit = nil
+	p.editingTargetID = ""
+	p.initControlEntry = nil
+	p.termControlEntry = nil
+	p.multiFunction = nil
+	p.previewReposition = nil
+	p.coastListReposition = nil
+	p.mapReposition = nil
+	p.mapRotate = nil
+	p.commandEntry.Clear()
+	p.dcbSpinner = NewRangeDcbSpinner(currentRange)
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) consumeDcbSpinnerInput(ctx *panes.Context) bool {
+	if p == nil || p.dcbSpinner == nil || ctx == nil || ctx.Mouse == nil {
+		return false
+	}
+
+	mouse := ctx.Mouse
+	switch {
+	case mouse.Wheel.Y > 0:
+		p.dcbSpinner.Increment(1)
+		p.previewArea.SetSystemResponse("")
+		return true
+	case mouse.Wheel.Y < 0:
+		p.dcbSpinner.Increment(-1)
+		p.previewArea.SetSystemResponse("")
+		return true
+	case mouse.Wheel.X > 0:
+		p.dcbSpinner.Increment(1)
+		p.previewArea.SetSystemResponse("")
+		return true
+	case mouse.Wheel.X < 0:
+		p.dcbSpinner.Increment(-1)
+		p.previewArea.SetSystemResponse("")
+		return true
+	case mouse.WasReleased(platform.MouseButtonLeft):
+		p.commitDcbSpinner()
+		return true
+	default:
+		return false
+	}
+}
+
+func (p *ASDEXPane) cancelDcbSpinner() {
+	if p == nil {
+		return
+	}
+	p.dcbSpinner = nil
+	p.previewArea.SetSystemResponse("")
+}
+
+func (p *ASDEXPane) commitDcbSpinner() {
+	if p == nil || p.dcbSpinner == nil {
+		return
+	}
+
+	spinner := p.dcbSpinner
+	value, ok := spinner.ParsedValue()
+	if !ok {
+		p.dcbSpinner = nil
+		p.previewArea.SetSystemResponse("INVALID ENTRY")
+		return
+	}
+
+	switch spinner.Kind {
+	case DcbSpinnerRange:
+		p.setRangeNM(value)
+	default:
+		p.dcbSpinner = nil
+		p.previewArea.SetSystemResponse("INVALID ENTRY")
+		return
+	}
+
+	p.dcbSpinner = nil
+	p.previewArea.SetSystemResponse("")
+}
+
+func (p *ASDEXPane) setRangeNM(rangeNM int) {
+	if p == nil {
+		return
+	}
+	rangeNM = clampInt(rangeNM, 6, 300)
+	p.rangeFeet = float32(rangeNM) * redsmath.FeetPerNM
 }
 
 func (p *ASDEXPane) dataBlockSettings() DataBlockSettings {
@@ -734,6 +895,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	if p.mapRotate != nil {
 		return p.mapRotate.DisplayLines()
 	}
+	if p.dcbSpinner != nil {
+		return p.dcbSpinner.DisplayLines()
+	}
 	if p.commandMode == CommandModeTrackSuspend {
 		return []string{"TRK SUSP"}
 	}
@@ -761,6 +925,9 @@ func (p *ASDEXPane) activeCommandCursor() (line int, column int, ok bool) {
 	}
 	if p.mapRotate != nil {
 		return p.mapRotate.CursorLine(), p.mapRotate.CursorColumn(), true
+	}
+	if p.dcbSpinner != nil {
+		return p.dcbSpinner.CursorLine(), p.dcbSpinner.CursorColumn(), true
 	}
 	if !p.commandEntry.Empty() {
 		return p.commandEntry.CursorLine(), p.commandEntry.CursorColumn(), true
@@ -792,6 +959,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.coastListReposition = nil
 	p.mapReposition = nil
 	p.mapRotate = nil
+	p.dcbSpinner = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 }
@@ -814,6 +982,9 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.mapRotate != nil {
 		return p.handleMapRotateKeyboard(ctx)
+	}
+	if p.dcbSpinner != nil {
+		return p.handleDcbSpinnerKeyboard(ctx)
 	}
 	if p.commandMode != CommandModeNone {
 		keyboard := ctx.Keyboard
@@ -1004,6 +1175,7 @@ func (p *ASDEXPane) startMultiPreviewReposition() {
 	p.multiFunction = nil
 	p.previewReposition = NewMultiPreviewRepositionCommand()
 	p.coastListReposition = nil
+	p.dcbSpinner = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -1018,6 +1190,7 @@ func (p *ASDEXPane) startMultiCoastListReposition() {
 	p.multiFunction = nil
 	p.previewReposition = nil
 	p.coastListReposition = NewMultiCoastListRepositionCommand()
+	p.dcbSpinner = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -1078,6 +1251,43 @@ func (p *ASDEXPane) submitMapRotate() {
 		Output:    "",
 		HasOutput: true,
 	})
+}
+
+func (p *ASDEXPane) handleDcbSpinnerKeyboard(ctx *panes.Context) bool {
+	if p == nil || p.dcbSpinner == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	keyboard := ctx.Keyboard
+	spinner := p.dcbSpinner
+	switch {
+	case keyboard.WasPressed(platform.KeyEscape):
+		p.cancelDcbSpinner()
+		return true
+	case keyboard.WasPressed(platform.KeyEnter), keyboard.WasPressed(platform.KeyKeypadEnter):
+		p.commitDcbSpinner()
+		return true
+	case keyboard.WasPressed(platform.KeyLeft):
+		spinner.MoveLeft()
+		return true
+	case keyboard.WasPressed(platform.KeyRight):
+		spinner.MoveRight()
+		return true
+	case keyboard.WasPressed(platform.KeyBackspace):
+		spinner.Backspace()
+		return true
+	case keyboard.WasPressed(platform.KeyDelete):
+		spinner.DeleteForward()
+		return true
+	}
+
+	handled := false
+	for _, r := range keyboard.Text {
+		spinner.Insert(r)
+		p.previewArea.SetSystemResponse("")
+		handled = true
+	}
+	return handled
 }
 
 func (p *ASDEXPane) handleNormalCommandKeyboard(ctx *panes.Context) bool {

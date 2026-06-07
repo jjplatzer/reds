@@ -134,11 +134,14 @@ type DcbLayout struct {
 
 type DcbState struct {
 	RangeNM      int
+	RangeDisplay string
 	Mode         Mode
 	VectorOn     bool
 	VectorLength int
 	LeaderLength int
 	DataBlocksOn bool
+
+	ActiveSpinnerFunction DcbFunction
 }
 
 func NewDcb() Dcb {
@@ -246,26 +249,30 @@ func isLargeDcbFunction(function DcbFunction) bool {
 }
 
 func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
+	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
+		spec.Depressed = state.ActiveSpinnerFunction == spec.Function
+		return spec
+	}
 	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
-		return DcbButtonSpec{
+		return applyState(DcbButtonSpec{
 			Function: function,
 			Kind:     DcbButtonNormal,
 			Large:    isLargeDcbFunction(function),
 			Visible:  true,
 			Lines:    append([]string(nil), lines...),
-		}
+		})
 	}
 	menu := func(function DcbFunction, lines ...string) DcbButtonSpec {
-		return DcbButtonSpec{
+		return applyState(DcbButtonSpec{
 			Function: function,
 			Kind:     DcbButtonMenu,
 			Large:    isLargeDcbFunction(function),
 			Visible:  true,
 			Lines:    append([]string(nil), lines...),
-		}
+		})
 	}
 	value := func(function DcbFunction, showValue bool, value string, lines ...string) DcbButtonSpec {
-		return DcbButtonSpec{
+		return applyState(DcbButtonSpec{
 			Function:  function,
 			Kind:      DcbButtonValue,
 			Large:     isLargeDcbFunction(function),
@@ -273,10 +280,10 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 			Lines:     append([]string(nil), lines...),
 			ShowValue: showValue,
 			Value:     value,
-		}
+		})
 	}
 	toggle := func(function DcbFunction, on bool, onLabel string, offLabel string, lines ...string) DcbButtonSpec {
-		return DcbButtonSpec{
+		return applyState(DcbButtonSpec{
 			Function: function,
 			Kind:     DcbButtonToggle,
 			Large:    isLargeDcbFunction(function),
@@ -285,16 +292,7 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 			On:       on,
 			OnLabel:  onLabel,
 			OffLabel: offLabel,
-		}
-	}
-	errorButton := func(function DcbFunction, lines ...string) DcbButtonSpec {
-		return DcbButtonSpec{
-			Function: function,
-			Kind:     DcbButtonError,
-			Large:    isLargeDcbFunction(function),
-			Visible:  true,
-			Lines:    append([]string(nil), lines...),
-		}
+		})
 	}
 
 	return []DcbButtonSpec{
@@ -322,13 +320,14 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 		normal(DcbFunctionTrackSuspend, "TRK", "SUSP"),
 		normal(DcbFunctionTermControl, "TERM", "CNTL"),
 		toggle(DcbFunctionDcbOnOff, d.Visible(), "ON", "OFF", "DCB"),
-		errorButton(DcbFunctionMlatOff, "MLAT", "OFF"),
-		errorButton(DcbFunctionAsrOff, "ASR", "OFF"),
 		menu(DcbFunctionOperationalMode, "OPER", "MODE"),
 	}
 }
 
 func (d *Dcb) rangeLabel(state DcbState) string {
+	if text := strings.TrimSpace(state.RangeDisplay); text != "" {
+		return text
+	}
 	return strconv.Itoa(state.RangeNM)
 }
 
@@ -761,13 +760,9 @@ func (d *Dcb) measureToggleFragments(
 		return 0, 0
 	}
 
-	fragments := d.toggleFragments(spec)
-	for i, fragment := range fragments {
+	for _, fragment := range d.toggleFragments(spec) {
 		fragmentWidth, fragmentHeight := font.MeasureText(fragment, fontSize)
 		width += fragmentWidth
-		if i != len(fragments)-1 {
-			width += dcbTextLineSpacing
-		}
 		if fragmentHeight > height {
 			height = fragmentHeight
 		}
@@ -808,9 +803,6 @@ func (d *Dcb) drawToggleFragments(
 
 		width, _ := font.MeasureText(fragment, fontSize)
 		x += float32(width)
-		if i != len(fragments)-1 {
-			x += dcbTextLineSpacing
-		}
 	}
 }
 

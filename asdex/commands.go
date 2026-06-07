@@ -968,6 +968,7 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 		ap.coastListReposition = nil
 		ap.mapReposition = nil
 		ap.mapRotate = nil
+		ap.dcbSpinner = nil
 		ap.commandEntry.Clear()
 	case ClearInput:
 		ap.commandEntry.Clear()
