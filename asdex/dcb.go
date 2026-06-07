@@ -134,7 +134,7 @@ type DcbLayout struct {
 }
 
 type DcbState struct {
-	RangeNM      int
+	Range        int
 	Mode         Mode
 	VectorOn     bool
 	VectorLength int
@@ -169,14 +169,14 @@ type DcbSpinner struct {
 }
 
 func NewRangeDcbSpinner(currentRange int) *DcbSpinner {
-	currentRange = clampInt(currentRange, asdexMinRangeNM, asdexMaxRangeNM)
+	currentRange = clampInt(currentRange, asdexMinRangeSetting, asdexMaxRangeSetting)
 
 	return &DcbSpinner{
 		Kind:     DcbSpinnerRange,
 		Function: DcbFunctionRange,
 		Title:    "RANGE",
-		Min:      asdexMinRangeNM,
-		Max:      asdexMaxRangeNM,
+		Min:      asdexMinRangeSetting,
+		Max:      asdexMaxRangeSetting,
 		Step:     1,
 		Value:    currentRange,
 		Original: currentRange,
@@ -501,7 +501,7 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 }
 
 func (d *Dcb) rangeLabel(state DcbState) string {
-	return strconv.Itoa(clampInt(state.RangeNM, asdexMinRangeNM, asdexMaxRangeNM))
+	return strconv.Itoa(clampInt(state.Range, asdexMinRangeSetting, asdexMaxRangeSetting))
 }
 
 func (d *Dcb) vectorLengthLabel(state DcbState) string {

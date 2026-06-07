@@ -37,9 +37,14 @@ const (
 	aircraftCoastDelay = 60 * time.Second
 	coastDropLifetime  = 45 * time.Second
 
-	asdexMinRangeNM     = 6
-	asdexMaxRangeNM     = 300
-	asdexDefaultRangeNM = 6
+	// CRC ASDE-X RANGE is not nautical miles. DisplayType.Asdex uses
+	// RangeUnits.Feet, and ViewManager converts the displayed range setting
+	// to feet as: rangeFeet = Range * 100. RANGE 100 means 10,000 ft from
+	// center to the limiting screen edge.
+	asdexMinRangeSetting     = 6
+	asdexMaxRangeSetting     = 300
+	asdexDefaultRangeSetting = 100
+	asdexFeetPerRangeUnit    = 100
 )
 
 const (
@@ -118,7 +123,7 @@ type ASDEXPane struct {
 	highlightQueryValid    bool
 
 	center          redsmath.Vec2
-	rangeNM         int
+	rangeSetting    int
 	rangeFeet       float32
 	rotation        float32
 	viewInitialized bool
@@ -176,8 +181,8 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		coastList:                 coastList,
 		dcb:                       NewDcb(),
 		showCoastList:             true,
-		rangeNM:                   asdexDefaultRangeNM,
-		rangeFeet:                 rangeFeetFromNM(asdexDefaultRangeNM),
+		rangeSetting:              asdexDefaultRangeSetting,
+		rangeFeet:                 rangeFeetFromSetting(asdexDefaultRangeSetting),
 	}, nil
 }
 
@@ -528,9 +533,9 @@ func (p *ASDEXPane) dcbState() DcbState {
 		}
 	}
 
-	rangeNM := asdexDefaultRangeNM
-	if p.rangeNM != 0 {
-		rangeNM = clampInt(p.rangeNM, asdexMinRangeNM, asdexMaxRangeNM)
+	rangeSetting := asdexDefaultRangeSetting
+	if p.rangeSetting != 0 {
+		rangeSetting = clampInt(p.rangeSetting, asdexMinRangeSetting, asdexMaxRangeSetting)
 	}
 
 	activeSpinnerFunction := DcbFunctionVacant
@@ -540,7 +545,7 @@ func (p *ASDEXPane) dcbState() DcbState {
 
 	settings := p.dataBlockSettings()
 	return DcbState{
-		RangeNM:               rangeNM,
+		Range:                 rangeSetting,
 		Mode:                  p.mode,
 		VectorOn:              true,
 		VectorLength:          3,
@@ -591,8 +596,8 @@ func (p *ASDEXPane) startRangeSpinner() {
 		return
 	}
 
-	if p.rangeNM == 0 {
-		p.setRangeNM(asdexDefaultRangeNM)
+	if p.rangeSetting == 0 {
+		p.setRangeSetting(asdexDefaultRangeSetting)
 	}
 
 	p.commandMode = CommandModeNone
@@ -606,7 +611,7 @@ func (p *ASDEXPane) startRangeSpinner() {
 	p.mapReposition = nil
 	p.mapRotate = nil
 	p.commandEntry.Clear()
-	p.dcbSpinner = NewRangeDcbSpinner(p.rangeNM)
+	p.dcbSpinner = NewRangeDcbSpinner(p.rangeSetting)
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
@@ -619,10 +624,10 @@ func (p *ASDEXPane) consumeDcbSpinnerInput(ctx *panes.Context) bool {
 	mouse := ctx.Mouse
 	switch {
 	case mouse.Wheel.Y > 0:
-		p.incrementActiveDcbSpinner(1)
+		p.incrementActiveDcbSpinner(-1)
 		return true
 	case mouse.Wheel.Y < 0:
-		p.incrementActiveDcbSpinner(-1)
+		p.incrementActiveDcbSpinner(1)
 		return true
 	case mouse.Wheel.X > 0:
 		p.incrementActiveDcbSpinner(1)
@@ -667,7 +672,7 @@ func (p *ASDEXPane) commitDcbSpinner() {
 			return
 		}
 
-		p.setRangeNM(value)
+		p.setRangeSetting(value)
 		p.dcbSpinner = nil
 		p.previewArea.SetSystemResponse("")
 		return
@@ -685,20 +690,20 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 
 	switch p.dcbSpinner.Kind {
 	case DcbSpinnerRange:
-		p.setRangeNM(p.rangeNM + delta)
-		p.dcbSpinner.Value = p.rangeNM
+		p.setRangeSetting(p.rangeSetting + delta)
+		p.dcbSpinner.Value = p.rangeSetting
 	default:
 		p.dcbSpinner.Increment(delta)
 	}
 	p.previewArea.SetSystemResponse("")
 }
 
-func (p *ASDEXPane) setRangeNM(rangeNM int) {
+func (p *ASDEXPane) setRangeSetting(rangeSetting int) {
 	if p == nil {
 		return
 	}
-	p.rangeNM = clampInt(rangeNM, asdexMinRangeNM, asdexMaxRangeNM)
-	p.rangeFeet = rangeFeetFromNM(p.rangeNM)
+	p.rangeSetting = clampInt(rangeSetting, asdexMinRangeSetting, asdexMaxRangeSetting)
+	p.rangeFeet = rangeFeetFromSetting(p.rangeSetting)
 }
 
 func (p *ASDEXPane) dataBlockSettings() DataBlockSettings {
@@ -1844,15 +1849,15 @@ func (p *ASDEXPane) initView(rect redsmath.Rect) {
 		X: (bounds.Min.X + bounds.Max.X) * 0.5,
 		Y: (bounds.Min.Y + bounds.Max.Y) * 0.5,
 	}
-	fitRangeNM := int(stdmath.Ceil(float64(fitRangeFeet / redsmath.FeetPerNM)))
-	fitRangeNM = clampInt(fitRangeNM, asdexMinRangeNM, asdexMaxRangeNM)
-	if p.rangeNM == 0 {
-		p.rangeNM = asdexDefaultRangeNM
+	fitRangeSetting := int(stdmath.Ceil(float64(fitRangeFeet / asdexFeetPerRangeUnit)))
+	fitRangeSetting = clampInt(fitRangeSetting, asdexMinRangeSetting, asdexMaxRangeSetting)
+	if p.rangeSetting == 0 {
+		p.rangeSetting = asdexDefaultRangeSetting
 	}
-	if fitRangeNM > p.rangeNM {
-		p.rangeNM = fitRangeNM
+	if fitRangeSetting > p.rangeSetting {
+		p.rangeSetting = fitRangeSetting
 	}
-	p.rangeFeet = rangeFeetFromNM(p.rangeNM)
+	p.rangeFeet = rangeFeetFromSetting(p.rangeSetting)
 	p.rotation = 0
 	p.viewInitialized = true
 }
@@ -1892,7 +1897,7 @@ func (p *ASDEXPane) consumeMouseEvents(
 	if mouse.Wheel.Y != 0 && paneLocal.Contains(mouse.Pos) {
 		oldRangeFeet := p.rangeFeet
 		oldCenter := p.center
-		p.setRangeNM(p.rangeNM + wheelRangeDelta(mouse.Wheel.Y))
+		p.setRangeSetting(p.rangeSetting + wheelRangeDelta(mouse.Wheel.Y))
 		newRangeFeet := p.rangeFeet
 
 		if oldRangeFeet > 0 && newRangeFeet > 0 && newRangeFeet != oldRangeFeet {
@@ -1949,9 +1954,9 @@ func wheelRangeDelta(wheelY float32) int {
 	}
 }
 
-func rangeFeetFromNM(rangeNM int) float32 {
-	rangeNM = clampInt(rangeNM, asdexMinRangeNM, asdexMaxRangeNM)
-	return float32(rangeNM) * redsmath.FeetPerNM
+func rangeFeetFromSetting(rangeSetting int) float32 {
+	rangeSetting = clampInt(rangeSetting, asdexMinRangeSetting, asdexMaxRangeSetting)
+	return float32(rangeSetting * asdexFeetPerRangeUnit)
 }
 
 func normalizeRotation(value float32) float32 {
