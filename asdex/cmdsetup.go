@@ -360,6 +360,7 @@ func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
 	ap.mapRotate = nil
+	ap.dcbSpinner = nil
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.initControlEntry = nil
@@ -382,6 +383,7 @@ func (ap *ASDEXPane) cmdMapReposition(ctx *panes.Context) CommandStatus {
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
 	ap.mapRotate = nil
+	ap.dcbSpinner = nil
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.initControlEntry = nil
@@ -405,6 +407,7 @@ func (ap *ASDEXPane) cmdMapRotate(_ *panes.Context) CommandStatus {
 	ap.multiFunction = nil
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
+	ap.dcbSpinner = nil
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.initControlEntry = nil
