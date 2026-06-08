@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	redsmath "github.com/juliusplatzer/reds/math"
+	"github.com/juliusplatzer/reds/radar"
 	"github.com/juliusplatzer/reds/renderer"
 	"github.com/juliusplatzer/reds/util"
 )
@@ -25,6 +26,7 @@ const (
 	departureSpeedThresholdKt     = 40.0
 	departureMaxAGLFeet           = 50.0
 	holdBarStationToleranceFeet   = 10.0
+	holdBarLineWidthPixels        = 1.5
 	pointOnSegmentToleranceFeet   = 5.0
 	degenerateRunwayAxisLength2   = 1e-6
 	holdBarsBrightnessDefault     = 95
@@ -574,7 +576,11 @@ func holdBarAheadOfOperation(
 	return operation.StationFeet < holdBarStart-holdBarStationToleranceFeet
 }
 
-func (sl *SafetyLogic) DrawHoldBars(cb *renderer.CmdBuffer, brightness int) {
+func (sl *SafetyLogic) DrawHoldBars(
+	cb *renderer.CmdBuffer,
+	transforms radar.ScopeTransformations,
+	brightness int,
+) {
 	if sl == nil || cb == nil {
 		return
 	}
@@ -584,20 +590,66 @@ func (sl *SafetyLogic) DrawHoldBars(cb *renderer.CmdBuffer, brightness int) {
 		return
 	}
 
-	builder := renderer.GetLinesBuilder()
-	defer renderer.ReturnLinesBuilder(builder)
+	color := applyBrightness(renderer.RGB8(0, 255, 0), brightness, brightnessFloorDefault)
+	builder := renderer.GetColoredTrianglesBuilder()
+	defer renderer.ReturnColoredTrianglesBuilder(builder)
 
 	for _, hb := range lit {
-		points := make([]renderer.PointVertex, 0, len(hb.PointsFeet))
-		for _, p := range hb.PointsFeet {
-			points = append(points, renderer.PointVertex{X: p.X, Y: p.Y})
-		}
-		builder.AddLineStrip(points)
+		buildHoldBar(builder, hb.PointsFeet, transforms, holdBarLineWidthPixels, color)
 	}
 
-	cb.SetRGB(applyBrightness(renderer.RGB8(0, 255, 0), brightness, brightnessFloorDefault))
-	cb.LineWidth(1)
 	builder.GenerateCommands(cb)
+}
+
+func buildHoldBar(
+	builder *renderer.ColoredTrianglesBuilder,
+	points []redsmath.Vec2,
+	transforms radar.ScopeTransformations,
+	widthPixels float32,
+	color renderer.RGB,
+) {
+	if builder == nil || len(points) < minHoldBarPolylinePointCount || widthPixels <= 0 {
+		return
+	}
+
+	for i := 0; i+1 < len(points); i++ {
+		a := transforms.WindowFromWorldP(points[i])
+		b := transforms.WindowFromWorldP(points[i+1])
+		buildScreenSegment(builder, a, b, widthPixels, color)
+	}
+}
+
+func buildScreenSegment(
+	builder *renderer.ColoredTrianglesBuilder,
+	a redsmath.Vec2,
+	b redsmath.Vec2,
+	widthPixels float32,
+	color renderer.RGB,
+) {
+	d := b.Sub(a)
+	len2 := safetyLength2(d)
+	if len2 <= degenerateRunwayAxisLength2 {
+		return
+	}
+
+	invLen := float32(1.0 / stdmath.Sqrt(float64(len2)))
+	normal := redsmath.Vec2{
+		X: -d.Y * invLen,
+		Y: d.X * invLen,
+	}.Mul(widthPixels * 0.5)
+
+	p0 := a.Add(normal)
+	p1 := b.Add(normal)
+	p2 := b.Sub(normal)
+	p3 := a.Sub(normal)
+
+	builder.AddQuad(
+		renderer.PointVertex{X: p0.X, Y: p0.Y},
+		renderer.PointVertex{X: p1.X, Y: p1.Y},
+		renderer.PointVertex{X: p2.X, Y: p2.Y},
+		renderer.PointVertex{X: p3.X, Y: p3.Y},
+		color,
+	)
 }
 
 func headingUnitVector(headingDeg float32) redsmath.Vec2 {

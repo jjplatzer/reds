@@ -355,8 +355,8 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	holdBarCB := zcb.At(windowZ(0, zSafetyLogicHoldBars))
 	holdBarCB.Viewport(x, y, w, h)
 	holdBarCB.Scissor(x, y, w, h)
-	transforms.LoadWorldViewingMatrices(holdBarCB)
-	p.safetyLogic.DrawHoldBars(holdBarCB, holdBarsBrightnessDefault)
+	transforms.LoadWindowViewingMatrices(holdBarCB)
+	p.safetyLogic.DrawHoldBars(holdBarCB, transforms, holdBarsBrightnessDefault)
 	holdBarCB.DisableScissor()
 
 	targetCB := zcb.At(windowZ(0, zTargets))
