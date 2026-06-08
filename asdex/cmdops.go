@@ -81,6 +81,8 @@ func (ap *ASDEXPane) cmdTrackSuspend(_ *panes.Context) CommandStatus {
 	ap.mapReposition = nil
 	ap.mapRotate = nil
 	ap.dcbSpinner = nil
+	ap.dcbMenuCommand = nil
+	ap.dcb.ReturnToMainMenu()
 	ap.clearHighlightedTarget()
 	ap.previewArea.SetSystemResponse("")
 
@@ -265,6 +267,8 @@ func (ap *ASDEXPane) cmdInitControl(_ *panes.Context) CommandStatus {
 	ap.mapReposition = nil
 	ap.mapRotate = nil
 	ap.dcbSpinner = nil
+	ap.dcbMenuCommand = nil
+	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.clearHighlightedTarget()
@@ -388,6 +392,8 @@ func (ap *ASDEXPane) cmdTerminateControl(_ *panes.Context) CommandStatus {
 	ap.mapReposition = nil
 	ap.mapRotate = nil
 	ap.dcbSpinner = nil
+	ap.dcbMenuCommand = nil
+	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
 	ap.clearHighlightedTarget()

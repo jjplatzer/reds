@@ -23,6 +23,7 @@ type DcbMenu int
 
 const (
 	DcbMenuMain DcbMenu = iota
+	DcbMenuTempData
 	DcbMenuOff
 )
 
@@ -55,6 +56,15 @@ const (
 	DcbFunctionVectorOnOff
 	DcbFunctionVectorLength
 	DcbFunctionTempData
+	DcbFunctionClosedRunway
+	DcbFunctionStoredGlobalTempData
+	DcbFunctionDefineClosedArea
+	DcbFunctionDefineRestrictedArea
+	DcbFunctionDefineTempText
+	DcbFunctionShowHiddenTempData
+	DcbFunctionHideTempData
+	DcbFunctionDeleteGlobalTempData
+	DcbFunctionDone
 	DcbFunctionLeaderLength
 	DcbFunctionLocal1
 	DcbFunctionLocal2
@@ -168,6 +178,21 @@ type DcbSpinner struct {
 
 	input  string
 	cursor int
+}
+
+type DcbMenuCommand struct {
+	lines []string
+}
+
+func NewDcbMenuCommand(lines ...string) *DcbMenuCommand {
+	return &DcbMenuCommand{lines: append([]string(nil), lines...)}
+}
+
+func (c *DcbMenuCommand) DisplayLines() []string {
+	if c == nil {
+		return nil
+	}
+	return append([]string(nil), c.lines...)
 }
 
 func NewRangeDcbSpinner(currentRange int) *DcbSpinner {
@@ -362,6 +387,29 @@ func (d *Dcb) ToggleOnOff() {
 	}
 }
 
+func (d *Dcb) SetMenu(menu DcbMenu) {
+	if d == nil {
+		return
+	}
+	d.menu = menu
+}
+
+func (d *Dcb) Menu() DcbMenu {
+	if d == nil {
+		return DcbMenuOff
+	}
+	return d.menu
+}
+
+func (d *Dcb) ReturnToMainMenu() {
+	if d == nil {
+		return
+	}
+	if d.menu != DcbMenuOff {
+		d.menu = DcbMenuMain
+	}
+}
+
 func (d *Dcb) SetPosition(position DcbPosition) {
 	if d == nil {
 		return
@@ -444,6 +492,15 @@ func isLargeDcbFunction(function DcbFunction) bool {
 	case DcbFunctionRange,
 		DcbFunctionSafetyLogic,
 		DcbFunctionTools,
+		DcbFunctionClosedRunway,
+		DcbFunctionStoredGlobalTempData,
+		DcbFunctionDefineClosedArea,
+		DcbFunctionDefineRestrictedArea,
+		DcbFunctionDefineTempText,
+		DcbFunctionShowHiddenTempData,
+		DcbFunctionHideTempData,
+		DcbFunctionDeleteGlobalTempData,
+		DcbFunctionDone,
 		DcbFunctionVacant:
 		return true
 	default:
@@ -562,6 +619,58 @@ func (d *Dcb) offButtonSpecs(state DcbState) []DcbButtonSpec {
 	}
 }
 
+func (d *Dcb) tempDataButtonSpecs(state DcbState) []DcbButtonSpec {
+	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
+		if state.ActiveSpinnerFunction == spec.Function {
+			spec.Active = true
+		}
+		return spec
+	}
+	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Kind:     DcbButtonNormal,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	menu := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Kind:     DcbButtonMenu,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	vacant := func() DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: DcbFunctionVacant,
+			Kind:     DcbButtonVacant,
+			Large:    true,
+			Visible:  true,
+		}
+	}
+
+	return []DcbButtonSpec{
+		vacant(),
+		vacant(),
+		vacant(),
+		menu(DcbFunctionClosedRunway, "CLOSED", "RWY"),
+		menu(DcbFunctionStoredGlobalTempData, "STORED", "GLOBAL", "TEMP", "DATA"),
+		normal(DcbFunctionDefineClosedArea, "DEFINE", "CLOSED", "AREA"),
+		normal(DcbFunctionDefineRestrictedArea, "DEFINE", "RESTR", "AREA"),
+		normal(DcbFunctionDefineTempText, "DEFINE", "TEXT"),
+		normal(DcbFunctionShowHiddenTempData, "SHOW", "HIDDEN", "DATA"),
+		normal(DcbFunctionHideTempData, "HIDE", "DATA"),
+		normal(DcbFunctionDeleteGlobalTempData, "DELETE", "GLOBAL"),
+		normal(DcbFunctionDone, "DONE"),
+		vacant(),
+		vacant(),
+	}
+}
+
 func (d *Dcb) rangeLabel(state DcbState) string {
 	return strconv.Itoa(clampInt(state.Range, asdexMinRangeSetting, asdexMaxRangeSetting))
 }
@@ -582,6 +691,8 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 	switch d.menu {
 	case DcbMenuOff:
 		return d.offButtonSpecs(state)
+	case DcbMenuTempData:
+		return d.tempDataButtonSpecs(state)
 	default:
 		return d.mainButtonSpecs(state)
 	}

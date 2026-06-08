@@ -99,6 +99,7 @@ type ASDEXPane struct {
 	coastList                 CoastList
 	dcb                       Dcb
 	dcbSpinner                *DcbSpinner
+	dcbMenuCommand            *DcbMenuCommand
 	showCoastList             bool
 	hoveredCoastListTarget    string
 
@@ -316,6 +317,9 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				p.rotation,
 			)
 		}
+	} else if p.dcbMenuCommand != nil {
+		p.clearHighlightedTarget()
+		p.consumeDcbInput(ctx)
 	} else {
 		if p.consumeDcbInput(ctx) {
 			p.clearHighlightedTarget()
@@ -550,7 +554,7 @@ func (p *ASDEXPane) dcbCursorUnlocked() bool {
 	if p == nil {
 		return false
 	}
-	if p.dcbSpinner != nil {
+	if p.dcbSpinner != nil || p.dcbMenuCommand != nil {
 		return true
 	}
 
@@ -656,9 +660,25 @@ func (p *ASDEXPane) activateDcbFunction(_ *panes.Context, function DcbFunction) 
 			p.startRangeSpinner()
 		}
 		return true
+	case DcbFunctionTempData:
+		p.openTempDataDcbMenu()
+		return true
+	case DcbFunctionDone:
+		p.closeDcbSubmenu()
+		return true
+	case DcbFunctionClosedRunway,
+		DcbFunctionStoredGlobalTempData,
+		DcbFunctionDefineClosedArea,
+		DcbFunctionDefineRestrictedArea,
+		DcbFunctionDefineTempText,
+		DcbFunctionShowHiddenTempData,
+		DcbFunctionHideTempData,
+		DcbFunctionDeleteGlobalTempData:
+		return true
 	case DcbFunctionDcbOnOff:
 		p.dcb.ToggleOnOff()
 		p.dcbSpinner = nil
+		p.dcbMenuCommand = nil
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
 		return true
@@ -686,8 +706,45 @@ func (p *ASDEXPane) startRangeSpinner() {
 	p.coastListReposition = nil
 	p.mapReposition = nil
 	p.mapRotate = nil
+	p.dcbMenuCommand = nil
 	p.commandEntry.Clear()
 	p.dcbSpinner = NewRangeDcbSpinner(p.rangeSetting)
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) openTempDataDcbMenu() {
+	if p == nil {
+		return
+	}
+
+	p.dcb.SetMenu(DcbMenuTempData)
+	p.dcbSpinner = nil
+	p.commandEntry.Clear()
+	p.datablockEdit = nil
+	p.editingTargetID = ""
+	p.initControlEntry = nil
+	p.termControlEntry = nil
+	p.multiFunction = nil
+	p.previewReposition = nil
+	p.coastListReposition = nil
+	p.mapReposition = nil
+	p.mapRotate = nil
+	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) closeDcbSubmenu() {
+	if p == nil {
+		return
+	}
+
+	if p.dcb.Menu() != DcbMenuOff {
+		p.dcb.SetMenu(DcbMenuMain)
+	}
+	p.dcbMenuCommand = nil
+	p.dcbSpinner = nil
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
@@ -1018,6 +1075,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	if p.dcbSpinner != nil {
 		return p.dcbSpinner.DisplayLines()
 	}
+	if p.dcbMenuCommand != nil {
+		return p.dcbMenuCommand.DisplayLines()
+	}
 	if p.commandMode == CommandModeTrackSuspend {
 		return []string{"TRK SUSP"}
 	}
@@ -1080,6 +1140,8 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.mapReposition = nil
 	p.mapRotate = nil
 	p.dcbSpinner = nil
+	p.dcbMenuCommand = nil
+	p.dcb.ReturnToMainMenu()
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 }
@@ -1106,6 +1168,9 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	if p.dcbSpinner != nil {
 		return p.handleDcbSpinnerKeyboard(ctx)
 	}
+	if p.dcbMenuCommand != nil {
+		return p.handleDcbMenuKeyboard(ctx)
+	}
 	if p.commandMode != CommandModeNone {
 		keyboard := ctx.Keyboard
 		if keyboard.WasPressed(platform.KeyEscape) ||
@@ -1118,6 +1183,22 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	if p.commandMode == CommandModeNone {
 		return p.handleNormalCommandKeyboard(ctx)
 	}
+	return false
+}
+
+func (p *ASDEXPane) handleDcbMenuKeyboard(ctx *panes.Context) bool {
+	if p == nil || p.dcbMenuCommand == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	keyboard := ctx.Keyboard
+	if keyboard.WasPressed(platform.KeyEscape) ||
+		keyboard.WasPressed(platform.KeyBackspace) ||
+		keyboard.WasPressed(platform.KeyDelete) {
+		p.closeDcbSubmenu()
+		return true
+	}
+
 	return false
 }
 
@@ -1296,6 +1377,7 @@ func (p *ASDEXPane) startMultiPreviewReposition() {
 	p.previewReposition = NewMultiPreviewRepositionCommand()
 	p.coastListReposition = nil
 	p.dcbSpinner = nil
+	p.dcbMenuCommand = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -1311,6 +1393,7 @@ func (p *ASDEXPane) startMultiCoastListReposition() {
 	p.previewReposition = nil
 	p.coastListReposition = NewMultiCoastListRepositionCommand()
 	p.dcbSpinner = nil
+	p.dcbMenuCommand = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
