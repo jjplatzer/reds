@@ -81,6 +81,7 @@ type ASDEXPane struct {
 	configAirportCode string
 	mode              Mode
 	videomap          *VideoMap
+	safetyLogic       SafetyLogic
 	targets           TargetStore
 	smes              *redsnet.SmesClient
 	fonts             fontCache
@@ -140,6 +141,10 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	if err != nil {
 		return nil, err
 	}
+	safetyLogic, err := LoadSafetyLogic(airport, vm)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "reds: %v\n", err)
+	}
 
 	fonts, err := loadFontCache()
 	if err != nil {
@@ -167,6 +172,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		configAirportCode: configAirport,
 		mode:              ModeDay,
 		videomap:          vm,
+		safetyLogic:       safetyLogic,
 		targets:           NewTargetStore(),
 		smes:              client,
 		fonts:             fonts,
@@ -334,6 +340,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.applyCurrentCursor(ctx)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
 	targets := p.targets.All()
+	p.safetyLogic.Update(targets)
 
 	cb := zcb.At(windowZ(0, zVideoMap))
 	x, y, w, h := ctx.PaneFramebufferRect()
@@ -344,6 +351,13 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	transforms.LoadWorldViewingMatrices(cb)
 	DrawVideoMap(p.videomap, cb, p.mode)
 	cb.DisableScissor()
+
+	holdBarCB := zcb.At(windowZ(0, zSafetyLogicHoldBars))
+	holdBarCB.Viewport(x, y, w, h)
+	holdBarCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(holdBarCB)
+	p.safetyLogic.DrawHoldBars(holdBarCB, transforms, holdBarsBrightnessDefault)
+	holdBarCB.DisableScissor()
 
 	targetCB := zcb.At(windowZ(0, zTargets))
 	targetCB.Viewport(x, y, w, h)
