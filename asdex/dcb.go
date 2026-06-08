@@ -123,6 +123,7 @@ type DcbButtonLayout struct {
 type DcbLayout struct {
 	Bounds     redsmath.Rect
 	MenuBounds redsmath.Rect
+	Collapsed  bool
 
 	ButtonSize redsmath.Vec2
 	MenuSize   redsmath.Vec2
@@ -140,6 +141,7 @@ type DcbState struct {
 	VectorLength int
 	LeaderLength int
 	DataBlocksOn bool
+	DcbOn        bool
 
 	ActiveSpinnerFunction DcbFunction
 }
@@ -340,6 +342,26 @@ func (d *Dcb) Visible() bool {
 	return d != nil && d.visible && d.position != DcbOff
 }
 
+func (d *Dcb) On() bool {
+	return d != nil && d.menu != DcbMenuOff
+}
+
+func (d *Dcb) Collapsed() bool {
+	return d != nil && d.menu == DcbMenuOff
+}
+
+func (d *Dcb) ToggleOnOff() {
+	if d == nil {
+		return
+	}
+
+	if d.menu == DcbMenuOff {
+		d.menu = DcbMenuMain
+	} else {
+		d.menu = DcbMenuOff
+	}
+}
+
 func (d *Dcb) SetPosition(position DcbPosition) {
 	if d == nil {
 		return
@@ -389,6 +411,13 @@ func verticalDcbMenuSize(button redsmath.Vec2) redsmath.Vec2 {
 	return redsmath.Vec2{
 		X: button.X + 6,
 		Y: button.Y*float32(dcbColumnCount)*2 + 87,
+	}
+}
+
+func offDcbMenuSize(button redsmath.Vec2) redsmath.Vec2 {
+	return redsmath.Vec2{
+		X: button.X + 6,
+		Y: button.Y*2 + 9,
 	}
 }
 
@@ -495,7 +524,40 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 		normal(DcbFunctionInitControl, "INIT", "CNTL"),
 		normal(DcbFunctionTrackSuspend, "TRK", "SUSP"),
 		normal(DcbFunctionTermControl, "TERM", "CNTL"),
-		toggle(DcbFunctionDcbOnOff, d.Visible(), "ON", "OFF", "DCB"),
+		toggle(DcbFunctionDcbOnOff, state.DcbOn, "ON", "OFF", "DCB"),
+		menu(DcbFunctionOperationalMode, "OPER", "MODE"),
+	}
+}
+
+func (d *Dcb) offButtonSpecs(state DcbState) []DcbButtonSpec {
+	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
+		if state.ActiveSpinnerFunction == spec.Function {
+			spec.Active = true
+		}
+		return spec
+	}
+	toggle := func(function DcbFunction, on bool, onLabel string, offLabel string, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Kind:     DcbButtonToggle,
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+			On:       on,
+			OnLabel:  onLabel,
+			OffLabel: offLabel,
+		})
+	}
+	menu := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Kind:     DcbButtonMenu,
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+
+	return []DcbButtonSpec{
+		toggle(DcbFunctionDcbOnOff, state.DcbOn, "ON", "OFF", "DCB"),
 		menu(DcbFunctionOperationalMode, "OPER", "MODE"),
 	}
 }
@@ -513,16 +575,26 @@ func (d *Dcb) leaderLengthLabel(state DcbState) string {
 }
 
 func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
-	if d == nil || d.menu == DcbMenuOff {
+	if d == nil {
 		return nil
 	}
-	return d.mainButtonSpecs(state)
+
+	switch d.menu {
+	case DcbMenuOff:
+		return d.offButtonSpecs(state)
+	default:
+		return d.mainButtonSpecs(state)
+	}
 }
 
 func (d *Dcb) Layout(displaySize redsmath.Vec2, font *renderer.BitmapFont, state DcbState) DcbLayout {
 	var out DcbLayout
 	if d == nil || !d.Visible() || font == nil || displaySize.X <= 0 || displaySize.Y <= 0 {
 		return out
+	}
+
+	if d.Collapsed() {
+		return d.collapsedLayout(displaySize, font, state)
 	}
 
 	autoSize := 3
@@ -600,6 +672,50 @@ func (d *Dcb) Layout(displaySize redsmath.Vec2, font *renderer.BitmapFont, state
 	}
 
 	out.Buttons = d.layoutButtons(out.MenuBounds, out.ButtonSize, d.buttonSpecs(state))
+	return out
+}
+
+func (d *Dcb) collapsedLayout(
+	displaySize redsmath.Vec2,
+	font *renderer.BitmapFont,
+	state DcbState,
+) DcbLayout {
+	var out DcbLayout
+
+	autoSize := 3
+	var buttonSize redsmath.Vec2
+	var menuSize redsmath.Vec2
+	for autoSize >= 1 {
+		buttonSize = d.buttonSizeForFont(font, autoSize)
+		if buttonSize.X <= 0 || buttonSize.Y <= 0 {
+			return DcbLayout{}
+		}
+
+		menuSize = offDcbMenuSize(buttonSize)
+		if autoSize == 1 || (displaySize.X >= menuSize.X && displaySize.Y >= menuSize.Y) {
+			break
+		}
+		autoSize--
+	}
+
+	out.Collapsed = true
+	out.AutoSize = autoSize
+	out.RenderFontSize = autoSize
+	charSize := clampInt(d.charSize, 1, 3)
+	if charSize < out.RenderFontSize {
+		out.RenderFontSize = charSize
+	}
+	out.ButtonSize = buttonSize
+	out.MenuSize = menuSize
+
+	x := displaySize.X - menuSize.X
+	if x < 0 {
+		x = 0
+	}
+
+	out.Bounds = redsmath.NewRect(x, 0, x+menuSize.X, menuSize.Y)
+	out.MenuBounds = out.Bounds
+	out.Buttons = layoutHorizontalDcbButtons(out.MenuBounds, out.ButtonSize, d.offButtonSpecs(state))
 	return out
 }
 
@@ -718,9 +834,14 @@ func (d *Dcb) DrawBackground(cb *renderer.CmdBuffer, layout DcbLayout) {
 	builder := renderer.GetColoredTrianglesBuilder()
 	defer renderer.ReturnColoredTrianglesBuilder(builder)
 
-	background := applyBrightness(dcbBackgroundRGB, d.brightness, dcbMinBrightness)
 	menuSlab := applyBrightness(dcbMenuSlabRGB, d.brightness, dcbMinBrightness)
+	if layout.Collapsed {
+		addDcbRect(builder, layout.Bounds, menuSlab)
+		builder.GenerateCommands(cb)
+		return
+	}
 
+	background := applyBrightness(dcbBackgroundRGB, d.brightness, dcbMinBrightness)
 	addDcbRect(builder, layout.Bounds, background)
 	if !layout.MenuBounds.Empty() {
 		addDcbRect(builder, layout.MenuBounds, menuSlab)
