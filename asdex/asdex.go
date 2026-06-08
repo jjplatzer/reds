@@ -48,9 +48,9 @@ const (
 )
 
 const (
-	zVideoMap            renderer.Z = -900
-	zRunwayClosures      renderer.Z = -800
-	zSafetyLogicHoldBars renderer.Z = -790
+	zVideoMap                 renderer.Z = -900
+	zSafetyLogicClosedRunways renderer.Z = -800
+	zSafetyLogicHoldBars      renderer.Z = -790
 
 	zRestrictedArea renderer.Z = -700
 	zClosedArea     renderer.Z = -690
@@ -356,6 +356,13 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	DrawVideoMap(p.videomap, cb, p.mode)
 	cb.DisableScissor()
 
+	closedRunwayCB := zcb.At(windowZ(0, zSafetyLogicClosedRunways))
+	closedRunwayCB.Viewport(x, y, w, h)
+	closedRunwayCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(closedRunwayCB)
+	p.safetyLogic.DrawClosedRunways(closedRunwayCB, transforms, closedRunwayBrightnessDefault)
+	closedRunwayCB.DisableScissor()
+
 	holdBarCB := zcb.At(windowZ(0, zSafetyLogicHoldBars))
 	holdBarCB.Viewport(x, y, w, h)
 	holdBarCB.Scissor(x, y, w, h)
@@ -605,6 +612,7 @@ func (p *ASDEXPane) dcbState() DcbState {
 		LeaderLength:          settings.LeaderLength,
 		DataBlocksOn:          settings.ShowDataBlocks,
 		DcbOn:                 p.dcb.On(),
+		ClosedRunways:         p.safetyLogic.DcbRunwayClosureStates(),
 		ActiveSpinnerFunction: activeSpinnerFunction,
 	}
 }
@@ -621,7 +629,7 @@ func (p *ASDEXPane) consumeDcbInput(ctx *panes.Context) bool {
 
 	mouse := ctx.Mouse
 	if mouse.WasReleased(platform.MouseButtonLeft) && hit.HasFunction {
-		return p.activateDcbFunction(ctx, hit.Function)
+		return p.activateDcbHit(ctx, hit)
 	}
 
 	return mouse.WasReleased(platform.MouseButtonLeft) ||
@@ -646,15 +654,25 @@ func (p *ASDEXPane) consumeDcbOnOffClick(ctx *panes.Context) bool {
 	if hit.Function != DcbFunctionDcbOnOff {
 		return false
 	}
-	return p.activateDcbFunction(ctx, hit.Function)
+	return p.activateDcbHit(ctx, hit)
 }
 
-func (p *ASDEXPane) activateDcbFunction(_ *panes.Context, function DcbFunction) bool {
+func (p *ASDEXPane) activateDcbFunction(ctx *panes.Context, function DcbFunction) bool {
+	return p.activateDcbHit(ctx, DcbHit{
+		Function:    function,
+		HasFunction: function != DcbFunctionVacant,
+	})
+}
+
+func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 	if p == nil {
 		return false
 	}
+	if !hit.HasFunction {
+		return false
+	}
 
-	switch function {
+	switch hit.Function {
 	case DcbFunctionRange:
 		if p.dcb.On() {
 			p.startRangeSpinner()
@@ -664,10 +682,20 @@ func (p *ASDEXPane) activateDcbFunction(_ *panes.Context, function DcbFunction) 
 		p.openTempDataDcbMenu()
 		return true
 	case DcbFunctionDone:
-		p.closeDcbSubmenu()
+		p.closeDcbCurrentSubmenu()
 		return true
-	case DcbFunctionClosedRunway,
-		DcbFunctionStoredGlobalTempData,
+	case DcbFunctionClosedRunway:
+		p.openTempDataClosedRunwayDcbMenu()
+		return true
+	case DcbFunctionCloseRunway:
+		if strings.TrimSpace(hit.Label) == "" {
+			return true
+		}
+		p.safetyLogic.ToggleRunwayClosedByDcbIndex(hit.ConfigID)
+		p.previewArea.SetSystemResponse("")
+		p.clearHighlightedTarget()
+		return true
+	case DcbFunctionStoredGlobalTempData,
 		DcbFunctionDefineClosedArea,
 		DcbFunctionDefineRestrictedArea,
 		DcbFunctionDefineTempText,
@@ -731,6 +759,50 @@ func (p *ASDEXPane) openTempDataDcbMenu() {
 	p.mapReposition = nil
 	p.mapRotate = nil
 	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) openTempDataClosedRunwayDcbMenu() {
+	if p == nil {
+		return
+	}
+
+	p.dcb.SetMenu(DcbMenuClosedRunway)
+	p.dcbSpinner = nil
+	p.commandEntry.Clear()
+	p.datablockEdit = nil
+	p.editingTargetID = ""
+	p.initControlEntry = nil
+	p.termControlEntry = nil
+	p.multiFunction = nil
+	p.previewReposition = nil
+	p.coastListReposition = nil
+	p.mapReposition = nil
+	p.mapRotate = nil
+	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA", "CLOSED RUNWAY")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) closeDcbCurrentSubmenu() {
+	if p == nil {
+		return
+	}
+
+	switch p.dcb.Menu() {
+	case DcbMenuClosedRunway:
+		p.dcb.SetMenu(DcbMenuTempData)
+		p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
+	case DcbMenuTempData:
+		p.dcb.SetMenu(DcbMenuMain)
+		p.dcbMenuCommand = nil
+	default:
+		p.closeDcbSubmenu()
+		return
+	}
+
+	p.dcbSpinner = nil
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
@@ -1195,7 +1267,7 @@ func (p *ASDEXPane) handleDcbMenuKeyboard(ctx *panes.Context) bool {
 	if keyboard.WasPressed(platform.KeyEscape) ||
 		keyboard.WasPressed(platform.KeyBackspace) ||
 		keyboard.WasPressed(platform.KeyDelete) {
-		p.closeDcbSubmenu()
+		p.closeDcbCurrentSubmenu()
 		return true
 	}
 

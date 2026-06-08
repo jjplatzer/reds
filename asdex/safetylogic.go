@@ -27,6 +27,9 @@ const (
 	departureMaxAGLFeet           = 50.0
 	holdBarStationToleranceFeet   = 10.0
 	holdBarLineWidthPixels        = 1.5
+	closedRunwayXAngleDeg         = 15.0
+	closedRunwayLineWidthPixels   = 1.5
+	closedRunwayBrightnessDefault = 95
 	pointOnSegmentToleranceFeet   = 5.0
 	degenerateRunwayAxisLength2   = 1e-6
 	holdBarsBrightnessDefault     = 95
@@ -40,6 +43,8 @@ type SafetyLogic struct {
 
 	runways  []surfaceRunway
 	holdBars []surfaceHoldBar
+
+	closedRunways map[string]bool
 
 	activeOperations map[string]activeRunwayOperation
 	litRunways       map[string]bool
@@ -60,6 +65,11 @@ type surfaceRunway struct {
 
 	LengthFeet    float32
 	HalfWidthFeet float32
+
+	MinAlongFeet  float32
+	MaxAlongFeet  float32
+	MinAcrossFeet float32
+	MaxAcrossFeet float32
 }
 
 type surfaceHoldBar struct {
@@ -140,6 +150,7 @@ func LoadSafetyLogic(airport string, vm *VideoMap) (SafetyLogic, error) {
 
 	sl := SafetyLogic{
 		airportAltitudeFt: surface.AltitudeFt,
+		closedRunways:     make(map[string]bool),
 		activeOperations:  make(map[string]activeRunwayOperation),
 		litRunways:        make(map[string]bool),
 	}
@@ -193,6 +204,50 @@ func isLAHSOHoldBarID(id string) bool {
 	return strings.HasPrefix(id, "LAHSO")
 }
 
+func (sl *SafetyLogic) DcbRunwayClosureStates() []DcbRunwayClosureState {
+	if sl == nil {
+		return nil
+	}
+
+	out := make([]DcbRunwayClosureState, 0, len(sl.runways))
+	for _, rwy := range sl.runways {
+		out = append(out, DcbRunwayClosureState{
+			ID:       rwy.ID,
+			IsClosed: sl.closedRunways != nil && sl.closedRunways[rwy.ID],
+		})
+	}
+	return out
+}
+
+func (sl *SafetyLogic) ToggleRunwayClosedByDcbIndex(index int) bool {
+	if sl == nil || index < 1 || index > len(sl.runways) {
+		return false
+	}
+
+	rwy := sl.runways[index-1]
+	if rwy.ID == "" {
+		return false
+	}
+
+	if sl.closedRunways == nil {
+		sl.closedRunways = make(map[string]bool)
+	}
+	if sl.closedRunways[rwy.ID] {
+		delete(sl.closedRunways, rwy.ID)
+	} else {
+		sl.closedRunways[rwy.ID] = true
+	}
+	return true
+}
+
+func (sl *SafetyLogic) RunwayClosed(id string) bool {
+	if sl == nil || sl.closedRunways == nil {
+		return false
+	}
+	id = strings.ToUpper(strings.TrimSpace(id))
+	return sl.closedRunways[id]
+}
+
 func surfacePolylineToFeet(coords [][]float64, vm *VideoMap) []redsmath.Vec2 {
 	points := make([]redsmath.Vec2, 0, len(coords))
 	for _, coord := range coords {
@@ -226,16 +281,25 @@ func populateRunwayFrame(rwy *surfaceRunway) {
 
 	minAlong := float32(0)
 	maxAlong := float32(0)
+	minAcross := float32(0)
+	maxAcross := float32(0)
 	halfWidth := float32(0)
 	for i, p := range rwy.PolygonFeet {
 		rel := p.Sub(rwy.CenterFeet)
 		along := safetyDot(rel, axis)
-		across := abs32(safetyDot(rel, normal))
+		acrossSigned := safetyDot(rel, normal)
+		across := abs32(acrossSigned)
 		if i == 0 || along < minAlong {
 			minAlong = along
 		}
 		if i == 0 || along > maxAlong {
 			maxAlong = along
+		}
+		if i == 0 || acrossSigned < minAcross {
+			minAcross = acrossSigned
+		}
+		if i == 0 || acrossSigned > maxAcross {
+			maxAcross = acrossSigned
 		}
 		if across > halfWidth {
 			halfWidth = across
@@ -246,6 +310,10 @@ func populateRunwayFrame(rwy *surfaceRunway) {
 	rwy.ThresholdMaxFeet = rwy.CenterFeet.Add(axis.Mul(maxAlong))
 	rwy.LengthFeet = maxAlong - minAlong
 	rwy.HalfWidthFeet = halfWidth
+	rwy.MinAlongFeet = minAlong
+	rwy.MaxAlongFeet = maxAlong
+	rwy.MinAcrossFeet = minAcross
+	rwy.MaxAcrossFeet = maxAcross
 }
 
 func runwayAxisFromPolygon(poly []redsmath.Vec2) (redsmath.Vec2, bool) {
@@ -616,6 +684,29 @@ func (sl *SafetyLogic) DrawHoldBars(
 	builder.GenerateCommands(cb)
 }
 
+func (sl *SafetyLogic) DrawClosedRunways(
+	cb *renderer.CmdBuffer,
+	transforms radar.ScopeTransformations,
+	brightness int,
+) {
+	if sl == nil || cb == nil || len(sl.closedRunways) == 0 {
+		return
+	}
+
+	color := applyBrightness(renderer.RGB8(255, 255, 255), brightness, brightnessFloorDefault)
+	builder := renderer.GetColoredTrianglesBuilder()
+	defer renderer.ReturnColoredTrianglesBuilder(builder)
+
+	for _, rwy := range sl.runways {
+		if !sl.closedRunways[rwy.ID] {
+			continue
+		}
+		buildClosedRunwayX(builder, rwy, transforms, closedRunwayLineWidthPixels, color)
+	}
+
+	builder.GenerateCommands(cb)
+}
+
 func buildHoldBar(
 	builder *renderer.ColoredTrianglesBuilder,
 	points []redsmath.Vec2,
@@ -665,6 +756,92 @@ func buildScreenSegment(
 		renderer.PointVertex{X: p3.X, Y: p3.Y},
 		color,
 	)
+}
+
+func buildClosedRunwayX(
+	builder *renderer.ColoredTrianglesBuilder,
+	rwy surfaceRunway,
+	transforms radar.ScopeTransformations,
+	widthPixels float32,
+	color renderer.RGB,
+) {
+	if builder == nil || rwy.LengthFeet <= 0 || widthPixels <= 0 {
+		return
+	}
+
+	c0 := runwayCorner(rwy, rwy.MinAlongFeet, rwy.MinAcrossFeet)
+	c1 := runwayCorner(rwy, rwy.MaxAlongFeet, rwy.MinAcrossFeet)
+	c2 := runwayCorner(rwy, rwy.MaxAlongFeet, rwy.MaxAcrossFeet)
+	c3 := runwayCorner(rwy, rwy.MinAlongFeet, rwy.MaxAcrossFeet)
+
+	angle := float32(closedRunwayXAngleDeg * stdmath.Pi / 180)
+	addClosedXRay(builder, c0, closedXDirection(rwy, 1, 1, angle), c3, c2, transforms, widthPixels, color)
+	addClosedXRay(builder, c1, closedXDirection(rwy, -1, 1, angle), c3, c2, transforms, widthPixels, color)
+	addClosedXRay(builder, c2, closedXDirection(rwy, -1, -1, angle), c0, c1, transforms, widthPixels, color)
+	addClosedXRay(builder, c3, closedXDirection(rwy, 1, -1, angle), c0, c1, transforms, widthPixels, color)
+}
+
+func closedXDirection(
+	rwy surfaceRunway,
+	alongSign float32,
+	acrossSign float32,
+	angleRad float32,
+) redsmath.Vec2 {
+	direction := rwy.AxisFeet.Mul(alongSign * float32(stdmath.Cos(float64(angleRad)))).
+		Add(rwy.NormalFeet.Mul(acrossSign * float32(stdmath.Sin(float64(angleRad)))))
+	normalized, ok := safetyNormalize(direction)
+	if !ok {
+		return redsmath.Vec2{}
+	}
+	return normalized
+}
+
+func runwayCorner(rwy surfaceRunway, along float32, across float32) redsmath.Vec2 {
+	return rwy.CenterFeet.
+		Add(rwy.AxisFeet.Mul(along)).
+		Add(rwy.NormalFeet.Mul(across))
+}
+
+func addClosedXRay(
+	builder *renderer.ColoredTrianglesBuilder,
+	start redsmath.Vec2,
+	dir redsmath.Vec2,
+	edgeA redsmath.Vec2,
+	edgeB redsmath.Vec2,
+	transforms radar.ScopeTransformations,
+	widthPixels float32,
+	color renderer.RGB,
+) {
+	end, ok := intersectRaySegment(start, dir, edgeA, edgeB)
+	if !ok {
+		return
+	}
+
+	a := transforms.WindowFromWorldP(start)
+	b := transforms.WindowFromWorldP(end)
+	buildScreenSegment(builder, a, b, widthPixels, color)
+}
+
+func intersectRaySegment(
+	p redsmath.Vec2,
+	r redsmath.Vec2,
+	q redsmath.Vec2,
+	sEnd redsmath.Vec2,
+) (redsmath.Vec2, bool) {
+	s := sEnd.Sub(q)
+	denominator := safetyCross2(r, s)
+	if abs32(denominator) < degenerateRunwayAxisLength2 {
+		return redsmath.Vec2{}, false
+	}
+
+	qmp := q.Sub(p)
+	t := safetyCross2(qmp, s) / denominator
+	u := safetyCross2(qmp, r) / denominator
+	if t < 0 || u < 0 || u > 1 {
+		return redsmath.Vec2{}, false
+	}
+
+	return p.Add(r.Mul(t)), true
 }
 
 func headingUnitVector(headingDeg float32) redsmath.Vec2 {
@@ -766,6 +943,10 @@ func safetyDot(a, b redsmath.Vec2) float32 {
 
 func safetyLength2(v redsmath.Vec2) float32 {
 	return safetyDot(v, v)
+}
+
+func safetyCross2(a, b redsmath.Vec2) float32 {
+	return a.X*b.Y - a.Y*b.X
 }
 
 func safetyNormalize(v redsmath.Vec2) (redsmath.Vec2, bool) {
