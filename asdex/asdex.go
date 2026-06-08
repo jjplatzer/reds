@@ -302,7 +302,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		p.consumeDatablockEditWheel(ctx)
 	} else if p.dcbSpinner != nil {
 		p.clearHighlightedTarget()
-		if p.consumeDcbSpinnerInput(ctx) {
+		if !p.consumeDcbOnOffClick(ctx) && p.consumeDcbSpinnerInput(ctx) {
 			transforms = radar.GetScopeTransformations(
 				paneExtent,
 				p.center,
@@ -564,6 +564,7 @@ func (p *ASDEXPane) dcbState() DcbState {
 			Mode:         ModeDay,
 			VectorOn:     true,
 			VectorLength: 3,
+			DcbOn:        true,
 		}
 	}
 
@@ -585,6 +586,7 @@ func (p *ASDEXPane) dcbState() DcbState {
 		VectorLength:          3,
 		LeaderLength:          settings.LeaderLength,
 		DataBlocksOn:          settings.ShowDataBlocks,
+		DcbOn:                 p.dcb.On(),
 		ActiveSpinnerFunction: activeSpinnerFunction,
 	}
 }
@@ -611,6 +613,24 @@ func (p *ASDEXPane) consumeDcbInput(ctx *panes.Context) bool {
 		hit.OverDcb
 }
 
+func (p *ASDEXPane) consumeDcbOnOffClick(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || ctx.Mouse == nil {
+		return false
+	}
+	if !ctx.Mouse.WasReleased(platform.MouseButtonLeft) {
+		return false
+	}
+
+	hit := p.dcbHit(ctx)
+	if !hit.OverDcb || !hit.HasFunction {
+		return false
+	}
+	if hit.Function != DcbFunctionDcbOnOff {
+		return false
+	}
+	return p.activateDcbFunction(ctx, hit.Function)
+}
+
 func (p *ASDEXPane) activateDcbFunction(_ *panes.Context, function DcbFunction) bool {
 	if p == nil {
 		return false
@@ -618,7 +638,15 @@ func (p *ASDEXPane) activateDcbFunction(_ *panes.Context, function DcbFunction) 
 
 	switch function {
 	case DcbFunctionRange:
-		p.startRangeSpinner()
+		if p.dcb.On() {
+			p.startRangeSpinner()
+		}
+		return true
+	case DcbFunctionDcbOnOff:
+		p.dcb.ToggleOnOff()
+		p.dcbSpinner = nil
+		p.previewArea.SetSystemResponse("")
+		p.clearHighlightedTarget()
 		return true
 	default:
 		return true
