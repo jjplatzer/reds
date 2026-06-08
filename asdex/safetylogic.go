@@ -28,7 +28,7 @@ const (
 	holdBarStationToleranceFeet   = 10.0
 	holdBarLineWidthPixels        = 1.5
 	closedRunwayXAngleDeg         = 15.0
-	closedRunwayLineWidthPixels   = 1.5
+	closedRunwayLineWidthPixels   = 1.0
 	closedRunwayBrightnessDefault = 95
 	pointOnSegmentToleranceFeet   = 5.0
 	degenerateRunwayAxisLength2   = 1e-6
