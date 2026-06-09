@@ -26,9 +26,8 @@ const (
 	departureSpeedThresholdKt     = 40.0
 	departureMaxAGLFeet           = 50.0
 	holdBarStationToleranceFeet   = 10.0
-	holdBarLineWidthPixels        = 1.5
+	holdBarLineWidthPixels        = 1.25
 	closedRunwayXAngleDeg         = 15.0
-	closedRunwayLineWidthPixels   = 1.0
 	closedRunwayBrightnessDefault = 95
 	pointOnSegmentToleranceFeet   = 5.0
 	degenerateRunwayAxisLength2   = 1e-6
@@ -686,24 +685,24 @@ func (sl *SafetyLogic) DrawHoldBars(
 
 func (sl *SafetyLogic) DrawClosedRunways(
 	cb *renderer.CmdBuffer,
-	transforms radar.ScopeTransformations,
 	brightness int,
 ) {
 	if sl == nil || cb == nil || len(sl.closedRunways) == 0 {
 		return
 	}
 
-	color := applyBrightness(renderer.RGB8(255, 255, 255), brightness, brightnessFloorDefault)
-	builder := renderer.GetColoredTrianglesBuilder()
-	defer renderer.ReturnColoredTrianglesBuilder(builder)
+	builder := renderer.GetLinesBuilder()
+	defer renderer.ReturnLinesBuilder(builder)
 
 	for _, rwy := range sl.runways {
 		if !sl.closedRunways[rwy.ID] {
 			continue
 		}
-		buildClosedRunwayX(builder, rwy, transforms, closedRunwayLineWidthPixels, color)
+		buildClosedRunwayXLines(builder, rwy)
 	}
 
+	cb.SetRGB(applyBrightness(renderer.RGB8(255, 255, 255), brightness, brightnessFloorDefault))
+	cb.LineWidth(1)
 	builder.GenerateCommands(cb)
 }
 
@@ -758,14 +757,11 @@ func buildScreenSegment(
 	)
 }
 
-func buildClosedRunwayX(
-	builder *renderer.ColoredTrianglesBuilder,
+func buildClosedRunwayXLines(
+	builder *renderer.LinesBuilder,
 	rwy surfaceRunway,
-	transforms radar.ScopeTransformations,
-	widthPixels float32,
-	color renderer.RGB,
 ) {
-	if builder == nil || rwy.LengthFeet <= 0 || widthPixels <= 0 {
+	if builder == nil || rwy.LengthFeet <= 0 {
 		return
 	}
 
@@ -775,10 +771,10 @@ func buildClosedRunwayX(
 	c3 := runwayCorner(rwy, rwy.MinAlongFeet, rwy.MaxAcrossFeet)
 
 	angle := float32(closedRunwayXAngleDeg * stdmath.Pi / 180)
-	addClosedXRay(builder, c0, closedXDirection(rwy, 1, 1, angle), c3, c2, transforms, widthPixels, color)
-	addClosedXRay(builder, c1, closedXDirection(rwy, -1, 1, angle), c3, c2, transforms, widthPixels, color)
-	addClosedXRay(builder, c2, closedXDirection(rwy, -1, -1, angle), c0, c1, transforms, widthPixels, color)
-	addClosedXRay(builder, c3, closedXDirection(rwy, 1, -1, angle), c0, c1, transforms, widthPixels, color)
+	addClosedXLine(builder, c0, closedXDirection(rwy, 1, 1, angle), c3, c2)
+	addClosedXLine(builder, c1, closedXDirection(rwy, -1, 1, angle), c3, c2)
+	addClosedXLine(builder, c2, closedXDirection(rwy, -1, -1, angle), c0, c1)
+	addClosedXLine(builder, c3, closedXDirection(rwy, 1, -1, angle), c0, c1)
 }
 
 func closedXDirection(
@@ -802,24 +798,22 @@ func runwayCorner(rwy surfaceRunway, along float32, across float32) redsmath.Vec
 		Add(rwy.NormalFeet.Mul(across))
 }
 
-func addClosedXRay(
-	builder *renderer.ColoredTrianglesBuilder,
+func addClosedXLine(
+	builder *renderer.LinesBuilder,
 	start redsmath.Vec2,
 	dir redsmath.Vec2,
 	edgeA redsmath.Vec2,
 	edgeB redsmath.Vec2,
-	transforms radar.ScopeTransformations,
-	widthPixels float32,
-	color renderer.RGB,
 ) {
 	end, ok := intersectRaySegment(start, dir, edgeA, edgeB)
 	if !ok {
 		return
 	}
 
-	a := transforms.WindowFromWorldP(start)
-	b := transforms.WindowFromWorldP(end)
-	buildScreenSegment(builder, a, b, widthPixels, color)
+	builder.AddLine(
+		renderer.PointVertex{X: start.X, Y: start.Y},
+		renderer.PointVertex{X: end.X, Y: end.Y},
+	)
 }
 
 func intersectRaySegment(

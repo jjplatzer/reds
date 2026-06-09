@@ -359,8 +359,8 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	closedRunwayCB := zcb.At(windowZ(0, zSafetyLogicClosedRunways))
 	closedRunwayCB.Viewport(x, y, w, h)
 	closedRunwayCB.Scissor(x, y, w, h)
-	transforms.LoadWindowViewingMatrices(closedRunwayCB)
-	p.safetyLogic.DrawClosedRunways(closedRunwayCB, transforms, closedRunwayBrightnessDefault)
+	transforms.LoadWorldViewingMatrices(closedRunwayCB)
+	p.safetyLogic.DrawClosedRunways(closedRunwayCB, closedRunwayBrightnessDefault)
 	closedRunwayCB.DisableScissor()
 
 	holdBarCB := zcb.At(windowZ(0, zSafetyLogicHoldBars))
