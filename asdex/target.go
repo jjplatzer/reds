@@ -1204,9 +1204,8 @@ const (
 )
 
 // Gildea, K. M. (2018), Development of a Standard Palette for Color Coding ATC Displays,
-// FAA Office of Aerospace Medicine Technical Report DOT/FAA/AM-18/18, Appendix A,
-// Table A1
-var targetVehiclePink = renderer.RGB8(246, 132, 216)
+// FAA Office of Aerospace Medicine Technical Report DOT/FAA/AM-18/18
+var targetVehiclePink = renderer.RGB8(232, 76, 253)
 
 func targetRGB(role targetRGBRole, brightness int) renderer.RGB {
 	floor := 0
