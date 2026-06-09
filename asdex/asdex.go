@@ -48,9 +48,9 @@ const (
 )
 
 const (
-	zVideoMap            renderer.Z = -900
-	zRunwayClosures      renderer.Z = -800
-	zSafetyLogicHoldBars renderer.Z = -790
+	zVideoMap                 renderer.Z = -900
+	zSafetyLogicClosedRunways renderer.Z = -800
+	zSafetyLogicHoldBars      renderer.Z = -790
 
 	zRestrictedArea renderer.Z = -700
 	zClosedArea     renderer.Z = -690
@@ -82,6 +82,7 @@ type ASDEXPane struct {
 	mode              Mode
 	videomap          *VideoMap
 	safetyLogic       SafetyLogic
+	tempData          TempData
 	targets           TargetStore
 	smes              *redsnet.SmesClient
 	fonts             fontCache
@@ -99,6 +100,7 @@ type ASDEXPane struct {
 	coastList                 CoastList
 	dcb                       Dcb
 	dcbSpinner                *DcbSpinner
+	dcbMenuCommand            *DcbMenuCommand
 	showCoastList             bool
 	hoveredCoastListTarget    string
 
@@ -173,6 +175,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		mode:              ModeDay,
 		videomap:          vm,
 		safetyLogic:       safetyLogic,
+		tempData:          NewTempData(),
 		targets:           NewTargetStore(),
 		smes:              client,
 		fonts:             fonts,
@@ -316,6 +319,9 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				p.rotation,
 			)
 		}
+	} else if p.dcbMenuCommand != nil {
+		p.clearHighlightedTarget()
+		p.consumeDcbInput(ctx)
 	} else {
 		if p.consumeDcbInput(ctx) {
 			p.clearHighlightedTarget()
@@ -351,6 +357,13 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	transforms.LoadWorldViewingMatrices(cb)
 	DrawVideoMap(p.videomap, cb, p.mode)
 	cb.DisableScissor()
+
+	closedRunwayCB := zcb.At(windowZ(0, zSafetyLogicClosedRunways))
+	closedRunwayCB.Viewport(x, y, w, h)
+	closedRunwayCB.Scissor(x, y, w, h)
+	transforms.LoadWorldViewingMatrices(closedRunwayCB)
+	p.tempData.DrawClosedRunways(closedRunwayCB, &p.safetyLogic, closedRunwayBrightnessDefault)
+	closedRunwayCB.DisableScissor()
 
 	holdBarCB := zcb.At(windowZ(0, zSafetyLogicHoldBars))
 	holdBarCB.Viewport(x, y, w, h)
@@ -550,7 +563,7 @@ func (p *ASDEXPane) dcbCursorUnlocked() bool {
 	if p == nil {
 		return false
 	}
-	if p.dcbSpinner != nil {
+	if p.dcbSpinner != nil || p.dcbMenuCommand != nil {
 		return true
 	}
 
@@ -601,6 +614,7 @@ func (p *ASDEXPane) dcbState() DcbState {
 		LeaderLength:          settings.LeaderLength,
 		DataBlocksOn:          settings.ShowDataBlocks,
 		DcbOn:                 p.dcb.On(),
+		ClosedRunways:         p.tempData.DcbRunwayClosureStates(&p.safetyLogic),
 		ActiveSpinnerFunction: activeSpinnerFunction,
 	}
 }
@@ -617,7 +631,7 @@ func (p *ASDEXPane) consumeDcbInput(ctx *panes.Context) bool {
 
 	mouse := ctx.Mouse
 	if mouse.WasReleased(platform.MouseButtonLeft) && hit.HasFunction {
-		return p.activateDcbFunction(ctx, hit.Function)
+		return p.activateDcbHit(ctx, hit)
 	}
 
 	return mouse.WasReleased(platform.MouseButtonLeft) ||
@@ -642,15 +656,29 @@ func (p *ASDEXPane) consumeDcbOnOffClick(ctx *panes.Context) bool {
 	if hit.Function != DcbFunctionDcbOnOff {
 		return false
 	}
-	return p.activateDcbFunction(ctx, hit.Function)
+	return p.activateDcbHit(ctx, hit)
 }
 
-func (p *ASDEXPane) activateDcbFunction(_ *panes.Context, function DcbFunction) bool {
+func (p *ASDEXPane) activateDcbFunction(ctx *panes.Context, function DcbFunction) bool {
+	return p.activateDcbHit(ctx, DcbHit{
+		Function:    function,
+		HasFunction: function != DcbFunctionVacant,
+	})
+}
+
+func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 	if p == nil {
 		return false
 	}
+	if !hit.HasFunction {
+		return false
+	}
 
-	switch function {
+	if p.activateTempDataDcbHit(hit) {
+		return true
+	}
+
+	switch hit.Function {
 	case DcbFunctionRange:
 		if p.dcb.On() {
 			p.startRangeSpinner()
@@ -659,6 +687,7 @@ func (p *ASDEXPane) activateDcbFunction(_ *panes.Context, function DcbFunction) 
 	case DcbFunctionDcbOnOff:
 		p.dcb.ToggleOnOff()
 		p.dcbSpinner = nil
+		p.dcbMenuCommand = nil
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
 		return true
@@ -686,6 +715,7 @@ func (p *ASDEXPane) startRangeSpinner() {
 	p.coastListReposition = nil
 	p.mapReposition = nil
 	p.mapRotate = nil
+	p.dcbMenuCommand = nil
 	p.commandEntry.Clear()
 	p.dcbSpinner = NewRangeDcbSpinner(p.rangeSetting)
 	p.previewArea.SetSystemResponse("")
@@ -1018,6 +1048,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	if p.dcbSpinner != nil {
 		return p.dcbSpinner.DisplayLines()
 	}
+	if p.dcbMenuCommand != nil {
+		return p.dcbMenuCommand.DisplayLines()
+	}
 	if p.commandMode == CommandModeTrackSuspend {
 		return []string{"TRK SUSP"}
 	}
@@ -1080,6 +1113,8 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.mapReposition = nil
 	p.mapRotate = nil
 	p.dcbSpinner = nil
+	p.dcbMenuCommand = nil
+	p.dcb.ReturnToMainMenu()
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 }
@@ -1105,6 +1140,9 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.dcbSpinner != nil {
 		return p.handleDcbSpinnerKeyboard(ctx)
+	}
+	if p.dcbMenuCommand != nil {
+		return p.handleDcbMenuKeyboard(ctx)
 	}
 	if p.commandMode != CommandModeNone {
 		keyboard := ctx.Keyboard
@@ -1296,6 +1334,7 @@ func (p *ASDEXPane) startMultiPreviewReposition() {
 	p.previewReposition = NewMultiPreviewRepositionCommand()
 	p.coastListReposition = nil
 	p.dcbSpinner = nil
+	p.dcbMenuCommand = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -1311,6 +1350,7 @@ func (p *ASDEXPane) startMultiCoastListReposition() {
 	p.previewReposition = nil
 	p.coastListReposition = NewMultiCoastListRepositionCommand()
 	p.dcbSpinner = nil
+	p.dcbMenuCommand = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()

@@ -26,7 +26,7 @@ const (
 	departureSpeedThresholdKt     = 40.0
 	departureMaxAGLFeet           = 50.0
 	holdBarStationToleranceFeet   = 10.0
-	holdBarLineWidthPixels        = 1.5
+	holdBarLineWidthPixels        = 1.25
 	pointOnSegmentToleranceFeet   = 5.0
 	degenerateRunwayAxisLength2   = 1e-6
 	holdBarsBrightnessDefault     = 95
@@ -60,6 +60,11 @@ type surfaceRunway struct {
 
 	LengthFeet    float32
 	HalfWidthFeet float32
+
+	MinAlongFeet  float32
+	MaxAlongFeet  float32
+	MinAcrossFeet float32
+	MaxAcrossFeet float32
 }
 
 type surfaceHoldBar struct {
@@ -226,16 +231,25 @@ func populateRunwayFrame(rwy *surfaceRunway) {
 
 	minAlong := float32(0)
 	maxAlong := float32(0)
+	minAcross := float32(0)
+	maxAcross := float32(0)
 	halfWidth := float32(0)
 	for i, p := range rwy.PolygonFeet {
 		rel := p.Sub(rwy.CenterFeet)
 		along := safetyDot(rel, axis)
-		across := abs32(safetyDot(rel, normal))
+		acrossSigned := safetyDot(rel, normal)
+		across := abs32(acrossSigned)
 		if i == 0 || along < minAlong {
 			minAlong = along
 		}
 		if i == 0 || along > maxAlong {
 			maxAlong = along
+		}
+		if i == 0 || acrossSigned < minAcross {
+			minAcross = acrossSigned
+		}
+		if i == 0 || acrossSigned > maxAcross {
+			maxAcross = acrossSigned
 		}
 		if across > halfWidth {
 			halfWidth = across
@@ -246,6 +260,10 @@ func populateRunwayFrame(rwy *surfaceRunway) {
 	rwy.ThresholdMaxFeet = rwy.CenterFeet.Add(axis.Mul(maxAlong))
 	rwy.LengthFeet = maxAlong - minAlong
 	rwy.HalfWidthFeet = halfWidth
+	rwy.MinAlongFeet = minAlong
+	rwy.MaxAlongFeet = maxAlong
+	rwy.MinAcrossFeet = minAcross
+	rwy.MaxAcrossFeet = maxAcross
 }
 
 func runwayAxisFromPolygon(poly []redsmath.Vec2) (redsmath.Vec2, bool) {

@@ -23,6 +23,8 @@ type DcbMenu int
 
 const (
 	DcbMenuMain DcbMenu = iota
+	DcbMenuTempData
+	DcbMenuClosedRunway
 	DcbMenuOff
 )
 
@@ -35,6 +37,7 @@ const (
 	DcbButtonToggle
 	DcbButtonError
 	DcbButtonVacant
+	DcbButtonConfig
 )
 
 type DcbFunction int
@@ -55,6 +58,16 @@ const (
 	DcbFunctionVectorOnOff
 	DcbFunctionVectorLength
 	DcbFunctionTempData
+	DcbFunctionClosedRunway
+	DcbFunctionCloseRunway
+	DcbFunctionStoredGlobalTempData
+	DcbFunctionDefineClosedArea
+	DcbFunctionDefineRestrictedArea
+	DcbFunctionDefineTempText
+	DcbFunctionShowHiddenTempData
+	DcbFunctionHideTempData
+	DcbFunctionDeleteGlobalTempData
+	DcbFunctionDone
 	DcbFunctionLeaderLength
 	DcbFunctionLocal1
 	DcbFunctionLocal2
@@ -112,6 +125,9 @@ type DcbButtonSpec struct {
 	OnLabel  string
 	OffLabel string
 	On       bool
+
+	ConfigID int
+	Label    string
 }
 
 type DcbButtonLayout struct {
@@ -143,7 +159,14 @@ type DcbState struct {
 	DataBlocksOn bool
 	DcbOn        bool
 
+	ClosedRunways []DcbRunwayClosureState
+
 	ActiveSpinnerFunction DcbFunction
+}
+
+type DcbRunwayClosureState struct {
+	ID       string
+	IsClosed bool
 }
 
 type DcbSpinnerKind int
@@ -168,6 +191,21 @@ type DcbSpinner struct {
 
 	input  string
 	cursor int
+}
+
+type DcbMenuCommand struct {
+	lines []string
+}
+
+func NewDcbMenuCommand(lines ...string) *DcbMenuCommand {
+	return &DcbMenuCommand{lines: append([]string(nil), lines...)}
+}
+
+func (c *DcbMenuCommand) DisplayLines() []string {
+	if c == nil {
+		return nil
+	}
+	return append([]string(nil), c.lines...)
 }
 
 func NewRangeDcbSpinner(currentRange int) *DcbSpinner {
@@ -362,6 +400,29 @@ func (d *Dcb) ToggleOnOff() {
 	}
 }
 
+func (d *Dcb) SetMenu(menu DcbMenu) {
+	if d == nil {
+		return
+	}
+	d.menu = menu
+}
+
+func (d *Dcb) Menu() DcbMenu {
+	if d == nil {
+		return DcbMenuOff
+	}
+	return d.menu
+}
+
+func (d *Dcb) ReturnToMainMenu() {
+	if d == nil {
+		return
+	}
+	if d.menu != DcbMenuOff {
+		d.menu = DcbMenuMain
+	}
+}
+
 func (d *Dcb) SetPosition(position DcbPosition) {
 	if d == nil {
 		return
@@ -444,6 +505,15 @@ func isLargeDcbFunction(function DcbFunction) bool {
 	case DcbFunctionRange,
 		DcbFunctionSafetyLogic,
 		DcbFunctionTools,
+		DcbFunctionClosedRunway,
+		DcbFunctionStoredGlobalTempData,
+		DcbFunctionDefineClosedArea,
+		DcbFunctionDefineRestrictedArea,
+		DcbFunctionDefineTempText,
+		DcbFunctionShowHiddenTempData,
+		DcbFunctionHideTempData,
+		DcbFunctionDeleteGlobalTempData,
+		DcbFunctionDone,
 		DcbFunctionVacant:
 		return true
 	default:
@@ -562,6 +632,100 @@ func (d *Dcb) offButtonSpecs(state DcbState) []DcbButtonSpec {
 	}
 }
 
+func (d *Dcb) tempDataButtonSpecs(state DcbState) []DcbButtonSpec {
+	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
+		if state.ActiveSpinnerFunction == spec.Function {
+			spec.Active = true
+		}
+		return spec
+	}
+	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Kind:     DcbButtonNormal,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	menu := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Kind:     DcbButtonMenu,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	vacant := func() DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: DcbFunctionVacant,
+			Kind:     DcbButtonVacant,
+			Large:    true,
+			Visible:  true,
+		}
+	}
+
+	return []DcbButtonSpec{
+		vacant(),
+		vacant(),
+		vacant(),
+		menu(DcbFunctionClosedRunway, "CLOSED", "RWY"),
+		menu(DcbFunctionStoredGlobalTempData, "STORED", "GLOBAL", "TEMP", "DATA"),
+		normal(DcbFunctionDefineClosedArea, "DEFINE", "CLOSED", "AREA"),
+		normal(DcbFunctionDefineRestrictedArea, "DEFINE", "RESTR", "AREA"),
+		normal(DcbFunctionDefineTempText, "DEFINE", "TEXT"),
+		normal(DcbFunctionShowHiddenTempData, "SHOW", "HIDDEN", "DATA"),
+		normal(DcbFunctionHideTempData, "HIDE", "DATA"),
+		normal(DcbFunctionDeleteGlobalTempData, "DELETE", "GLOBAL"),
+		normal(DcbFunctionDone, "DONE"),
+		vacant(),
+		vacant(),
+	}
+}
+
+func (d *Dcb) closedRunwayButtonSpecs(state DcbState) []DcbButtonSpec {
+	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
+		if state.ActiveSpinnerFunction == spec.Function {
+			spec.Active = true
+		}
+		return spec
+	}
+	config := func(id int, label string, isClosed bool) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: DcbFunctionCloseRunway,
+			Kind:     DcbButtonConfig,
+			Visible:  true,
+			ConfigID: id,
+			Label:    label,
+			On:       !isClosed,
+			OnLabel:  "OPN",
+			OffLabel: "CLSD",
+		})
+	}
+
+	buttons := make([]DcbButtonSpec, 0, 27)
+	for i := 1; i <= 26; i++ {
+		label := ""
+		isClosed := false
+		if i <= len(state.ClosedRunways) {
+			label = state.ClosedRunways[i-1].ID
+			isClosed = state.ClosedRunways[i-1].IsClosed
+		}
+		buttons = append(buttons, config(i, label, isClosed))
+	}
+
+	buttons = append(buttons, applyState(DcbButtonSpec{
+		Function: DcbFunctionDone,
+		Kind:     DcbButtonNormal,
+		Large:    isLargeDcbFunction(DcbFunctionDone),
+		Visible:  true,
+		Lines:    []string{"DONE"},
+	}))
+
+	return buttons
+}
+
 func (d *Dcb) rangeLabel(state DcbState) string {
 	return strconv.Itoa(clampInt(state.Range, asdexMinRangeSetting, asdexMaxRangeSetting))
 }
@@ -582,6 +746,10 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 	switch d.menu {
 	case DcbMenuOff:
 		return d.offButtonSpecs(state)
+	case DcbMenuTempData:
+		return d.tempDataButtonSpecs(state)
+	case DcbMenuClosedRunway:
+		return d.closedRunwayButtonSpecs(state)
 	default:
 		return d.mainButtonSpecs(state)
 	}
@@ -896,8 +1064,12 @@ func (d *Dcb) drawButtonText(
 	hovering bool,
 ) {
 	spec := button.Spec
-	if spec.Kind == DcbButtonToggle {
+	switch spec.Kind {
+	case DcbButtonToggle:
 		d.drawToggleButtonText(td, font, fontSize, button, hovering)
+		return
+	case DcbButtonConfig:
+		d.drawConfigButtonText(td, font, fontSize, button, hovering)
 		return
 	}
 
@@ -1045,6 +1217,50 @@ func (d *Dcb) drawToggleButtonText(
 	d.drawToggleFragments(td, font, fontSize, x, y, spec, primary)
 }
 
+func (d *Dcb) drawConfigButtonText(
+	td *renderer.TextDrawBuilder,
+	font *renderer.BitmapFont,
+	fontSize int,
+	button DcbButtonLayout,
+	hovering bool,
+) {
+	if td == nil || font == nil || button.Bounds.Empty() {
+		return
+	}
+
+	spec := button.Spec
+	if strings.TrimSpace(spec.Label) == "" {
+		return
+	}
+
+	labelWidth, labelHeight := font.MeasureText(spec.Label, fontSize)
+	stateWidth, stateHeight := d.measureToggleFragments(font, fontSize, spec)
+	if labelHeight <= 0 || stateHeight <= 0 {
+		return
+	}
+
+	bounds := button.Bounds
+	totalHeight := labelHeight + dcbTextLineSpacing + stateHeight
+	y := bounds.Min.Y + (bounds.Height()-float32(totalHeight))*0.5
+
+	primary := d.primaryTextColor(spec, hovering)
+	td.AddText(
+		spec.Label,
+		redsmath.Vec2{
+			X: bounds.Min.X + (bounds.Width()-float32(labelWidth))*0.5,
+			Y: y,
+		},
+		renderer.TextStyle{
+			Size:  fontSize,
+			Color: primary.ToRGBA(),
+		},
+	)
+
+	x := bounds.Min.X + (bounds.Width()-float32(stateWidth))*0.5
+	y += float32(labelHeight + dcbTextLineSpacing)
+	d.drawToggleFragments(td, font, fontSize, x, y, spec, primary)
+}
+
 func (d *Dcb) measureToggleFragments(
 	font *renderer.BitmapFont,
 	fontSize int,
@@ -1161,6 +1377,9 @@ type DcbHit struct {
 	ButtonIndex int
 	Function    DcbFunction
 	HasFunction bool
+	ConfigID    int
+	Label       string
+	Spec        DcbButtonSpec
 }
 
 func (d *Dcb) HitTest(
@@ -1182,9 +1401,14 @@ func (d *Dcb) HitTest(
 		}
 
 		hit.ButtonIndex = i
+		hit.Spec = button.Spec
+		hit.ConfigID = button.Spec.ConfigID
+		hit.Label = button.Spec.Label
 		if button.Spec.Function != DcbFunctionVacant {
-			hit.Function = button.Spec.Function
-			hit.HasFunction = true
+			if button.Spec.Kind != DcbButtonConfig || strings.TrimSpace(button.Spec.Label) != "" {
+				hit.Function = button.Spec.Function
+				hit.HasFunction = true
+			}
 		}
 		break
 	}
