@@ -363,6 +363,8 @@ func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
 	ap.tempAreaDraft = nil
+	ap.tempTextCommand = nil
+	ap.tempTextPlacement = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
@@ -389,6 +391,8 @@ func (ap *ASDEXPane) cmdMapReposition(ctx *panes.Context) CommandStatus {
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
 	ap.tempAreaDraft = nil
+	ap.tempTextCommand = nil
+	ap.tempTextPlacement = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
@@ -416,6 +420,8 @@ func (ap *ASDEXPane) cmdMapRotate(_ *panes.Context) CommandStatus {
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
 	ap.tempAreaDraft = nil
+	ap.tempTextCommand = nil
+	ap.tempTextPlacement = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""

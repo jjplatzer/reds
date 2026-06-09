@@ -4,6 +4,7 @@ import (
 	"fmt"
 	stdmath "math"
 	"strings"
+	"unicode"
 
 	redsmath "github.com/juliusplatzer/reds/math"
 	"github.com/juliusplatzer/reds/panes"
@@ -22,6 +23,14 @@ const (
 
 	tempMapAreasBrightnessDefault = 95
 	tempAreaDrawLineWidth         = 1.0
+
+	tempTextMaxLineLength     = 16
+	tempTextFontSizeDefault   = 2
+	tempTextBrightnessDefault = 95
+	tempTextLineSpacing       = 2
+	tempTextAnchorOffsetPx    = 7
+	tempTextStepPx            = 15
+	tempTextZeroLengthPx      = 10
 )
 
 var (
@@ -29,7 +38,23 @@ var (
 	tempRestrictedAreaRGB = renderer.RGB8(255, 255, 0)
 	tempAreaDrawRGB       = renderer.RGB8(255, 255, 255)
 	tempAreaHighlightRGB  = renderer.RGB8(0, 0, 255)
+	tempTextRGB           = renderer.RGB8(255, 255, 255)
+	tempTextHighlightRGB  = renderer.RGB8(0, 0, 255)
 )
+
+var tempTextAnchorPoints = []redsmath.Vec2{
+	{X: 11, Y: 0},
+	{X: 3, Y: -3},
+	{X: 3, Y: -12},
+	{X: -3, Y: -5},
+	{X: -12, Y: -8},
+	{X: -7, Y: 0},
+	{X: -12, Y: 8},
+	{X: -3, Y: 5},
+	{X: 3, Y: 12},
+	{X: 3, Y: 3},
+	{X: 11, Y: 0},
+}
 
 type TempDataType int
 
@@ -43,8 +68,10 @@ type TempData struct {
 
 	closedAreas     []TempArea
 	restrictedAreas []TempArea
+	texts           []TempText
 
 	nextAreaID int
+	nextTextID int
 }
 
 type TempArea struct {
@@ -64,11 +91,188 @@ type TempAreaDraft struct {
 	Mouse  redsmath.Vec2
 }
 
+type TempText struct {
+	ID string
+
+	Location redsmath.Vec2
+
+	Line1 string
+	Line2 string
+
+	Hidden      bool
+	Highlighted bool
+
+	ShowDataBlock *bool
+
+	LeaderDirection *LeaderDirection
+	LeaderLength    *int
+	FontSize        *int
+	Brightness      *int
+}
+
+type TempTextCommand struct {
+	line1 string
+	line2 string
+
+	activeLine int
+	cursor     int
+}
+
+type TempTextPlacementCommand struct {
+	line1 string
+	line2 string
+}
+
 func NewTempData() TempData {
 	return TempData{
 		closedRunways: make(map[string]bool),
 		nextAreaID:    1,
+		nextTextID:    1,
 	}
+}
+
+func NewTempTextCommand() *TempTextCommand {
+	return &TempTextCommand{
+		activeLine: 1,
+		cursor:     0,
+	}
+}
+
+func (cmd *TempTextCommand) DisplayLines() []string {
+	if cmd == nil {
+		return nil
+	}
+	return []string{
+		"TEMP DATA",
+		"DEFINE TEXT",
+		">: " + cmd.line1,
+		">: " + cmd.line2,
+	}
+}
+
+func (cmd *TempTextCommand) CursorLine() int {
+	if cmd == nil {
+		return 0
+	}
+	if cmd.activeLine == 2 {
+		return 4
+	}
+	return 3
+}
+
+func (cmd *TempTextCommand) CursorColumn() int {
+	if cmd == nil {
+		return 0
+	}
+	return 3 + cmd.cursor
+}
+
+func (cmd *TempTextCommand) ActiveText() string {
+	if cmd == nil {
+		return ""
+	}
+	if cmd.activeLine == 2 {
+		return cmd.line2
+	}
+	return cmd.line1
+}
+
+func (cmd *TempTextCommand) SetActiveText(text string) {
+	if cmd == nil {
+		return
+	}
+	if cmd.activeLine == 2 {
+		cmd.line2 = text
+		return
+	}
+	cmd.line1 = text
+}
+
+func (cmd *TempTextCommand) Insert(r rune) {
+	if cmd == nil || r < 32 || r == 127 {
+		return
+	}
+
+	r = unicode.ToUpper(r)
+	text := []rune(cmd.ActiveText())
+	if len(text) >= tempTextMaxLineLength {
+		return
+	}
+
+	cmd.cursor = clampInt(cmd.cursor, 0, len(text))
+	text = append(text[:cmd.cursor], append([]rune{r}, text[cmd.cursor:]...)...)
+	cmd.SetActiveText(string(text))
+	cmd.cursor++
+}
+
+func (cmd *TempTextCommand) Backspace() {
+	if cmd == nil || cmd.cursor <= 0 {
+		return
+	}
+
+	text := []rune(cmd.ActiveText())
+	cmd.cursor = clampInt(cmd.cursor, 0, len(text))
+	if cmd.cursor <= 0 {
+		return
+	}
+
+	cmd.cursor--
+	text = append(text[:cmd.cursor], text[cmd.cursor+1:]...)
+	cmd.SetActiveText(string(text))
+}
+
+func (cmd *TempTextCommand) DeleteForward() {
+	if cmd == nil {
+		return
+	}
+
+	text := []rune(cmd.ActiveText())
+	cmd.cursor = clampInt(cmd.cursor, 0, len(text))
+	if cmd.cursor >= len(text) {
+		return
+	}
+
+	text = append(text[:cmd.cursor], text[cmd.cursor+1:]...)
+	cmd.SetActiveText(string(text))
+}
+
+func (cmd *TempTextCommand) MoveLeft() {
+	if cmd != nil && cmd.cursor > 0 {
+		cmd.cursor--
+	}
+}
+
+func (cmd *TempTextCommand) MoveRight() {
+	if cmd == nil {
+		return
+	}
+	text := []rune(cmd.ActiveText())
+	if cmd.cursor < len(text) {
+		cmd.cursor++
+	}
+}
+
+func (cmd *TempTextCommand) MoveUp() {
+	if cmd == nil || cmd.activeLine == 1 {
+		return
+	}
+	cmd.activeLine = 1
+	cmd.cursor = clampInt(cmd.cursor, 0, len([]rune(cmd.line1)))
+}
+
+func (cmd *TempTextCommand) MoveDown() {
+	if cmd == nil || cmd.activeLine == 2 {
+		return
+	}
+	cmd.activeLine = 2
+	cmd.cursor = clampInt(cmd.cursor, 0, len([]rune(cmd.line2)))
+}
+
+func (cmd *TempTextPlacementCommand) DisplayLines() []string {
+	if cmd == nil {
+		return nil
+	}
+	return []string{"TEMP DATA", "DEFINE TEXT"}
 }
 
 func (td *TempData) DcbRunwayClosureStates(sl *SafetyLogic) []DcbRunwayClosureState {
@@ -131,6 +335,11 @@ func (td *TempData) VisibleObjectCount() int {
 			count++
 		}
 	}
+	for _, text := range td.texts {
+		if !text.Hidden {
+			count++
+		}
+	}
 	return count
 }
 
@@ -172,6 +381,36 @@ func (td *TempData) nextTempAreaID(kind TempDataType) string {
 
 	id := fmt.Sprintf("%s:%d", prefix, td.nextAreaID)
 	td.nextAreaID++
+	return id
+}
+
+func (td *TempData) AddText(location redsmath.Vec2, line1 string, line2 string) {
+	if td == nil {
+		return
+	}
+
+	line1 = strings.TrimSpace(line1)
+	line2 = strings.TrimSpace(line2)
+	if line1 == "" {
+		return
+	}
+
+	text := TempText{
+		ID:       td.nextTempTextID(),
+		Location: location,
+		Line1:    line1,
+		Line2:    line2,
+	}
+	td.texts = append(td.texts, text)
+}
+
+func (td *TempData) nextTempTextID() string {
+	if td.nextTextID <= 0 {
+		td.nextTextID = 1
+	}
+
+	id := fmt.Sprintf("TEXT:%d", td.nextTextID)
+	td.nextTextID++
 	return id
 }
 
@@ -272,6 +511,183 @@ func tempAreaHatchOffset(area TempArea, transforms radar.ScopeTransformations) f
 
 	p := transforms.WindowFromWorldP(area.Points[0])
 	return -float32(stdmath.Mod(float64(4*p.Y+p.X), 50))
+}
+
+func (td *TempData) DrawTempTextAnchors(
+	cb *renderer.CmdBuffer,
+	transforms radar.ScopeTransformations,
+	brightness int,
+) {
+	if td == nil || cb == nil || len(td.texts) == 0 {
+		return
+	}
+
+	builder := renderer.GetLinesBuilder()
+	defer renderer.ReturnLinesBuilder(builder)
+
+	for _, text := range td.texts {
+		if text.Hidden {
+			continue
+		}
+		addTempTextAnchor(builder, transforms.WindowFromWorldP(text.Location))
+	}
+
+	cb.SetRGB(applyBrightness(tempTextRGB, brightness, brightnessFloorDefault))
+	cb.LineWidth(1)
+	builder.GenerateCommands(cb)
+}
+
+func addTempTextAnchor(builder *renderer.LinesBuilder, center redsmath.Vec2) {
+	if builder == nil {
+		return
+	}
+
+	points := make([]renderer.PointVertex, 0, len(tempTextAnchorPoints))
+	for _, pt := range tempTextAnchorPoints {
+		points = append(points, renderer.PointVertex{
+			X: center.X + pt.X,
+			Y: center.Y + pt.Y,
+		})
+	}
+	builder.AddLineStrip(points)
+}
+
+func (td *TempData) DrawTempTexts(
+	cb *renderer.CmdBuffer,
+	transforms radar.ScopeTransformations,
+	font *renderer.BitmapFont,
+	textureForSize func(size int) renderer.TextureID,
+	settings DataBlockSettings,
+) {
+	if td == nil || cb == nil || font == nil || textureForSize == nil || len(td.texts) == 0 {
+		return
+	}
+
+	fontSize := tempTextFontSizeDefault
+	textureID := textureForSize(fontSize)
+	if textureID == 0 {
+		return
+	}
+
+	lineBuilder := renderer.GetLinesBuilder()
+	tdb := renderer.GetTextDrawBuilder()
+	tdb.SetFont(font)
+
+	for _, text := range td.texts {
+		if text.Hidden {
+			continue
+		}
+
+		color := applyBrightness(tempTextColor(text), tempTextBrightness(text), brightnessFloorDefault)
+		drawOneTempText(text, transforms, lineBuilder, tdb, font, fontSize, settings, color)
+	}
+
+	cb.SetRGB(applyBrightness(tempTextRGB, tempTextBrightnessDefault, brightnessFloorDefault))
+	cb.LineWidth(1)
+	lineBuilder.GenerateCommands(cb)
+	tdb.GenerateCommands(cb, textureID)
+
+	renderer.ReturnTextDrawBuilder(tdb)
+	renderer.ReturnLinesBuilder(lineBuilder)
+}
+
+func tempTextColor(text TempText) renderer.RGB {
+	if text.Highlighted {
+		return tempTextHighlightRGB
+	}
+	return tempTextRGB
+}
+
+func tempTextBrightness(text TempText) int {
+	if text.Brightness == nil {
+		return tempTextBrightnessDefault
+	}
+	return *text.Brightness
+}
+
+func drawOneTempText(
+	text TempText,
+	transforms radar.ScopeTransformations,
+	lineBuilder *renderer.LinesBuilder,
+	td *renderer.TextDrawBuilder,
+	font *renderer.BitmapFont,
+	fontSize int,
+	settings DataBlockSettings,
+	color renderer.RGB,
+) {
+	if strings.TrimSpace(text.Line1) == "" {
+		return
+	}
+
+	anchor := transforms.WindowFromWorldP(text.Location)
+
+	direction := settings.LeaderDirection
+	if text.LeaderDirection != nil {
+		direction = *text.LeaderDirection
+	}
+
+	leaderLength := settings.LeaderLength
+	if text.LeaderLength != nil {
+		leaderLength = *text.LeaderLength
+	}
+
+	if text.FontSize != nil && *text.FontSize > 0 {
+		fontSize = *text.FontSize
+	}
+
+	heading := leaderHeadingDegrees(direction)
+	left := isLeftDatablock(direction)
+
+	leaderLengthPx := leaderLength * tempTextStepPx
+	if leaderLengthPx < 0 {
+		leaderLengthPx = 0
+	}
+
+	leaderStart := anchor.Add(leaderDelta(tempTextAnchorOffsetPx, heading))
+	anchorDistance := float32(leaderLengthPx)
+	if leaderLengthPx == 0 {
+		anchorDistance = tempTextZeroLengthPx
+	}
+	leaderEnd := anchor.Add(leaderDelta(anchorDistance, heading))
+
+	if leaderLengthPx > 0 {
+		lineBuilder.AddLine(
+			renderer.PointVertex{X: leaderStart.X, Y: leaderStart.Y},
+			renderer.PointVertex{X: leaderEnd.X, Y: leaderEnd.Y},
+		)
+	}
+
+	line1Width, height := font.MeasureText(text.Line1, fontSize)
+	line2Width, _ := font.MeasureText(text.Line2, fontSize)
+	if height <= 0 {
+		return
+	}
+
+	maxWidth := line1Width
+	if line2Width > maxWidth {
+		maxWidth = line2Width
+	}
+
+	textX := int(leaderEnd.X)
+	if left {
+		textX += -2 - maxWidth
+	} else {
+		textX += 2
+	}
+	textY := int(leaderEnd.Y) - height/2
+
+	style := renderer.TextStyle{
+		Size:  fontSize,
+		Color: color.ToRGBA(),
+	}
+
+	pos := redsmath.Vec2{X: float32(textX), Y: float32(textY)}
+	td.AddText(text.Line1, pos, style)
+
+	if strings.TrimSpace(text.Line2) != "" {
+		pos.Y += float32(height + tempTextLineSpacing)
+		td.AddText(text.Line2, pos, style)
+	}
 }
 
 func buildClosedRunwayXLines(
@@ -380,6 +796,9 @@ func (p *ASDEXPane) activateTempDataDcbHit(hit DcbHit) bool {
 	case DcbFunctionDefineRestrictedArea:
 		p.startDefineRestrictedArea()
 		return true
+	case DcbFunctionDefineTempText:
+		p.startDefineTempText()
+		return true
 	case DcbFunctionCloseRunway:
 		if strings.TrimSpace(hit.Label) == "" {
 			return true
@@ -389,7 +808,6 @@ func (p *ASDEXPane) activateTempDataDcbHit(hit DcbHit) bool {
 		p.clearHighlightedTarget()
 		return true
 	case DcbFunctionStoredGlobalTempData,
-		DcbFunctionDefineTempText,
 		DcbFunctionShowHiddenTempData,
 		DcbFunctionHideTempData,
 		DcbFunctionDeleteGlobalTempData:
@@ -405,6 +823,152 @@ func (p *ASDEXPane) startDefineClosedArea() {
 
 func (p *ASDEXPane) startDefineRestrictedArea() {
 	p.startDefineTempArea(TempDataRestrictedArea, "DEFINE RESTR AREA")
+}
+
+func (p *ASDEXPane) startDefineTempText() {
+	if p == nil {
+		return
+	}
+
+	if p.tempData.VisibleObjectCount() >= maxTempDataObjects {
+		p.previewArea.SetSystemResponse("ERROR: MAX LIMIT")
+		return
+	}
+
+	p.clearTempDataCommandConflicts()
+	p.tempTextCommand = NewTempTextCommand()
+	p.dcbMenuCommand = nil
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) handleTempTextKeyboard(ctx *panes.Context) bool {
+	if p == nil || p.tempTextCommand == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	keyboard := ctx.Keyboard
+	cmd := p.tempTextCommand
+	switch {
+	case keyboard.WasPressed(platform.KeyEscape):
+		p.cancelTempTextCommand()
+		return true
+	case keyboard.WasPressed(platform.KeyBackspace):
+		cmd.Backspace()
+		return true
+	case keyboard.WasPressed(platform.KeyDelete):
+		cmd.DeleteForward()
+		return true
+	case keyboard.WasPressed(platform.KeyLeft):
+		cmd.MoveLeft()
+		return true
+	case keyboard.WasPressed(platform.KeyRight):
+		cmd.MoveRight()
+		return true
+	case keyboard.WasPressed(platform.KeyUp):
+		cmd.MoveUp()
+		return true
+	case keyboard.WasPressed(platform.KeyDown):
+		cmd.MoveDown()
+		return true
+	case keyboard.WasPressed(platform.KeyEnter), keyboard.WasPressed(platform.KeyKeypadEnter):
+		p.submitTempTextCommand()
+		return true
+	}
+
+	handled := false
+	for _, r := range keyboard.Text {
+		cmd.Insert(r)
+		p.previewArea.SetSystemResponse("")
+		handled = true
+	}
+	return handled
+}
+
+func (p *ASDEXPane) submitTempTextCommand() {
+	if p == nil || p.tempTextCommand == nil {
+		return
+	}
+
+	line1 := strings.TrimSpace(p.tempTextCommand.line1)
+	line2 := strings.TrimSpace(p.tempTextCommand.line2)
+	if len([]rune(line1)) > tempTextMaxLineLength ||
+		len([]rune(line2)) > tempTextMaxLineLength {
+		p.previewArea.SetSystemResponse("ERROR: MAX LIMIT")
+		return
+	}
+	if line1 == "" {
+		p.previewArea.SetSystemResponse("INVALID ENTRY")
+		return
+	}
+
+	p.tempTextPlacement = &TempTextPlacementCommand{
+		line1: line1,
+		line2: line2,
+	}
+	p.tempTextCommand = nil
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) handleTempTextPlacementKeyboard(ctx *panes.Context) bool {
+	if p == nil || p.tempTextPlacement == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	keyboard := ctx.Keyboard
+	if keyboard.WasPressed(platform.KeyEscape) ||
+		keyboard.WasPressed(platform.KeyBackspace) ||
+		keyboard.WasPressed(platform.KeyDelete) {
+		p.cancelTempTextPlacement()
+		return true
+	}
+	return false
+}
+
+func (p *ASDEXPane) cancelTempTextCommand() {
+	if p == nil {
+		return
+	}
+
+	p.tempTextCommand = nil
+	p.dcb.SetMenu(DcbMenuTempData)
+	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) cancelTempTextPlacement() {
+	if p == nil {
+		return
+	}
+
+	p.tempTextPlacement = nil
+	p.dcb.SetMenu(DcbMenuTempData)
+	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) consumeTempTextPlacementInput(
+	ctx *panes.Context,
+	transforms radar.ScopeTransformations,
+) bool {
+	if p == nil || p.tempTextPlacement == nil || ctx == nil || ctx.Mouse == nil {
+		return false
+	}
+	if !ctx.Mouse.WasReleased(platform.MouseButtonLeft) {
+		return false
+	}
+
+	world := transforms.WorldFromWindowP(ctx.Mouse.Pos)
+	p.tempData.AddText(world, p.tempTextPlacement.line1, p.tempTextPlacement.line2)
+	p.tempTextPlacement = nil
+	p.dcb.SetMenu(DcbMenuTempData)
+	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+	return true
 }
 
 func (p *ASDEXPane) startDefineTempArea(kind TempDataType, commandLine string) {
@@ -632,6 +1196,8 @@ func (p *ASDEXPane) clearTempDataCommandConflicts() {
 	}
 
 	p.tempAreaDraft = nil
+	p.tempTextCommand = nil
+	p.tempTextPlacement = nil
 	p.dcbSpinner = nil
 	p.commandEntry.Clear()
 	p.datablockEdit = nil
@@ -687,6 +1253,8 @@ func (p *ASDEXPane) closeDcbCurrentSubmenu() {
 	}
 
 	p.tempAreaDraft = nil
+	p.tempTextCommand = nil
+	p.tempTextPlacement = nil
 	p.dcbSpinner = nil
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -703,6 +1271,8 @@ func (p *ASDEXPane) closeDcbSubmenu() {
 	p.dcbMenuCommand = nil
 	p.dcbSpinner = nil
 	p.tempAreaDraft = nil
+	p.tempTextCommand = nil
+	p.tempTextPlacement = nil
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }

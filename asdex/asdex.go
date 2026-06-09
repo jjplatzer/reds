@@ -103,6 +103,8 @@ type ASDEXPane struct {
 	dcbSpinner                *DcbSpinner
 	dcbMenuCommand            *DcbMenuCommand
 	tempAreaDraft             *TempAreaDraft
+	tempTextCommand           *TempTextCommand
+	tempTextPlacement         *TempTextPlacementCommand
 	showCoastList             bool
 	hoveredCoastListTarget    string
 
@@ -283,12 +285,14 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.consumeOpsHotkeys(ctx, transforms)
 	p.coastList.SetVisible(p.showCoastList)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
-	if p.mapReposition == nil && !p.listRepositionActive() && p.tempAreaDraft == nil {
+	if p.mapReposition == nil && !p.listRepositionActive() && p.tempAreaDraft == nil &&
+		p.tempTextCommand == nil && p.tempTextPlacement == nil {
 		p.updateCoastListHover(ctx)
 	} else {
 		p.hoveredCoastListTarget = ""
 	}
-	if p.mapReposition == nil && p.tempAreaDraft == nil {
+	if p.mapReposition == nil && p.tempAreaDraft == nil &&
+		p.tempTextCommand == nil && p.tempTextPlacement == nil {
 		p.updateRightClickGesture(ctx)
 	} else {
 		p.clearRightClickGesture()
@@ -314,6 +318,11 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	} else if p.datablockEdit != nil {
 		p.clearHighlightedTarget()
 		p.consumeDatablockEditWheel(ctx)
+	} else if p.tempTextPlacement != nil {
+		p.clearHighlightedTarget()
+		p.consumeTempTextPlacementInput(ctx, transforms)
+	} else if p.tempTextCommand != nil {
+		p.clearHighlightedTarget()
 	} else if p.tempAreaDraft != nil {
 		p.clearHighlightedTarget()
 		p.consumeTempAreaDraftInput(ctx, transforms)
@@ -386,6 +395,22 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	transforms.LoadWorldViewingMatrices(closedAreaCB)
 	p.tempData.DrawClosedAreas(closedAreaCB, transforms, tempMapAreasBrightnessDefault)
 	closedAreaCB.DisableScissor()
+
+	tempTextCB := zcb.At(windowZ(0, zTempMapText))
+	tempTextCB.Viewport(x, y, w, h)
+	tempTextCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(tempTextCB)
+	p.tempData.DrawTempTextAnchors(tempTextCB, transforms, tempMapAreasBrightnessDefault)
+	p.tempData.DrawTempTexts(
+		tempTextCB,
+		transforms,
+		p.fonts.font,
+		func(size int) renderer.TextureID {
+			return p.fonts.textureForSize(ctx.Renderer, size)
+		},
+		p.dataBlockSettings(),
+	)
+	tempTextCB.DisableScissor()
 
 	draftCB := zcb.At(windowZ(0, zTempAreaDrawing))
 	draftCB.Viewport(x, y, w, h)
@@ -592,7 +617,7 @@ func (p *ASDEXPane) dcbCursorUnlocked() bool {
 	if p == nil {
 		return false
 	}
-	if p.tempAreaDraft != nil {
+	if p.tempAreaDraft != nil || p.tempTextCommand != nil || p.tempTextPlacement != nil {
 		return false
 	}
 	if p.dcbSpinner != nil || p.dcbMenuCommand != nil {
@@ -721,6 +746,8 @@ func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 		p.dcbSpinner = nil
 		p.dcbMenuCommand = nil
 		p.tempAreaDraft = nil
+		p.tempTextCommand = nil
+		p.tempTextPlacement = nil
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
 		return true
@@ -750,6 +777,8 @@ func (p *ASDEXPane) startRangeSpinner() {
 	p.mapRotate = nil
 	p.dcbMenuCommand = nil
 	p.tempAreaDraft = nil
+	p.tempTextCommand = nil
+	p.tempTextPlacement = nil
 	p.commandEntry.Clear()
 	p.dcbSpinner = NewRangeDcbSpinner(p.rangeSetting)
 	p.previewArea.SetSystemResponse("")
@@ -962,6 +991,12 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 	if p != nil && p.listRepositionActive() {
 		return CursorModeMove
 	}
+	if p != nil && p.tempTextCommand != nil {
+		return CursorModeHidden
+	}
+	if p != nil && p.tempTextPlacement != nil {
+		return CursorModeScope
+	}
 	if p != nil && p.tempAreaDraft != nil {
 		return CursorModeScope
 	}
@@ -1085,6 +1120,12 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	if p.dcbSpinner != nil {
 		return p.dcbSpinner.DisplayLines()
 	}
+	if p.tempTextCommand != nil {
+		return p.tempTextCommand.DisplayLines()
+	}
+	if p.tempTextPlacement != nil {
+		return p.tempTextPlacement.DisplayLines()
+	}
 	if p.dcbMenuCommand != nil {
 		return p.dcbMenuCommand.DisplayLines()
 	}
@@ -1119,6 +1160,9 @@ func (p *ASDEXPane) activeCommandCursor() (line int, column int, ok bool) {
 	if p.dcbSpinner != nil {
 		return p.dcbSpinner.CursorLine(), p.dcbSpinner.CursorColumn(), true
 	}
+	if p.tempTextCommand != nil {
+		return p.tempTextCommand.CursorLine(), p.tempTextCommand.CursorColumn(), true
+	}
 	if !p.commandEntry.Empty() {
 		return p.commandEntry.CursorLine(), p.commandEntry.CursorColumn(), true
 	}
@@ -1152,6 +1196,8 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
 	p.tempAreaDraft = nil
+	p.tempTextCommand = nil
+	p.tempTextPlacement = nil
 	p.dcb.ReturnToMainMenu()
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
@@ -1178,6 +1224,12 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.dcbSpinner != nil {
 		return p.handleDcbSpinnerKeyboard(ctx)
+	}
+	if p.tempTextCommand != nil {
+		return p.handleTempTextKeyboard(ctx)
+	}
+	if p.tempTextPlacement != nil {
+		return p.handleTempTextPlacementKeyboard(ctx)
 	}
 	if p.dcbMenuCommand != nil {
 		return p.handleDcbMenuKeyboard(ctx)
@@ -1374,6 +1426,8 @@ func (p *ASDEXPane) startMultiPreviewReposition() {
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
 	p.tempAreaDraft = nil
+	p.tempTextCommand = nil
+	p.tempTextPlacement = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -1391,6 +1445,8 @@ func (p *ASDEXPane) startMultiCoastListReposition() {
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
 	p.tempAreaDraft = nil
+	p.tempTextCommand = nil
+	p.tempTextPlacement = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
