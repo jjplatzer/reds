@@ -77,6 +77,10 @@ func windowZ(stackIndex int, localZ renderer.Z) renderer.Z {
 	return renderer.Z(-10000 + stackIndex*1000 + int(localZ))
 }
 
+func scopeWindowZ(stackIndex int, localZ renderer.Z) renderer.Z {
+	return renderer.Z(-20000 + stackIndex*1000 + int(localZ))
+}
+
 type ASDEXPane struct {
 	airport           string
 	configAirportCode string
@@ -84,6 +88,7 @@ type ASDEXPane struct {
 	videomap          *VideoMap
 	safetyLogic       SafetyLogic
 	tempData          TempData
+	windows           ScopeWindowManager
 	targets           TargetStore
 	smes              *redsnet.SmesClient
 	fonts             fontCache
@@ -107,6 +112,7 @@ type ASDEXPane struct {
 	tempTextPlacement         *TempTextPlacementCommand
 	tempDataSelectMode        TempDataSelectMode
 	hoveredTempData           TempDataHit
+	newWindow                 *NewWindowCommand
 	showCoastList             bool
 	hoveredCoastListTarget    string
 
@@ -182,6 +188,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		videomap:          vm,
 		safetyLogic:       safetyLogic,
 		tempData:          NewTempData(),
+		windows:           NewScopeWindowManager(),
 		targets:           NewTargetStore(),
 		smes:              client,
 		fonts:             fonts,
@@ -289,14 +296,14 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
 	if p.mapReposition == nil && !p.listRepositionActive() && p.tempAreaDraft == nil &&
 		p.tempTextCommand == nil && p.tempTextPlacement == nil &&
-		p.tempDataSelectMode == TempDataSelectNone {
+		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil {
 		p.updateCoastListHover(ctx)
 	} else {
 		p.hoveredCoastListTarget = ""
 	}
 	if p.mapReposition == nil && p.tempAreaDraft == nil &&
 		p.tempTextCommand == nil && p.tempTextPlacement == nil &&
-		p.tempDataSelectMode == TempDataSelectNone {
+		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil {
 		p.updateRightClickGesture(ctx)
 	} else {
 		p.clearRightClickGesture()
@@ -322,6 +329,9 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	} else if p.datablockEdit != nil {
 		p.clearHighlightedTarget()
 		p.consumeDatablockEditWheel(ctx)
+	} else if p.newWindow != nil {
+		p.clearHighlightedTarget()
+		p.consumeNewWindowInput(ctx, transforms)
 	} else if p.tempTextPlacement != nil {
 		p.clearHighlightedTarget()
 		p.consumeTempTextPlacementInput(ctx, transforms)
@@ -349,26 +359,44 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	} else {
 		if p.consumeDcbInput(ctx) {
 			p.clearHighlightedTarget()
-		} else if p.consumeMouseEvents(ctx, transforms) {
-			transforms = radar.GetScopeTransformations(
-				paneExtent,
-				p.center,
-				p.rangeFeet,
-				p.rotation,
-			)
-			p.updateHighlightedTarget(ctx, transforms)
-			if !p.consumeCoastListClicks(ctx) {
-				p.consumeCommandClicks(ctx, transforms)
-			}
 		} else {
-			p.updateHighlightedTarget(ctx, transforms)
-			if !p.consumeCoastListClicks(ctx) {
-				p.consumeCommandClicks(ctx, transforms)
+			if ctx.Mouse == nil {
+				p.clearHighlightedTarget()
+			} else {
+				windowID, windowRect, view, ok := p.scopeWindowAtPoint(ctx.Mouse.Pos, ctx.PaneSize())
+				if ok {
+					scopeTransforms := scopeTransformForWindow(windowRect, view)
+					updatedView, changed := p.consumeScopeMouseEvents(ctx, windowRect, view, scopeTransforms)
+					if changed {
+						p.setScopeView(windowID, updatedView)
+						view = updatedView
+						scopeTransforms = scopeTransformForWindow(windowRect, view)
+						if windowID == mainScopeWindowID {
+							transforms = scopeTransforms
+						}
+					}
+					p.updateHighlightedTargetInWindow(ctx, windowRect, scopeTransforms)
+					if !p.consumeCoastListClicks(ctx) {
+						p.consumeCommandClicksInWindow(ctx, windowRect, scopeTransforms)
+					}
+				} else {
+					p.clearHighlightedTarget()
+					if !p.consumeCoastListClicks(ctx) {
+						p.consumeCommandClicks(ctx, transforms)
+					}
+				}
 			}
 		}
 	}
 	if p.tempDataSelectMode != TempDataSelectNone && ctx.Mouse != nil {
-		p.hoveredTempData = p.tempData.HitTest(transforms.WorldFromWindowP(ctx.Mouse.Pos))
+		if _, windowRect, view, ok := p.scopeWindowAtPoint(ctx.Mouse.Pos, ctx.PaneSize()); ok {
+			scopeTransforms := scopeTransformForWindow(windowRect, view)
+			p.hoveredTempData = p.tempData.HitTest(
+				scopeTransforms.WorldFromWindowP(ctx.Mouse.Pos.Sub(windowRect.Min)),
+			)
+		} else {
+			p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+		}
 	} else {
 		p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	}
@@ -377,128 +405,18 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	targets := p.targets.All()
 	p.safetyLogic.Update(targets)
 
-	cb := zcb.At(windowZ(0, zVideoMap))
+	mainRect := redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y)
+	transforms = p.renderScopeWindow(ctx, zcb, 0, mainRect, p.mainScopeView(), targets, now, true)
+	for i, win := range p.windows.secondary {
+		if win.Hidden {
+			continue
+		}
+		p.renderScopeWindow(ctx, zcb, i+1, win.Rect, win.View, targets, now, false)
+	}
+	p.renderWindowBorders(ctx, zcb, transforms)
+	p.renderNewWindowPreview(ctx, zcb, transforms)
+
 	x, y, w, h := ctx.PaneFramebufferRect()
-	cb.Viewport(x, y, w, h)
-	cb.Scissor(x, y, w, h)
-	cb.Clear(applyBrightness(backgroundColor(p.mode), brightnessDefault, 20).ToRGBA())
-
-	transforms.LoadWorldViewingMatrices(cb)
-	DrawVideoMap(p.videomap, cb, p.mode)
-	cb.DisableScissor()
-
-	closedRunwayCB := zcb.At(windowZ(0, zSafetyLogicClosedRunways))
-	closedRunwayCB.Viewport(x, y, w, h)
-	closedRunwayCB.Scissor(x, y, w, h)
-	transforms.LoadWorldViewingMatrices(closedRunwayCB)
-	p.tempData.DrawClosedRunways(closedRunwayCB, &p.safetyLogic, closedRunwayBrightnessDefault)
-	closedRunwayCB.DisableScissor()
-
-	restrictedAreaCB := zcb.At(windowZ(0, zRestrictedArea))
-	restrictedAreaCB.Viewport(x, y, w, h)
-	restrictedAreaCB.Scissor(x, y, w, h)
-	transforms.LoadWorldViewingMatrices(restrictedAreaCB)
-	p.tempData.DrawRestrictedAreas(restrictedAreaCB, transforms, tempMapAreasBrightnessDefault)
-	restrictedAreaCB.DisableScissor()
-
-	closedAreaCB := zcb.At(windowZ(0, zClosedArea))
-	closedAreaCB.Viewport(x, y, w, h)
-	closedAreaCB.Scissor(x, y, w, h)
-	transforms.LoadWorldViewingMatrices(closedAreaCB)
-	p.tempData.DrawClosedAreas(closedAreaCB, transforms, tempMapAreasBrightnessDefault)
-	closedAreaCB.DisableScissor()
-
-	tempTextCB := zcb.At(windowZ(0, zTempMapText))
-	tempTextCB.Viewport(x, y, w, h)
-	tempTextCB.Scissor(x, y, w, h)
-	transforms.LoadWindowViewingMatrices(tempTextCB)
-	p.tempData.DrawTempTextAnchors(tempTextCB, transforms, tempMapAreasBrightnessDefault)
-	p.tempData.DrawTempTexts(
-		tempTextCB,
-		transforms,
-		p.fonts.font,
-		func(size int) renderer.TextureID {
-			return p.fonts.textureForSize(ctx.Renderer, size)
-		},
-		p.dataBlockSettings(),
-	)
-	tempTextCB.DisableScissor()
-
-	draftCB := zcb.At(windowZ(0, zTempAreaDrawing))
-	draftCB.Viewport(x, y, w, h)
-	draftCB.Scissor(x, y, w, h)
-	transforms.LoadWorldViewingMatrices(draftCB)
-	p.DrawTempAreaDraft(draftCB)
-	draftCB.DisableScissor()
-
-	holdBarCB := zcb.At(windowZ(0, zSafetyLogicHoldBars))
-	holdBarCB.Viewport(x, y, w, h)
-	holdBarCB.Scissor(x, y, w, h)
-	transforms.LoadWindowViewingMatrices(holdBarCB)
-	p.safetyLogic.DrawHoldBars(holdBarCB, transforms, holdBarsBrightnessDefault)
-	holdBarCB.DisableScissor()
-
-	targetCB := zcb.At(windowZ(0, zTargets))
-	targetCB.Viewport(x, y, w, h)
-	targetCB.Scissor(x, y, w, h)
-	transforms.LoadWorldViewingMatrices(targetCB)
-	DrawTargets(
-		targets,
-		p.targets.History(),
-		targetCB,
-		TargetDrawOptions{
-			VectorSeconds:    3,
-			Brightness:       brightnessDefault,
-			ScopeRotationDeg: int(p.rotation),
-		},
-	)
-	targetCB.DisableScissor()
-
-	suspendedLabelCB := zcb.At(windowZ(0, zSuspendedLabels))
-	suspendedLabelCB.Viewport(x, y, w, h)
-	suspendedLabelCB.Scissor(x, y, w, h)
-	transforms.LoadWindowViewingMatrices(suspendedLabelCB)
-	DrawSuspendedTargetLabels(
-		targets,
-		suspendedLabelCB,
-		transforms,
-		p.fonts.font,
-		p.fonts.textureForSize(ctx.Renderer, suspendedLabelFontSize),
-	)
-	suspendedLabelCB.DisableScissor()
-
-	datablockSettings := p.dataBlockSettings()
-	dbCB := zcb.At(windowZ(0, zDatablocks))
-	dbCB.Viewport(x, y, w, h)
-	dbCB.Scissor(x, y, w, h)
-	DrawDatablocks(
-		targets,
-		dbCB,
-		transforms,
-		DataBlockDrawOptions{
-			Font: p.fonts.font,
-			FontTextureForSize: func(size int) renderer.TextureID {
-				return p.fonts.textureForSize(ctx.Renderer, size)
-			},
-			SettingsForTarget: func(target *Target) DataBlockSettings {
-				settings := datablockSettings
-				if target != nil {
-					if direction, ok := p.leaderDirectionByTarget[target.ID]; ok {
-						settings.LeaderDirection = direction
-					}
-					if length, ok := p.leaderLengthByTarget[target.ID]; ok {
-						settings.LeaderLength = length
-					}
-				}
-				return settings
-			},
-			ShowBeaconCodeForTarget: func(target *Target) bool {
-				return p.showBeaconCodeForTarget(target, now)
-			},
-		},
-	)
-	dbCB.DisableScissor()
-
 	listCB := zcb.At(windowZ(0, zPreviewArea))
 	listCB.Viewport(x, y, w, h)
 	listCB.Scissor(x, y, w, h)
@@ -557,6 +475,149 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 
 	p.renderDcb(ctx, zcb, transforms)
+}
+
+func (p *ASDEXPane) renderScopeWindow(
+	ctx *panes.Context,
+	zcb *renderer.ZCmdBuffer,
+	stackIndex int,
+	rect redsmath.Rect,
+	view ScopeView,
+	targets []*Target,
+	now time.Time,
+	drawDraft bool,
+) radar.ScopeTransformations {
+	if p == nil || ctx == nil || zcb == nil || rect.Empty() {
+		return radar.ScopeTransformations{}
+	}
+
+	transforms := scopeTransformForWindow(rect, view)
+	x, y, w, h := scopeFramebufferRect(ctx, rect)
+
+	cb := zcb.At(scopeWindowZ(stackIndex, zVideoMap))
+	cb.Viewport(x, y, w, h)
+	cb.Scissor(x, y, w, h)
+	cb.Clear(applyBrightness(backgroundColor(p.mode), brightnessDefault, 20).ToRGBA())
+
+	transforms.LoadWorldViewingMatrices(cb)
+	DrawVideoMap(p.videomap, cb, p.mode)
+	cb.DisableScissor()
+
+	closedRunwayCB := zcb.At(scopeWindowZ(stackIndex, zSafetyLogicClosedRunways))
+	closedRunwayCB.Viewport(x, y, w, h)
+	closedRunwayCB.Scissor(x, y, w, h)
+	transforms.LoadWorldViewingMatrices(closedRunwayCB)
+	p.tempData.DrawClosedRunways(closedRunwayCB, &p.safetyLogic, closedRunwayBrightnessDefault)
+	closedRunwayCB.DisableScissor()
+
+	restrictedAreaCB := zcb.At(scopeWindowZ(stackIndex, zRestrictedArea))
+	restrictedAreaCB.Viewport(x, y, w, h)
+	restrictedAreaCB.Scissor(x, y, w, h)
+	transforms.LoadWorldViewingMatrices(restrictedAreaCB)
+	p.tempData.DrawRestrictedAreas(restrictedAreaCB, transforms, tempMapAreasBrightnessDefault)
+	restrictedAreaCB.DisableScissor()
+
+	closedAreaCB := zcb.At(scopeWindowZ(stackIndex, zClosedArea))
+	closedAreaCB.Viewport(x, y, w, h)
+	closedAreaCB.Scissor(x, y, w, h)
+	transforms.LoadWorldViewingMatrices(closedAreaCB)
+	p.tempData.DrawClosedAreas(closedAreaCB, transforms, tempMapAreasBrightnessDefault)
+	closedAreaCB.DisableScissor()
+
+	tempTextCB := zcb.At(scopeWindowZ(stackIndex, zTempMapText))
+	tempTextCB.Viewport(x, y, w, h)
+	tempTextCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(tempTextCB)
+	p.tempData.DrawTempTextAnchors(tempTextCB, transforms, tempMapAreasBrightnessDefault)
+	p.tempData.DrawTempTexts(
+		tempTextCB,
+		transforms,
+		p.fonts.font,
+		func(size int) renderer.TextureID {
+			return p.fonts.textureForSize(ctx.Renderer, size)
+		},
+		p.dataBlockSettings(),
+	)
+	tempTextCB.DisableScissor()
+
+	if drawDraft {
+		draftCB := zcb.At(scopeWindowZ(stackIndex, zTempAreaDrawing))
+		draftCB.Viewport(x, y, w, h)
+		draftCB.Scissor(x, y, w, h)
+		transforms.LoadWorldViewingMatrices(draftCB)
+		p.DrawTempAreaDraft(draftCB)
+		draftCB.DisableScissor()
+	}
+
+	holdBarCB := zcb.At(scopeWindowZ(stackIndex, zSafetyLogicHoldBars))
+	holdBarCB.Viewport(x, y, w, h)
+	holdBarCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(holdBarCB)
+	p.safetyLogic.DrawHoldBars(holdBarCB, transforms, holdBarsBrightnessDefault)
+	holdBarCB.DisableScissor()
+
+	targetCB := zcb.At(scopeWindowZ(stackIndex, zTargets))
+	targetCB.Viewport(x, y, w, h)
+	targetCB.Scissor(x, y, w, h)
+	transforms.LoadWorldViewingMatrices(targetCB)
+	DrawTargets(
+		targets,
+		p.targets.History(),
+		targetCB,
+		TargetDrawOptions{
+			VectorSeconds:    3,
+			Brightness:       brightnessDefault,
+			ScopeRotationDeg: int(view.Rotation),
+		},
+	)
+	targetCB.DisableScissor()
+
+	suspendedLabelCB := zcb.At(scopeWindowZ(stackIndex, zSuspendedLabels))
+	suspendedLabelCB.Viewport(x, y, w, h)
+	suspendedLabelCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(suspendedLabelCB)
+	DrawSuspendedTargetLabels(
+		targets,
+		suspendedLabelCB,
+		transforms,
+		p.fonts.font,
+		p.fonts.textureForSize(ctx.Renderer, suspendedLabelFontSize),
+	)
+	suspendedLabelCB.DisableScissor()
+
+	datablockSettings := p.dataBlockSettings()
+	dbCB := zcb.At(scopeWindowZ(stackIndex, zDatablocks))
+	dbCB.Viewport(x, y, w, h)
+	dbCB.Scissor(x, y, w, h)
+	DrawDatablocks(
+		targets,
+		dbCB,
+		transforms,
+		DataBlockDrawOptions{
+			Font: p.fonts.font,
+			FontTextureForSize: func(size int) renderer.TextureID {
+				return p.fonts.textureForSize(ctx.Renderer, size)
+			},
+			SettingsForTarget: func(target *Target) DataBlockSettings {
+				settings := datablockSettings
+				if target != nil {
+					if direction, ok := p.leaderDirectionByTarget[target.ID]; ok {
+						settings.LeaderDirection = direction
+					}
+					if length, ok := p.leaderLengthByTarget[target.ID]; ok {
+						settings.LeaderLength = length
+					}
+				}
+				return settings
+			},
+			ShowBeaconCodeForTarget: func(target *Target) bool {
+				return p.showBeaconCodeForTarget(target, now)
+			},
+		},
+	)
+	dbCB.DisableScissor()
+
+	return transforms
 }
 
 func (p *ASDEXPane) renderDcb(
@@ -630,7 +691,7 @@ func (p *ASDEXPane) dcbCursorUnlocked() bool {
 		return false
 	}
 	if p.tempAreaDraft != nil || p.tempTextCommand != nil || p.tempTextPlacement != nil ||
-		p.tempDataSelectMode != TempDataSelectNone {
+		p.tempDataSelectMode != TempDataSelectNone || p.newWindow != nil {
 		return false
 	}
 	if p.dcbSpinner != nil || p.dcbMenuCommand != nil {
@@ -764,6 +825,7 @@ func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 		p.tempDataSelectMode = TempDataSelectNone
 		p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 		p.tempData.ClearHighlights()
+		p.newWindow = nil
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
 		return true
@@ -798,6 +860,7 @@ func (p *ASDEXPane) startRangeSpinner() {
 	p.tempDataSelectMode = TempDataSelectNone
 	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
+	p.newWindow = nil
 	p.commandEntry.Clear()
 	p.dcbSpinner = NewRangeDcbSpinner(p.rangeSetting)
 	p.previewArea.SetSystemResponse("")
@@ -1019,6 +1082,9 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 	if p != nil && p.tempAreaDraft != nil {
 		return CursorModeScope
 	}
+	if p != nil && p.newWindow != nil {
+		return CursorModeScope
+	}
 	if p != nil && p.tempDataSelectMode != TempDataSelectNone {
 		if p.hoveredTempData.Kind != TempDataHitNone {
 			return CursorModeSelect
@@ -1065,18 +1131,33 @@ func (p *ASDEXPane) updateHighlightedTarget(
 	ctx *panes.Context,
 	transforms radar.ScopeTransformations,
 ) {
+	if ctx == nil {
+		p.clearHighlightedTarget()
+		return
+	}
+	p.updateHighlightedTargetInWindow(
+		ctx,
+		redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height()),
+		transforms,
+	)
+}
+
+func (p *ASDEXPane) updateHighlightedTargetInWindow(
+	ctx *panes.Context,
+	windowRect redsmath.Rect,
+	transforms radar.ScopeTransformations,
+) {
 	if p == nil || ctx == nil || ctx.Mouse == nil {
 		p.clearHighlightedTarget()
 		return
 	}
 
-	paneLocal := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
-	if !paneLocal.Contains(ctx.Mouse.Pos) {
+	if !windowRect.Contains(ctx.Mouse.Pos) {
 		p.clearHighlightedTarget()
 		return
 	}
 
-	mouseWorld := transforms.WorldFromWindowP(ctx.Mouse.Pos)
+	mouseWorld := transforms.WorldFromWindowP(ctx.Mouse.Pos.Sub(windowRect.Min))
 	storeRevision := p.targets.HoverRevision()
 	if p.highlightQueryValid &&
 		p.highlightMouseWorld == mouseWorld &&
@@ -1144,6 +1225,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	}
 	if p.dcbSpinner != nil {
 		return p.dcbSpinner.DisplayLines()
+	}
+	if p.newWindow != nil {
+		return p.newWindow.DisplayLines()
 	}
 	if p.tempTextCommand != nil {
 		return p.tempTextCommand.DisplayLines()
@@ -1226,6 +1310,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.tempDataSelectMode = TempDataSelectNone
 	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
+	p.newWindow = nil
 	p.dcb.ReturnToMainMenu()
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
@@ -1258,6 +1343,9 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.tempTextPlacement != nil {
 		return p.handleTempTextPlacementKeyboard(ctx)
+	}
+	if p.newWindow != nil {
+		return p.handleNewWindowKeyboard(ctx)
 	}
 	if p.consumeTempDataSelectionKeyboard(ctx) {
 		return true
@@ -1462,6 +1550,7 @@ func (p *ASDEXPane) startMultiPreviewReposition() {
 	p.tempDataSelectMode = TempDataSelectNone
 	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
+	p.newWindow = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -1484,6 +1573,7 @@ func (p *ASDEXPane) startMultiCoastListReposition() {
 	p.tempDataSelectMode = TempDataSelectNone
 	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
+	p.newWindow = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()

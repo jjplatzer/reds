@@ -976,6 +976,7 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 		ap.tempDataSelectMode = TempDataSelectNone
 		ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 		ap.tempData.ClearHighlights()
+		ap.newWindow = nil
 		ap.dcb.ReturnToMainMenu()
 		ap.commandEntry.Clear()
 	case ClearInput:
@@ -992,7 +993,7 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 		return false
 	}
 	if ap.tempAreaDraft != nil || ap.tempTextCommand != nil || ap.tempTextPlacement != nil ||
-		ap.tempDataSelectMode != TempDataSelectNone {
+		ap.tempDataSelectMode != TempDataSelectNone || ap.newWindow != nil {
 		return false
 	}
 	if ap.commandMode != CommandModeNone {
@@ -1015,6 +1016,8 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 		command = "[MAP RPOS]"
 	case ctx.Keyboard.WasPressed(platform.KeyF10):
 		command = "[MAP THEME]"
+	case ctx.Keyboard.WasPressed(platform.KeyF11):
+		command = "[NEW WINDOW]"
 	default:
 		return false
 	}
@@ -1042,6 +1045,21 @@ func (ap *ASDEXPane) consumeCommandClicks(
 	ctx *panes.Context,
 	transforms radar.ScopeTransformations,
 ) bool {
+	if ctx == nil {
+		return false
+	}
+	return ap.consumeCommandClicksInWindow(
+		ctx,
+		redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height()),
+		transforms,
+	)
+}
+
+func (ap *ASDEXPane) consumeCommandClicksInWindow(
+	ctx *panes.Context,
+	windowRect redsmath.Rect,
+	transforms radar.ScopeTransformations,
+) bool {
 	if ap == nil || ctx == nil || ctx.Mouse == nil {
 		return false
 	}
@@ -1065,10 +1083,10 @@ func (ap *ASDEXPane) consumeCommandClicks(
 		return false
 	}
 
-	paneLocal := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
-	if !paneLocal.Contains(mouse.Pos) {
+	if !windowRect.Contains(mouse.Pos) {
 		return false
 	}
+	localMouse := mouse.Pos.Sub(windowRect.Min)
 
 	target := ap.highlightedTarget()
 	if target == nil {
@@ -1122,7 +1140,7 @@ func (ap *ASDEXPane) consumeCommandClicks(
 		cmdText,
 		target,
 		clickKind,
-		mouse.Pos,
+		localMouse,
 		transforms,
 	)
 	if err != nil {

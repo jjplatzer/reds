@@ -1142,6 +1142,10 @@ func (p *ASDEXPane) consumeTempDataSelectionInput(
 
 	mouse := ctx.Mouse
 	world := transforms.WorldFromWindowP(mouse.Pos)
+	if _, windowRect, view, ok := p.scopeWindowAtPoint(mouse.Pos, ctx.PaneSize()); ok {
+		scopeTransforms := scopeTransformForWindow(windowRect, view)
+		world = scopeTransforms.WorldFromWindowP(mouse.Pos.Sub(windowRect.Min))
+	}
 	switch {
 	case mouse.WasReleased(platform.MouseButtonLeft):
 		hit := p.tempData.HitTest(world)
@@ -1550,6 +1554,7 @@ func (p *ASDEXPane) clearTempDataCommandConflicts() {
 	p.tempDataSelectMode = TempDataSelectNone
 	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
+	p.newWindow = nil
 	p.dcbSpinner = nil
 	p.commandEntry.Clear()
 	p.datablockEdit = nil
@@ -1610,6 +1615,7 @@ func (p *ASDEXPane) closeDcbCurrentSubmenu() {
 	p.tempDataSelectMode = TempDataSelectNone
 	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
+	p.newWindow = nil
 	p.dcbSpinner = nil
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -1631,6 +1637,7 @@ func (p *ASDEXPane) closeDcbSubmenu() {
 	p.tempDataSelectMode = TempDataSelectNone
 	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
+	p.newWindow = nil
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
