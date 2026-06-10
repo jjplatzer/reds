@@ -102,6 +102,9 @@ type ASDEXPane struct {
 	showBeaconUntilByTargetID map[string]time.Time
 	previewArea               PreviewArea
 	coastList                 CoastList
+	alertRepository           AlertRepository
+	auralAlerts               *AuralAlertManager
+	alertMessageBox           AlertMessageBox
 	dcb                       Dcb
 	dcbSpinner                *DcbSpinner
 	dcbMenuCommand            *DcbMenuCommand
@@ -170,6 +173,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	}
 	preview.SetSystemResponse("CRITICAL FAULT START")
 	coastList := NewCoastList()
+	auralAlerts := NewAuralAlertManager()
 	configAirport := loadConfigAirportCode(airport)
 
 	client := redsnet.NewSmesClient(targetWebSocketURL())
@@ -196,6 +200,9 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		showBeaconUntilByTargetID: make(map[string]time.Time),
 		previewArea:               preview,
 		coastList:                 coastList,
+		alertRepository:           NewAlertRepository(auralAlerts),
+		auralAlerts:               auralAlerts,
+		alertMessageBox:           NewAlertMessageBox(),
 		dcb:                       NewDcb(),
 		showCoastList:             true,
 		rangeSetting:              asdexDefaultRangeSetting,
@@ -210,6 +217,9 @@ func (p *ASDEXPane) Dispose() {
 	if p.smes != nil {
 		p.smes.Close()
 		p.smes = nil
+	}
+	if p.auralAlerts != nil {
+		p.auralAlerts.Stop()
 	}
 	p.targets.Clear()
 	clear(p.showBeaconUntilByTargetID)
@@ -396,7 +406,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		RunwayConfiguration: p.currentSafetyRunwayConfiguration(),
 		RunwayClosed:        p.tempData.RunwayClosed,
 	})
-	_ = alertChanges
+	p.alertRepository.ApplyChanges(alertChanges)
 
 	mainRect := redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y)
 	transforms = p.renderScopeWindow(ctx, zcb, 0, mainScopeWindowID, mainRect, referenceExtent, p.mainScopeView(), targets, now, true)
@@ -410,6 +420,26 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.renderNewWindowPreview(ctx, zcb, transforms)
 
 	x, y, w, h := ctx.PaneFramebufferRect()
+	alertCB := zcb.At(windowZ(0, zAlertMessage))
+	alertCB.Viewport(x, y, w, h)
+	alertCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(alertCB)
+	alertTextureID := p.fonts.textureForSize(ctx.Renderer, alertMessageFontSize)
+	if alertTextureID != 0 {
+		td := renderer.GetTextDrawBuilder()
+		td.SetFont(p.fonts.font)
+		p.alertMessageBox.Render(
+			alertCB,
+			td,
+			p.fonts.font,
+			p.alertRepository.FirstN(alertMessageMaxAlerts),
+			ctx.PaneSize(),
+		)
+		td.GenerateCommands(alertCB, alertTextureID)
+		renderer.ReturnTextDrawBuilder(td)
+	}
+	alertCB.DisableScissor()
+
 	listCB := zcb.At(windowZ(0, zPreviewArea))
 	listCB.Viewport(x, y, w, h)
 	listCB.Scissor(x, y, w, h)

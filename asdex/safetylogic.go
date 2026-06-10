@@ -519,10 +519,8 @@ func (sl *SafetyLogic) closedRunwayAlert(
 	}
 
 	alertType := SafetyAlertLandingClosedRunway
-	description := "LANDING ON CLOSED RWY"
 	if operation.Type == activeRunwayOperationDeparture {
 		alertType = SafetyAlertDepartureClosedRunway
-		description = "DEPARTURE ON CLOSED RWY"
 	}
 
 	runwayID := strings.ToUpper(strings.TrimSpace(operation.RunwayID))
@@ -535,7 +533,7 @@ func (sl *SafetyLogic) closedRunwayAlert(
 		MessageLines: []string{
 			"RWY " + runwayID,
 			targetLabel,
-			description,
+			"RWY CLOSED",
 		},
 		AircraftIDs: []string{target.ID},
 		RunwayIDs:   []string{runwayID},

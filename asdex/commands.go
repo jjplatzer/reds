@@ -992,6 +992,12 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 	if ap == nil || ctx == nil || ctx.Keyboard == nil || ap.datablockEdit != nil {
 		return false
 	}
+	if ctx.Keyboard.WasPressed(platform.KeyF12) &&
+		ap.auralAlerts != nil &&
+		ap.auralAlerts.IsPlaying() {
+		ap.auralAlerts.Stop()
+		return true
+	}
 	if ap.tempAreaDraft != nil || ap.tempTextCommand != nil || ap.tempTextPlacement != nil ||
 		ap.tempDataSelectMode != TempDataSelectNone || ap.newWindow != nil {
 		return false
