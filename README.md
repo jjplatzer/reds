@@ -58,42 +58,24 @@ Install the following dependencies from an elevated PowerShell:
 choco install golang temurin21 maven msys2 -y --no-progress
 ```
 
-Then install the native cgo/GLFW toolchain that the Windows CI uses:
+Then install the native cgo/GLFW toolchain:
 
 ```powershell
 C:\msys64\usr\bin\pacman.exe -Syu --noconfirm
 C:\msys64\usr\bin\pacman.exe -S --needed --noconfirm base-devel mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-pkgconf mingw-w64-ucrt-x86_64-glfw
 ```
 
-For the current PowerShell session, point cgo and `pkg-config` at the MSYS2 UCRT64 toolchain:
-
-```powershell
-$env:Path = "C:\msys64\ucrt64\bin;$env:Path"
-$env:CGO_ENABLED = "1"
-$env:CC = "C:\msys64\ucrt64\bin\gcc.exe"
-$env:CXX = "C:\msys64\ucrt64\bin\g++.exe"
-$env:PKG_CONFIG = "C:\msys64\ucrt64\bin\pkg-config.exe"
-```
-
-Fill in your SWIM credentials unquoted into the example environment file:
+Fill in your SWIM credentials unquoted into the example `.env` file:
 
 ```powershell
 Copy-Item .env.example .env
 notepad .env
 ```
 
-Load the `.env` values into the current PowerShell session, then build and run:
+Finally, build and run:
 
 ```powershell
-Get-Content .env | Where-Object { $_ -and $_ -notmatch '^\s*#' } | ForEach-Object {
-    $name, $value = $_ -split '=', 2
-    [Environment]::SetEnvironmentVariable($name, $value, 'Process')
-}
-
-mvn -B -f swim/smes/pom.xml -DskipTests package
-New-Item -ItemType Directory -Force build | Out-Null
-go build -o build/reds.exe ./cmd/reds
-.\build\reds.exe
+.\build.bat
 ```
 
 ### Documentation
