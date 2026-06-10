@@ -281,12 +281,10 @@ func (s *TargetStore) Upsert(t Target) {
 			s.trimHistory(t.ID)
 			s.hoverRevision++
 		}
-		t.Highlighted = t.ID == s.highlightedID
 		*existing = t
 		return
 	}
 
-	t.Highlighted = false
 	targetCopy := t
 	s.targets[t.ID] = &targetCopy
 	s.order = append(s.order, t.ID)
@@ -809,11 +807,17 @@ func (s *TargetStore) UpdateCoastDropTracks(
 const maxTargetHoverRangeFeet = float32(150)
 
 func (s *TargetStore) HighlightNearest(posFeet redsmath.Vec2) string {
+	bestID := s.NearestTargetID(posFeet)
+	if s != nil {
+		s.highlightedID = bestID
+	}
+	return bestID
+}
+
+func (s *TargetStore) NearestTargetID(posFeet redsmath.Vec2) string {
 	if s == nil || len(s.targets) == 0 {
 		return ""
 	}
-
-	s.ClearHighlight()
 
 	maxDistance2 := maxTargetHoverRangeFeet * maxTargetHoverRangeFeet
 	bestDistance2 := maxDistance2
@@ -833,10 +837,6 @@ func (s *TargetStore) HighlightNearest(posFeet redsmath.Vec2) string {
 		}
 	}
 
-	if target := s.targets[bestID]; target != nil {
-		target.Highlighted = true
-	}
-	s.highlightedID = bestID
 	return bestID
 }
 
@@ -845,9 +845,6 @@ func (s *TargetStore) ClearHighlight() {
 		return
 	}
 
-	if target := s.targets[s.highlightedID]; target != nil {
-		target.Highlighted = false
-	}
 	s.highlightedID = ""
 }
 
@@ -1093,6 +1090,8 @@ type TargetDrawOptions struct {
 	ScopeRotationDeg int
 
 	VectorVisible func(*Target) bool
+
+	HighlightedTargetID string
 }
 
 func DrawTargets(
@@ -1109,7 +1108,7 @@ func DrawTargets(
 	}
 
 	addHistoryDots(targets, history, cb, opts)
-	addHighlightRings(targets, cb, opts.Brightness)
+	addHighlightRings(targets, cb, opts.Brightness, opts.HighlightedTargetID)
 	addTargetSymbols(targets, cb, opts.Brightness)
 	addSuspendedTargetIcons(targets, cb, opts.Brightness, opts.ScopeRotationDeg)
 	addTargetVectors(targets, cb, opts)
@@ -1374,12 +1373,21 @@ func triangleFanIndices(vertexCount int) []uint32 {
 	return indices
 }
 
-func addHighlightRings(targets []*Target, cb *renderer.CmdBuffer, brightness int) {
+func addHighlightRings(
+	targets []*Target,
+	cb *renderer.CmdBuffer,
+	brightness int,
+	highlightedID string,
+) {
+	if highlightedID == "" {
+		return
+	}
+
 	builder := renderer.GetLinesBuilder()
 	defer renderer.ReturnLinesBuilder(builder)
 
 	for _, target := range targets {
-		if target == nil || !target.Highlighted || target.Suspended || target.Dropped {
+		if target == nil || target.ID != highlightedID || target.Suspended || target.Dropped {
 			continue
 		}
 
@@ -1394,6 +1402,7 @@ func addHighlightRings(targets []*Target, cb *renderer.CmdBuffer, brightness int
 			points = append(points, renderer.PointVertex{X: position.X, Y: position.Y})
 		}
 		builder.AddLineStrip(points)
+		break
 	}
 
 	cb.SetRGB(targetRGB(targetRGBHighlight, brightness))

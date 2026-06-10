@@ -133,10 +133,11 @@ type ASDEXPane struct {
 	rightClickCandidate bool
 	rightClickDragged   bool
 
-	highlightedTargetID    string
-	highlightMouseWorld    redsmath.Vec2
-	highlightStoreRevision uint64
-	highlightQueryValid    bool
+	highlightedTargetID     string
+	highlightedTargetWindow ScopeWindowID
+	highlightMouseWorld     redsmath.Vec2
+	highlightStoreRevision  uint64
+	highlightQueryValid     bool
 
 	center          redsmath.Vec2
 	rangeSetting    int
@@ -373,7 +374,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 							transforms = scopeTransforms
 						}
 					}
-					p.updateHighlightedTargetInWindow(ctx, windowRect, scopeTransforms)
+					p.updateHighlightedTargetInWindow(ctx, windowID, windowRect, scopeTransforms)
 					if !p.consumeCoastListClicks(ctx) {
 						p.consumeCommandClicksInWindow(ctx, windowRect, scopeTransforms)
 					}
@@ -560,14 +561,19 @@ func (p *ASDEXPane) renderScopeWindow(
 	targetCB.Viewport(x, y, w, h)
 	targetCB.Scissor(x, y, w, h)
 	transforms.LoadWorldViewingMatrices(targetCB)
+	highlightedTargetID := ""
+	if p.highlightedTargetWindow == windowID {
+		highlightedTargetID = p.highlightedTargetID
+	}
 	DrawTargets(
 		targets,
 		p.targets.History(),
 		targetCB,
 		TargetDrawOptions{
-			VectorSeconds:    3,
-			Brightness:       brightnessDefault,
-			ScopeRotationDeg: int(view.Rotation),
+			VectorSeconds:       3,
+			Brightness:          brightnessDefault,
+			ScopeRotationDeg:    int(view.Rotation),
+			HighlightedTargetID: highlightedTargetID,
 		},
 	)
 	targetCB.DisableScissor()
@@ -1389,6 +1395,7 @@ func (p *ASDEXPane) updateHighlightedTarget(
 	}
 	p.updateHighlightedTargetInWindow(
 		ctx,
+		mainScopeWindowID,
 		redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height()),
 		transforms,
 	)
@@ -1396,6 +1403,7 @@ func (p *ASDEXPane) updateHighlightedTarget(
 
 func (p *ASDEXPane) updateHighlightedTargetInWindow(
 	ctx *panes.Context,
+	windowID ScopeWindowID,
 	windowRect redsmath.Rect,
 	transforms radar.ScopeTransformations,
 ) {
@@ -1412,12 +1420,14 @@ func (p *ASDEXPane) updateHighlightedTargetInWindow(
 	mouseWorld := transforms.WorldFromWindowP(ctx.Mouse.Pos.Sub(windowRect.Min))
 	storeRevision := p.targets.HoverRevision()
 	if p.highlightQueryValid &&
+		p.highlightedTargetWindow == windowID &&
 		p.highlightMouseWorld == mouseWorld &&
 		p.highlightStoreRevision == storeRevision {
 		return
 	}
 
-	p.highlightedTargetID = p.targets.HighlightNearest(mouseWorld)
+	p.highlightedTargetID = p.targets.NearestTargetID(mouseWorld)
+	p.highlightedTargetWindow = windowID
 	p.highlightMouseWorld = mouseWorld
 	p.highlightStoreRevision = storeRevision
 	p.highlightQueryValid = true
@@ -1433,16 +1443,13 @@ func (p *ASDEXPane) clearHighlightedTarget() {
 	}
 
 	p.highlightedTargetID = ""
+	p.highlightedTargetWindow = mainScopeWindowID
 	p.highlightQueryValid = false
-	p.targets.ClearHighlight()
 }
 
 func (p *ASDEXPane) highlightedTarget() *Target {
 	if p == nil {
 		return nil
-	}
-	if target := p.targets.HighlightedTarget(); target != nil {
-		return target
 	}
 	return p.targets.TargetByID(p.highlightedTargetID)
 }
