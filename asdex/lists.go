@@ -874,6 +874,13 @@ func (p *PreviewArea) SetRunwayConfigName(name string) {
 	p.state.RunwayConfigName = strings.TrimSpace(name)
 }
 
+func (p *PreviewArea) RunwayConfigName() string {
+	if p == nil {
+		return "LIMITED"
+	}
+	return strings.TrimSpace(p.state.RunwayConfigName)
+}
+
 func (p *PreviewArea) SetTowerPositions(positions []string) {
 	if p == nil {
 		return

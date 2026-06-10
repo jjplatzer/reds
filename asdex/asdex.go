@@ -392,7 +392,11 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.applyCurrentCursor(ctx)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
 	targets := p.targets.All()
-	p.safetyLogic.Update(targets)
+	alertChanges := p.safetyLogic.Update(targets, SafetyLogicUpdateOptions{
+		RunwayConfiguration: p.currentSafetyRunwayConfiguration(),
+		RunwayClosed:        p.tempData.RunwayClosed,
+	})
+	_ = alertChanges
 
 	mainRect := redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y)
 	transforms = p.renderScopeWindow(ctx, zcb, 0, mainScopeWindowID, mainRect, referenceExtent, p.mainScopeView(), targets, now, true)
@@ -748,6 +752,21 @@ func (p *ASDEXPane) dcbState() DcbState {
 		ClosedRunways:         p.tempData.DcbRunwayClosureStates(&p.safetyLogic),
 		ActiveSpinnerFunction: activeSpinnerFunction,
 	}
+}
+
+func (p *ASDEXPane) currentSafetyRunwayConfiguration() SafetyRunwayConfiguration {
+	if p == nil {
+		return LimitedSafetyRunwayConfiguration()
+	}
+
+	name := p.previewArea.RunwayConfigName()
+	if strings.EqualFold(strings.TrimSpace(name), "LIMITED") {
+		return LimitedSafetyRunwayConfiguration()
+	}
+
+	// Later: return the selected runway configuration with arrival/departure
+	// runway maps once REDS stores the full preview config selection.
+	return SafetyRunwayConfiguration{Name: name}
 }
 
 func (p *ASDEXPane) consumeDcbInput(ctx *panes.Context) bool {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	stdmath "math"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	redsmath "github.com/juliusplatzer/reds/math"
@@ -43,6 +44,86 @@ type SafetyLogic struct {
 
 	activeOperations map[string]activeRunwayOperation
 	litRunways       map[string]bool
+	activeAlerts     map[string]SafetyAlert
+}
+
+type SafetyAlertType int
+
+const (
+	SafetyAlertNone SafetyAlertType = iota
+	SafetyAlertLandingClosedRunway
+	SafetyAlertDepartureClosedRunway
+)
+
+type SafetyAuralAlert int
+
+const (
+	SafetyAuralWarning SafetyAuralAlert = iota
+	SafetyAuralRunway
+	SafetyAuralZero
+	SafetyAuralOne
+	SafetyAuralTwo
+	SafetyAuralThree
+	SafetyAuralFour
+	SafetyAuralFive
+	SafetyAuralSix
+	SafetyAuralSeven
+	SafetyAuralEight
+	SafetyAuralNine
+	SafetyAuralLeft
+	SafetyAuralRight
+	SafetyAuralCenter
+	SafetyAuralClosed
+)
+
+type SafetyAlert struct {
+	ID string
+
+	Type SafetyAlertType
+
+	MessageLines []string
+	AircraftIDs  []string
+	RunwayIDs    []string
+
+	AuralAlerts []SafetyAuralAlert
+
+	// True only when the alert is newly generated and should trigger audio.
+	PlayAuralAlert bool
+}
+
+type SafetyAlertChanges struct {
+	Upserted []SafetyAlert
+	Deleted  []string
+}
+
+func (c SafetyAlertChanges) Empty() bool {
+	return len(c.Upserted) == 0 && len(c.Deleted) == 0
+}
+
+type SafetyRunwayConfiguration struct {
+	Name string
+
+	ArrivalRunwayIDs   map[string]bool
+	DepartureRunwayIDs map[string]bool
+}
+
+func LimitedSafetyRunwayConfiguration() SafetyRunwayConfiguration {
+	return SafetyRunwayConfiguration{
+		Name:               "LIMITED",
+		ArrivalRunwayIDs:   map[string]bool{},
+		DepartureRunwayIDs: map[string]bool{},
+	}
+}
+
+func (cfg SafetyRunwayConfiguration) IsLimited() bool {
+	return strings.EqualFold(strings.TrimSpace(cfg.Name), "LIMITED")
+}
+
+type SafetyLogicUpdateOptions struct {
+	RunwayConfiguration SafetyRunwayConfiguration
+
+	// For now this comes from TempData.RunwayClosed.
+	RunwayClosed func(runwayID string) bool
 }
 
 type surfaceRunway struct {
@@ -147,6 +228,7 @@ func LoadSafetyLogic(airport string, vm *VideoMap) (SafetyLogic, error) {
 		airportAltitudeFt: surface.AltitudeFt,
 		activeOperations:  make(map[string]activeRunwayOperation),
 		litRunways:        make(map[string]bool),
+		activeAlerts:      make(map[string]SafetyAlert),
 	}
 
 	runwayByID := make(map[string]int)
@@ -305,15 +387,21 @@ func populateHoldBarStations(hb *surfaceHoldBar, rwy surfaceRunway) {
 	}
 }
 
-func (sl *SafetyLogic) Update(targets []*Target) {
+func (sl *SafetyLogic) Update(
+	targets []*Target,
+	opts SafetyLogicUpdateOptions,
+) SafetyAlertChanges {
 	if sl == nil {
-		return
+		return SafetyAlertChanges{}
 	}
 	if sl.activeOperations == nil {
 		sl.activeOperations = make(map[string]activeRunwayOperation)
 	}
 	if sl.litRunways == nil {
 		sl.litRunways = make(map[string]bool)
+	}
+	if sl.activeAlerts == nil {
+		sl.activeAlerts = make(map[string]SafetyAlert)
 	}
 	clear(sl.litRunways)
 
@@ -335,6 +423,268 @@ func (sl *SafetyLogic) Update(targets []*Target) {
 	for _, operation := range sl.activeOperations {
 		sl.litRunways[operation.RunwayID] = true
 	}
+
+	return sl.updateAlerts(targets, opts)
+}
+
+func (sl *SafetyLogic) updateAlerts(
+	targets []*Target,
+	opts SafetyLogicUpdateOptions,
+) SafetyAlertChanges {
+	if sl == nil {
+		return SafetyAlertChanges{}
+	}
+	if sl.activeAlerts == nil {
+		sl.activeAlerts = make(map[string]SafetyAlert)
+	}
+
+	targetByID := targetMapByID(targets)
+	generated := sl.generateAlerts(targetByID, opts)
+
+	var changes SafetyAlertChanges
+
+	for id := range sl.activeAlerts {
+		if _, stillActive := generated[id]; !stillActive {
+			delete(sl.activeAlerts, id)
+			changes.Deleted = append(changes.Deleted, id)
+		}
+	}
+
+	for id, alert := range generated {
+		old, existed := sl.activeAlerts[id]
+		alert.PlayAuralAlert = !existed
+
+		if !existed || !safetyAlertEqualIgnoringPlay(old, alert) {
+			sl.activeAlerts[id] = alert
+			changes.Upserted = append(changes.Upserted, alert)
+		}
+	}
+
+	return changes
+}
+
+func (sl *SafetyLogic) generateAlerts(
+	targetByID map[string]*Target,
+	opts SafetyLogicUpdateOptions,
+) map[string]SafetyAlert {
+	generated := make(map[string]SafetyAlert)
+	if sl == nil {
+		return generated
+	}
+
+	// LIMITED currently generates closed-runway alerts only. Non-LIMITED
+	// runway configuration alert rules will be added when those configs are
+	// represented in REDS.
+	if !opts.RunwayConfiguration.IsLimited() || opts.RunwayClosed == nil {
+		return generated
+	}
+
+	for _, operation := range sl.activeOperations {
+		if !opts.RunwayClosed(operation.RunwayID) {
+			continue
+		}
+
+		target := targetByID[operation.TargetID]
+		if target == nil {
+			continue
+		}
+
+		alert, ok := sl.closedRunwayAlert(target, operation)
+		if !ok {
+			continue
+		}
+		generated[alert.ID] = alert
+	}
+
+	return generated
+}
+
+func targetMapByID(targets []*Target) map[string]*Target {
+	out := make(map[string]*Target, len(targets))
+	for _, target := range targets {
+		if target == nil || target.ID == "" {
+			continue
+		}
+		out[target.ID] = target
+	}
+	return out
+}
+
+func (sl *SafetyLogic) closedRunwayAlert(
+	target *Target,
+	operation activeRunwayOperation,
+) (SafetyAlert, bool) {
+	if target == nil || operation.RunwayID == "" {
+		return SafetyAlert{}, false
+	}
+
+	alertType := SafetyAlertLandingClosedRunway
+	description := "LANDING ON CLOSED RWY"
+	if operation.Kind == activeRunwayOperationDeparture {
+		alertType = SafetyAlertDepartureClosedRunway
+		description = "DEPARTURE ON CLOSED RWY"
+	}
+
+	runwayID := strings.ToUpper(strings.TrimSpace(operation.RunwayID))
+	targetLabel := safetyAlertTargetLabel(target)
+
+	return SafetyAlert{
+		ID:   safetyAlertID(alertType, target.ID, runwayID),
+		Type: alertType,
+
+		MessageLines: []string{
+			"RWY " + runwayID,
+			targetLabel,
+			description,
+		},
+		AircraftIDs: []string{target.ID},
+		RunwayIDs:   []string{runwayID},
+
+		AuralAlerts: closedRunwayAuralAlerts(runwayID),
+	}, true
+}
+
+func safetyAlertID(alertType SafetyAlertType, targetID string, runwayID string) string {
+	return fmt.Sprintf(
+		"SL:%d:%s:%s",
+		alertType,
+		strings.ToUpper(strings.TrimSpace(targetID)),
+		strings.ToUpper(strings.TrimSpace(runwayID)),
+	)
+}
+
+func safetyAlertTargetLabel(target *Target) string {
+	if target == nil {
+		return "UNKNOWN"
+	}
+
+	if callsign := strings.TrimSpace(target.Callsign); callsign != "" {
+		return strings.ToUpper(callsign)
+	}
+	if beacon := strings.TrimSpace(target.Beacon); beacon != "" {
+		return beacon
+	}
+	if id := strings.TrimSpace(target.ID); id != "" {
+		return strings.ToUpper(id)
+	}
+	return "UNKNOWN"
+}
+
+func closedRunwayAuralAlerts(runwayID string) []SafetyAuralAlert {
+	out := []SafetyAuralAlert{
+		SafetyAuralWarning,
+		SafetyAuralRunway,
+	}
+	out = append(out, runwayIDAuralTokens(runwayID)...)
+	out = append(out, SafetyAuralClosed)
+	return out
+}
+
+func runwayIDAuralTokens(runwayID string) []SafetyAuralAlert {
+	runwayID = strings.ToUpper(strings.TrimSpace(runwayID))
+
+	out := make([]SafetyAuralAlert, 0, len(runwayID))
+	for _, r := range runwayID {
+		switch r {
+		case '0':
+			out = append(out, SafetyAuralZero)
+		case '1':
+			out = append(out, SafetyAuralOne)
+		case '2':
+			out = append(out, SafetyAuralTwo)
+		case '3':
+			out = append(out, SafetyAuralThree)
+		case '4':
+			out = append(out, SafetyAuralFour)
+		case '5':
+			out = append(out, SafetyAuralFive)
+		case '6':
+			out = append(out, SafetyAuralSix)
+		case '7':
+			out = append(out, SafetyAuralSeven)
+		case '8':
+			out = append(out, SafetyAuralEight)
+		case '9':
+			out = append(out, SafetyAuralNine)
+		case 'L':
+			out = append(out, SafetyAuralLeft)
+		case 'R':
+			out = append(out, SafetyAuralRight)
+		case 'C':
+			out = append(out, SafetyAuralCenter)
+		}
+	}
+
+	return out
+}
+
+func safetyAlertEqualIgnoringPlay(a, b SafetyAlert) bool {
+	if a.ID != b.ID || a.Type != b.Type {
+		return false
+	}
+	if !sameStringSlice(a.MessageLines, b.MessageLines) {
+		return false
+	}
+	if !sameStringSlice(a.AircraftIDs, b.AircraftIDs) {
+		return false
+	}
+	if !sameStringSlice(a.RunwayIDs, b.RunwayIDs) {
+		return false
+	}
+	if len(a.AuralAlerts) != len(b.AuralAlerts) {
+		return false
+	}
+	for i := range a.AuralAlerts {
+		if a.AuralAlerts[i] != b.AuralAlerts[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func sameStringSlice(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func (sl *SafetyLogic) ActiveAlerts() []SafetyAlert {
+	if sl == nil || len(sl.activeAlerts) == 0 {
+		return nil
+	}
+
+	out := make([]SafetyAlert, 0, len(sl.activeAlerts))
+	for _, alert := range sl.activeAlerts {
+		out = append(out, alert)
+	}
+
+	sort.Slice(out, func(i, j int) bool {
+		return out[i].ID < out[j].ID
+	})
+
+	return out
+}
+
+func (sl *SafetyLogic) AircraftIsInAlert(targetID string) bool {
+	if sl == nil || targetID == "" {
+		return false
+	}
+
+	for _, alert := range sl.activeAlerts {
+		for _, id := range alert.AircraftIDs {
+			if id == targetID {
+				return true
+			}
+		}
+	}
+
+	return false
 }
 
 func (sl *SafetyLogic) updateOperationForTarget(target *Target) {
