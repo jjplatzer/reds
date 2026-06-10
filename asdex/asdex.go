@@ -98,6 +98,7 @@ type ASDEXPane struct {
 	cursorMode CursorMode
 
 	displayStateByWindow      map[ScopeWindowID]*WindowDisplayState
+	dbFieldSettings           DataBlockFieldSettings
 	datablockTimeshareStart   time.Time
 	showBeaconUntilByTargetID map[string]time.Time
 	previewArea               PreviewArea
@@ -196,6 +197,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		displayStateByWindow: map[ScopeWindowID]*WindowDisplayState{
 			mainScopeWindowID: NewWindowDisplayState(),
 		},
+		dbFieldSettings:           DefaultDataBlockFieldSettings(),
 		datablockTimeshareStart:   time.Now(),
 		showBeaconUntilByTargetID: make(map[string]time.Time),
 		previewArea:               preview,
@@ -651,7 +653,6 @@ func (p *ASDEXPane) renderScopeWindow(
 	)
 	suspendedLabelCB.DisableScissor()
 
-	datablockSettings := p.dataBlockSettingsForWindow(windowID)
 	dbCB := zcb.At(scopeWindowZ(stackIndex, zDatablocks))
 	dbCB.Viewport(x, y, w, h)
 	dbCB.Scissor(x, y, w, h)
@@ -672,7 +673,6 @@ func (p *ASDEXPane) renderScopeWindow(
 				return p.resolveDataBlockSettings(
 					target,
 					windowID,
-					datablockSettings,
 					alertInProgress,
 					targetInAlert,
 				)
@@ -807,6 +807,7 @@ func (p *ASDEXPane) dcbState() DcbState {
 	if p.dcbSpinner != nil {
 		activeSpinnerFunction = p.dcbSpinner.Function
 	}
+	fields := p.dbFieldSettings
 
 	return DcbState{
 		Range:                 rangeSetting,
@@ -816,6 +817,14 @@ func (p *ASDEXPane) dcbState() DcbState {
 		LeaderLength:          active.DB.LeaderLength,
 		DataBlocksOn:          active.DB.ShowDataBlocks,
 		DcbOn:                 p.dcb.On(),
+		FullDataBlocks:        active.DB.FullDataBlocks,
+		ShowAltitude:          fields.ShowAltitude,
+		ShowTargetType:        fields.ShowTargetType,
+		ShowSensors:           fields.ShowSensors,
+		ShowCWT:               fields.ShowCWT,
+		ShowFix:               fields.ShowFix,
+		ShowVelocity:          fields.ShowVelocity,
+		ShowScratchpads:       fields.ShowScratchpads,
 		ClosedRunways:         p.tempData.DcbRunwayClosureStates(&p.safetyLogic),
 		ActiveSpinnerFunction: activeSpinnerFunction,
 	}
@@ -901,6 +910,50 @@ func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 			p.startRangeSpinner()
 		}
 		return true
+	case DcbFunctionDataBlockEdit:
+		p.openDbEditDcbMenu()
+		return true
+	case DcbFunctionDbFullPart:
+		p.toggleDbFullPart()
+		return true
+	case DcbFunctionDbAltitudeOnOff:
+		p.toggleDbField(func(fields *DataBlockFieldSettings) {
+			fields.ShowAltitude = !fields.ShowAltitude
+		})
+		return true
+	case DcbFunctionDbTypeOnOff:
+		p.toggleDbField(func(fields *DataBlockFieldSettings) {
+			fields.ShowTargetType = !fields.ShowTargetType
+		})
+		return true
+	case DcbFunctionDbSensorsOnOff:
+		p.toggleDbField(func(fields *DataBlockFieldSettings) {
+			fields.ShowSensors = !fields.ShowSensors
+		})
+		return true
+	case DcbFunctionDbCategoryOnOff:
+		p.toggleDbField(func(fields *DataBlockFieldSettings) {
+			fields.ShowCWT = !fields.ShowCWT
+		})
+		return true
+	case DcbFunctionDbFixOnOff:
+		p.toggleDbField(func(fields *DataBlockFieldSettings) {
+			fields.ShowFix = !fields.ShowFix
+		})
+		return true
+	case DcbFunctionDbVelocityOnOff:
+		p.toggleDbField(func(fields *DataBlockFieldSettings) {
+			fields.ShowVelocity = !fields.ShowVelocity
+		})
+		return true
+	case DcbFunctionDbScratchpadOnOff:
+		p.toggleDbField(func(fields *DataBlockFieldSettings) {
+			fields.ShowScratchpads = !fields.ShowScratchpads
+		})
+		return true
+	case DcbFunctionDataBlocksOnOff:
+		p.toggleDataBlocksOnOff()
+		return true
 	case DcbFunctionDcbOnOff:
 		p.dcb.ToggleOnOff()
 		p.dcbSpinner = nil
@@ -918,6 +971,77 @@ func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 	default:
 		return true
 	}
+}
+
+func (p *ASDEXPane) clearDcbModalConflicts() {
+	if p == nil {
+		return
+	}
+
+	p.commandMode = CommandModeNone
+	p.commandEntry.Clear()
+	p.datablockEdit = nil
+	p.editingTargetID = ""
+	p.initControlEntry = nil
+	p.termControlEntry = nil
+	p.multiFunction = nil
+	p.previewReposition = nil
+	p.coastListReposition = nil
+	p.mapReposition = nil
+	p.mapRotate = nil
+	p.dcbSpinner = nil
+	p.tempAreaDraft = nil
+	p.tempTextCommand = nil
+	p.tempTextPlacement = nil
+	p.tempDataSelectMode = TempDataSelectNone
+	p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
+	p.tempData.ClearHighlights()
+	p.newWindow = nil
+}
+
+func (p *ASDEXPane) openDbEditDcbMenu() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.dcb.SetMenu(DcbMenuDbEdit)
+	p.dcbMenuCommand = NewDcbMenuCommand("DB EDIT")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) toggleDbFullPart() {
+	if p == nil {
+		return
+	}
+
+	p.updateActiveDataBlockSettings(func(settings *DataBlockSettings) {
+		settings.FullDataBlocks = !settings.FullDataBlocks
+	})
+	p.previewArea.SetSystemResponse("")
+}
+
+func (p *ASDEXPane) toggleDbField(update func(*DataBlockFieldSettings)) {
+	if p == nil || update == nil {
+		return
+	}
+
+	update(&p.dbFieldSettings)
+	p.previewArea.SetSystemResponse("")
+}
+
+func (p *ASDEXPane) toggleDataBlocksOnOff() {
+	if p == nil {
+		return
+	}
+
+	windowID := p.activeWindowID()
+	p.updateActiveDataBlockSettings(func(settings *DataBlockSettings) {
+		settings.ShowDataBlocks = !settings.ShowDataBlocks
+	})
+	p.clearTargetShowDBOverrides(windowID)
+	p.previewArea.SetSystemResponse("")
 }
 
 func (p *ASDEXPane) startRangeSpinner() {
@@ -1227,11 +1351,19 @@ func (p *ASDEXPane) targetShowsDataBlockInWindow(
 func (p *ASDEXPane) resolveDataBlockSettings(
 	target *Target,
 	windowID ScopeWindowID,
-	base DataBlockSettings,
 	alertInProgress bool,
 	targetInAlert bool,
 ) DataBlockSettings {
-	settings := base
+	settings := p.dataBlockSettingsForWindow(windowID)
+	fields := p.dbFieldSettings
+	settings.ShowAltitude = fields.ShowAltitude
+	settings.ShowTargetType = fields.ShowTargetType
+	settings.ShowSensors = fields.ShowSensors
+	settings.ShowCWT = fields.ShowCWT
+	settings.ShowFix = fields.ShowFix
+	settings.ShowVelocity = fields.ShowVelocity
+	settings.ShowScratchpads = fields.ShowScratchpads
+
 	if target != nil {
 		if direction, ok := p.leaderDirectionOverride(windowID, target.ID); ok {
 			settings.LeaderDirection = direction

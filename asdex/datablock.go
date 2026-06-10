@@ -97,6 +97,31 @@ type DataBlockSettings struct {
 	ShowScratchpads bool
 }
 
+// CRC stores DB field visibility in CurrentPrefSet, not in AsdexWindowSettings.
+// Therefore ALTITUDE/TYPE/SENSORS/CAT/FIX/VELOCITY/SCRATCH PAD are global
+// display toggles until DB trait areas override them.
+type DataBlockFieldSettings struct {
+	ShowAltitude    bool
+	ShowTargetType  bool
+	ShowSensors     bool
+	ShowCWT         bool
+	ShowFix         bool
+	ShowVelocity    bool
+	ShowScratchpads bool
+}
+
+func DefaultDataBlockFieldSettings() DataBlockFieldSettings {
+	return DataBlockFieldSettings{
+		ShowAltitude:    false,
+		ShowTargetType:  true,
+		ShowSensors:     false,
+		ShowCWT:         false,
+		ShowFix:         true,
+		ShowVelocity:    false,
+		ShowScratchpads: true,
+	}
+}
+
 type datablockField int
 
 const (
@@ -134,6 +159,7 @@ func fitFieldWidth(value string, width int) string {
 }
 
 func DefaultDataBlockSettings() DataBlockSettings {
+	fields := DefaultDataBlockFieldSettings()
 	return DataBlockSettings{
 		ShowDataBlocks: true,
 		FullDataBlocks: true,
@@ -147,13 +173,13 @@ func DefaultDataBlockSettings() DataBlockSettings {
 		AlertInProgress:  false,
 		TargetInAlert:    false,
 
-		ShowAltitude:    false,
-		ShowTargetType:  true,
-		ShowSensors:     false,
-		ShowCWT:         false,
-		ShowFix:         true,
-		ShowVelocity:    false,
-		ShowScratchpads: true,
+		ShowAltitude:    fields.ShowAltitude,
+		ShowTargetType:  fields.ShowTargetType,
+		ShowSensors:     fields.ShowSensors,
+		ShowCWT:         fields.ShowCWT,
+		ShowFix:         fields.ShowFix,
+		ShowVelocity:    fields.ShowVelocity,
+		ShowScratchpads: fields.ShowScratchpads,
 	}
 }
 

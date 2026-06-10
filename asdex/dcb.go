@@ -25,6 +25,7 @@ const (
 	DcbMenuMain DcbMenu = iota
 	DcbMenuTempData
 	DcbMenuClosedRunway
+	DcbMenuDbEdit
 	DcbMenuOff
 )
 
@@ -73,6 +74,14 @@ const (
 	DcbFunctionLocal2
 	DcbFunctionDataBlockArea
 	DcbFunctionDataBlockEdit
+	DcbFunctionDbFullPart
+	DcbFunctionDbAltitudeOnOff
+	DcbFunctionDbTypeOnOff
+	DcbFunctionDbSensorsOnOff
+	DcbFunctionDbCategoryOnOff
+	DcbFunctionDbFixOnOff
+	DcbFunctionDbVelocityOnOff
+	DcbFunctionDbScratchpadOnOff
 	DcbFunctionDataBlocksOnOff
 	DcbFunctionInitControl
 	DcbFunctionTrackSuspend
@@ -158,6 +167,16 @@ type DcbState struct {
 	LeaderLength int
 	DataBlocksOn bool
 	DcbOn        bool
+
+	FullDataBlocks bool
+
+	ShowAltitude    bool
+	ShowTargetType  bool
+	ShowSensors     bool
+	ShowCWT         bool
+	ShowFix         bool
+	ShowVelocity    bool
+	ShowScratchpads bool
 
 	ClosedRunways []DcbRunwayClosureState
 
@@ -516,6 +535,8 @@ func isLargeDcbFunction(function DcbFunction) bool {
 		DcbFunctionShowHiddenTempData,
 		DcbFunctionHideTempData,
 		DcbFunctionDeleteGlobalTempData,
+		DcbFunctionDbFullPart,
+		DcbFunctionDbScratchpadOnOff,
 		DcbFunctionDone,
 		DcbFunctionVacant:
 		return true
@@ -729,6 +750,67 @@ func (d *Dcb) closedRunwayButtonSpecs(state DcbState) []DcbButtonSpec {
 	return buttons
 }
 
+func (d *Dcb) dbEditButtonSpecs(state DcbState) []DcbButtonSpec {
+	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
+		if state.ActiveSpinnerFunction == spec.Function {
+			spec.Active = true
+		}
+		return spec
+	}
+	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonNormal,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	toggle := func(function DcbFunction, on bool, onLabel string, offLabel string, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonToggle,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+			On:       on,
+			OnLabel:  onLabel,
+			OffLabel: offLabel,
+		})
+	}
+	vacant := func() DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: DcbFunctionVacant,
+			Type:     DcbButtonVacant,
+			Large:    true,
+			Visible:  true,
+		}
+	}
+
+	return []DcbButtonSpec{
+		vacant(),
+		vacant(),
+		vacant(),
+		vacant(),
+
+		toggle(DcbFunctionDbFullPart, state.FullDataBlocks, "FULL", "PART"),
+		toggle(DcbFunctionDbAltitudeOnOff, state.ShowAltitude, "ON", "OFF", "ALTITUDE"),
+		toggle(DcbFunctionDbTypeOnOff, state.ShowTargetType, "ON", "OFF", "TYPE"),
+		toggle(DcbFunctionDbSensorsOnOff, state.ShowSensors, "ON", "OFF", "SENSORS"),
+		toggle(DcbFunctionDbCategoryOnOff, state.ShowCWT, "ON", "OFF", "CAT"),
+		toggle(DcbFunctionDbFixOnOff, state.ShowFix, "ON", "OFF", "FIX"),
+		toggle(DcbFunctionDbVelocityOnOff, state.ShowVelocity, "ON", "OFF", "VELOCITY"),
+		toggle(DcbFunctionDbScratchpadOnOff, state.ShowScratchpads, "ON", "OFF", "SCRATCH", "PAD"),
+
+		normal(DcbFunctionDone, "DONE"),
+
+		vacant(),
+		vacant(),
+		vacant(),
+		vacant(),
+	}
+}
+
 func (d *Dcb) rangeLabel(state DcbState) string {
 	return strconv.Itoa(clampInt(state.Range, asdexMinRangeSetting, asdexMaxRangeSetting))
 }
@@ -753,6 +835,8 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 		return d.tempDataButtonSpecs(state)
 	case DcbMenuClosedRunway:
 		return d.closedRunwayButtonSpecs(state)
+	case DcbMenuDbEdit:
+		return d.dbEditButtonSpecs(state)
 	default:
 		return d.mainButtonSpecs(state)
 	}
