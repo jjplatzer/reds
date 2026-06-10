@@ -90,17 +90,17 @@ const (
 	TempDataSelectHide
 )
 
-type TempDataHitKind int
+type TempDataHitType int
 
 const (
-	TempDataHitNone TempDataHitKind = iota
+	TempDataHitNone TempDataHitType = iota
 	TempDataHitText
 	TempDataHitClosedArea
 	TempDataHitRestrictedArea
 )
 
 type TempDataHit struct {
-	Kind  TempDataHitKind
+	Type  TempDataHitType
 	Index int
 	ID    string
 }
@@ -387,7 +387,7 @@ func (td *TempData) VisibleObjectCount() int {
 	return count
 }
 
-func (td *TempData) AddArea(kind TempDataType, points []redsmath.Vec2) {
+func (td *TempData) AddArea(areaType TempDataType, points []redsmath.Vec2) {
 	if td == nil || len(points) < minTempAreaNodes+1 {
 		return
 	}
@@ -398,15 +398,15 @@ func (td *TempData) AddArea(kind TempDataType, points []redsmath.Vec2) {
 	}
 
 	area := TempArea{
-		ID:           td.nextTempAreaID(kind),
-		Type:         kind,
+		ID:           td.nextTempAreaID(areaType),
+		Type:         areaType,
 		Points:       append([]redsmath.Vec2(nil), points...),
 		Bounds:       boundsForTempPolygon(points),
 		meshVertices: vertices,
 		meshIndices:  indices,
 	}
 
-	switch kind {
+	switch areaType {
 	case TempDataClosedArea:
 		td.closedAreas = append(td.closedAreas, area)
 	case TempDataRestrictedArea:
@@ -441,13 +441,13 @@ func boundsForTempPolygon(points []redsmath.Vec2) redsmath.Rect {
 	return redsmath.NewRect(minX, minY, maxX, maxY)
 }
 
-func (td *TempData) nextTempAreaID(kind TempDataType) string {
+func (td *TempData) nextTempAreaID(areaType TempDataType) string {
 	if td.nextAreaID <= 0 {
 		td.nextAreaID = 1
 	}
 
 	prefix := "CLOSED"
-	if kind == TempDataRestrictedArea {
+	if areaType == TempDataRestrictedArea {
 		prefix = "RESTR"
 	}
 
@@ -478,20 +478,20 @@ func (td *TempData) AddText(location redsmath.Vec2, line1 string, line2 string) 
 
 func (td *TempData) HitTest(world redsmath.Vec2) TempDataHit {
 	if td == nil {
-		return TempDataHit{Kind: TempDataHitNone, Index: -1}
+		return TempDataHit{Type: TempDataHitNone, Index: -1}
 	}
-	if hit := td.hitTestText(world); hit.Kind != TempDataHitNone {
+	if hit := td.hitTestText(world); hit.Type != TempDataHitNone {
 		return hit
 	}
-	if hit := td.hitTestAreas(world); hit.Kind != TempDataHitNone {
+	if hit := td.hitTestAreas(world); hit.Type != TempDataHitNone {
 		return hit
 	}
-	return TempDataHit{Kind: TempDataHitNone, Index: -1}
+	return TempDataHit{Type: TempDataHitNone, Index: -1}
 }
 
 func (td *TempData) hitTestText(world redsmath.Vec2) TempDataHit {
 	if td == nil {
-		return TempDataHit{Kind: TempDataHitNone, Index: -1}
+		return TempDataHit{Type: TempDataHitNone, Index: -1}
 	}
 
 	bestIndex := -1
@@ -510,10 +510,10 @@ func (td *TempData) hitTestText(world redsmath.Vec2) TempDataHit {
 	}
 
 	if bestIndex < 0 {
-		return TempDataHit{Kind: TempDataHitNone, Index: -1}
+		return TempDataHit{Type: TempDataHitNone, Index: -1}
 	}
 	return TempDataHit{
-		Kind:  TempDataHitText,
+		Type:  TempDataHitText,
 		Index: bestIndex,
 		ID:    td.texts[bestIndex].ID,
 	}
@@ -521,13 +521,13 @@ func (td *TempData) hitTestText(world redsmath.Vec2) TempDataHit {
 
 func (td *TempData) hitTestAreas(world redsmath.Vec2) TempDataHit {
 	if td == nil {
-		return TempDataHit{Kind: TempDataHitNone, Index: -1}
+		return TempDataHit{Type: TempDataHitNone, Index: -1}
 	}
 
 	for i := len(td.closedAreas) - 1; i >= 0; i-- {
 		if tempAreaContains(td.closedAreas[i], world) {
 			return TempDataHit{
-				Kind:  TempDataHitClosedArea,
+				Type:  TempDataHitClosedArea,
 				Index: i,
 				ID:    td.closedAreas[i].ID,
 			}
@@ -536,13 +536,13 @@ func (td *TempData) hitTestAreas(world redsmath.Vec2) TempDataHit {
 	for i := len(td.restrictedAreas) - 1; i >= 0; i-- {
 		if tempAreaContains(td.restrictedAreas[i], world) {
 			return TempDataHit{
-				Kind:  TempDataHitRestrictedArea,
+				Type:  TempDataHitRestrictedArea,
 				Index: i,
 				ID:    td.restrictedAreas[i].ID,
 			}
 		}
 	}
-	return TempDataHit{Kind: TempDataHitNone, Index: -1}
+	return TempDataHit{Type: TempDataHitNone, Index: -1}
 }
 
 func tempAreaContains(area TempArea, world redsmath.Vec2) bool {
@@ -567,7 +567,7 @@ func (td *TempData) ToggleHighlight(hit TempDataHit) bool {
 		return false
 	}
 
-	switch hit.Kind {
+	switch hit.Type {
 	case TempDataHitText:
 		if hit.Index >= len(td.texts) {
 			return false
@@ -1149,7 +1149,7 @@ func (p *ASDEXPane) consumeTempDataSelectionInput(
 	switch {
 	case mouse.WasReleased(platform.MouseButtonLeft):
 		hit := p.tempData.HitTest(world)
-		if hit.Kind != TempDataHitNone {
+		if hit.Type != TempDataHitNone {
 			p.tempData.ToggleHighlight(hit)
 			p.previewArea.SetSystemResponse("")
 		}
@@ -1182,7 +1182,7 @@ func (p *ASDEXPane) finishTempDataSelection() {
 	}
 
 	p.tempDataSelectMode = TempDataSelectNone
-	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	p.dcb.SetMenu(DcbMenuTempData)
 	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
 	p.previewArea.SetSystemResponse("")
@@ -1324,7 +1324,7 @@ func (p *ASDEXPane) consumeTempTextPlacementInput(
 	return true
 }
 
-func (p *ASDEXPane) startDefineTempArea(kind TempDataType, commandLine string) {
+func (p *ASDEXPane) startDefineTempArea(areaType TempDataType, commandLine string) {
 	if p == nil {
 		return
 	}
@@ -1337,7 +1337,7 @@ func (p *ASDEXPane) startDefineTempArea(kind TempDataType, commandLine string) {
 	p.clearTempDataCommandConflicts()
 	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA", commandLine)
 	p.tempAreaDraft = &TempAreaDraft{
-		Type:   kind,
+		Type:   areaType,
 		Points: make([]redsmath.Vec2, 0, maxTempAreaNodes+1),
 	}
 	p.previewArea.SetSystemResponse("")
@@ -1552,7 +1552,7 @@ func (p *ASDEXPane) clearTempDataCommandConflicts() {
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
 	p.tempDataSelectMode = TempDataSelectNone
-	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
 	p.newWindow = nil
 	p.dcbSpinner = nil
@@ -1613,7 +1613,7 @@ func (p *ASDEXPane) closeDcbCurrentSubmenu() {
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
 	p.tempDataSelectMode = TempDataSelectNone
-	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
 	p.newWindow = nil
 	p.dcbSpinner = nil
@@ -1635,7 +1635,7 @@ func (p *ASDEXPane) closeDcbSubmenu() {
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
 	p.tempDataSelectMode = TempDataSelectNone
-	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
 	p.newWindow = nil
 	p.previewArea.SetSystemResponse("")

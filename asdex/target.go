@@ -1057,6 +1057,9 @@ type TargetDrawOptions struct {
 	VectorVisible func(*Target) bool
 
 	HighlightedTargetID string
+
+	AlertTargetIDs map[string]bool
+	AlertFlashOn   bool
 }
 
 func DrawTargets(
@@ -1073,8 +1076,9 @@ func DrawTargets(
 	}
 
 	addHistoryDots(targets, history, cb, opts)
-	addHighlightRings(targets, cb, opts.Brightness, opts.HighlightedTargetID)
-	addTargetSymbols(targets, cb, opts.Brightness)
+	addAlertOctagons(targets, cb, opts)
+	addHighlightRings(targets, cb, opts.Brightness, opts.HighlightedTargetID, opts.AlertTargetIDs)
+	addTargetSymbols(targets, cb, opts)
 	addSuspendedTargetIcons(targets, cb, opts.Brightness, opts.ScopeRotationDeg, opts.HighlightedTargetID)
 	addTargetVectors(targets, cb, opts)
 }
@@ -1165,6 +1169,7 @@ const (
 	targetRGBSuspendedOuter
 	targetRGBSuspendedInner
 	targetRGBSuspendedSelectedInner
+	targetRGBAlert
 )
 
 // Gildea, K. M. (2018), Development of a Standard Palette for Color Coding ATC Displays,
@@ -1196,6 +1201,9 @@ func targetRGB(role targetRGBRole, brightness int) renderer.RGB {
 		floor = 20
 	case targetRGBSuspendedSelectedInner:
 		base = renderer.RGB8(255, 255, 255)
+		floor = 20
+	case targetRGBAlert:
+		base = renderer.RGB8(255, 0, 0)
 		floor = 20
 	default:
 		base = renderer.RGB8(248, 248, 248)
@@ -1281,6 +1289,10 @@ const highlightRingRadiusFeet = 0.012 * redsmath.FeetPerNM
 
 var highlightRingPolygon = regularRingPolygon(20, highlightRingRadiusFeet)
 
+const alertOctagonRadiusFeet = 0.012 * redsmath.FeetPerNM
+
+var alertOctagonPolygon = regularRingPolygon(20, alertOctagonRadiusFeet)
+
 const (
 	suspendedOuterHalfSizeFeet = float32(65)
 	suspendedInnerHalfSizeFeet = float32(55)
@@ -1343,8 +1355,9 @@ func addHighlightRings(
 	cb *renderer.CmdBuffer,
 	brightness int,
 	highlightedID string,
+	alertTargetIDs map[string]bool,
 ) {
-	if highlightedID == "" {
+	if highlightedID == "" || alertTargetIDs[highlightedID] {
 		return
 	}
 
@@ -1375,17 +1388,57 @@ func addHighlightRings(
 	builder.GenerateCommands(cb)
 }
 
-func addTargetSymbols(targets []*Target, cb *renderer.CmdBuffer, brightness int) {
+func addAlertOctagons(
+	targets []*Target,
+	cb *renderer.CmdBuffer,
+	opts TargetDrawOptions,
+) {
+	if cb == nil || len(opts.AlertTargetIDs) == 0 {
+		return
+	}
+
+	builder := renderer.GetLinesBuilder()
+	defer renderer.ReturnLinesBuilder(builder)
+
+	// CRC draws the octagon with rotateWithWorld=false and a 22.5 degree
+	// rotation, so counter the scope rotation in world-matrix rendering.
+	rotation := float32(22.5) - float32(opts.ScopeRotationDeg)
+	for _, target := range targets {
+		if target == nil || target.Suspended || target.Dropped || !opts.AlertTargetIDs[target.ID] {
+			continue
+		}
+
+		scale := float32(1)
+		if classifyTarget(target) == targetClassHeavyAircraft {
+			scale = 1.5
+		}
+
+		points := make([]renderer.PointVertex, 0, len(alertOctagonPolygon))
+		for _, point := range alertOctagonPolygon {
+			position := rotateScaleTranslate(point, target.PosFeet, rotation, scale)
+			points = append(points, renderer.PointVertex{X: position.X, Y: position.Y})
+		}
+		builder.AddLineStrip(points)
+	}
+
+	cb.SetRGB(targetRGB(targetRGBAlert, opts.Brightness))
+	cb.LineWidth(2)
+	builder.GenerateCommands(cb)
+}
+
+func addTargetSymbols(targets []*Target, cb *renderer.CmdBuffer, opts TargetDrawOptions) {
 	builders := map[targetClass]*renderer.TrianglesBuilder{
 		targetClassUnknown:       renderer.GetTrianglesBuilder(),
 		targetClassVehicle:       renderer.GetTrianglesBuilder(),
 		targetClassAircraft:      renderer.GetTrianglesBuilder(),
 		targetClassHeavyAircraft: renderer.GetTrianglesBuilder(),
 	}
+	alertBuilder := renderer.GetTrianglesBuilder()
 	defer func() {
 		for _, builder := range builders {
 			renderer.ReturnTrianglesBuilder(builder)
 		}
+		renderer.ReturnTrianglesBuilder(alertBuilder)
 	}()
 
 	for _, target := range targets {
@@ -1403,8 +1456,13 @@ func addTargetSymbols(targets []*Target, cb *renderer.CmdBuffer, brightness int)
 			scale = 1.5
 		}
 
+		builder := builders[class]
+		if opts.AlertFlashOn && opts.AlertTargetIDs[target.ID] {
+			builder = alertBuilder
+		}
+
 		addTransformedIndexed(
-			builders[class],
+			builder,
 			mesh.Vertices,
 			mesh.Indices,
 			target.PosFeet,
@@ -1419,9 +1477,12 @@ func addTargetSymbols(targets []*Target, cb *renderer.CmdBuffer, brightness int)
 		targetClassUnknown,
 		targetClassVehicle,
 	} {
-		cb.SetRGB(targetClassRGB(class, brightness))
+		cb.SetRGB(targetClassRGB(class, opts.Brightness))
 		builders[class].GenerateCommands(cb, renderer.DrawSolid, 0)
 	}
+
+	cb.SetRGB(targetRGB(targetRGBAlert, opts.Brightness))
+	alertBuilder.GenerateCommands(cb, renderer.DrawSolid, 0)
 }
 
 func addSuspendedTargetIcons(

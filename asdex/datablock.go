@@ -83,7 +83,10 @@ type DataBlockSettings struct {
 	LeaderDirection LeaderDirection
 
 	TimesharePrimary bool
-	AlertInProgress  bool
+
+	// Alert render context. These are not persistent DB settings.
+	AlertInProgress bool
+	TargetInAlert   bool
 
 	ShowAltitude    bool
 	ShowTargetType  bool
@@ -142,6 +145,7 @@ func DefaultDataBlockSettings() DataBlockSettings {
 
 		TimesharePrimary: true,
 		AlertInProgress:  false,
+		TargetInAlert:    false,
 
 		ShowAltitude:    false,
 		ShowTargetType:  true,
@@ -340,6 +344,19 @@ func chooseLine2(primaryLine2 string, scratchLine2 string, settings DataBlockSet
 	return scratchLine2
 }
 
+func effectiveFullDataBlock(settings DataBlockSettings) bool {
+	if !settings.AlertInProgress {
+		return settings.FullDataBlocks
+	}
+
+	// CRC: during an alert, only alert aircraft may remain full. Non-alert
+	// aircraft are partial regardless of the resolved FullDataBlocks setting.
+	if !settings.TargetInAlert {
+		return false
+	}
+	return settings.FullDataBlocks
+}
+
 type builtDataBlock struct {
 	lines []string
 
@@ -361,7 +378,7 @@ func buildDataBlock(
 	duplicateBeaconLine := ""
 	out.lines = append(out.lines, duplicateBeaconLine)
 
-	if !settings.FullDataBlocks {
+	if !effectiveFullDataBlock(settings) {
 		line1 := datablockIDField(target, showBeaconCode)
 		out.lines = append(out.lines, line1)
 		measureDataBlockLine(&out, duplicateBeaconLine, 0, settings.FontSize, font)

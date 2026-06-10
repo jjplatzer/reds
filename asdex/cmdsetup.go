@@ -394,7 +394,7 @@ func (ap *ASDEXPane) cmdNewWindow(_ *panes.Context) CommandStatus {
 	ap.tempTextCommand = nil
 	ap.tempTextPlacement = nil
 	ap.tempDataSelectMode = TempDataSelectNone
-	ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = NewNewWindowCommand()
 	ap.dcb.ReturnToMainMenu()
@@ -421,7 +421,7 @@ func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
 	ap.tempTextCommand = nil
 	ap.tempTextPlacement = nil
 	ap.tempDataSelectMode = TempDataSelectNone
-	ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = nil
 	ap.dcb.ReturnToMainMenu()
@@ -455,7 +455,7 @@ func (ap *ASDEXPane) cmdMapReposition(ctx *panes.Context) CommandStatus {
 	ap.tempTextCommand = nil
 	ap.tempTextPlacement = nil
 	ap.tempDataSelectMode = TempDataSelectNone
-	ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = nil
 	ap.dcb.ReturnToMainMenu()
@@ -490,7 +490,7 @@ func (ap *ASDEXPane) cmdMapRotate(_ *panes.Context) CommandStatus {
 	ap.tempTextCommand = nil
 	ap.tempTextPlacement = nil
 	ap.tempDataSelectMode = TempDataSelectNone
-	ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = nil
 	ap.dcb.ReturnToMainMenu()

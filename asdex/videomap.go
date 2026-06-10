@@ -305,8 +305,8 @@ func stringProperty(properties map[string]any, key string) string {
 	return text
 }
 
-func classifyPolygonType(asdexKind string) (PolygonType, bool) {
-	switch asdexKind {
+func classifyPolygonType(asdexType string) (PolygonType, bool) {
+	switch asdexType {
 	case "runway":
 		return PolygonRunway, true
 	case "taxiway":

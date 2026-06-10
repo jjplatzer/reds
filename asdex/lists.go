@@ -217,10 +217,10 @@ type CoastListEntry struct {
 	Selected       bool
 }
 
-type CoastListEntryHitKind int
+type CoastListEntryHitType int
 
 const (
-	CoastListHitNone CoastListEntryHitKind = iota
+	CoastListHitNone CoastListEntryHitType = iota
 	CoastListHitHeader
 	CoastListHitEntry
 	CoastListHitUpArrow
@@ -229,7 +229,7 @@ const (
 
 type CoastListEntryHit struct {
 	Hit  bool
-	Kind CoastListEntryHitKind
+	Type CoastListEntryHitType
 
 	TargetID string
 	TrackID  string
@@ -627,13 +627,13 @@ func (l *CoastList) HitTest(
 		return CoastListEntryHit{}
 	}
 	if l.headerBounds(asdexFont, displaySize).Contains(point) {
-		return CoastListEntryHit{Hit: true, Kind: CoastListHitHeader}
+		return CoastListEntryHit{Hit: true, Type: CoastListHitHeader}
 	}
 	if bounds := l.upArrowBounds(asdexFont, eramTextFont, displaySize); !bounds.Empty() && bounds.Contains(point) {
-		return CoastListEntryHit{Hit: true, Kind: CoastListHitUpArrow}
+		return CoastListEntryHit{Hit: true, Type: CoastListHitUpArrow}
 	}
 	if bounds := l.downArrowBounds(asdexFont, eramTextFont, displaySize); !bounds.Empty() && bounds.Contains(point) {
-		return CoastListEntryHit{Hit: true, Kind: CoastListHitDownArrow}
+		return CoastListEntryHit{Hit: true, Type: CoastListHitDownArrow}
 	}
 
 	ordered := l.orderedEntries()
@@ -652,7 +652,7 @@ func (l *CoastList) HitTest(
 		entry := ordered[start+index]
 		return CoastListEntryHit{
 			Hit:      true,
-			Kind:     CoastListHitEntry,
+			Type:     CoastListHitEntry,
 			TargetID: entry.TargetID,
 			TrackID:  entry.TrackID,
 			Status:   entry.Status,
@@ -872,6 +872,13 @@ func (p *PreviewArea) SetRunwayConfigName(name string) {
 		return
 	}
 	p.state.RunwayConfigName = strings.TrimSpace(name)
+}
+
+func (p *PreviewArea) RunwayConfigName() string {
+	if p == nil {
+		return "LIMITED"
+	}
+	return strings.TrimSpace(p.state.RunwayConfigName)
 }
 
 func (p *PreviewArea) SetTowerPositions(positions []string) {

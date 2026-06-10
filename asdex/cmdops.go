@@ -86,7 +86,7 @@ func (ap *ASDEXPane) cmdTrackSuspend(_ *panes.Context) CommandStatus {
 	ap.tempTextCommand = nil
 	ap.tempTextPlacement = nil
 	ap.tempDataSelectMode = TempDataSelectNone
-	ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = nil
 	ap.dcb.ReturnToMainMenu()
@@ -279,7 +279,7 @@ func (ap *ASDEXPane) cmdInitControl(_ *panes.Context) CommandStatus {
 	ap.tempTextCommand = nil
 	ap.tempTextPlacement = nil
 	ap.tempDataSelectMode = TempDataSelectNone
-	ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = nil
 	ap.dcb.ReturnToMainMenu()
@@ -411,7 +411,7 @@ func (ap *ASDEXPane) cmdTerminateControl(_ *panes.Context) CommandStatus {
 	ap.tempTextCommand = nil
 	ap.tempTextPlacement = nil
 	ap.tempDataSelectMode = TempDataSelectNone
-	ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = nil
 	ap.dcb.ReturnToMainMenu()

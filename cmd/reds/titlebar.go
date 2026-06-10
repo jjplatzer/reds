@@ -44,10 +44,10 @@ const (
 	titleBarActionSwitchFacility
 )
 
-type titleBarButtonKind int
+type titleBarButtonType int
 
 const (
-	titleBarButtonMinimize titleBarButtonKind = iota
+	titleBarButtonMinimize titleBarButtonType = iota
 	titleBarButtonMaximize
 	titleBarButtonClose
 )
@@ -250,11 +250,11 @@ func drawTitleBarButtons(plat platform.Platform, windowWidth float32) bool {
 	return captured
 }
 
-func titleBarButtonRect(kind titleBarButtonKind, windowWidth float32) (imgui.Vec2, imgui.Vec2) {
+func titleBarButtonRect(buttonType titleBarButtonType, windowWidth float32) (imgui.Vec2, imgui.Vec2) {
 	min := imgui.Vec2{Y: 0}
 	max := imgui.Vec2{Y: scopeTitleBarHeight}
 
-	switch kind {
+	switch buttonType {
 	case titleBarButtonClose:
 		min.X = windowWidth - titleBarButtonWidth
 		max.X = windowWidth
@@ -271,14 +271,14 @@ func titleBarButtonRect(kind titleBarButtonKind, windowWidth float32) (imgui.Vec
 
 func drawTitleBarButton(
 	plat platform.Platform,
-	kind titleBarButtonKind,
+	buttonType titleBarButtonType,
 	windowWidth float32,
 ) bool {
-	min, max := titleBarButtonRect(kind, windowWidth)
+	min, max := titleBarButtonRect(buttonType, windowWidth)
 
 	imgui.SetCursorScreenPos(min)
 	clicked := imgui.InvisibleButtonV(
-		fmt.Sprintf("##titlebar-button-%d", kind),
+		fmt.Sprintf("##titlebar-button-%d", buttonType),
 		imgui.Vec2{X: max.X - min.X, Y: max.Y - min.Y},
 		imgui.ButtonFlagsMouseButtonLeft,
 	)
@@ -286,7 +286,7 @@ func drawTitleBarButton(
 	hovered := imgui.IsItemHovered()
 	if hovered {
 		hoverColor := titleBarHover
-		if kind == titleBarButtonClose {
+		if buttonType == titleBarButtonClose {
 			hoverColor = titleBarCloseHover
 		}
 		imgui.WindowDrawList().AddRectFilledV(
@@ -298,10 +298,10 @@ func drawTitleBarButton(
 		)
 	}
 
-	drawTitleBarIcon(plat, kind, min, max)
+	drawTitleBarIcon(plat, buttonType, min, max)
 
 	if clicked {
-		switch kind {
+		switch buttonType {
 		case titleBarButtonMinimize:
 			plat.MinimizeWindow()
 		case titleBarButtonMaximize:
@@ -316,12 +316,12 @@ func drawTitleBarButton(
 
 func drawTitleBarIcon(
 	plat platform.Platform,
-	kind titleBarButtonKind,
+	buttonType titleBarButtonType,
 	min, max imgui.Vec2,
 ) {
 	glyph := titleBarGlyphMinimize
 
-	switch kind {
+	switch buttonType {
 	case titleBarButtonMinimize:
 		glyph = titleBarGlyphMinimize
 

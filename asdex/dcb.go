@@ -28,10 +28,10 @@ const (
 	DcbMenuOff
 )
 
-type DcbButtonKind int
+type DcbButtonType int
 
 const (
-	DcbButtonNormal DcbButtonKind = iota
+	DcbButtonNormal DcbButtonType = iota
 	DcbButtonMenu
 	DcbButtonValue
 	DcbButtonToggle
@@ -112,7 +112,7 @@ type Dcb struct {
 
 type DcbButtonSpec struct {
 	Function  DcbFunction
-	Kind      DcbButtonKind
+	Type      DcbButtonType
 	Large     bool
 	Visible   bool
 	Depressed bool
@@ -169,15 +169,15 @@ type DcbRunwayClosureState struct {
 	IsClosed bool
 }
 
-type DcbSpinnerKind int
+type DcbSpinnerType int
 
 const (
-	DcbSpinnerNone DcbSpinnerKind = iota
+	DcbSpinnerNone DcbSpinnerType = iota
 	DcbSpinnerRange
 )
 
 type DcbSpinner struct {
-	Kind     DcbSpinnerKind
+	Type     DcbSpinnerType
 	Function DcbFunction
 
 	WindowID ScopeWindowID
@@ -214,7 +214,7 @@ func NewRangeDcbSpinner(windowID ScopeWindowID, currentRange int) *DcbSpinner {
 	currentRange = clampInt(currentRange, asdexMinRangeSetting, asdexMaxRangeSetting)
 
 	return &DcbSpinner{
-		Kind:     DcbSpinnerRange,
+		Type:     DcbSpinnerRange,
 		Function: DcbFunctionRange,
 		WindowID: windowID,
 		Title:    "RANGE",
@@ -493,7 +493,7 @@ func (d *Dcb) buttonColor(spec DcbButtonSpec) renderer.RGB {
 		return applyBrightness(dcbDepressedRGB, d.brightness, dcbMinBrightness)
 	}
 
-	switch spec.Kind {
+	switch spec.Type {
 	case DcbButtonMenu:
 		return applyBrightness(dcbMenuButtonRGB, d.brightness, dcbMinBrightness)
 	case DcbButtonError:
@@ -534,7 +534,7 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
 		return applyState(DcbButtonSpec{
 			Function: function,
-			Kind:     DcbButtonNormal,
+			Type:     DcbButtonNormal,
 			Large:    isLargeDcbFunction(function),
 			Visible:  true,
 			Lines:    append([]string(nil), lines...),
@@ -543,7 +543,7 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 	menu := func(function DcbFunction, lines ...string) DcbButtonSpec {
 		return applyState(DcbButtonSpec{
 			Function: function,
-			Kind:     DcbButtonMenu,
+			Type:     DcbButtonMenu,
 			Large:    isLargeDcbFunction(function),
 			Visible:  true,
 			Lines:    append([]string(nil), lines...),
@@ -552,7 +552,7 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 	value := func(function DcbFunction, showValue bool, value string, lines ...string) DcbButtonSpec {
 		return applyState(DcbButtonSpec{
 			Function:  function,
-			Kind:      DcbButtonValue,
+			Type:      DcbButtonValue,
 			Large:     isLargeDcbFunction(function),
 			Visible:   true,
 			Lines:     append([]string(nil), lines...),
@@ -563,7 +563,7 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 	toggle := func(function DcbFunction, on bool, onLabel string, offLabel string, lines ...string) DcbButtonSpec {
 		return applyState(DcbButtonSpec{
 			Function: function,
-			Kind:     DcbButtonToggle,
+			Type:     DcbButtonToggle,
 			Large:    isLargeDcbFunction(function),
 			Visible:  true,
 			Lines:    append([]string(nil), lines...),
@@ -612,7 +612,7 @@ func (d *Dcb) offButtonSpecs(state DcbState) []DcbButtonSpec {
 	toggle := func(function DcbFunction, on bool, onLabel string, offLabel string, lines ...string) DcbButtonSpec {
 		return applyState(DcbButtonSpec{
 			Function: function,
-			Kind:     DcbButtonToggle,
+			Type:     DcbButtonToggle,
 			Visible:  true,
 			Lines:    append([]string(nil), lines...),
 			On:       on,
@@ -623,7 +623,7 @@ func (d *Dcb) offButtonSpecs(state DcbState) []DcbButtonSpec {
 	menu := func(function DcbFunction, lines ...string) DcbButtonSpec {
 		return applyState(DcbButtonSpec{
 			Function: function,
-			Kind:     DcbButtonMenu,
+			Type:     DcbButtonMenu,
 			Visible:  true,
 			Lines:    append([]string(nil), lines...),
 		})
@@ -645,7 +645,7 @@ func (d *Dcb) tempDataButtonSpecs(state DcbState) []DcbButtonSpec {
 	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
 		return applyState(DcbButtonSpec{
 			Function: function,
-			Kind:     DcbButtonNormal,
+			Type:     DcbButtonNormal,
 			Large:    isLargeDcbFunction(function),
 			Visible:  true,
 			Lines:    append([]string(nil), lines...),
@@ -654,7 +654,7 @@ func (d *Dcb) tempDataButtonSpecs(state DcbState) []DcbButtonSpec {
 	menu := func(function DcbFunction, lines ...string) DcbButtonSpec {
 		return applyState(DcbButtonSpec{
 			Function: function,
-			Kind:     DcbButtonMenu,
+			Type:     DcbButtonMenu,
 			Large:    isLargeDcbFunction(function),
 			Visible:  true,
 			Lines:    append([]string(nil), lines...),
@@ -663,7 +663,7 @@ func (d *Dcb) tempDataButtonSpecs(state DcbState) []DcbButtonSpec {
 	vacant := func() DcbButtonSpec {
 		return DcbButtonSpec{
 			Function: DcbFunctionVacant,
-			Kind:     DcbButtonVacant,
+			Type:     DcbButtonVacant,
 			Large:    true,
 			Visible:  true,
 		}
@@ -697,7 +697,7 @@ func (d *Dcb) closedRunwayButtonSpecs(state DcbState) []DcbButtonSpec {
 	config := func(id int, label string, isClosed bool) DcbButtonSpec {
 		return applyState(DcbButtonSpec{
 			Function: DcbFunctionCloseRunway,
-			Kind:     DcbButtonConfig,
+			Type:     DcbButtonConfig,
 			Visible:  true,
 			ConfigID: id,
 			Label:    label,
@@ -720,7 +720,7 @@ func (d *Dcb) closedRunwayButtonSpecs(state DcbState) []DcbButtonSpec {
 
 	buttons = append(buttons, applyState(DcbButtonSpec{
 		Function: DcbFunctionDone,
-		Kind:     DcbButtonNormal,
+		Type:     DcbButtonNormal,
 		Large:    isLargeDcbFunction(DcbFunctionDone),
 		Visible:  true,
 		Lines:    []string{"DONE"},
@@ -1067,7 +1067,7 @@ func (d *Dcb) drawButtonText(
 	hovering bool,
 ) {
 	spec := button.Spec
-	switch spec.Kind {
+	switch spec.Type {
 	case DcbButtonToggle:
 		d.drawToggleButtonText(td, font, fontSize, button, hovering)
 		return
@@ -1088,7 +1088,7 @@ func (d *Dcb) drawButtonText(
 
 func (d *Dcb) textLinesForButton(spec DcbButtonSpec) []string {
 	lines := append([]string(nil), spec.Lines...)
-	if spec.Kind != DcbButtonValue || !spec.ShowValue {
+	if spec.Type != DcbButtonValue || !spec.ShowValue {
 		return lines
 	}
 
@@ -1335,7 +1335,7 @@ func (d *Dcb) primaryTextColor(spec DcbButtonSpec, hovering bool) renderer.RGB {
 	if d == nil {
 		return dcbTextRGB
 	}
-	if spec.Kind == DcbButtonError {
+	if spec.Type == DcbButtonError {
 		return applyBrightness(dcbTextRGB, d.brightness, dcbMinBrightness)
 	}
 	if spec.Active {
@@ -1408,7 +1408,7 @@ func (d *Dcb) HitTest(
 		hit.ConfigID = button.Spec.ConfigID
 		hit.Label = button.Spec.Label
 		if button.Spec.Function != DcbFunctionVacant {
-			if button.Spec.Kind != DcbButtonConfig || strings.TrimSpace(button.Spec.Label) != "" {
+			if button.Spec.Type != DcbButtonConfig || strings.TrimSpace(button.Spec.Label) != "" {
 				hit.Function = button.Spec.Function
 				hit.HasFunction = true
 			}

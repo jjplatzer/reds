@@ -102,6 +102,9 @@ type ASDEXPane struct {
 	showBeaconUntilByTargetID map[string]time.Time
 	previewArea               PreviewArea
 	coastList                 CoastList
+	alertRepository           AlertRepository
+	auralAlerts               *AuralAlertManager
+	alertMessageBox           AlertMessageBox
 	dcb                       Dcb
 	dcbSpinner                *DcbSpinner
 	dcbMenuCommand            *DcbMenuCommand
@@ -170,6 +173,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	}
 	preview.SetSystemResponse("CRITICAL FAULT START")
 	coastList := NewCoastList()
+	auralAlerts := NewAuralAlertManager()
 	configAirport := loadConfigAirportCode(airport)
 
 	client := redsnet.NewSmesClient(targetWebSocketURL())
@@ -196,6 +200,9 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		showBeaconUntilByTargetID: make(map[string]time.Time),
 		previewArea:               preview,
 		coastList:                 coastList,
+		alertRepository:           NewAlertRepository(auralAlerts),
+		auralAlerts:               auralAlerts,
+		alertMessageBox:           NewAlertMessageBox(),
 		dcb:                       NewDcb(),
 		showCoastList:             true,
 		rangeSetting:              asdexDefaultRangeSetting,
@@ -210,6 +217,9 @@ func (p *ASDEXPane) Dispose() {
 	if p.smes != nil {
 		p.smes.Close()
 		p.smes = nil
+	}
+	if p.auralAlerts != nil {
+		p.auralAlerts.Stop()
 	}
 	p.targets.Clear()
 	clear(p.showBeaconUntilByTargetID)
@@ -384,28 +394,83 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				scopeTransforms.WorldFromWindowP(ctx.Mouse.Pos.Sub(windowRect.Min)),
 			)
 		} else {
-			p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+			p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 		}
 	} else {
-		p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+		p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	}
 	p.applyCurrentCursor(ctx)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
 	targets := p.targets.All()
-	p.safetyLogic.Update(targets)
+	alertChanges := p.safetyLogic.Update(targets, SafetyLogicUpdateOptions{
+		RunwayConfiguration: p.currentSafetyRunwayConfiguration(),
+		RunwayClosed:        p.tempData.RunwayClosed,
+	})
+	p.alertRepository.ApplyChanges(alertChanges)
+	alertTargetIDs := p.alertRepository.AircraftIDsInAlertSet()
+	alertInProgress := p.alertRepository.AlertInProgress()
+	alertOn := alertFlashOn(now)
 
 	mainRect := redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y)
-	transforms = p.renderScopeWindow(ctx, zcb, 0, mainScopeWindowID, mainRect, referenceExtent, p.mainScopeView(), targets, now, true)
+	transforms = p.renderScopeWindow(
+		ctx,
+		zcb,
+		0,
+		mainScopeWindowID,
+		mainRect,
+		referenceExtent,
+		p.mainScopeView(),
+		targets,
+		now,
+		true,
+		alertTargetIDs,
+		alertInProgress,
+		alertOn,
+	)
 	for i, win := range p.windows.secondary {
 		if win.Hidden {
 			continue
 		}
-		p.renderScopeWindow(ctx, zcb, i+1, win.ID, win.Rect, referenceExtent, win.View, targets, now, false)
+		p.renderScopeWindow(
+			ctx,
+			zcb,
+			i+1,
+			win.ID,
+			win.Rect,
+			referenceExtent,
+			win.View,
+			targets,
+			now,
+			false,
+			alertTargetIDs,
+			alertInProgress,
+			alertOn,
+		)
 	}
 	p.renderWindowBorders(ctx, zcb, transforms)
 	p.renderNewWindowPreview(ctx, zcb, transforms)
 
 	x, y, w, h := ctx.PaneFramebufferRect()
+	alertCB := zcb.At(windowZ(0, zAlertMessage))
+	alertCB.Viewport(x, y, w, h)
+	alertCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(alertCB)
+	alertTextureID := p.fonts.textureForSize(ctx.Renderer, alertMessageFontSize)
+	if alertTextureID != 0 {
+		td := renderer.GetTextDrawBuilder()
+		td.SetFont(p.fonts.font)
+		p.alertMessageBox.Render(
+			alertCB,
+			td,
+			p.fonts.font,
+			p.alertRepository.FirstN(alertMessageMaxAlerts),
+			ctx.PaneSize(),
+		)
+		td.GenerateCommands(alertCB, alertTextureID)
+		renderer.ReturnTextDrawBuilder(td)
+	}
+	alertCB.DisableScissor()
+
 	listCB := zcb.At(windowZ(0, zPreviewArea))
 	listCB.Viewport(x, y, w, h)
 	listCB.Scissor(x, y, w, h)
@@ -477,6 +542,9 @@ func (p *ASDEXPane) renderScopeWindow(
 	targets []*Target,
 	now time.Time,
 	drawDraft bool,
+	alertTargetIDs map[string]bool,
+	alertInProgress bool,
+	alertOn bool,
 ) radar.ScopeTransformations {
 	if p == nil || ctx == nil || zcb == nil || rect.Empty() {
 		return radar.ScopeTransformations{}
@@ -564,6 +632,8 @@ func (p *ASDEXPane) renderScopeWindow(
 			Brightness:          brightnessDefault,
 			ScopeRotationDeg:    int(view.Rotation),
 			HighlightedTargetID: highlightedTargetID,
+			AlertTargetIDs:      alertTargetIDs,
+			AlertFlashOn:        alertOn,
 		},
 	)
 	targetCB.DisableScissor()
@@ -595,19 +665,20 @@ func (p *ASDEXPane) renderScopeWindow(
 				return p.fonts.textureForSize(ctx.Renderer, size)
 			},
 			SettingsForTarget: func(target *Target) DataBlockSettings {
-				settings := datablockSettings
+				targetInAlert := false
 				if target != nil {
-					if direction, ok := p.leaderDirectionOverride(windowID, target.ID); ok {
-						settings.LeaderDirection = direction
-					}
-					if length, ok := p.leaderLengthOverride(windowID, target.ID); ok {
-						settings.LeaderLength = length
-					}
+					targetInAlert = alertTargetIDs[target.ID]
 				}
-				return settings
+				return p.resolveDataBlockSettings(
+					target,
+					windowID,
+					datablockSettings,
+					alertInProgress,
+					targetInAlert,
+				)
 			},
 			ShowDataBlockForTarget: func(target *Target, settings DataBlockSettings) bool {
-				return p.targetShowsDataBlockInWindow(target, windowID, settings)
+				return p.targetShowsDataBlockForRender(target, windowID, settings)
 			},
 			ShowBeaconCodeForTarget: func(target *Target) bool {
 				return p.showBeaconCodeForTarget(target, now)
@@ -750,6 +821,21 @@ func (p *ASDEXPane) dcbState() DcbState {
 	}
 }
 
+func (p *ASDEXPane) currentSafetyRunwayConfiguration() SafetyRunwayConfiguration {
+	if p == nil {
+		return LimitedSafetyRunwayConfiguration()
+	}
+
+	name := p.previewArea.RunwayConfigName()
+	if strings.EqualFold(strings.TrimSpace(name), "LIMITED") {
+		return LimitedSafetyRunwayConfiguration()
+	}
+
+	// Later: return the selected runway configuration with arrival/departure
+	// runway maps once REDS stores the full preview config selection.
+	return SafetyRunwayConfiguration{Name: name}
+}
+
 func (p *ASDEXPane) consumeDcbInput(ctx *panes.Context) bool {
 	if p == nil || ctx == nil || ctx.Mouse == nil {
 		return false
@@ -823,7 +909,7 @@ func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 		p.tempTextCommand = nil
 		p.tempTextPlacement = nil
 		p.tempDataSelectMode = TempDataSelectNone
-		p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+		p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 		p.tempData.ClearHighlights()
 		p.newWindow = nil
 		p.previewArea.SetSystemResponse("")
@@ -857,7 +943,7 @@ func (p *ASDEXPane) startRangeSpinner() {
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
 	p.tempDataSelectMode = TempDataSelectNone
-	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
 	p.newWindow = nil
 	p.commandEntry.Clear()
@@ -907,7 +993,7 @@ func (p *ASDEXPane) commitDcbSpinner() {
 	}
 
 	spinner := p.dcbSpinner
-	switch spinner.Kind {
+	switch spinner.Type {
 	case DcbSpinnerRange:
 		if strings.TrimSpace(spinner.InputText()) == "" {
 			p.dcbSpinner = nil
@@ -938,7 +1024,7 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 		return
 	}
 
-	switch p.dcbSpinner.Kind {
+	switch p.dcbSpinner.Type {
 	case DcbSpinnerRange:
 		windowID := p.dcbSpinner.WindowID
 		view, ok := p.scopeViewForWindow(windowID)
@@ -1138,6 +1224,46 @@ func (p *ASDEXPane) targetShowsDataBlockInWindow(
 	return settings.ShowDataBlocks
 }
 
+func (p *ASDEXPane) resolveDataBlockSettings(
+	target *Target,
+	windowID ScopeWindowID,
+	base DataBlockSettings,
+	alertInProgress bool,
+	targetInAlert bool,
+) DataBlockSettings {
+	settings := base
+	if target != nil {
+		if direction, ok := p.leaderDirectionOverride(windowID, target.ID); ok {
+			settings.LeaderDirection = direction
+		}
+		if length, ok := p.leaderLengthOverride(windowID, target.ID); ok {
+			settings.LeaderLength = length
+		}
+	}
+
+	settings.AlertInProgress = alertInProgress
+	settings.TargetInAlert = targetInAlert
+	return settings
+}
+
+func (p *ASDEXPane) targetShowsDataBlockForRender(
+	target *Target,
+	windowID ScopeWindowID,
+	settings DataBlockSettings,
+) bool {
+	if target == nil || target.Suspended || target.Dropped || !targetCanHaveDataBlock(target) {
+		return false
+	}
+
+	// CRC bypasses normal datablock visibility suppression while any ASDE-X
+	// alert is active.
+	if settings.AlertInProgress {
+		return true
+	}
+
+	return p.targetShowsDataBlockInWindow(target, windowID, settings)
+}
+
 func (p *ASDEXPane) leaderDirectionOverride(
 	windowID ScopeWindowID,
 	targetID string,
@@ -1328,7 +1454,7 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 		return CursorModeScope
 	}
 	if p != nil && p.tempDataSelectMode != TempDataSelectNone {
-		if p.hoveredTempData.Kind != TempDataHitNone {
+		if p.hoveredTempData.Type != TempDataHitNone {
 			return CursorModeSelect
 		}
 		return CursorModeScope
@@ -1344,7 +1470,7 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 	}
 	if p != nil && p.showCoastList && ctx != nil && ctx.Mouse != nil {
 		hit := p.coastList.HitTest(ctx.Mouse.Pos, p.fonts.font, p.eramTextFonts.font, ctx.PaneSize())
-		if hit.Kind == CoastListHitEntry &&
+		if hit.Type == CoastListHitEntry &&
 			(hit.Status == CoastListEntrySuspended ||
 				p.commandMode == CommandModeTerminateControl) {
 			return CursorModeSelect
@@ -1557,7 +1683,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
 	p.tempDataSelectMode = TempDataSelectNone
-	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
 	p.newWindow = nil
 	p.dcb.ReturnToMainMenu()
@@ -1797,7 +1923,7 @@ func (p *ASDEXPane) startMultiPreviewReposition() {
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
 	p.tempDataSelectMode = TempDataSelectNone
-	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
 	p.newWindow = nil
 	p.commandEntry.Clear()
@@ -1820,7 +1946,7 @@ func (p *ASDEXPane) startMultiCoastListReposition() {
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
 	p.tempDataSelectMode = TempDataSelectNone
-	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
 	p.newWindow = nil
 	p.commandEntry.Clear()
@@ -1938,8 +2064,8 @@ func (p *ASDEXPane) handleNormalCommandKeyboard(ctx *panes.Context) bool {
 		}
 		return false
 	case keyboard.WasPressed(platform.KeyEnter), keyboard.WasPressed(platform.KeyKeypadEnter):
-		kind := p.commandEntry.Kind()
-		switch kind {
+		entryType := p.commandEntry.Type()
+		switch entryType {
 		case CommandTextEntryLeaderDirection, CommandTextEntryLeaderLength:
 		default:
 			return false
@@ -1964,7 +2090,7 @@ func (p *ASDEXPane) handleNormalCommandKeyboard(ctx *panes.Context) bool {
 		}
 
 		p.commandEntry.Clear()
-		if kind == CommandTextEntryLeaderLength {
+		if entryType == CommandTextEntryLeaderLength {
 			p.previewArea.SetSystemResponse("INVALID LNG")
 		} else {
 			p.previewArea.SetSystemResponse("INVALID ENTRY")
@@ -2286,7 +2412,7 @@ func (p *ASDEXPane) updateCoastListHover(ctx *panes.Context) {
 	}
 
 	hit := p.coastList.HitTest(ctx.Mouse.Pos, p.fonts.font, p.eramTextFonts.font, ctx.PaneSize())
-	if hit.Kind == CoastListHitEntry &&
+	if hit.Type == CoastListHitEntry &&
 		(hit.Status == CoastListEntrySuspended ||
 			p.commandMode == CommandModeTerminateControl) {
 		p.hoveredCoastListTarget = hit.TargetID
@@ -2306,7 +2432,7 @@ func (p *ASDEXPane) consumeCoastListClicks(ctx *panes.Context) bool {
 		return false
 	}
 
-	switch hit.Kind {
+	switch hit.Type {
 	case CoastListHitHeader:
 		p.coastList.ToggleExpanded()
 	case CoastListHitUpArrow:

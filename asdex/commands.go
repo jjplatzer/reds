@@ -64,30 +64,30 @@ type LeaderLengthInput struct {
 	Value int
 }
 
-type CommandTextEntryKind int
+type CommandTextEntryType int
 
 const (
-	CommandTextEntryNone CommandTextEntryKind = iota
+	CommandTextEntryNone CommandTextEntryType = iota
 	CommandTextEntryACID
 	CommandTextEntryLeaderDirection
 	CommandTextEntryLeaderLength
 )
 
 type CommandTextEntry struct {
-	kind   CommandTextEntryKind
-	value  string
-	cursor int
+	entryType CommandTextEntryType
+	value     string
+	cursor    int
 }
 
 func (entry *CommandTextEntry) Empty() bool {
-	return entry == nil || entry.kind == CommandTextEntryNone
+	return entry == nil || entry.entryType == CommandTextEntryNone
 }
 
-func (entry *CommandTextEntry) Kind() CommandTextEntryKind {
+func (entry *CommandTextEntry) Type() CommandTextEntryType {
 	if entry == nil {
 		return CommandTextEntryNone
 	}
-	return entry.kind
+	return entry.entryType
 }
 
 func (entry *CommandTextEntry) Value() string {
@@ -98,11 +98,11 @@ func (entry *CommandTextEntry) Value() string {
 }
 
 func (entry *CommandTextEntry) DisplayLines() []string {
-	if entry == nil || entry.kind == CommandTextEntryNone {
+	if entry == nil || entry.entryType == CommandTextEntryNone {
 		return nil
 	}
 
-	switch entry.kind {
+	switch entry.entryType {
 	case CommandTextEntryACID:
 		return []string{"ACID", entry.value}
 	case CommandTextEntryLeaderDirection:
@@ -115,7 +115,7 @@ func (entry *CommandTextEntry) DisplayLines() []string {
 }
 
 func (entry *CommandTextEntry) CursorLine() int {
-	if entry == nil || entry.kind == CommandTextEntryNone {
+	if entry == nil || entry.entryType == CommandTextEntryNone {
 		return 0
 	}
 	return 2
@@ -135,7 +135,7 @@ func (entry *CommandTextEntry) Insert(r rune) {
 
 	r = unicode.ToUpper(r)
 
-	if entry.kind == CommandTextEntryNone {
+	if entry.entryType == CommandTextEntryNone {
 		switch {
 		case r == '/':
 			entry.StartLeaderLength()
@@ -147,7 +147,7 @@ func (entry *CommandTextEntry) Insert(r rune) {
 		return
 	}
 
-	switch entry.kind {
+	switch entry.entryType {
 	case CommandTextEntryACID:
 		entry.insertACIDRune(r)
 	case CommandTextEntryLeaderDirection:
@@ -168,7 +168,7 @@ func (entry *CommandTextEntry) StartACID(r rune) {
 		return
 	}
 
-	entry.kind = CommandTextEntryACID
+	entry.entryType = CommandTextEntryACID
 	entry.value = string(r)
 	entry.cursor = 1
 }
@@ -200,7 +200,7 @@ func (entry *CommandTextEntry) StartLeaderDirection(r rune) {
 		return
 	}
 
-	entry.kind = CommandTextEntryLeaderDirection
+	entry.entryType = CommandTextEntryLeaderDirection
 	entry.value = string(r)
 	entry.cursor = 1
 }
@@ -227,7 +227,7 @@ func (entry *CommandTextEntry) StartLeaderLength() {
 	}
 
 	entry.Clear()
-	entry.kind = CommandTextEntryLeaderLength
+	entry.entryType = CommandTextEntryLeaderLength
 	entry.value = ""
 	entry.cursor = 0
 }
@@ -312,7 +312,7 @@ func (entry *CommandTextEntry) Clear() {
 	if entry == nil {
 		return
 	}
-	entry.kind = CommandTextEntryNone
+	entry.entryType = CommandTextEntryNone
 	entry.value = ""
 	entry.cursor = 0
 }
@@ -324,20 +324,20 @@ func commandOutput(text string) CommandStatus {
 	}
 }
 
-type CommandClickKind int
+type CommandClickType int
 
 const (
-	CommandClickNone CommandClickKind = iota
+	CommandClickNone CommandClickType = iota
 	CommandClickLeft
 	CommandClickRight
 )
 
 type CommandInput struct {
-	text string
-	kind CommandTextEntryKind
+	text      string
+	entryType CommandTextEntryType
 
 	clickedTarget *Target
-	clickKind     CommandClickKind
+	clickType     CommandClickType
 
 	mousePosition redsmath.Vec2
 	transforms    radar.ScopeTransformations
@@ -395,7 +395,7 @@ func (slewMatcher) match(
 	input *CommandInput,
 	text string,
 ) (*matchResult, error) {
-	if input == nil || input.clickKind != CommandClickLeft || input.clickedTarget == nil {
+	if input == nil || input.clickType != CommandClickLeft || input.clickedTarget == nil {
 		return nil, nil
 	}
 	return &matchResult{
@@ -417,7 +417,7 @@ func (rightSlewMatcher) match(
 	input *CommandInput,
 	text string,
 ) (*matchResult, error) {
-	if input == nil || input.clickKind != CommandClickRight || input.clickedTarget == nil {
+	if input == nil || input.clickType != CommandClickRight || input.clickedTarget == nil {
 		return nil, nil
 	}
 	return &matchResult{
@@ -439,7 +439,7 @@ func (displaySlewMatcher) match(
 	input *CommandInput,
 	text string,
 ) (*matchResult, error) {
-	if input == nil || input.clickKind != CommandClickLeft {
+	if input == nil || input.clickType != CommandClickLeft {
 		return nil, nil
 	}
 
@@ -463,8 +463,8 @@ func (ldrDirMatcher) match(
 	text string,
 ) (*matchResult, error) {
 	if cmdInput != nil &&
-		cmdInput.kind != CommandTextEntryNone &&
-		cmdInput.kind != CommandTextEntryLeaderDirection {
+		cmdInput.entryType != CommandTextEntryNone &&
+		cmdInput.entryType != CommandTextEntryLeaderDirection {
 		return nil, nil
 	}
 
@@ -522,8 +522,8 @@ func (ldrLengthMatcher) match(
 	text string,
 ) (*matchResult, error) {
 	if cmdInput != nil &&
-		cmdInput.kind != CommandTextEntryNone &&
-		cmdInput.kind != CommandTextEntryLeaderLength {
+		cmdInput.entryType != CommandTextEntryNone &&
+		cmdInput.entryType != CommandTextEntryLeaderLength {
 		return nil, nil
 	}
 
@@ -597,16 +597,16 @@ func (acidMatcher) validate() error      { return nil }
 func (acidMatcher) goType() reflect.Type { return reflect.TypeFor[AircraftID]() }
 func (acidMatcher) consumesClick() bool  { return false }
 
-type handlerArgumentKind int
+type handlerArgumentType int
 
 const (
-	handlerArgumentPane handlerArgumentKind = iota
+	handlerArgumentPane handlerArgumentType = iota
 	handlerArgumentContext
 	handlerArgumentMatcher
 )
 
 type handlerArgument struct {
-	kind         handlerArgumentKind
+	argType      handlerArgumentType
 	matcherIndex int
 }
 
@@ -768,13 +768,13 @@ func bindHandlerArguments(handler any, matchers []matcher) ([]handlerArgument, e
 				return nil, fmt.Errorf("handler has duplicate *ASDEXPane argument")
 			}
 			paneBound = true
-			arguments = append(arguments, handlerArgument{kind: handlerArgumentPane})
+			arguments = append(arguments, handlerArgument{argType: handlerArgumentPane})
 		case panesContextType:
 			if contextBound {
 				return nil, fmt.Errorf("handler has duplicate *panes.Context argument")
 			}
 			contextBound = true
-			arguments = append(arguments, handlerArgument{kind: handlerArgumentContext})
+			arguments = append(arguments, handlerArgument{argType: handlerArgumentContext})
 		default:
 			matcherIndex := firstUnboundMatcherOfType(matchers, matcherBound, argumentType)
 			if matcherIndex == -1 {
@@ -782,7 +782,7 @@ func bindHandlerArguments(handler any, matchers []matcher) ([]handlerArgument, e
 			}
 			matcherBound[matcherIndex] = true
 			arguments = append(arguments, handlerArgument{
-				kind:         handlerArgumentMatcher,
+				argType:      handlerArgumentMatcher,
 				matcherIndex: matcherIndex,
 			})
 		}
@@ -829,7 +829,7 @@ func (command userCommand) match(
 	if input == nil {
 		return nil, false, nil
 	}
-	if (input.clickKind != CommandClickNone) != command.consumesClick {
+	if (input.clickType != CommandClickNone) != command.consumesClick {
 		return nil, false, nil
 	}
 
@@ -869,7 +869,7 @@ func (command userCommand) call(
 
 	args := make([]reflect.Value, 0, len(command.arguments))
 	for _, argument := range command.arguments {
-		switch argument.kind {
+		switch argument.argType {
 		case handlerArgumentPane:
 			args = append(args, reflect.ValueOf(ap))
 		case handlerArgumentContext:
@@ -906,7 +906,7 @@ func (ap *ASDEXPane) tryExecuteUserCommand(
 	ctx *panes.Context,
 	cmd string,
 	clickedTarget *Target,
-	clickKind CommandClickKind,
+	clickType CommandClickType,
 	mousePosition redsmath.Vec2,
 	transforms radar.ScopeTransformations,
 ) (CommandStatus, error, bool) {
@@ -914,16 +914,16 @@ func (ap *ASDEXPane) tryExecuteUserCommand(
 		return CommandStatus{}, nil, false
 	}
 
-	entryKind := CommandTextEntryNone
+	entryType := CommandTextEntryNone
 	if ap.commandMode == CommandModeNone {
-		entryKind = ap.commandEntry.Kind()
+		entryType = ap.commandEntry.Type()
 	}
 
 	input := &CommandInput{
 		text:          strings.ToUpper(cmd),
-		kind:          entryKind,
+		entryType:     entryType,
 		clickedTarget: clickedTarget,
-		clickKind:     clickKind,
+		clickType:     clickType,
 		mousePosition: mousePosition,
 		transforms:    transforms,
 	}
@@ -974,7 +974,7 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 		ap.tempTextCommand = nil
 		ap.tempTextPlacement = nil
 		ap.tempDataSelectMode = TempDataSelectNone
-		ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+		ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 		ap.tempData.ClearHighlights()
 		ap.newWindow = nil
 		ap.dcb.ReturnToMainMenu()
@@ -991,6 +991,12 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 ) bool {
 	if ap == nil || ctx == nil || ctx.Keyboard == nil || ap.datablockEdit != nil {
 		return false
+	}
+	if ctx.Keyboard.WasPressed(platform.KeyF12) &&
+		ap.auralAlerts != nil &&
+		ap.auralAlerts.IsPlaying() {
+		ap.auralAlerts.Stop()
+		return true
 	}
 	if ap.tempAreaDraft != nil || ap.tempTextCommand != nil || ap.tempTextPlacement != nil ||
 		ap.tempDataSelectMode != TempDataSelectNone || ap.newWindow != nil {
@@ -1073,13 +1079,13 @@ func (ap *ASDEXPane) consumeCommandClicksInWindow(
 		defer ap.clearRightClickGesture()
 	}
 
-	clickKind := CommandClickNone
+	clickType := CommandClickNone
 	if mouse.WasReleased(platform.MouseButtonLeft) {
-		clickKind = CommandClickLeft
+		clickType = CommandClickLeft
 	} else if rightReleased && ap.rightClickCandidate && !ap.rightClickDragged {
-		clickKind = CommandClickRight
+		clickType = CommandClickRight
 	}
-	if clickKind == CommandClickNone {
+	if clickType == CommandClickNone {
 		return false
 	}
 
@@ -1090,7 +1096,7 @@ func (ap *ASDEXPane) consumeCommandClicksInWindow(
 
 	target := ap.highlightedTarget()
 	if target == nil {
-		if clickKind == CommandClickLeft {
+		if clickType == CommandClickLeft {
 			if ap.commandMode == CommandModeNone && !ap.commandEntry.Empty() {
 				ap.commandEntry.Clear()
 				ap.applyCommandStatus(commandOutputClearAll("NO SLEW"))
@@ -1115,22 +1121,22 @@ func (ap *ASDEXPane) consumeCommandClicksInWindow(
 	}
 
 	if ap.commandMode == CommandModeNone &&
-		clickKind == CommandClickLeft &&
-		ap.commandEntry.Kind() == CommandTextEntryLeaderLength &&
+		clickType == CommandClickLeft &&
+		ap.commandEntry.Type() == CommandTextEntryLeaderLength &&
 		ap.commandEntry.Value() == "" {
 		ap.applyCommandStatus(commandOutputClearAll("INVALID LNG"))
 		return true
 	}
 
 	cmdText := ""
-	if ap.commandMode == CommandModeNone && clickKind == CommandClickLeft {
-		switch ap.commandEntry.Kind() {
+	if ap.commandMode == CommandModeNone && clickType == CommandClickLeft {
+		switch ap.commandEntry.Type() {
 		case CommandTextEntryACID, CommandTextEntryLeaderDirection, CommandTextEntryLeaderLength:
 			cmdText = ap.commandEntry.Value()
 		}
 	}
 	if ap.commandMode == CommandModeMultiFunction &&
-		clickKind == CommandClickLeft &&
+		clickType == CommandClickLeft &&
 		ap.multiFunction != nil {
 		cmdText = ap.multiFunction.Value()
 	}
@@ -1139,7 +1145,7 @@ func (ap *ASDEXPane) consumeCommandClicksInWindow(
 		ctx,
 		cmdText,
 		target,
-		clickKind,
+		clickType,
 		localMouse,
 		transforms,
 	)
@@ -1152,14 +1158,14 @@ func (ap *ASDEXPane) consumeCommandClicksInWindow(
 		return true
 	}
 	if ap.commandMode == CommandModeMultiFunction &&
-		clickKind == CommandClickLeft &&
+		clickType == CommandClickLeft &&
 		ap.multiFunction != nil &&
 		ap.multiFunction.Value() != "" {
 		ap.applyCommandStatus(commandOutputClearAll("INVALID ENTRY"))
 		return true
 	}
-	if ap.commandMode == CommandModeNone && clickKind == CommandClickLeft && !ap.commandEntry.Empty() {
-		if ap.commandEntry.Kind() == CommandTextEntryLeaderLength {
+	if ap.commandMode == CommandModeNone && clickType == CommandClickLeft && !ap.commandEntry.Empty() {
+		if ap.commandEntry.Type() == CommandTextEntryLeaderLength {
 			ap.applyCommandStatus(commandOutputClearAll("INVALID LNG"))
 		} else {
 			ap.applyCommandStatus(commandOutputClearAll("INVALID ENTRY"))
