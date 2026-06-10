@@ -421,6 +421,7 @@ func (p *ASDEXPane) maybeActivateScopeWindowOnLeftPress(ctx *panes.Context) {
 		p.mapRotate != nil ||
 		p.listRepositionActive() ||
 		p.dbAreaDraft != nil ||
+		p.dbAreaSelection != nil ||
 		p.tempAreaDraft != nil ||
 		p.tempTextCommand != nil ||
 		p.tempTextPlacement != nil ||

@@ -52,11 +52,57 @@ type DataBlockAreaDraft struct {
 	Mouse    redsmath.Vec2
 }
 
+type DataBlockAreaSelectionMode int
+
+const (
+	DataBlockAreaSelectionNone DataBlockAreaSelectionMode = iota
+	DataBlockAreaSelectionModifyTrait
+	DataBlockAreaSelectionDeleteOne
+)
+
+type DataBlockAreaSelection struct {
+	Mode      DataBlockAreaSelectionMode
+	WindowID  ScopeWindowID
+	HoveredID string
+}
+
+type DataBlockAreaEditMode int
+
+const (
+	DataBlockAreaEditDefineTrait DataBlockAreaEditMode = iota
+	DataBlockAreaEditModifyTrait
+)
+
 var (
 	dbAreaOffRGB   = renderer.RGB8(255, 0, 0)
 	dbAreaTraitRGB = renderer.RGB8(0, 255, 0)
 	dbAreaDrawRGB  = renderer.RGB8(255, 255, 255)
 )
+
+func dbAreaEditModeForMenu(menu DcbMenu) DataBlockAreaEditMode {
+	if menu == DcbMenuModifyTraitArea {
+		return DataBlockAreaEditModifyTrait
+	}
+	return DataBlockAreaEditDefineTrait
+}
+
+func dbAreaEditCommandLines(mode DataBlockAreaEditMode) []string {
+	switch mode {
+	case DataBlockAreaEditModifyTrait:
+		return []string{"DB AREA", "MODIFY TRAIT AREA"}
+	default:
+		return []string{"DB AREA", "DEFINE TRAIT AREA"}
+	}
+}
+
+func dbAreaEditMenu(mode DataBlockAreaEditMode) DcbMenu {
+	switch mode {
+	case DataBlockAreaEditModifyTrait:
+		return DcbMenuModifyTraitArea
+	default:
+		return DcbMenuDefineTraitArea
+	}
+}
 
 func DefaultDataBlockAreaTraits() DataBlockAreaTraits {
 	fields := DefaultDataBlockFieldSettings()
@@ -165,6 +211,22 @@ func (p *ASDEXPane) startDefineDbTraitArea() {
 		WindowID: windowID,
 		Points:   make([]redsmath.Vec2, 0, maxTempAreaNodes+1),
 	}
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) startModifyDbTraitArea() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.dbAreaSelection = &DataBlockAreaSelection{
+		Mode:     DataBlockAreaSelectionModifyTrait,
+		WindowID: p.activeWindowID(),
+	}
+	p.dcb.SetMenu(DcbMenuDbArea)
+	p.dcbMenuCommand = NewDcbMenuCommand("DB AREA", "MODIFY TRAIT AREA")
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
@@ -298,6 +360,7 @@ func (p *ASDEXPane) finishDataBlockAreaDraft() {
 	state.SelectedDBAreaID = id
 
 	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	switch draft.Type {
 	case DataBlockAreaTrait:
 		p.dcb.SetMenu(DcbMenuDefineTraitArea)
@@ -319,6 +382,19 @@ func (p *ASDEXPane) cancelDataBlockAreaDraft() {
 	}
 
 	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
+	p.dcb.SetMenu(DcbMenuDbArea)
+	p.dcbMenuCommand = NewDcbMenuCommand("DB AREA")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) cancelDataBlockAreaSelection() {
+	if p == nil || p.dbAreaSelection == nil {
+		return
+	}
+
+	p.dbAreaSelection = nil
 	p.dcb.SetMenu(DcbMenuDbArea)
 	p.dcbMenuCommand = NewDcbMenuCommand("DB AREA")
 	p.previewArea.SetSystemResponse("")
@@ -338,6 +414,142 @@ func (p *ASDEXPane) handleDataBlockAreaDraftKeyboard(ctx *panes.Context) bool {
 		return true
 	}
 	return false
+}
+
+func (p *ASDEXPane) handleDataBlockAreaSelectionKeyboard(ctx *panes.Context) bool {
+	if p == nil || p.dbAreaSelection == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	keyboard := ctx.Keyboard
+	if keyboard.WasPressed(platform.KeyEscape) ||
+		keyboard.WasPressed(platform.KeyBackspace) ||
+		keyboard.WasPressed(platform.KeyDelete) {
+		p.cancelDataBlockAreaSelection()
+		return true
+	}
+	return false
+}
+
+func (p *ASDEXPane) updateDataBlockAreaSelectionHover(
+	ctx *panes.Context,
+	referenceExtent redsmath.Rect,
+) {
+	if p == nil || p.dbAreaSelection == nil || ctx == nil || ctx.Mouse == nil {
+		return
+	}
+
+	selection := p.dbAreaSelection
+	selection.HoveredID = ""
+
+	windowID, windowRect, transforms, ok := p.activeWindowRectAndTransform(ctx, referenceExtent)
+	if !ok || windowID != selection.WindowID {
+		return
+	}
+	if !windowRect.Contains(ctx.Mouse.Pos) {
+		return
+	}
+
+	localMouse := ctx.Mouse.Pos.Sub(windowRect.Min)
+	world := transforms.WorldFromWindowP(localMouse)
+	if area, ok := p.hitTestDataBlockArea(windowID, world, selection.Mode); ok {
+		selection.HoveredID = area.ID
+	}
+}
+
+func (p *ASDEXPane) consumeDataBlockAreaSelectionInput(
+	ctx *panes.Context,
+	referenceExtent redsmath.Rect,
+) bool {
+	if p == nil || p.dbAreaSelection == nil || ctx == nil || ctx.Mouse == nil {
+		return false
+	}
+
+	selection := p.dbAreaSelection
+	windowID, windowRect, transforms, ok := p.activeWindowRectAndTransform(ctx, referenceExtent)
+	if !ok || windowID != selection.WindowID {
+		return false
+	}
+	if !windowRect.Contains(ctx.Mouse.Pos) {
+		return true
+	}
+	if ctx.Mouse.WasReleased(platform.MouseButtonRight) {
+		return true
+	}
+	if !ctx.Mouse.WasReleased(platform.MouseButtonLeft) &&
+		!ctx.Mouse.WasReleased(platform.MouseButtonMiddle) {
+		return true
+	}
+
+	localMouse := ctx.Mouse.Pos.Sub(windowRect.Min)
+	world := transforms.WorldFromWindowP(localMouse)
+	area, hit := p.hitTestDataBlockArea(windowID, world, selection.Mode)
+	if !hit {
+		return true
+	}
+
+	switch selection.Mode {
+	case DataBlockAreaSelectionModifyTrait:
+		p.selectDataBlockTraitAreaForModify(windowID, area.ID)
+		return true
+	case DataBlockAreaSelectionDeleteOne:
+		return true
+	default:
+		return true
+	}
+}
+
+func (p *ASDEXPane) selectDataBlockTraitAreaForModify(
+	windowID ScopeWindowID,
+	areaID string,
+) {
+	if p == nil || areaID == "" {
+		return
+	}
+
+	state := p.displayStateForWindow(windowID)
+	state.SelectedDBAreaID = areaID
+	p.dbAreaSelection = nil
+	p.dcb.SetMenu(DcbMenuModifyTraitArea)
+	p.dcbMenuCommand = NewDcbMenuCommand("DB AREA", "MODIFY TRAIT AREA")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) hitTestDataBlockArea(
+	windowID ScopeWindowID,
+	point redsmath.Vec2,
+	mode DataBlockAreaSelectionMode,
+) (*DataBlockArea, bool) {
+	if p == nil {
+		return nil, false
+	}
+
+	state := p.displayStateForWindow(windowID)
+	for i := len(state.DataBlockAreas) - 1; i >= 0; i-- {
+		area := &state.DataBlockAreas[i]
+		if !dataBlockAreaSelectableForMode(*area, mode) {
+			continue
+		}
+		if dataBlockAreaContains(*area, point) {
+			return area, true
+		}
+	}
+	return nil, false
+}
+
+func dataBlockAreaSelectableForMode(
+	area DataBlockArea,
+	mode DataBlockAreaSelectionMode,
+) bool {
+	switch mode {
+	case DataBlockAreaSelectionModifyTrait:
+		return area.Type == DataBlockAreaTrait && !area.Traits.DataBlocksOff
+	case DataBlockAreaSelectionDeleteOne:
+		return true
+	default:
+		return false
+	}
 }
 
 func dbAreaPointInsideExisting(point redsmath.Vec2, areas []DataBlockArea) bool {
@@ -385,10 +597,16 @@ func (p *ASDEXPane) showsDataBlockAreas() bool {
 	if p == nil {
 		return false
 	}
-	if p.dbAreaDraft != nil {
+	if p.dbAreaDraft != nil || p.dbAreaSelection != nil {
 		return true
 	}
-	return p.dcb.Menu() == DcbMenuDbArea || p.dcb.Menu() == DcbMenuDefineTraitArea
+
+	switch p.dcb.Menu() {
+	case DcbMenuDbArea, DcbMenuDefineTraitArea, DcbMenuModifyTraitArea:
+		return true
+	default:
+		return false
+	}
 }
 
 func (p *ASDEXPane) drawDataBlockAreas(cb *renderer.CmdBuffer, windowID ScopeWindowID) {

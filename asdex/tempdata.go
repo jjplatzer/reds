@@ -1429,6 +1429,7 @@ func (p *ASDEXPane) finishTempAreaDraft() {
 	p.tempData.AddArea(draft.Type, polygon)
 
 	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.dcb.SetMenu(DcbMenuTempData)
 	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
@@ -1442,7 +1443,7 @@ func (p *ASDEXPane) cancelTempAreaDraft() {
 	}
 
 	p.dbAreaDraft = nil
-	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.dcb.SetMenu(DcbMenuTempData)
 	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
@@ -1557,6 +1558,7 @@ func (p *ASDEXPane) clearTempDataCommandConflicts() {
 	}
 
 	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
@@ -1641,6 +1643,7 @@ func (p *ASDEXPane) closeDcbSubmenu() {
 	p.dcbMenuCommand = nil
 	p.dcbSpinner = nil
 	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil

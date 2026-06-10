@@ -110,6 +110,7 @@ type ASDEXPane struct {
 	dcbSpinner                *DcbSpinner
 	dcbMenuCommand            *DcbMenuCommand
 	dbAreaDraft               *DataBlockAreaDraft
+	dbAreaSelection           *DataBlockAreaSelection
 	tempAreaDraft             *TempAreaDraft
 	tempTextCommand           *TempTextCommand
 	tempTextPlacement         *TempTextPlacementCommand
@@ -297,14 +298,14 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.consumeOpsHotkeys(ctx, transforms)
 	p.coastList.SetVisible(p.showCoastList)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
-	if p.mapReposition == nil && !p.listRepositionActive() && p.dbAreaDraft == nil && p.tempAreaDraft == nil &&
-		p.tempTextCommand == nil && p.tempTextPlacement == nil &&
+	if p.mapReposition == nil && !p.listRepositionActive() && p.dbAreaDraft == nil && p.dbAreaSelection == nil &&
+		p.tempAreaDraft == nil && p.tempTextCommand == nil && p.tempTextPlacement == nil &&
 		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil {
 		p.updateCoastListHover(ctx)
 	} else {
 		p.hoveredCoastListTarget = ""
 	}
-	if p.mapReposition == nil && p.dbAreaDraft == nil && p.tempAreaDraft == nil &&
+	if p.mapReposition == nil && p.dbAreaDraft == nil && p.dbAreaSelection == nil && p.tempAreaDraft == nil &&
 		p.tempTextCommand == nil && p.tempTextPlacement == nil &&
 		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil {
 		p.updateRightClickGesture(ctx)
@@ -357,6 +358,11 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				p.mainScopeView(),
 			)
 		}
+	} else if p.dbAreaSelection != nil {
+		p.clearHighlightedTarget()
+		if !p.consumeDcbInput(ctx) {
+			p.consumeDataBlockAreaSelectionInput(ctx, referenceExtent)
+		}
 	} else if p.dcbMenuCommand != nil {
 		p.clearHighlightedTarget()
 		p.consumeDcbInput(ctx)
@@ -404,6 +410,9 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		}
 	} else {
 		p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
+	}
+	if p.dbAreaSelection != nil {
+		p.updateDataBlockAreaSelectionHover(ctx, referenceExtent)
 	}
 	p.applyCurrentCursor(ctx)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
@@ -774,6 +783,9 @@ func (p *ASDEXPane) dcbCursorUnlocked() bool {
 	if p == nil {
 		return false
 	}
+	if p.dbAreaSelection != nil {
+		return true
+	}
 	if p.dbAreaDraft != nil || p.tempAreaDraft != nil || p.tempTextCommand != nil || p.tempTextPlacement != nil ||
 		p.tempDataSelectMode != TempDataSelectNone || p.newWindow != nil {
 		return false
@@ -926,7 +938,9 @@ func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 		return true
 	}
 
-	if p.dcb.Menu() == DcbMenuDefineTraitArea && p.activateDefineTraitAreaDcbHit(hit) {
+	if (p.dcb.Menu() == DcbMenuDefineTraitArea ||
+		p.dcb.Menu() == DcbMenuModifyTraitArea) &&
+		p.activateTraitAreaDcbHit(hit) {
 		return true
 	}
 
@@ -937,7 +951,8 @@ func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 		}
 		return true
 	case DcbFunctionDone:
-		if p.dcb.Menu() == DcbMenuDefineTraitArea {
+		if p.dcb.Menu() == DcbMenuDefineTraitArea ||
+			p.dcb.Menu() == DcbMenuModifyTraitArea {
 			p.dcb.SetMenu(DcbMenuDbArea)
 			p.dcbMenuCommand = NewDcbMenuCommand("DB AREA")
 			p.previewArea.SetSystemResponse("")
@@ -958,8 +973,10 @@ func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 	case DcbFunctionDefineDbOffArea:
 		p.startDefineDbOffArea()
 		return true
-	case DcbFunctionModifyDbTraitArea,
-		DcbFunctionDeleteAllDbAreas,
+	case DcbFunctionModifyDbTraitArea:
+		p.startModifyDbTraitArea()
+		return true
+	case DcbFunctionDeleteAllDbAreas,
 		DcbFunctionDeleteOneDbArea:
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
@@ -1010,6 +1027,7 @@ func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 		p.dcbSpinner = nil
 		p.dcbMenuCommand = nil
 		p.dbAreaDraft = nil
+		p.dbAreaSelection = nil
 		p.tempAreaDraft = nil
 		p.tempTextCommand = nil
 		p.tempTextPlacement = nil
@@ -1043,6 +1061,7 @@ func (p *ASDEXPane) clearDcbModalConflicts() {
 	p.mapRotate = nil
 	p.dcbSpinner = nil
 	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
@@ -1109,7 +1128,7 @@ func (p *ASDEXPane) toggleDataBlocksOnOff() {
 	p.previewArea.SetSystemResponse("")
 }
 
-func (p *ASDEXPane) activateDefineTraitAreaDcbHit(hit DcbHit) bool {
+func (p *ASDEXPane) activateTraitAreaDcbHit(hit DcbHit) bool {
 	if p == nil {
 		return false
 	}
@@ -1208,6 +1227,7 @@ func (p *ASDEXPane) startDbAreaValueSpinner(function DcbFunction) {
 	}
 
 	windowID := p.activeWindowID()
+	editMode := dbAreaEditModeForMenu(p.dcb.Menu())
 	state := p.displayStateForWindow(windowID)
 	area, ok := state.selectedDataBlockArea()
 	if !ok || area.Traits.DataBlocksOff {
@@ -1259,6 +1279,7 @@ func (p *ASDEXPane) startDbAreaValueSpinner(function DcbFunction) {
 		function,
 		windowID,
 		area.ID,
+		editMode,
 		title,
 		minValue,
 		maxValue,
@@ -1289,6 +1310,7 @@ func (p *ASDEXPane) startRangeSpinner() {
 	p.mapRotate = nil
 	p.dcbMenuCommand = nil
 	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
@@ -1334,10 +1356,19 @@ func (p *ASDEXPane) cancelDcbSpinner() {
 		return
 	}
 	if p.dcbSpinner != nil && p.dcbSpinner.Type != DcbSpinnerRange {
-		p.dcbMenuCommand = NewDcbMenuCommand("DB AREA", "DEFINE TRAIT AREA")
+		p.restoreDbAreaEditCommand(p.dcbSpinner)
 	}
 	p.dcbSpinner = nil
 	p.previewArea.SetSystemResponse("")
+}
+
+func (p *ASDEXPane) restoreDbAreaEditCommand(spinner *DcbSpinner) {
+	if p == nil || spinner == nil {
+		return
+	}
+
+	p.dcb.SetMenu(dbAreaEditMenu(spinner.DbAreaEditMode))
+	p.dcbMenuCommand = NewDcbMenuCommand(dbAreaEditCommandLines(spinner.DbAreaEditMode)...)
 }
 
 func (p *ASDEXPane) commitDcbSpinner() {
@@ -1370,16 +1401,16 @@ func (p *ASDEXPane) commitDcbSpinner() {
 		DcbSpinnerDbAreaLeaderLength,
 		DcbSpinnerDbAreaLeaderDirection:
 		if strings.TrimSpace(spinner.InputText()) == "" {
+			p.restoreDbAreaEditCommand(spinner)
 			p.dcbSpinner = nil
-			p.dcbMenuCommand = NewDcbMenuCommand("DB AREA", "DEFINE TRAIT AREA")
 			p.previewArea.SetSystemResponse("")
 			return
 		}
 
 		value, ok := spinner.ParsedValue()
 		if !ok {
+			p.restoreDbAreaEditCommand(spinner)
 			p.dcbSpinner = nil
-			p.dcbMenuCommand = NewDcbMenuCommand("DB AREA", "DEFINE TRAIT AREA")
 			p.previewArea.SetSystemResponse("INVALID ENTRY")
 			return
 		}
@@ -1387,8 +1418,8 @@ func (p *ASDEXPane) commitDcbSpinner() {
 		if spinner.Type == DcbSpinnerDbAreaLeaderDirection {
 			direction, ok := leaderDirectionFromDisplayValue(value)
 			if !ok {
+				p.restoreDbAreaEditCommand(spinner)
 				p.dcbSpinner = nil
-				p.dcbMenuCommand = NewDcbMenuCommand("DB AREA", "DEFINE TRAIT AREA")
 				p.previewArea.SetSystemResponse("INVALID ENTRY")
 				return
 			}
@@ -1408,8 +1439,8 @@ func (p *ASDEXPane) commitDcbSpinner() {
 			})
 		}
 
+		p.restoreDbAreaEditCommand(spinner)
 		p.dcbSpinner = nil
-		p.dcbMenuCommand = NewDcbMenuCommand("DB AREA", "DEFINE TRAIT AREA")
 		p.previewArea.SetSystemResponse("")
 		return
 	default:
@@ -1901,6 +1932,18 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 	if p != nil && p.dbAreaDraft != nil {
 		return CursorModeScope
 	}
+	if p != nil && p.dbAreaSelection != nil {
+		if p.dcbCursorUnlocked() && p.mouseOverDcb(ctx) {
+			if p.dcbMouseCaptured() {
+				return CursorModeCaptured
+			}
+			return CursorModeDcb
+		}
+		if p.dbAreaSelection.HoveredID != "" {
+			return CursorModeSelect
+		}
+		return CursorModeScope
+	}
 	if p != nil && p.newWindow != nil {
 		return CursorModeScope
 	}
@@ -2131,6 +2174,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
 	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
@@ -2176,6 +2220,9 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.dbAreaDraft != nil {
 		return p.handleDataBlockAreaDraftKeyboard(ctx)
+	}
+	if p.dbAreaSelection != nil {
+		return p.handleDataBlockAreaSelectionKeyboard(ctx)
 	}
 	if p.consumeTempDataSelectionKeyboard(ctx) {
 		return true
@@ -2375,6 +2422,7 @@ func (p *ASDEXPane) startMultiPreviewReposition() {
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
 	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
@@ -2399,6 +2447,7 @@ func (p *ASDEXPane) startMultiCoastListReposition() {
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
 	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil

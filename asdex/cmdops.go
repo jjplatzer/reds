@@ -83,6 +83,7 @@ func (ap *ASDEXPane) cmdTrackSuspend(_ *panes.Context) CommandStatus {
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
 	ap.dbAreaDraft = nil
+	ap.dbAreaSelection = nil
 	ap.tempAreaDraft = nil
 	ap.tempTextCommand = nil
 	ap.tempTextPlacement = nil
@@ -277,6 +278,7 @@ func (ap *ASDEXPane) cmdInitControl(_ *panes.Context) CommandStatus {
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
 	ap.dbAreaDraft = nil
+	ap.dbAreaSelection = nil
 	ap.tempAreaDraft = nil
 	ap.tempTextCommand = nil
 	ap.tempTextPlacement = nil
@@ -410,6 +412,7 @@ func (ap *ASDEXPane) cmdTerminateControl(_ *panes.Context) CommandStatus {
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
 	ap.dbAreaDraft = nil
+	ap.dbAreaSelection = nil
 	ap.tempAreaDraft = nil
 	ap.tempTextCommand = nil
 	ap.tempTextPlacement = nil

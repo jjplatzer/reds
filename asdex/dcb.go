@@ -28,6 +28,7 @@ const (
 	DcbMenuDbEdit
 	DcbMenuDbArea
 	DcbMenuDefineTraitArea
+	DcbMenuModifyTraitArea
 	DcbMenuOff
 )
 
@@ -218,8 +219,9 @@ type DcbSpinner struct {
 	Type     DcbSpinnerType
 	Function DcbFunction
 
-	WindowID ScopeWindowID
-	AreaID   string
+	WindowID       ScopeWindowID
+	AreaID         string
+	DbAreaEditMode DataBlockAreaEditMode
 
 	Title string
 
@@ -272,6 +274,7 @@ func NewDbAreaDcbSpinner(
 	function DcbFunction,
 	windowID ScopeWindowID,
 	areaID string,
+	editMode DataBlockAreaEditMode,
 	title string,
 	min int,
 	max int,
@@ -279,18 +282,19 @@ func NewDbAreaDcbSpinner(
 ) *DcbSpinner {
 	currentValue = clampInt(currentValue, min, max)
 	return &DcbSpinner{
-		Type:     spinnerType,
-		Function: function,
-		WindowID: windowID,
-		AreaID:   areaID,
-		Title:    title,
-		Min:      min,
-		Max:      max,
-		Step:     1,
-		Value:    currentValue,
-		Original: currentValue,
-		input:    strconv.Itoa(currentValue),
-		cursor:   len(strconv.Itoa(currentValue)),
+		Type:           spinnerType,
+		Function:       function,
+		WindowID:       windowID,
+		AreaID:         areaID,
+		DbAreaEditMode: editMode,
+		Title:          title,
+		Min:            min,
+		Max:            max,
+		Step:           1,
+		Value:          currentValue,
+		Original:       currentValue,
+		input:          strconv.Itoa(currentValue),
+		cursor:         len(strconv.Itoa(currentValue)),
 	}
 }
 
@@ -913,7 +917,7 @@ func (d *Dcb) dbAreaButtonSpecs(state DcbState) []DcbButtonSpec {
 	}
 }
 
-func (d *Dcb) defineTraitAreaButtonSpecs(state DcbState) []DcbButtonSpec {
+func (d *Dcb) traitAreaButtonSpecs(state DcbState) []DcbButtonSpec {
 	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
 		if state.ActiveSpinnerFunction == spec.Function {
 			spec.Active = true
@@ -1016,8 +1020,8 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 		return d.dbEditButtonSpecs(state)
 	case DcbMenuDbArea:
 		return d.dbAreaButtonSpecs(state)
-	case DcbMenuDefineTraitArea:
-		return d.defineTraitAreaButtonSpecs(state)
+	case DcbMenuDefineTraitArea, DcbMenuModifyTraitArea:
+		return d.traitAreaButtonSpecs(state)
 	default:
 		return d.mainButtonSpecs(state)
 	}

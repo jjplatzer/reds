@@ -95,6 +95,7 @@ func (ap *ASDEXPane) cmdRSlew(
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
 	ap.dbAreaDraft = nil
+	ap.dbAreaSelection = nil
 	ap.tempAreaDraft = nil
 	ap.tempTextCommand = nil
 	ap.tempTextPlacement = nil
