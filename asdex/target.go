@@ -65,10 +65,9 @@ type Target struct {
 	CoastUntil   time.Time
 	SuspendUntil time.Time
 
-	Suspended   bool
-	Coasting    bool
-	Dropped     bool
-	Highlighted bool
+	Suspended bool
+	Coasting  bool
+	Dropped   bool
 }
 
 func (t *Target) EffectiveShowDB() bool {
@@ -91,7 +90,6 @@ type TargetStore struct {
 	manualAssociations map[string]ManualAssociationOverride
 	manualTags         map[string]ManualTagOverride
 	terminatedTracks   map[string]bool
-	highlightedID      string
 	hoverRevision      uint64
 }
 
@@ -281,12 +279,10 @@ func (s *TargetStore) Upsert(t Target) {
 			s.trimHistory(t.ID)
 			s.hoverRevision++
 		}
-		t.Highlighted = t.ID == s.highlightedID
 		*existing = t
 		return
 	}
 
-	t.Highlighted = false
 	targetCopy := t
 	s.targets[t.ID] = &targetCopy
 	s.order = append(s.order, t.ID)
@@ -307,9 +303,6 @@ func (s *TargetStore) Remove(id string) {
 	delete(s.manualAssociations, id)
 	delete(s.manualTags, id)
 	delete(s.terminatedTracks, id)
-	if s.highlightedID == id {
-		s.highlightedID = ""
-	}
 	for i, orderedID := range s.order {
 		if orderedID == id {
 			s.order = append(s.order[:i], s.order[i+1:]...)
@@ -354,7 +347,6 @@ func (s *TargetStore) Clear() {
 	clear(s.manualTags)
 	clear(s.terminatedTracks)
 	s.order = s.order[:0]
-	s.highlightedID = ""
 }
 
 func (s *TargetStore) All() []*Target {
@@ -390,13 +382,6 @@ func (s *TargetStore) TargetByID(id string) *Target {
 		return nil
 	}
 	return s.targets[id]
-}
-
-func (s *TargetStore) HighlightedTarget() *Target {
-	if s == nil {
-		return nil
-	}
-	return s.TargetByID(s.highlightedID)
 }
 
 func (s *TargetStore) SuspendedCount() int {
@@ -787,12 +772,6 @@ func (s *TargetStore) UpdateCoastDropTracks(
 			target.Dropped = true
 			target.Coasting = false
 			target.ShowDB = false
-			if target.Highlighted {
-				target.Highlighted = false
-				if s.highlightedID == target.ID {
-					s.highlightedID = ""
-				}
-			}
 		} else {
 			target.Coasting = true
 			target.Dropped = false
@@ -808,12 +787,10 @@ func (s *TargetStore) UpdateCoastDropTracks(
 
 const maxTargetHoverRangeFeet = float32(150)
 
-func (s *TargetStore) HighlightNearest(posFeet redsmath.Vec2) string {
+func (s *TargetStore) NearestTargetID(posFeet redsmath.Vec2) string {
 	if s == nil || len(s.targets) == 0 {
 		return ""
 	}
-
-	s.ClearHighlight()
 
 	maxDistance2 := maxTargetHoverRangeFeet * maxTargetHoverRangeFeet
 	bestDistance2 := maxDistance2
@@ -833,22 +810,7 @@ func (s *TargetStore) HighlightNearest(posFeet redsmath.Vec2) string {
 		}
 	}
 
-	if target := s.targets[bestID]; target != nil {
-		target.Highlighted = true
-	}
-	s.highlightedID = bestID
 	return bestID
-}
-
-func (s *TargetStore) ClearHighlight() {
-	if s == nil {
-		return
-	}
-
-	if target := s.targets[s.highlightedID]; target != nil {
-		target.Highlighted = false
-	}
-	s.highlightedID = ""
 }
 
 func (s *TargetStore) trimHistory(id string) {
@@ -1093,6 +1055,8 @@ type TargetDrawOptions struct {
 	ScopeRotationDeg int
 
 	VectorVisible func(*Target) bool
+
+	HighlightedTargetID string
 }
 
 func DrawTargets(
@@ -1109,9 +1073,9 @@ func DrawTargets(
 	}
 
 	addHistoryDots(targets, history, cb, opts)
-	addHighlightRings(targets, cb, opts.Brightness)
+	addHighlightRings(targets, cb, opts.Brightness, opts.HighlightedTargetID)
 	addTargetSymbols(targets, cb, opts.Brightness)
-	addSuspendedTargetIcons(targets, cb, opts.Brightness, opts.ScopeRotationDeg)
+	addSuspendedTargetIcons(targets, cb, opts.Brightness, opts.ScopeRotationDeg, opts.HighlightedTargetID)
 	addTargetVectors(targets, cb, opts)
 }
 
@@ -1374,12 +1338,21 @@ func triangleFanIndices(vertexCount int) []uint32 {
 	return indices
 }
 
-func addHighlightRings(targets []*Target, cb *renderer.CmdBuffer, brightness int) {
+func addHighlightRings(
+	targets []*Target,
+	cb *renderer.CmdBuffer,
+	brightness int,
+	highlightedID string,
+) {
+	if highlightedID == "" {
+		return
+	}
+
 	builder := renderer.GetLinesBuilder()
 	defer renderer.ReturnLinesBuilder(builder)
 
 	for _, target := range targets {
-		if target == nil || !target.Highlighted || target.Suspended || target.Dropped {
+		if target == nil || target.ID != highlightedID || target.Suspended || target.Dropped {
 			continue
 		}
 
@@ -1394,6 +1367,7 @@ func addHighlightRings(targets []*Target, cb *renderer.CmdBuffer, brightness int
 			points = append(points, renderer.PointVertex{X: position.X, Y: position.Y})
 		}
 		builder.AddLineStrip(points)
+		break
 	}
 
 	cb.SetRGB(targetRGB(targetRGBHighlight, brightness))
@@ -1455,6 +1429,7 @@ func addSuspendedTargetIcons(
 	cb *renderer.CmdBuffer,
 	brightness int,
 	scopeRotationDeg int,
+	highlightedID string,
 ) {
 	outerBuilder := renderer.GetTrianglesBuilder()
 	innerBuilder := renderer.GetTrianglesBuilder()
@@ -1480,7 +1455,7 @@ func addSuspendedTargetIcons(
 		)
 
 		fillBuilder := innerBuilder
-		if target.Highlighted {
+		if target.ID == highlightedID {
 			fillBuilder = selectedInnerBuilder
 		}
 		fillBuilder.AddQuad(

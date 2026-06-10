@@ -11,7 +11,8 @@ import (
 // scope-local world coordinates. World coordinates are feet with y increasing
 // upward; window coordinates have a top-left origin with y increasing downward.
 type ScopeTransformations struct {
-	paneExtent redsmath.Rect
+	paneExtent      redsmath.Rect
+	referenceExtent redsmath.Rect
 
 	center    redsmath.Vec2
 	rangeFeet float32
@@ -22,9 +23,29 @@ type ScopeTransformations struct {
 }
 
 // GetScopeTransformations returns transformations for a scope view. rangeFeet
-// is half the visible world height, matching VICE's range semantics.
+// is half the visible world height when the pane itself is the range reference.
 func GetScopeTransformations(
 	paneExtent redsmath.Rect,
+	center redsmath.Vec2,
+	rangeFeet float32,
+	rotation float32,
+) ScopeTransformations {
+	return GetScopeTransformationsWithReference(
+		paneExtent,
+		paneExtent,
+		center,
+		rangeFeet,
+		rotation,
+	)
+}
+
+// GetScopeTransformationsWithReference returns transformations for a scope
+// subwindow whose range scale is defined relative to a reference display size.
+// For CRC ASDE-X, rangeFeet is RangeSetting*100 feet at half of the reference
+// display's limiting dimension, not half of each secondary window's height.
+func GetScopeTransformationsWithReference(
+	paneExtent redsmath.Rect,
+	referenceExtent redsmath.Rect,
 	center redsmath.Vec2,
 	rangeFeet float32,
 	rotation float32,
@@ -32,6 +53,7 @@ func GetScopeTransformations(
 	if paneExtent.Empty() || rangeFeet <= 0 {
 		return ScopeTransformations{
 			paneExtent:       paneExtent,
+			referenceExtent:  referenceExtent,
 			center:           center,
 			rangeFeet:        rangeFeet,
 			rotation:         rotation,
@@ -42,15 +64,37 @@ func GetScopeTransformations(
 
 	width := paneExtent.Width()
 	height := paneExtent.Height()
+	effectiveRangeFeet := effectiveHalfHeightFeet(paneExtent, referenceExtent, rangeFeet)
 
 	return ScopeTransformations{
 		paneExtent:       paneExtent,
+		referenceExtent:  referenceExtent,
 		center:           center,
-		rangeFeet:        rangeFeet,
+		rangeFeet:        effectiveRangeFeet,
 		rotation:         rotation,
-		worldProjection:  rotatedWorldProjection(width, height, center, rangeFeet, rotation),
+		worldProjection:  rotatedWorldProjection(width, height, center, effectiveRangeFeet, rotation),
 		windowProjection: renderer.ScreenOrtho(width, height),
 	}
+}
+
+func effectiveHalfHeightFeet(
+	paneExtent redsmath.Rect,
+	referenceExtent redsmath.Rect,
+	rangeFeet float32,
+) float32 {
+	if paneExtent.Empty() || referenceExtent.Empty() || rangeFeet <= 0 {
+		return rangeFeet
+	}
+
+	refMin := referenceExtent.Width()
+	if referenceExtent.Height() < refMin {
+		refMin = referenceExtent.Height()
+	}
+	if refMin <= 0 {
+		return rangeFeet
+	}
+
+	return rangeFeet * paneExtent.Height() / refMin
 }
 
 func rotatedWorldProjection(

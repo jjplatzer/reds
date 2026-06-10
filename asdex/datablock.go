@@ -507,6 +507,7 @@ type DataBlockDrawOptions struct {
 	FontTextureForSize func(size int) renderer.TextureID
 
 	SettingsForTarget       func(target *Target) DataBlockSettings
+	ShowDataBlockForTarget  func(target *Target, settings DataBlockSettings) bool
 	ShowBeaconCodeForTarget func(target *Target) bool
 }
 
@@ -522,7 +523,7 @@ func DrawDatablocks(
 
 	transforms.LoadWindowViewingMatrices(cb)
 	for _, target := range targets {
-		if target == nil || !target.EffectiveShowDB() {
+		if target == nil {
 			continue
 		}
 
@@ -530,7 +531,12 @@ func DrawDatablocks(
 		if opts.SettingsForTarget != nil {
 			settings = opts.SettingsForTarget(target)
 		}
-		if !settings.ShowDataBlocks {
+
+		showDataBlock := target.EffectiveShowDB()
+		if opts.ShowDataBlockForTarget != nil {
+			showDataBlock = opts.ShowDataBlockForTarget(target, settings)
+		}
+		if !showDataBlock {
 			continue
 		}
 

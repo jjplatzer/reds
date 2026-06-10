@@ -77,6 +77,10 @@ func windowZ(stackIndex int, localZ renderer.Z) renderer.Z {
 	return renderer.Z(-10000 + stackIndex*1000 + int(localZ))
 }
 
+func scopeWindowZ(stackIndex int, localZ renderer.Z) renderer.Z {
+	return renderer.Z(-20000 + stackIndex*1000 + int(localZ))
+}
+
 type ASDEXPane struct {
 	airport           string
 	configAirportCode string
@@ -84,6 +88,7 @@ type ASDEXPane struct {
 	videomap          *VideoMap
 	safetyLogic       SafetyLogic
 	tempData          TempData
+	windows           ScopeWindowManager
 	targets           TargetStore
 	smes              *redsnet.SmesClient
 	fonts             fontCache
@@ -92,10 +97,8 @@ type ASDEXPane struct {
 	cursors    CursorSet
 	cursorMode CursorMode
 
-	datablockSettings         DataBlockSettings
+	displayStateByWindow      map[ScopeWindowID]*WindowDisplayState
 	datablockTimeshareStart   time.Time
-	leaderDirectionByTarget   map[string]LeaderDirection
-	leaderLengthByTarget      map[string]int
 	showBeaconUntilByTargetID map[string]time.Time
 	previewArea               PreviewArea
 	coastList                 CoastList
@@ -107,6 +110,7 @@ type ASDEXPane struct {
 	tempTextPlacement         *TempTextPlacementCommand
 	tempDataSelectMode        TempDataSelectMode
 	hoveredTempData           TempDataHit
+	newWindow                 *NewWindowCommand
 	showCoastList             bool
 	hoveredCoastListTarget    string
 
@@ -126,10 +130,7 @@ type ASDEXPane struct {
 	rightClickCandidate bool
 	rightClickDragged   bool
 
-	highlightedTargetID    string
-	highlightMouseWorld    redsmath.Vec2
-	highlightStoreRevision uint64
-	highlightQueryValid    bool
+	hover ScopeHoverState
 
 	center          redsmath.Vec2
 	rangeSetting    int
@@ -182,15 +183,16 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		videomap:          vm,
 		safetyLogic:       safetyLogic,
 		tempData:          NewTempData(),
+		windows:           NewScopeWindowManager(),
 		targets:           NewTargetStore(),
 		smes:              client,
 		fonts:             fonts,
 		eramTextFonts:     eramTextFonts,
 
-		datablockSettings:         DefaultDataBlockSettings(),
+		displayStateByWindow: map[ScopeWindowID]*WindowDisplayState{
+			mainScopeWindowID: NewWindowDisplayState(),
+		},
 		datablockTimeshareStart:   time.Now(),
-		leaderDirectionByTarget:   make(map[string]LeaderDirection),
-		leaderLengthByTarget:      make(map[string]int),
 		showBeaconUntilByTargetID: make(map[string]time.Time),
 		previewArea:               preview,
 		coastList:                 coastList,
@@ -267,13 +269,8 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		return
 	}
 
-	paneExtent := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
-	transforms := radar.GetScopeTransformations(
-		paneExtent,
-		p.center,
-		p.rangeFeet,
-		p.rotation,
-	)
+	referenceExtent := mainReferenceExtent(ctx.PaneSize())
+	transforms := scopeTransformForWindow(referenceExtent, referenceExtent, p.mainScopeView())
 
 	now := time.Now().UTC()
 	p.expireTemporaryBeaconDisplays(now)
@@ -289,14 +286,14 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
 	if p.mapReposition == nil && !p.listRepositionActive() && p.tempAreaDraft == nil &&
 		p.tempTextCommand == nil && p.tempTextPlacement == nil &&
-		p.tempDataSelectMode == TempDataSelectNone {
+		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil {
 		p.updateCoastListHover(ctx)
 	} else {
 		p.hoveredCoastListTarget = ""
 	}
 	if p.mapReposition == nil && p.tempAreaDraft == nil &&
 		p.tempTextCommand == nil && p.tempTextPlacement == nil &&
-		p.tempDataSelectMode == TempDataSelectNone {
+		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil {
 		p.updateRightClickGesture(ctx)
 	} else {
 		p.clearRightClickGesture()
@@ -308,11 +305,10 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if p.mapReposition != nil {
 		p.clearHighlightedTarget()
 		if p.consumeMapRepositionMouse(ctx, transforms) {
-			transforms = radar.GetScopeTransformations(
-				paneExtent,
-				p.center,
-				p.rangeFeet,
-				p.rotation,
+			transforms = scopeTransformForWindow(
+				redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y),
+				referenceExtent,
+				p.mainScopeView(),
 			)
 		}
 	} else if p.listRepositionActive() {
@@ -322,6 +318,9 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	} else if p.datablockEdit != nil {
 		p.clearHighlightedTarget()
 		p.consumeDatablockEditWheel(ctx)
+	} else if p.newWindow != nil {
+		p.clearHighlightedTarget()
+		p.consumeNewWindowInput(ctx, transforms)
 	} else if p.tempTextPlacement != nil {
 		p.clearHighlightedTarget()
 		p.consumeTempTextPlacementInput(ctx, transforms)
@@ -336,11 +335,10 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	} else if p.dcbSpinner != nil {
 		p.clearHighlightedTarget()
 		if !p.consumeDcbOnOffClick(ctx) && p.consumeDcbSpinnerInput(ctx) {
-			transforms = radar.GetScopeTransformations(
-				paneExtent,
-				p.center,
-				p.rangeFeet,
-				p.rotation,
+			transforms = scopeTransformForWindow(
+				redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y),
+				referenceExtent,
+				p.mainScopeView(),
 			)
 		}
 	} else if p.dcbMenuCommand != nil {
@@ -349,26 +347,45 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	} else {
 		if p.consumeDcbInput(ctx) {
 			p.clearHighlightedTarget()
-		} else if p.consumeMouseEvents(ctx, transforms) {
-			transforms = radar.GetScopeTransformations(
-				paneExtent,
-				p.center,
-				p.rangeFeet,
-				p.rotation,
-			)
-			p.updateHighlightedTarget(ctx, transforms)
-			if !p.consumeCoastListClicks(ctx) {
-				p.consumeCommandClicks(ctx, transforms)
-			}
 		} else {
-			p.updateHighlightedTarget(ctx, transforms)
-			if !p.consumeCoastListClicks(ctx) {
-				p.consumeCommandClicks(ctx, transforms)
+			p.maybeActivateScopeWindowOnLeftPress(ctx)
+			if ctx.Mouse == nil {
+				p.clearHighlightedTarget()
+			} else {
+				windowID, windowRect, view, ok := p.scopeWindowAtPoint(ctx.Mouse.Pos, ctx.PaneSize())
+				if ok {
+					scopeTransforms := scopeTransformForWindow(windowRect, referenceExtent, view)
+					updatedView, changed := p.consumeScopeMouseEvents(ctx, windowRect, view, scopeTransforms)
+					if changed {
+						p.setScopeView(windowID, updatedView)
+						view = updatedView
+						scopeTransforms = scopeTransformForWindow(windowRect, referenceExtent, view)
+						if windowID == mainScopeWindowID {
+							transforms = scopeTransforms
+						}
+					}
+					p.updateHighlightedTargetInWindow(ctx, windowID, windowRect, scopeTransforms)
+					if !p.consumeCoastListClicks(ctx) {
+						p.consumeCommandClicksInWindow(ctx, windowRect, scopeTransforms)
+					}
+				} else {
+					p.clearHighlightedTarget()
+					if !p.consumeCoastListClicks(ctx) {
+						p.consumeCommandClicks(ctx, transforms)
+					}
+				}
 			}
 		}
 	}
 	if p.tempDataSelectMode != TempDataSelectNone && ctx.Mouse != nil {
-		p.hoveredTempData = p.tempData.HitTest(transforms.WorldFromWindowP(ctx.Mouse.Pos))
+		if _, windowRect, view, ok := p.scopeWindowAtPoint(ctx.Mouse.Pos, ctx.PaneSize()); ok {
+			scopeTransforms := scopeTransformForWindow(windowRect, referenceExtent, view)
+			p.hoveredTempData = p.tempData.HitTest(
+				scopeTransforms.WorldFromWindowP(ctx.Mouse.Pos.Sub(windowRect.Min)),
+			)
+		} else {
+			p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+		}
 	} else {
 		p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	}
@@ -377,128 +394,18 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	targets := p.targets.All()
 	p.safetyLogic.Update(targets)
 
-	cb := zcb.At(windowZ(0, zVideoMap))
+	mainRect := redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y)
+	transforms = p.renderScopeWindow(ctx, zcb, 0, mainScopeWindowID, mainRect, referenceExtent, p.mainScopeView(), targets, now, true)
+	for i, win := range p.windows.secondary {
+		if win.Hidden {
+			continue
+		}
+		p.renderScopeWindow(ctx, zcb, i+1, win.ID, win.Rect, referenceExtent, win.View, targets, now, false)
+	}
+	p.renderWindowBorders(ctx, zcb, transforms)
+	p.renderNewWindowPreview(ctx, zcb, transforms)
+
 	x, y, w, h := ctx.PaneFramebufferRect()
-	cb.Viewport(x, y, w, h)
-	cb.Scissor(x, y, w, h)
-	cb.Clear(applyBrightness(backgroundColor(p.mode), brightnessDefault, 20).ToRGBA())
-
-	transforms.LoadWorldViewingMatrices(cb)
-	DrawVideoMap(p.videomap, cb, p.mode)
-	cb.DisableScissor()
-
-	closedRunwayCB := zcb.At(windowZ(0, zSafetyLogicClosedRunways))
-	closedRunwayCB.Viewport(x, y, w, h)
-	closedRunwayCB.Scissor(x, y, w, h)
-	transforms.LoadWorldViewingMatrices(closedRunwayCB)
-	p.tempData.DrawClosedRunways(closedRunwayCB, &p.safetyLogic, closedRunwayBrightnessDefault)
-	closedRunwayCB.DisableScissor()
-
-	restrictedAreaCB := zcb.At(windowZ(0, zRestrictedArea))
-	restrictedAreaCB.Viewport(x, y, w, h)
-	restrictedAreaCB.Scissor(x, y, w, h)
-	transforms.LoadWorldViewingMatrices(restrictedAreaCB)
-	p.tempData.DrawRestrictedAreas(restrictedAreaCB, transforms, tempMapAreasBrightnessDefault)
-	restrictedAreaCB.DisableScissor()
-
-	closedAreaCB := zcb.At(windowZ(0, zClosedArea))
-	closedAreaCB.Viewport(x, y, w, h)
-	closedAreaCB.Scissor(x, y, w, h)
-	transforms.LoadWorldViewingMatrices(closedAreaCB)
-	p.tempData.DrawClosedAreas(closedAreaCB, transforms, tempMapAreasBrightnessDefault)
-	closedAreaCB.DisableScissor()
-
-	tempTextCB := zcb.At(windowZ(0, zTempMapText))
-	tempTextCB.Viewport(x, y, w, h)
-	tempTextCB.Scissor(x, y, w, h)
-	transforms.LoadWindowViewingMatrices(tempTextCB)
-	p.tempData.DrawTempTextAnchors(tempTextCB, transforms, tempMapAreasBrightnessDefault)
-	p.tempData.DrawTempTexts(
-		tempTextCB,
-		transforms,
-		p.fonts.font,
-		func(size int) renderer.TextureID {
-			return p.fonts.textureForSize(ctx.Renderer, size)
-		},
-		p.dataBlockSettings(),
-	)
-	tempTextCB.DisableScissor()
-
-	draftCB := zcb.At(windowZ(0, zTempAreaDrawing))
-	draftCB.Viewport(x, y, w, h)
-	draftCB.Scissor(x, y, w, h)
-	transforms.LoadWorldViewingMatrices(draftCB)
-	p.DrawTempAreaDraft(draftCB)
-	draftCB.DisableScissor()
-
-	holdBarCB := zcb.At(windowZ(0, zSafetyLogicHoldBars))
-	holdBarCB.Viewport(x, y, w, h)
-	holdBarCB.Scissor(x, y, w, h)
-	transforms.LoadWindowViewingMatrices(holdBarCB)
-	p.safetyLogic.DrawHoldBars(holdBarCB, transforms, holdBarsBrightnessDefault)
-	holdBarCB.DisableScissor()
-
-	targetCB := zcb.At(windowZ(0, zTargets))
-	targetCB.Viewport(x, y, w, h)
-	targetCB.Scissor(x, y, w, h)
-	transforms.LoadWorldViewingMatrices(targetCB)
-	DrawTargets(
-		targets,
-		p.targets.History(),
-		targetCB,
-		TargetDrawOptions{
-			VectorSeconds:    3,
-			Brightness:       brightnessDefault,
-			ScopeRotationDeg: int(p.rotation),
-		},
-	)
-	targetCB.DisableScissor()
-
-	suspendedLabelCB := zcb.At(windowZ(0, zSuspendedLabels))
-	suspendedLabelCB.Viewport(x, y, w, h)
-	suspendedLabelCB.Scissor(x, y, w, h)
-	transforms.LoadWindowViewingMatrices(suspendedLabelCB)
-	DrawSuspendedTargetLabels(
-		targets,
-		suspendedLabelCB,
-		transforms,
-		p.fonts.font,
-		p.fonts.textureForSize(ctx.Renderer, suspendedLabelFontSize),
-	)
-	suspendedLabelCB.DisableScissor()
-
-	datablockSettings := p.dataBlockSettings()
-	dbCB := zcb.At(windowZ(0, zDatablocks))
-	dbCB.Viewport(x, y, w, h)
-	dbCB.Scissor(x, y, w, h)
-	DrawDatablocks(
-		targets,
-		dbCB,
-		transforms,
-		DataBlockDrawOptions{
-			Font: p.fonts.font,
-			FontTextureForSize: func(size int) renderer.TextureID {
-				return p.fonts.textureForSize(ctx.Renderer, size)
-			},
-			SettingsForTarget: func(target *Target) DataBlockSettings {
-				settings := datablockSettings
-				if target != nil {
-					if direction, ok := p.leaderDirectionByTarget[target.ID]; ok {
-						settings.LeaderDirection = direction
-					}
-					if length, ok := p.leaderLengthByTarget[target.ID]; ok {
-						settings.LeaderLength = length
-					}
-				}
-				return settings
-			},
-			ShowBeaconCodeForTarget: func(target *Target) bool {
-				return p.showBeaconCodeForTarget(target, now)
-			},
-		},
-	)
-	dbCB.DisableScissor()
-
 	listCB := zcb.At(windowZ(0, zPreviewArea))
 	listCB.Viewport(x, y, w, h)
 	listCB.Scissor(x, y, w, h)
@@ -557,6 +464,159 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 
 	p.renderDcb(ctx, zcb, transforms)
+}
+
+func (p *ASDEXPane) renderScopeWindow(
+	ctx *panes.Context,
+	zcb *renderer.ZCmdBuffer,
+	stackIndex int,
+	windowID ScopeWindowID,
+	rect redsmath.Rect,
+	referenceExtent redsmath.Rect,
+	view ScopeView,
+	targets []*Target,
+	now time.Time,
+	drawDraft bool,
+) radar.ScopeTransformations {
+	if p == nil || ctx == nil || zcb == nil || rect.Empty() {
+		return radar.ScopeTransformations{}
+	}
+
+	transforms := scopeTransformForWindow(rect, referenceExtent, view)
+	x, y, w, h := scopeFramebufferRect(ctx, rect)
+
+	cb := zcb.At(scopeWindowZ(stackIndex, zVideoMap))
+	cb.Viewport(x, y, w, h)
+	cb.Scissor(x, y, w, h)
+	cb.Clear(applyBrightness(backgroundColor(p.mode), brightnessDefault, 20).ToRGBA())
+
+	transforms.LoadWorldViewingMatrices(cb)
+	DrawVideoMap(p.videomap, cb, p.mode)
+	cb.DisableScissor()
+
+	closedRunwayCB := zcb.At(scopeWindowZ(stackIndex, zSafetyLogicClosedRunways))
+	closedRunwayCB.Viewport(x, y, w, h)
+	closedRunwayCB.Scissor(x, y, w, h)
+	transforms.LoadWorldViewingMatrices(closedRunwayCB)
+	p.tempData.DrawClosedRunways(closedRunwayCB, &p.safetyLogic, closedRunwayBrightnessDefault)
+	closedRunwayCB.DisableScissor()
+
+	restrictedAreaCB := zcb.At(scopeWindowZ(stackIndex, zRestrictedArea))
+	restrictedAreaCB.Viewport(x, y, w, h)
+	restrictedAreaCB.Scissor(x, y, w, h)
+	transforms.LoadWorldViewingMatrices(restrictedAreaCB)
+	p.tempData.DrawRestrictedAreas(restrictedAreaCB, transforms, tempMapAreasBrightnessDefault)
+	restrictedAreaCB.DisableScissor()
+
+	closedAreaCB := zcb.At(scopeWindowZ(stackIndex, zClosedArea))
+	closedAreaCB.Viewport(x, y, w, h)
+	closedAreaCB.Scissor(x, y, w, h)
+	transforms.LoadWorldViewingMatrices(closedAreaCB)
+	p.tempData.DrawClosedAreas(closedAreaCB, transforms, tempMapAreasBrightnessDefault)
+	closedAreaCB.DisableScissor()
+
+	tempTextCB := zcb.At(scopeWindowZ(stackIndex, zTempMapText))
+	tempTextCB.Viewport(x, y, w, h)
+	tempTextCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(tempTextCB)
+	p.tempData.DrawTempTextAnchors(tempTextCB, transforms, tempMapAreasBrightnessDefault)
+	p.tempData.DrawTempTexts(
+		tempTextCB,
+		transforms,
+		p.fonts.font,
+		func(size int) renderer.TextureID {
+			return p.fonts.textureForSize(ctx.Renderer, size)
+		},
+		p.dataBlockSettingsForWindow(windowID),
+	)
+	tempTextCB.DisableScissor()
+
+	if drawDraft {
+		draftCB := zcb.At(scopeWindowZ(stackIndex, zTempAreaDrawing))
+		draftCB.Viewport(x, y, w, h)
+		draftCB.Scissor(x, y, w, h)
+		transforms.LoadWorldViewingMatrices(draftCB)
+		p.DrawTempAreaDraft(draftCB)
+		draftCB.DisableScissor()
+	}
+
+	holdBarCB := zcb.At(scopeWindowZ(stackIndex, zSafetyLogicHoldBars))
+	holdBarCB.Viewport(x, y, w, h)
+	holdBarCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(holdBarCB)
+	p.safetyLogic.DrawHoldBars(holdBarCB, transforms, holdBarsBrightnessDefault)
+	holdBarCB.DisableScissor()
+
+	targetCB := zcb.At(scopeWindowZ(stackIndex, zTargets))
+	targetCB.Viewport(x, y, w, h)
+	targetCB.Scissor(x, y, w, h)
+	transforms.LoadWorldViewingMatrices(targetCB)
+	highlightedTargetID := ""
+	if p.hover.WindowID == windowID {
+		highlightedTargetID = p.hover.TargetID
+	}
+	DrawTargets(
+		targets,
+		p.targets.History(),
+		targetCB,
+		TargetDrawOptions{
+			VectorSeconds:       3,
+			Brightness:          brightnessDefault,
+			ScopeRotationDeg:    int(view.Rotation),
+			HighlightedTargetID: highlightedTargetID,
+		},
+	)
+	targetCB.DisableScissor()
+
+	suspendedLabelCB := zcb.At(scopeWindowZ(stackIndex, zSuspendedLabels))
+	suspendedLabelCB.Viewport(x, y, w, h)
+	suspendedLabelCB.Scissor(x, y, w, h)
+	transforms.LoadWindowViewingMatrices(suspendedLabelCB)
+	DrawSuspendedTargetLabels(
+		targets,
+		suspendedLabelCB,
+		transforms,
+		p.fonts.font,
+		p.fonts.textureForSize(ctx.Renderer, suspendedLabelFontSize),
+	)
+	suspendedLabelCB.DisableScissor()
+
+	datablockSettings := p.dataBlockSettingsForWindow(windowID)
+	dbCB := zcb.At(scopeWindowZ(stackIndex, zDatablocks))
+	dbCB.Viewport(x, y, w, h)
+	dbCB.Scissor(x, y, w, h)
+	DrawDatablocks(
+		targets,
+		dbCB,
+		transforms,
+		DataBlockDrawOptions{
+			Font: p.fonts.font,
+			FontTextureForSize: func(size int) renderer.TextureID {
+				return p.fonts.textureForSize(ctx.Renderer, size)
+			},
+			SettingsForTarget: func(target *Target) DataBlockSettings {
+				settings := datablockSettings
+				if target != nil {
+					if direction, ok := p.leaderDirectionOverride(windowID, target.ID); ok {
+						settings.LeaderDirection = direction
+					}
+					if length, ok := p.leaderLengthOverride(windowID, target.ID); ok {
+						settings.LeaderLength = length
+					}
+				}
+				return settings
+			},
+			ShowDataBlockForTarget: func(target *Target, settings DataBlockSettings) bool {
+				return p.targetShowsDataBlockInWindow(target, windowID, settings)
+			},
+			ShowBeaconCodeForTarget: func(target *Target) bool {
+				return p.showBeaconCodeForTarget(target, now)
+			},
+		},
+	)
+	dbCB.DisableScissor()
+
+	return transforms
 }
 
 func (p *ASDEXPane) renderDcb(
@@ -630,7 +690,7 @@ func (p *ASDEXPane) dcbCursorUnlocked() bool {
 		return false
 	}
 	if p.tempAreaDraft != nil || p.tempTextCommand != nil || p.tempTextPlacement != nil ||
-		p.tempDataSelectMode != TempDataSelectNone {
+		p.tempDataSelectMode != TempDataSelectNone || p.newWindow != nil {
 		return false
 	}
 	if p.dcbSpinner != nil || p.dcbMenuCommand != nil {
@@ -665,24 +725,25 @@ func (p *ASDEXPane) dcbState() DcbState {
 		}
 	}
 
-	rangeSetting := asdexDefaultRangeSetting
-	if p.rangeSetting != 0 {
-		rangeSetting = clampInt(p.rangeSetting, asdexMinRangeSetting, asdexMaxRangeSetting)
+	active := p.activeDcbWindowState()
+	rangeSetting := active.View.RangeSetting
+	if rangeSetting == 0 {
+		rangeSetting = asdexDefaultRangeSetting
 	}
+	rangeSetting = clampInt(rangeSetting, asdexMinRangeSetting, asdexMaxRangeSetting)
 
 	activeSpinnerFunction := DcbFunctionVacant
 	if p.dcbSpinner != nil {
 		activeSpinnerFunction = p.dcbSpinner.Function
 	}
 
-	settings := p.dataBlockSettings()
 	return DcbState{
 		Range:                 rangeSetting,
 		Mode:                  p.mode,
 		VectorOn:              true,
 		VectorLength:          3,
-		LeaderLength:          settings.LeaderLength,
-		DataBlocksOn:          settings.ShowDataBlocks,
+		LeaderLength:          active.DB.LeaderLength,
+		DataBlocksOn:          active.DB.ShowDataBlocks,
 		DcbOn:                 p.dcb.On(),
 		ClosedRunways:         p.tempData.DcbRunwayClosureStates(&p.safetyLogic),
 		ActiveSpinnerFunction: activeSpinnerFunction,
@@ -764,6 +825,7 @@ func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 		p.tempDataSelectMode = TempDataSelectNone
 		p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 		p.tempData.ClearHighlights()
+		p.newWindow = nil
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
 		return true
@@ -777,9 +839,8 @@ func (p *ASDEXPane) startRangeSpinner() {
 		return
 	}
 
-	if p.rangeSetting == 0 {
-		p.setRangeSetting(asdexDefaultRangeSetting)
-	}
+	windowID := p.activeWindowID()
+	currentRange := p.activeRangeSetting()
 
 	p.commandMode = CommandModeNone
 	p.datablockEdit = nil
@@ -798,8 +859,9 @@ func (p *ASDEXPane) startRangeSpinner() {
 	p.tempDataSelectMode = TempDataSelectNone
 	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
+	p.newWindow = nil
 	p.commandEntry.Clear()
-	p.dcbSpinner = NewRangeDcbSpinner(p.rangeSetting)
+	p.dcbSpinner = NewRangeDcbSpinner(windowID, currentRange)
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
@@ -860,7 +922,7 @@ func (p *ASDEXPane) commitDcbSpinner() {
 			return
 		}
 
-		p.setRangeSetting(value)
+		p.setRangeSettingForWindow(spinner.WindowID, value)
 		p.dcbSpinner = nil
 		p.previewArea.SetSystemResponse("")
 		return
@@ -878,31 +940,274 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 
 	switch p.dcbSpinner.Kind {
 	case DcbSpinnerRange:
-		p.setRangeSetting(p.rangeSetting + delta)
-		p.dcbSpinner.Value = p.rangeSetting
+		windowID := p.dcbSpinner.WindowID
+		view, ok := p.scopeViewForWindow(windowID)
+		if !ok {
+			windowID = p.activeWindowID()
+			view = p.activeScopeView()
+			p.dcbSpinner.WindowID = windowID
+		}
+
+		next := view.RangeSetting
+		if next == 0 {
+			next = asdexDefaultRangeSetting
+		}
+		next = clampInt(
+			next+delta,
+			asdexMinRangeSetting,
+			asdexMaxRangeSetting,
+		)
+
+		p.setRangeSettingForWindow(windowID, next)
+		p.dcbSpinner.Value = next
 	default:
 		p.dcbSpinner.Increment(delta)
 	}
 	p.previewArea.SetSystemResponse("")
 }
 
-func (p *ASDEXPane) setRangeSetting(rangeSetting int) {
+func (p *ASDEXPane) activeRangeSetting() int {
+	view := p.activeScopeView()
+	if view.RangeSetting == 0 {
+		return asdexDefaultRangeSetting
+	}
+	return clampInt(view.RangeSetting, asdexMinRangeSetting, asdexMaxRangeSetting)
+}
+
+func (p *ASDEXPane) setRangeSettingForWindow(id ScopeWindowID, rangeSetting int) {
 	if p == nil {
 		return
 	}
-	p.rangeSetting = clampInt(rangeSetting, asdexMinRangeSetting, asdexMaxRangeSetting)
-	p.rangeFeet = rangeFeetFromSetting(p.rangeSetting)
+
+	rangeSetting = clampInt(rangeSetting, asdexMinRangeSetting, asdexMaxRangeSetting)
+	p.updateScopeViewForWindow(id, func(view *ScopeView) {
+		view.RangeSetting = rangeSetting
+		view.RangeFeet = rangeFeetFromSetting(rangeSetting)
+	})
+}
+
+func (p *ASDEXPane) setMainRangeSetting(rangeSetting int) {
+	p.setRangeSettingForWindow(mainScopeWindowID, rangeSetting)
+}
+
+func (p *ASDEXPane) setActiveRangeSetting(rangeSetting int) {
+	if p == nil {
+		return
+	}
+	p.setRangeSettingForWindow(p.activeWindowID(), rangeSetting)
 }
 
 func (p *ASDEXPane) dataBlockSettings() DataBlockSettings {
-	settings := DefaultDataBlockSettings()
+	return p.dataBlockSettingsForWindow(p.activeWindowID())
+}
+
+type ActiveDcbWindowState struct {
+	WindowID ScopeWindowID
+	View     ScopeView
+	DB       DataBlockSettings
+}
+
+func (p *ASDEXPane) activeDcbWindowState() ActiveDcbWindowState {
+	windowID := p.activeWindowID()
+
+	view, ok := p.scopeViewForWindow(windowID)
+	if !ok {
+		windowID = mainScopeWindowID
+		view = p.mainScopeView()
+	}
+
+	return ActiveDcbWindowState{
+		WindowID: windowID,
+		View:     view,
+		DB:       p.dataBlockSettingsForWindow(windowID),
+	}
+}
+
+func (p *ASDEXPane) updateActiveDataBlockSettings(
+	update func(*DataBlockSettings),
+) {
+	if p == nil || update == nil {
+		return
+	}
+
+	windowID := p.activeWindowID()
+	settings := p.dataBlockSettingsForWindow(windowID)
+	update(&settings)
+	p.setDataBlockSettingsForWindow(windowID, settings)
+}
+
+func (p *ASDEXPane) activeWindowID() ScopeWindowID {
 	if p == nil {
+		return mainScopeWindowID
+	}
+	return p.windows.ActiveWindowID()
+}
+
+func (p *ASDEXPane) displayStateForWindow(id ScopeWindowID) *WindowDisplayState {
+	if p == nil {
+		return NewWindowDisplayState()
+	}
+	if p.displayStateByWindow == nil {
+		p.displayStateByWindow = make(map[ScopeWindowID]*WindowDisplayState)
+	}
+	state := p.displayStateByWindow[id]
+	if state == nil {
+		state = NewWindowDisplayState()
+		p.displayStateByWindow[id] = state
+	}
+	return state
+}
+
+func (p *ASDEXPane) dataBlockSettingsForWindow(id ScopeWindowID) DataBlockSettings {
+	if p == nil {
+		settings := DefaultDataBlockSettings()
+		settings.TimesharePrimary = true
 		return settings
 	}
 
-	settings = p.datablockSettings
+	settings := p.displayStateForWindow(id).DB
 	settings.TimesharePrimary = p.timesharePrimary(time.Now())
 	return settings
+}
+
+func (p *ASDEXPane) setDataBlockSettingsForWindow(id ScopeWindowID, settings DataBlockSettings) {
+	if p == nil {
+		return
+	}
+	p.displayStateForWindow(id).DB = settings
+}
+
+func (p *ASDEXPane) targetShowDBOverride(
+	windowID ScopeWindowID,
+	targetID string,
+) (bool, bool) {
+	if p == nil {
+		return false, false
+	}
+
+	state := p.displayStateForWindow(windowID)
+	value, ok := state.TargetShowDBOverrides[targetID]
+	return value, ok
+}
+
+func (p *ASDEXPane) setTargetShowDBOverride(
+	windowID ScopeWindowID,
+	targetID string,
+	value bool,
+) {
+	if p == nil || targetID == "" {
+		return
+	}
+
+	state := p.displayStateForWindow(windowID)
+	if state.TargetShowDBOverrides == nil {
+		state.TargetShowDBOverrides = make(map[string]bool)
+	}
+	state.TargetShowDBOverrides[targetID] = value
+}
+
+func (p *ASDEXPane) clearTargetShowDBOverrides(windowID ScopeWindowID) {
+	if p == nil || p.displayStateByWindow == nil {
+		return
+	}
+	if state := p.displayStateByWindow[windowID]; state != nil {
+		state.TargetShowDBOverrides = nil
+	}
+}
+
+func (p *ASDEXPane) targetShowsDataBlockInWindow(
+	target *Target,
+	windowID ScopeWindowID,
+	settings DataBlockSettings,
+) bool {
+	if target == nil || target.Suspended || target.Dropped {
+		return false
+	}
+	if !targetCanHaveDataBlock(target) {
+		return false
+	}
+
+	if override, ok := p.targetShowDBOverride(windowID, target.ID); ok {
+		return override
+	}
+
+	if !target.ShowDB {
+		return false
+	}
+
+	return settings.ShowDataBlocks
+}
+
+func (p *ASDEXPane) leaderDirectionOverride(
+	windowID ScopeWindowID,
+	targetID string,
+) (LeaderDirection, bool) {
+	if p == nil {
+		return LeaderNE, false
+	}
+	state := p.displayStateForWindow(windowID)
+	value, ok := state.LeaderDirectionOverrides[targetID]
+	return value, ok
+}
+
+func (p *ASDEXPane) setLeaderDirectionOverride(
+	windowID ScopeWindowID,
+	targetID string,
+	value LeaderDirection,
+) {
+	if p == nil || targetID == "" {
+		return
+	}
+	state := p.displayStateForWindow(windowID)
+	if state.LeaderDirectionOverrides == nil {
+		state.LeaderDirectionOverrides = make(map[string]LeaderDirection)
+	}
+	state.LeaderDirectionOverrides[targetID] = value
+}
+
+func (p *ASDEXPane) clearLeaderDirectionOverrides(windowID ScopeWindowID) {
+	if p == nil || p.displayStateByWindow == nil {
+		return
+	}
+	if state := p.displayStateByWindow[windowID]; state != nil {
+		state.LeaderDirectionOverrides = nil
+	}
+}
+
+func (p *ASDEXPane) leaderLengthOverride(
+	windowID ScopeWindowID,
+	targetID string,
+) (int, bool) {
+	if p == nil {
+		return 0, false
+	}
+	state := p.displayStateForWindow(windowID)
+	value, ok := state.LeaderLengthOverrides[targetID]
+	return value, ok
+}
+
+func (p *ASDEXPane) setLeaderLengthOverride(
+	windowID ScopeWindowID,
+	targetID string,
+	value int,
+) {
+	if p == nil || targetID == "" {
+		return
+	}
+	state := p.displayStateForWindow(windowID)
+	if state.LeaderLengthOverrides == nil {
+		state.LeaderLengthOverrides = make(map[string]int)
+	}
+	state.LeaderLengthOverrides[targetID] = value
+}
+
+func (p *ASDEXPane) clearLeaderLengthOverrides(windowID ScopeWindowID) {
+	if p == nil || p.displayStateByWindow == nil {
+		return
+	}
+	if state := p.displayStateByWindow[windowID]; state != nil {
+		state.LeaderLengthOverrides = nil
+	}
 }
 
 func (p *ASDEXPane) timesharePrimary(now time.Time) bool {
@@ -1019,6 +1324,9 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 	if p != nil && p.tempAreaDraft != nil {
 		return CursorModeScope
 	}
+	if p != nil && p.newWindow != nil {
+		return CursorModeScope
+	}
 	if p != nil && p.tempDataSelectMode != TempDataSelectNone {
 		if p.hoveredTempData.Kind != TempDataHitNone {
 			return CursorModeSelect
@@ -1065,29 +1373,48 @@ func (p *ASDEXPane) updateHighlightedTarget(
 	ctx *panes.Context,
 	transforms radar.ScopeTransformations,
 ) {
+	if ctx == nil {
+		p.clearHighlightedTarget()
+		return
+	}
+	p.updateHighlightedTargetInWindow(
+		ctx,
+		mainScopeWindowID,
+		redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height()),
+		transforms,
+	)
+}
+
+func (p *ASDEXPane) updateHighlightedTargetInWindow(
+	ctx *panes.Context,
+	windowID ScopeWindowID,
+	windowRect redsmath.Rect,
+	transforms radar.ScopeTransformations,
+) {
 	if p == nil || ctx == nil || ctx.Mouse == nil {
 		p.clearHighlightedTarget()
 		return
 	}
 
-	paneLocal := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
-	if !paneLocal.Contains(ctx.Mouse.Pos) {
+	if !windowRect.Contains(ctx.Mouse.Pos) {
 		p.clearHighlightedTarget()
 		return
 	}
 
-	mouseWorld := transforms.WorldFromWindowP(ctx.Mouse.Pos)
+	mouseWorld := transforms.WorldFromWindowP(ctx.Mouse.Pos.Sub(windowRect.Min))
 	storeRevision := p.targets.HoverRevision()
-	if p.highlightQueryValid &&
-		p.highlightMouseWorld == mouseWorld &&
-		p.highlightStoreRevision == storeRevision {
+	if p.hover.Valid &&
+		p.hover.WindowID == windowID &&
+		p.hover.MouseWorld == mouseWorld &&
+		p.hover.Revision == storeRevision {
 		return
 	}
 
-	p.highlightedTargetID = p.targets.HighlightNearest(mouseWorld)
-	p.highlightMouseWorld = mouseWorld
-	p.highlightStoreRevision = storeRevision
-	p.highlightQueryValid = true
+	p.hover.TargetID = p.targets.NearestTargetID(mouseWorld)
+	p.hover.WindowID = windowID
+	p.hover.MouseWorld = mouseWorld
+	p.hover.Revision = storeRevision
+	p.hover.Valid = true
 }
 
 func (p *ASDEXPane) clearHighlightedTarget() {
@@ -1095,23 +1422,18 @@ func (p *ASDEXPane) clearHighlightedTarget() {
 		return
 	}
 
-	if !p.highlightQueryValid && p.highlightedTargetID == "" {
+	if !p.hover.Valid && p.hover.TargetID == "" {
 		return
 	}
 
-	p.highlightedTargetID = ""
-	p.highlightQueryValid = false
-	p.targets.ClearHighlight()
+	p.hover = ScopeHoverState{}
 }
 
 func (p *ASDEXPane) highlightedTarget() *Target {
 	if p == nil {
 		return nil
 	}
-	if target := p.targets.HighlightedTarget(); target != nil {
-		return target
-	}
-	return p.targets.TargetByID(p.highlightedTargetID)
+	return p.targets.TargetByID(p.hover.TargetID)
 }
 
 func (p *ASDEXPane) activeCommandLines() []string {
@@ -1144,6 +1466,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	}
 	if p.dcbSpinner != nil {
 		return p.dcbSpinner.DisplayLines()
+	}
+	if p.newWindow != nil {
+		return p.newWindow.DisplayLines()
 	}
 	if p.tempTextCommand != nil {
 		return p.tempTextCommand.DisplayLines()
@@ -1203,10 +1528,18 @@ func (p *ASDEXPane) cancelActiveCommand() {
 		return
 	}
 	if p.mapReposition != nil && p.mapReposition.initialized {
-		p.center = p.mapReposition.originalCenter
+		windowID := p.mapReposition.WindowID
+		originalCenter := p.mapReposition.originalCenter
+		p.updateScopeViewForWindow(windowID, func(view *ScopeView) {
+			view.Center = originalCenter
+		})
 	}
 	if p.mapRotate != nil {
-		p.rotation = p.mapRotate.originalRotation
+		windowID := p.mapRotate.WindowID
+		originalRotation := p.mapRotate.originalRotation
+		p.updateScopeViewForWindow(windowID, func(view *ScopeView) {
+			view.Rotation = originalRotation
+		})
 	}
 	p.commandMode = CommandModeNone
 	p.datablockEdit = nil
@@ -1226,6 +1559,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.tempDataSelectMode = TempDataSelectNone
 	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
+	p.newWindow = nil
 	p.dcb.ReturnToMainMenu()
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
@@ -1258,6 +1592,9 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.tempTextPlacement != nil {
 		return p.handleTempTextPlacementKeyboard(ctx)
+	}
+	if p.newWindow != nil {
+		return p.handleNewWindowKeyboard(ctx)
 	}
 	if p.consumeTempDataSelectionKeyboard(ctx) {
 		return true
@@ -1462,6 +1799,7 @@ func (p *ASDEXPane) startMultiPreviewReposition() {
 	p.tempDataSelectMode = TempDataSelectNone
 	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
+	p.newWindow = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -1484,6 +1822,7 @@ func (p *ASDEXPane) startMultiCoastListReposition() {
 	p.tempDataSelectMode = TempDataSelectNone
 	p.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	p.tempData.ClearHighlights()
+	p.newWindow = nil
 	p.commandEntry.Clear()
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -1538,7 +1877,11 @@ func (p *ASDEXPane) submitMapRotate() {
 		return
 	}
 
-	p.rotation = normalizeRotation(float32(value))
+	windowID := p.mapRotate.WindowID
+	rotation := normalizeRotation(float32(value))
+	p.updateScopeViewForWindow(windowID, func(view *ScopeView) {
+		view.Rotation = rotation
+	})
 	p.applyCommandStatus(CommandStatus{
 		Clear:     ClearAll,
 		Output:    "",
@@ -1669,15 +2012,12 @@ func (p *ASDEXPane) listRepositionActive() bool {
 	return p != nil && (p.previewReposition != nil || p.coastListReposition != nil)
 }
 
-func mapRepositionCursorCenter(ctx *panes.Context) redsmath.Vec2 {
-	if ctx == nil {
-		return redsmath.Vec2{}
-	}
-	size := ctx.PaneSize()
-	return redsmath.Vec2{
+func mapRepositionCursorCenter(rect redsmath.Rect) redsmath.Vec2 {
+	size := rect.Size()
+	return rect.Min.Add(redsmath.Vec2{
 		X: size.X * 0.5,
 		Y: size.Y * 0.5,
-	}
+	})
 }
 
 func (p *ASDEXPane) centerMapRepositionCursor(ctx *panes.Context) {
@@ -1685,7 +2025,11 @@ func (p *ASDEXPane) centerMapRepositionCursor(ctx *panes.Context) {
 		return
 	}
 
-	center := mapRepositionCursorCenter(ctx)
+	rect, ok := p.scopeWindowRectForWindow(p.mapReposition.WindowID, ctx.PaneSize())
+	if !ok {
+		rect = redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y)
+	}
+	center := mapRepositionCursorCenter(rect)
 	ctx.Platform.SetMousePosition(ctx.PaneRect.Min.Add(center))
 	if ctx.Mouse != nil {
 		ctx.Mouse.Pos = center
@@ -1711,14 +2055,27 @@ func (p *ASDEXPane) consumeMapRepositionMouse(
 		return true
 	}
 
-	center := mapRepositionCursorCenter(ctx)
+	windowID := p.mapReposition.WindowID
+	rect, ok := p.scopeWindowRectForWindow(windowID, ctx.PaneSize())
+	if !ok {
+		rect = redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y)
+	}
+	view, ok := p.scopeViewForWindow(windowID)
+	if !ok {
+		view = p.mainScopeView()
+	}
+	transforms = scopeTransformForWindow(rect, mainReferenceExtent(ctx.PaneSize()), view)
+
+	center := mapRepositionCursorCenter(rect)
 	delta := mouse.Pos.Sub(center)
 	if delta.X == 0 && delta.Y == 0 {
 		return true
 	}
 
 	deltaWorld := transforms.WorldFromWindowV(delta)
-	p.center = p.center.Sub(deltaWorld)
+	p.updateScopeViewForWindow(windowID, func(view *ScopeView) {
+		view.Center = view.Center.Sub(deltaWorld)
+	})
 
 	ctx.Platform.SetMousePosition(ctx.PaneRect.Min.Add(center))
 	mouse.Pos = center
@@ -1906,7 +2263,7 @@ func (p *ASDEXPane) buildCoastSuspendEntries(now time.Time) []CoastListEntry {
 		case target.Suspended:
 			entry.Status = CoastListEntrySuspended
 			entry.TimeoutSeconds = targetTimeoutSeconds(target.SuspendUntil, now)
-			entry.Selected = target.Highlighted
+			entry.Selected = p.hover.TargetID == target.ID
 		default:
 			continue
 		}
@@ -2152,7 +2509,7 @@ func (p *ASDEXPane) consumeMouseEvents(
 	if mouse.Wheel.Y != 0 && paneLocal.Contains(mouse.Pos) {
 		oldRangeFeet := p.rangeFeet
 		oldCenter := p.center
-		p.setRangeSetting(p.rangeSetting + wheelRangeDelta(mouse.Wheel.Y))
+		p.setMainRangeSetting(p.rangeSetting + wheelRangeDelta(mouse.Wheel.Y))
 		newRangeFeet := p.rangeFeet
 
 		if oldRangeFeet > 0 && newRangeFeet > 0 && newRangeFeet != oldRangeFeet {

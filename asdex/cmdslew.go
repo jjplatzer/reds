@@ -58,7 +58,10 @@ func (ap *ASDEXPane) cmdBareAircraftSlew(
 		return CommandStatus{}
 	}
 
-	target.ShowDB = !target.ShowDB
+	windowID := ap.activeWindowID()
+	settings := ap.dataBlockSettingsForWindow(windowID)
+	current := ap.targetShowsDataBlockInWindow(target, windowID, settings)
+	ap.setTargetShowDBOverride(windowID, target.ID, !current)
 	return CommandStatus{}
 }
 
@@ -93,6 +96,7 @@ func (ap *ASDEXPane) cmdRSlew(
 	ap.tempDataSelectMode = TempDataSelectNone
 	ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
+	ap.newWindow = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.previewArea.SetSystemResponse("")
 	ap.clearHighlightedTarget()

@@ -180,6 +180,8 @@ type DcbSpinner struct {
 	Kind     DcbSpinnerKind
 	Function DcbFunction
 
+	WindowID ScopeWindowID
+
 	Title string
 
 	Min  int
@@ -208,12 +210,13 @@ func (c *DcbMenuCommand) DisplayLines() []string {
 	return append([]string(nil), c.lines...)
 }
 
-func NewRangeDcbSpinner(currentRange int) *DcbSpinner {
+func NewRangeDcbSpinner(windowID ScopeWindowID, currentRange int) *DcbSpinner {
 	currentRange = clampInt(currentRange, asdexMinRangeSetting, asdexMaxRangeSetting)
 
 	return &DcbSpinner{
 		Kind:     DcbSpinnerRange,
 		Function: DcbFunctionRange,
+		WindowID: windowID,
 		Title:    "RANGE",
 		Min:      asdexMinRangeSetting,
 		Max:      asdexMaxRangeSetting,

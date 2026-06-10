@@ -94,12 +94,14 @@ func (command *CoastListRepositionCommand) DisplayLines() []string {
 }
 
 type MapRepositionCommand struct {
+	WindowID       ScopeWindowID
 	originalCenter redsmath.Vec2
 	initialized    bool
 }
 
-func NewMapRepositionCommand(center redsmath.Vec2) *MapRepositionCommand {
+func NewMapRepositionCommand(windowID ScopeWindowID, center redsmath.Vec2) *MapRepositionCommand {
 	return &MapRepositionCommand{
+		WindowID:       windowID,
 		originalCenter: center,
 		initialized:    true,
 	}
@@ -113,13 +115,15 @@ func (command *MapRepositionCommand) DisplayLines() []string {
 }
 
 type MapRotateCommand struct {
+	WindowID         ScopeWindowID
 	value            string
 	cursor           int
 	originalRotation float32
 }
 
-func NewMapRotateCommand(rotation float32) *MapRotateCommand {
+func NewMapRotateCommand(windowID ScopeWindowID, rotation float32) *MapRotateCommand {
 	return &MapRotateCommand{
+		WindowID:         windowID,
 		originalRotation: rotation,
 	}
 }
@@ -260,6 +264,14 @@ func registerSetupCommands() {
 	)
 
 	registerCommand(
+		CommandModeNone,
+		"[NEW WINDOW]",
+		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
+			return ap.cmdNewWindow(ctx)
+		},
+	)
+
+	registerCommand(
 		CommandModeMultiFunction,
 		"B[SLEW]",
 		func(ap *ASDEXPane, ctx *panes.Context, target *Target) CommandStatus {
@@ -340,13 +352,56 @@ func (ap *ASDEXPane) cmdDataBlocksOnOff(_ *panes.Context) CommandStatus {
 		return CommandStatus{Clear: ClearAll}
 	}
 
-	ap.datablockSettings.ShowDataBlocks = !ap.datablockSettings.ShowDataBlocks
+	windowID := ap.activeWindowID()
+	ap.updateActiveDataBlockSettings(func(settings *DataBlockSettings) {
+		settings.ShowDataBlocks = !settings.ShowDataBlocks
+	})
+	ap.clearTargetShowDBOverrides(windowID)
 
 	return CommandStatus{
 		Clear:     ClearAll,
 		Output:    "",
 		HasOutput: true,
 	}
+}
+
+func (ap *ASDEXPane) cmdNewWindow(_ *panes.Context) CommandStatus {
+	if ap == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+	if !ap.windows.CanAddSecondary() {
+		return CommandStatus{
+			Clear:     ClearAll,
+			Output:    "",
+			HasOutput: true,
+		}
+	}
+
+	ap.commandMode = CommandModeNone
+	ap.commandEntry.Clear()
+	ap.datablockEdit = nil
+	ap.editingTargetID = ""
+	ap.initControlEntry = nil
+	ap.termControlEntry = nil
+	ap.multiFunction = nil
+	ap.previewReposition = nil
+	ap.coastListReposition = nil
+	ap.mapReposition = nil
+	ap.mapRotate = nil
+	ap.dcbSpinner = nil
+	ap.dcbMenuCommand = nil
+	ap.tempAreaDraft = nil
+	ap.tempTextCommand = nil
+	ap.tempTextPlacement = nil
+	ap.tempDataSelectMode = TempDataSelectNone
+	ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
+	ap.tempData.ClearHighlights()
+	ap.newWindow = NewNewWindowCommand()
+	ap.dcb.ReturnToMainMenu()
+	ap.previewArea.SetSystemResponse("")
+	ap.clearHighlightedTarget()
+
+	return CommandStatus{Clear: ClearNone}
 }
 
 func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
@@ -368,6 +423,7 @@ func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
 	ap.tempDataSelectMode = TempDataSelectNone
 	ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
+	ap.newWindow = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
@@ -385,8 +441,10 @@ func (ap *ASDEXPane) cmdMapReposition(ctx *panes.Context) CommandStatus {
 		return CommandStatus{Clear: ClearAll}
 	}
 
+	windowID := ap.activeWindowID()
+	view := ap.activeScopeView()
 	ap.commandMode = CommandModeMapReposition
-	ap.mapReposition = NewMapRepositionCommand(ap.center)
+	ap.mapReposition = NewMapRepositionCommand(windowID, view.Center)
 	ap.multiFunction = nil
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
@@ -399,6 +457,7 @@ func (ap *ASDEXPane) cmdMapReposition(ctx *panes.Context) CommandStatus {
 	ap.tempDataSelectMode = TempDataSelectNone
 	ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
+	ap.newWindow = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
@@ -417,8 +476,10 @@ func (ap *ASDEXPane) cmdMapRotate(_ *panes.Context) CommandStatus {
 		return CommandStatus{Clear: ClearAll}
 	}
 
+	windowID := ap.activeWindowID()
+	view := ap.activeScopeView()
 	ap.commandMode = CommandModeMapRotate
-	ap.mapRotate = NewMapRotateCommand(ap.rotation)
+	ap.mapRotate = NewMapRotateCommand(windowID, view.Rotation)
 	ap.mapReposition = nil
 	ap.multiFunction = nil
 	ap.previewReposition = nil
@@ -431,6 +492,7 @@ func (ap *ASDEXPane) cmdMapRotate(_ *panes.Context) CommandStatus {
 	ap.tempDataSelectMode = TempDataSelectNone
 	ap.hoveredTempData = TempDataHit{Kind: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
+	ap.newWindow = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
@@ -538,8 +600,11 @@ func (ap *ASDEXPane) cmdLeaderDirectionAll(
 		return CommandStatus{Clear: ClearAll}
 	}
 
-	ap.datablockSettings.LeaderDirection = input.Direction
-	clear(ap.leaderDirectionByTarget)
+	windowID := ap.activeWindowID()
+	ap.updateActiveDataBlockSettings(func(settings *DataBlockSettings) {
+		settings.LeaderDirection = input.Direction
+	})
+	ap.clearLeaderDirectionOverrides(windowID)
 
 	return CommandStatus{
 		Clear:     ClearAll,
@@ -566,10 +631,7 @@ func (ap *ASDEXPane) cmdLeaderDirectionSlew(
 		return commandOutputClearAll("INVALID ENTRY")
 	}
 
-	if ap.leaderDirectionByTarget == nil {
-		ap.leaderDirectionByTarget = make(map[string]LeaderDirection)
-	}
-	ap.leaderDirectionByTarget[target.ID] = input.Direction
+	ap.setLeaderDirectionOverride(ap.activeWindowID(), target.ID, input.Direction)
 
 	return CommandStatus{
 		Clear:     ClearAll,
@@ -586,8 +648,11 @@ func (ap *ASDEXPane) cmdLeaderLengthAll(
 		return CommandStatus{Clear: ClearAll}
 	}
 
-	ap.datablockSettings.LeaderLength = input.Value
-	clear(ap.leaderLengthByTarget)
+	windowID := ap.activeWindowID()
+	ap.updateActiveDataBlockSettings(func(settings *DataBlockSettings) {
+		settings.LeaderLength = input.Value
+	})
+	ap.clearLeaderLengthOverrides(windowID)
 
 	return CommandStatus{
 		Clear:     ClearAll,
@@ -614,10 +679,7 @@ func (ap *ASDEXPane) cmdLeaderLengthSlew(
 		return commandOutputClearAll("INVALID LNG")
 	}
 
-	if ap.leaderLengthByTarget == nil {
-		ap.leaderLengthByTarget = make(map[string]int)
-	}
-	ap.leaderLengthByTarget[target.ID] = input.Value
+	ap.setLeaderLengthOverride(ap.activeWindowID(), target.ID, input.Value)
 
 	return CommandStatus{
 		Clear:     ClearAll,
