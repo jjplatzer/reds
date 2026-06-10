@@ -31,13 +31,17 @@ brew install go openjdk@21 maven pkg-config glfw
 If your default `java` or `mvn` uses a JDK **older** than 21, point the current shell at brew's JDK 21:
 
 ```bash
-# check whether JDK 21 or newer is used
-# java -version
-export JAVA_HOME="$(brew --prefix openjdk@21)/libexec/openjdk.jdk/Contents/Home"
-export PATH="$JAVA_HOME/bin:$PATH"
+java_major="$(java -version 2>&1 | awk -F'[\".]' '/version/ {print ($2 == "1" ? $3 : $2); exit}')"
+
+if [ -n "$java_major" ] && [ "$java_major" -ge 21 ]; then
+    java -version
+elif [ -z "$java_major" ] || [ "$java_major" -lt 21 ]; then
+    export JAVA_HOME="$(brew --prefix openjdk@21)/libexec/openjdk.jdk/Contents/Home"
+    export PATH="$JAVA_HOME/bin:$PATH"
+fi
 ```
 
-Fill in your SWIM credentials unquoted into the example environment file and run
+Fill in your SWIM credentials unquoted into the example `.env` file and run
 
 ```bash
 cp .env.example .env
