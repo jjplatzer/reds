@@ -28,17 +28,11 @@ xcode-select --install
 brew install go openjdk@21 maven pkg-config glfw
 ```
 
-If your default `java` or `mvn` uses a JDK **older** than 21, point the current shell at brew's JDK 21:
+If your default `java` or `mvn` uses a JDK **older** than 21, point the current shell at brew's JDK 21 using:
 
 ```bash
-java_major="$(java -version 2>&1 | awk -F'[\".]' '/version/ {print ($2 == "1" ? $3 : $2); exit}')"
-
-if [ -n "$java_major" ] && [ "$java_major" -ge 21 ]; then
-    java -version
-elif [ -z "$java_major" ] || [ "$java_major" -lt 21 ]; then
-    export JAVA_HOME="$(brew --prefix openjdk@21)/libexec/openjdk.jdk/Contents/Home"
-    export PATH="$JAVA_HOME/bin:$PATH"
-fi
+export JAVA_HOME="$(brew --prefix openjdk@21)/libexec/openjdk.jdk/Contents/Home"
+export PATH="$JAVA_HOME/bin:$PATH"
 ```
 
 Fill in your SWIM credentials unquoted into the example `.env` file and run
