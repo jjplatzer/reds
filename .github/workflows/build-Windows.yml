@@ -1,0 +1,165 @@
+name: build-Windows
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    name: Build Windows
+    runs-on: windows-latest
+
+    env:
+      CGO_ENABLED: '1'
+
+    steps:
+      - name: Disable Git line ending conversion
+        shell: pwsh
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Set up MSYS2 MinGW toolchain
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            base-devel
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-pkgconf
+            mingw-w64-ucrt-x86_64-glfw
+
+      - name: Configure MSYS2 UCRT64 toolchain
+        shell: pwsh
+        run: |
+          $candidateBins = @(
+            "C:\msys64\ucrt64\bin",
+            "C:\tools\msys64\ucrt64\bin",
+            "$env:RUNNER_TEMP\msys64\ucrt64\bin"
+          )
+
+          $ucrtBin = $candidateBins |
+            Where-Object { Test-Path (Join-Path $_ "gcc.exe") } |
+            Select-Object -First 1
+
+          if (-not $ucrtBin) {
+            Write-Host "Searching for MSYS2 UCRT64 gcc.exe..."
+            $searchRoots = @("C:\msys64", "C:\tools\msys64", "$env:RUNNER_TEMP")
+            foreach ($root in $searchRoots) {
+              if (-not (Test-Path $root)) {
+                continue
+              }
+
+              $gcc = Get-ChildItem -Path $root -Filter gcc.exe -Recurse -ErrorAction SilentlyContinue |
+                Where-Object { $_.FullName -match '\\ucrt64\\bin\\gcc\.exe$' } |
+                Select-Object -First 1
+
+              if ($gcc) {
+                $ucrtBin = $gcc.DirectoryName
+                break
+              }
+            }
+          }
+
+          if (-not $ucrtBin) {
+            Write-Error "MSYS2 UCRT64 gcc.exe was not found"
+            exit 1
+          }
+
+          "MSYS2_UCRT64_BIN=$ucrtBin" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "CC=$ucrtBin\gcc.exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "CXX=$ucrtBin\g++.exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "PKG_CONFIG=$ucrtBin\pkg-config.exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          $ucrtBin | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+          Write-Host "Using MSYS2 UCRT64 bin: $ucrtBin"
+
+      - name: Install Maven
+        shell: pwsh
+        run: choco install maven -y --no-progress
+
+      - name: Show tool versions
+        shell: pwsh
+        run: |
+          go version
+          java -version
+          mvn -version
+          & $env:CC --version
+          & $env:CXX --version
+          & $env:PKG_CONFIG --version
+          & $env:PKG_CONFIG --modversion glfw3
+
+      - name: Download Go modules
+        shell: pwsh
+        run: go mod download
+
+      - name: Check Go formatting
+        shell: pwsh
+        run: |
+          $files = gofmt -l .
+          if ($files) {
+            Write-Error "The following Go files need gofmt:`n$($files -join "`n")"
+            exit 1
+          }
+
+      - name: Build SMES reader jar
+        shell: pwsh
+        run: mvn -B -f swim/smes/pom.xml -DskipTests package
+
+      - name: Build REDS frontend
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build | Out-Null
+          go build -v -o build/reds.exe ./cmd/reds
+
+      - name: Run Go tests
+        shell: pwsh
+        run: go test -v ./...
+
+      - name: Verify build outputs
+        shell: pwsh
+        run: |
+          if (!(Test-Path build/reds.exe)) {
+            Write-Error "Missing build/reds.exe"
+            exit 1
+          }
+          if (!(Test-Path swim/smes/target/faascope-stdds-1.0-SNAPSHOT.jar)) {
+            Write-Error "Missing SMES reader jar"
+            exit 1
+          }
+          Get-Item build/reds.exe, swim/smes/target/faascope-stdds-1.0-SNAPSHOT.jar | Format-Table FullName, Length
+
+      - name: Upload Windows build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: reds-windows-build
+          path: |
+            build/reds.exe
+            swim/smes/target/faascope-stdds-1.0-SNAPSHOT.jar
+          if-no-files-found: error
