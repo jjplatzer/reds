@@ -665,32 +665,20 @@ func (p *ASDEXPane) renderScopeWindow(
 				return p.fonts.textureForSize(ctx.Renderer, size)
 			},
 			SettingsForTarget: func(target *Target) DataBlockSettings {
-				settings := datablockSettings
+				targetInAlert := false
 				if target != nil {
-					if direction, ok := p.leaderDirectionOverride(windowID, target.ID); ok {
-						settings.LeaderDirection = direction
-					}
-					if length, ok := p.leaderLengthOverride(windowID, target.ID); ok {
-						settings.LeaderLength = length
-					}
-					settings.AlertInProgress = alertInProgress
-					if alertInProgress && !alertTargetIDs[target.ID] {
-						settings.FullDataBlocks = false
-					}
-					if alertTargetIDs[target.ID] {
-						settings.FullDataBlocks = true
-					}
+					targetInAlert = alertTargetIDs[target.ID]
 				}
-				return settings
+				return p.resolveDataBlockSettings(
+					target,
+					windowID,
+					datablockSettings,
+					alertInProgress,
+					targetInAlert,
+				)
 			},
 			ShowDataBlockForTarget: func(target *Target, settings DataBlockSettings) bool {
-				if target == nil || target.Suspended || target.Dropped || !targetCanHaveDataBlock(target) {
-					return false
-				}
-				if alertInProgress {
-					return true
-				}
-				return p.targetShowsDataBlockInWindow(target, windowID, settings)
+				return p.targetShowsDataBlockForRender(target, windowID, settings)
 			},
 			ShowBeaconCodeForTarget: func(target *Target) bool {
 				return p.showBeaconCodeForTarget(target, now)
@@ -1234,6 +1222,46 @@ func (p *ASDEXPane) targetShowsDataBlockInWindow(
 	}
 
 	return settings.ShowDataBlocks
+}
+
+func (p *ASDEXPane) resolveDataBlockSettings(
+	target *Target,
+	windowID ScopeWindowID,
+	base DataBlockSettings,
+	alertInProgress bool,
+	targetInAlert bool,
+) DataBlockSettings {
+	settings := base
+	if target != nil {
+		if direction, ok := p.leaderDirectionOverride(windowID, target.ID); ok {
+			settings.LeaderDirection = direction
+		}
+		if length, ok := p.leaderLengthOverride(windowID, target.ID); ok {
+			settings.LeaderLength = length
+		}
+	}
+
+	settings.AlertInProgress = alertInProgress
+	settings.TargetInAlert = targetInAlert
+	return settings
+}
+
+func (p *ASDEXPane) targetShowsDataBlockForRender(
+	target *Target,
+	windowID ScopeWindowID,
+	settings DataBlockSettings,
+) bool {
+	if target == nil || target.Suspended || target.Dropped || !targetCanHaveDataBlock(target) {
+		return false
+	}
+
+	// CRC bypasses normal datablock visibility suppression while any ASDE-X
+	// alert is active.
+	if settings.AlertInProgress {
+		return true
+	}
+
+	return p.targetShowsDataBlockInWindow(target, windowID, settings)
 }
 
 func (p *ASDEXPane) leaderDirectionOverride(
