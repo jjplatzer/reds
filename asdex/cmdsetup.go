@@ -377,31 +377,7 @@ func (ap *ASDEXPane) cmdNewWindow(_ *panes.Context) CommandStatus {
 		}
 	}
 
-	ap.commandMode = CommandModeNone
-	ap.commandEntry.Clear()
-	ap.datablockEdit = nil
-	ap.editingTargetID = ""
-	ap.initControlEntry = nil
-	ap.termControlEntry = nil
-	ap.multiFunction = nil
-	ap.previewReposition = nil
-	ap.coastListReposition = nil
-	ap.mapReposition = nil
-	ap.mapRotate = nil
-	ap.dcbSpinner = nil
-	ap.dcbMenuCommand = nil
-	ap.dbAreaDraft = nil
-	ap.dbAreaSelection = nil
-	ap.tempAreaDraft = nil
-	ap.tempTextCommand = nil
-	ap.tempTextPlacement = nil
-	ap.tempDataSelectMode = TempDataSelectNone
-	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
-	ap.tempData.ClearHighlights()
-	ap.newWindow = NewNewWindowCommand()
-	ap.dcb.ReturnToMainMenu()
-	ap.previewArea.SetSystemResponse("")
-	ap.clearHighlightedTarget()
+	ap.startNewWindowCommand(NewNewWindowCommand())
 
 	return CommandStatus{Clear: ClearNone}
 }
@@ -428,6 +404,9 @@ func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
 	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = nil
+	ap.deleteWindow = nil
+	ap.windowReposition = nil
+	ap.resizeWindow = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
@@ -464,6 +443,9 @@ func (ap *ASDEXPane) cmdMapReposition(ctx *panes.Context) CommandStatus {
 	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = nil
+	ap.deleteWindow = nil
+	ap.windowReposition = nil
+	ap.resizeWindow = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
@@ -501,6 +483,9 @@ func (ap *ASDEXPane) cmdMapRotate(_ *panes.Context) CommandStatus {
 	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = nil
+	ap.deleteWindow = nil
+	ap.windowReposition = nil
+	ap.resizeWindow = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
@@ -639,7 +624,11 @@ func (ap *ASDEXPane) cmdLeaderDirectionSlew(
 		return commandOutputClearAll("INVALID ENTRY")
 	}
 
-	ap.setLeaderDirectionOverride(ap.activeWindowID(), target.ID, input.Direction)
+	ap.setTargetLeaderDirectionManualOverride(
+		ap.activeWindowID(),
+		target,
+		input.Direction,
+	)
 
 	return CommandStatus{
 		Clear:     ClearAll,
@@ -687,7 +676,11 @@ func (ap *ASDEXPane) cmdLeaderLengthSlew(
 		return commandOutputClearAll("INVALID LNG")
 	}
 
-	ap.setLeaderLengthOverride(ap.activeWindowID(), target.ID, input.Value)
+	ap.setTargetLeaderLengthManualOverride(
+		ap.activeWindowID(),
+		target,
+		input.Value,
+	)
 
 	return CommandStatus{
 		Clear:     ClearAll,

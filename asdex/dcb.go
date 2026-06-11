@@ -30,6 +30,7 @@ const (
 	DcbMenuDefineTraitArea
 	DcbMenuModifyTraitArea
 	DcbMenuBrightness
+	DcbMenuTools
 	DcbMenuOff
 )
 
@@ -105,6 +106,23 @@ const (
 	DcbFunctionTempMapAreasBrightness
 	DcbFunctionTempMapTextBrightness
 	DcbFunctionDcbBrightness
+	DcbFunctionNewWindow
+	DcbFunctionResizeWindow
+	DcbFunctionDeleteWindow
+	DcbFunctionWindowReposition
+	DcbFunctionHistoryOnOff
+	DcbFunctionHistory
+	DcbFunctionCoastOnOff
+	DcbFunctionCoastReposition
+	DcbFunctionPreviewReposition
+	DcbFunctionCursorSpeed
+	DcbFunctionCursorHomeOnOff
+	DcbFunctionDcbTop
+	DcbFunctionDcbLeft
+	DcbFunctionDcbRight
+	DcbFunctionDcbBottom
+	DcbFunctionChangePassword
+	DcbFunctionPlayBack
 	DcbFunctionDataBlocksOnOff
 	DcbFunctionInitControl
 	DcbFunctionTrackSuspend
@@ -190,6 +208,14 @@ type DcbState struct {
 	LeaderLength int
 	DataBlocksOn bool
 	DcbOn        bool
+
+	RotationDeg int
+
+	ShowHistory   bool
+	HistoryLength int
+	ShowCoastList bool
+	CursorSpeed   int
+	CursorHome    bool
 
 	FullDataBlocks bool
 
@@ -764,6 +790,7 @@ func isLargeDcbFunction(function DcbFunction) bool {
 		DcbFunctionTempMapAreasBrightness,
 		DcbFunctionTempMapTextBrightness,
 		DcbFunctionDcbBrightness,
+		DcbFunctionCursorHomeOnOff,
 		DcbFunctionDone,
 		DcbFunctionVacant:
 		return true
@@ -1212,6 +1239,90 @@ func (d *Dcb) brightnessButtonSpecs(state DcbState) []DcbButtonSpec {
 	}
 }
 
+func (d *Dcb) toolsButtonSpecs(state DcbState) []DcbButtonSpec {
+	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
+		if state.ActiveSpinnerFunction == spec.Function {
+			spec.Active = true
+		}
+		return spec
+	}
+	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonNormal,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	menu := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonMenu,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	value := func(function DcbFunction, showValue bool, value string, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function:  function,
+			Type:      DcbButtonValue,
+			Large:     isLargeDcbFunction(function),
+			Visible:   true,
+			Lines:     append([]string(nil), lines...),
+			ShowValue: showValue,
+			Value:     value,
+		})
+	}
+	toggle := func(function DcbFunction, on bool, onLabel string, offLabel string, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonToggle,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+			On:       on,
+			OnLabel:  onLabel,
+			OffLabel: offLabel,
+		})
+	}
+	vacant := func() DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: DcbFunctionVacant,
+			Type:     DcbButtonVacant,
+			Large:    true,
+			Visible:  true,
+		}
+	}
+
+	return []DcbButtonSpec{
+		vacant(),
+		value(DcbFunctionRange, true, d.rangeLabel(state), "RANGE"),
+		normal(DcbFunctionMapReposition, "MAP", "RPOS"),
+		value(DcbFunctionRotate, false, strconv.Itoa(state.RotationDeg), "ROTATE"),
+		normal(DcbFunctionNewWindow, "NEW", "WINDOW"),
+		normal(DcbFunctionResizeWindow, "RESIZE", "WINDOW"),
+		normal(DcbFunctionDeleteWindow, "DELETE", "WINDOW"),
+		normal(DcbFunctionWindowReposition, "WINDOW", "RPOS"),
+		toggle(DcbFunctionHistoryOnOff, state.ShowHistory, "ON", "OFF", "HISTORY"),
+		value(DcbFunctionHistory, true, strconv.Itoa(state.HistoryLength), "HISTORY"),
+		toggle(DcbFunctionCoastOnOff, state.ShowCoastList, "ON", "OFF", "COAST"),
+		normal(DcbFunctionCoastReposition, "COAST", "RPOS"),
+		normal(DcbFunctionPreviewReposition, "PREVIEW", "RPOS"),
+		value(DcbFunctionCursorSpeed, true, strconv.Itoa(state.CursorSpeed), "CSR SPD"),
+		toggle(DcbFunctionCursorHomeOnOff, state.CursorHome, "ON", "OFF", "CSR", "HOME"),
+		normal(DcbFunctionDcbTop, "DCB", "TOP"),
+		normal(DcbFunctionDcbLeft, "DCB", "LEFT"),
+		normal(DcbFunctionDcbRight, "DCB", "RIGHT"),
+		normal(DcbFunctionDcbBottom, "DCB", "BOTTOM"),
+		menu(DcbFunctionChangePassword, "CHG", "PWD"),
+		menu(DcbFunctionPlayBack, "PLAY", "BACK"),
+		normal(DcbFunctionDone, "DONE"),
+		vacant(),
+	}
+}
+
 func (d *Dcb) rangeLabel(state DcbState) string {
 	return strconv.Itoa(clampInt(state.Range, asdexMinRangeSetting, asdexMaxRangeSetting))
 }
@@ -1248,6 +1359,8 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 		return d.traitAreaButtonSpecs(state)
 	case DcbMenuBrightness:
 		return d.brightnessButtonSpecs(state)
+	case DcbMenuTools:
+		return d.toolsButtonSpecs(state)
 	default:
 		return d.mainButtonSpecs(state)
 	}

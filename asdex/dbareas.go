@@ -691,6 +691,17 @@ func (p *ASDEXPane) dataBlockAreaForPoint(
 	return nil, false
 }
 
+func (p *ASDEXPane) dataBlockTraitAreaForPoint(
+	windowID ScopeWindowID,
+	point redsmath.Vec2,
+) (*DataBlockArea, bool) {
+	area, ok := p.dataBlockAreaForPoint(windowID, point)
+	if !ok || area.Type != DataBlockAreaTrait || area.Traits.DataBlocksOff {
+		return nil, false
+	}
+	return area, true
+}
+
 func applyDataBlockAreaTraits(settings DataBlockSettings, traits DataBlockAreaTraits) DataBlockSettings {
 	if traits.DataBlocksOff {
 		settings.DataBlocksOff = true
