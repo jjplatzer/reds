@@ -856,6 +856,8 @@ func (p *ASDEXPane) dcbState() DcbState {
 	activeSpinnerFunction := DcbFunctionVacant
 	if p.dcbSpinner != nil {
 		activeSpinnerFunction = p.dcbSpinner.Function
+	} else if p.newWindow != nil && p.dcb.Menu() == DcbMenuTools {
+		activeSpinnerFunction = DcbFunctionNewWindow
 	} else if p.deleteWindow != nil {
 		activeSpinnerFunction = DcbFunctionDeleteWindow
 	} else if p.windowReposition != nil {
@@ -1026,6 +1028,11 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return true
 	case DcbFunctionTools:
 		p.openToolsMenu()
+		return true
+	case DcbFunctionNewWindow:
+		if p.dcb.Menu() == DcbMenuTools {
+			p.startToolsNewWindowCommand()
+		}
 		return true
 	case DcbFunctionDeleteWindow:
 		if p.dcb.Menu() == DcbMenuTools {
@@ -1357,6 +1364,60 @@ func (p *ASDEXPane) openToolsMenu() {
 	p.clearHighlightedTarget()
 }
 
+func (p *ASDEXPane) startNewWindowCommand(command *NewWindowCommand) {
+	if p == nil || command == nil {
+		return
+	}
+
+	p.commandMode = CommandModeNone
+	p.commandEntry.Clear()
+	p.datablockEdit = nil
+	p.editingTargetID = ""
+	p.initControlEntry = nil
+	p.termControlEntry = nil
+	p.multiFunction = nil
+	p.previewReposition = nil
+	p.coastListReposition = nil
+	p.mapReposition = nil
+	p.mapRotate = nil
+	p.dcbSpinner = nil
+	p.dcbMenuCommand = nil
+	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
+	p.tempAreaDraft = nil
+	p.tempTextCommand = nil
+	p.tempTextPlacement = nil
+	p.tempDataSelectMode = TempDataSelectNone
+	p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
+	p.tempData.ClearHighlights()
+	p.newWindow = command
+	p.deleteWindow = nil
+	p.windowReposition = nil
+	p.resizeWindow = nil
+
+	if command.returnMenu == DcbMenuTools {
+		p.dcb.SetMenu(DcbMenuTools)
+	} else {
+		p.dcb.ReturnToMainMenu()
+	}
+
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) startToolsNewWindowCommand() {
+	if p == nil {
+		return
+	}
+	if !p.windows.CanAddSecondary() {
+		p.previewArea.SetSystemResponse("")
+		p.clearHighlightedTarget()
+		return
+	}
+
+	p.startNewWindowCommand(NewToolsNewWindowCommand())
+}
+
 func (p *ASDEXPane) startDeleteWindowCommand() {
 	if p == nil {
 		return
@@ -1419,7 +1480,6 @@ func isToolsPlaceholderFunction(function DcbFunction) bool {
 	case DcbFunctionRange,
 		DcbFunctionMapReposition,
 		DcbFunctionRotate,
-		DcbFunctionNewWindow,
 		DcbFunctionHistoryOnOff,
 		DcbFunctionHistory,
 		DcbFunctionCoastOnOff,

@@ -377,34 +377,7 @@ func (ap *ASDEXPane) cmdNewWindow(_ *panes.Context) CommandStatus {
 		}
 	}
 
-	ap.commandMode = CommandModeNone
-	ap.commandEntry.Clear()
-	ap.datablockEdit = nil
-	ap.editingTargetID = ""
-	ap.initControlEntry = nil
-	ap.termControlEntry = nil
-	ap.multiFunction = nil
-	ap.previewReposition = nil
-	ap.coastListReposition = nil
-	ap.mapReposition = nil
-	ap.mapRotate = nil
-	ap.dcbSpinner = nil
-	ap.dcbMenuCommand = nil
-	ap.dbAreaDraft = nil
-	ap.dbAreaSelection = nil
-	ap.tempAreaDraft = nil
-	ap.tempTextCommand = nil
-	ap.tempTextPlacement = nil
-	ap.tempDataSelectMode = TempDataSelectNone
-	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
-	ap.tempData.ClearHighlights()
-	ap.newWindow = NewNewWindowCommand()
-	ap.deleteWindow = nil
-	ap.windowReposition = nil
-	ap.resizeWindow = nil
-	ap.dcb.ReturnToMainMenu()
-	ap.previewArea.SetSystemResponse("")
-	ap.clearHighlightedTarget()
+	ap.startNewWindowCommand(NewNewWindowCommand())
 
 	return CommandStatus{Clear: ClearNone}
 }

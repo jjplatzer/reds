@@ -110,6 +110,10 @@ type ScopeWindowManager struct {
 type NewWindowCommand struct {
 	firstCorner *redsmath.Vec2
 	mouse       redsmath.Vec2
+
+	displayLines []string
+	returnMenu   DcbMenu
+	returnLines  []string
 }
 
 type DeleteWindowCommand struct{}
@@ -172,14 +176,25 @@ func NewScopeWindowManager() ScopeWindowManager {
 }
 
 func NewNewWindowCommand() *NewWindowCommand {
-	return &NewWindowCommand{}
+	return &NewWindowCommand{
+		displayLines: []string{"NEW WINDOW"},
+		returnMenu:   DcbMenuMain,
+	}
+}
+
+func NewToolsNewWindowCommand() *NewWindowCommand {
+	return &NewWindowCommand{
+		displayLines: []string{"TOOLS", "NEW WINDOW"},
+		returnMenu:   DcbMenuTools,
+		returnLines:  []string{"TOOLS"},
+	}
 }
 
 func (cmd *NewWindowCommand) DisplayLines() []string {
 	if cmd == nil {
 		return nil
 	}
-	return []string{"NEW WINDOW"}
+	return append([]string(nil), cmd.displayLines...)
 }
 
 func NewDeleteWindowCommand() *DeleteWindowCommand {
@@ -630,10 +645,31 @@ func (p *ASDEXPane) consumeNewWindowInput(
 		)
 		p.displayStateForWindow(id).Brightness = p.displayStateForWindow(mainScopeWindowID).Brightness
 	}
-	p.newWindow = nil
-	p.previewArea.SetSystemResponse("")
-	p.clearHighlightedTarget()
+	p.finishNewWindowCommand("")
 	return true
+}
+
+func (p *ASDEXPane) finishNewWindowCommand(response string) {
+	if p == nil {
+		return
+	}
+
+	cmd := p.newWindow
+	p.newWindow = nil
+	if cmd != nil && cmd.returnMenu == DcbMenuTools {
+		p.dcb.SetMenu(DcbMenuTools)
+		if len(cmd.returnLines) > 0 {
+			p.dcbMenuCommand = NewDcbMenuCommand(cmd.returnLines...)
+		} else {
+			p.dcbMenuCommand = NewDcbMenuCommand("TOOLS")
+		}
+	} else {
+		p.dcb.ReturnToMainMenu()
+		p.dcbMenuCommand = nil
+	}
+
+	p.previewArea.SetSystemResponse(response)
+	p.clearHighlightedTarget()
 }
 
 func (p *ASDEXPane) consumeDeleteWindowInput(ctx *panes.Context) bool {
@@ -910,9 +946,7 @@ func (p *ASDEXPane) handleNewWindowKeyboard(ctx *panes.Context) bool {
 	if keyboard.WasPressed(platform.KeyEscape) ||
 		keyboard.WasPressed(platform.KeyBackspace) ||
 		keyboard.WasPressed(platform.KeyDelete) {
-		p.newWindow = nil
-		p.previewArea.SetSystemResponse("")
-		p.clearHighlightedTarget()
+		p.finishNewWindowCommand("")
 		return true
 	}
 	return false
