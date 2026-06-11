@@ -126,8 +126,18 @@ func (vm *VideoMap) Meshes() []VideoMapMesh {
 	return vm.meshes
 }
 
-func DrawVideoMap(vm *VideoMap, cb *renderer.CmdBuffer, mode Mode) {
+func DrawVideoMap(vm *VideoMap, cb *renderer.CmdBuffer, mode Mode, brightness int) {
 	if vm == nil || cb == nil || !vm.IsValid() {
+		return
+	}
+	if brightness != brightnessDefault {
+		for _, mesh := range vm.meshes {
+			cb.SetRGB(videoMapColor(mesh.Type, mode, brightness))
+			builder := renderer.GetTrianglesBuilder()
+			builder.AddIndexed(mesh.Vertices, mesh.Indices)
+			builder.GenerateCommands(cb, renderer.DrawSolid, 0)
+			renderer.ReturnTrianglesBuilder(builder)
+		}
 		return
 	}
 	if mode == ModeNight {
@@ -140,7 +150,7 @@ func DrawVideoMap(vm *VideoMap, cb *renderer.CmdBuffer, mode Mode) {
 func (vm *VideoMap) buildCmdBuffer(mode Mode) *renderer.CmdBuffer {
 	cb := &renderer.CmdBuffer{}
 	for _, mesh := range vm.meshes {
-		cb.SetRGB(videoMapColor(mesh.Type, mode))
+		cb.SetRGB(videoMapColor(mesh.Type, mode, brightnessDefault))
 		builder := renderer.GetTrianglesBuilder()
 		builder.AddIndexed(mesh.Vertices, mesh.Indices)
 		builder.GenerateCommands(cb, renderer.DrawSolid, 0)
@@ -336,7 +346,7 @@ func videoMapZ(polygonType PolygonType) float32 {
 	}
 }
 
-func videoMapColor(polygonType PolygonType, mode Mode) renderer.RGB {
+func videoMapColor(polygonType PolygonType, mode Mode, brightness int) renderer.RGB {
 	day := mode == ModeDay
 	var base renderer.RGB
 	switch polygonType {
@@ -361,5 +371,5 @@ func videoMapColor(polygonType PolygonType, mode Mode) renderer.RGB {
 			base = renderer.RGB8(34, 63, 103)
 		}
 	}
-	return applyBrightness(base, brightnessDefault, brightnessFloorDefault)
+	return applyBrightness(base, brightness, brightnessFloorDefault)
 }

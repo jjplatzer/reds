@@ -101,6 +101,8 @@ type ASDEXPane struct {
 	dbFieldSettings           DataBlockFieldSettings
 	datablockTimeshareStart   time.Time
 	showBeaconUntilByTargetID map[string]time.Time
+	listsBrightness           int
+	dcbBrightness             int
 	previewArea               PreviewArea
 	coastList                 CoastList
 	alertRepository           AlertRepository
@@ -202,6 +204,8 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		dbFieldSettings:           DefaultDataBlockFieldSettings(),
 		datablockTimeshareStart:   time.Now(),
 		showBeaconUntilByTargetID: make(map[string]time.Time),
+		listsBrightness:           brightnessDefault,
+		dcbBrightness:             brightnessDefault,
 		previewArea:               preview,
 		coastList:                 coastList,
 		alertRepository:           NewAlertRepository(auralAlerts),
@@ -567,42 +571,44 @@ func (p *ASDEXPane) renderScopeWindow(
 
 	transforms := scopeTransformForWindow(rect, referenceExtent, view)
 	x, y, w, h := scopeFramebufferRect(ctx, rect)
+	displayState := p.displayStateForWindow(windowID)
+	brightness := displayState.Brightness
 
 	cb := zcb.At(scopeWindowZ(stackIndex, zVideoMap))
 	cb.Viewport(x, y, w, h)
 	cb.Scissor(x, y, w, h)
-	cb.Clear(applyBrightness(backgroundColor(p.mode), brightnessDefault, 20).ToRGBA())
+	cb.Clear(applyBrightness(backgroundColor(p.mode), brightness.Background, 20).ToRGBA())
 
 	transforms.LoadWorldViewingMatrices(cb)
-	DrawVideoMap(p.videomap, cb, p.mode)
+	DrawVideoMap(p.videomap, cb, p.mode, brightness.MovementArea)
 	cb.DisableScissor()
 
 	closedRunwayCB := zcb.At(scopeWindowZ(stackIndex, zSafetyLogicClosedRunways))
 	closedRunwayCB.Viewport(x, y, w, h)
 	closedRunwayCB.Scissor(x, y, w, h)
 	transforms.LoadWorldViewingMatrices(closedRunwayCB)
-	p.tempData.DrawClosedRunways(closedRunwayCB, &p.safetyLogic, closedRunwayBrightnessDefault)
+	p.tempData.DrawClosedRunways(closedRunwayCB, &p.safetyLogic, brightness.TempMapAreas)
 	closedRunwayCB.DisableScissor()
 
 	restrictedAreaCB := zcb.At(scopeWindowZ(stackIndex, zRestrictedArea))
 	restrictedAreaCB.Viewport(x, y, w, h)
 	restrictedAreaCB.Scissor(x, y, w, h)
 	transforms.LoadWorldViewingMatrices(restrictedAreaCB)
-	p.tempData.DrawRestrictedAreas(restrictedAreaCB, transforms, tempMapAreasBrightnessDefault)
+	p.tempData.DrawRestrictedAreas(restrictedAreaCB, transforms, brightness.TempMapAreas)
 	restrictedAreaCB.DisableScissor()
 
 	closedAreaCB := zcb.At(scopeWindowZ(stackIndex, zClosedArea))
 	closedAreaCB.Viewport(x, y, w, h)
 	closedAreaCB.Scissor(x, y, w, h)
 	transforms.LoadWorldViewingMatrices(closedAreaCB)
-	p.tempData.DrawClosedAreas(closedAreaCB, transforms, tempMapAreasBrightnessDefault)
+	p.tempData.DrawClosedAreas(closedAreaCB, transforms, brightness.TempMapAreas)
 	closedAreaCB.DisableScissor()
 
 	tempTextCB := zcb.At(scopeWindowZ(stackIndex, zTempMapText))
 	tempTextCB.Viewport(x, y, w, h)
 	tempTextCB.Scissor(x, y, w, h)
 	transforms.LoadWindowViewingMatrices(tempTextCB)
-	p.tempData.DrawTempTextAnchors(tempTextCB, transforms, tempMapAreasBrightnessDefault)
+	p.tempData.DrawTempTextAnchors(tempTextCB, transforms, brightness.TempMapText)
 	p.tempData.DrawTempTexts(
 		tempTextCB,
 		transforms,
@@ -611,6 +617,7 @@ func (p *ASDEXPane) renderScopeWindow(
 			return p.fonts.textureForSize(ctx.Renderer, size)
 		},
 		p.dataBlockSettingsForWindow(windowID),
+		brightness.TempMapText,
 	)
 	tempTextCB.DisableScissor()
 
@@ -637,7 +644,7 @@ func (p *ASDEXPane) renderScopeWindow(
 	holdBarCB.Viewport(x, y, w, h)
 	holdBarCB.Scissor(x, y, w, h)
 	transforms.LoadWindowViewingMatrices(holdBarCB)
-	p.safetyLogic.DrawHoldBars(holdBarCB, transforms, holdBarsBrightnessDefault)
+	p.safetyLogic.DrawHoldBars(holdBarCB, transforms, brightness.HoldBars)
 	holdBarCB.DisableScissor()
 
 	targetCB := zcb.At(scopeWindowZ(stackIndex, zTargets))
@@ -654,7 +661,7 @@ func (p *ASDEXPane) renderScopeWindow(
 		targetCB,
 		TargetDrawOptions{
 			VectorSeconds:       3,
-			Brightness:          brightnessDefault,
+			Brightness:          brightness.Track,
 			ScopeRotationDeg:    int(view.Rotation),
 			HighlightedTargetID: highlightedTargetID,
 			AlertTargetIDs:      alertTargetIDs,
@@ -836,23 +843,32 @@ func (p *ASDEXPane) dcbState() DcbState {
 	fields := p.dbFieldSettings
 
 	state := DcbState{
-		Range:                 rangeSetting,
-		Mode:                  p.mode,
-		VectorOn:              true,
-		VectorLength:          3,
-		LeaderLength:          active.DB.LeaderLength,
-		DataBlocksOn:          active.DB.ShowDataBlocks,
-		DcbOn:                 p.dcb.On(),
-		FullDataBlocks:        active.DB.FullDataBlocks,
-		ShowAltitude:          fields.ShowAltitude,
-		ShowTargetType:        fields.ShowTargetType,
-		ShowSensors:           fields.ShowSensors,
-		ShowCWT:               fields.ShowCWT,
-		ShowFix:               fields.ShowFix,
-		ShowVelocity:          fields.ShowVelocity,
-		ShowScratchpads:       fields.ShowScratchpads,
-		ClosedRunways:         p.tempData.DcbRunwayClosureStates(&p.safetyLogic),
-		ActiveSpinnerFunction: activeSpinnerFunction,
+		Range:                  rangeSetting,
+		Mode:                   p.mode,
+		VectorOn:               true,
+		VectorLength:           3,
+		LeaderLength:           active.DB.LeaderLength,
+		DataBlocksOn:           active.DB.ShowDataBlocks,
+		DcbOn:                  p.dcb.On(),
+		FullDataBlocks:         active.DB.FullDataBlocks,
+		ShowAltitude:           fields.ShowAltitude,
+		ShowTargetType:         fields.ShowTargetType,
+		ShowSensors:            fields.ShowSensors,
+		ShowCWT:                fields.ShowCWT,
+		ShowFix:                fields.ShowFix,
+		ShowVelocity:           fields.ShowVelocity,
+		ShowScratchpads:        fields.ShowScratchpads,
+		HoldBarsBrightness:     active.Brightness.HoldBars,
+		MovementAreaBrightness: active.Brightness.MovementArea,
+		BackgroundBrightness:   active.Brightness.Background,
+		TrackBrightness:        active.Brightness.Track,
+		DataBlocksBrightness:   active.DB.Brightness,
+		ListsBrightness:        p.listsBrightness,
+		TempMapAreasBrightness: active.Brightness.TempMapAreas,
+		TempMapTextBrightness:  active.Brightness.TempMapText,
+		DcbBrightness:          p.dcbBrightness,
+		ClosedRunways:          p.tempData.DcbRunwayClosureStates(&p.safetyLogic),
+		ActiveSpinnerFunction:  activeSpinnerFunction,
 	}
 
 	windowState := p.displayStateForWindow(active.WindowID)
@@ -943,6 +959,10 @@ func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 		p.activateTraitAreaDcbHit(hit) {
 		return true
 	}
+	if isBrightnessFunction(hit.Function) {
+		p.startBrightnessSpinner(hit.Function)
+		return true
+	}
 
 	switch hit.Function {
 	case DcbFunctionRange:
@@ -966,6 +986,9 @@ func (p *ASDEXPane) activateDcbHit(_ *panes.Context, hit DcbHit) bool {
 		return true
 	case DcbFunctionDataBlockEdit:
 		p.openDbEditDcbMenu()
+		return true
+	case DcbFunctionBrightness:
+		p.openBrightnessMenu()
 		return true
 	case DcbFunctionDefineDbTraitArea:
 		p.startDefineDbTraitArea()
@@ -1126,6 +1149,157 @@ func (p *ASDEXPane) toggleDataBlocksOnOff() {
 	})
 	p.clearTargetShowDBOverrides(windowID)
 	p.previewArea.SetSystemResponse("")
+}
+
+func (p *ASDEXPane) setListsBrightness(value int) {
+	if p == nil {
+		return
+	}
+
+	value = clampBrightness(value)
+	p.listsBrightness = value
+	p.previewArea.SetBrightness(value)
+	p.coastList.SetBrightness(value)
+	p.alertMessageBox.SetBrightness(value)
+}
+
+func (p *ASDEXPane) setDcbBrightness(value int) {
+	if p == nil {
+		return
+	}
+
+	value = clampBrightness(value)
+	p.dcbBrightness = value
+	p.dcb.SetBrightness(value)
+}
+
+func isBrightnessFunction(function DcbFunction) bool {
+	switch function {
+	case DcbFunctionHoldBarsBrightness,
+		DcbFunctionMovementAreaBrightness,
+		DcbFunctionBackgroundBrightness,
+		DcbFunctionTrackBrightness,
+		DcbFunctionDataBlocksBrightness,
+		DcbFunctionListsBrightness,
+		DcbFunctionTempMapAreasBrightness,
+		DcbFunctionTempMapTextBrightness,
+		DcbFunctionDcbBrightness:
+		return true
+	default:
+		return false
+	}
+}
+
+func brightnessLabel(function DcbFunction) string {
+	switch function {
+	case DcbFunctionHoldBarsBrightness:
+		return "HOLD BARS"
+	case DcbFunctionMovementAreaBrightness:
+		return "MVMENT AREA"
+	case DcbFunctionBackgroundBrightness:
+		return "BAKGND"
+	case DcbFunctionTrackBrightness:
+		return "TRACK"
+	case DcbFunctionDataBlocksBrightness:
+		return "DATA BLOCKS"
+	case DcbFunctionListsBrightness:
+		return "LISTS"
+	case DcbFunctionTempMapAreasBrightness:
+		return "TEMP MAP AREAS"
+	case DcbFunctionTempMapTextBrightness:
+		return "TEMP MAP TEXT"
+	case DcbFunctionDcbBrightness:
+		return "DCB"
+	default:
+		return ""
+	}
+}
+
+func (p *ASDEXPane) currentBrightnessValue(function DcbFunction) int {
+	if p == nil {
+		return brightnessDefault
+	}
+
+	active := p.activeDcbWindowState()
+	switch function {
+	case DcbFunctionHoldBarsBrightness:
+		return active.Brightness.HoldBars
+	case DcbFunctionMovementAreaBrightness:
+		return active.Brightness.MovementArea
+	case DcbFunctionBackgroundBrightness:
+		return active.Brightness.Background
+	case DcbFunctionTrackBrightness:
+		return active.Brightness.Track
+	case DcbFunctionDataBlocksBrightness:
+		return active.DB.Brightness
+	case DcbFunctionListsBrightness:
+		return p.listsBrightness
+	case DcbFunctionTempMapAreasBrightness:
+		return active.Brightness.TempMapAreas
+	case DcbFunctionTempMapTextBrightness:
+		return active.Brightness.TempMapText
+	case DcbFunctionDcbBrightness:
+		return p.dcbBrightness
+	default:
+		return brightnessDefault
+	}
+}
+
+func (p *ASDEXPane) setBrightnessValue(function DcbFunction, value int) {
+	if p == nil {
+		return
+	}
+
+	value = clampBrightness(value)
+	windowID := p.activeWindowID()
+	state := p.displayStateForWindow(windowID)
+	switch function {
+	case DcbFunctionHoldBarsBrightness:
+		state.Brightness.HoldBars = value
+	case DcbFunctionMovementAreaBrightness:
+		state.Brightness.MovementArea = value
+	case DcbFunctionBackgroundBrightness:
+		state.Brightness.Background = value
+	case DcbFunctionTrackBrightness:
+		state.Brightness.Track = value
+	case DcbFunctionDataBlocksBrightness:
+		state.DB.Brightness = value
+	case DcbFunctionListsBrightness:
+		p.setListsBrightness(value)
+	case DcbFunctionTempMapAreasBrightness:
+		state.Brightness.TempMapAreas = value
+	case DcbFunctionTempMapTextBrightness:
+		state.Brightness.TempMapText = value
+	case DcbFunctionDcbBrightness:
+		p.setDcbBrightness(value)
+	}
+}
+
+func (p *ASDEXPane) openBrightnessMenu() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.dcb.SetMenu(DcbMenuBrightness)
+	p.dcbMenuCommand = NewDcbMenuCommand("BRITE")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) startBrightnessSpinner(function DcbFunction) {
+	if p == nil {
+		return
+	}
+
+	label := brightnessLabel(function)
+	if label == "" {
+		return
+	}
+	p.dcbSpinner = NewBrightnessSpinner(function, label, p.currentBrightnessValue(function))
+	p.dcbMenuCommand = nil
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
 }
 
 func (p *ASDEXPane) activateTraitAreaDcbHit(hit DcbHit) bool {
@@ -1439,6 +1613,13 @@ func (p *ASDEXPane) cancelDcbSpinner() {
 	if p == nil {
 		return
 	}
+	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerBrightness {
+		p.dcbSpinner = nil
+		p.dcb.SetMenu(DcbMenuBrightness)
+		p.dcbMenuCommand = NewDcbMenuCommand("BRITE")
+		p.previewArea.SetSystemResponse("")
+		return
+	}
 	if p.dcbSpinner != nil && p.dcbSpinner.Type != DcbSpinnerRange {
 		p.restoreDbAreaEditCommand(p.dcbSpinner)
 	}
@@ -1529,6 +1710,9 @@ func (p *ASDEXPane) commitDcbSpinner() {
 	case DcbSpinnerDbAreaLeaderDirection:
 		p.commitDbAreaLeaderDirectionSpinner(spinner)
 		return
+	case DcbSpinnerBrightness:
+		p.commitBrightnessSpinner(spinner)
+		return
 	default:
 		p.dcbSpinner = nil
 		p.previewArea.SetSystemResponse("INVALID ENTRY")
@@ -1592,6 +1776,31 @@ func (p *ASDEXPane) commitDbAreaLeaderDirectionSpinner(spinner *DcbSpinner) {
 	p.finishDbAreaSpinner(spinner, "INVALID ENTRY")
 }
 
+func (p *ASDEXPane) finishBrightnessSpinner(systemResponse string) {
+	if p == nil {
+		return
+	}
+	p.dcbSpinner = nil
+	p.dcb.SetMenu(DcbMenuBrightness)
+	p.dcbMenuCommand = NewDcbMenuCommand("BRITE")
+	p.previewArea.SetSystemResponse(systemResponse)
+}
+
+func (p *ASDEXPane) commitBrightnessSpinner(spinner *DcbSpinner) {
+	if p == nil || spinner == nil {
+		return
+	}
+
+	value, ok := spinner.ParsedValue()
+	if !ok || value < brightnessMin || value > brightnessMax {
+		p.finishBrightnessSpinner("INVALID ENTRY")
+		return
+	}
+
+	p.setBrightnessValue(spinner.Function, value)
+	p.finishBrightnessSpinner("")
+}
+
 func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 	if p == nil || p.dcbSpinner == nil || delta == 0 {
 		return
@@ -1653,6 +1862,10 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 				})
 			}
 		}
+	case DcbSpinnerBrightness:
+		next := clampBrightness(p.currentBrightnessValue(spinner.Function) + delta)
+		p.setBrightnessValue(spinner.Function, next)
+		spinner.SetValue(next)
 	default:
 		spinner.Increment(delta)
 	}
@@ -1695,9 +1908,10 @@ func (p *ASDEXPane) dataBlockSettings() DataBlockSettings {
 }
 
 type ActiveDcbWindowState struct {
-	WindowID ScopeWindowID
-	View     ScopeView
-	DB       DataBlockSettings
+	WindowID   ScopeWindowID
+	View       ScopeView
+	DB         DataBlockSettings
+	Brightness WindowBrightnessSettings
 }
 
 func (p *ASDEXPane) activeDcbWindowState() ActiveDcbWindowState {
@@ -1710,9 +1924,10 @@ func (p *ASDEXPane) activeDcbWindowState() ActiveDcbWindowState {
 	}
 
 	return ActiveDcbWindowState{
-		WindowID: windowID,
-		View:     view,
-		DB:       p.dataBlockSettingsForWindow(windowID),
+		WindowID:   windowID,
+		View:       view,
+		DB:         p.dataBlockSettingsForWindow(windowID),
+		Brightness: p.displayStateForWindow(windowID).Brightness,
 	}
 }
 
@@ -3400,6 +3615,10 @@ func clamp(v, lo, hi float32) float32 {
 		return hi
 	}
 	return v
+}
+
+func clampBrightness(value int) int {
+	return clampInt(value, brightnessMin, brightnessMax)
 }
 
 func backgroundColor(mode Mode) renderer.RGB {

@@ -33,7 +33,8 @@ type ScopeWindow struct {
 // WindowDisplayState holds per-scope-window display settings. World objects
 // such as targets, temp data, holdbars and runway closures remain global.
 type WindowDisplayState struct {
-	DB DataBlockSettings
+	DB         DataBlockSettings
+	Brightness WindowBrightnessSettings
 
 	TargetShowDBOverrides    map[string]bool
 	TargetDBOffAreaOverrides map[string]bool
@@ -52,9 +53,31 @@ type WindowDisplayState struct {
 	// DbTraitAreas []DataBlockTraitArea
 }
 
+type WindowBrightnessSettings struct {
+	HoldBars     int
+	MovementArea int
+	Background   int
+	Track        int
+	TempMapAreas int
+	TempMapText  int
+}
+
+func NewWindowBrightnessSettings() WindowBrightnessSettings {
+	return WindowBrightnessSettings{
+		HoldBars:     brightnessDefault,
+		MovementArea: brightnessDefault,
+		Background:   brightnessDefault,
+		Track:        brightnessDefault,
+		TempMapAreas: tempMapAreasBrightnessDefault,
+		TempMapText:  tempTextBrightnessDefault,
+	}
+}
+
 func NewWindowDisplayState() *WindowDisplayState {
 	return &WindowDisplayState{
-		DB:           DefaultDataBlockSettings(),
+		DB:         DefaultDataBlockSettings(),
+		Brightness: NewWindowBrightnessSettings(),
+
 		NextDBAreaID: 1,
 	}
 }
@@ -399,6 +422,7 @@ func (p *ASDEXPane) consumeNewWindowInput(
 			id,
 			p.dataBlockSettingsForWindow(mainScopeWindowID),
 		)
+		p.displayStateForWindow(id).Brightness = p.displayStateForWindow(mainScopeWindowID).Brightness
 	}
 	p.newWindow = nil
 	p.previewArea.SetSystemResponse("")

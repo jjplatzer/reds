@@ -1,6 +1,7 @@
 package asdex
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"unicode"
@@ -29,6 +30,7 @@ const (
 	DcbMenuDbArea
 	DcbMenuDefineTraitArea
 	DcbMenuModifyTraitArea
+	DcbMenuBrightness
 	DcbMenuOff
 )
 
@@ -95,6 +97,15 @@ const (
 	DcbFunctionDbAreaVectorOnOff
 	DcbFunctionDbAreaLeaderLength
 	DcbFunctionDbAreaLeaderDirection
+	DcbFunctionHoldBarsBrightness
+	DcbFunctionMovementAreaBrightness
+	DcbFunctionBackgroundBrightness
+	DcbFunctionTrackBrightness
+	DcbFunctionDataBlocksBrightness
+	DcbFunctionListsBrightness
+	DcbFunctionTempMapAreasBrightness
+	DcbFunctionTempMapTextBrightness
+	DcbFunctionDcbBrightness
 	DcbFunctionDataBlocksOnOff
 	DcbFunctionInitControl
 	DcbFunctionTrackSuspend
@@ -194,6 +205,16 @@ type DcbState struct {
 	HasSelectedDbArea    bool
 	SelectedDbAreaTraits DataBlockAreaTraits
 
+	HoldBarsBrightness     int
+	MovementAreaBrightness int
+	BackgroundBrightness   int
+	TrackBrightness        int
+	DataBlocksBrightness   int
+	ListsBrightness        int
+	TempMapAreasBrightness int
+	TempMapTextBrightness  int
+	DcbBrightness          int
+
 	ClosedRunways []DcbRunwayClosureState
 
 	ActiveSpinnerFunction DcbFunction
@@ -213,6 +234,7 @@ const (
 	DcbSpinnerDbAreaBrightness
 	DcbSpinnerDbAreaLeaderLength
 	DcbSpinnerDbAreaLeaderDirection
+	DcbSpinnerBrightness
 )
 
 type DcbSpinner struct {
@@ -235,10 +257,35 @@ type DcbSpinner struct {
 	Value    int
 	Original int
 
-	MaxInputDigits int
+	MaxInputDigits            int
+	ReplaceInputOnFirstInsert bool
 
 	input  string
 	cursor int
+}
+
+func NewBrightnessSpinner(
+	function DcbFunction,
+	label string,
+	current int,
+) *DcbSpinner {
+	current = clampBrightness(current)
+	input := fmt.Sprintf("%03d", current)
+	return &DcbSpinner{
+		Type:                      DcbSpinnerBrightness,
+		Function:                  function,
+		Title:                     "BRITE",
+		Lines:                     []string{"BRITE", label},
+		Min:                       brightnessMin,
+		Max:                       brightnessMax,
+		Step:                      1,
+		Value:                     current,
+		Original:                  current,
+		MaxInputDigits:            3,
+		ReplaceInputOnFirstInsert: true,
+		input:                     input,
+		cursor:                    len(input),
+	}
 }
 
 type DcbMenuCommand struct {
@@ -468,6 +515,12 @@ func (s *DcbSpinner) Insert(r rune) {
 	}
 
 	value := []rune(s.input)
+	if s.ReplaceInputOnFirstInsert {
+		value = nil
+		s.input = ""
+		s.cursor = 0
+		s.ReplaceInputOnFirstInsert = false
+	}
 	maxDigits := s.MaxInputDigits
 	if maxDigits <= 0 {
 		maxDigits = 3
@@ -555,6 +608,13 @@ func NewDcb() Dcb {
 		brightness: brightnessDefault,
 		charSize:   2,
 	}
+}
+
+func (d *Dcb) SetBrightness(value int) {
+	if d == nil {
+		return
+	}
+	d.brightness = clampBrightness(value)
 }
 
 // TODO(DCB): Keep all layout code position-aware. CRC supports TOP, BOTTOM,
@@ -713,6 +773,15 @@ func isLargeDcbFunction(function DcbFunction) bool {
 		DcbFunctionDbAreaVectorOnOff,
 		DcbFunctionDbAreaLeaderLength,
 		DcbFunctionDbAreaLeaderDirection,
+		DcbFunctionHoldBarsBrightness,
+		DcbFunctionMovementAreaBrightness,
+		DcbFunctionBackgroundBrightness,
+		DcbFunctionTrackBrightness,
+		DcbFunctionDataBlocksBrightness,
+		DcbFunctionListsBrightness,
+		DcbFunctionTempMapAreasBrightness,
+		DcbFunctionTempMapTextBrightness,
+		DcbFunctionDcbBrightness,
 		DcbFunctionDone,
 		DcbFunctionVacant:
 		return true
@@ -1107,6 +1176,60 @@ func (d *Dcb) traitAreaButtonSpecs(state DcbState) []DcbButtonSpec {
 	}
 }
 
+func (d *Dcb) brightnessButtonSpecs(state DcbState) []DcbButtonSpec {
+	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
+		if state.ActiveSpinnerFunction == spec.Function {
+			spec.Active = true
+		}
+		return spec
+	}
+	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonNormal,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	value := func(function DcbFunction, brightness int, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function:  function,
+			Type:      DcbButtonValue,
+			Large:     isLargeDcbFunction(function),
+			Visible:   true,
+			Lines:     append([]string(nil), lines...),
+			ShowValue: true,
+			Value:     brightnessLabelValue(brightness),
+		})
+	}
+	vacant := func() DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: DcbFunctionVacant,
+			Type:     DcbButtonVacant,
+			Large:    true,
+			Visible:  true,
+		}
+	}
+
+	return []DcbButtonSpec{
+		vacant(),
+		vacant(),
+		value(DcbFunctionHoldBarsBrightness, state.HoldBarsBrightness, "HOLD", "BARS"),
+		value(DcbFunctionMovementAreaBrightness, state.MovementAreaBrightness, "MVMENT", "AREA"),
+		value(DcbFunctionBackgroundBrightness, state.BackgroundBrightness, "BAKGND"),
+		value(DcbFunctionTrackBrightness, state.TrackBrightness, "TRACK"),
+		value(DcbFunctionDataBlocksBrightness, state.DataBlocksBrightness, "DATA", "BLOCKS"),
+		value(DcbFunctionListsBrightness, state.ListsBrightness, "LISTS"),
+		value(DcbFunctionTempMapAreasBrightness, state.TempMapAreasBrightness, "TEMP MAP", "AREAS"),
+		value(DcbFunctionTempMapTextBrightness, state.TempMapTextBrightness, "TEMP MAP", "TEXT"),
+		value(DcbFunctionDcbBrightness, state.DcbBrightness, "DCB"),
+		normal(DcbFunctionDone, "DONE"),
+		vacant(),
+		vacant(),
+	}
+}
+
 func (d *Dcb) rangeLabel(state DcbState) string {
 	return strconv.Itoa(clampInt(state.Range, asdexMinRangeSetting, asdexMaxRangeSetting))
 }
@@ -1117,6 +1240,10 @@ func (d *Dcb) vectorLengthLabel(state DcbState) string {
 
 func (d *Dcb) leaderLengthLabel(state DcbState) string {
 	return strconv.Itoa(state.LeaderLength)
+}
+
+func brightnessLabelValue(value int) string {
+	return fmt.Sprintf("%03d", clampBrightness(value))
 }
 
 func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
@@ -1137,6 +1264,8 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 		return d.dbAreaButtonSpecs(state)
 	case DcbMenuDefineTraitArea, DcbMenuModifyTraitArea:
 		return d.traitAreaButtonSpecs(state)
+	case DcbMenuBrightness:
+		return d.brightnessButtonSpecs(state)
 	default:
 		return d.mainButtonSpecs(state)
 	}
