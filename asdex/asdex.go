@@ -305,7 +305,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.consumeOpsHotkeys(ctx, transforms)
 	p.coastList.SetVisible(p.showCoastList)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
-	if p.mapReposition == nil && !p.listRepositionActive() && p.dbAreaDraft == nil && p.dbAreaSelection == nil &&
+	if p.mapReposition == nil && p.mapRotate == nil && !p.listRepositionActive() && p.dbAreaDraft == nil && p.dbAreaSelection == nil &&
 		p.tempAreaDraft == nil && p.tempTextCommand == nil && p.tempTextPlacement == nil &&
 		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil && p.deleteWindow == nil &&
 		p.windowReposition == nil && p.resizeWindow == nil {
@@ -313,7 +313,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	} else {
 		p.hoveredCoastListTarget = ""
 	}
-	if p.mapReposition == nil && p.dbAreaDraft == nil && p.dbAreaSelection == nil && p.tempAreaDraft == nil &&
+	if p.mapReposition == nil && p.mapRotate == nil && p.dbAreaDraft == nil && p.dbAreaSelection == nil && p.tempAreaDraft == nil &&
 		p.tempTextCommand == nil && p.tempTextPlacement == nil &&
 		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil && p.deleteWindow == nil &&
 		p.windowReposition == nil && p.resizeWindow == nil {
@@ -338,6 +338,9 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		p.clearHighlightedTarget()
 		p.clampListRepositionCursor(ctx)
 		p.consumeListRepositionClick(ctx)
+	} else if p.mapRotate != nil {
+		p.clearHighlightedTarget()
+		p.consumeMapRotateMouse(ctx)
 	} else if p.datablockEdit != nil {
 		p.clearHighlightedTarget()
 		p.consumeDatablockEditWheel(ctx)
@@ -856,6 +859,8 @@ func (p *ASDEXPane) dcbState() DcbState {
 	activeSpinnerFunction := DcbFunctionVacant
 	if p.dcbSpinner != nil {
 		activeSpinnerFunction = p.dcbSpinner.Function
+	} else if p.mapRotate != nil {
+		activeSpinnerFunction = DcbFunctionRotate
 	} else if p.newWindow != nil && p.dcb.Menu() == DcbMenuTools {
 		activeSpinnerFunction = DcbFunctionNewWindow
 	} else if p.deleteWindow != nil {
@@ -1004,6 +1009,11 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	case DcbFunctionRange:
 		if p.dcb.On() {
 			p.startRangeSpinner()
+		}
+		return true
+	case DcbFunctionRotate:
+		if p.dcb.On() {
+			p.startDcbRotateCommand()
 		}
 		return true
 	case DcbFunctionDone:
@@ -1364,6 +1374,62 @@ func (p *ASDEXPane) openToolsMenu() {
 	p.clearHighlightedTarget()
 }
 
+func (p *ASDEXPane) startMapRotateCommand(command *MapRotateCommand) {
+	if p == nil || command == nil {
+		return
+	}
+
+	p.commandMode = CommandModeMapRotate
+	p.mapRotate = command
+	p.mapReposition = nil
+	p.multiFunction = nil
+	p.previewReposition = nil
+	p.coastListReposition = nil
+	p.dcbSpinner = nil
+	p.dcbMenuCommand = nil
+	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
+	p.tempAreaDraft = nil
+	p.tempTextCommand = nil
+	p.tempTextPlacement = nil
+	p.tempDataSelectMode = TempDataSelectNone
+	p.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
+	p.tempData.ClearHighlights()
+	p.newWindow = nil
+	p.deleteWindow = nil
+	p.windowReposition = nil
+	p.resizeWindow = nil
+	p.datablockEdit = nil
+	p.editingTargetID = ""
+	p.initControlEntry = nil
+	p.termControlEntry = nil
+	p.commandEntry.Clear()
+
+	if command.returnMenu == DcbMenuTools {
+		p.dcb.SetMenu(DcbMenuTools)
+	} else {
+		p.dcb.ReturnToMainMenu()
+	}
+
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) startDcbRotateCommand() {
+	if p == nil {
+		return
+	}
+
+	windowID := p.activeWindowID()
+	view := p.activeScopeView()
+	if p.dcb.Menu() == DcbMenuTools {
+		p.startMapRotateCommand(NewToolsMapRotateCommand(windowID, view.Rotation))
+		return
+	}
+
+	p.startMapRotateCommand(NewMainMapRotateCommand(windowID, view.Rotation))
+}
+
 func (p *ASDEXPane) startNewWindowCommand(command *NewWindowCommand) {
 	if p == nil || command == nil {
 		return
@@ -1479,7 +1545,6 @@ func isToolsPlaceholderFunction(function DcbFunction) bool {
 	switch function {
 	case DcbFunctionRange,
 		DcbFunctionMapReposition,
-		DcbFunctionRotate,
 		DcbFunctionHistoryOnOff,
 		DcbFunctionHistory,
 		DcbFunctionCoastOnOff,
@@ -1775,10 +1840,30 @@ func (p *ASDEXPane) consumeDcbSpinnerInput(ctx *panes.Context) bool {
 		p.incrementActiveDcbSpinner(-1)
 		return true
 	case mouse.WasReleased(platform.MouseButtonLeft):
-		p.commitDcbSpinner()
+		p.acceptActiveDcbSpinner()
 		return true
 	default:
 		return false
+	}
+}
+
+func (p *ASDEXPane) acceptActiveDcbSpinner() {
+	if p == nil || p.dcbSpinner == nil {
+		return
+	}
+
+	spinner := p.dcbSpinner
+	switch spinner.Type {
+	case DcbSpinnerBrightness:
+		p.finishBrightnessSpinner("")
+	case DcbSpinnerDbAreaCharSize,
+		DcbSpinnerDbAreaBrightness,
+		DcbSpinnerDbAreaLeaderLength,
+		DcbSpinnerDbAreaLeaderDirection:
+		p.finishDbAreaSpinner(spinner, "")
+	default:
+		p.dcbSpinner = nil
+		p.previewArea.SetSystemResponse("")
 	}
 }
 
@@ -2969,18 +3054,20 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	if p == nil {
 		return
 	}
-	if p.mapReposition != nil && p.mapReposition.initialized {
-		windowID := p.mapReposition.WindowID
-		originalCenter := p.mapReposition.originalCenter
-		p.updateScopeViewForWindow(windowID, func(view *ScopeView) {
-			view.Center = originalCenter
-		})
-	}
 	if p.mapRotate != nil {
 		windowID := p.mapRotate.WindowID
 		originalRotation := p.mapRotate.originalRotation
 		p.updateScopeViewForWindow(windowID, func(view *ScopeView) {
 			view.Rotation = originalRotation
+		})
+		p.finishMapRotateCommand("")
+		return
+	}
+	if p.mapReposition != nil && p.mapReposition.initialized {
+		windowID := p.mapReposition.WindowID
+		originalCenter := p.mapReposition.originalCenter
+		p.updateScopeViewForWindow(windowID, func(view *ScopeView) {
+			view.Center = originalCenter
 		})
 	}
 	p.commandMode = CommandModeNone
@@ -3344,8 +3431,7 @@ func (p *ASDEXPane) submitMapRotate() {
 
 	value, err := strconv.Atoi(p.mapRotate.Value())
 	if err != nil || value < 0 || value > 359 {
-		p.mapRotate = nil
-		p.applyCommandStatus(commandOutputClearAll("INVALID ENTRY"))
+		p.finishMapRotateCommand("INVALID ENTRY")
 		return
 	}
 
@@ -3354,11 +3440,66 @@ func (p *ASDEXPane) submitMapRotate() {
 	p.updateScopeViewForWindow(windowID, func(view *ScopeView) {
 		view.Rotation = rotation
 	})
-	p.applyCommandStatus(CommandStatus{
-		Clear:     ClearAll,
-		Output:    "",
-		HasOutput: true,
+	p.finishMapRotateCommand("")
+}
+
+func (p *ASDEXPane) finishMapRotateCommand(response string) {
+	if p == nil {
+		return
+	}
+
+	command := p.mapRotate
+	p.mapRotate = nil
+	p.commandMode = CommandModeNone
+	p.commandEntry.Clear()
+
+	if command != nil && command.returnMenu == DcbMenuTools {
+		p.dcb.SetMenu(DcbMenuTools)
+		p.dcbMenuCommand = NewDcbMenuCommand("TOOLS")
+	} else {
+		p.dcb.ReturnToMainMenu()
+		p.dcbMenuCommand = nil
+	}
+
+	p.previewArea.SetSystemResponse(response)
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) consumeMapRotateMouse(ctx *panes.Context) bool {
+	if p == nil || p.mapRotate == nil || ctx == nil || ctx.Mouse == nil {
+		return false
+	}
+
+	hit := p.dcbHit(ctx)
+	if !hit.OverDcb || !hit.HasFunction || hit.Function != DcbFunctionRotate {
+		return false
+	}
+
+	mouse := ctx.Mouse
+	switch {
+	case mouse.WasReleased(platform.MouseButtonLeft):
+		p.finishMapRotateCommand("")
+		return true
+	case mouse.Wheel.Y > 0 || mouse.Wheel.X > 0:
+		return p.incrementActiveMapRotate(1)
+	case mouse.Wheel.Y < 0 || mouse.Wheel.X < 0:
+		return p.incrementActiveMapRotate(-1)
+	default:
+		return false
+	}
+}
+
+func (p *ASDEXPane) incrementActiveMapRotate(delta float32) bool {
+	if p == nil || p.mapRotate == nil || delta == 0 {
+		return false
+	}
+
+	windowID := p.mapRotate.WindowID
+	p.updateScopeViewForWindow(windowID, func(view *ScopeView) {
+		view.Rotation = normalizeRotation(view.Rotation + delta)
 	})
+	p.previewArea.SetSystemResponse("")
+	return true
 }
 
 func (p *ASDEXPane) handleDcbSpinnerKeyboard(ctx *panes.Context) bool {
