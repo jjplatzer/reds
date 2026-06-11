@@ -22,40 +22,41 @@ type ScopeTransformations struct {
 	windowProjection renderer.Mat4
 }
 
-// GetScopeTransformations returns transformations for a scope view. rangeFeet
-// is half the visible world height when the pane itself is the range reference.
+// GetScopeTransformations returns transformations for a scope view.
+// fullHorizontalFeet is the full visible world width when the pane itself is
+// the range reference.
 func GetScopeTransformations(
 	paneExtent redsmath.Rect,
 	center redsmath.Vec2,
-	rangeFeet float32,
+	fullHorizontalFeet float32,
 	rotation float32,
 ) ScopeTransformations {
 	return GetScopeTransformationsWithReference(
 		paneExtent,
 		paneExtent,
 		center,
-		rangeFeet,
+		fullHorizontalFeet,
 		rotation,
 	)
 }
 
 // GetScopeTransformationsWithReference returns transformations for a scope
 // subwindow whose range scale is defined relative to a reference display size.
-// For CRC ASDE-X, rangeFeet is RangeSetting*100 feet at half of the reference
-// display's limiting dimension, not half of each secondary window's height.
+// For CRC ASDE-X, fullHorizontalFeet is RangeSetting*100 feet across the full
+// horizontal width of the reference display.
 func GetScopeTransformationsWithReference(
 	paneExtent redsmath.Rect,
 	referenceExtent redsmath.Rect,
 	center redsmath.Vec2,
-	rangeFeet float32,
+	fullHorizontalFeet float32,
 	rotation float32,
 ) ScopeTransformations {
-	if paneExtent.Empty() || rangeFeet <= 0 {
+	if paneExtent.Empty() || fullHorizontalFeet <= 0 {
 		return ScopeTransformations{
 			paneExtent:       paneExtent,
 			referenceExtent:  referenceExtent,
 			center:           center,
-			rangeFeet:        rangeFeet,
+			rangeFeet:        fullHorizontalFeet,
 			rotation:         rotation,
 			worldProjection:  renderer.Identity(),
 			windowProjection: renderer.Identity(),
@@ -64,7 +65,7 @@ func GetScopeTransformationsWithReference(
 
 	width := paneExtent.Width()
 	height := paneExtent.Height()
-	effectiveRangeFeet := effectiveHalfHeightFeet(paneExtent, referenceExtent, rangeFeet)
+	effectiveRangeFeet := effectiveHalfHeightFeet(paneExtent, referenceExtent, fullHorizontalFeet)
 
 	return ScopeTransformations{
 		paneExtent:       paneExtent,
@@ -80,21 +81,19 @@ func GetScopeTransformationsWithReference(
 func effectiveHalfHeightFeet(
 	paneExtent redsmath.Rect,
 	referenceExtent redsmath.Rect,
-	rangeFeet float32,
+	fullHorizontalFeet float32,
 ) float32 {
-	if paneExtent.Empty() || referenceExtent.Empty() || rangeFeet <= 0 {
-		return rangeFeet
+	if paneExtent.Empty() || referenceExtent.Empty() || fullHorizontalFeet <= 0 {
+		return fullHorizontalFeet
 	}
 
-	refMin := referenceExtent.Width()
-	if referenceExtent.Height() < refMin {
-		refMin = referenceExtent.Height()
-	}
-	if refMin <= 0 {
-		return rangeFeet
+	refWidth := referenceExtent.Width()
+	if refWidth <= 0 {
+		return fullHorizontalFeet
 	}
 
-	return rangeFeet * paneExtent.Height() / refMin
+	feetPerPixel := fullHorizontalFeet / refWidth
+	return paneExtent.Height() * feetPerPixel * 0.5
 }
 
 func rotatedWorldProjection(
