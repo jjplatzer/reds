@@ -1044,8 +1044,13 @@ func (p *ASDEXPane) activateTempDataDcbHit(hit DcbHit) bool {
 		p.openTempDataDcbMenu()
 		return true
 	case DcbFunctionDone:
-		p.closeDcbCurrentSubmenu()
-		return true
+		switch p.dcb.Menu() {
+		case DcbMenuTempData, DcbMenuClosedRunway:
+			p.closeDcbCurrentSubmenu()
+			return true
+		default:
+			return false
+		}
 	case DcbFunctionClosedRunway:
 		p.openTempDataClosedRunwayDcbMenu()
 		return true
@@ -1423,6 +1428,8 @@ func (p *ASDEXPane) finishTempAreaDraft() {
 	polygon = append(polygon, first)
 	p.tempData.AddArea(draft.Type, polygon)
 
+	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.dcb.SetMenu(DcbMenuTempData)
 	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
@@ -1435,6 +1442,8 @@ func (p *ASDEXPane) cancelTempAreaDraft() {
 		return
 	}
 
+	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.dcb.SetMenu(DcbMenuTempData)
 	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
@@ -1548,6 +1557,8 @@ func (p *ASDEXPane) clearTempDataCommandConflicts() {
 		return
 	}
 
+	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil
@@ -1631,6 +1642,8 @@ func (p *ASDEXPane) closeDcbSubmenu() {
 	}
 	p.dcbMenuCommand = nil
 	p.dcbSpinner = nil
+	p.dbAreaDraft = nil
+	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
 	p.tempTextCommand = nil
 	p.tempTextPlacement = nil

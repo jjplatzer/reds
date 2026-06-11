@@ -76,6 +76,7 @@ const (
 type DataBlockSettings struct {
 	ShowDataBlocks bool
 	FullDataBlocks bool
+	DataBlocksOff  bool
 
 	FontSize        int
 	Brightness      int
@@ -163,6 +164,7 @@ func DefaultDataBlockSettings() DataBlockSettings {
 	return DataBlockSettings{
 		ShowDataBlocks: true,
 		FullDataBlocks: true,
+		DataBlocksOff:  false,
 
 		FontSize:        2,
 		Brightness:      brightnessDefault,

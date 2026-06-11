@@ -970,6 +970,8 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 		ap.mapRotate = nil
 		ap.dcbSpinner = nil
 		ap.dcbMenuCommand = nil
+		ap.dbAreaDraft = nil
+		ap.dbAreaSelection = nil
 		ap.tempAreaDraft = nil
 		ap.tempTextCommand = nil
 		ap.tempTextPlacement = nil
@@ -998,7 +1000,8 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 		ap.auralAlerts.Stop()
 		return true
 	}
-	if ap.tempAreaDraft != nil || ap.tempTextCommand != nil || ap.tempTextPlacement != nil ||
+	if ap.dbAreaDraft != nil || ap.dbAreaSelection != nil || ap.tempAreaDraft != nil ||
+		ap.tempTextCommand != nil || ap.tempTextPlacement != nil ||
 		ap.tempDataSelectMode != TempDataSelectNone || ap.newWindow != nil {
 		return false
 	}

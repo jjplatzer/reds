@@ -59,9 +59,13 @@ func (ap *ASDEXPane) cmdBareAircraftSlew(
 	}
 
 	windowID := ap.activeWindowID()
-	settings := ap.dataBlockSettingsForWindow(windowID)
+	settings := ap.resolveDataBlockSettings(target, windowID, false, false)
 	current := ap.targetShowsDataBlockInWindow(target, windowID, settings)
-	ap.setTargetShowDBOverride(windowID, target.ID, !current)
+	if settings.DataBlocksOff {
+		ap.setTargetDBOffAreaOverride(windowID, target.ID, !current)
+	} else {
+		ap.setTargetShowDBOverride(windowID, target.ID, !current)
+	}
 	return CommandStatus{}
 }
 
@@ -90,6 +94,8 @@ func (ap *ASDEXPane) cmdRSlew(
 	ap.mapRotate = nil
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
+	ap.dbAreaDraft = nil
+	ap.dbAreaSelection = nil
 	ap.tempAreaDraft = nil
 	ap.tempTextCommand = nil
 	ap.tempTextPlacement = nil

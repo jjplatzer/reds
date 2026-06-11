@@ -35,10 +35,15 @@ type ScopeWindow struct {
 type WindowDisplayState struct {
 	DB DataBlockSettings
 
-	TargetShowDBOverrides map[string]bool
+	TargetShowDBOverrides    map[string]bool
+	TargetDBOffAreaOverrides map[string]bool
 
 	LeaderDirectionOverrides map[string]LeaderDirection
 	LeaderLengthOverrides    map[string]int
+
+	DataBlockAreas   []DataBlockArea
+	NextDBAreaID     int
+	SelectedDBAreaID string
 
 	// Later:
 	// TempTextShowDBOverrides map[string]bool
@@ -49,7 +54,8 @@ type WindowDisplayState struct {
 
 func NewWindowDisplayState() *WindowDisplayState {
 	return &WindowDisplayState{
-		DB: DefaultDataBlockSettings(),
+		DB:           DefaultDataBlockSettings(),
+		NextDBAreaID: 1,
 	}
 }
 
@@ -414,6 +420,8 @@ func (p *ASDEXPane) maybeActivateScopeWindowOnLeftPress(ctx *panes.Context) {
 		p.mapReposition != nil ||
 		p.mapRotate != nil ||
 		p.listRepositionActive() ||
+		p.dbAreaDraft != nil ||
+		p.dbAreaSelection != nil ||
 		p.tempAreaDraft != nil ||
 		p.tempTextCommand != nil ||
 		p.tempTextPlacement != nil ||
