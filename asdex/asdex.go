@@ -1865,7 +1865,7 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 	case DcbSpinnerBrightness:
 		next := clampBrightness(p.currentBrightnessValue(spinner.Function) + delta)
 		p.setBrightnessValue(spinner.Function, next)
-		spinner.SetValue(next)
+		spinner.Value = next
 	default:
 		spinner.Increment(delta)
 	}

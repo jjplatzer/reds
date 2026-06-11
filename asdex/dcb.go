@@ -1,7 +1,6 @@
 package asdex
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 	"unicode"
@@ -257,8 +256,7 @@ type DcbSpinner struct {
 	Value    int
 	Original int
 
-	MaxInputDigits            int
-	ReplaceInputOnFirstInsert bool
+	MaxInputDigits int
 
 	input  string
 	cursor int
@@ -270,21 +268,19 @@ func NewBrightnessSpinner(
 	current int,
 ) *DcbSpinner {
 	current = clampBrightness(current)
-	input := fmt.Sprintf("%03d", current)
 	return &DcbSpinner{
-		Type:                      DcbSpinnerBrightness,
-		Function:                  function,
-		Title:                     "BRITE",
-		Lines:                     []string{"BRITE", label},
-		Min:                       brightnessMin,
-		Max:                       brightnessMax,
-		Step:                      1,
-		Value:                     current,
-		Original:                  current,
-		MaxInputDigits:            3,
-		ReplaceInputOnFirstInsert: true,
-		input:                     input,
-		cursor:                    len(input),
+		Type:           DcbSpinnerBrightness,
+		Function:       function,
+		Title:          "BRITE",
+		Lines:          []string{"BRITE", label},
+		Min:            brightnessMin,
+		Max:            brightnessMax,
+		Step:           1,
+		Value:          current,
+		Original:       current,
+		MaxInputDigits: 3,
+		input:          "",
+		cursor:         0,
 	}
 }
 
@@ -515,12 +511,6 @@ func (s *DcbSpinner) Insert(r rune) {
 	}
 
 	value := []rune(s.input)
-	if s.ReplaceInputOnFirstInsert {
-		value = nil
-		s.input = ""
-		s.cursor = 0
-		s.ReplaceInputOnFirstInsert = false
-	}
 	maxDigits := s.MaxInputDigits
 	if maxDigits <= 0 {
 		maxDigits = 3
@@ -1243,7 +1233,7 @@ func (d *Dcb) leaderLengthLabel(state DcbState) string {
 }
 
 func brightnessLabelValue(value int) string {
-	return fmt.Sprintf("%03d", clampBrightness(value))
+	return strconv.Itoa(clampBrightness(value))
 }
 
 func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
