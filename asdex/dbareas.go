@@ -86,6 +86,15 @@ func dbAreaEditModeForMenu(menu DcbMenu) DataBlockAreaEditMode {
 	return DataBlockAreaEditDefineTrait
 }
 
+func dbAreaEditReturnContext(menu DcbMenu) (DcbMenu, []string) {
+	switch menu {
+	case DcbMenuModifyTraitArea:
+		return DcbMenuModifyTraitArea, []string{"DB AREA", "MODIFY TRAIT AREA"}
+	default:
+		return DcbMenuDefineTraitArea, []string{"DB AREA", "DEFINE TRAIT AREA"}
+	}
+}
+
 func dbAreaEditCommandLines(mode DataBlockAreaEditMode) []string {
 	switch mode {
 	case DataBlockAreaEditModifyTrait:

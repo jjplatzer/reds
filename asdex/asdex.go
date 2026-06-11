@@ -1170,11 +1170,17 @@ func (p *ASDEXPane) activateTraitAreaDcbHit(hit DcbHit) bool {
 		return p.updateSelectedDataBlockAreaTraits(func(t *DataBlockAreaTraits) {
 			t.ShowVector = !t.ShowVector
 		})
-	case DcbFunctionDbAreaDataBlockCharSize,
-		DcbFunctionDbAreaDataBlockBrightness,
-		DcbFunctionDbAreaLeaderLength,
-		DcbFunctionDbAreaLeaderDirection:
+	case DcbFunctionDbAreaDataBlockCharSize:
 		p.startDbAreaValueSpinner(hit.Function)
+		return true
+	case DcbFunctionDbAreaDataBlockBrightness:
+		p.startDbAreaBrightnessSpinner()
+		return true
+	case DcbFunctionDbAreaLeaderLength:
+		p.startDbAreaLeaderLengthSpinner()
+		return true
+	case DcbFunctionDbAreaLeaderDirection:
+		p.startDbAreaLeaderDirectionSpinner()
 		return true
 	}
 	return false
@@ -1221,19 +1227,31 @@ func (p *ASDEXPane) updateDataBlockAreaTraitsByID(
 	return false
 }
 
+func (p *ASDEXPane) selectedDbAreaForEdit() (ScopeWindowID, *WindowDisplayState, *DataBlockArea, bool) {
+	if p == nil {
+		return 0, nil, nil, false
+	}
+
+	windowID := p.activeWindowID()
+	state := p.displayStateForWindow(windowID)
+	area, ok := state.selectedDataBlockArea()
+	if !ok || area.Traits.DataBlocksOff {
+		return 0, nil, nil, false
+	}
+	return windowID, state, area, true
+}
+
 func (p *ASDEXPane) startDbAreaValueSpinner(function DcbFunction) {
 	if p == nil {
 		return
 	}
 
-	windowID := p.activeWindowID()
-	editMode := dbAreaEditModeForMenu(p.dcb.Menu())
-	state := p.displayStateForWindow(windowID)
-	area, ok := state.selectedDataBlockArea()
-	if !ok || area.Traits.DataBlocksOff {
+	windowID, _, area, ok := p.selectedDbAreaForEdit()
+	if !ok {
 		p.previewArea.SetSystemResponse("")
 		return
 	}
+	editMode := dbAreaEditModeForMenu(p.dcb.Menu())
 
 	spinnerType := DcbSpinnerNone
 	title := ""
@@ -1286,6 +1304,72 @@ func (p *ASDEXPane) startDbAreaValueSpinner(function DcbFunction) {
 		currentValue,
 	)
 	p.dcbMenuCommand = nil
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) startDbAreaBrightnessSpinner() {
+	if p == nil {
+		return
+	}
+
+	windowID, _, area, ok := p.selectedDbAreaForEdit()
+	if !ok {
+		p.previewArea.SetSystemResponse("")
+		return
+	}
+
+	returnMenu := p.dcb.Menu()
+	areaID := area.ID
+	current := area.Traits.Brightness
+	p.clearDcbModalConflicts()
+	p.dcb.SetMenu(returnMenu)
+	p.dcbMenuCommand = nil
+	p.dcbSpinner = NewDbAreaBrightnessSpinner(windowID, areaID, returnMenu, current)
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) startDbAreaLeaderLengthSpinner() {
+	if p == nil {
+		return
+	}
+
+	windowID, _, area, ok := p.selectedDbAreaForEdit()
+	if !ok {
+		p.previewArea.SetSystemResponse("")
+		return
+	}
+
+	returnMenu := p.dcb.Menu()
+	areaID := area.ID
+	current := area.Traits.LeaderLength
+	p.clearDcbModalConflicts()
+	p.dcb.SetMenu(returnMenu)
+	p.dcbMenuCommand = nil
+	p.dcbSpinner = NewDbAreaLeaderLengthSpinner(windowID, areaID, returnMenu, current)
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) startDbAreaLeaderDirectionSpinner() {
+	if p == nil {
+		return
+	}
+
+	windowID, _, area, ok := p.selectedDbAreaForEdit()
+	if !ok {
+		p.previewArea.SetSystemResponse("")
+		return
+	}
+
+	returnMenu := p.dcb.Menu()
+	areaID := area.ID
+	current := area.Traits.LeaderDirection
+	p.clearDcbModalConflicts()
+	p.dcb.SetMenu(returnMenu)
+	p.dcbMenuCommand = nil
+	p.dcbSpinner = NewDbAreaLeaderDirectionSpinner(windowID, areaID, returnMenu, current)
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
@@ -1367,8 +1451,25 @@ func (p *ASDEXPane) restoreDbAreaEditCommand(spinner *DcbSpinner) {
 		return
 	}
 
+	if spinner.ReturnMenu != DcbMenuOff {
+		p.dcb.SetMenu(spinner.ReturnMenu)
+	}
+	if len(spinner.ReturnLines) > 0 {
+		p.dcbMenuCommand = NewDcbMenuCommand(spinner.ReturnLines...)
+		return
+	}
 	p.dcb.SetMenu(dbAreaEditMenu(spinner.DbAreaEditMode))
 	p.dcbMenuCommand = NewDcbMenuCommand(dbAreaEditCommandLines(spinner.DbAreaEditMode)...)
+}
+
+func (p *ASDEXPane) finishDbAreaSpinner(spinner *DcbSpinner, systemResponse string) {
+	if p == nil || spinner == nil {
+		return
+	}
+
+	p.restoreDbAreaEditCommand(spinner)
+	p.dcbSpinner = nil
+	p.previewArea.SetSystemResponse(systemResponse)
 }
 
 func (p *ASDEXPane) commitDcbSpinner() {
@@ -1396,10 +1497,7 @@ func (p *ASDEXPane) commitDcbSpinner() {
 		p.dcbSpinner = nil
 		p.previewArea.SetSystemResponse("")
 		return
-	case DcbSpinnerDbAreaCharSize,
-		DcbSpinnerDbAreaBrightness,
-		DcbSpinnerDbAreaLeaderLength,
-		DcbSpinnerDbAreaLeaderDirection:
+	case DcbSpinnerDbAreaCharSize:
 		if strings.TrimSpace(spinner.InputText()) == "" {
 			p.restoreDbAreaEditCommand(spinner)
 			p.dcbSpinner = nil
@@ -1415,33 +1513,21 @@ func (p *ASDEXPane) commitDcbSpinner() {
 			return
 		}
 
-		if spinner.Type == DcbSpinnerDbAreaLeaderDirection {
-			direction, ok := leaderDirectionFromDisplayValue(value)
-			if !ok {
-				p.restoreDbAreaEditCommand(spinner)
-				p.dcbSpinner = nil
-				p.previewArea.SetSystemResponse("INVALID ENTRY")
-				return
-			}
-			p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
-				t.LeaderDirection = direction
-			})
-		} else {
-			p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
-				switch spinner.Type {
-				case DcbSpinnerDbAreaCharSize:
-					t.FontSize = value
-				case DcbSpinnerDbAreaBrightness:
-					t.Brightness = value
-				case DcbSpinnerDbAreaLeaderLength:
-					t.LeaderLength = value
-				}
-			})
-		}
-
+		p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
+			t.FontSize = value
+		})
 		p.restoreDbAreaEditCommand(spinner)
 		p.dcbSpinner = nil
 		p.previewArea.SetSystemResponse("")
+		return
+	case DcbSpinnerDbAreaBrightness:
+		p.commitDbAreaBrightnessSpinner(spinner)
+		return
+	case DcbSpinnerDbAreaLeaderLength:
+		p.commitDbAreaLeaderLengthSpinner(spinner)
+		return
+	case DcbSpinnerDbAreaLeaderDirection:
+		p.commitDbAreaLeaderDirectionSpinner(spinner)
 		return
 	default:
 		p.dcbSpinner = nil
@@ -1450,19 +1536,76 @@ func (p *ASDEXPane) commitDcbSpinner() {
 	}
 }
 
+func (p *ASDEXPane) commitDbAreaBrightnessSpinner(spinner *DcbSpinner) {
+	text := strings.TrimSpace(spinner.InputText())
+	value, err := strconv.Atoi(text)
+	if err != nil || value < brightnessMin || value > brightnessMax {
+		p.finishDbAreaSpinner(spinner, "INVALID ENTRY")
+		return
+	}
+
+	if p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
+		t.Brightness = value
+	}) {
+		p.finishDbAreaSpinner(spinner, "")
+		return
+	}
+	p.finishDbAreaSpinner(spinner, "INVALID ENTRY")
+}
+
+func (p *ASDEXPane) commitDbAreaLeaderLengthSpinner(spinner *DcbSpinner) {
+	text := strings.TrimSpace(spinner.InputText())
+	value, err := strconv.Atoi(text)
+	if err != nil || value < leaderLengthMin || value > leaderLengthMax {
+		p.finishDbAreaSpinner(spinner, "INVALID LNG")
+		return
+	}
+
+	if p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
+		t.LeaderLength = value
+	}) {
+		p.finishDbAreaSpinner(spinner, "")
+		return
+	}
+	p.finishDbAreaSpinner(spinner, "INVALID LNG")
+}
+
+func (p *ASDEXPane) commitDbAreaLeaderDirectionSpinner(spinner *DcbSpinner) {
+	text := strings.TrimSpace(spinner.InputText())
+	value, err := strconv.Atoi(text)
+	if err != nil || value < 1 || value > 9 || value == 5 {
+		p.finishDbAreaSpinner(spinner, "INVALID ENTRY")
+		return
+	}
+
+	direction, ok := leaderDirectionFromDisplayValue(value)
+	if !ok {
+		p.finishDbAreaSpinner(spinner, "INVALID ENTRY")
+		return
+	}
+	if p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
+		t.LeaderDirection = direction
+	}) {
+		p.finishDbAreaSpinner(spinner, "")
+		return
+	}
+	p.finishDbAreaSpinner(spinner, "INVALID ENTRY")
+}
+
 func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 	if p == nil || p.dcbSpinner == nil || delta == 0 {
 		return
 	}
 
-	switch p.dcbSpinner.Type {
+	spinner := p.dcbSpinner
+	switch spinner.Type {
 	case DcbSpinnerRange:
-		windowID := p.dcbSpinner.WindowID
+		windowID := spinner.WindowID
 		view, ok := p.scopeViewForWindow(windowID)
 		if !ok {
 			windowID = p.activeWindowID()
 			view = p.activeScopeView()
-			p.dcbSpinner.WindowID = windowID
+			spinner.WindowID = windowID
 		}
 
 		next := view.RangeSetting
@@ -1476,9 +1619,42 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 		)
 
 		p.setRangeSettingForWindow(windowID, next)
-		p.dcbSpinner.Value = next
+		spinner.Value = next
+	case DcbSpinnerDbAreaBrightness:
+		next := clampInt(spinner.Value+delta, brightnessFloorDefault, brightnessMax)
+		if next != spinner.Value {
+			spinner.Value = next
+			p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
+				t.Brightness = next
+			})
+		}
+	case DcbSpinnerDbAreaLeaderLength:
+		next := clampInt(spinner.Value+delta, leaderLengthMin, leaderLengthMax)
+		if next != spinner.Value {
+			spinner.Value = next
+			p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
+				t.LeaderLength = next
+			})
+		}
+	case DcbSpinnerDbAreaLeaderDirection:
+		next := spinner.Value + delta
+		if delta > 0 && next == 5 {
+			next++
+		} else if delta < 0 && next == 5 {
+			next--
+		}
+		next = clampInt(next, 1, 9)
+		if next != spinner.Value {
+			direction, ok := leaderDirectionFromDisplayValue(next)
+			if ok {
+				spinner.Value = next
+				p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
+					t.LeaderDirection = direction
+				})
+			}
+		}
 	default:
-		p.dcbSpinner.Increment(delta)
+		spinner.Increment(delta)
 	}
 	p.previewArea.SetSystemResponse("")
 }
@@ -1919,6 +2095,9 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 	}
 	if p != nil && p.listRepositionActive() {
 		return CursorModeMove
+	}
+	if p != nil && p.dcbSpinner != nil {
+		return CursorModeHidden
 	}
 	if p != nil && p.tempTextCommand != nil {
 		return CursorModeHidden

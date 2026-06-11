@@ -222,8 +222,11 @@ type DcbSpinner struct {
 	WindowID       ScopeWindowID
 	AreaID         string
 	DbAreaEditMode DataBlockAreaEditMode
+	ReturnMenu     DcbMenu
+	ReturnLines    []string
 
 	Title string
+	Lines []string
 
 	Min  int
 	Max  int
@@ -231,6 +234,8 @@ type DcbSpinner struct {
 
 	Value    int
 	Original int
+
+	MaxInputDigits int
 
 	input  string
 	cursor int
@@ -259,6 +264,7 @@ func NewRangeDcbSpinner(windowID ScopeWindowID, currentRange int) *DcbSpinner {
 		Function: DcbFunctionRange,
 		WindowID: windowID,
 		Title:    "RANGE",
+		Lines:    []string{"RANGE"},
 		Min:      asdexMinRangeSetting,
 		Max:      asdexMaxRangeSetting,
 		Step:     1,
@@ -281,20 +287,114 @@ func NewDbAreaDcbSpinner(
 	currentValue int,
 ) *DcbSpinner {
 	currentValue = clampInt(currentValue, min, max)
+	returnMenu := dbAreaEditMenu(editMode)
+	returnLines := dbAreaEditCommandLines(editMode)
+	input := strconv.Itoa(currentValue)
 	return &DcbSpinner{
 		Type:           spinnerType,
 		Function:       function,
 		WindowID:       windowID,
 		AreaID:         areaID,
 		DbAreaEditMode: editMode,
+		ReturnMenu:     returnMenu,
+		ReturnLines:    returnLines,
 		Title:          title,
+		Lines:          append(append([]string(nil), returnLines...), title),
 		Min:            min,
 		Max:            max,
 		Step:           1,
 		Value:          currentValue,
 		Original:       currentValue,
-		input:          strconv.Itoa(currentValue),
-		cursor:         len(strconv.Itoa(currentValue)),
+		MaxInputDigits: 3,
+		input:          input,
+		cursor:         len(input),
+	}
+}
+
+func NewDbAreaBrightnessSpinner(
+	windowID ScopeWindowID,
+	areaID string,
+	returnMenu DcbMenu,
+	current int,
+) *DcbSpinner {
+	returnMenu, returnLines := dbAreaEditReturnContext(returnMenu)
+	current = clampInt(current, brightnessMin, brightnessMax)
+	return &DcbSpinner{
+		Type:           DcbSpinnerDbAreaBrightness,
+		Function:       DcbFunctionDbAreaDataBlockBrightness,
+		WindowID:       windowID,
+		AreaID:         areaID,
+		ReturnMenu:     returnMenu,
+		ReturnLines:    returnLines,
+		Title:          "BRITE",
+		Lines:          append(append([]string(nil), returnLines...), "BRITE", "DATA BLOCK"),
+		Min:            brightnessMin,
+		Max:            brightnessMax,
+		Step:           1,
+		Value:          current,
+		Original:       current,
+		MaxInputDigits: 2,
+		input:          "",
+		cursor:         0,
+	}
+}
+
+func NewDbAreaLeaderLengthSpinner(
+	windowID ScopeWindowID,
+	areaID string,
+	returnMenu DcbMenu,
+	current int,
+) *DcbSpinner {
+	returnMenu, returnLines := dbAreaEditReturnContext(returnMenu)
+	current = clampInt(current, leaderLengthMin, leaderLengthMax)
+	return &DcbSpinner{
+		Type:           DcbSpinnerDbAreaLeaderLength,
+		Function:       DcbFunctionDbAreaLeaderLength,
+		WindowID:       windowID,
+		AreaID:         areaID,
+		ReturnMenu:     returnMenu,
+		ReturnLines:    returnLines,
+		Title:          "LDR LNG",
+		Lines:          append(append([]string(nil), returnLines...), "LDR LNG"),
+		Min:            leaderLengthMin,
+		Max:            leaderLengthMax,
+		Step:           1,
+		Value:          current,
+		Original:       current,
+		MaxInputDigits: 2,
+		input:          "",
+		cursor:         0,
+	}
+}
+
+func NewDbAreaLeaderDirectionSpinner(
+	windowID ScopeWindowID,
+	areaID string,
+	returnMenu DcbMenu,
+	current LeaderDirection,
+) *DcbSpinner {
+	returnMenu, returnLines := dbAreaEditReturnContext(returnMenu)
+	value, err := strconv.Atoi(leaderDirectionDisplayValue(current))
+	if err != nil || value < 1 || value > 9 || value == 5 {
+		value = 9
+	}
+	return &DcbSpinner{
+		Type:           DcbSpinnerDbAreaLeaderDirection,
+		Function:       DcbFunctionDbAreaLeaderDirection,
+		WindowID:       windowID,
+		AreaID:         areaID,
+		ReturnMenu:     returnMenu,
+		ReturnLines:    returnLines,
+		Title:          "LDR DIR",
+		Lines:          append(append([]string(nil), returnLines...), "LDR DIR"),
+		Min:            1,
+		Max:            9,
+		Step:           1,
+		Value:          value,
+		Original:       value,
+		MaxInputDigits: 1,
+		input:          "",
+		cursor:         0,
 	}
 }
 
@@ -302,11 +402,22 @@ func (s *DcbSpinner) DisplayLines() []string {
 	if s == nil {
 		return nil
 	}
-	return []string{s.Title, s.InputText()}
+	lines := append([]string(nil), s.Lines...)
+	if len(lines) == 0 && s.Title != "" {
+		lines = append(lines, s.Title)
+	}
+	lines = append(lines, s.InputText())
+	return lines
 }
 
 func (s *DcbSpinner) CursorLine() int {
-	return 2
+	if s == nil {
+		return 1
+	}
+	if len(s.Lines) == 0 && s.Title != "" {
+		return 2
+	}
+	return len(s.Lines) + 1
 }
 
 func (s *DcbSpinner) CursorColumn() int {
@@ -357,7 +468,11 @@ func (s *DcbSpinner) Insert(r rune) {
 	}
 
 	value := []rune(s.input)
-	if len(value) >= 3 {
+	maxDigits := s.MaxInputDigits
+	if maxDigits <= 0 {
+		maxDigits = 3
+	}
+	if len(value) >= maxDigits {
 		return
 	}
 
