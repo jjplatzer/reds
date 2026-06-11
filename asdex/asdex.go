@@ -3484,12 +3484,36 @@ func (p *ASDEXPane) listRepositionActive() bool {
 	return p != nil && (p.previewReposition != nil || p.coastListReposition != nil)
 }
 
+const mapRepositionCenterDeadzonePx = float32(1)
+
+func roundLogicalPixel(v float32) float32 {
+	return float32(stdmath.Round(float64(v)))
+}
+
 func mapRepositionCursorCenter(rect redsmath.Rect) redsmath.Vec2 {
-	size := rect.Size()
-	return rect.Min.Add(redsmath.Vec2{
-		X: size.X * 0.5,
-		Y: size.Y * 0.5,
-	})
+	return redsmath.Vec2{
+		X: roundLogicalPixel(rect.Min.X + rect.Width()*0.5),
+		Y: roundLogicalPixel(rect.Min.Y + rect.Height()*0.5),
+	}
+}
+
+func mapRepositionDelta(mousePos, center redsmath.Vec2) (redsmath.Vec2, bool) {
+	delta := mousePos.Sub(center)
+	d2 := delta.X*delta.X + delta.Y*delta.Y
+	if d2 <= mapRepositionCenterDeadzonePx*mapRepositionCenterDeadzonePx {
+		return redsmath.Vec2{}, false
+	}
+	return delta, true
+}
+
+func (p *ASDEXPane) recenterMapRepositionCursor(ctx *panes.Context, center redsmath.Vec2) {
+	if ctx == nil || ctx.Platform == nil || ctx.Mouse == nil {
+		return
+	}
+
+	ctx.Platform.SetMousePosition(ctx.PaneRect.Min.Add(center))
+	ctx.Mouse.Pos = center
+	ctx.Mouse.Delta = redsmath.Vec2{}
 }
 
 func (p *ASDEXPane) centerMapRepositionCursor(ctx *panes.Context) {
@@ -3502,11 +3526,7 @@ func (p *ASDEXPane) centerMapRepositionCursor(ctx *panes.Context) {
 		rect = redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y)
 	}
 	center := mapRepositionCursorCenter(rect)
-	ctx.Platform.SetMousePosition(ctx.PaneRect.Min.Add(center))
-	if ctx.Mouse != nil {
-		ctx.Mouse.Pos = center
-		ctx.Mouse.Delta = redsmath.Vec2{}
-	}
+	p.recenterMapRepositionCursor(ctx, center)
 }
 
 func (p *ASDEXPane) consumeMapRepositionMouse(
@@ -3539,8 +3559,9 @@ func (p *ASDEXPane) consumeMapRepositionMouse(
 	transforms = scopeTransformForWindow(rect, mainReferenceExtent(ctx.PaneSize()), view)
 
 	center := mapRepositionCursorCenter(rect)
-	delta := mouse.Pos.Sub(center)
-	if delta.X == 0 && delta.Y == 0 {
+	delta, moved := mapRepositionDelta(mouse.Pos, center)
+	if !moved {
+		p.recenterMapRepositionCursor(ctx, center)
 		return true
 	}
 
@@ -3549,9 +3570,7 @@ func (p *ASDEXPane) consumeMapRepositionMouse(
 		view.Center = view.Center.Sub(deltaWorld)
 	})
 
-	ctx.Platform.SetMousePosition(ctx.PaneRect.Min.Add(center))
-	mouse.Pos = center
-	mouse.Delta = redsmath.Vec2{}
+	p.recenterMapRepositionCursor(ctx, center)
 
 	return true
 }
