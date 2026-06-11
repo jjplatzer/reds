@@ -817,6 +817,7 @@ func (td *TempData) DrawTempTexts(
 	font *renderer.BitmapFont,
 	textureForSize func(size int) renderer.TextureID,
 	settings DataBlockSettings,
+	defaultBrightness int,
 ) {
 	if td == nil || cb == nil || font == nil || textureForSize == nil || len(td.texts) == 0 {
 		return
@@ -836,7 +837,7 @@ func (td *TempData) DrawTempTexts(
 			continue
 		}
 
-		color := applyBrightness(tempTextColor(text), tempTextBrightness(text), brightnessFloorDefault)
+		color := applyBrightness(tempTextColor(text), tempTextBrightness(text, defaultBrightness), brightnessFloorDefault)
 		lineBuilder := renderer.GetLinesBuilder()
 		drawOneTempText(text, transforms, lineBuilder, tdb, font, fontSize, settings, color)
 		cb.SetRGB(color)
@@ -857,11 +858,11 @@ func tempTextColor(text TempText) renderer.RGB {
 	return tempTextRGB
 }
 
-func tempTextBrightness(text TempText) int {
+func tempTextBrightness(text TempText, defaultBrightness int) int {
 	if text.Brightness == nil {
-		return tempTextBrightnessDefault
+		return clampBrightness(defaultBrightness)
 	}
-	return *text.Brightness
+	return clampBrightness(*text.Brightness)
 }
 
 func drawOneTempText(
