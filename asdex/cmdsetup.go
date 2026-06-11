@@ -399,6 +399,7 @@ func (ap *ASDEXPane) cmdNewWindow(_ *panes.Context) CommandStatus {
 	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = NewNewWindowCommand()
+	ap.deleteWindow = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.previewArea.SetSystemResponse("")
 	ap.clearHighlightedTarget()
@@ -428,6 +429,7 @@ func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
 	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = nil
+	ap.deleteWindow = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
@@ -464,6 +466,7 @@ func (ap *ASDEXPane) cmdMapReposition(ctx *panes.Context) CommandStatus {
 	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = nil
+	ap.deleteWindow = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""
@@ -501,6 +504,7 @@ func (ap *ASDEXPane) cmdMapRotate(_ *panes.Context) CommandStatus {
 	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
 	ap.tempData.ClearHighlights()
 	ap.newWindow = nil
+	ap.deleteWindow = nil
 	ap.dcb.ReturnToMainMenu()
 	ap.datablockEdit = nil
 	ap.editingTargetID = ""

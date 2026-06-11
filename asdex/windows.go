@@ -112,6 +112,8 @@ type NewWindowCommand struct {
 	mouse       redsmath.Vec2
 }
 
+type DeleteWindowCommand struct{}
+
 const (
 	maxSecondaryWindows = 4
 
@@ -149,6 +151,17 @@ func (cmd *NewWindowCommand) DisplayLines() []string {
 	return []string{"NEW WINDOW"}
 }
 
+func NewDeleteWindowCommand() *DeleteWindowCommand {
+	return &DeleteWindowCommand{}
+}
+
+func (cmd *DeleteWindowCommand) DisplayLines() []string {
+	if cmd == nil {
+		return nil
+	}
+	return []string{"TOOLS", "DELETE WINDOW"}
+}
+
 func (wm *ScopeWindowManager) CanAddSecondary() bool {
 	return wm != nil && len(wm.secondary) < maxSecondaryWindows
 }
@@ -166,6 +179,26 @@ func (wm *ScopeWindowManager) AddSecondary(rect redsmath.Rect, view ScopeView) (
 		View: view,
 	})
 	return id, true
+}
+
+func (wm *ScopeWindowManager) DeleteSecondary(id ScopeWindowID) bool {
+	if wm == nil || id == mainScopeWindowID {
+		return false
+	}
+
+	for i, win := range wm.secondary {
+		if win.Hidden || win.ID != id {
+			continue
+		}
+
+		wm.secondary = append(wm.secondary[:i], wm.secondary[i+1:]...)
+		if wm.activeID == id {
+			wm.activeID = mainScopeWindowID
+		}
+		return true
+	}
+
+	return false
 }
 
 func (wm *ScopeWindowManager) SetActiveWindow(id ScopeWindowID) {
@@ -437,6 +470,68 @@ func (p *ASDEXPane) consumeNewWindowInput(
 	return true
 }
 
+func (p *ASDEXPane) consumeDeleteWindowInput(ctx *panes.Context) bool {
+	if p == nil || p.deleteWindow == nil || ctx == nil || ctx.Mouse == nil {
+		return false
+	}
+
+	mouse := ctx.Mouse
+	if !mouse.WasPressed(platform.MouseButtonLeft) {
+		return true
+	}
+
+	windowID, _, _, ok := p.scopeWindowAtPoint(mouse.Pos, ctx.PaneSize())
+	if !ok || windowID == mainScopeWindowID {
+		p.finishDeleteWindowCommand("NO SLEW")
+		return true
+	}
+
+	p.deleteSecondaryWindow(windowID)
+	p.finishDeleteWindowCommand("")
+	return true
+}
+
+func (p *ASDEXPane) deleteSecondaryWindow(id ScopeWindowID) bool {
+	if p == nil || id == mainScopeWindowID {
+		return false
+	}
+
+	if !p.windows.DeleteSecondary(id) {
+		return false
+	}
+
+	delete(p.displayStateByWindow, id)
+	if p.dbAreaDraft != nil && p.dbAreaDraft.WindowID == id {
+		p.dbAreaDraft = nil
+	}
+	if p.dbAreaSelection != nil && p.dbAreaSelection.WindowID == id {
+		p.dbAreaSelection = nil
+	}
+	p.windows.SetActiveWindow(mainScopeWindowID)
+	p.clearHighlightedTarget()
+	return true
+}
+
+func (p *ASDEXPane) finishDeleteWindowCommand(response string) {
+	if p == nil {
+		return
+	}
+
+	p.deleteWindow = nil
+	p.dcb.SetMenu(DcbMenuTools)
+	p.dcbMenuCommand = NewDcbMenuCommand("TOOLS")
+	p.previewArea.SetSystemResponse(response)
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) cancelDeleteWindowCommand() {
+	if p == nil {
+		return
+	}
+
+	p.finishDeleteWindowCommand("")
+}
+
 func (p *ASDEXPane) maybeActivateScopeWindowOnLeftPress(ctx *panes.Context) {
 	if p == nil || ctx == nil || ctx.Mouse == nil {
 		return
@@ -448,6 +543,7 @@ func (p *ASDEXPane) maybeActivateScopeWindowOnLeftPress(ctx *panes.Context) {
 	if p.commandMode != CommandModeNone ||
 		p.datablockEdit != nil ||
 		p.newWindow != nil ||
+		p.deleteWindow != nil ||
 		p.mapReposition != nil ||
 		p.mapRotate != nil ||
 		p.listRepositionActive() ||
@@ -479,6 +575,21 @@ func (p *ASDEXPane) handleNewWindowKeyboard(ctx *panes.Context) bool {
 		p.newWindow = nil
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
+		return true
+	}
+	return false
+}
+
+func (p *ASDEXPane) handleDeleteWindowKeyboard(ctx *panes.Context) bool {
+	if p == nil || p.deleteWindow == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	keyboard := ctx.Keyboard
+	if keyboard.WasPressed(platform.KeyEscape) ||
+		keyboard.WasPressed(platform.KeyBackspace) ||
+		keyboard.WasPressed(platform.KeyDelete) {
+		p.cancelDeleteWindowCommand()
 		return true
 	}
 	return false
