@@ -119,24 +119,56 @@ type MapRotateCommand struct {
 	value            string
 	cursor           int
 	originalRotation float32
+	displayLines     []string
+	returnMenu       DcbMenu
 }
 
-func NewMapRotateCommand(windowID ScopeWindowID, rotation float32) *MapRotateCommand {
+func NewMapRotateCommand(
+	windowID ScopeWindowID,
+	rotation float32,
+	displayLines []string,
+	returnMenu DcbMenu,
+) *MapRotateCommand {
 	return &MapRotateCommand{
 		WindowID:         windowID,
 		originalRotation: rotation,
+		displayLines:     append([]string(nil), displayLines...),
+		returnMenu:       returnMenu,
 	}
+}
+
+func NewMainMapRotateCommand(windowID ScopeWindowID, rotation float32) *MapRotateCommand {
+	return NewMapRotateCommand(
+		windowID,
+		rotation,
+		[]string{"ROTATE"},
+		DcbMenuMain,
+	)
+}
+
+func NewToolsMapRotateCommand(windowID ScopeWindowID, rotation float32) *MapRotateCommand {
+	return NewMapRotateCommand(
+		windowID,
+		rotation,
+		[]string{"TOOLS", "ROTATE"},
+		DcbMenuTools,
+	)
 }
 
 func (command *MapRotateCommand) DisplayLines() []string {
 	if command == nil {
 		return nil
 	}
-	return []string{"ROTATE", command.value}
+	lines := append([]string(nil), command.displayLines...)
+	lines = append(lines, command.value)
+	return lines
 }
 
 func (command *MapRotateCommand) CursorLine() int {
-	return 2
+	if command == nil {
+		return 0
+	}
+	return len(command.displayLines) + 1
 }
 
 func (command *MapRotateCommand) CursorColumn() int {
@@ -466,34 +498,7 @@ func (ap *ASDEXPane) cmdMapRotate(_ *panes.Context) CommandStatus {
 
 	windowID := ap.activeWindowID()
 	view := ap.activeScopeView()
-	ap.commandMode = CommandModeMapRotate
-	ap.mapRotate = NewMapRotateCommand(windowID, view.Rotation)
-	ap.mapReposition = nil
-	ap.multiFunction = nil
-	ap.previewReposition = nil
-	ap.coastListReposition = nil
-	ap.dcbSpinner = nil
-	ap.dcbMenuCommand = nil
-	ap.dbAreaDraft = nil
-	ap.dbAreaSelection = nil
-	ap.tempAreaDraft = nil
-	ap.tempTextCommand = nil
-	ap.tempTextPlacement = nil
-	ap.tempDataSelectMode = TempDataSelectNone
-	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
-	ap.tempData.ClearHighlights()
-	ap.newWindow = nil
-	ap.deleteWindow = nil
-	ap.windowReposition = nil
-	ap.resizeWindow = nil
-	ap.dcb.ReturnToMainMenu()
-	ap.datablockEdit = nil
-	ap.editingTargetID = ""
-	ap.initControlEntry = nil
-	ap.termControlEntry = nil
-	ap.commandEntry.Clear()
-	ap.previewArea.SetSystemResponse("")
-	ap.clearHighlightedTarget()
+	ap.startMapRotateCommand(NewMainMapRotateCommand(windowID, view.Rotation))
 
 	return CommandStatus{Clear: ClearNone}
 }

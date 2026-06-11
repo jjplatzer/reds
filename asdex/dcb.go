@@ -1300,7 +1300,7 @@ func (d *Dcb) toolsButtonSpecs(state DcbState) []DcbButtonSpec {
 		vacant(),
 		value(DcbFunctionRange, true, d.rangeLabel(state), "RANGE"),
 		normal(DcbFunctionMapReposition, "MAP", "RPOS"),
-		value(DcbFunctionRotate, false, strconv.Itoa(state.RotationDeg), "ROTATE"),
+		value(DcbFunctionRotate, false, "", "ROTATE"),
 		normal(DcbFunctionNewWindow, "NEW", "WINDOW"),
 		normal(DcbFunctionResizeWindow, "RESIZE", "WINDOW"),
 		normal(DcbFunctionDeleteWindow, "DELETE", "WINDOW"),
