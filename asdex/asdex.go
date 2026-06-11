@@ -2097,6 +2097,25 @@ func (p *ASDEXPane) targetShowsDataBlockInWindow(
 	return settings.ShowDataBlocks
 }
 
+func (p *ASDEXPane) applyManualLeaderOverrides(
+	settings DataBlockSettings,
+	windowID ScopeWindowID,
+	targetID string,
+) DataBlockSettings {
+	if p == nil || targetID == "" {
+		return settings
+	}
+
+	if direction, ok := p.leaderDirectionOverride(windowID, targetID); ok {
+		settings.LeaderDirection = direction
+	}
+	if length, ok := p.leaderLengthOverride(windowID, targetID); ok {
+		settings.LeaderLength = length
+	}
+
+	return settings
+}
+
 func (p *ASDEXPane) resolveDataBlockSettings(
 	target *Target,
 	windowID ScopeWindowID,
@@ -2114,14 +2133,13 @@ func (p *ASDEXPane) resolveDataBlockSettings(
 	settings.ShowScratchpads = fields.ShowScratchpads
 
 	if target != nil {
+		// Datablock setting priority follows CRC: active window defaults,
+		// global DB field toggles, manual per-target leader overrides, then
+		// DB area traits while the target is inside the area.
+		settings = p.applyManualLeaderOverrides(settings, windowID, target.ID)
+
 		if area, ok := p.dataBlockAreaForPoint(windowID, target.PosFeet); ok {
 			settings = applyDataBlockAreaTraits(settings, area.Traits)
-		}
-		if direction, ok := p.leaderDirectionOverride(windowID, target.ID); ok {
-			settings.LeaderDirection = direction
-		}
-		if length, ok := p.leaderLengthOverride(windowID, target.ID); ok {
-			settings.LeaderLength = length
 		}
 	}
 
