@@ -45,8 +45,12 @@ const (
 	asdexMaxRangeSetting     = 600
 	asdexDefaultRangeSetting = 100
 	asdexFeetPerRangeUnit    = 100
-	asdexVirtualPanelWidth   = 1600
-	asdexVirtualPanelHeight  = 1200
+
+	// CRC's ASDE-X range math is affected by ViewManager.mScale:
+	// visibleFeet = RANGE*100 * floor(mScale)/(mScale*mScale).
+	// This factor matches CRC's displayed RANGE values while keeping the
+	// geometry and feet projection unchanged.
+	asdexCrcRangeVisibleScale = float32(0.786)
 )
 
 const (
@@ -4088,7 +4092,12 @@ func (p *ASDEXPane) initView(rect redsmath.Rect) {
 
 	const margin = float32(1.08)
 
-	refWidth := float32(asdexVirtualPanelWidth)
+	referenceExtent := mainReferenceExtent(rect.Size())
+	refWidth := referenceExtent.Width()
+	if refWidth <= 0 || asdexCrcRangeVisibleScale <= 0 {
+		return
+	}
+
 	rangeFromWidth := width * margin * refWidth / paneW
 	rangeFromHeight := height * margin * refWidth / paneH
 
@@ -4101,7 +4110,9 @@ func (p *ASDEXPane) initView(rect redsmath.Rect) {
 		X: (bounds.Min.X + bounds.Max.X) * 0.5,
 		Y: (bounds.Min.Y + bounds.Max.Y) * 0.5,
 	}
-	fitRangeSetting := int(stdmath.Ceil(float64(fitFullHorizontalFeet / asdexFeetPerRangeUnit)))
+	fitRangeSetting := int(stdmath.Ceil(float64(
+		fitFullHorizontalFeet / (asdexFeetPerRangeUnit * asdexCrcRangeVisibleScale),
+	)))
 	fitRangeSetting = clampInt(fitRangeSetting, asdexMinRangeSetting, asdexMaxRangeSetting)
 	if p.rangeSetting == 0 {
 		p.rangeSetting = asdexDefaultRangeSetting

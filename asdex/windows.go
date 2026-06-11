@@ -577,11 +577,8 @@ func (p *ASDEXPane) scopeWindowAtPoint(
 	return 0, redsmath.Rect{}, ScopeView{}, false
 }
 
-func mainReferenceExtent(_ redsmath.Vec2) redsmath.Rect {
-	return redsmath.RectFromSize(
-		float32(asdexVirtualPanelWidth),
-		float32(asdexVirtualPanelHeight),
-	)
+func mainReferenceExtent(paneSize redsmath.Vec2) redsmath.Rect {
+	return redsmath.RectFromSize(paneSize.X, paneSize.Y)
 }
 
 func scopeTransformForWindow(
@@ -594,6 +591,7 @@ func scopeTransformForWindow(
 		referenceExtent,
 		view.Center,
 		view.RangeFullHorizontalFeet,
+		asdexCrcRangeVisibleScale,
 		view.Rotation,
 	)
 }

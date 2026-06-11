@@ -36,6 +36,7 @@ func GetScopeTransformations(
 		paneExtent,
 		center,
 		fullHorizontalFeet,
+		1,
 		rotation,
 	)
 }
@@ -49,6 +50,7 @@ func GetScopeTransformationsWithReference(
 	referenceExtent redsmath.Rect,
 	center redsmath.Vec2,
 	fullHorizontalFeet float32,
+	rangeVisibleScale float32,
 	rotation float32,
 ) ScopeTransformations {
 	if paneExtent.Empty() || fullHorizontalFeet <= 0 {
@@ -65,7 +67,12 @@ func GetScopeTransformationsWithReference(
 
 	width := paneExtent.Width()
 	height := paneExtent.Height()
-	effectiveRangeFeet := effectiveHalfHeightFeet(paneExtent, referenceExtent, fullHorizontalFeet)
+	effectiveRangeFeet := effectiveHalfHeightFeet(
+		paneExtent,
+		referenceExtent,
+		fullHorizontalFeet,
+		rangeVisibleScale,
+	)
 
 	return ScopeTransformations{
 		paneExtent:       paneExtent,
@@ -82,6 +89,7 @@ func effectiveHalfHeightFeet(
 	paneExtent redsmath.Rect,
 	referenceExtent redsmath.Rect,
 	fullHorizontalFeet float32,
+	rangeVisibleScale float32,
 ) float32 {
 	if paneExtent.Empty() || referenceExtent.Empty() || fullHorizontalFeet <= 0 {
 		return fullHorizontalFeet
@@ -91,8 +99,11 @@ func effectiveHalfHeightFeet(
 	if refWidth <= 0 {
 		return fullHorizontalFeet
 	}
+	if rangeVisibleScale <= 0 {
+		rangeVisibleScale = 1
+	}
 
-	feetPerPixel := fullHorizontalFeet / refWidth
+	feetPerPixel := fullHorizontalFeet * rangeVisibleScale / refWidth
 	return paneExtent.Height() * feetPerPixel * 0.5
 }
 
