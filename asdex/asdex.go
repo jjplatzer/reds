@@ -1840,10 +1840,30 @@ func (p *ASDEXPane) consumeDcbSpinnerInput(ctx *panes.Context) bool {
 		p.incrementActiveDcbSpinner(-1)
 		return true
 	case mouse.WasReleased(platform.MouseButtonLeft):
-		p.commitDcbSpinner()
+		p.acceptActiveDcbSpinner()
 		return true
 	default:
 		return false
+	}
+}
+
+func (p *ASDEXPane) acceptActiveDcbSpinner() {
+	if p == nil || p.dcbSpinner == nil {
+		return
+	}
+
+	spinner := p.dcbSpinner
+	switch spinner.Type {
+	case DcbSpinnerBrightness:
+		p.finishBrightnessSpinner("")
+	case DcbSpinnerDbAreaCharSize,
+		DcbSpinnerDbAreaBrightness,
+		DcbSpinnerDbAreaLeaderLength,
+		DcbSpinnerDbAreaLeaderDirection:
+		p.finishDbAreaSpinner(spinner, "")
+	default:
+		p.dcbSpinner = nil
+		p.previewArea.SetSystemResponse("")
 	}
 }
 
@@ -1940,11 +1960,6 @@ func (p *ASDEXPane) commitDcbSpinner() {
 
 func (p *ASDEXPane) commitDbAreaCharSizeSpinner(spinner *DcbSpinner) {
 	text := strings.TrimSpace(spinner.InputText())
-	if text == "" {
-		p.finishDbAreaSpinner(spinner, "")
-		return
-	}
-
 	value, err := strconv.Atoi(text)
 	if err != nil || value < 1 || value > 6 {
 		p.finishDbAreaSpinner(spinner, "INVALID SIZE")
@@ -1962,11 +1977,6 @@ func (p *ASDEXPane) commitDbAreaCharSizeSpinner(spinner *DcbSpinner) {
 
 func (p *ASDEXPane) commitDbAreaBrightnessSpinner(spinner *DcbSpinner) {
 	text := strings.TrimSpace(spinner.InputText())
-	if text == "" {
-		p.finishDbAreaSpinner(spinner, "")
-		return
-	}
-
 	value, err := strconv.Atoi(text)
 	if err != nil || value < brightnessMin || value > brightnessMax {
 		p.finishDbAreaSpinner(spinner, "INVALID ENTRY")
@@ -1984,11 +1994,6 @@ func (p *ASDEXPane) commitDbAreaBrightnessSpinner(spinner *DcbSpinner) {
 
 func (p *ASDEXPane) commitDbAreaLeaderLengthSpinner(spinner *DcbSpinner) {
 	text := strings.TrimSpace(spinner.InputText())
-	if text == "" {
-		p.finishDbAreaSpinner(spinner, "")
-		return
-	}
-
 	value, err := strconv.Atoi(text)
 	if err != nil || value < leaderLengthMin || value > leaderLengthMax {
 		p.finishDbAreaSpinner(spinner, "INVALID LNG")
@@ -2006,11 +2011,6 @@ func (p *ASDEXPane) commitDbAreaLeaderLengthSpinner(spinner *DcbSpinner) {
 
 func (p *ASDEXPane) commitDbAreaLeaderDirectionSpinner(spinner *DcbSpinner) {
 	text := strings.TrimSpace(spinner.InputText())
-	if text == "" {
-		p.finishDbAreaSpinner(spinner, "")
-		return
-	}
-
 	value, err := strconv.Atoi(text)
 	if err != nil || value < 1 || value > 9 || value == 5 {
 		p.finishDbAreaSpinner(spinner, "INVALID ENTRY")
@@ -2043,11 +2043,6 @@ func (p *ASDEXPane) finishBrightnessSpinner(systemResponse string) {
 
 func (p *ASDEXPane) commitBrightnessSpinner(spinner *DcbSpinner) {
 	if p == nil || spinner == nil {
-		return
-	}
-
-	if strings.TrimSpace(spinner.InputText()) == "" {
-		p.finishBrightnessSpinner("")
 		return
 	}
 
@@ -3483,11 +3478,7 @@ func (p *ASDEXPane) consumeMapRotateMouse(ctx *panes.Context) bool {
 	mouse := ctx.Mouse
 	switch {
 	case mouse.WasReleased(platform.MouseButtonLeft):
-		if strings.TrimSpace(p.mapRotate.Value()) == "" {
-			p.finishMapRotateCommand("")
-			return true
-		}
-		p.submitMapRotate()
+		p.finishMapRotateCommand("")
 		return true
 	case mouse.Wheel.Y > 0 || mouse.Wheel.X > 0:
 		return p.incrementActiveMapRotate(1)
