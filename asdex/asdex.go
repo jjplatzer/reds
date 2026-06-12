@@ -2848,13 +2848,18 @@ func (p *ASDEXPane) applyCurrentCursor(ctx *panes.Context) {
 	}
 
 	p.cursorMode = CursorModeHidden
-	if ctx.Mouse != nil {
-		paneLocal := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
-		if paneLocal.Contains(ctx.Mouse.Pos) {
-			p.cursorMode = p.resolveCursorMode(ctx)
-		}
+	if ctx.Mouse == nil {
+		ctx.Platform.ClearCursorOverride()
+		return
 	}
 
+	paneLocal := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
+	if !paneLocal.Contains(ctx.Mouse.Pos) {
+		ctx.Platform.ClearCursorOverride()
+		return
+	}
+
+	p.cursorMode = p.resolveCursorMode(ctx)
 	ctx.Platform.SetCursorHiddenOverride()
 }
 
