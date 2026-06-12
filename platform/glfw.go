@@ -363,6 +363,7 @@ var trackedKeys = []trackedKey{
 	{KeyAlt, glfw.KeyLeftAlt},
 	{KeyShift, glfw.KeyLeftShift},
 	{KeyControl, glfw.KeyLeftControl},
+	{KeyC, glfw.KeyC},
 }
 
 func (g *glfwPlatform) updateKeyboard() {

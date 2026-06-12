@@ -929,6 +929,7 @@ func (p *ASDEXPane) maybeActivateScopeWindowOnLeftPress(ctx *panes.Context) {
 		p.deleteWindow != nil ||
 		p.windowReposition != nil ||
 		p.resizeWindow != nil ||
+		p.towerReadout != nil ||
 		p.mapReposition != nil ||
 		p.mapRotate != nil ||
 		p.listRepositionActive() ||

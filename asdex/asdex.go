@@ -114,6 +114,8 @@ type ASDEXPane struct {
 	alertRepository           AlertRepository
 	auralAlerts               *AuralAlertManager
 	alertMessageBox           AlertMessageBox
+	towerReference            TowerReference
+	hasTowerReference         bool
 	dcb                       Dcb
 	dcbSpinner                *DcbSpinner
 	dcbMenuCommand            *DcbMenuCommand
@@ -142,6 +144,7 @@ type ASDEXPane struct {
 	coastListReposition *CoastListRepositionCommand
 	mapReposition       *MapRepositionCommand
 	mapRotate           *MapRotateCommand
+	towerReadout        *TowerReadoutCommand
 
 	rightClickStart     redsmath.Vec2
 	rightClickCandidate bool
@@ -166,6 +169,10 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	vm, err := LoadVideoMap(airport)
 	if err != nil {
 		return nil, err
+	}
+	towerReference, hasTowerReference, towerErr := LoadTowerReference(airport, vm)
+	if towerErr != nil {
+		fmt.Fprintf(os.Stderr, "reds: %v\n", towerErr)
 	}
 	safetyLogic, err := LoadSafetyLogic(airport, vm)
 	if err != nil {
@@ -220,6 +227,8 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		alertRepository:           NewAlertRepository(auralAlerts),
 		auralAlerts:               auralAlerts,
 		alertMessageBox:           NewAlertMessageBox(),
+		towerReference:            towerReference,
+		hasTowerReference:         hasTowerReference,
 		dcb:                       NewDcb(),
 		showCoastList:             true,
 		rangeSetting:              asdexDefaultRangeSetting,
@@ -317,7 +326,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.consumeOpsHotkeys(ctx, transforms)
 	p.coastList.SetVisible(p.showCoastList)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
-	if p.mapReposition == nil && p.mapRotate == nil && !p.listRepositionActive() && p.dbAreaDraft == nil && p.dbAreaSelection == nil &&
+	if p.mapReposition == nil && p.mapRotate == nil && p.towerReadout == nil && !p.listRepositionActive() && p.dbAreaDraft == nil && p.dbAreaSelection == nil &&
 		p.tempAreaDraft == nil && p.tempTextCommand == nil && p.tempTextPlacement == nil &&
 		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil && p.deleteWindow == nil &&
 		p.windowReposition == nil && p.resizeWindow == nil {
@@ -325,7 +334,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	} else {
 		p.hoveredCoastListTarget = ""
 	}
-	if p.mapReposition == nil && p.mapRotate == nil && p.dbAreaDraft == nil && p.dbAreaSelection == nil && p.tempAreaDraft == nil &&
+	if p.mapReposition == nil && p.mapRotate == nil && p.towerReadout == nil && p.dbAreaDraft == nil && p.dbAreaSelection == nil && p.tempAreaDraft == nil &&
 		p.tempTextCommand == nil && p.tempTextPlacement == nil &&
 		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil && p.deleteWindow == nil &&
 		p.windowReposition == nil && p.resizeWindow == nil {
@@ -354,6 +363,8 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	} else if p.mapRotate != nil {
 		p.clearHighlightedTarget()
 		p.consumeMapRotateMouse(ctx)
+	} else if p.towerReadout != nil {
+		p.clearHighlightedTarget()
 	} else if p.datablockEdit != nil {
 		p.clearHighlightedTarget()
 		p.consumeDatablockEditWheel(ctx)
@@ -449,6 +460,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if p.dbAreaSelection != nil {
 		p.updateDataBlockAreaSelectionHover(ctx, referenceExtent)
 	}
+	p.updateTowerReadout(ctx, referenceExtent, rangeVisibleScale)
 	p.applyCurrentCursor(ctx)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
 	targets := p.targets.All()
@@ -831,7 +843,7 @@ func (p *ASDEXPane) dcbCursorUnlocked() bool {
 	}
 	if p.dbAreaDraft != nil || p.tempAreaDraft != nil || p.tempTextCommand != nil || p.tempTextPlacement != nil ||
 		p.tempDataSelectMode != TempDataSelectNone || p.newWindow != nil || p.deleteWindow != nil ||
-		p.windowReposition != nil || p.resizeWindow != nil {
+		p.windowReposition != nil || p.resizeWindow != nil || p.towerReadout != nil {
 		return false
 	}
 	if p.dcbSpinner != nil || p.dcbMenuCommand != nil {
@@ -846,7 +858,8 @@ func (p *ASDEXPane) dcbCursorUnlocked() bool {
 		p.previewReposition == nil &&
 		p.coastListReposition == nil &&
 		p.mapReposition == nil &&
-		p.mapRotate == nil
+		p.mapRotate == nil &&
+		p.towerReadout == nil
 }
 
 func (p *ASDEXPane) dcbMouseCaptured() bool {
@@ -1135,6 +1148,7 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		p.dcb.ToggleOnOff()
 		p.dcbSpinner = nil
 		p.dcbMenuCommand = nil
+		p.towerReadout = nil
 		p.dbAreaDraft = nil
 		p.dbAreaSelection = nil
 		p.tempAreaDraft = nil
@@ -1171,6 +1185,7 @@ func (p *ASDEXPane) clearDcbModalConflicts() {
 	p.coastListReposition = nil
 	p.mapReposition = nil
 	p.mapRotate = nil
+	p.towerReadout = nil
 	p.dcbSpinner = nil
 	p.dbAreaDraft = nil
 	p.dbAreaSelection = nil
@@ -1399,6 +1414,7 @@ func (p *ASDEXPane) startMapRotateCommand(command *MapRotateCommand) {
 	p.commandMode = CommandModeMapRotate
 	p.mapRotate = command
 	p.mapReposition = nil
+	p.towerReadout = nil
 	p.multiFunction = nil
 	p.previewReposition = nil
 	p.coastListReposition = nil
@@ -1463,6 +1479,7 @@ func (p *ASDEXPane) startNewWindowCommand(command *NewWindowCommand) {
 	p.coastListReposition = nil
 	p.mapReposition = nil
 	p.mapRotate = nil
+	p.towerReadout = nil
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
 	p.dbAreaDraft = nil
@@ -1818,6 +1835,7 @@ func (p *ASDEXPane) startRangeSpinner() {
 	p.coastListReposition = nil
 	p.mapReposition = nil
 	p.mapRotate = nil
+	p.towerReadout = nil
 	p.dcbMenuCommand = nil
 	p.dbAreaDraft = nil
 	p.dbAreaSelection = nil
@@ -2840,6 +2858,9 @@ func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
 	if p != nil && p.resizeWindow != nil {
 		return p.resizeWindowCursorMode(ctx)
 	}
+	if p != nil && p.towerReadout != nil {
+		return CursorModeScope
+	}
 	if p != nil && p.tempDataSelectMode != TempDataSelectNone {
 		if p.hoveredTempData.Type != TempDataHitNone {
 			return CursorModeSelect
@@ -2971,6 +2992,44 @@ func (p *ASDEXPane) highlightedTarget() *Target {
 	return p.targets.TargetByID(p.hover.TargetID)
 }
 
+func (p *ASDEXPane) updateTowerReadout(
+	ctx *panes.Context,
+	referenceExtent redsmath.Rect,
+	rangeVisibleScale float32,
+) {
+	if p == nil || p.towerReadout == nil || ctx == nil || ctx.Mouse == nil {
+		return
+	}
+
+	mouse := ctx.Mouse.Pos
+	windowID, windowRect, view, ok := p.scopeWindowAtPoint(mouse, ctx.PaneSize())
+	if !ok {
+		windowID = mainScopeWindowID
+		windowRect = redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y)
+		view = p.mainScopeView()
+	}
+
+	transforms := scopeTransformForWindow(
+		windowRect,
+		referenceExtent,
+		view,
+		rangeVisibleScale,
+	)
+
+	localMouse := mouse
+	if windowID != mainScopeWindowID {
+		localMouse = mouse.Sub(windowRect.Min)
+	}
+
+	cursorFeet := transforms.WorldFromWindowP(localMouse)
+	x, y := towerReadoutValues(
+		cursorFeet,
+		p.towerReadout.Tower.Feet,
+		view.Rotation,
+	)
+	p.towerReadout.SetValues(x, y)
+}
+
 func (p *ASDEXPane) activeCommandLines() []string {
 	if p == nil {
 		return nil
@@ -2998,6 +3057,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	}
 	if p.mapRotate != nil {
 		return p.mapRotate.DisplayLines()
+	}
+	if p.towerReadout != nil {
+		return p.towerReadout.DisplayLines()
 	}
 	if p.dcbSpinner != nil {
 		return p.dcbSpinner.DisplayLines()
@@ -3097,6 +3159,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.coastListReposition = nil
 	p.mapReposition = nil
 	p.mapRotate = nil
+	p.towerReadout = nil
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
 	p.dbAreaDraft = nil
@@ -3134,6 +3197,9 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.mapRotate != nil {
 		return p.handleMapRotateKeyboard(ctx)
+	}
+	if p.towerReadout != nil {
+		return p.handleTowerReadoutKeyboard(ctx)
 	}
 	if p.dcbSpinner != nil {
 		return p.handleDcbSpinnerKeyboard(ctx)
@@ -3177,8 +3243,27 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 			return true
 		}
 	}
+	if towerReadoutShortcutPressed(ctx) {
+		return false
+	}
 	if p.commandMode == CommandModeNone {
 		return p.handleNormalCommandKeyboard(ctx)
+	}
+	return false
+}
+
+func (p *ASDEXPane) handleTowerReadoutKeyboard(ctx *panes.Context) bool {
+	if p == nil || p.towerReadout == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	keyboard := ctx.Keyboard
+	if keyboard.WasPressed(platform.KeyEscape) ||
+		keyboard.WasPressed(platform.KeyBackspace) {
+		p.towerReadout = nil
+		p.previewArea.SetSystemResponse("")
+		p.clearHighlightedTarget()
+		return true
 	}
 	return false
 }
@@ -3357,6 +3442,7 @@ func (p *ASDEXPane) startMultiPreviewReposition() {
 	p.multiFunction = nil
 	p.previewReposition = NewMultiPreviewRepositionCommand()
 	p.coastListReposition = nil
+	p.towerReadout = nil
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
 	p.dbAreaDraft = nil
@@ -3385,6 +3471,7 @@ func (p *ASDEXPane) startMultiCoastListReposition() {
 	p.multiFunction = nil
 	p.previewReposition = nil
 	p.coastListReposition = NewMultiCoastListRepositionCommand()
+	p.towerReadout = nil
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
 	p.dbAreaDraft = nil

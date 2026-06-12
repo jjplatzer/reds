@@ -968,6 +968,7 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 		ap.coastListReposition = nil
 		ap.mapReposition = nil
 		ap.mapRotate = nil
+		ap.towerReadout = nil
 		ap.dcbSpinner = nil
 		ap.dcbMenuCommand = nil
 		ap.dbAreaDraft = nil
@@ -1002,7 +1003,10 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 	}
 	if ap.dbAreaDraft != nil || ap.dbAreaSelection != nil || ap.tempAreaDraft != nil ||
 		ap.tempTextCommand != nil || ap.tempTextPlacement != nil ||
-		ap.tempDataSelectMode != TempDataSelectNone || ap.newWindow != nil {
+		ap.tempDataSelectMode != TempDataSelectNone || ap.newWindow != nil ||
+		ap.deleteWindow != nil || ap.windowReposition != nil || ap.resizeWindow != nil ||
+		ap.towerReadout != nil || ap.dcbSpinner != nil || ap.dcbMenuCommand != nil ||
+		!ap.commandEntry.Empty() {
 		return false
 	}
 	if ap.commandMode != CommandModeNone {
@@ -1027,6 +1031,8 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 		command = "[MAP THEME]"
 	case ctx.Keyboard.WasPressed(platform.KeyF11):
 		command = "[NEW WINDOW]"
+	case towerReadoutShortcutPressed(ctx):
+		command = "[TWR RDOUT]"
 	default:
 		return false
 	}
@@ -1048,6 +1054,17 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 		return true
 	}
 	return false
+}
+
+func towerReadoutShortcutPressed(ctx *panes.Context) bool {
+	if ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	return ctx.Keyboard.WasPressed(platform.KeyC) &&
+		ctx.Keyboard.IsDown(platform.KeyControl) &&
+		ctx.Keyboard.IsDown(platform.KeyShift) &&
+		!ctx.Keyboard.IsDown(platform.KeyAlt)
 }
 
 func (ap *ASDEXPane) consumeCommandClicks(
