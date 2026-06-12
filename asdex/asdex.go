@@ -77,6 +77,8 @@ const (
 	zDCBBackground renderer.Z = -100
 	zDCBButtons    renderer.Z = -99
 	zDCBText       renderer.Z = -98
+
+	zMouseCursor renderer.Z = 1000
 )
 
 func windowZ(stackIndex int, localZ renderer.Z) renderer.Z {
@@ -595,6 +597,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 
 	p.renderDcb(ctx, zcb, transforms)
+	p.renderSoftwareCursor(ctx, zcb)
 }
 
 func (p *ASDEXPane) renderScopeWindow(
@@ -812,6 +815,58 @@ func (p *ASDEXPane) renderDcb(
 
 		textCB.DisableScissor()
 	}
+}
+
+func (p *ASDEXPane) renderSoftwareCursor(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil || ctx.Mouse == nil {
+		return
+	}
+	if p.cursorMode == CursorModeHidden {
+		return
+	}
+
+	cursorType, ok := p.cursors.CursorTypeForMode(p.cursorMode)
+	if !ok {
+		return
+	}
+
+	cursor := p.cursors.Cursor(cursorType)
+	if cursor == nil {
+		return
+	}
+
+	textureID := p.cursors.textureForCursor(ctx.Renderer, cursorType)
+	if textureID == 0 {
+		return
+	}
+
+	x, y, w, h := ctx.PaneFramebufferRect()
+	cb := zcb.At(zMouseCursor)
+	cb.Viewport(x, y, w, h)
+	cb.Scissor(x, y, w, h)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.SetRGBA(renderer.RGBA{R: 1, G: 1, B: 1, A: 1})
+
+	mouse := ctx.Mouse.Pos
+	left := float32(stdmath.Floor(float64(mouse.X - float32(cursor.Hotspot[0]))))
+	top := float32(stdmath.Floor(float64(mouse.Y - float32(cursor.Hotspot[1]))))
+	right := left + float32(cursor.Width)
+	bottom := top + float32(cursor.Height)
+
+	builder := renderer.GetTexturedTrianglesBuilder()
+	builder.AddQuad(
+		renderer.PointVertex{X: left, Y: top},
+		renderer.PointVertex{X: 0, Y: 0},
+		renderer.PointVertex{X: right, Y: top},
+		renderer.PointVertex{X: 1, Y: 0},
+		renderer.PointVertex{X: right, Y: bottom},
+		renderer.PointVertex{X: 1, Y: 1},
+		renderer.PointVertex{X: left, Y: bottom},
+		renderer.PointVertex{X: 0, Y: 1},
+	)
+	builder.GenerateCommands(cb, textureID)
+	renderer.ReturnTexturedTrianglesBuilder(builder)
+	cb.DisableScissor()
 }
 
 func (p *ASDEXPane) hoveredDcbButtonIndex(ctx *panes.Context) int {
@@ -2779,10 +2834,10 @@ func (p *ASDEXPane) isDestinationCurrentAirport(target *Target) bool {
 }
 
 func (p *ASDEXPane) ensureCursorsLoaded(ctx *panes.Context) {
-	if p == nil || ctx == nil || ctx.Platform == nil || p.cursors.loaded {
+	if p == nil || ctx == nil || p.cursors.loaded {
 		return
 	}
-	if err := p.cursors.Load(ctx.Platform); err != nil {
+	if err := p.cursors.Load(); err != nil {
 		fmt.Fprintf(os.Stderr, "reds: %v\n", err)
 	}
 }
@@ -2791,19 +2846,16 @@ func (p *ASDEXPane) applyCurrentCursor(ctx *panes.Context) {
 	if p == nil || ctx == nil || ctx.Platform == nil {
 		return
 	}
-	if p.datablockEdit != nil {
-		p.applyCursorMode(ctx, CursorModeHidden)
-		return
-	}
-	if ctx.Mouse == nil {
-		return
+
+	p.cursorMode = CursorModeHidden
+	if ctx.Mouse != nil {
+		paneLocal := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
+		if paneLocal.Contains(ctx.Mouse.Pos) {
+			p.cursorMode = p.resolveCursorMode(ctx)
+		}
 	}
 
-	paneLocal := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
-	if !paneLocal.Contains(ctx.Mouse.Pos) {
-		return
-	}
-	p.applyCursorMode(ctx, p.resolveCursorMode(ctx))
+	ctx.Platform.SetCursorHiddenOverride()
 }
 
 func (p *ASDEXPane) resolveCursorMode(ctx *panes.Context) CursorMode {
@@ -2907,22 +2959,6 @@ func (p *ASDEXPane) resizeWindowCursorMode(ctx *panes.Context) CursorMode {
 		return CursorModeScope
 	}
 	return cursorModeForResizeOperation(op)
-}
-
-func (p *ASDEXPane) applyCursorMode(ctx *panes.Context, mode CursorMode) {
-	if p == nil || ctx == nil || ctx.Platform == nil {
-		return
-	}
-
-	p.cursorMode = mode
-	cursor, hidden := p.cursors.CursorForMode(mode)
-	if hidden {
-		ctx.Platform.SetCursorHiddenOverride()
-		return
-	}
-	if cursor != nil {
-		ctx.Platform.SetCursorOverride(cursor)
-	}
 }
 
 func (p *ASDEXPane) updateHighlightedTarget(

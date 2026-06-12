@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/juliusplatzer/reds/platform"
-	"github.com/juliusplatzer/reds/util"
+	"github.com/juliusplatzer/reds/asdex/assets"
+	"github.com/juliusplatzer/reds/renderer"
 )
 
 type CursorType int
@@ -33,53 +33,44 @@ const (
 	CursorModeHidden
 )
 
-type cursorFile struct {
-	Type CursorType
-	Path string
-	Name string
-}
-
-var cursorFiles = []cursorFile{
-	{CursorScope, "resources/bitmaps/asdex/cursors/Asdex.cur.zst", "Asdex.cur"},
-	{CursorDcb, "resources/bitmaps/asdex/cursors/AsdexDcb.cur.zst", "AsdexDcb.cur"},
-	{CursorCaptured, "resources/bitmaps/asdex/cursors/AsdexCaptured.cur.zst", "AsdexCaptured.cur"},
-	{CursorSelect, "resources/bitmaps/asdex/cursors/AsdexSelect.cur.zst", "AsdexSelect.cur"},
-	{CursorMove, "resources/bitmaps/asdex/cursors/AsdexMove.cur.zst", "AsdexMove.cur"},
-	{CursorUpDown, "resources/bitmaps/asdex/cursors/AsdexUpDown.cur.zst", "AsdexUpDown.cur"},
-	{CursorLeftRight, "resources/bitmaps/asdex/cursors/AsdexLeftRight.cur.zst", "AsdexLeftRight.cur"},
+var cursorAssetNames = map[CursorType]string{
+	CursorScope:     "Asdex",
+	CursorDcb:       "AsdexDcb",
+	CursorCaptured:  "AsdexCaptured",
+	CursorSelect:    "AsdexSelect",
+	CursorMove:      "AsdexMove",
+	CursorUpDown:    "AsdexUpDown",
+	CursorLeftRight: "AsdexLeftRight",
 }
 
 type CursorSet struct {
-	cursors map[CursorType]*platform.Cursor
+	cursors  map[CursorType]*renderer.CursorBitmap
+	textures map[CursorType]renderer.TextureID
 
 	loaded bool
 	err    error
 }
 
-func (cs *CursorSet) Load(plat platform.Platform) error {
-	if cs == nil || plat == nil {
-		return fmt.Errorf("ASDE-X cursors require a platform")
+func (cs *CursorSet) Load() error {
+	if cs == nil {
+		return fmt.Errorf("ASDE-X cursors require a cursor set")
 	}
 	if cs.loaded {
 		return cs.err
 	}
 
 	cs.loaded = true
-	cs.cursors = make(map[CursorType]*platform.Cursor)
+	cs.cursors = make(map[CursorType]*renderer.CursorBitmap, len(cursorAssetNames))
+	cs.textures = make(map[CursorType]renderer.TextureID)
 
 	var loadErrors []string
-	for _, file := range cursorFiles {
-		if !util.ResourceExists(file.Path) {
-			loadErrors = append(loadErrors, file.Path+": missing")
+	for cursorType, name := range cursorAssetNames {
+		cursor := assets.AsdexCursors[name]
+		if cursor == nil {
+			loadErrors = append(loadErrors, name+": missing")
 			continue
 		}
-
-		cursor, err := plat.LoadCursorFromBytes(file.Name, util.LoadResourceBytes(file.Path))
-		if err != nil {
-			loadErrors = append(loadErrors, err.Error())
-			continue
-		}
-		cs.cursors[file.Type] = cursor
+		cs.cursors[cursorType] = cursor
 	}
 
 	if len(cs.cursors) == 0 {
@@ -96,39 +87,59 @@ func (cs *CursorSet) Has(cursorType CursorType) bool {
 	return cs != nil && cs.cursors[cursorType] != nil
 }
 
-func (cs *CursorSet) Cursor(cursorType CursorType) *platform.Cursor {
+func (cs *CursorSet) Cursor(cursorType CursorType) *renderer.CursorBitmap {
 	if cs == nil {
 		return nil
 	}
 	return cs.cursors[cursorType]
 }
 
-func (cs *CursorSet) CursorForMode(mode CursorMode) (*platform.Cursor, bool) {
+func (cs *CursorSet) CursorTypeForMode(mode CursorMode) (CursorType, bool) {
 	switch mode {
 	case CursorModeDcb:
-		return cs.first(CursorDcb, CursorScope), false
+		return cs.firstType(CursorDcb, CursorScope)
 	case CursorModeCaptured:
-		return cs.first(CursorCaptured, CursorDcb, CursorScope), false
+		return cs.firstType(CursorCaptured, CursorDcb, CursorScope)
 	case CursorModeSelect:
-		return cs.first(CursorSelect, CursorScope), false
+		return cs.firstType(CursorSelect, CursorScope)
 	case CursorModeMove:
-		return cs.first(CursorMove, CursorScope), false
+		return cs.firstType(CursorMove, CursorScope)
 	case CursorModeUpDown:
-		return cs.first(CursorUpDown, CursorScope), false
+		return cs.firstType(CursorUpDown, CursorScope)
 	case CursorModeLeftRight:
-		return cs.first(CursorLeftRight, CursorScope), false
+		return cs.firstType(CursorLeftRight, CursorScope)
 	case CursorModeHidden:
-		return nil, true
+		return CursorScope, false
 	default:
-		return cs.first(CursorScope), false
+		return cs.firstType(CursorScope)
 	}
 }
 
-func (cs *CursorSet) first(types ...CursorType) *platform.Cursor {
+func (cs *CursorSet) textureForCursor(r renderer.Renderer, cursorType CursorType) renderer.TextureID {
+	if cs == nil || r == nil {
+		return 0
+	}
+	if texture := cs.textures[cursorType]; texture != 0 {
+		return texture
+	}
+
+	cursor := cs.Cursor(cursorType)
+	if cursor == nil {
+		return 0
+	}
+
+	texture := r.CreateTextureRGBA(cursor.Width, cursor.Height, cursor.RGBABytes(), true)
+	if texture != 0 {
+		cs.textures[cursorType] = texture
+	}
+	return texture
+}
+
+func (cs *CursorSet) firstType(types ...CursorType) (CursorType, bool) {
 	for _, cursorType := range types {
-		if cursor := cs.Cursor(cursorType); cursor != nil {
-			return cursor
+		if cs.Has(cursorType) {
+			return cursorType, true
 		}
 	}
-	return nil
+	return CursorScope, false
 }
