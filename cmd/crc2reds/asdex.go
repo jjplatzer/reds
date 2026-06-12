@@ -69,20 +69,31 @@ func runAsdex(args []string) error {
 func runAsdexFont(args []string) error {
 	fs := flag.NewFlagSet("asdex font", flag.ContinueOnError)
 
-	inPath := fs.String("in", "", "input ASDE-X font.bin or font.bin.zst")
+	inPath := fs.String("in", "", "input ASDE-X .bin or .bin.zst font file")
 	outPath := fs.String("out", "", "output generated Go file")
 
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
 	if *inPath == "" || *outPath == "" {
-		return fmt.Errorf("usage: crc2reds asdex font -in asdex/assets/font.bin.zst -out asdex/assets/font.go")
+		return fmt.Errorf("usage: crc2reds asdex font -in /path/to/font.bin.zst -out asdex/assets/font.go")
 	}
 
 	return convertAsdexFont(*inPath, *outPath)
 }
 
 func convertAsdexFont(inPath, outPath string) error {
+	info, err := os.Stat(inPath)
+	if err != nil {
+		return err
+	}
+	if info.IsDir() {
+		return fmt.Errorf("-in must be an ASDE-X .bin or .bin.zst font file: %s", inPath)
+	}
+	if !isBinInputFile(filepath.Base(inPath)) {
+		return fmt.Errorf("-in must be an ASDE-X .bin or .bin.zst font file: %s", inPath)
+	}
+
 	raw, err := readMaybeZstd(inPath)
 	if err != nil {
 		return err
@@ -218,26 +229,26 @@ func formatUint8Array(values []byte, indent string) string {
 func runAsdexCursors(args []string) error {
 	fs := flag.NewFlagSet("asdex cursors", flag.ContinueOnError)
 
-	inDir := fs.String("in", "", "input directory containing ASDE-X .cur or .cur.zst files")
+	inPath := fs.String("in", "", "input ASDE-X .cur/.cur.zst file or directory containing cursor files")
 	outPath := fs.String("out", "", "output generated Go file")
 
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
-	if *inDir == "" || *outPath == "" {
-		return fmt.Errorf("usage: crc2reds asdex cursors -in resources/bitmaps/asdex/cursors -out asdex/assets/cursors.go")
+	if *inPath == "" || *outPath == "" {
+		return fmt.Errorf("usage: crc2reds asdex cursors -in /path/to/cursors-or-cursor.cur.zst -out asdex/assets/cursors.go")
 	}
 
-	return convertAsdexCursors(*inDir, *outPath)
+	return convertAsdexCursors(*inPath, *outPath)
 }
 
-func convertAsdexCursors(inDir, outPath string) error {
-	paths, err := cursorInputFiles(inDir)
+func convertAsdexCursors(inPath, outPath string) error {
+	paths, err := cursorInputFiles(inPath)
 	if err != nil {
 		return err
 	}
 	if len(paths) == 0 {
-		return fmt.Errorf("no .cur or .cur.zst files found in %s", inDir)
+		return fmt.Errorf("no .cur or .cur.zst files found in %s", inPath)
 	}
 
 	cursors := make([]cursorBitmap, 0, len(paths))
@@ -273,16 +284,20 @@ func convertAsdexCursors(inDir, outPath string) error {
 	return nil
 }
 
-func cursorInputFiles(inDir string) ([]string, error) {
-	info, err := os.Stat(inDir)
+func cursorInputFiles(inPath string) ([]string, error) {
+	info, err := os.Stat(inPath)
 	if err != nil {
 		return nil, err
 	}
+
 	if !info.IsDir() {
-		return nil, fmt.Errorf("-in must be a directory: %s", inDir)
+		if !isCursorInputFile(filepath.Base(inPath)) {
+			return nil, fmt.Errorf("-in must be an ASDE-X .cur/.cur.zst file or a directory containing cursor files: %s", inPath)
+		}
+		return []string{inPath}, nil
 	}
 
-	entries, err := os.ReadDir(inDir)
+	entries, err := os.ReadDir(inPath)
 	if err != nil {
 		return nil, err
 	}
@@ -297,13 +312,21 @@ func cursorInputFiles(inDir string) ([]string, error) {
 		if strings.HasPrefix(name, "._") {
 			continue
 		}
-		if strings.HasSuffix(name, ".cur") || strings.HasSuffix(name, ".cur.zst") {
-			paths = append(paths, filepath.Join(inDir, name))
+		if isCursorInputFile(name) {
+			paths = append(paths, filepath.Join(inPath, name))
 		}
 	}
 
 	sort.Strings(paths)
 	return paths, nil
+}
+
+func isBinInputFile(name string) bool {
+	return strings.HasSuffix(name, ".bin") || strings.HasSuffix(name, ".bin.zst")
+}
+
+func isCursorInputFile(name string) bool {
+	return strings.HasSuffix(name, ".cur") || strings.HasSuffix(name, ".cur.zst")
 }
 
 func decodeCursorFile(path string) (cursorBitmap, error) {

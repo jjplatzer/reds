@@ -36,26 +36,26 @@ func runEram(args []string) error {
 func runEramFont(args []string) error {
 	fs := flag.NewFlagSet("eram font", flag.ContinueOnError)
 
-	inDir := fs.String("in", "", "input directory containing ERAM .bin or .bin.zst font files")
+	inPath := fs.String("in", "", "input ERAM .bin/.bin.zst font file or directory containing font files")
 	outPath := fs.String("out", "", "output generated Go file")
 
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
-	if *inDir == "" || *outPath == "" {
-		return fmt.Errorf("usage: crc2reds eram font -in resources/bitmaps/eram/fonts -out eram/assets/font.go")
+	if *inPath == "" || *outPath == "" {
+		return fmt.Errorf("usage: crc2reds eram font -in /path/to/eram-fonts-or-font.bin.zst -out eram/assets/font.go")
 	}
 
-	return convertEramFont(*inDir, *outPath)
+	return convertEramFont(*inPath, *outPath)
 }
 
-func convertEramFont(inDir, outPath string) error {
-	families, err := parseEramInputDir(inDir)
+func convertEramFont(inPath, outPath string) error {
+	families, err := parseEramInputPath(inPath)
 	if err != nil {
 		return err
 	}
 	if len(families) == 0 {
-		return fmt.Errorf("no .bin or .bin.zst font files found in %s", inDir)
+		return fmt.Errorf("no .bin or .bin.zst font files found in %s", inPath)
 	}
 
 	if err := writeEramFontGo(outPath, families); err != nil {
@@ -79,34 +79,11 @@ func convertEramFont(inDir, outPath string) error {
 	return nil
 }
 
-func parseEramInputDir(inDir string) ([]eramFamilyFonts, error) {
-	info, err := os.Stat(inDir)
+func parseEramInputPath(inPath string) ([]eramFamilyFonts, error) {
+	paths, err := eramInputFiles(inPath)
 	if err != nil {
 		return nil, err
 	}
-	if !info.IsDir() {
-		return nil, fmt.Errorf("-in must be a directory: %s", inDir)
-	}
-
-	entries, err := os.ReadDir(inDir)
-	if err != nil {
-		return nil, err
-	}
-
-	var paths []string
-	for _, entry := range entries {
-		if entry.IsDir() {
-			continue
-		}
-		name := entry.Name()
-		if strings.HasPrefix(name, "._") {
-			continue
-		}
-		if strings.HasSuffix(name, ".bin") || strings.HasSuffix(name, ".bin.zst") {
-			paths = append(paths, filepath.Join(inDir, name))
-		}
-	}
-	sort.Strings(paths)
 
 	families := make([]eramFamilyFonts, 0, len(paths))
 	for _, path := range paths {
@@ -134,6 +111,40 @@ func parseEramInputDir(inDir string) ([]eramFamilyFonts, error) {
 		return families[i].family < families[j].family
 	})
 	return families, nil
+}
+
+func eramInputFiles(inPath string) ([]string, error) {
+	info, err := os.Stat(inPath)
+	if err != nil {
+		return nil, err
+	}
+	if !info.IsDir() {
+		if !isBinInputFile(filepath.Base(inPath)) {
+			return nil, fmt.Errorf("-in must be an ERAM .bin/.bin.zst font file or a directory containing font files: %s", inPath)
+		}
+		return []string{inPath}, nil
+	}
+
+	entries, err := os.ReadDir(inPath)
+	if err != nil {
+		return nil, err
+	}
+
+	var paths []string
+	for _, entry := range entries {
+		if entry.IsDir() {
+			continue
+		}
+		name := entry.Name()
+		if strings.HasPrefix(name, "._") {
+			continue
+		}
+		if isBinInputFile(name) {
+			paths = append(paths, filepath.Join(inPath, name))
+		}
+	}
+	sort.Strings(paths)
+	return paths, nil
 }
 
 func validateEramFontSizes(sizes []legacyFontSize) error {
