@@ -41,6 +41,7 @@ type Renderer interface {
 
 	CreateTextureFromImage(img image.Image, magNearest bool) TextureID
 	CreateTextureR8(width, height int, pixels []byte, magNearest bool) TextureID
+	CreateTextureRGBA(width, height int, pixels []byte, magNearest bool) TextureID
 	UpdateTextureFromImage(id TextureID, img image.Image, magNearest bool)
 	DestroyTexture(id TextureID)
 

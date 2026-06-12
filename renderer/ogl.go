@@ -180,6 +180,23 @@ func (r *OpenGLRenderer) CreateTextureR8(width, height int, pixels []byte, magNe
 	return id
 }
 
+func (r *OpenGLRenderer) CreateTextureRGBA(width, height int, pixels []byte, magNearest bool) TextureID {
+	if width <= 0 || height <= 0 || len(pixels) < width*height*4 {
+		return 0
+	}
+	id, tex := r.newTexture()
+	r.textures[id] = tex
+
+	gl.BindTexture(gl.TEXTURE_2D, tex)
+	setTextureParams(magNearest)
+	gl.PixelStorei(gl.UNPACK_ALIGNMENT, 1)
+	gl.TexImage2D(gl.TEXTURE_2D, 0, int32(gl.RGBA8), int32(width), int32(height), 0, gl.RGBA, gl.UNSIGNED_BYTE, gl.Ptr(pixels))
+	gl.PixelStorei(gl.UNPACK_ALIGNMENT, 4)
+	gl.BindTexture(gl.TEXTURE_2D, 0)
+
+	return id
+}
+
 func (r *OpenGLRenderer) UpdateTextureFromImage(id TextureID, img image.Image, magNearest bool) {
 	tex := r.textures[id]
 	if tex == 0 || img == nil {
