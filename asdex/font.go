@@ -1,15 +1,9 @@
 package asdex
 
 import (
-	"fmt"
-
-	"github.com/juliusplatzer/reds/asdex/assets"
+	asdexassets "github.com/juliusplatzer/reds/asdex/assets"
+	eramassets "github.com/juliusplatzer/reds/eram/assets"
 	"github.com/juliusplatzer/reds/renderer"
-	"github.com/juliusplatzer/reds/util"
-)
-
-const (
-	eramTextFontPath = "resources/bitmaps/eram/fonts/EramText.bin.zst"
 )
 
 type fontCache struct {
@@ -18,23 +12,11 @@ type fontCache struct {
 }
 
 func loadFontCache() (fontCache, error) {
-	return newFontCache(renderer.NewBitmapFontFromAlpha(assets.AsdexFonts)), nil
+	return newFontCache(renderer.NewBitmapFontFromAlpha(asdexassets.AsdexFonts)), nil
 }
 
 func loadEramTextFontCache() (fontCache, error) {
-	return loadFontCacheFrom(eramTextFontPath, "ERAM text")
-}
-
-func loadFontCacheFrom(path string, label string) (fontCache, error) {
-	if !util.ResourceExists(path) {
-		return fontCache{}, fmt.Errorf("%s font resource %s not found", label, path)
-	}
-
-	font, err := renderer.LoadBitmapFontBytes(util.LoadResourceBytes(path))
-	if err != nil {
-		return fontCache{}, fmt.Errorf("load %s font: %w", label, err)
-	}
-	return newFontCache(font), nil
+	return newFontCache(renderer.NewBitmapFontFromMono(eramassets.EramTextFonts)), nil
 }
 
 func newFontCache(font *renderer.BitmapFont) fontCache {

@@ -30,6 +30,21 @@ type AlphaBitmapGlyph struct {
 	Alpha  []uint8
 }
 
+type MonoBitmapFont struct {
+	PointSize int
+	Width     int
+	Height    int
+	Glyphs    []MonoBitmapGlyph
+}
+
+type MonoBitmapGlyph struct {
+	Name   string
+	StepX  int
+	Bounds [2]int
+	Offset [2]int
+	Bitmap []uint32
+}
+
 type BitmapFontSize struct {
 	Size        int
 	LineHeight  int
@@ -245,6 +260,109 @@ func NewBitmapFontFromAlpha(src map[int]*AlphaBitmapFont) *BitmapFont {
 	return &BitmapFont{sizes: sizes}
 }
 
+func NewBitmapFontFromMono(src map[int]*MonoBitmapFont) *BitmapFont {
+	sizes := make(map[int]*BitmapFontSize, len(src))
+
+	for size, font := range src {
+		if font == nil {
+			continue
+		}
+
+		atlasWidth := 0
+		atlasHeight := 0
+		glyphCount := 0
+
+		for _, glyph := range font.Glyphs {
+			if !monoGlyphPresent(glyph) {
+				continue
+			}
+
+			w := glyph.Bounds[0]
+			h := glyph.Bounds[1]
+			if w < 0 || h < 0 {
+				continue
+			}
+
+			glyphCount++
+			atlasWidth += w
+			if h > atlasHeight {
+				atlasHeight = h
+			}
+		}
+
+		if atlasWidth <= 0 {
+			atlasWidth = 1
+		}
+		if atlasHeight <= 0 {
+			atlasHeight = font.Height
+			if atlasHeight <= 0 {
+				atlasHeight = 1
+			}
+		}
+
+		atlas := make([]byte, atlasWidth*atlasHeight)
+		glyphs := make([]BitmapGlyph, 0, glyphCount)
+		glyphIndex := make(map[rune]int, glyphCount)
+		textureOffset := 0
+
+		for codepoint, glyph := range font.Glyphs {
+			if !monoGlyphPresent(glyph) {
+				continue
+			}
+
+			w := glyph.Bounds[0]
+			h := glyph.Bounds[1]
+			if w < 0 || h < 0 {
+				continue
+			}
+
+			if w > 0 && h > 0 {
+				for y := 0; y < h && y < len(glyph.Bitmap); y++ {
+					row := glyph.Bitmap[y]
+					dstOffset := y*atlasWidth + textureOffset
+
+					for x := 0; x < w; x++ {
+						if row&(uint32(1)<<uint(31-x)) != 0 {
+							atlas[dstOffset+x] = 255
+						}
+					}
+				}
+			}
+
+			runtimeGlyph := BitmapGlyph{
+				Codepoint:     rune(codepoint),
+				Width:         w,
+				Height:        h,
+				TextureOffset: textureOffset,
+				BearingX:      glyph.Offset[0],
+				BearingY:      font.Height - glyph.Offset[1],
+				Advance:       glyph.StepX,
+			}
+
+			glyphIndex[runtimeGlyph.Codepoint] = len(glyphs)
+			glyphs = append(glyphs, runtimeGlyph)
+			textureOffset += w
+		}
+
+		lineHeight := font.Height
+		if lineHeight <= 0 {
+			lineHeight = atlasHeight
+		}
+
+		sizes[size] = &BitmapFontSize{
+			Size:        size,
+			LineHeight:  lineHeight,
+			AtlasWidth:  atlasWidth,
+			AtlasHeight: atlasHeight,
+			AtlasR8:     atlas,
+			Glyphs:      glyphs,
+			GlyphIndex:  glyphIndex,
+		}
+	}
+
+	return &BitmapFont{sizes: sizes}
+}
+
 func alphaGlyphPresent(g AlphaBitmapGlyph) bool {
 	return g.Name != "" ||
 		g.StepX != 0 ||
@@ -253,6 +371,16 @@ func alphaGlyphPresent(g AlphaBitmapGlyph) bool {
 		g.Offset[0] != 0 ||
 		g.Offset[1] != 0 ||
 		len(g.Alpha) != 0
+}
+
+func monoGlyphPresent(g MonoBitmapGlyph) bool {
+	return g.Name != "" ||
+		g.StepX != 0 ||
+		g.Bounds[0] != 0 ||
+		g.Bounds[1] != 0 ||
+		g.Offset[0] != 0 ||
+		g.Offset[1] != 0 ||
+		len(g.Bitmap) != 0
 }
 
 func (f *BitmapFont) Size(size int) *BitmapFontSize {
