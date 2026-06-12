@@ -3,12 +3,12 @@ package asdex
 import (
 	"fmt"
 
+	"github.com/juliusplatzer/reds/asdex/assets"
 	"github.com/juliusplatzer/reds/renderer"
 	"github.com/juliusplatzer/reds/util"
 )
 
 const (
-	asdexFontPath    = "resources/bitmaps/asdex/fonts/font.bin.zst"
 	eramTextFontPath = "resources/bitmaps/eram/fonts/EramText.bin.zst"
 )
 
@@ -18,7 +18,7 @@ type fontCache struct {
 }
 
 func loadFontCache() (fontCache, error) {
-	return loadFontCacheFrom(asdexFontPath, "ASDE-X")
+	return newFontCache(renderer.NewBitmapFontFromAlpha(assets.AsdexFonts)), nil
 }
 
 func loadEramTextFontCache() (fontCache, error) {
