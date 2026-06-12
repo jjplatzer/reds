@@ -49,6 +49,8 @@ type glfwPlatform struct {
 	loadedCursors        []*glfw.Cursor
 }
 
+const windowsBaselineDPI = float32(96)
+
 // New creates the window and wires up the ImGui backends. An ImGui context
 // must already exist (imgui.CreateContext) before calling New, because we
 // touch imgui.CurrentIO() here — same ordering as vice.
@@ -360,6 +362,7 @@ var trackedKeys = []trackedKey{
 	{KeyF12, glfw.KeyF12},
 	{KeyAlt, glfw.KeyLeftAlt},
 	{KeyShift, glfw.KeyLeftShift},
+	{KeyControl, glfw.KeyLeftControl},
 }
 
 func (g *glfwPlatform) updateKeyboard() {
@@ -401,6 +404,10 @@ func (g *glfwPlatform) isKeyDown(tk trackedKey) bool {
 		return g.window.GetKey(glfw.KeyLeftShift) == glfw.Press ||
 			g.window.GetKey(glfw.KeyRightShift) == glfw.Press
 	}
+	if tk.key == KeyControl {
+		return g.window.GetKey(glfw.KeyLeftControl) == glfw.Press ||
+			g.window.GetKey(glfw.KeyRightControl) == glfw.Press
+	}
 	return g.window.GetKey(tk.glfw) == glfw.Press
 }
 
@@ -411,6 +418,27 @@ func (g *glfwPlatform) DPIScale() float32 {
 		return 1
 	}
 	return fb[0] / win[0]
+}
+
+func (g *glfwPlatform) DeviceDPI() float32 {
+	if g == nil || g.window == nil {
+		return windowsBaselineDPI
+	}
+
+	xscale, yscale := g.window.GetContentScale()
+	scale := (xscale + yscale) * 0.5
+	if scale <= 0 {
+		return windowsBaselineDPI
+	}
+	return scale * windowsBaselineDPI
+}
+
+func (g *glfwPlatform) WindowScaleFactor() float32 {
+	dpi := g.DeviceDPI()
+	if dpi <= 0 {
+		return 1
+	}
+	return dpi / windowsBaselineDPI
 }
 
 func (g *glfwPlatform) Dispose() {

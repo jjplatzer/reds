@@ -90,6 +90,14 @@ type Platform interface {
 	// display, 2.0 on a typical Retina display).
 	DPIScale() float32
 
+	// DeviceDPI returns the UI/window DPI comparable to WinForms
+	// Control.DeviceDpi. 96 is the Windows baseline DPI.
+	DeviceDPI() float32
+
+	// WindowScaleFactor returns DeviceDPI()/96, matching CRC's
+	// DisplayEngine.WindowScaleFactor.
+	WindowScaleFactor() float32
+
 	// Dispose tears down the ImGui backends, the window, and GLFW.
 	Dispose()
 }

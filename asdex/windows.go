@@ -11,10 +11,10 @@ import (
 type ScopeView struct {
 	Center       redsmath.Vec2
 	RangeSetting int
-	// RangeFeet is the CRC ASDE-X range scale: RangeSetting * 100. It is
-	// converted to an effective visible half-height by the scope transform.
-	RangeFeet float32
-	Rotation  float32
+	// RangeFullHorizontalFeet is the CRC ASDE-X full-horizontal range:
+	// RangeSetting * 100 feet across the main display width.
+	RangeFullHorizontalFeet float32
+	Rotation                float32
 }
 
 type ScopeWindowID int
@@ -435,10 +435,10 @@ func (p *ASDEXPane) mainScopeView() ScopeView {
 		return ScopeView{}
 	}
 	return ScopeView{
-		Center:       p.center,
-		RangeSetting: p.rangeSetting,
-		RangeFeet:    p.rangeFeet,
-		Rotation:     p.rotation,
+		Center:                  p.center,
+		RangeSetting:            p.rangeSetting,
+		RangeFullHorizontalFeet: p.rangeFullHorizontalFeet,
+		Rotation:                p.rotation,
 	}
 }
 
@@ -448,7 +448,7 @@ func (p *ASDEXPane) applyMainScopeView(view ScopeView) {
 	}
 	p.center = view.Center
 	p.rangeSetting = view.RangeSetting
-	p.rangeFeet = view.RangeFeet
+	p.rangeFullHorizontalFeet = view.RangeFullHorizontalFeet
 	p.rotation = view.Rotation
 }
 
@@ -585,12 +585,14 @@ func scopeTransformForWindow(
 	rect redsmath.Rect,
 	referenceExtent redsmath.Rect,
 	view ScopeView,
+	rangeVisibleScale float32,
 ) radar.ScopeTransformations {
 	return radar.GetScopeTransformationsWithReference(
 		redsmath.RectFromSize(rect.Width(), rect.Height()),
 		referenceExtent,
 		view.Center,
-		view.RangeFeet,
+		view.RangeFullHorizontalFeet,
+		rangeVisibleScale,
 		view.Rotation,
 	)
 }
@@ -631,10 +633,10 @@ func (p *ASDEXPane) consumeNewWindowInput(
 	centerWorld := mainTransforms.WorldFromWindowP(centerWindow)
 	main := p.mainScopeView()
 	view := ScopeView{
-		Center:       centerWorld,
-		RangeSetting: main.RangeSetting,
-		RangeFeet:    main.RangeFeet,
-		Rotation:     main.Rotation,
+		Center:                  centerWorld,
+		RangeSetting:            main.RangeSetting,
+		RangeFullHorizontalFeet: main.RangeFullHorizontalFeet,
+		Rotation:                main.Rotation,
 	}
 
 	id, ok := p.windows.AddSecondary(rect, view)
@@ -830,7 +832,14 @@ func (p *ASDEXPane) consumeResizeWindowInput(
 		if cmd.HasPoint {
 			finalRect := resizeWindowRect(rect, cmd.Point, cmd.Operation)
 			if p.windows.ProposedSecondaryResizeIsValid(cmd.WindowID, finalRect, paneSize) {
-				p.resizeSecondaryWindow(cmd.WindowID, finalRect, cmd.Operation, paneSize, referenceExtent)
+				p.resizeSecondaryWindow(
+					cmd.WindowID,
+					finalRect,
+					cmd.Operation,
+					paneSize,
+					referenceExtent,
+					rangeVisibleScaleForContext(ctx),
+				)
 			}
 		}
 		p.finishResizeWindowCommand("")
@@ -846,6 +855,7 @@ func (p *ASDEXPane) resizeSecondaryWindow(
 	op ResizeOperation,
 	paneSize redsmath.Vec2,
 	referenceExtent redsmath.Rect,
+	rangeVisibleScale float32,
 ) bool {
 	if p == nil || id == mainScopeWindowID || newRect.Empty() {
 		return false
@@ -873,6 +883,7 @@ func (p *ASDEXPane) resizeSecondaryWindow(
 		redsmath.RectFromSize(oldRect.Width(), oldRect.Height()),
 		referenceExtent,
 		view,
+		rangeVisibleScale,
 	)
 	view.Center = oldTransforms.WorldFromWindowP(anchor)
 
@@ -1199,20 +1210,20 @@ func (p *ASDEXPane) consumeScopeMouseEvents(
 	}
 
 	if mouse.Wheel.Y != 0 {
-		oldRangeFeet := view.RangeFeet
+		oldRangeFullHorizontalFeet := view.RangeFullHorizontalFeet
 		oldCenter := view.Center
 		view.RangeSetting = clampInt(
-			view.RangeSetting+wheelRangeDelta(mouse.Wheel.Y),
+			view.RangeSetting+wheelRangeDeltaForContext(mouse.Wheel.Y, ctx),
 			asdexMinRangeSetting,
 			asdexMaxRangeSetting,
 		)
-		view.RangeFeet = rangeFeetFromSetting(view.RangeSetting)
-		newRangeFeet := view.RangeFeet
+		view.RangeFullHorizontalFeet = rangeFullHorizontalFeetFromSetting(view.RangeSetting)
+		newRangeFullHorizontalFeet := view.RangeFullHorizontalFeet
 
-		if oldRangeFeet > 0 && newRangeFeet > 0 && newRangeFeet != oldRangeFeet {
+		if oldRangeFullHorizontalFeet > 0 && newRangeFullHorizontalFeet > 0 && newRangeFullHorizontalFeet != oldRangeFullHorizontalFeet {
 			if ctx.Keyboard != nil && ctx.Keyboard.IsDown(platform.KeyAlt) {
 				mouseWorld := transforms.WorldFromWindowP(localMouse)
-				scale := newRangeFeet / oldRangeFeet
+				scale := newRangeFullHorizontalFeet / oldRangeFullHorizontalFeet
 				view.Center = mouseWorld.Add(oldCenter.Sub(mouseWorld).Mul(scale))
 			}
 			changed = true
