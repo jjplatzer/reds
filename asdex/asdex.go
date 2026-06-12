@@ -45,6 +45,8 @@ const (
 	asdexMaxRangeSetting     = 600
 	asdexDefaultRangeSetting = 100
 	asdexFeetPerRangeUnit    = 100
+	asdexWheelRangeStep      = 4
+	asdexCtrlWheelRangeStep  = 16
 
 	// Set to a positive value to override the platform-reported ASDE-X window
 	// scale factor used for RANGE compatibility.
@@ -4174,7 +4176,9 @@ func (p *ASDEXPane) consumeMouseEvents(
 	if mouse.Wheel.Y != 0 && paneLocal.Contains(mouse.Pos) {
 		oldRangeFullHorizontalFeet := p.rangeFullHorizontalFeet
 		oldCenter := p.center
-		p.setMainRangeSetting(p.rangeSetting + wheelRangeDelta(mouse.Wheel.Y))
+		p.setMainRangeSetting(
+			p.rangeSetting + wheelRangeDeltaForContext(mouse.Wheel.Y, ctx),
+		)
 		newRangeFullHorizontalFeet := p.rangeFullHorizontalFeet
 
 		if oldRangeFullHorizontalFeet > 0 && newRangeFullHorizontalFeet > 0 && newRangeFullHorizontalFeet != oldRangeFullHorizontalFeet {
@@ -4220,15 +4224,20 @@ func (p *ASDEXPane) rotateByDegrees(delta float32) {
 	p.rotation = normalizeRotation(p.rotation + delta)
 }
 
-func wheelRangeDelta(wheelY float32) int {
-	switch {
-	case wheelY > 0:
-		return -1
-	case wheelY < 0:
-		return 1
-	default:
+func wheelRangeDeltaForContext(wheelY float32, ctx *panes.Context) int {
+	if wheelY == 0 {
 		return 0
 	}
+
+	step := asdexWheelRangeStep
+	if ctx != nil && ctx.Keyboard != nil && ctx.Keyboard.IsDown(platform.KeyControl) {
+		step = asdexCtrlWheelRangeStep
+	}
+
+	if wheelY > 0 {
+		return -step
+	}
+	return step
 }
 
 func rangeFullHorizontalFeetFromSetting(rangeSetting int) float32 {

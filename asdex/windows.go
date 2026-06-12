@@ -1213,7 +1213,7 @@ func (p *ASDEXPane) consumeScopeMouseEvents(
 		oldRangeFullHorizontalFeet := view.RangeFullHorizontalFeet
 		oldCenter := view.Center
 		view.RangeSetting = clampInt(
-			view.RangeSetting+wheelRangeDelta(mouse.Wheel.Y),
+			view.RangeSetting+wheelRangeDeltaForContext(mouse.Wheel.Y, ctx),
 			asdexMinRangeSetting,
 			asdexMaxRangeSetting,
 		)
