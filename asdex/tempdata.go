@@ -1149,7 +1149,12 @@ func (p *ASDEXPane) consumeTempDataSelectionInput(
 	mouse := ctx.Mouse
 	world := transforms.WorldFromWindowP(mouse.Pos)
 	if _, windowRect, view, ok := p.scopeWindowAtPoint(mouse.Pos, ctx.PaneSize()); ok {
-		scopeTransforms := scopeTransformForWindow(windowRect, mainReferenceExtent(ctx.PaneSize()), view)
+		scopeTransforms := scopeTransformForWindow(
+			windowRect,
+			mainReferenceExtent(ctx.PaneSize()),
+			view,
+			rangeVisibleScaleForContext(ctx),
+		)
 		world = scopeTransforms.WorldFromWindowP(mouse.Pos.Sub(windowRect.Min))
 	}
 	switch {

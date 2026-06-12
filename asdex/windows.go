@@ -585,13 +585,14 @@ func scopeTransformForWindow(
 	rect redsmath.Rect,
 	referenceExtent redsmath.Rect,
 	view ScopeView,
+	rangeVisibleScale float32,
 ) radar.ScopeTransformations {
 	return radar.GetScopeTransformationsWithReference(
 		redsmath.RectFromSize(rect.Width(), rect.Height()),
 		referenceExtent,
 		view.Center,
 		view.RangeFullHorizontalFeet,
-		asdexCrcRangeVisibleScale,
+		rangeVisibleScale,
 		view.Rotation,
 	)
 }
@@ -831,7 +832,14 @@ func (p *ASDEXPane) consumeResizeWindowInput(
 		if cmd.HasPoint {
 			finalRect := resizeWindowRect(rect, cmd.Point, cmd.Operation)
 			if p.windows.ProposedSecondaryResizeIsValid(cmd.WindowID, finalRect, paneSize) {
-				p.resizeSecondaryWindow(cmd.WindowID, finalRect, cmd.Operation, paneSize, referenceExtent)
+				p.resizeSecondaryWindow(
+					cmd.WindowID,
+					finalRect,
+					cmd.Operation,
+					paneSize,
+					referenceExtent,
+					rangeVisibleScaleForContext(ctx),
+				)
 			}
 		}
 		p.finishResizeWindowCommand("")
@@ -847,6 +855,7 @@ func (p *ASDEXPane) resizeSecondaryWindow(
 	op ResizeOperation,
 	paneSize redsmath.Vec2,
 	referenceExtent redsmath.Rect,
+	rangeVisibleScale float32,
 ) bool {
 	if p == nil || id == mainScopeWindowID || newRect.Empty() {
 		return false
@@ -874,6 +883,7 @@ func (p *ASDEXPane) resizeSecondaryWindow(
 		redsmath.RectFromSize(oldRect.Width(), oldRect.Height()),
 		referenceExtent,
 		view,
+		rangeVisibleScale,
 	)
 	view.Center = oldTransforms.WorldFromWindowP(anchor)
 

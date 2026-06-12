@@ -46,11 +46,9 @@ const (
 	asdexDefaultRangeSetting = 100
 	asdexFeetPerRangeUnit    = 100
 
-	// CRC's ASDE-X range math is affected by ViewManager.mScale:
-	// visibleFeet = RANGE*100 * floor(mScale)/(mScale*mScale).
-	// This factor matches CRC's displayed RANGE values while keeping the
-	// geometry and feet projection unchanged.
-	asdexCrcRangeVisibleScale = float32(0.786)
+	// Set to a positive value to override the platform-reported ASDE-X window
+	// scale factor used for RANGE compatibility.
+	asdexWindowScaleFactorOverride = float32(0)
 )
 
 const (
@@ -291,13 +289,19 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.ensureCursorsLoaded(ctx)
 	p.consumeNetworkEvents()
 	p.consumeCommandKeyboard(ctx)
-	p.initView(ctx.PaneRect)
+	rangeVisibleScale := rangeVisibleScaleForContext(ctx)
+	p.initView(ctx.PaneRect, rangeVisibleScale)
 	if !p.viewInitialized {
 		return
 	}
 
 	referenceExtent := mainReferenceExtent(ctx.PaneSize())
-	transforms := scopeTransformForWindow(referenceExtent, referenceExtent, p.mainScopeView())
+	transforms := scopeTransformForWindow(
+		referenceExtent,
+		referenceExtent,
+		p.mainScopeView(),
+		rangeVisibleScale,
+	)
 
 	now := time.Now().UTC()
 	p.expireTemporaryBeaconDisplays(now)
@@ -338,6 +342,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y),
 				referenceExtent,
 				p.mainScopeView(),
+				rangeVisibleScale,
 			)
 		}
 	} else if p.listRepositionActive() {
@@ -383,6 +388,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y),
 				referenceExtent,
 				p.mainScopeView(),
+				rangeVisibleScale,
 			)
 		}
 	} else if p.dbAreaSelection != nil {
@@ -403,12 +409,12 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			} else {
 				windowID, windowRect, view, ok := p.scopeWindowAtPoint(ctx.Mouse.Pos, ctx.PaneSize())
 				if ok {
-					scopeTransforms := scopeTransformForWindow(windowRect, referenceExtent, view)
+					scopeTransforms := scopeTransformForWindow(windowRect, referenceExtent, view, rangeVisibleScale)
 					updatedView, changed := p.consumeScopeMouseEvents(ctx, windowRect, view, scopeTransforms)
 					if changed {
 						p.setScopeView(windowID, updatedView)
 						view = updatedView
-						scopeTransforms = scopeTransformForWindow(windowRect, referenceExtent, view)
+						scopeTransforms = scopeTransformForWindow(windowRect, referenceExtent, view, rangeVisibleScale)
 						if windowID == mainScopeWindowID {
 							transforms = scopeTransforms
 						}
@@ -428,7 +434,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 	if p.tempDataSelectMode != TempDataSelectNone && ctx.Mouse != nil {
 		if _, windowRect, view, ok := p.scopeWindowAtPoint(ctx.Mouse.Pos, ctx.PaneSize()); ok {
-			scopeTransforms := scopeTransformForWindow(windowRect, referenceExtent, view)
+			scopeTransforms := scopeTransformForWindow(windowRect, referenceExtent, view, rangeVisibleScale)
 			p.hoveredTempData = p.tempData.HitTest(
 				scopeTransforms.WorldFromWindowP(ctx.Mouse.Pos.Sub(windowRect.Min)),
 			)
@@ -462,6 +468,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		mainRect,
 		referenceExtent,
 		p.mainScopeView(),
+		rangeVisibleScale,
 		targets,
 		now,
 		true,
@@ -481,6 +488,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			win.Rect,
 			referenceExtent,
 			win.View,
+			rangeVisibleScale,
 			targets,
 			now,
 			false,
@@ -583,6 +591,7 @@ func (p *ASDEXPane) renderScopeWindow(
 	rect redsmath.Rect,
 	referenceExtent redsmath.Rect,
 	view ScopeView,
+	rangeVisibleScale float32,
 	targets []*Target,
 	now time.Time,
 	drawDraft bool,
@@ -594,7 +603,7 @@ func (p *ASDEXPane) renderScopeWindow(
 		return radar.ScopeTransformations{}
 	}
 
-	transforms := scopeTransformForWindow(rect, referenceExtent, view)
+	transforms := scopeTransformForWindow(rect, referenceExtent, view, rangeVisibleScale)
 	x, y, w, h := scopeFramebufferRect(ctx, rect)
 	displayState := p.displayStateForWindow(windowID)
 	brightness := displayState.Brightness
@@ -3703,7 +3712,12 @@ func (p *ASDEXPane) consumeMapRepositionMouse(
 	if !ok {
 		view = p.mainScopeView()
 	}
-	transforms = scopeTransformForWindow(rect, mainReferenceExtent(ctx.PaneSize()), view)
+	transforms = scopeTransformForWindow(
+		rect,
+		mainReferenceExtent(ctx.PaneSize()),
+		view,
+		rangeVisibleScaleForContext(ctx),
+	)
 
 	center := mapRepositionCursorCenter(rect)
 	delta, moved := mapRepositionDelta(mouse.Pos, center)
@@ -4068,7 +4082,7 @@ func (p *ASDEXPane) applySmesStatus(status redsnet.SmesStatusEvent) {
 	}
 }
 
-func (p *ASDEXPane) initView(rect redsmath.Rect) {
+func (p *ASDEXPane) initView(rect redsmath.Rect, rangeVisibleScale float32) {
 	if p == nil || p.viewInitialized || p.videomap == nil || rect.Empty() {
 		return
 	}
@@ -4094,7 +4108,7 @@ func (p *ASDEXPane) initView(rect redsmath.Rect) {
 
 	referenceExtent := mainReferenceExtent(rect.Size())
 	refWidth := referenceExtent.Width()
-	if refWidth <= 0 || asdexCrcRangeVisibleScale <= 0 {
+	if refWidth <= 0 || rangeVisibleScale <= 0 {
 		return
 	}
 
@@ -4111,7 +4125,7 @@ func (p *ASDEXPane) initView(rect redsmath.Rect) {
 		Y: (bounds.Min.Y + bounds.Max.Y) * 0.5,
 	}
 	fitRangeSetting := int(stdmath.Ceil(float64(
-		fitFullHorizontalFeet / (asdexFeetPerRangeUnit * asdexCrcRangeVisibleScale),
+		fitFullHorizontalFeet / (asdexFeetPerRangeUnit * rangeVisibleScale),
 	)))
 	fitRangeSetting = clampInt(fitRangeSetting, asdexMinRangeSetting, asdexMaxRangeSetting)
 	if p.rangeSetting == 0 {
@@ -4220,6 +4234,32 @@ func wheelRangeDelta(wheelY float32) int {
 func rangeFullHorizontalFeetFromSetting(rangeSetting int) float32 {
 	rangeSetting = clampInt(rangeSetting, asdexMinRangeSetting, asdexMaxRangeSetting)
 	return float32(rangeSetting * asdexFeetPerRangeUnit)
+}
+
+func windowScaleFactorForContext(ctx *panes.Context) float32 {
+	if asdexWindowScaleFactorOverride > 0 {
+		return asdexWindowScaleFactorOverride
+	}
+	if ctx == nil || ctx.Platform == nil {
+		return 1
+	}
+	return ctx.Platform.WindowScaleFactor()
+}
+
+func rangeVisibleScale(windowScale float32) float32 {
+	if windowScale <= 0 {
+		return 1
+	}
+
+	intScale := float32(int(windowScale))
+	if intScale < 1 {
+		intScale = 1
+	}
+	return intScale / (windowScale * windowScale)
+}
+
+func rangeVisibleScaleForContext(ctx *panes.Context) float32 {
+	return rangeVisibleScale(windowScaleFactorForContext(ctx))
 }
 
 func normalizeRotation(value float32) float32 {

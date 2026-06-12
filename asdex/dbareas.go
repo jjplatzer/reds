@@ -259,7 +259,12 @@ func (p *ASDEXPane) activeWindowRectAndTransform(
 		return 0, redsmath.Rect{}, radar.ScopeTransformations{}, false
 	}
 
-	return windowID, rect, scopeTransformForWindow(rect, referenceExtent, view), true
+	return windowID, rect, scopeTransformForWindow(
+		rect,
+		referenceExtent,
+		view,
+		rangeVisibleScaleForContext(ctx),
+	), true
 }
 
 func (p *ASDEXPane) consumeDataBlockAreaDraftInput(
