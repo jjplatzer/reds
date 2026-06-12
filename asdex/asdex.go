@@ -3243,64 +3243,13 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 			return true
 		}
 	}
-	if p.canStartTowerReadoutCommand() &&
-		ctx.Keyboard.WasPressed(platform.KeyC) &&
-		ctx.Keyboard.IsDown(platform.KeyControl) &&
-		ctx.Keyboard.IsDown(platform.KeyShift) &&
-		!ctx.Keyboard.IsDown(platform.KeyAlt) {
-		p.startTowerReadoutCommand()
-		return true
+	if towerReadoutShortcutPressed(ctx) {
+		return false
 	}
 	if p.commandMode == CommandModeNone {
 		return p.handleNormalCommandKeyboard(ctx)
 	}
 	return false
-}
-
-func (p *ASDEXPane) canStartTowerReadoutCommand() bool {
-	if p == nil {
-		return false
-	}
-
-	return p.commandMode == CommandModeNone &&
-		p.commandEntry.Empty() &&
-		p.datablockEdit == nil &&
-		p.initControlEntry == nil &&
-		p.termControlEntry == nil &&
-		p.multiFunction == nil &&
-		p.previewReposition == nil &&
-		p.coastListReposition == nil &&
-		p.mapReposition == nil &&
-		p.mapRotate == nil &&
-		p.towerReadout == nil &&
-		p.dcbSpinner == nil &&
-		p.dcbMenuCommand == nil &&
-		p.dbAreaDraft == nil &&
-		p.dbAreaSelection == nil &&
-		p.tempAreaDraft == nil &&
-		p.tempTextCommand == nil &&
-		p.tempTextPlacement == nil &&
-		p.tempDataSelectMode == TempDataSelectNone &&
-		p.newWindow == nil &&
-		p.deleteWindow == nil &&
-		p.windowReposition == nil &&
-		p.resizeWindow == nil
-}
-
-func (p *ASDEXPane) startTowerReadoutCommand() {
-	if p == nil {
-		return
-	}
-
-	if !p.hasTowerReference {
-		p.previewArea.SetSystemResponse("NO GLOBAL DATA")
-		p.clearHighlightedTarget()
-		return
-	}
-
-	p.towerReadout = NewTowerReadoutCommand(p.towerReference)
-	p.previewArea.SetSystemResponse("")
-	p.clearHighlightedTarget()
 }
 
 func (p *ASDEXPane) handleTowerReadoutKeyboard(ctx *panes.Context) bool {
