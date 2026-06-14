@@ -68,6 +68,8 @@ type Target struct {
 	Suspended bool
 	Coasting  bool
 	Dropped   bool
+
+	AlertsInhibited bool
 }
 
 func (t *Target) EffectiveShowDB() bool {
@@ -382,6 +384,70 @@ func (s *TargetStore) TargetByID(id string) *Target {
 		return nil
 	}
 	return s.targets[id]
+}
+
+func (s *TargetStore) ToggleAlertsInhibited(targetID string) bool {
+	if s == nil || targetID == "" {
+		return false
+	}
+
+	target := s.TargetByID(targetID)
+	if target == nil {
+		return false
+	}
+
+	target.AlertsInhibited = !target.AlertsInhibited
+	s.hoverRevision++
+	return true
+}
+
+func (s *TargetStore) AlertsInhibited(targetID string) bool {
+	target := s.TargetByID(targetID)
+	return target != nil && target.AlertsInhibited
+}
+
+func (s *TargetStore) AnyAlertsInhibited() bool {
+	if s == nil {
+		return false
+	}
+
+	for _, target := range s.targets {
+		if target != nil && target.AlertsInhibited {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *TargetStore) AlertInhibitedIDs() map[string]bool {
+	out := make(map[string]bool)
+	if s == nil {
+		return out
+	}
+
+	for _, target := range s.targets {
+		if target != nil && target.AlertsInhibited {
+			out[target.ID] = true
+		}
+	}
+	return out
+}
+
+func (s *TargetStore) ClearAlertInhibits() {
+	if s == nil {
+		return
+	}
+
+	changed := false
+	for _, target := range s.targets {
+		if target != nil && target.AlertsInhibited {
+			target.AlertsInhibited = false
+			changed = true
+		}
+	}
+	if changed {
+		s.hoverRevision++
+	}
 }
 
 func (s *TargetStore) SuspendedCount() int {
@@ -1060,6 +1126,8 @@ type TargetDrawOptions struct {
 
 	AlertTargetIDs map[string]bool
 	AlertFlashOn   bool
+
+	AlertInhibitedTargetIDs map[string]bool
 }
 
 func DrawTargets(
@@ -1076,6 +1144,7 @@ func DrawTargets(
 	}
 
 	addHistoryDots(targets, history, cb, opts)
+	addAlertInhibitSquares(targets, cb, opts)
 	addAlertOctagons(targets, cb, opts)
 	addHighlightRings(targets, cb, opts.Brightness, opts.HighlightedTargetID, opts.AlertTargetIDs)
 	addTargetSymbols(targets, cb, opts)
@@ -1293,6 +1362,10 @@ const alertOctagonRadiusFeet = 0.012 * redsmath.FeetPerNM
 
 var alertOctagonPolygon = regularRingPolygon(20, alertOctagonRadiusFeet)
 
+const alertInhibitSquareRadiusFeet = float32(3.0 / 160.0 * redsmath.FeetPerNM)
+
+var alertInhibitSquarePolygon = regularRingPolygon(4, alertInhibitSquareRadiusFeet)
+
 const (
 	suspendedOuterHalfSizeFeet = float32(65)
 	suspendedInnerHalfSizeFeet = float32(55)
@@ -1424,6 +1497,57 @@ func addAlertOctagons(
 	cb.SetRGB(targetRGB(targetRGBAlert, opts.Brightness))
 	cb.LineWidth(2)
 	builder.GenerateCommands(cb)
+}
+
+func addAlertInhibitSquares(
+	targets []*Target,
+	cb *renderer.CmdBuffer,
+	opts TargetDrawOptions,
+) {
+	if cb == nil || len(opts.AlertInhibitedTargetIDs) == 0 {
+		return
+	}
+
+	builders := map[targetClass]*renderer.LinesBuilder{
+		targetClassUnknown:       renderer.GetLinesBuilder(),
+		targetClassVehicle:       renderer.GetLinesBuilder(),
+		targetClassAircraft:      renderer.GetLinesBuilder(),
+		targetClassHeavyAircraft: renderer.GetLinesBuilder(),
+	}
+	defer func() {
+		for _, builder := range builders {
+			renderer.ReturnLinesBuilder(builder)
+		}
+	}()
+
+	rotation := float32(45) - float32(opts.ScopeRotationDeg)
+	for _, target := range targets {
+		if target == nil || target.Suspended || target.Dropped ||
+			!opts.AlertInhibitedTargetIDs[target.ID] {
+			continue
+		}
+
+		class := classifyTarget(target)
+		builder := builders[class]
+
+		points := make([]renderer.PointVertex, 0, len(alertInhibitSquarePolygon))
+		for _, point := range alertInhibitSquarePolygon {
+			position := rotateScaleTranslate(point, target.PosFeet, rotation, 1)
+			points = append(points, renderer.PointVertex{X: position.X, Y: position.Y})
+		}
+		builder.AddLineStrip(points)
+	}
+
+	cb.LineWidth(2)
+	for _, class := range []targetClass{
+		targetClassAircraft,
+		targetClassHeavyAircraft,
+		targetClassUnknown,
+		targetClassVehicle,
+	} {
+		cb.SetRGB(targetClassRGB(class, opts.Brightness))
+		builders[class].GenerateCommands(cb)
+	}
 }
 
 func addTargetSymbols(targets []*Target, cb *renderer.CmdBuffer, opts TargetDrawOptions) {

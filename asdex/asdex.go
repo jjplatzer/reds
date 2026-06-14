@@ -105,35 +105,38 @@ type ASDEXPane struct {
 	cursors    CursorSet
 	cursorMode CursorMode
 
-	displayStateByWindow      map[ScopeWindowID]*WindowDisplayState
-	dbFieldSettings           DataBlockFieldSettings
-	datablockTimeshareStart   time.Time
-	showBeaconUntilByTargetID map[string]time.Time
-	listsBrightness           int
-	dcbBrightness             int
-	previewArea               PreviewArea
-	coastList                 CoastList
-	alertRepository           AlertRepository
-	auralAlerts               *AuralAlertManager
-	alertMessageBox           AlertMessageBox
-	towerReference            TowerReference
-	hasTowerReference         bool
-	dcb                       Dcb
-	dcbSpinner                *DcbSpinner
-	dcbMenuCommand            *DcbMenuCommand
-	dbAreaDraft               *DataBlockAreaDraft
-	dbAreaSelection           *DataBlockAreaSelection
-	tempAreaDraft             *TempAreaDraft
-	tempTextCommand           *TempTextCommand
-	tempTextPlacement         *TempTextPlacementCommand
-	tempDataSelectMode        TempDataSelectMode
-	hoveredTempData           TempDataHit
-	newWindow                 *NewWindowCommand
-	deleteWindow              *DeleteWindowCommand
-	windowReposition          *WindowRepositionCommand
-	resizeWindow              *ResizeWindowCommand
-	showCoastList             bool
-	hoveredCoastListTarget    string
+	displayStateByWindow            map[ScopeWindowID]*WindowDisplayState
+	dbFieldSettings                 DataBlockFieldSettings
+	datablockTimeshareStart         time.Time
+	showBeaconUntilByTargetID       map[string]time.Time
+	listsBrightness                 int
+	dcbBrightness                   int
+	previewArea                     PreviewArea
+	coastList                       CoastList
+	alertRepository                 AlertRepository
+	auralAlerts                     *AuralAlertManager
+	alertMessageBox                 AlertMessageBox
+	towerReference                  TowerReference
+	hasTowerReference               bool
+	dcb                             Dcb
+	dcbSpinner                      *DcbSpinner
+	dcbMenuCommand                  *DcbMenuCommand
+	trackAlertInhibitReturnMenu     DcbMenu
+	trackAlertInhibitReturnLines    []string
+	trackAlertInhibitHasReturnState bool
+	dbAreaDraft                     *DataBlockAreaDraft
+	dbAreaSelection                 *DataBlockAreaSelection
+	tempAreaDraft                   *TempAreaDraft
+	tempTextCommand                 *TempTextCommand
+	tempTextPlacement               *TempTextPlacementCommand
+	tempDataSelectMode              TempDataSelectMode
+	hoveredTempData                 TempDataHit
+	newWindow                       *NewWindowCommand
+	deleteWindow                    *DeleteWindowCommand
+	windowReposition                *WindowRepositionCommand
+	resizeWindow                    *ResizeWindowCommand
+	showCoastList                   bool
+	hoveredCoastListTarget          string
 
 	commandMode         CommandMode
 	commandEntry        CommandTextEntry
@@ -466,12 +469,25 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.applyCurrentCursor(ctx)
 	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
 	targets := p.targets.All()
+	p.previewArea.SetTrackAlertsInhibited(p.targets.AnyAlertsInhibited())
 	alertChanges := p.safetyLogic.Update(targets, SafetyLogicUpdateOptions{
 		RunwayConfiguration: p.currentSafetyRunwayConfiguration(),
 		RunwayClosed:        p.tempData.RunwayClosed,
+		TargetAlertsInhibited: func(targetID string) bool {
+			return p.targets.AlertsInhibited(targetID)
+		},
 	})
-	p.alertRepository.ApplyChanges(alertChanges)
+	targetAlertsInhibited := func(targetID string) bool {
+		return p.targets.AlertsInhibited(targetID)
+	}
+	p.alertRepository.ApplyChanges(alertChanges, targetAlertsInhibited)
 	alertTargetIDs := p.alertRepository.AircraftIDsInAlertSet()
+	for targetID := range alertTargetIDs {
+		if p.targets.AlertsInhibited(targetID) {
+			delete(alertTargetIDs, targetID)
+		}
+	}
+	alertInhibitedTargetIDs := p.targets.AlertInhibitedIDs()
 	alertInProgress := p.alertRepository.AlertInProgress()
 	alertOn := alertFlashOn(now)
 
@@ -489,6 +505,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		now,
 		true,
 		alertTargetIDs,
+		alertInhibitedTargetIDs,
 		alertInProgress,
 		alertOn,
 	)
@@ -509,6 +526,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			now,
 			false,
 			alertTargetIDs,
+			alertInhibitedTargetIDs,
 			alertInProgress,
 			alertOn,
 		)
@@ -613,6 +631,7 @@ func (p *ASDEXPane) renderScopeWindow(
 	now time.Time,
 	drawDraft bool,
 	alertTargetIDs map[string]bool,
+	alertInhibitedTargetIDs map[string]bool,
 	alertInProgress bool,
 	alertOn bool,
 ) radar.ScopeTransformations {
@@ -711,12 +730,13 @@ func (p *ASDEXPane) renderScopeWindow(
 		p.targets.History(),
 		targetCB,
 		TargetDrawOptions{
-			VectorSeconds:       3,
-			Brightness:          brightness.Track,
-			ScopeRotationDeg:    int(view.Rotation),
-			HighlightedTargetID: highlightedTargetID,
-			AlertTargetIDs:      alertTargetIDs,
-			AlertFlashOn:        alertOn,
+			VectorSeconds:           3,
+			Brightness:              brightness.Track,
+			ScopeRotationDeg:        int(view.Rotation),
+			HighlightedTargetID:     highlightedTargetID,
+			AlertTargetIDs:          alertTargetIDs,
+			AlertInhibitedTargetIDs: alertInhibitedTargetIDs,
+			AlertFlashOn:            alertOn,
 		},
 	)
 	targetCB.DisableScissor()
@@ -954,6 +974,8 @@ func (p *ASDEXPane) dcbState() DcbState {
 		activeSpinnerFunction = DcbFunctionWindowReposition
 	} else if p.resizeWindow != nil {
 		activeSpinnerFunction = DcbFunctionResizeWindow
+	} else if p.commandMode == CommandModeTrackAlertInhibit {
+		activeSpinnerFunction = DcbFunctionTrackAlertInhibit
 	}
 	fields := p.dbFieldSettings
 
@@ -971,6 +993,7 @@ func (p *ASDEXPane) dcbState() DcbState {
 		ShowCoastList:          p.showCoastList,
 		CursorSpeed:            1,
 		CursorHome:             false,
+		Volume:                 0,
 		FullDataBlocks:         active.DB.FullDataBlocks,
 		ShowAltitude:           fields.ShowAltitude,
 		ShowTargetType:         fields.ShowTargetType,
@@ -1071,6 +1094,10 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return false
 	}
 
+	if p.dcb.Menu() == DcbMenuSafetyLogic && p.activateSafetyLogicDcbHit(ctx, hit) {
+		return true
+	}
+
 	if p.activateTempDataDcbHit(hit) {
 		return true
 	}
@@ -1123,6 +1150,9 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return true
 	case DcbFunctionTools:
 		p.openToolsMenu()
+		return true
+	case DcbFunctionSafetyLogic:
+		p.openSafetyLogicMenu()
 		return true
 	case DcbFunctionNewWindow:
 		if p.dcb.Menu() == DcbMenuTools {
@@ -1203,6 +1233,7 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		p.dcb.ToggleOnOff()
 		p.dcbSpinner = nil
 		p.dcbMenuCommand = nil
+		p.clearTrackAlertInhibitReturnContext()
 		p.towerReadout = nil
 		p.dbAreaDraft = nil
 		p.dbAreaSelection = nil
@@ -1224,6 +1255,42 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	}
 }
 
+func (p *ASDEXPane) activateSafetyLogicDcbHit(ctx *panes.Context, hit DcbHit) bool {
+	if p == nil {
+		return false
+	}
+
+	switch hit.Function {
+	case DcbFunctionTrackAlertInhibit:
+		p.startTrackAlertInhibitFromDcb(ctx)
+		return true
+	case DcbFunctionAllTracksEnableAlerts:
+		p.alertRepository.ClearInhibitedAircraft(func(targetID string) bool {
+			return p.targets.AlertsInhibited(targetID)
+		})
+		p.targets.ClearAlertInhibits()
+		if p.auralAlerts != nil && !p.alertRepository.AlertInProgress() {
+			p.auralAlerts.Stop()
+		}
+		p.previewArea.SetTrackAlertsInhibited(false)
+		p.previewArea.SetSystemResponse("")
+		p.clearHighlightedTarget()
+		return true
+	case DcbFunctionArrivalAlerts,
+		DcbFunctionAlertReposition,
+		DcbFunctionVolume,
+		DcbFunctionVolumeTest,
+		DcbFunctionRunwayConfig,
+		DcbFunctionTowerConfig,
+		DcbFunctionClosedRunway:
+		p.previewArea.SetSystemResponse("")
+		p.clearHighlightedTarget()
+		return true
+	default:
+		return false
+	}
+}
+
 func (p *ASDEXPane) clearDcbModalConflicts() {
 	if p == nil {
 		return
@@ -1242,6 +1309,7 @@ func (p *ASDEXPane) clearDcbModalConflicts() {
 	p.mapRotate = nil
 	p.towerReadout = nil
 	p.dcbSpinner = nil
+	p.clearTrackAlertInhibitReturnContext()
 	p.dbAreaDraft = nil
 	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
@@ -1461,6 +1529,31 @@ func (p *ASDEXPane) openToolsMenu() {
 	p.clearHighlightedTarget()
 }
 
+func (p *ASDEXPane) openSafetyLogicMenu() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.dcb.SetMenu(DcbMenuSafetyLogic)
+	p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) startTrackAlertInhibitFromDcb(_ *panes.Context) {
+	if p == nil {
+		return
+	}
+
+	status := p.startTrackAlertInhibitCommand(
+		DcbMenuSafetyLogic,
+		[]string{"SAFETY LOGIC"},
+		true,
+	)
+	p.applyCommandStatus(status)
+}
+
 func (p *ASDEXPane) startMapRotateCommand(command *MapRotateCommand) {
 	if p == nil || command == nil {
 		return
@@ -1537,6 +1630,7 @@ func (p *ASDEXPane) startNewWindowCommand(command *NewWindowCommand) {
 	p.towerReadout = nil
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
+	p.clearTrackAlertInhibitReturnContext()
 	p.dbAreaDraft = nil
 	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
@@ -3129,6 +3223,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	if p.commandMode == CommandModeTrackSuspend {
 		return []string{"TRK SUSP"}
 	}
+	if p.commandMode == CommandModeTrackAlertInhibit {
+		return []string{"SAFETY LOGIC", "TRACK ALERT INHIB"}
+	}
 	if !p.commandEntry.Empty() {
 		return p.commandEntry.DisplayLines()
 	}
@@ -3183,6 +3280,10 @@ func (p *ASDEXPane) cancelActiveCommand() {
 		p.finishMapRotateCommand("")
 		return
 	}
+	if p.commandMode == CommandModeTrackAlertInhibit {
+		p.finishTrackAlertInhibitCommand("")
+		return
+	}
 	if p.mapReposition != nil && p.mapReposition.initialized {
 		windowID := p.mapReposition.WindowID
 		originalCenter := p.mapReposition.originalCenter
@@ -3203,6 +3304,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.towerReadout = nil
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
+	p.clearTrackAlertInhibitReturnContext()
 	p.dbAreaDraft = nil
 	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil

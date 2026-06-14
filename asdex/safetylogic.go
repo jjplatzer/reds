@@ -124,6 +124,8 @@ type SafetyLogicUpdateOptions struct {
 
 	// For now this comes from TempData.RunwayClosed.
 	RunwayClosed func(runwayID string) bool
+
+	TargetAlertsInhibited func(targetID string) bool
 }
 
 type surfaceRunway struct {
@@ -486,6 +488,9 @@ func (sl *SafetyLogic) generateAlerts(
 
 		target := targetByID[operation.TargetID]
 		if target == nil {
+			continue
+		}
+		if opts.TargetAlertsInhibited != nil && opts.TargetAlertsInhibited(target.ID) {
 			continue
 		}
 

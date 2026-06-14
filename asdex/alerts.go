@@ -38,7 +38,10 @@ func NewAlertRepository(aural *AuralAlertManager) AlertRepository {
 	return AlertRepository{aural: aural}
 }
 
-func (r *AlertRepository) ApplyChanges(changes SafetyAlertChanges) {
+func (r *AlertRepository) ApplyChanges(
+	changes SafetyAlertChanges,
+	targetAlertsInhibited func(string) bool,
+) {
 	if r == nil || changes.Empty() {
 		return
 	}
@@ -47,6 +50,10 @@ func (r *AlertRepository) ApplyChanges(changes SafetyAlertChanges) {
 		r.Delete(id)
 	}
 	for _, alert := range changes.Upserted {
+		if safetyAlertInvolvesInhibitedTarget(alert, targetAlertsInhibited) {
+			r.Delete(alert.ID)
+			continue
+		}
 		r.Upsert(alert)
 	}
 }
@@ -77,6 +84,37 @@ func (r *AlertRepository) Delete(id string) {
 	out := r.alerts[:0]
 	for _, alert := range r.alerts {
 		if alert.ID != id {
+			out = append(out, alert)
+		}
+	}
+	r.alerts = out
+}
+
+func (r *AlertRepository) DeleteForAircraft(targetID string) {
+	targetID = strings.TrimSpace(targetID)
+	if r == nil || targetID == "" {
+		return
+	}
+
+	out := r.alerts[:0]
+	for _, alert := range r.alerts {
+		if !safetyAlertInvolvesTarget(alert, targetID) {
+			out = append(out, alert)
+		}
+	}
+	r.alerts = out
+}
+
+func (r *AlertRepository) ClearInhibitedAircraft(
+	targetAlertsInhibited func(string) bool,
+) {
+	if r == nil || targetAlertsInhibited == nil {
+		return
+	}
+
+	out := r.alerts[:0]
+	for _, alert := range r.alerts {
+		if !safetyAlertInvolvesInhibitedTarget(alert, targetAlertsInhibited) {
 			out = append(out, alert)
 		}
 	}
@@ -134,6 +172,31 @@ func (r *AlertRepository) AircraftIDsInAlertSet() map[string]bool {
 		}
 	}
 	return out
+}
+
+func safetyAlertInvolvesInhibitedTarget(
+	alert SafetyAlert,
+	targetAlertsInhibited func(string) bool,
+) bool {
+	if targetAlertsInhibited == nil {
+		return false
+	}
+
+	for _, id := range alert.AircraftIDs {
+		if targetAlertsInhibited(strings.TrimSpace(id)) {
+			return true
+		}
+	}
+	return false
+}
+
+func safetyAlertInvolvesTarget(alert SafetyAlert, targetID string) bool {
+	for _, id := range alert.AircraftIDs {
+		if strings.TrimSpace(id) == targetID {
+			return true
+		}
+	}
+	return false
 }
 
 func alertFlashOn(now time.Time) bool {

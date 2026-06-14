@@ -62,6 +62,22 @@ func registerOpsCommands() {
 			return ap.cmdTrackSuspendSlew(ctx, target)
 		},
 	)
+
+	registerCommand(
+		CommandModeNone,
+		"[TRK ALERT INHIB]",
+		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
+			return ap.cmdTrackAlertInhibit(ctx)
+		},
+	)
+
+	registerCommand(
+		CommandModeTrackAlertInhibit,
+		"[SLEW]",
+		func(ap *ASDEXPane, ctx *panes.Context, target *Target) CommandStatus {
+			return ap.cmdTrackAlertInhibitSlew(ctx, target)
+		},
+	)
 }
 
 func (ap *ASDEXPane) cmdTrackSuspend(_ *panes.Context) CommandStatus {
@@ -138,6 +154,149 @@ func (ap *ASDEXPane) cmdTrackSuspendSlew(
 		Output:    "",
 		HasOutput: true,
 	}
+}
+
+func (ap *ASDEXPane) cmdTrackAlertInhibit(_ *panes.Context) CommandStatus {
+	if ap == nil {
+		return CommandStatus{}
+	}
+
+	returnMenu := ap.dcb.Menu()
+	var returnLines []string
+	if ap.dcbMenuCommand != nil {
+		returnLines = ap.dcbMenuCommand.DisplayLines()
+	}
+
+	return ap.startTrackAlertInhibitCommand(returnMenu, returnLines, false)
+}
+
+func (ap *ASDEXPane) startTrackAlertInhibitCommand(
+	returnMenu DcbMenu,
+	returnLines []string,
+	changeDcbMenu bool,
+) CommandStatus {
+	if ap == nil {
+		return CommandStatus{}
+	}
+
+	ap.commandMode = CommandModeTrackAlertInhibit
+	ap.commandEntry.Clear()
+	ap.datablockEdit = nil
+	ap.editingTargetID = ""
+	ap.initControlEntry = nil
+	ap.termControlEntry = nil
+	ap.multiFunction = nil
+	ap.previewReposition = nil
+	ap.coastListReposition = nil
+	ap.mapReposition = nil
+	ap.mapRotate = nil
+	ap.towerReadout = nil
+	ap.dcbSpinner = nil
+	ap.dcbMenuCommand = nil
+	ap.dbAreaDraft = nil
+	ap.dbAreaSelection = nil
+	ap.tempAreaDraft = nil
+	ap.tempTextCommand = nil
+	ap.tempTextPlacement = nil
+	ap.tempDataSelectMode = TempDataSelectNone
+	ap.hoveredTempData = TempDataHit{Type: TempDataHitNone, Index: -1}
+	ap.tempData.ClearHighlights()
+	ap.newWindow = nil
+	ap.deleteWindow = nil
+	ap.windowReposition = nil
+	ap.resizeWindow = nil
+
+	ap.trackAlertInhibitReturnMenu = returnMenu
+	ap.trackAlertInhibitReturnLines = append([]string(nil), returnLines...)
+	ap.trackAlertInhibitHasReturnState = true
+	ap.dcbMenuCommand = nil
+
+	if changeDcbMenu {
+		ap.dcb.SetMenu(returnMenu)
+	}
+
+	ap.clearHighlightedTarget()
+	ap.previewArea.SetSystemResponse("")
+
+	return CommandStatus{Clear: ClearNone}
+}
+
+func (ap *ASDEXPane) cmdTrackAlertInhibitSlew(
+	_ *panes.Context,
+	target *Target,
+) CommandStatus {
+	if ap == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+	if target == nil {
+		ap.finishTrackAlertInhibitCommand("NO SLEW")
+		return CommandStatus{
+			Clear:     ClearNone,
+			Output:    "NO SLEW",
+			HasOutput: true,
+		}
+	}
+	if target.Suspended || target.Coasting || target.Dropped {
+		ap.finishTrackAlertInhibitCommand("")
+		return CommandStatus{Clear: ClearNone}
+	}
+	if !targetCanHaveDataBlock(target) {
+		ap.finishTrackAlertInhibitCommand("")
+		return CommandStatus{Clear: ClearNone}
+	}
+
+	ap.targets.ToggleAlertsInhibited(target.ID)
+	if ap.targets.AlertsInhibited(target.ID) {
+		ap.alertRepository.DeleteForAircraft(target.ID)
+		if ap.auralAlerts != nil && !ap.alertRepository.AlertInProgress() {
+			ap.auralAlerts.Stop()
+		}
+	}
+	ap.previewArea.SetTrackAlertsInhibited(ap.targets.AnyAlertsInhibited())
+
+	ap.finishTrackAlertInhibitCommand("")
+
+	return CommandStatus{
+		Clear:     ClearNone,
+		Output:    "",
+		HasOutput: true,
+	}
+}
+
+func (ap *ASDEXPane) finishTrackAlertInhibitCommand(response string) {
+	if ap == nil {
+		return
+	}
+
+	ap.commandMode = CommandModeNone
+	ap.commandEntry.Clear()
+
+	returnMenu := ap.trackAlertInhibitReturnMenu
+	returnLines := append([]string(nil), ap.trackAlertInhibitReturnLines...)
+	hasReturn := ap.trackAlertInhibitHasReturnState
+	ap.clearTrackAlertInhibitReturnContext()
+
+	if hasReturn {
+		ap.dcb.SetMenu(returnMenu)
+		if len(returnLines) > 0 {
+			ap.dcbMenuCommand = NewDcbMenuCommand(returnLines...)
+		} else {
+			ap.dcbMenuCommand = nil
+		}
+	}
+
+	ap.previewArea.SetSystemResponse(response)
+	ap.clearHighlightedTarget()
+}
+
+func (ap *ASDEXPane) clearTrackAlertInhibitReturnContext() {
+	if ap == nil {
+		return
+	}
+
+	ap.trackAlertInhibitReturnMenu = DcbMenuMain
+	ap.trackAlertInhibitReturnLines = nil
+	ap.trackAlertInhibitHasReturnState = false
 }
 
 func commandOutputClearAll(text string) CommandStatus {

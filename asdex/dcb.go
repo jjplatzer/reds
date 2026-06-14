@@ -31,6 +31,7 @@ const (
 	DcbMenuModifyTraitArea
 	DcbMenuBrightness
 	DcbMenuTools
+	DcbMenuSafetyLogic
 	DcbMenuOff
 )
 
@@ -123,6 +124,14 @@ const (
 	DcbFunctionDcbBottom
 	DcbFunctionChangePassword
 	DcbFunctionPlayBack
+	DcbFunctionArrivalAlerts
+	DcbFunctionTrackAlertInhibit
+	DcbFunctionAllTracksEnableAlerts
+	DcbFunctionAlertReposition
+	DcbFunctionVolume
+	DcbFunctionVolumeTest
+	DcbFunctionRunwayConfig
+	DcbFunctionTowerConfig
 	DcbFunctionDataBlocksOnOff
 	DcbFunctionInitControl
 	DcbFunctionTrackSuspend
@@ -216,6 +225,7 @@ type DcbState struct {
 	ShowCoastList bool
 	CursorSpeed   int
 	CursorHome    bool
+	Volume        int
 
 	FullDataBlocks bool
 
@@ -762,6 +772,8 @@ func isLargeDcbFunction(function DcbFunction) bool {
 		DcbFunctionSafetyLogic,
 		DcbFunctionTools,
 		DcbFunctionClosedRunway,
+		DcbFunctionRunwayConfig,
+		DcbFunctionTowerConfig,
 		DcbFunctionStoredGlobalTempData,
 		DcbFunctionDefineClosedArea,
 		DcbFunctionDefineRestrictedArea,
@@ -791,6 +803,12 @@ func isLargeDcbFunction(function DcbFunction) bool {
 		DcbFunctionTempMapTextBrightness,
 		DcbFunctionDcbBrightness,
 		DcbFunctionCursorHomeOnOff,
+		DcbFunctionArrivalAlerts,
+		DcbFunctionTrackAlertInhibit,
+		DcbFunctionAllTracksEnableAlerts,
+		DcbFunctionAlertReposition,
+		DcbFunctionVolume,
+		DcbFunctionVolumeTest,
 		DcbFunctionDone,
 		DcbFunctionVacant:
 		return true
@@ -1239,6 +1257,69 @@ func (d *Dcb) brightnessButtonSpecs(state DcbState) []DcbButtonSpec {
 	}
 }
 
+func (d *Dcb) safetyLogicButtonSpecs(state DcbState) []DcbButtonSpec {
+	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
+		if state.ActiveSpinnerFunction == spec.Function {
+			spec.Active = true
+		}
+		return spec
+	}
+	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonNormal,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	menu := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonMenu,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	value := func(function DcbFunction, showValue bool, value string, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function:  function,
+			Type:      DcbButtonValue,
+			Large:     isLargeDcbFunction(function),
+			Visible:   true,
+			Lines:     append([]string(nil), lines...),
+			ShowValue: showValue,
+			Value:     value,
+		})
+	}
+	vacant := func() DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: DcbFunctionVacant,
+			Type:     DcbButtonVacant,
+			Large:    true,
+			Visible:  true,
+		}
+	}
+
+	return []DcbButtonSpec{
+		vacant(),
+		vacant(),
+		menu(DcbFunctionClosedRunway, "CLOSED", "RWY"),
+		menu(DcbFunctionRunwayConfig, "RWY", "CONFIG"),
+		menu(DcbFunctionTowerConfig, "TOWER", "CONFIG"),
+		menu(DcbFunctionArrivalAlerts, "ARR", "ALERTS"),
+		normal(DcbFunctionTrackAlertInhibit, "TRACK", "ALERT", "INHIB"),
+		normal(DcbFunctionAllTracksEnableAlerts, "ALL", "TRACKS", "ENABLE"),
+		normal(DcbFunctionAlertReposition, "ALERT", "RPOS"),
+		value(DcbFunctionVolume, true, strconv.Itoa(state.Volume), "VOL"),
+		normal(DcbFunctionVolumeTest, "VOL", "TEST"),
+		normal(DcbFunctionDone, "DONE"),
+		vacant(),
+		vacant(),
+	}
+}
+
 func (d *Dcb) toolsButtonSpecs(state DcbState) []DcbButtonSpec {
 	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
 		if state.ActiveSpinnerFunction == spec.Function {
@@ -1361,6 +1442,8 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 		return d.brightnessButtonSpecs(state)
 	case DcbMenuTools:
 		return d.toolsButtonSpecs(state)
+	case DcbMenuSafetyLogic:
+		return d.safetyLogicButtonSpecs(state)
 	default:
 		return d.mainButtonSpecs(state)
 	}
