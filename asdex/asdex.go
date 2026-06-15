@@ -713,8 +713,8 @@ func (p *ASDEXPane) renderScopeWindow(
 	holdBarCB := zcb.At(scopeWindowZ(stackIndex, zSafetyLogicHoldBars))
 	holdBarCB.Viewport(x, y, w, h)
 	holdBarCB.Scissor(x, y, w, h)
-	transforms.LoadWindowViewingMatrices(holdBarCB)
-	p.safetyLogic.DrawHoldBars(holdBarCB, transforms, brightness.HoldBars)
+	transforms.LoadWorldViewingMatrices(holdBarCB)
+	p.safetyLogic.DrawHoldBars(holdBarCB, brightness.HoldBars)
 	holdBarCB.DisableScissor()
 
 	targetCB := zcb.At(scopeWindowZ(stackIndex, zTargets))
