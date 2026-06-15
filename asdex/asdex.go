@@ -731,6 +731,8 @@ func (p *ASDEXPane) renderScopeWindow(
 		targetCB,
 		TargetDrawOptions{
 			VectorSeconds:           3,
+			ShowHistory:             displayState.ShowHistory,
+			HistoryLength:           displayState.HistoryLength,
 			Brightness:              brightness.Track,
 			ScopeRotationDeg:        int(view.Rotation),
 			HighlightedTargetID:     highlightedTargetID,
@@ -988,8 +990,8 @@ func (p *ASDEXPane) dcbState() DcbState {
 		DataBlocksOn:           active.DB.ShowDataBlocks,
 		DcbOn:                  p.dcb.On(),
 		RotationDeg:            int(normalizeRotation(active.View.Rotation)),
-		ShowHistory:            true,
-		HistoryLength:          7,
+		ShowHistory:            active.ShowHistory,
+		HistoryLength:          active.HistoryLength,
 		ShowCoastList:          p.showCoastList,
 		CursorSpeed:            1,
 		CursorHome:             false,
@@ -1153,6 +1155,16 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return true
 	case DcbFunctionSafetyLogic:
 		p.openSafetyLogicMenu()
+		return true
+	case DcbFunctionHistoryOnOff:
+		if p.dcb.Menu() == DcbMenuTools {
+			p.toggleHistoryForActiveWindow()
+		}
+		return true
+	case DcbFunctionHistory:
+		if p.dcb.Menu() == DcbMenuTools {
+			p.startHistorySpinner()
+		}
 		return true
 	case DcbFunctionNewWindow:
 		if p.dcb.Menu() == DcbMenuTools {
@@ -1728,8 +1740,6 @@ func isToolsPlaceholderFunction(function DcbFunction) bool {
 	switch function {
 	case DcbFunctionRange,
 		DcbFunctionMapReposition,
-		DcbFunctionHistoryOnOff,
-		DcbFunctionHistory,
 		DcbFunctionCoastOnOff,
 		DcbFunctionCoastReposition,
 		DcbFunctionPreviewReposition,
@@ -2004,6 +2014,34 @@ func (p *ASDEXPane) startRangeSpinner() {
 	p.clearHighlightedTarget()
 }
 
+func (p *ASDEXPane) toggleHistoryForActiveWindow() {
+	if p == nil {
+		return
+	}
+
+	state := p.displayStateForWindow(p.activeWindowID())
+	state.ShowHistory = !state.ShowHistory
+
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) startHistorySpinner() {
+	if p == nil {
+		return
+	}
+
+	windowID := p.activeWindowID()
+	state := p.displayStateForWindow(windowID)
+
+	p.clearDcbModalConflicts()
+	p.dcb.SetMenu(DcbMenuTools)
+	p.dcbMenuCommand = nil
+	p.dcbSpinner = NewHistoryDcbSpinner(windowID, state.HistoryLength)
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
 func (p *ASDEXPane) consumeDcbSpinnerInput(ctx *panes.Context) bool {
 	if p == nil || p.dcbSpinner == nil || ctx == nil || ctx.Mouse == nil {
 		return false
@@ -2040,6 +2078,8 @@ func (p *ASDEXPane) acceptActiveDcbSpinner() {
 	switch spinner.Type {
 	case DcbSpinnerBrightness:
 		p.finishBrightnessSpinner("")
+	case DcbSpinnerHistory:
+		p.finishHistorySpinner("")
 	case DcbSpinnerDbAreaCharSize,
 		DcbSpinnerDbAreaBrightness,
 		DcbSpinnerDbAreaLeaderLength,
@@ -2060,6 +2100,10 @@ func (p *ASDEXPane) cancelDcbSpinner() {
 		p.dcb.SetMenu(DcbMenuBrightness)
 		p.dcbMenuCommand = NewDcbMenuCommand("BRITE")
 		p.previewArea.SetSystemResponse("")
+		return
+	}
+	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerHistory {
+		p.finishHistorySpinner("")
 		return
 	}
 	if p.dcbSpinner != nil && p.dcbSpinner.Type != DcbSpinnerRange {
@@ -2119,6 +2163,9 @@ func (p *ASDEXPane) commitDcbSpinner() {
 		p.setRangeSettingForWindow(spinner.WindowID, value)
 		p.dcbSpinner = nil
 		p.previewArea.SetSystemResponse("")
+		return
+	case DcbSpinnerHistory:
+		p.commitHistorySpinner(spinner)
 		return
 	case DcbSpinnerDbAreaCharSize:
 		p.commitDbAreaCharSizeSpinner(spinner)
@@ -2240,6 +2287,33 @@ func (p *ASDEXPane) commitBrightnessSpinner(spinner *DcbSpinner) {
 	p.finishBrightnessSpinner("")
 }
 
+func (p *ASDEXPane) commitHistorySpinner(spinner *DcbSpinner) {
+	if p == nil || spinner == nil {
+		return
+	}
+
+	value, ok := spinner.ParsedValue()
+	if !ok || value < 1 || value > 7 {
+		p.finishHistorySpinner("INVALID ENTRY")
+		return
+	}
+
+	p.setHistoryLengthForWindow(spinner.WindowID, value)
+	p.finishHistorySpinner("")
+}
+
+func (p *ASDEXPane) finishHistorySpinner(systemResponse string) {
+	if p == nil {
+		return
+	}
+
+	p.dcbSpinner = nil
+	p.dcb.SetMenu(DcbMenuTools)
+	p.dcbMenuCommand = NewDcbMenuCommand("TOOLS")
+	p.previewArea.SetSystemResponse(systemResponse)
+	p.clearHighlightedTarget()
+}
+
 func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 	if p == nil || p.dcbSpinner == nil || delta == 0 {
 		return
@@ -2268,6 +2342,12 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 
 		p.setRangeSettingForWindow(windowID, next)
 		spinner.Value = next
+	case DcbSpinnerHistory:
+		next := clampInt(spinner.Value+delta, 1, 7)
+		if next != spinner.Value {
+			spinner.Value = next
+			p.setHistoryLengthForWindow(spinner.WindowID, next)
+		}
 	case DcbSpinnerDbAreaCharSize:
 		next := clampInt(spinner.Value+delta, 1, 6)
 		if next != spinner.Value {
@@ -2339,6 +2419,15 @@ func (p *ASDEXPane) setRangeSettingForWindow(id ScopeWindowID, rangeSetting int)
 	})
 }
 
+func (p *ASDEXPane) setHistoryLengthForWindow(windowID ScopeWindowID, value int) {
+	if p == nil {
+		return
+	}
+
+	state := p.displayStateForWindow(windowID)
+	state.HistoryLength = clampInt(value, 1, 7)
+}
+
 func (p *ASDEXPane) setMainRangeSetting(rangeSetting int) {
 	p.setRangeSettingForWindow(mainScopeWindowID, rangeSetting)
 }
@@ -2355,10 +2444,12 @@ func (p *ASDEXPane) dataBlockSettings() DataBlockSettings {
 }
 
 type ActiveDcbWindowState struct {
-	WindowID   ScopeWindowID
-	View       ScopeView
-	DB         DataBlockSettings
-	Brightness WindowBrightnessSettings
+	WindowID      ScopeWindowID
+	View          ScopeView
+	DB            DataBlockSettings
+	Brightness    WindowBrightnessSettings
+	ShowHistory   bool
+	HistoryLength int
 }
 
 func (p *ASDEXPane) activeDcbWindowState() ActiveDcbWindowState {
@@ -2370,11 +2461,14 @@ func (p *ASDEXPane) activeDcbWindowState() ActiveDcbWindowState {
 		view = p.mainScopeView()
 	}
 
+	state := p.displayStateForWindow(windowID)
 	return ActiveDcbWindowState{
-		WindowID:   windowID,
-		View:       view,
-		DB:         p.dataBlockSettingsForWindow(windowID),
-		Brightness: p.displayStateForWindow(windowID).Brightness,
+		WindowID:      windowID,
+		View:          view,
+		DB:            p.dataBlockSettingsForWindow(windowID),
+		Brightness:    state.Brightness,
+		ShowHistory:   state.ShowHistory,
+		HistoryLength: state.HistoryLength,
 	}
 }
 

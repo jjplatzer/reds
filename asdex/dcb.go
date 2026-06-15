@@ -265,6 +265,7 @@ type DcbSpinnerType int
 const (
 	DcbSpinnerNone DcbSpinnerType = iota
 	DcbSpinnerRange
+	DcbSpinnerHistory
 	DcbSpinnerDbAreaCharSize
 	DcbSpinnerDbAreaBrightness
 	DcbSpinnerDbAreaLeaderLength
@@ -351,6 +352,26 @@ func NewRangeDcbSpinner(windowID ScopeWindowID, currentRange int) *DcbSpinner {
 		Original: currentRange,
 		input:    "",
 		cursor:   0,
+	}
+}
+
+func NewHistoryDcbSpinner(windowID ScopeWindowID, current int) *DcbSpinner {
+	current = clampInt(current, 1, 7)
+
+	return &DcbSpinner{
+		Type:           DcbSpinnerHistory,
+		Function:       DcbFunctionHistory,
+		WindowID:       windowID,
+		Title:          "HISTORY",
+		Lines:          []string{"TOOLS", "HISTORY"},
+		Min:            1,
+		Max:            7,
+		Step:           1,
+		Value:          current,
+		Original:       current,
+		MaxInputDigits: 1,
+		input:          "",
+		cursor:         0,
 	}
 }
 

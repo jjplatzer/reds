@@ -36,6 +36,9 @@ type WindowDisplayState struct {
 	DB         DataBlockSettings
 	Brightness WindowBrightnessSettings
 
+	ShowHistory   bool
+	HistoryLength int
+
 	TargetShowDBOverrides    map[string]bool
 	TargetDBOffAreaOverrides map[string]bool
 
@@ -84,6 +87,9 @@ func NewWindowDisplayState() *WindowDisplayState {
 	return &WindowDisplayState{
 		DB:         DefaultDataBlockSettings(),
 		Brightness: NewWindowBrightnessSettings(),
+
+		ShowHistory:   false,
+		HistoryLength: 7,
 
 		NextDBAreaID: 1,
 	}
