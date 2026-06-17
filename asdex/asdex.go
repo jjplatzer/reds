@@ -1231,6 +1231,11 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 			p.startHistorySpinner()
 		}
 		return true
+	case DcbFunctionCoastOnOff:
+		if p.dcb.Menu() == DcbMenuTools {
+			p.toggleCoastList()
+		}
+		return true
 	case DcbFunctionNewWindow:
 		if p.dcb.Menu() == DcbMenuTools {
 			p.startToolsNewWindowCommand()
@@ -1871,7 +1876,6 @@ func isToolsPlaceholderFunction(function DcbFunction) bool {
 	switch function {
 	case DcbFunctionRange,
 		DcbFunctionMapReposition,
-		DcbFunctionCoastOnOff,
 		DcbFunctionCoastReposition,
 		DcbFunctionPreviewReposition,
 		DcbFunctionCursorSpeed,
@@ -2152,6 +2156,20 @@ func (p *ASDEXPane) toggleHistoryForActiveWindow() {
 
 	state := p.displayStateForWindow(p.activeWindowID())
 	state.ShowHistory = !state.ShowHistory
+
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) toggleCoastList() {
+	if p == nil {
+		return
+	}
+
+	p.showCoastList = !p.showCoastList
+	if !p.showCoastList {
+		p.hoveredCoastListTarget = ""
+	}
 
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
