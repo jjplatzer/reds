@@ -74,7 +74,9 @@ const (
 	KeyAlt
 	KeyShift
 	KeyControl
+	KeyCommand
 	KeyC
+	KeyF
 )
 
 // KeyboardState is the keyboard input for one frame.

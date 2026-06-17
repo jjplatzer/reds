@@ -96,6 +96,20 @@ func (g *glfwPlatform) ClearCursorOverride() {
 	g.cursorHiddenOverride = false
 }
 
+func (g *glfwPlatform) ShowSystemCursor() {
+	if g == nil || g.window == nil {
+		return
+	}
+
+	g.cursorOverride = nil
+	g.cursorHiddenOverride = false
+	g.currentCursor = nil
+	g.currentCursorHidden = false
+
+	g.window.SetInputMode(glfw.CursorMode, glfw.CursorNormal)
+	g.window.SetCursor(nil)
+}
+
 func (g *glfwPlatform) applyCursorState() {
 	if g == nil || g.window == nil {
 		return
