@@ -38,7 +38,6 @@ const (
 const (
 	shortcutCommandSymbol = "\u2318"
 	shortcutControlSymbol = "\u2303"
-	shortcutOptionSymbol  = "\u2325"
 	shortcutShiftSymbol   = "\u21e7"
 )
 
@@ -287,28 +286,20 @@ func drawTitleBarMenuItemText(
 
 func titleBarSwitchFacilityShortcutParts() []titleBarShortcutPart {
 	if runtime.GOOS == "darwin" {
-		if shortcutSymbolFont12 != nil {
-			return []titleBarShortcutPart{
-				{Text: shortcutCommandSymbol, Font: shortcutSymbolFont12, FontSize: 12},
-				{Text: "+"},
-				{Text: shortcutShiftSymbol, Font: shortcutSymbolFont12, FontSize: 12},
-				{Text: "+F"},
-			}
-		}
-
-		return []titleBarShortcutPart{{Text: "Cmd+Shift+F"}}
-	}
-
-	if shortcutSymbolFont12 != nil {
 		return []titleBarShortcutPart{
-			{Text: shortcutControlSymbol, Font: shortcutSymbolFont12, FontSize: 12},
+			{Text: shortcutCommandSymbol},
 			{Text: "+"},
-			{Text: shortcutShiftSymbol, Font: shortcutSymbolFont12, FontSize: 12},
+			{Text: shortcutShiftSymbol},
 			{Text: "+F"},
 		}
 	}
 
-	return []titleBarShortcutPart{{Text: "Ctrl+Shift+F"}}
+	return []titleBarShortcutPart{
+		{Text: shortcutControlSymbol},
+		{Text: "+"},
+		{Text: shortcutShiftSymbol},
+		{Text: "+F"},
+	}
 }
 
 func titleBarShortcutPartsWidth(parts []titleBarShortcutPart) float32 {
