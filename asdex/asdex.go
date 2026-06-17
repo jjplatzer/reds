@@ -118,6 +118,9 @@ type ASDEXPane struct {
 	alertMessageBox                 AlertMessageBox
 	towerReference                  TowerReference
 	hasTowerReference               bool
+	towerConfigurations             []TowerConfiguration
+	defaultTowerConfigID            string
+	activeTowerConfigIDs            map[string]bool
 	dcb                             Dcb
 	dcbSpinner                      *DcbSpinner
 	dcbMenuCommand                  *DcbMenuCommand
@@ -179,6 +182,14 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	if towerErr != nil {
 		fmt.Fprintf(os.Stderr, "reds: %v\n", towerErr)
 	}
+	towerConfigs, defaultTowerConfigID, towerConfigErr := loadTowerConfigurations(airport)
+	if towerConfigErr != nil {
+		fmt.Fprintf(os.Stderr, "reds: %v\n", towerConfigErr)
+	}
+	activeTowerConfigIDs := make(map[string]bool)
+	if defaultTowerConfigID != "" {
+		activeTowerConfigIDs[defaultTowerConfigID] = true
+	}
 	safetyLogic, err := LoadSafetyLogic(airport, vm)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "reds: %v\n", err)
@@ -206,7 +217,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	client.SetAirport(airport)
 	client.Start()
 
-	return &ASDEXPane{
+	pane := &ASDEXPane{
 		airport:           airport,
 		configAirportCode: configAirport,
 		mode:              ModeDay,
@@ -234,11 +245,17 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		alertMessageBox:           NewAlertMessageBox(),
 		towerReference:            towerReference,
 		hasTowerReference:         hasTowerReference,
+		towerConfigurations:       towerConfigs,
+		defaultTowerConfigID:      defaultTowerConfigID,
+		activeTowerConfigIDs:      activeTowerConfigIDs,
 		dcb:                       NewDcb(),
 		showCoastList:             true,
 		rangeSetting:              asdexDefaultRangeSetting,
 		rangeFullHorizontalFeet:   rangeFullHorizontalFeetFromSetting(asdexDefaultRangeSetting),
-	}, nil
+	}
+	pane.refreshTowerConfigPreviewLine()
+
+	return pane, nil
 }
 
 func (p *ASDEXPane) Dispose() {
@@ -473,6 +490,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	alertChanges := p.safetyLogic.Update(targets, SafetyLogicUpdateOptions{
 		RunwayConfiguration: p.currentSafetyRunwayConfiguration(),
 		RunwayClosed:        p.tempData.RunwayClosed,
+		TowerRunwayEnabled:  p.towerRunwayEnabledPredicate(),
 		TargetAlertsInhibited: func(targetID string) bool {
 			return p.targets.AlertsInhibited(targetID)
 		},
@@ -1014,6 +1032,7 @@ func (p *ASDEXPane) dcbState() DcbState {
 		TempMapTextBrightness:  active.Brightness.TempMapText,
 		DcbBrightness:          p.dcbBrightness,
 		ClosedRunways:          p.tempData.DcbRunwayClosureStates(&p.safetyLogic),
+		TowerConfigs:           p.dcbTowerConfigStates(),
 		ActiveSpinnerFunction:  activeSpinnerFunction,
 	}
 
@@ -1024,6 +1043,48 @@ func (p *ASDEXPane) dcbState() DcbState {
 	}
 
 	return state
+}
+
+func (p *ASDEXPane) dcbTowerConfigStates() []DcbTowerConfigState {
+	if p == nil {
+		return nil
+	}
+
+	out := make([]DcbTowerConfigState, 0, len(p.towerConfigurations))
+	for _, cfg := range p.towerConfigurations {
+		defaultOn := cfg.ID == p.defaultTowerConfigID
+		out = append(out, DcbTowerConfigState{
+			ID:      cfg.ID,
+			Name:    cfg.Name,
+			On:      defaultOn || p.activeTowerConfigIDs[cfg.ID],
+			Default: defaultOn,
+		})
+	}
+	return out
+}
+
+func (p *ASDEXPane) activeTowerConfigNames() []string {
+	if p == nil {
+		return nil
+	}
+
+	names := make([]string, 0, len(p.towerConfigurations))
+	for _, cfg := range p.towerConfigurations {
+		if cfg.ID == p.defaultTowerConfigID || p.activeTowerConfigIDs[cfg.ID] {
+			names = append(names, cfg.Name)
+		}
+	}
+	return names
+}
+
+func (p *ASDEXPane) refreshTowerConfigPreviewLine() {
+	if p == nil {
+		return
+	}
+	if len(p.towerConfigurations) == 0 {
+		return
+	}
+	p.previewArea.SetTowerPositions(p.activeTowerConfigNames())
 }
 
 func (p *ASDEXPane) currentSafetyRunwayConfiguration() SafetyRunwayConfiguration {
@@ -1097,6 +1158,10 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	}
 
 	if p.dcb.Menu() == DcbMenuSafetyLogic && p.activateSafetyLogicDcbHit(ctx, hit) {
+		return true
+	}
+
+	if p.dcb.Menu() == DcbMenuTowerConfig && p.activateTowerConfigDcbHit(ctx, hit) {
 		return true
 	}
 
@@ -1273,6 +1338,9 @@ func (p *ASDEXPane) activateSafetyLogicDcbHit(ctx *panes.Context, hit DcbHit) bo
 	}
 
 	switch hit.Function {
+	case DcbFunctionTowerConfig:
+		p.openTowerConfigMenu()
+		return true
 	case DcbFunctionTrackAlertInhibit:
 		p.startTrackAlertInhibitFromDcb(ctx)
 		return true
@@ -1293,7 +1361,6 @@ func (p *ASDEXPane) activateSafetyLogicDcbHit(ctx *panes.Context, hit DcbHit) bo
 		DcbFunctionVolume,
 		DcbFunctionVolumeTest,
 		DcbFunctionRunwayConfig,
-		DcbFunctionTowerConfig,
 		DcbFunctionClosedRunway:
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
@@ -1301,6 +1368,56 @@ func (p *ASDEXPane) activateSafetyLogicDcbHit(ctx *panes.Context, hit DcbHit) bo
 	default:
 		return false
 	}
+}
+
+func (p *ASDEXPane) activateTowerConfigDcbHit(_ *panes.Context, hit DcbHit) bool {
+	if p == nil {
+		return false
+	}
+
+	switch hit.Function {
+	case DcbFunctionTowerConfigPreset:
+		p.toggleTowerConfigByIndex(hit.ConfigID)
+		return true
+	case DcbFunctionDone:
+		p.dcb.SetMenu(DcbMenuSafetyLogic)
+		p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC")
+		p.previewArea.SetSystemResponse("")
+		p.refreshTowerConfigPreviewLine()
+		p.clearHighlightedTarget()
+		return true
+	default:
+		return false
+	}
+}
+
+func (p *ASDEXPane) toggleTowerConfigByIndex(id int) {
+	if p == nil || id < 1 || id > len(p.towerConfigurations) {
+		return
+	}
+
+	cfg := p.towerConfigurations[id-1]
+	if cfg.ID == p.defaultTowerConfigID {
+		return
+	}
+
+	if p.activeTowerConfigIDs == nil {
+		p.activeTowerConfigIDs = make(map[string]bool)
+	}
+
+	if p.activeTowerConfigIDs[cfg.ID] {
+		delete(p.activeTowerConfigIDs, cfg.ID)
+	} else {
+		p.activeTowerConfigIDs[cfg.ID] = true
+	}
+
+	if p.defaultTowerConfigID != "" {
+		p.activeTowerConfigIDs[p.defaultTowerConfigID] = true
+	}
+
+	p.previewArea.SetSystemResponse("")
+	p.refreshTowerConfigPreviewLine()
+	p.clearHighlightedTarget()
 }
 
 func (p *ASDEXPane) clearDcbModalConflicts() {
@@ -1550,6 +1667,20 @@ func (p *ASDEXPane) openSafetyLogicMenu() {
 	p.dcb.SetMenu(DcbMenuSafetyLogic)
 	p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC")
 	p.previewArea.SetSystemResponse("")
+	p.refreshTowerConfigPreviewLine()
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) openTowerConfigMenu() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.dcb.SetMenu(DcbMenuTowerConfig)
+	p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC", "TOWER CONFIG")
+	p.previewArea.SetSystemResponse("")
+	p.refreshTowerConfigPreviewLine()
 	p.clearHighlightedTarget()
 }
 
