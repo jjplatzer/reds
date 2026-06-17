@@ -5,6 +5,8 @@ import (
 	"encoding/binary"
 	"flag"
 	"fmt"
+	"image"
+	"image/draw"
 	"image/png"
 	"os"
 	"path/filepath"
@@ -378,16 +380,9 @@ func decodeCursorFile(path string) (cursorBitmap, error) {
 		off += 16
 	}
 
-	sort.Slice(entries, func(i, j int) bool {
-		areaI := entries[i].width * entries[i].height
-		areaJ := entries[j].width * entries[j].height
-		if areaI != areaJ {
-			return areaI > areaJ
-		}
-		return entries[i].bytesInRes > entries[j].bytesInRes
-	})
-
 	name := cursorNameFromPath(path)
+	// CRC reads the hotspot from the first directory entry and lets the UI
+	// cursor loader consume the file. Keep the same first-entry image choice.
 	cursor, err := decodeCursorImage(raw, entries[0], name)
 	if err != nil {
 		return cursorBitmap{}, fmt.Errorf("%s: %w", path, err)
@@ -417,22 +412,22 @@ func decodePNGCursor(payload []byte, hotX, hotY int, name string) (cursorBitmap,
 		return cursorBitmap{}, fmt.Errorf("decode PNG cursor: %w", err)
 	}
 
-	bounds := img.Bounds()
-	width := bounds.Dx()
-	height := bounds.Dy()
+	nrgba := image.NewNRGBA(image.Rect(0, 0, img.Bounds().Dx(), img.Bounds().Dy()))
+	draw.Draw(nrgba, nrgba.Bounds(), img, img.Bounds().Min, draw.Src)
 
-	pixels := make([]uint32, 0, width*height)
-	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
-		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			r16, g16, b16, a16 := img.At(x, y).RGBA()
-			pixels = append(pixels, rgba(uint8(r16>>8), uint8(g16>>8), uint8(b16>>8), uint8(a16>>8)))
+	pixels := make([]uint32, 0, nrgba.Bounds().Dx()*nrgba.Bounds().Dy())
+	for y := 0; y < nrgba.Bounds().Dy(); y++ {
+		row := nrgba.Pix[y*nrgba.Stride:]
+		for x := 0; x < nrgba.Bounds().Dx(); x++ {
+			i := x * 4
+			pixels = append(pixels, rgba(row[i], row[i+1], row[i+2], row[i+3]))
 		}
 	}
 
 	return cursorBitmap{
 		name:    name,
-		width:   width,
-		height:  height,
+		width:   nrgba.Bounds().Dx(),
+		height:  nrgba.Bounds().Dy(),
 		hotspot: [2]int{hotX, hotY},
 		pixels:  pixels,
 	}, nil
@@ -570,7 +565,10 @@ func decodeDIBCursor(payload []byte, hotX, hotY int, name string) (cursorBitmap,
 				a = 0
 			}
 
-			pixels[y*width+x] = (px & 0xffffff00) | uint32(a)
+			r := uint8(px >> 24)
+			g := uint8(px >> 16)
+			b := uint8(px >> 8)
+			pixels[y*width+x] = rgba(r, g, b, a)
 		}
 	}
 
@@ -611,6 +609,9 @@ func maskBit(row []byte, x int) int {
 }
 
 func rgba(r, g, b, a uint8) uint32 {
+	if a == 0 {
+		r, g, b = 0, 0, 0
+	}
 	return uint32(r)<<24 | uint32(g)<<16 | uint32(b)<<8 | uint32(a)
 }
 
