@@ -22,6 +22,7 @@ var fontPinner runtime.Pinner
 var (
 	menuFontTTF      []byte
 	menuBoldFontTTF  []byte
+	menuFontRange    []imgui.Wchar
 	symbolsFontTTF   []byte
 	symbolsFontRange []imgui.Wchar
 
@@ -39,6 +40,14 @@ func loadFont() {
 
 	fonts := imgui.CurrentIO().Fonts()
 	fontPinner.Pin(&menuFontTTF[0])
+	menuFontRange = []imgui.Wchar{
+		0x0020, 0x00FF,
+		0x21E7, 0x21E7,
+		0x2318, 0x2318,
+		0,
+	}
+	fontPinner.Pin(&menuFontRange[0])
+
 	cfg := imgui.NewFontConfig()
 	cfg.SetFontDataOwnedByAtlas(false)
 	fonts.AddFontFromMemoryTTFV(
@@ -46,7 +55,7 @@ func loadFont() {
 		int32(len(menuFontTTF)),
 		uiFontSize,
 		cfg,
-		nil,
+		&menuFontRange[0],
 	)
 	if len(menuBoldFontTTF) == 0 {
 		return
@@ -60,7 +69,7 @@ func loadFont() {
 		int32(len(menuBoldFontTTF)),
 		uiFontSize,
 		boldCfg,
-		nil,
+		&menuFontRange[0],
 	)
 
 	symbolsFontTTF = util.LoadResourceBytes(symbolsFontPath)

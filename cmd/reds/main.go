@@ -121,7 +121,7 @@ func main() {
 			implogl3.RenderDrawData(imgui.CurrentDrawData())
 			plat.PostRender()
 
-			if titlebarAction == titleBarActionSwitchFacility {
+			if titlebarAction == titleBarActionSwitchProfile {
 				switchToMenu(&mode, &active, &scopeTitle, plat, consumer, m)
 			}
 		}
