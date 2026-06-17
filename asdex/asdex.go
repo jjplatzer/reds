@@ -870,10 +870,20 @@ func (p *ASDEXPane) renderSoftwareCursor(ctx *panes.Context, zcb *renderer.ZCmdB
 	cb.SetRGBA(renderer.RGBA{R: 1, G: 1, B: 1, A: 1})
 
 	mouse := ctx.Mouse.Pos
-	left := float32(stdmath.Floor(float64(mouse.X - float32(cursor.Hotspot[0]))))
-	top := float32(stdmath.Floor(float64(mouse.Y - float32(cursor.Hotspot[1]))))
-	right := left + float32(cursor.Width)
-	bottom := top + float32(cursor.Height)
+
+	scale := ctx.DPIScale
+	if scale <= 0 {
+		scale = 1
+	}
+
+	left := float32(stdmath.Floor(
+		float64(mouse.X*scale-float32(cursor.Hotspot[0])),
+	)) / scale
+	top := float32(stdmath.Floor(
+		float64(mouse.Y*scale-float32(cursor.Hotspot[1])),
+	)) / scale
+	right := left + float32(cursor.Width)/scale
+	bottom := top + float32(cursor.Height)/scale
 
 	builder := renderer.GetTexturedTrianglesBuilder()
 	builder.AddQuad(
