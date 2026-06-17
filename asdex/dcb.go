@@ -32,6 +32,7 @@ const (
 	DcbMenuBrightness
 	DcbMenuTools
 	DcbMenuSafetyLogic
+	DcbMenuTowerConfig
 	DcbMenuOff
 )
 
@@ -132,6 +133,7 @@ const (
 	DcbFunctionVolumeTest
 	DcbFunctionRunwayConfig
 	DcbFunctionTowerConfig
+	DcbFunctionTowerConfigPreset
 	DcbFunctionDataBlocksOnOff
 	DcbFunctionInitControl
 	DcbFunctionTrackSuspend
@@ -181,9 +183,10 @@ type DcbButtonSpec struct {
 	ShowValue bool
 	Value     string
 
-	OnLabel  string
-	OffLabel string
-	On       bool
+	OnLabel      string
+	OffLabel     string
+	On           bool
+	HideOffLabel bool
 
 	ConfigID int
 	Label    string
@@ -251,6 +254,7 @@ type DcbState struct {
 	DcbBrightness          int
 
 	ClosedRunways []DcbRunwayClosureState
+	TowerConfigs  []DcbTowerConfigState
 
 	ActiveSpinnerFunction DcbFunction
 }
@@ -258,6 +262,13 @@ type DcbState struct {
 type DcbRunwayClosureState struct {
 	ID       string
 	IsClosed bool
+}
+
+type DcbTowerConfigState struct {
+	ID      string
+	Name    string
+	On      bool
+	Default bool
 }
 
 type DcbSpinnerType int
@@ -1341,6 +1352,67 @@ func (d *Dcb) safetyLogicButtonSpecs(state DcbState) []DcbButtonSpec {
 	}
 }
 
+func (d *Dcb) towerConfigButtonSpecs(state DcbState) []DcbButtonSpec {
+	vacant := func() DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: DcbFunctionVacant,
+			Type:     DcbButtonVacant,
+			Large:    true,
+			Visible:  true,
+		}
+	}
+
+	config := func(id int) DcbButtonSpec {
+		spec := DcbButtonSpec{
+			Function: DcbFunctionTowerConfigPreset,
+			Type:     DcbButtonConfig,
+			Visible:  true,
+			ConfigID: id,
+			OnLabel:  "ON",
+			OffLabel: "OFF",
+		}
+
+		index := id - 1
+		if index < 0 || index >= len(state.TowerConfigs) {
+			return spec
+		}
+
+		cfg := state.TowerConfigs[index]
+		spec.Label = cfg.Name
+		spec.On = cfg.On
+		if cfg.Default {
+			spec.OffLabel = ""
+			spec.HideOffLabel = true
+		}
+
+		return spec
+	}
+
+	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonNormal,
+			Large:    true,
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		}
+	}
+
+	buttons := make([]DcbButtonSpec, 0, 22)
+	buttons = append(buttons, vacant(), vacant())
+	for i := 1; i <= 16; i++ {
+		buttons = append(buttons, config(i))
+	}
+	buttons = append(buttons,
+		normal(DcbFunctionDone, "DONE"),
+		vacant(),
+		vacant(),
+		vacant(),
+	)
+
+	return buttons
+}
+
 func (d *Dcb) toolsButtonSpecs(state DcbState) []DcbButtonSpec {
 	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
 		if state.ActiveSpinnerFunction == spec.Function {
@@ -1465,6 +1537,8 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 		return d.toolsButtonSpecs(state)
 	case DcbMenuSafetyLogic:
 		return d.safetyLogicButtonSpecs(state)
+	case DcbMenuTowerConfig:
+		return d.towerConfigButtonSpecs(state)
 	default:
 		return d.mainButtonSpecs(state)
 	}
@@ -2010,6 +2084,14 @@ func (d *Dcb) drawToggleFragments(
 
 	fragments := d.toggleFragments(spec)
 	highlight := d.highlightTextColor()
+	if len(fragments) == 1 {
+		td.AddText(fragments[0], redsmath.Vec2{X: x, Y: y}, renderer.TextStyle{
+			Size:  fontSize,
+			Color: highlight.ToRGBA(),
+		})
+		return
+	}
+
 	colors := []renderer.RGB{primary, primary, primary}
 	if spec.On {
 		colors[0] = highlight
@@ -2036,6 +2118,10 @@ func (d *Dcb) toggleFragments(spec DcbButtonSpec) []string {
 	if onLabel == "" {
 		onLabel = "ON"
 	}
+	if spec.HideOffLabel {
+		return []string{onLabel}
+	}
+
 	offLabel := strings.TrimSpace(spec.OffLabel)
 	if offLabel == "" {
 		offLabel = "OFF"

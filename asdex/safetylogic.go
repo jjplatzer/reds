@@ -118,11 +118,120 @@ func (cfg SafetyRunwayConfiguration) IsLimited() bool {
 	return strings.EqualFold(strings.TrimSpace(cfg.Name), "LIMITED")
 }
 
+type TowerConfiguration struct {
+	ID        string
+	Name      string
+	RunwayIDs []string
+	Default   bool
+}
+
+type towerConfigAirportJSON struct {
+	TowerPositions []towerConfigJSON `json:"towerPositions"`
+}
+
+type towerConfigJSON struct {
+	ID        string   `json:"id"`
+	Name      string   `json:"name"`
+	RunwayIDs []string `json:"runwayIds"`
+	Default   bool     `json:"default"`
+}
+
+func towerConfigID(name string) string {
+	return strings.ToUpper(strings.TrimSpace(name))
+}
+
+func loadTowerConfigurations(airport string) ([]TowerConfiguration, string, error) {
+	airport = strings.ToUpper(strings.TrimSpace(airport))
+	if airport == "" {
+		return nil, "", nil
+	}
+
+	path := "resources/configs/asdex/" + airport + ".json"
+	if !util.ResourceExists(path) {
+		return nil, "", fmt.Errorf("tower config: airport config %s not found", path)
+	}
+
+	var cfg towerConfigAirportJSON
+	if err := json.Unmarshal(util.LoadResourceBytes(path), &cfg); err != nil {
+		return nil, "", fmt.Errorf("tower config: decode %s: %w", path, err)
+	}
+
+	out := make([]TowerConfiguration, 0, len(cfg.TowerPositions))
+	defaultID := ""
+	for _, item := range cfg.TowerPositions {
+		name := strings.TrimSpace(item.Name)
+		if name == "" {
+			continue
+		}
+
+		id := strings.TrimSpace(item.ID)
+		if id == "" {
+			id = towerConfigID(name)
+		}
+
+		tc := TowerConfiguration{
+			ID:        id,
+			Name:      name,
+			RunwayIDs: append([]string(nil), item.RunwayIDs...),
+			Default:   item.Default,
+		}
+		out = append(out, tc)
+		if tc.Default && defaultID == "" {
+			defaultID = tc.ID
+		}
+	}
+
+	if defaultID == "" && len(out) > 0 {
+		out[0].Default = true
+		defaultID = out[0].ID
+	}
+
+	return out, defaultID, nil
+}
+
+func (p *ASDEXPane) towerRunwayEnabledPredicate() func(string) bool {
+	enabled, configured := p.enabledTowerRunwayIDs()
+	if !configured {
+		return nil
+	}
+
+	return func(runwayID string) bool {
+		runwayID = strings.ToUpper(strings.TrimSpace(runwayID))
+		return runwayID != "" && enabled[runwayID]
+	}
+}
+
+func (p *ASDEXPane) enabledTowerRunwayIDs() (map[string]bool, bool) {
+	if p == nil || len(p.towerConfigurations) == 0 {
+		return nil, false
+	}
+
+	out := make(map[string]bool)
+	for _, cfg := range p.towerConfigurations {
+		if cfg.ID != p.defaultTowerConfigID && !p.activeTowerConfigIDs[cfg.ID] {
+			continue
+		}
+
+		for _, group := range cfg.RunwayIDs {
+			for _, runwayID := range strings.Split(group, "-") {
+				runwayID = strings.ToUpper(strings.TrimSpace(runwayID))
+				if runwayID != "" {
+					out[runwayID] = true
+				}
+			}
+		}
+	}
+
+	return out, true
+}
+
 type SafetyLogicUpdateOptions struct {
 	RunwayConfiguration SafetyRunwayConfiguration
 
 	// For now this comes from TempData.RunwayClosed.
 	RunwayClosed func(runwayID string) bool
+
+	TowerRunwayEnabled func(runwayID string) bool
 
 	TargetAlertsInhibited func(targetID string) bool
 }
@@ -481,6 +590,9 @@ func (sl *SafetyLogic) generateAlerts(
 	}
 
 	for _, operation := range sl.activeOperations {
+		if opts.TowerRunwayEnabled != nil && !opts.TowerRunwayEnabled(operation.RunwayID) {
+			continue
+		}
 		if !opts.RunwayClosed(operation.RunwayID) {
 			continue
 		}
