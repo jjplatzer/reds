@@ -65,6 +65,7 @@ type Platform interface {
 	SetCursorOverride(cursor *Cursor)
 	SetCursorHiddenOverride()
 	ClearCursorOverride()
+	ShowSystemCursor()
 
 	// DisplaySize returns the window size in screen (logical) coordinates.
 	DisplaySize() [2]float32

@@ -175,6 +175,7 @@ func switchToMenu(
 		plat.SetWindowDecorated(true)
 		plat.SetWindowTitle("REDS")
 		plat.SetWindowSizeCentered(200, 350)
+		plat.ShowSystemCursor()
 	}
 	if m != nil {
 		m.firstFrame = true
