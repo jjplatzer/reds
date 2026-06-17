@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 
 	"github.com/juliusplatzer/reds/platform"
 
@@ -18,7 +19,7 @@ const (
 )
 
 const (
-	titleBarMenuPopupWidth       = 275
+	titleBarMenuPopupWidth       = 300
 	titleBarMenuItemHeight       = 30
 	titleBarMenuTextPadX         = 13
 	titleBarMenuShortcutPadRight = 14
@@ -32,6 +33,13 @@ const (
 	titleBarGlyphMaximize = "\ue15b"
 	titleBarGlyphRestore  = "\ue158"
 	titleBarGlyphClose    = "\ue106"
+)
+
+const (
+	shortcutCommandSymbol = "\u2318"
+	shortcutControlSymbol = "\u2303"
+	shortcutOptionSymbol  = "\u2325"
+	shortcutShiftSymbol   = "\u21e7"
 )
 
 var (
@@ -56,7 +64,7 @@ type titleBarAction int
 
 const (
 	titleBarActionNone titleBarAction = iota
-	titleBarActionSwitchProfile
+	titleBarActionSwitchFacility
 )
 
 type titleBarButtonType int
@@ -66,6 +74,12 @@ const (
 	titleBarButtonMaximize
 	titleBarButtonClose
 )
+
+type titleBarShortcutPart struct {
+	Text     string
+	Font     *imgui.Font
+	FontSize float32
+}
 
 func drawScopeTitleBar(
 	plat platform.Platform,
@@ -100,7 +114,7 @@ func drawScopeTitleBar(
 
 	drawTitleBarBackground(displaySize[0])
 	menuCaptured, menuAction := drawTitleBarMenuButton()
-	if shortcutAction := titleBarShortcutAction(); shortcutAction != titleBarActionNone {
+	if shortcutAction := titleBarShortcutAction(plat); shortcutAction != titleBarActionNone {
 		menuAction = shortcutAction
 	}
 	drawTitleBarTitle(title)
@@ -214,7 +228,7 @@ func drawTitleBarMenuPopup(buttonMin, buttonMax imgui.Vec2) titleBarAction {
 	if imgui.BeginPopupV("##titlebar-menu-popup", flags) {
 		imgui.SetCursorPos(imgui.Vec2{X: 0, Y: 0})
 		clicked := imgui.InvisibleButtonV(
-			"##switch-profile-menu-item",
+			"##switch-facility-menu-item",
 			imgui.Vec2{X: titleBarMenuPopupWidth, Y: titleBarMenuItemHeight},
 			imgui.ButtonFlagsMouseButtonLeft,
 		)
@@ -234,12 +248,12 @@ func drawTitleBarMenuPopup(buttonMin, buttonMax imgui.Vec2) titleBarAction {
 		drawTitleBarMenuItemText(
 			rowMin,
 			titleBarMenuItemHeight,
-			"Switch Profile...",
-			"⇧⌘P",
+			"Switch Facility...",
+			titleBarSwitchFacilityShortcutParts(),
 		)
 
 		if clicked {
-			action = titleBarActionSwitchProfile
+			action = titleBarActionSwitchFacility
 			imgui.CloseCurrentPopup()
 		}
 
@@ -251,7 +265,12 @@ func drawTitleBarMenuPopup(buttonMin, buttonMax imgui.Vec2) titleBarAction {
 	return action
 }
 
-func drawTitleBarMenuItemText(rowMin imgui.Vec2, itemHeight float32, label, shortcut string) {
+func drawTitleBarMenuItemText(
+	rowMin imgui.Vec2,
+	itemHeight float32,
+	label string,
+	shortcut []titleBarShortcutPart,
+) {
 	textY := rowMin.Y + (itemHeight-imgui.FontSize())*0.5
 	if textY < rowMin.Y {
 		textY = rowMin.Y
@@ -263,23 +282,135 @@ func drawTitleBarMenuItemText(rowMin imgui.Vec2, itemHeight float32, label, shor
 		label,
 	)
 
-	if shortcut == "" {
+	drawTitleBarShortcutParts(rowMin, itemHeight, shortcut)
+}
+
+func titleBarSwitchFacilityShortcutParts() []titleBarShortcutPart {
+	if runtime.GOOS == "darwin" {
+		if shortcutSymbolFont12 != nil {
+			return []titleBarShortcutPart{
+				{Text: shortcutCommandSymbol, Font: shortcutSymbolFont12, FontSize: 12},
+				{Text: "+"},
+				{Text: shortcutShiftSymbol, Font: shortcutSymbolFont12, FontSize: 12},
+				{Text: "+F"},
+			}
+		}
+
+		return []titleBarShortcutPart{{Text: "Cmd+Shift+F"}}
+	}
+
+	if shortcutSymbolFont12 != nil {
+		return []titleBarShortcutPart{
+			{Text: shortcutControlSymbol, Font: shortcutSymbolFont12, FontSize: 12},
+			{Text: "+"},
+			{Text: shortcutShiftSymbol, Font: shortcutSymbolFont12, FontSize: 12},
+			{Text: "+F"},
+		}
+	}
+
+	return []titleBarShortcutPart{{Text: "Ctrl+Shift+F"}}
+}
+
+func titleBarShortcutPartsWidth(parts []titleBarShortcutPart) float32 {
+	var width float32
+
+	for _, part := range parts {
+		if part.Text == "" {
+			continue
+		}
+
+		if part.Font != nil {
+			size := part.FontSize
+			if size <= 0 {
+				size = imgui.FontSize()
+			}
+
+			imgui.PushFont(part.Font, size)
+			partSize := imgui.CalcTextSize(part.Text)
+			imgui.PopFont()
+			width += partSize.X
+			continue
+		}
+
+		width += imgui.CalcTextSize(part.Text).X
+	}
+
+	return width
+}
+
+func drawTitleBarShortcutParts(
+	rowMin imgui.Vec2,
+	itemHeight float32,
+	parts []titleBarShortcutPart,
+) {
+	if len(parts) == 0 {
 		return
 	}
 
-	shortcutSize := imgui.CalcTextSize(shortcut)
-	shortcutX := rowMin.X + titleBarMenuPopupWidth - titleBarMenuShortcutPadRight - shortcutSize.X
-	imgui.WindowDrawList().AddTextVec2(
-		imgui.Vec2{X: shortcutX, Y: textY},
-		imgui.ColorU32Vec4(titleBarMenuShortcutFg),
-		shortcut,
-	)
+	x := rowMin.X + titleBarMenuPopupWidth -
+		titleBarMenuShortcutPadRight -
+		titleBarShortcutPartsWidth(parts)
+
+	for _, part := range parts {
+		if part.Text == "" {
+			continue
+		}
+
+		if part.Font != nil {
+			size := part.FontSize
+			if size <= 0 {
+				size = imgui.FontSize()
+			}
+
+			imgui.PushFont(part.Font, size)
+			textSize := imgui.CalcTextSize(part.Text)
+			y := rowMin.Y + (itemHeight-textSize.Y)*0.5
+			if y < rowMin.Y {
+				y = rowMin.Y
+			}
+			imgui.WindowDrawList().AddTextVec2(
+				imgui.Vec2{X: x, Y: y},
+				imgui.ColorU32Vec4(titleBarMenuShortcutFg),
+				part.Text,
+			)
+			imgui.PopFont()
+			x += textSize.X
+			continue
+		}
+
+		textY := rowMin.Y + (itemHeight-imgui.FontSize())*0.5
+		if textY < rowMin.Y {
+			textY = rowMin.Y
+		}
+		imgui.WindowDrawList().AddTextVec2(
+			imgui.Vec2{X: x, Y: textY},
+			imgui.ColorU32Vec4(titleBarMenuShortcutFg),
+			part.Text,
+		)
+		x += imgui.CalcTextSize(part.Text).X
+	}
 }
 
-func titleBarShortcutAction() titleBarAction {
-	io := imgui.CurrentIO()
-	if imgui.IsKeyPressedBool(imgui.KeyP) && io.KeyShift() && io.KeySuper() {
-		return titleBarActionSwitchProfile
+func titleBarShortcutAction(plat platform.Platform) titleBarAction {
+	if plat == nil {
+		return titleBarActionNone
+	}
+
+	keyboard := plat.GetKeyboard()
+	if !keyboard.WasPressed(platform.KeyF) ||
+		!keyboard.IsDown(platform.KeyShift) {
+		return titleBarActionNone
+	}
+
+	if runtime.GOOS == "darwin" {
+		if keyboard.IsDown(platform.KeyCommand) {
+			return titleBarActionSwitchFacility
+		}
+		return titleBarActionNone
+	}
+
+	if keyboard.IsDown(platform.KeyControl) {
+		return titleBarActionSwitchFacility
 	}
 
 	return titleBarActionNone

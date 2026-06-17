@@ -121,7 +121,7 @@ func main() {
 			implogl3.RenderDrawData(imgui.CurrentDrawData())
 			plat.PostRender()
 
-			if titlebarAction == titleBarActionSwitchProfile {
+			if titlebarAction == titleBarActionSwitchFacility {
 				switchToMenu(&mode, &active, &scopeTitle, plat, consumer, m)
 			}
 		}
@@ -175,6 +175,7 @@ func switchToMenu(
 		plat.SetWindowDecorated(true)
 		plat.SetWindowTitle("REDS")
 		plat.SetWindowSizeCentered(200, 350)
+		plat.ShowSystemCursor()
 	}
 	if m != nil {
 		m.firstFrame = true

@@ -10,9 +10,10 @@ import (
 )
 
 const (
-	menuFontPath     = "fonts/B612-Regular.ttf.zst"
-	menuBoldFontPath = "fonts/B612-Bold.ttf.zst"
-	symbolsFontPath  = "fonts/Symbols.ttf.zst"
+	menuFontPath           = "fonts/B612-Regular.ttf.zst"
+	menuBoldFontPath       = "fonts/B612-Bold.ttf.zst"
+	symbolsFontPath        = "fonts/Symbols.ttf.zst"
+	shortcutSymbolFontPath = "fonts/SF-Pro.ttf.zst"
 )
 
 // fontPinner keeps decompressed font bytes pinned so the GC can't move them
@@ -26,9 +27,13 @@ var (
 	symbolsFontTTF   []byte
 	symbolsFontRange []imgui.Wchar
 
-	menuBoldFont  *imgui.Font
-	symbolsFont12 *imgui.Font
-	symbolsFont8  *imgui.Font
+	shortcutSymbolFontTTF   []byte
+	shortcutSymbolFontRange []imgui.Wchar
+
+	menuBoldFont         *imgui.Font
+	symbolsFont12        *imgui.Font
+	symbolsFont8         *imgui.Font
+	shortcutSymbolFont12 *imgui.Font
 )
 
 func loadFont() {
@@ -42,8 +47,6 @@ func loadFont() {
 	fontPinner.Pin(&menuFontTTF[0])
 	menuFontRange = []imgui.Wchar{
 		0x0020, 0x00FF,
-		0x21E7, 0x21E7,
-		0x2318, 0x2318,
 		0,
 	}
 	fontPinner.Pin(&menuFontRange[0])
@@ -102,5 +105,30 @@ func loadFont() {
 		8,
 		symbolCfg8,
 		&symbolsFontRange[0],
+	)
+
+	shortcutSymbolFontTTF = util.LoadResourceBytes(shortcutSymbolFontPath)
+	if len(shortcutSymbolFontTTF) == 0 {
+		return
+	}
+
+	fontPinner.Pin(&shortcutSymbolFontTTF[0])
+	shortcutSymbolFontRange = []imgui.Wchar{
+		0x21E7, 0x21E7, // ⇧
+		0x2303, 0x2303, // ⌃
+		0x2318, 0x2318, // ⌘
+		0x2325, 0x2325, // ⌥
+		0,
+	}
+	fontPinner.Pin(&shortcutSymbolFontRange[0])
+
+	shortcutSymbolCfg12 := imgui.NewFontConfig()
+	shortcutSymbolCfg12.SetFontDataOwnedByAtlas(false)
+	shortcutSymbolFont12 = fonts.AddFontFromMemoryTTFV(
+		uintptr(unsafe.Pointer(&shortcutSymbolFontTTF[0])),
+		int32(len(shortcutSymbolFontTTF)),
+		12,
+		shortcutSymbolCfg12,
+		&shortcutSymbolFontRange[0],
 	)
 }
