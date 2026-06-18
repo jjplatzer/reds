@@ -344,6 +344,8 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		return
 	}
 
+	p.clampDcbSubmenuCursor(ctx)
+
 	referenceExtent := mainReferenceExtent(ctx.PaneSize())
 	transforms := scopeTransformForWindow(
 		referenceExtent,
@@ -976,11 +978,95 @@ func (p *ASDEXPane) dcbCursorUnlocked() bool {
 		p.towerReadout == nil
 }
 
-func (p *ASDEXPane) dcbMouseCaptured() bool {
+func (p *ASDEXPane) dcbSubmenuCursorCaptured() bool {
 	if p == nil {
 		return false
 	}
-	return false
+	if !p.dcb.Visible() || p.dcb.Collapsed() {
+		return false
+	}
+
+	switch p.dcb.Menu() {
+	case DcbMenuMain, DcbMenuOff:
+		return false
+	}
+
+	if p.dbAreaSelection != nil ||
+		p.dbAreaDraft != nil ||
+		p.tempAreaDraft != nil ||
+		p.tempTextCommand != nil ||
+		p.tempTextPlacement != nil ||
+		p.tempDataSelectMode != TempDataSelectNone ||
+		p.newWindow != nil ||
+		p.deleteWindow != nil ||
+		p.windowReposition != nil ||
+		p.resizeWindow != nil ||
+		p.previewReposition != nil ||
+		p.coastListReposition != nil ||
+		p.mapReposition != nil ||
+		p.mapRotate != nil ||
+		p.towerReadout != nil {
+		return false
+	}
+
+	return p.dcbMenuCommand != nil
+}
+
+func (p *ASDEXPane) dcbMouseCaptured() bool {
+	return p != nil && p.dcbSubmenuCursorCaptured()
+}
+
+func (p *ASDEXPane) dcbCursorCaptureRect(ctx *panes.Context) (redsmath.Rect, bool) {
+	if p == nil || ctx == nil || p.fonts.font == nil {
+		return redsmath.Rect{}, false
+	}
+	if !p.dcbSubmenuCursorCaptured() {
+		return redsmath.Rect{}, false
+	}
+
+	layout := p.dcb.Layout(ctx.PaneSize(), p.fonts.font, p.dcbState())
+	if layout.MenuBounds.Empty() {
+		return redsmath.Rect{}, false
+	}
+
+	return layout.MenuBounds, true
+}
+
+func (p *ASDEXPane) clampDcbSubmenuCursor(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Mouse == nil || ctx.Platform == nil {
+		return
+	}
+
+	bounds, ok := p.dcbCursorCaptureRect(ctx)
+	if !ok {
+		return
+	}
+
+	const edgeInset = float32(0.5)
+
+	minX := bounds.Min.X + edgeInset
+	minY := bounds.Min.Y + edgeInset
+	maxX := bounds.Max.X - edgeInset
+	maxY := bounds.Max.Y - edgeInset
+	if maxX < minX {
+		maxX = minX
+	}
+	if maxY < minY {
+		maxY = minY
+	}
+
+	pos := ctx.Mouse.Pos
+	clamped := redsmath.Vec2{
+		X: clamp(pos.X, minX, maxX),
+		Y: clamp(pos.Y, minY, maxY),
+	}
+	if clamped == pos {
+		return
+	}
+
+	ctx.Platform.SetMousePosition(clamped.Add(ctx.PaneRect.Min))
+	ctx.Mouse.Pos = clamped
+	ctx.Mouse.Delta = redsmath.Vec2{}
 }
 
 func (p *ASDEXPane) dcbState() DcbState {
