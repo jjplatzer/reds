@@ -118,6 +118,9 @@ type ASDEXPane struct {
 	alertMessageBox                 AlertMessageBox
 	towerReference                  TowerReference
 	hasTowerReference               bool
+	runwayConfigurations            []RunwayConfiguration
+	activeRunwayConfigID            string
+	runwayConfigPage                int
 	towerConfigurations             []TowerConfiguration
 	defaultTowerConfigID            string
 	activeTowerConfigIDs            map[string]bool
@@ -182,6 +185,10 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	if towerErr != nil {
 		fmt.Fprintf(os.Stderr, "reds: %v\n", towerErr)
 	}
+	runwayConfigs, defaultRunwayConfigID, runwayConfigErr := loadRunwayConfigurations(airport)
+	if runwayConfigErr != nil {
+		fmt.Fprintf(os.Stderr, "reds: %v\n", runwayConfigErr)
+	}
 	towerConfigs, defaultTowerConfigID, towerConfigErr := loadTowerConfigurations(airport)
 	if towerConfigErr != nil {
 		fmt.Fprintf(os.Stderr, "reds: %v\n", towerConfigErr)
@@ -245,6 +252,9 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		alertMessageBox:           NewAlertMessageBox(),
 		towerReference:            towerReference,
 		hasTowerReference:         hasTowerReference,
+		runwayConfigurations:      runwayConfigs,
+		activeRunwayConfigID:      defaultRunwayConfigID,
+		runwayConfigPage:          1,
 		towerConfigurations:       towerConfigs,
 		defaultTowerConfigID:      defaultTowerConfigID,
 		activeTowerConfigIDs:      activeTowerConfigIDs,
@@ -253,6 +263,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		rangeSetting:              asdexDefaultRangeSetting,
 		rangeFullHorizontalFeet:   rangeFullHorizontalFeetFromSetting(asdexDefaultRangeSetting),
 	}
+	pane.refreshRunwayConfigPreviewLine()
 	pane.refreshTowerConfigPreviewLine()
 
 	return pane, nil
@@ -1032,6 +1043,10 @@ func (p *ASDEXPane) dcbState() DcbState {
 		TempMapTextBrightness:  active.Brightness.TempMapText,
 		DcbBrightness:          p.dcbBrightness,
 		ClosedRunways:          p.tempData.DcbRunwayClosureStates(&p.safetyLogic),
+		RunwayConfigs:          p.dcbRunwayConfigStates(),
+		RunwayConfigPage:       p.runwayConfigPage,
+		ActiveRunwayConfigID:   p.activeRunwayConfigID,
+		RunwayConfigName:       p.activeRunwayConfiguration().Name,
 		TowerConfigs:           p.dcbTowerConfigStates(),
 		ActiveSpinnerFunction:  activeSpinnerFunction,
 	}
@@ -1043,6 +1058,54 @@ func (p *ASDEXPane) dcbState() DcbState {
 	}
 
 	return state
+}
+
+func (p *ASDEXPane) dcbRunwayConfigStates() []DcbRunwayConfigState {
+	if p == nil {
+		return nil
+	}
+
+	out := make([]DcbRunwayConfigState, 0, len(p.runwayConfigurations))
+	for index, cfg := range p.runwayConfigurations {
+		number := cfg.Number
+		if number <= 0 {
+			number = index + 1
+		}
+		out = append(out, DcbRunwayConfigState{
+			ID:     cfg.ID,
+			Number: number,
+			Name:   cfg.Name,
+			Active: cfg.ID == p.activeRunwayConfigID,
+		})
+	}
+	return out
+}
+
+func (p *ASDEXPane) activeRunwayConfiguration() RunwayConfiguration {
+	if p != nil {
+		for _, cfg := range p.runwayConfigurations {
+			if cfg.ID == p.activeRunwayConfigID {
+				return cfg
+			}
+		}
+	}
+
+	return RunwayConfiguration{
+		ID:   "limited",
+		Name: "LIMITED",
+	}
+}
+
+func (p *ASDEXPane) refreshRunwayConfigPreviewLine() {
+	if p == nil {
+		return
+	}
+
+	name := strings.TrimSpace(p.activeRunwayConfiguration().Name)
+	if name == "" {
+		name = "LIMITED"
+	}
+	p.previewArea.SetRunwayConfigName(name)
 }
 
 func (p *ASDEXPane) dcbTowerConfigStates() []DcbTowerConfigState {
@@ -1092,14 +1155,28 @@ func (p *ASDEXPane) currentSafetyRunwayConfiguration() SafetyRunwayConfiguration
 		return LimitedSafetyRunwayConfiguration()
 	}
 
-	name := p.previewArea.RunwayConfigName()
-	if strings.EqualFold(strings.TrimSpace(name), "LIMITED") {
+	cfg := p.activeRunwayConfiguration()
+	if strings.EqualFold(strings.TrimSpace(cfg.Name), "LIMITED") ||
+		strings.EqualFold(strings.TrimSpace(cfg.ID), "limited") {
 		return LimitedSafetyRunwayConfiguration()
 	}
 
-	// Later: return the selected runway configuration with arrival/departure
-	// runway maps once REDS stores the full preview config selection.
-	return SafetyRunwayConfiguration{Name: name}
+	return SafetyRunwayConfiguration{
+		Name:               cfg.Name,
+		ArrivalRunwayIDs:   stringSet(cfg.ArrivalRunwayIDs),
+		DepartureRunwayIDs: stringSet(cfg.DepartureRunwayIDs),
+	}
+}
+
+func stringSet(values []string) map[string]bool {
+	out := make(map[string]bool, len(values))
+	for _, value := range values {
+		value = strings.ToUpper(strings.TrimSpace(value))
+		if value != "" {
+			out[value] = true
+		}
+	}
+	return out
 }
 
 func (p *ASDEXPane) consumeDcbInput(ctx *panes.Context) bool {
@@ -1162,6 +1239,10 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	}
 
 	if p.dcb.Menu() == DcbMenuTowerConfig && p.activateTowerConfigDcbHit(ctx, hit) {
+		return true
+	}
+
+	if p.dcb.Menu() == DcbMenuRunwayConfig && p.activateRunwayConfigDcbHit(ctx, hit) {
 		return true
 	}
 
@@ -1343,6 +1424,9 @@ func (p *ASDEXPane) activateSafetyLogicDcbHit(ctx *panes.Context, hit DcbHit) bo
 	}
 
 	switch hit.Function {
+	case DcbFunctionRunwayConfig:
+		p.openRunwayConfigMenu()
+		return true
 	case DcbFunctionTowerConfig:
 		p.openTowerConfigMenu()
 		return true
@@ -1365,7 +1449,6 @@ func (p *ASDEXPane) activateSafetyLogicDcbHit(ctx *panes.Context, hit DcbHit) bo
 		DcbFunctionAlertReposition,
 		DcbFunctionVolume,
 		DcbFunctionVolumeTest,
-		DcbFunctionRunwayConfig,
 		DcbFunctionClosedRunway:
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
@@ -1373,6 +1456,78 @@ func (p *ASDEXPane) activateSafetyLogicDcbHit(ctx *panes.Context, hit DcbHit) bo
 	default:
 		return false
 	}
+}
+
+func (p *ASDEXPane) activateRunwayConfigDcbHit(_ *panes.Context, hit DcbHit) bool {
+	if p == nil {
+		return false
+	}
+
+	switch hit.Function {
+	case DcbFunctionRunwayConfigPreset:
+		p.selectRunwayConfigByNumber(hit.ConfigID)
+		return true
+	case DcbFunctionRunwayConfigPresetsPage1:
+		p.setRunwayConfigPage(1)
+		return true
+	case DcbFunctionRunwayConfigPresetsPage2:
+		p.setRunwayConfigPage(2)
+		return true
+	case DcbFunctionRunwayConfigPresetsPage3:
+		p.setRunwayConfigPage(3)
+		return true
+	case DcbFunctionDone:
+		p.dcb.SetMenu(DcbMenuSafetyLogic)
+		p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC")
+		p.previewArea.SetSystemResponse("")
+		p.refreshRunwayConfigPreviewLine()
+		p.clearHighlightedTarget()
+		return true
+	default:
+		return false
+	}
+}
+
+func (p *ASDEXPane) setRunwayConfigPage(page int) {
+	if p == nil {
+		return
+	}
+
+	p.runwayConfigPage = clampInt(page, 1, 3)
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) selectRunwayConfigByNumber(number int) {
+	if p == nil {
+		return
+	}
+	if number < 1 || number > 60 {
+		p.previewArea.SetSystemResponse("INVALID CONFIG")
+		p.clearHighlightedTarget()
+		return
+	}
+
+	var selected *RunwayConfiguration
+	for i := range p.runwayConfigurations {
+		if p.runwayConfigurations[i].Number == number {
+			selected = &p.runwayConfigurations[i]
+			break
+		}
+	}
+	if selected == nil {
+		p.previewArea.SetSystemResponse("NO STORED DATA")
+		p.clearHighlightedTarget()
+		return
+	}
+	if selected.ID == p.activeRunwayConfigID {
+		return
+	}
+
+	p.activeRunwayConfigID = selected.ID
+	p.refreshRunwayConfigPreviewLine()
+	p.previewArea.SetSystemResponse(selected.Name + " CONFIRMED")
+	p.clearHighlightedTarget()
 }
 
 func (p *ASDEXPane) activateTowerConfigDcbHit(_ *panes.Context, hit DcbHit) bool {
@@ -1672,7 +1827,22 @@ func (p *ASDEXPane) openSafetyLogicMenu() {
 	p.dcb.SetMenu(DcbMenuSafetyLogic)
 	p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC")
 	p.previewArea.SetSystemResponse("")
+	p.refreshRunwayConfigPreviewLine()
 	p.refreshTowerConfigPreviewLine()
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) openRunwayConfigMenu() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.runwayConfigPage = 1
+	p.dcb.SetMenu(DcbMenuRunwayConfig)
+	p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC", "RWY CONFIG")
+	p.previewArea.SetSystemResponse("")
+	p.refreshRunwayConfigPreviewLine()
 	p.clearHighlightedTarget()
 }
 

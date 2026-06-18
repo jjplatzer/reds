@@ -33,6 +33,7 @@ const (
 	DcbMenuTools
 	DcbMenuSafetyLogic
 	DcbMenuTowerConfig
+	DcbMenuRunwayConfig
 	DcbMenuOff
 )
 
@@ -46,6 +47,7 @@ const (
 	DcbButtonError
 	DcbButtonVacant
 	DcbButtonConfig
+	DcbButtonPref
 )
 
 type DcbFunction int
@@ -134,6 +136,10 @@ const (
 	DcbFunctionRunwayConfig
 	DcbFunctionTowerConfig
 	DcbFunctionTowerConfigPreset
+	DcbFunctionRunwayConfigPreset
+	DcbFunctionRunwayConfigPresetsPage1
+	DcbFunctionRunwayConfigPresetsPage2
+	DcbFunctionRunwayConfigPresetsPage3
 	DcbFunctionDataBlocksOnOff
 	DcbFunctionInitControl
 	DcbFunctionTrackSuspend
@@ -190,6 +196,10 @@ type DcbButtonSpec struct {
 
 	ConfigID int
 	Label    string
+
+	PrefNumber int
+	PrefName   string
+	PrefActive bool
 }
 
 type DcbButtonLayout struct {
@@ -253,8 +263,12 @@ type DcbState struct {
 	TempMapTextBrightness  int
 	DcbBrightness          int
 
-	ClosedRunways []DcbRunwayClosureState
-	TowerConfigs  []DcbTowerConfigState
+	ClosedRunways        []DcbRunwayClosureState
+	RunwayConfigs        []DcbRunwayConfigState
+	RunwayConfigPage     int
+	ActiveRunwayConfigID string
+	RunwayConfigName     string
+	TowerConfigs         []DcbTowerConfigState
 
 	ActiveSpinnerFunction DcbFunction
 }
@@ -262,6 +276,13 @@ type DcbState struct {
 type DcbRunwayClosureState struct {
 	ID       string
 	IsClosed bool
+}
+
+type DcbRunwayConfigState struct {
+	ID     string
+	Number int
+	Name   string
+	Active bool
 }
 
 type DcbTowerConfigState struct {
@@ -897,6 +918,10 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 			OffLabel: offLabel,
 		})
 	}
+	runwayConfigName := strings.TrimSpace(state.RunwayConfigName)
+	if runwayConfigName == "" {
+		runwayConfigName = "LIMITED"
+	}
 
 	return []DcbButtonSpec{
 		value(DcbFunctionRange, true, d.rangeLabel(state), "RANGE"),
@@ -908,7 +933,7 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 		toggle(DcbFunctionDayNite, state.Mode == ModeDay, "DAY", "NITE"),
 		menu(DcbFunctionBrightness, "BRITE"),
 		menu(DcbFunctionCharSize, "CHAR", "SIZE"),
-		menu(DcbFunctionSafetyLogic, "SAFETY", "LOGIC", "LIMITED"),
+		menu(DcbFunctionSafetyLogic, "SAFETY", "LOGIC", runwayConfigName),
 		menu(DcbFunctionTools, "TOOLS"),
 		toggle(DcbFunctionVectorOnOff, state.VectorOn, "ON", "OFF", "VECTOR"),
 		value(DcbFunctionVectorLength, true, d.vectorLengthLabel(state), "VECTOR"),
@@ -1352,6 +1377,74 @@ func (d *Dcb) safetyLogicButtonSpecs(state DcbState) []DcbButtonSpec {
 	}
 }
 
+func (d *Dcb) runwayConfigButtonSpecs(state DcbState) []DcbButtonSpec {
+	vacant := func() DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: DcbFunctionVacant,
+			Type:     DcbButtonVacant,
+			Large:    true,
+			Visible:  true,
+		}
+	}
+
+	page := clampInt(state.RunwayConfigPage, 1, 3)
+	pref := func(slot int) DcbButtonSpec {
+		number := slot + (page-1)*20
+		spec := DcbButtonSpec{
+			Function:   DcbFunctionRunwayConfigPreset,
+			Type:       DcbButtonPref,
+			Visible:    true,
+			ConfigID:   number,
+			PrefNumber: number,
+		}
+
+		for _, cfg := range state.RunwayConfigs {
+			if cfg.Number != number {
+				continue
+			}
+			spec.Label = cfg.Name
+			spec.PrefName = cfg.Name
+			spec.PrefActive = cfg.Active
+			break
+		}
+		return spec
+	}
+
+	pageButton := func(function DcbFunction, label string, visible bool) DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonMenu,
+			Visible:  visible,
+			Lines:    []string{label},
+		}
+	}
+
+	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonNormal,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		}
+	}
+
+	buttons := make([]DcbButtonSpec, 0, 26)
+	buttons = append(buttons, vacant())
+	for i := 1; i <= 20; i++ {
+		buttons = append(buttons, pref(i))
+	}
+	buttons = append(buttons,
+		pageButton(DcbFunctionRunwayConfigPresetsPage1, "1-20", page != 1),
+		pageButton(DcbFunctionRunwayConfigPresetsPage2, "21-40", page != 2),
+		pageButton(DcbFunctionRunwayConfigPresetsPage3, "41-60", page != 3),
+		normal(DcbFunctionDone, "DONE"),
+		vacant(),
+	)
+
+	return buttons
+}
+
 func (d *Dcb) towerConfigButtonSpecs(state DcbState) []DcbButtonSpec {
 	vacant := func() DcbButtonSpec {
 		return DcbButtonSpec{
@@ -1539,6 +1632,8 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 		return d.safetyLogicButtonSpecs(state)
 	case DcbMenuTowerConfig:
 		return d.towerConfigButtonSpecs(state)
+	case DcbMenuRunwayConfig:
+		return d.runwayConfigButtonSpecs(state)
 	default:
 		return d.mainButtonSpecs(state)
 	}
@@ -1860,6 +1955,9 @@ func (d *Dcb) drawButtonText(
 	case DcbButtonConfig:
 		d.drawConfigButtonText(td, font, fontSize, button, hovering)
 		return
+	case DcbButtonPref:
+		d.drawPrefButtonText(td, font, fontSize, button, hovering)
+		return
 	}
 
 	d.drawCenteredTextLines(
@@ -2004,6 +2102,62 @@ func (d *Dcb) drawToggleButtonText(
 
 	x := bounds.Min.X + (bounds.Width()-float32(toggleWidth))*0.5
 	d.drawToggleFragments(td, font, fontSize, x, y, spec, primary)
+}
+
+func (d *Dcb) drawPrefButtonText(
+	td *renderer.TextDrawBuilder,
+	font *renderer.BitmapFont,
+	fontSize int,
+	button DcbButtonLayout,
+	hovering bool,
+) {
+	if td == nil || font == nil || button.Bounds.Empty() {
+		return
+	}
+
+	spec := button.Spec
+	numberText := strconv.Itoa(spec.PrefNumber)
+	nameText := strings.TrimSpace(spec.PrefName)
+	if nameText == "" {
+		nameText = " "
+	}
+
+	numberWidth, numberHeight := font.MeasureText(numberText, fontSize)
+	nameWidth, nameHeight := font.MeasureText(nameText, fontSize)
+	if numberHeight <= 0 || nameHeight <= 0 {
+		return
+	}
+
+	totalHeight := numberHeight + dcbTextLineSpacing + nameHeight
+	y := button.Bounds.Min.Y + (button.Bounds.Height()-float32(totalHeight))*0.5
+
+	color := d.primaryTextColor(spec, hovering)
+	if spec.PrefActive && !hovering && !spec.Depressed {
+		color = d.highlightTextColor()
+	}
+	style := renderer.TextStyle{
+		Size:  fontSize,
+		Color: color.ToRGBA(),
+	}
+
+	td.AddText(
+		numberText,
+		redsmath.Vec2{
+			X: button.Bounds.Min.X + (button.Bounds.Width()-float32(numberWidth))*0.5,
+			Y: y,
+		},
+		style,
+	)
+
+	y += float32(numberHeight + dcbTextLineSpacing)
+	td.AddText(
+		nameText,
+		redsmath.Vec2{
+			X: button.Bounds.Min.X + (button.Bounds.Width()-float32(nameWidth))*0.5,
+			Y: y,
+		},
+		style,
+	)
 }
 
 func (d *Dcb) drawConfigButtonText(
