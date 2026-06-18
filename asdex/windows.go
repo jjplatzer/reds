@@ -39,6 +39,8 @@ type WindowDisplayState struct {
 	ShowHistory   bool
 	HistoryLength int
 
+	ShowVectorLine bool
+
 	TargetShowDBOverrides    map[string]bool
 	TargetDBOffAreaOverrides map[string]bool
 
@@ -90,6 +92,8 @@ func NewWindowDisplayState() *WindowDisplayState {
 
 		ShowHistory:   false,
 		HistoryLength: 7,
+
+		ShowVectorLine: false,
 
 		NextDBAreaID: 1,
 	}

@@ -48,6 +48,8 @@ const (
 	asdexWheelRangeStep      = 4
 	asdexCtrlWheelRangeStep  = 16
 
+	defaultVectorLengthSeconds = 5
+
 	// Set to a positive value to override the platform-reported ASDE-X window
 	// scale factor used for RANGE compatibility.
 	asdexWindowScaleFactorOverride = float32(0)
@@ -111,6 +113,7 @@ type ASDEXPane struct {
 	showBeaconUntilByTargetID       map[string]time.Time
 	listsBrightness                 int
 	dcbBrightness                   int
+	vectorLength                    int
 	previewArea                     PreviewArea
 	coastList                       CoastList
 	alertRepository                 AlertRepository
@@ -246,6 +249,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		showBeaconUntilByTargetID: make(map[string]time.Time),
 		listsBrightness:           brightnessDefault,
 		dcbBrightness:             brightnessDefault,
+		vectorLength:              defaultVectorLengthSeconds,
 		previewArea:               preview,
 		coastList:                 coastList,
 		alertRepository:           NewAlertRepository(auralAlerts),
@@ -760,7 +764,10 @@ func (p *ASDEXPane) renderScopeWindow(
 		p.targets.History(),
 		targetCB,
 		TargetDrawOptions{
-			VectorSeconds:           3,
+			VectorSeconds: ClampedTargetVectorSeconds(p.vectorLength),
+			VectorVisible: func(target *Target) bool {
+				return p.targetVectorVisibleForWindow(windowID, target)
+			},
 			ShowHistory:             displayState.ShowHistory,
 			HistoryLength:           displayState.HistoryLength,
 			Brightness:              brightness.Track,
@@ -980,8 +987,8 @@ func (p *ASDEXPane) dcbState() DcbState {
 	if p == nil {
 		return DcbState{
 			Mode:         ModeDay,
-			VectorOn:     true,
-			VectorLength: 3,
+			VectorOn:     false,
+			VectorLength: defaultVectorLengthSeconds,
 			DcbOn:        true,
 		}
 	}
@@ -1014,8 +1021,8 @@ func (p *ASDEXPane) dcbState() DcbState {
 	state := DcbState{
 		Range:                  rangeSetting,
 		Mode:                   p.mode,
-		VectorOn:               true,
-		VectorLength:           3,
+		VectorOn:               active.ShowVectorLine,
+		VectorLength:           ClampedTargetVectorSeconds(p.vectorLength),
 		LeaderLength:           active.DB.LeaderLength,
 		DataBlocksOn:           active.DB.ShowDataBlocks,
 		DcbOn:                  p.dcb.On(),
@@ -1312,6 +1319,9 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		if p.dcb.Menu() == DcbMenuTools {
 			p.startHistorySpinner()
 		}
+		return true
+	case DcbFunctionVectorOnOff:
+		p.toggleVectorLineForActiveWindow()
 		return true
 	case DcbFunctionCoastOnOff:
 		if p.dcb.Menu() == DcbMenuTools {
@@ -2349,6 +2359,18 @@ func (p *ASDEXPane) toggleHistoryForActiveWindow() {
 	p.clearHighlightedTarget()
 }
 
+func (p *ASDEXPane) toggleVectorLineForActiveWindow() {
+	if p == nil {
+		return
+	}
+
+	state := p.displayStateForWindow(p.activeWindowID())
+	state.ShowVectorLine = !state.ShowVectorLine
+
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
 func (p *ASDEXPane) toggleCoastList() {
 	if p == nil {
 		return
@@ -2781,12 +2803,13 @@ func (p *ASDEXPane) dataBlockSettings() DataBlockSettings {
 }
 
 type ActiveDcbWindowState struct {
-	WindowID      ScopeWindowID
-	View          ScopeView
-	DB            DataBlockSettings
-	Brightness    WindowBrightnessSettings
-	ShowHistory   bool
-	HistoryLength int
+	WindowID       ScopeWindowID
+	View           ScopeView
+	DB             DataBlockSettings
+	Brightness     WindowBrightnessSettings
+	ShowHistory    bool
+	HistoryLength  int
+	ShowVectorLine bool
 }
 
 func (p *ASDEXPane) activeDcbWindowState() ActiveDcbWindowState {
@@ -2800,12 +2823,13 @@ func (p *ASDEXPane) activeDcbWindowState() ActiveDcbWindowState {
 
 	state := p.displayStateForWindow(windowID)
 	return ActiveDcbWindowState{
-		WindowID:      windowID,
-		View:          view,
-		DB:            p.dataBlockSettingsForWindow(windowID),
-		Brightness:    state.Brightness,
-		ShowHistory:   state.ShowHistory,
-		HistoryLength: state.HistoryLength,
+		WindowID:       windowID,
+		View:           view,
+		DB:             p.dataBlockSettingsForWindow(windowID),
+		Brightness:     state.Brightness,
+		ShowHistory:    state.ShowHistory,
+		HistoryLength:  state.HistoryLength,
+		ShowVectorLine: state.ShowVectorLine,
 	}
 }
 
@@ -2861,6 +2885,29 @@ func (p *ASDEXPane) setDataBlockSettingsForWindow(id ScopeWindowID, settings Dat
 		return
 	}
 	p.displayStateForWindow(id).DB = settings
+}
+
+func (p *ASDEXPane) targetVectorVisibleForWindow(
+	windowID ScopeWindowID,
+	target *Target,
+) bool {
+	if p == nil || target == nil {
+		return false
+	}
+
+	if !targetCanHaveDataBlock(target) {
+		return false
+	}
+	if target.Suspended || target.Coasting || target.Dropped {
+		return false
+	}
+
+	state := p.displayStateForWindow(windowID)
+	if area, ok := p.dataBlockTraitAreaForPoint(windowID, target.PosFeet); ok {
+		return area.Traits.ShowVector
+	}
+
+	return state.ShowVectorLine
 }
 
 func (p *ASDEXPane) targetShowDBOverride(
