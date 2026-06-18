@@ -298,6 +298,7 @@ const (
 	DcbSpinnerNone DcbSpinnerType = iota
 	DcbSpinnerRange
 	DcbSpinnerHistory
+	DcbSpinnerVectorLength
 	DcbSpinnerDbAreaCharSize
 	DcbSpinnerDbAreaBrightness
 	DcbSpinnerDbAreaLeaderLength
@@ -402,6 +403,25 @@ func NewHistoryDcbSpinner(windowID ScopeWindowID, current int) *DcbSpinner {
 		Value:          current,
 		Original:       current,
 		MaxInputDigits: 1,
+		input:          "",
+		cursor:         0,
+	}
+}
+
+func NewVectorLengthDcbSpinner(current int) *DcbSpinner {
+	current = ClampedTargetVectorSeconds(current)
+
+	return &DcbSpinner{
+		Type:           DcbSpinnerVectorLength,
+		Function:       DcbFunctionVectorLength,
+		Title:          "VECTOR LENGTH",
+		Lines:          []string{"VECTOR LENGTH"},
+		Min:            minTargetVectorSeconds,
+		Max:            maxTargetVectorSeconds,
+		Step:           1,
+		Value:          current,
+		Original:       current,
+		MaxInputDigits: 2,
 		input:          "",
 		cursor:         0,
 	}

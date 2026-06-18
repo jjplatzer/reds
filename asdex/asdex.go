@@ -1323,6 +1323,9 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	case DcbFunctionVectorOnOff:
 		p.toggleVectorLineForActiveWindow()
 		return true
+	case DcbFunctionVectorLength:
+		p.startVectorLengthSpinner()
+		return true
 	case DcbFunctionCoastOnOff:
 		if p.dcb.Menu() == DcbMenuTools {
 			p.toggleCoastList()
@@ -2401,6 +2404,19 @@ func (p *ASDEXPane) startHistorySpinner() {
 	p.clearHighlightedTarget()
 }
 
+func (p *ASDEXPane) startVectorLengthSpinner() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.dcb.ReturnToMainMenu()
+	p.dcbMenuCommand = nil
+	p.dcbSpinner = NewVectorLengthDcbSpinner(p.vectorLength)
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
 func (p *ASDEXPane) consumeDcbSpinnerInput(ctx *panes.Context) bool {
 	if p == nil || p.dcbSpinner == nil || ctx == nil || ctx.Mouse == nil {
 		return false
@@ -2439,6 +2455,8 @@ func (p *ASDEXPane) acceptActiveDcbSpinner() {
 		p.finishBrightnessSpinner("")
 	case DcbSpinnerHistory:
 		p.finishHistorySpinner("")
+	case DcbSpinnerVectorLength:
+		p.finishVectorLengthSpinner("")
 	case DcbSpinnerDbAreaCharSize,
 		DcbSpinnerDbAreaBrightness,
 		DcbSpinnerDbAreaLeaderLength,
@@ -2452,6 +2470,10 @@ func (p *ASDEXPane) acceptActiveDcbSpinner() {
 
 func (p *ASDEXPane) cancelDcbSpinner() {
 	if p == nil {
+		return
+	}
+	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerVectorLength {
+		p.finishVectorLengthSpinner("")
 		return
 	}
 	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerBrightness {
@@ -2525,6 +2547,9 @@ func (p *ASDEXPane) commitDcbSpinner() {
 		return
 	case DcbSpinnerHistory:
 		p.commitHistorySpinner(spinner)
+		return
+	case DcbSpinnerVectorLength:
+		p.commitVectorLengthSpinner(spinner)
 		return
 	case DcbSpinnerDbAreaCharSize:
 		p.commitDbAreaCharSizeSpinner(spinner)
@@ -2673,6 +2698,33 @@ func (p *ASDEXPane) finishHistorySpinner(systemResponse string) {
 	p.clearHighlightedTarget()
 }
 
+func (p *ASDEXPane) commitVectorLengthSpinner(spinner *DcbSpinner) {
+	if p == nil || spinner == nil {
+		return
+	}
+
+	value, ok := spinner.ParsedValue()
+	if !ok || value < minTargetVectorSeconds || value > maxTargetVectorSeconds {
+		p.finishVectorLengthSpinner("INVALID ENTRY")
+		return
+	}
+
+	p.setVectorLength(value)
+	p.finishVectorLengthSpinner("")
+}
+
+func (p *ASDEXPane) finishVectorLengthSpinner(systemResponse string) {
+	if p == nil {
+		return
+	}
+
+	p.dcbSpinner = nil
+	p.dcb.ReturnToMainMenu()
+	p.dcbMenuCommand = nil
+	p.previewArea.SetSystemResponse(systemResponse)
+	p.clearHighlightedTarget()
+}
+
 func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 	if p == nil || p.dcbSpinner == nil || delta == 0 {
 		return
@@ -2706,6 +2758,16 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 		if next != spinner.Value {
 			spinner.Value = next
 			p.setHistoryLengthForWindow(spinner.WindowID, next)
+		}
+	case DcbSpinnerVectorLength:
+		next := clampInt(
+			p.vectorLength+delta,
+			minTargetVectorSeconds,
+			maxTargetVectorSeconds,
+		)
+		if next != p.vectorLength {
+			p.setVectorLength(next)
+			spinner.Value = next
 		}
 	case DcbSpinnerDbAreaCharSize:
 		next := clampInt(spinner.Value+delta, 1, 6)
@@ -2785,6 +2847,14 @@ func (p *ASDEXPane) setHistoryLengthForWindow(windowID ScopeWindowID, value int)
 
 	state := p.displayStateForWindow(windowID)
 	state.HistoryLength = clampInt(value, 1, 7)
+}
+
+func (p *ASDEXPane) setVectorLength(value int) {
+	if p == nil {
+		return
+	}
+
+	p.vectorLength = ClampedTargetVectorSeconds(value)
 }
 
 func (p *ASDEXPane) setMainRangeSetting(rangeSetting int) {
