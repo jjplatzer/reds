@@ -1310,6 +1310,10 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	case DcbFunctionSafetyLogic:
 		p.openSafetyLogicMenu()
 		return true
+	case DcbFunctionDayNite:
+		p.applyCommandStatus(p.cmdMapTheme(ctx))
+		p.clearHighlightedTarget()
+		return true
 	case DcbFunctionHistoryOnOff:
 		if p.dcb.Menu() == DcbMenuTools {
 			p.toggleHistoryForActiveWindow()
