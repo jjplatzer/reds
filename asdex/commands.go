@@ -28,6 +28,7 @@ const (
 	CommandModeCoastListReposition
 	CommandModeMapReposition
 	CommandModeMapRotate
+	CommandModeSetRunwayConfig
 )
 
 type CommandClear int
@@ -969,6 +970,7 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 		ap.coastListReposition = nil
 		ap.mapReposition = nil
 		ap.mapRotate = nil
+		ap.runwayConfigCommand = nil
 		ap.towerReadout = nil
 		ap.dcbSpinner = nil
 		ap.dcbMenuCommand = nil
@@ -1002,7 +1004,7 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 		ap.tempTextCommand != nil || ap.tempTextPlacement != nil ||
 		ap.tempDataSelectMode != TempDataSelectNone || ap.newWindow != nil ||
 		ap.deleteWindow != nil || ap.windowReposition != nil || ap.resizeWindow != nil ||
-		ap.towerReadout != nil || ap.dcbSpinner != nil ||
+		ap.towerReadout != nil || ap.runwayConfigCommand != nil || ap.dcbSpinner != nil ||
 		(ap.dcbMenuCommand != nil && !f12Pressed) ||
 		!ap.commandEntry.Empty() {
 		return false
@@ -1013,6 +1015,8 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 
 	command := ""
 	switch {
+	case ctx.Keyboard.WasPressed(platform.KeyF2):
+		command = "[RWY CFG]"
 	case ctx.Keyboard.WasPressed(platform.KeyF3):
 		command = "[INIT CNTL]"
 	case ctx.Keyboard.WasPressed(platform.KeyF4):

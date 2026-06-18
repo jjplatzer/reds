@@ -128,6 +128,112 @@ type MapRotateCommand struct {
 	returnMenu       DcbMenu
 }
 
+type RunwayConfigCommand struct {
+	value  string
+	cursor int
+}
+
+func NewRunwayConfigCommand() *RunwayConfigCommand {
+	return &RunwayConfigCommand{}
+}
+
+func (command *RunwayConfigCommand) DisplayLines() []string {
+	if command == nil {
+		return nil
+	}
+	return []string{
+		"SAFETY LOGIC",
+		"RWY CONFIG",
+		command.value,
+	}
+}
+
+func (command *RunwayConfigCommand) CursorLine() int {
+	return 3
+}
+
+func (command *RunwayConfigCommand) CursorColumn() int {
+	if command == nil {
+		return 0
+	}
+	return command.cursor
+}
+
+func (command *RunwayConfigCommand) Insert(r rune) {
+	if command == nil {
+		return
+	}
+
+	r = unicode.ToUpper(r)
+	if !unicode.IsLetter(r) && !unicode.IsDigit(r) {
+		return
+	}
+
+	value := []rune(command.value)
+	command.cursor = clampInt(command.cursor, 0, len(value))
+	value = append(value[:command.cursor], append([]rune{r}, value[command.cursor:]...)...)
+	command.value = string(value)
+	command.cursor++
+}
+
+func (command *RunwayConfigCommand) Backspace() bool {
+	if command == nil {
+		return true
+	}
+
+	value := []rune(command.value)
+	if len(value) == 0 {
+		return true
+	}
+
+	command.cursor = clampInt(command.cursor, 0, len(value))
+	if command.cursor == 0 {
+		return false
+	}
+
+	command.cursor--
+	value = append(value[:command.cursor], value[command.cursor+1:]...)
+	command.value = string(value)
+	return false
+}
+
+func (command *RunwayConfigCommand) DeleteForward() {
+	if command == nil {
+		return
+	}
+
+	value := []rune(command.value)
+	command.cursor = clampInt(command.cursor, 0, len(value))
+	if command.cursor >= len(value) {
+		return
+	}
+
+	value = append(value[:command.cursor], value[command.cursor+1:]...)
+	command.value = string(value)
+}
+
+func (command *RunwayConfigCommand) MoveLeft() {
+	if command != nil && command.cursor > 0 {
+		command.cursor--
+	}
+}
+
+func (command *RunwayConfigCommand) MoveRight() {
+	if command == nil {
+		return
+	}
+	if command.cursor < len([]rune(command.value)) {
+		command.cursor++
+	}
+}
+
+func (command *RunwayConfigCommand) Value() string {
+	if command == nil {
+		return ""
+	}
+	return strings.TrimSpace(command.value)
+}
+
 func NewMapRotateCommand(
 	windowID ScopeWindowID,
 	rotation float32,
@@ -396,6 +502,14 @@ func registerSetupCommands() {
 
 	registerCommand(
 		CommandModeNone,
+		"[RWY CFG]",
+		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
+			return ap.cmdRunwayConfig(ctx)
+		},
+	)
+
+	registerCommand(
+		CommandModeNone,
 		"[NEW WINDOW]",
 		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
 			return ap.cmdNewWindow(ctx)
@@ -521,6 +635,22 @@ func (ap *ASDEXPane) cmdNewWindow(_ *panes.Context) CommandStatus {
 	return CommandStatus{Clear: ClearNone}
 }
 
+func (ap *ASDEXPane) cmdRunwayConfig(_ *panes.Context) CommandStatus {
+	if ap == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+
+	ap.clearDcbModalConflicts()
+	ap.commandMode = CommandModeSetRunwayConfig
+	ap.runwayConfigCommand = NewRunwayConfigCommand()
+	ap.previewArea.SetSystemResponse("")
+	ap.refreshRunwayConfigPreviewLine()
+	ap.refreshTowerConfigPreviewLine()
+	ap.clearHighlightedTarget()
+
+	return CommandStatus{Clear: ClearNone}
+}
+
 func (ap *ASDEXPane) cmdTowerReadout(_ *panes.Context) CommandStatus {
 	if ap == nil {
 		return CommandStatus{Clear: ClearAll}
@@ -541,6 +671,7 @@ func (ap *ASDEXPane) cmdTowerReadout(_ *panes.Context) CommandStatus {
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
 	ap.mapRotate = nil
+	ap.runwayConfigCommand = nil
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
 	ap.dbAreaDraft = nil
@@ -573,6 +704,7 @@ func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
 	ap.mapRotate = nil
+	ap.runwayConfigCommand = nil
 	ap.towerReadout = nil
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
@@ -613,6 +745,7 @@ func (ap *ASDEXPane) cmdMapReposition(ctx *panes.Context) CommandStatus {
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
 	ap.mapRotate = nil
+	ap.runwayConfigCommand = nil
 	ap.towerReadout = nil
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil

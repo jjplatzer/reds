@@ -96,6 +96,7 @@ func (ap *ASDEXPane) cmdTrackSuspend(_ *panes.Context) CommandStatus {
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
 	ap.mapRotate = nil
+	ap.runwayConfigCommand = nil
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
 	ap.dbAreaDraft = nil
@@ -190,6 +191,7 @@ func (ap *ASDEXPane) startTrackAlertInhibitCommand(
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
 	ap.mapRotate = nil
+	ap.runwayConfigCommand = nil
 	ap.towerReadout = nil
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
@@ -434,6 +436,7 @@ func (ap *ASDEXPane) cmdInitControl(_ *panes.Context) CommandStatus {
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
 	ap.mapRotate = nil
+	ap.runwayConfigCommand = nil
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
 	ap.dbAreaDraft = nil
@@ -568,6 +571,7 @@ func (ap *ASDEXPane) cmdTerminateControl(_ *panes.Context) CommandStatus {
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
 	ap.mapRotate = nil
+	ap.runwayConfigCommand = nil
 	ap.dcbSpinner = nil
 	ap.dcbMenuCommand = nil
 	ap.dbAreaDraft = nil

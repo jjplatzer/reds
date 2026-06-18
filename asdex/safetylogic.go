@@ -6,6 +6,7 @@ import (
 	stdmath "math"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 
 	redsmath "github.com/juliusplatzer/reds/math"
@@ -116,6 +117,95 @@ func LimitedSafetyRunwayConfiguration() SafetyRunwayConfiguration {
 
 func (cfg SafetyRunwayConfiguration) IsLimited() bool {
 	return strings.EqualFold(strings.TrimSpace(cfg.Name), "LIMITED")
+}
+
+type RunwayConfiguration struct {
+	ID                   string
+	Number               int
+	Name                 string
+	ArrivalRunwayIDs     []string
+	DepartureRunwayIDs   []string
+	HoldShortRunwayPairs []HoldShortRunwayPair
+	Default              bool
+}
+
+type HoldShortRunwayPair struct {
+	ID              string `json:"id"`
+	ArrivalRunwayID string `json:"arrivalRunwayId"`
+	HoldShortID     string `json:"holdShortId"`
+}
+
+type runwayConfigAirportJSON struct {
+	RunwayConfigurations []runwayConfigJSON `json:"runwayConfigurations"`
+}
+
+type runwayConfigJSON struct {
+	ID                   string                `json:"id"`
+	Number               int                   `json:"number"`
+	Name                 string                `json:"name"`
+	ArrivalRunwayIDs     []string              `json:"arrivalRunwayIds"`
+	DepartureRunwayIDs   []string              `json:"departureRunwayIds"`
+	HoldShortRunwayPairs []HoldShortRunwayPair `json:"holdShortRunwayPairs"`
+	Default              bool                  `json:"default"`
+}
+
+func runwayConfigID(cfg runwayConfigJSON) string {
+	if id := strings.TrimSpace(cfg.ID); id != "" {
+		return id
+	}
+	if strings.EqualFold(strings.TrimSpace(cfg.Name), "LIMITED") {
+		return "limited"
+	}
+	if cfg.Number > 0 {
+		return strconv.Itoa(cfg.Number)
+	}
+	return strings.ToUpper(strings.TrimSpace(cfg.Name))
+}
+
+func loadRunwayConfigurations(airport string) ([]RunwayConfiguration, string, error) {
+	airport = strings.ToUpper(strings.TrimSpace(airport))
+	if airport == "" {
+		return nil, "", nil
+	}
+
+	path := "resources/configs/asdex/" + airport + ".json"
+	if !util.ResourceExists(path) {
+		return nil, "", fmt.Errorf("runway config: airport config %s not found", path)
+	}
+
+	var raw runwayConfigAirportJSON
+	if err := json.Unmarshal(util.LoadResourceBytes(path), &raw); err != nil {
+		return nil, "", fmt.Errorf("runway config: decode %s: %w", path, err)
+	}
+
+	out := make([]RunwayConfiguration, 0, len(raw.RunwayConfigurations))
+	defaultID := ""
+	for _, item := range raw.RunwayConfigurations {
+		name := strings.TrimSpace(item.Name)
+		if name == "" {
+			continue
+		}
+
+		cfg := RunwayConfiguration{
+			ID:                   runwayConfigID(item),
+			Number:               item.Number,
+			Name:                 name,
+			ArrivalRunwayIDs:     append([]string(nil), item.ArrivalRunwayIDs...),
+			DepartureRunwayIDs:   append([]string(nil), item.DepartureRunwayIDs...),
+			HoldShortRunwayPairs: append([]HoldShortRunwayPair(nil), item.HoldShortRunwayPairs...),
+			Default:              item.Default,
+		}
+		out = append(out, cfg)
+		if cfg.Default && defaultID == "" {
+			defaultID = cfg.ID
+		}
+	}
+
+	if defaultID == "" && len(out) > 0 {
+		defaultID = out[len(out)-1].ID
+	}
+
+	return out, defaultID, nil
 }
 
 type TowerConfiguration struct {
@@ -582,14 +672,14 @@ func (sl *SafetyLogic) generateAlerts(
 		return generated
 	}
 
-	// LIMITED currently generates closed-runway alerts only. Non-LIMITED
-	// runway configuration alert rules will be added when those configs are
-	// represented in REDS.
-	if !opts.RunwayConfiguration.IsLimited() || opts.RunwayClosed == nil {
+	if opts.RunwayClosed == nil {
 		return generated
 	}
 
 	for _, operation := range sl.activeOperations {
+		if !runwayConfigurationAllowsOperation(opts.RunwayConfiguration, operation) {
+			continue
+		}
 		if opts.TowerRunwayEnabled != nil && !opts.TowerRunwayEnabled(operation.RunwayID) {
 			continue
 		}
@@ -613,6 +703,29 @@ func (sl *SafetyLogic) generateAlerts(
 	}
 
 	return generated
+}
+
+func runwayConfigurationAllowsOperation(
+	cfg SafetyRunwayConfiguration,
+	operation activeRunwayOperation,
+) bool {
+	if cfg.IsLimited() {
+		return true
+	}
+
+	runwayID := strings.ToUpper(strings.TrimSpace(operation.RunwayID))
+	if runwayID == "" {
+		return false
+	}
+
+	switch operation.Type {
+	case activeRunwayOperationLanding:
+		return cfg.ArrivalRunwayIDs[runwayID]
+	case activeRunwayOperationDeparture:
+		return cfg.DepartureRunwayIDs[runwayID]
+	default:
+		return false
+	}
 }
 
 func targetMapByID(targets []*Target) map[string]*Target {
