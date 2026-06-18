@@ -1398,14 +1398,12 @@ func (d *Dcb) runwayConfigButtonSpecs(state DcbState) []DcbButtonSpec {
 			PrefNumber: number,
 		}
 
-		for _, cfg := range state.RunwayConfigs {
-			if cfg.Number != number {
-				continue
-			}
+		index := number - 1
+		if index >= 0 && index < len(state.RunwayConfigs) {
+			cfg := state.RunwayConfigs[index]
 			spec.Label = cfg.Name
 			spec.PrefName = cfg.Name
 			spec.PrefActive = cfg.Active
-			break
 		}
 		return spec
 	}

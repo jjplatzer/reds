@@ -155,6 +155,7 @@ type ASDEXPane struct {
 	coastListReposition *CoastListRepositionCommand
 	mapReposition       *MapRepositionCommand
 	mapRotate           *MapRotateCommand
+	runwayConfigCommand *RunwayConfigCommand
 	towerReadout        *TowerReadoutCommand
 
 	rightClickStart     redsmath.Vec2
@@ -1394,6 +1395,8 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return true
 	case DcbFunctionDcbOnOff:
 		p.dcb.ToggleOnOff()
+		p.commandMode = CommandModeNone
+		p.runwayConfigCommand = nil
 		p.dcbSpinner = nil
 		p.dcbMenuCommand = nil
 		p.clearTrackAlertInhibitReturnContext()
@@ -1502,32 +1505,44 @@ func (p *ASDEXPane) selectRunwayConfigByNumber(number int) {
 	if p == nil {
 		return
 	}
+
+	response := p.setRunwayConfigurationByOrdinal(number, false)
+	if response == "" {
+		return
+	}
+	p.previewArea.SetSystemResponse(response)
+}
+
+func (p *ASDEXPane) setRunwayConfigurationByOrdinal(
+	number int,
+	confirmEvenIfActive bool,
+) string {
+	if p == nil {
+		return ""
+	}
 	if number < 1 || number > 60 {
-		p.previewArea.SetSystemResponse("INVALID CONFIG")
-		p.clearHighlightedTarget()
-		return
+		return "INVALID CONFIG"
 	}
 
-	var selected *RunwayConfiguration
-	for i := range p.runwayConfigurations {
-		if p.runwayConfigurations[i].Number == number {
-			selected = &p.runwayConfigurations[i]
-			break
-		}
-	}
-	if selected == nil {
-		p.previewArea.SetSystemResponse("NO STORED DATA")
-		p.clearHighlightedTarget()
-		return
-	}
-	if selected.ID == p.activeRunwayConfigID {
-		return
+	index := number - 1
+	if index < 0 || index >= len(p.runwayConfigurations) {
+		return "NO STORED DATA"
 	}
 
-	p.activeRunwayConfigID = selected.ID
+	cfg := p.runwayConfigurations[index]
+	if cfg.ID == p.activeRunwayConfigID && !confirmEvenIfActive {
+		return ""
+	}
+
+	p.activeRunwayConfigID = cfg.ID
 	p.refreshRunwayConfigPreviewLine()
-	p.previewArea.SetSystemResponse(selected.Name + " CONFIRMED")
 	p.clearHighlightedTarget()
+
+	name := strings.ToUpper(strings.TrimSpace(cfg.Name))
+	if name == "" {
+		name = "LIMITED"
+	}
+	return name + " CONFIRMED"
 }
 
 func (p *ASDEXPane) activateTowerConfigDcbHit(_ *panes.Context, hit DcbHit) bool {
@@ -1596,6 +1611,7 @@ func (p *ASDEXPane) clearDcbModalConflicts() {
 	p.coastListReposition = nil
 	p.mapReposition = nil
 	p.mapRotate = nil
+	p.runwayConfigCommand = nil
 	p.towerReadout = nil
 	p.dcbSpinner = nil
 	p.clearTrackAlertInhibitReturnContext()
@@ -1945,6 +1961,7 @@ func (p *ASDEXPane) startNewWindowCommand(command *NewWindowCommand) {
 	p.coastListReposition = nil
 	p.mapReposition = nil
 	p.mapRotate = nil
+	p.runwayConfigCommand = nil
 	p.towerReadout = nil
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
@@ -2299,6 +2316,7 @@ func (p *ASDEXPane) startRangeSpinner() {
 	p.coastListReposition = nil
 	p.mapReposition = nil
 	p.mapRotate = nil
+	p.runwayConfigCommand = nil
 	p.towerReadout = nil
 	p.dcbMenuCommand = nil
 	p.dbAreaDraft = nil
@@ -3606,6 +3624,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	if p.mapRotate != nil {
 		return p.mapRotate.DisplayLines()
 	}
+	if p.runwayConfigCommand != nil {
+		return p.runwayConfigCommand.DisplayLines()
+	}
 	if p.towerReadout != nil {
 		return p.towerReadout.DisplayLines()
 	}
@@ -3664,6 +3685,9 @@ func (p *ASDEXPane) activeCommandCursor() (line int, column int, ok bool) {
 	if p.mapRotate != nil {
 		return p.mapRotate.CursorLine(), p.mapRotate.CursorColumn(), true
 	}
+	if p.runwayConfigCommand != nil {
+		return p.runwayConfigCommand.CursorLine(), p.runwayConfigCommand.CursorColumn(), true
+	}
 	if p.dcbSpinner != nil {
 		return p.dcbSpinner.CursorLine(), p.dcbSpinner.CursorColumn(), true
 	}
@@ -3693,6 +3717,10 @@ func (p *ASDEXPane) cancelActiveCommand() {
 		p.finishMapRotateCommand("")
 		return
 	}
+	if p.runwayConfigCommand != nil {
+		p.finishRunwayConfigCommand("")
+		return
+	}
 	if p.commandMode == CommandModeTrackAlertInhibit {
 		p.finishTrackAlertInhibitCommand("")
 		return
@@ -3714,6 +3742,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.coastListReposition = nil
 	p.mapReposition = nil
 	p.mapRotate = nil
+	p.runwayConfigCommand = nil
 	p.towerReadout = nil
 	p.dcbSpinner = nil
 	p.dcbMenuCommand = nil
@@ -3753,6 +3782,9 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.mapRotate != nil {
 		return p.handleMapRotateKeyboard(ctx)
+	}
+	if p.runwayConfigCommand != nil {
+		return p.handleRunwayConfigKeyboard(ctx)
 	}
 	if p.towerReadout != nil {
 		return p.handleTowerReadoutKeyboard(ctx)
@@ -3822,6 +3854,80 @@ func (p *ASDEXPane) handleTowerReadoutKeyboard(ctx *panes.Context) bool {
 		return true
 	}
 	return false
+}
+
+func (p *ASDEXPane) handleRunwayConfigKeyboard(ctx *panes.Context) bool {
+	if p == nil || p.runwayConfigCommand == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	keyboard := ctx.Keyboard
+	command := p.runwayConfigCommand
+	switch {
+	case keyboard.WasPressed(platform.KeyEscape):
+		p.finishRunwayConfigCommand("")
+		return true
+	case keyboard.WasPressed(platform.KeyBackspace):
+		if command.Backspace() {
+			p.finishRunwayConfigCommand("")
+		} else {
+			p.previewArea.SetSystemResponse("")
+		}
+		return true
+	case keyboard.WasPressed(platform.KeyDelete):
+		command.DeleteForward()
+		p.previewArea.SetSystemResponse("")
+		return true
+	case keyboard.WasPressed(platform.KeyLeft):
+		command.MoveLeft()
+		return true
+	case keyboard.WasPressed(platform.KeyRight):
+		command.MoveRight()
+		return true
+	case keyboard.WasPressed(platform.KeyEnter), keyboard.WasPressed(platform.KeyKeypadEnter):
+		p.submitRunwayConfigCommand()
+		return true
+	}
+
+	handled := false
+	for _, r := range keyboard.Text {
+		command.Insert(r)
+		p.previewArea.SetSystemResponse("")
+		handled = true
+	}
+	return handled
+}
+
+func (p *ASDEXPane) submitRunwayConfigCommand() {
+	if p == nil || p.runwayConfigCommand == nil {
+		return
+	}
+
+	number, err := strconv.Atoi(p.runwayConfigCommand.Value())
+	if err != nil {
+		p.finishRunwayConfigCommand("INVALID CONFIG")
+		return
+	}
+
+	p.finishRunwayConfigCommand(
+		p.setRunwayConfigurationByOrdinal(number, true),
+	)
+}
+
+func (p *ASDEXPane) finishRunwayConfigCommand(response string) {
+	if p == nil {
+		return
+	}
+
+	p.runwayConfigCommand = nil
+	p.commandMode = CommandModeNone
+	p.commandEntry.Clear()
+	p.dcb.ReturnToMainMenu()
+	p.dcbMenuCommand = nil
+	p.previewArea.SetSystemResponse(response)
+	p.refreshRunwayConfigPreviewLine()
+	p.refreshTowerConfigPreviewLine()
+	p.clearHighlightedTarget()
 }
 
 func (p *ASDEXPane) handleDatablockEditKeyboard(ctx *panes.Context) bool {
