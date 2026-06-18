@@ -1260,6 +1260,7 @@ func targetRGB(role targetRGBRole, brightness int) renderer.RGB {
 		base = targetVehiclePink
 	case targetRGBVector:
 		base = renderer.RGB8(140, 140, 140)
+		floor = 20
 	case targetRGBHighlight:
 		base = renderer.RGB8(255, 255, 255)
 	case targetRGBSuspendedOuter:
