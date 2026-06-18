@@ -1,0 +1,258 @@
+{
+  "airport": "DEN",
+  "runwayConfigurations": [
+    {
+      "number": 1,
+      "name": "SOC_VMC",
+      "arrivalRunwayIds": [
+        "16L",
+        "16R",
+        "17R"
+      ],
+      "departureRunwayIds": [
+        "17L",
+        "17R",
+        "25",
+        "8"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "SOC_IMC",
+      "arrivalRunwayIds": [
+        "16R",
+        "17L",
+        "17R"
+      ],
+      "departureRunwayIds": [
+        "16L",
+        "17R",
+        "25"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "NOC",
+      "arrivalRunwayIds": [
+        "34R",
+        "35L",
+        "35R"
+      ],
+      "departureRunwayIds": [
+        "25",
+        "34L",
+        "35L",
+        "8"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "SOE",
+      "arrivalRunwayIds": [
+        "16L",
+        "16R",
+        "17R",
+        "7"
+      ],
+      "departureRunwayIds": [
+        "17L",
+        "17R",
+        "8"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "SOW_VMC",
+      "arrivalRunwayIds": [
+        "16L",
+        "16R",
+        "17R",
+        "26"
+      ],
+      "departureRunwayIds": [
+        "17L",
+        "17R",
+        "25"
+      ]
+    },
+    {
+      "number": 6,
+      "name": "SOW_IMC",
+      "arrivalRunwayIds": [
+        "16R",
+        "17L",
+        "17R"
+      ],
+      "departureRunwayIds": [
+        "16L",
+        "17R",
+        "25"
+      ]
+    },
+    {
+      "number": 7,
+      "name": "NOE",
+      "arrivalRunwayIds": [
+        "34R",
+        "35L",
+        "35R",
+        "7"
+      ],
+      "departureRunwayIds": [
+        "34L",
+        "35L",
+        "8"
+      ]
+    },
+    {
+      "number": 8,
+      "name": "NOW",
+      "arrivalRunwayIds": [
+        "26",
+        "34R",
+        "35L",
+        "35R"
+      ],
+      "departureRunwayIds": [
+        "25",
+        "34L",
+        "34R",
+        "35L"
+      ]
+    },
+    {
+      "number": 9,
+      "name": "SOA_VMC",
+      "arrivalRunwayIds": [
+        "16L",
+        "16R",
+        "17R"
+      ],
+      "departureRunwayIds": [
+        "17L",
+        "17R"
+      ]
+    },
+    {
+      "number": 10,
+      "name": "SOA_IMC",
+      "arrivalRunwayIds": [
+        "16R",
+        "17L",
+        "17R"
+      ],
+      "departureRunwayIds": [
+        "16L",
+        "17R"
+      ]
+    },
+    {
+      "number": 11,
+      "name": "NOA",
+      "arrivalRunwayIds": [
+        "34R",
+        "35L",
+        "35R"
+      ],
+      "departureRunwayIds": [
+        "34L",
+        "34R",
+        "35L"
+      ]
+    },
+    {
+      "number": 12,
+      "name": "EAA",
+      "arrivalRunwayIds": [
+        "7",
+        "8"
+      ],
+      "departureRunwayIds": [
+        "8"
+      ]
+    },
+    {
+      "number": 13,
+      "name": "WEA",
+      "arrivalRunwayIds": [
+        "25",
+        "26"
+      ],
+      "departureRunwayIds": [
+        "25"
+      ]
+    },
+    {
+      "number": 14,
+      "name": "HB_ARR",
+      "arrivalRunwayIds": [
+        "16L",
+        "16R",
+        "35L",
+        "35R"
+      ],
+      "departureRunwayIds": [
+        "25",
+        "8"
+      ]
+    },
+    {
+      "number": 15,
+      "name": "HB_DEP",
+      "arrivalRunwayIds": [
+        "26",
+        "7"
+      ],
+      "departureRunwayIds": [
+        "17L",
+        "17R",
+        "34L",
+        "34R"
+      ]
+    },
+    {
+      "number": 16,
+      "name": "LIMITED",
+      "arrivalRunwayIds": [],
+      "departureRunwayIds": [],
+      "default": true
+    }
+  ],
+  "towerPositions": [
+    {
+      "name": "LC 1",
+      "runwayIds": [
+        "17L-35R",
+        "8-26"
+      ]
+    },
+    {
+      "name": "LC 2",
+      "runwayIds": [
+        "17L-35R",
+        "17R-35L"
+      ]
+    },
+    {
+      "name": "LC 3",
+      "runwayIds": [
+        "16R-34L",
+        "7-25"
+      ]
+    },
+    {
+      "name": "LC 4",
+      "runwayIds": [
+        "16L-34R",
+        "16R-34L",
+        "7-25",
+        "8-26"
+      ]
+    },
+    {
+      "name": "GCE/GCW",
+      "runwayIds": [],
+      "default": true
+    }
+  ]
+}
