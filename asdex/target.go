@@ -784,6 +784,33 @@ func (s *TargetStore) ExpireSuspendedTracks(now time.Time) {
 	}
 }
 
+func (s *TargetStore) ExpireRawUnknownTargets(now time.Time, lifetime time.Duration) {
+	if s == nil || lifetime <= 0 {
+		return
+	}
+
+	var remove []string
+	for _, target := range s.targets {
+		if !targetIsRawUnknown(target) {
+			continue
+		}
+
+		last := target.LastSmesFrameTime
+		if last.IsZero() {
+			last = target.PositionReportTime
+		}
+		if last.IsZero() || now.Sub(last) < lifetime {
+			continue
+		}
+
+		remove = append(remove, target.ID)
+	}
+
+	for _, id := range remove {
+		s.Remove(id)
+	}
+}
+
 func (s *TargetStore) UpdateCoastDropTracks(
 	now time.Time,
 	coastDelay time.Duration,
@@ -1195,6 +1222,19 @@ func targetCanHaveDataBlock(target *Target) bool {
 		return false
 	}
 	return target.ForceDataBlock || targetHasDatablock(classifyTarget(target))
+}
+
+func targetIsRawUnknown(target *Target) bool {
+	if target == nil {
+		return false
+	}
+	if !target.Live || target.Suspended || target.Coasting || target.Dropped {
+		return false
+	}
+	if target.ForceDataBlock {
+		return false
+	}
+	return classifyTarget(target) == targetClassUnknown && !targetCanHaveDataBlock(target)
 }
 
 func isInitControlUnknownTarget(target *Target) bool {
