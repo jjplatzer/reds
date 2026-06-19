@@ -526,6 +526,14 @@ func registerSetupCommands() {
 
 	registerCommand(
 		CommandModeNone,
+		"[WINDOW RESIZE][WINDOW SMSLEW]",
+		func(ap *ASDEXPane, ctx *panes.Context, slew WindowShiftMiddleSlew) CommandStatus {
+			return ap.cmdWindowResizeShiftMiddleSlew(ctx, slew)
+		},
+	)
+
+	registerCommand(
+		CommandModeNone,
 		"[WINDOW SWITCH][WINDOW SLEW]",
 		func(ap *ASDEXPane, ctx *panes.Context, slew WindowSlew) CommandStatus {
 			return ap.cmdWindowSwitchWindowSlew(ctx, slew)
@@ -678,6 +686,22 @@ func (ap *ASDEXPane) cmdWindowRepositionMiddleSlew(
 		slew.WindowID,
 		slew.Rect,
 		NewShortcutWindowRepositionCommand(slew.WindowID, slew.Rect),
+	)
+
+	return CommandStatus{Clear: ClearNone}
+}
+
+func (ap *ASDEXPane) cmdWindowResizeShiftMiddleSlew(
+	_ *panes.Context,
+	slew WindowShiftMiddleSlew,
+) CommandStatus {
+	if ap == nil || slew.WindowID == mainScopeWindowID || slew.Rect.Empty() {
+		return CommandStatus{Clear: ClearNone}
+	}
+
+	ap.startResizeWindowForWindow(
+		slew.WindowID,
+		NewShortcutResizeWindowCommand(slew.WindowID),
 	)
 
 	return CommandStatus{Clear: ClearNone}

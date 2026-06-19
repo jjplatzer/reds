@@ -151,6 +151,12 @@ type ResizeWindowCommand struct {
 
 	Point    redsmath.Vec2
 	HasPoint bool
+
+	displayLines []string
+
+	restoreDcbMenu bool
+	returnMenu     DcbMenu
+	returnLines    []string
 }
 
 type WindowRepositionCommand struct {
@@ -249,15 +255,51 @@ func (op ResizeOperation) IsPositiveDirection() bool {
 		op == ResizeBottomLeft
 }
 
-func NewResizeWindowCommand(windowID ScopeWindowID) *ResizeWindowCommand {
-	return &ResizeWindowCommand{WindowID: windowID}
+func NewResizeWindowCommand(
+	windowID ScopeWindowID,
+	displayLines []string,
+	restoreDcbMenu bool,
+	returnMenu DcbMenu,
+	returnLines []string,
+) *ResizeWindowCommand {
+	return &ResizeWindowCommand{
+		WindowID: windowID,
+
+		displayLines:   append([]string(nil), displayLines...),
+		restoreDcbMenu: restoreDcbMenu,
+		returnMenu:     returnMenu,
+		returnLines:    append([]string(nil), returnLines...),
+	}
+}
+
+func NewToolsResizeWindowCommand(windowID ScopeWindowID) *ResizeWindowCommand {
+	return NewResizeWindowCommand(
+		windowID,
+		[]string{"TOOLS", "RESIZE WINDOW"},
+		true,
+		DcbMenuTools,
+		[]string{"TOOLS"},
+	)
+}
+
+func NewShortcutResizeWindowCommand(windowID ScopeWindowID) *ResizeWindowCommand {
+	return NewResizeWindowCommand(
+		windowID,
+		[]string{"WINDOW RESIZE"},
+		false,
+		DcbMenuMain,
+		nil,
+	)
 }
 
 func (cmd *ResizeWindowCommand) DisplayLines() []string {
 	if cmd == nil {
 		return nil
 	}
-	return []string{"TOOLS", "RESIZE WINDOW"}
+	if len(cmd.displayLines) == 0 {
+		return []string{"WINDOW RESIZE"}
+	}
+	return append([]string(nil), cmd.displayLines...)
 }
 
 func NewWindowRepositionCommand(
@@ -985,9 +1027,19 @@ func (p *ASDEXPane) finishResizeWindowCommand(response string) {
 		return
 	}
 
+	cmd := p.resizeWindow
 	p.resizeWindow = nil
-	p.dcb.SetMenu(DcbMenuTools)
-	p.dcbMenuCommand = NewDcbMenuCommand("TOOLS")
+	if cmd != nil && cmd.restoreDcbMenu {
+		p.dcb.SetMenu(cmd.returnMenu)
+		if len(cmd.returnLines) > 0 {
+			p.dcbMenuCommand = NewDcbMenuCommand(cmd.returnLines...)
+		} else {
+			p.dcbMenuCommand = nil
+		}
+	} else {
+		p.dcb.ReturnToMainMenu()
+		p.dcbMenuCommand = nil
+	}
 	p.previewArea.SetSystemResponse(response)
 	p.clearHighlightedTarget()
 }

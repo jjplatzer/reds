@@ -2210,10 +2210,39 @@ func (p *ASDEXPane) startResizeWindowCommand() {
 		return
 	}
 
+	p.startResizeWindowForWindow(
+		windowID,
+		NewToolsResizeWindowCommand(windowID),
+	)
+}
+
+func (p *ASDEXPane) startResizeWindowForWindow(
+	windowID ScopeWindowID,
+	command *ResizeWindowCommand,
+) {
+	if p == nil || command == nil || windowID == mainScopeWindowID {
+		return
+	}
+	if _, ok := p.scopeViewForWindow(windowID); !ok {
+		return
+	}
+
 	p.clearDcbModalConflicts()
-	p.dcb.SetMenu(DcbMenuTools)
-	p.dcbMenuCommand = nil
-	p.resizeWindow = NewResizeWindowCommand(windowID)
+	p.windows.SetActiveWindow(windowID)
+
+	if command.restoreDcbMenu {
+		p.dcb.SetMenu(command.returnMenu)
+		if len(command.returnLines) > 0 {
+			p.dcbMenuCommand = NewDcbMenuCommand(command.returnLines...)
+		} else {
+			p.dcbMenuCommand = nil
+		}
+	} else {
+		p.dcb.ReturnToMainMenu()
+		p.dcbMenuCommand = nil
+	}
+
+	p.resizeWindow = command
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }

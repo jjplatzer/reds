@@ -347,6 +347,12 @@ type WindowSlew struct {
 	Point    redsmath.Vec2
 }
 
+type WindowShiftMiddleSlew struct {
+	WindowID ScopeWindowID
+	Rect     redsmath.Rect
+	Point    redsmath.Vec2
+}
+
 type DcbMiddleSlew struct {
 	Point redsmath.Vec2
 	Menu  DcbMenu
@@ -513,6 +519,41 @@ func (windowMiddleSlewMatcher) goType() reflect.Type {
 	return reflect.TypeFor[WindowMiddleSlew]()
 }
 func (windowMiddleSlewMatcher) consumesClick() bool { return true }
+
+type windowShiftMiddleSlewMatcher struct{}
+
+func (windowShiftMiddleSlewMatcher) match(
+	_ *ASDEXPane,
+	_ *panes.Context,
+	input *CommandInput,
+	text string,
+) (*matchResult, error) {
+	if input == nil ||
+		input.clickType != CommandClickMiddle ||
+		!input.shiftDown ||
+		input.windowRect.Empty() ||
+		input.windowID == mainScopeWindowID {
+		return nil, nil
+	}
+
+	return &matchResult{
+		values: []any{
+			WindowShiftMiddleSlew{
+				WindowID: input.windowID,
+				Rect:     input.windowRect,
+				Point:    input.mousePosition,
+			},
+		},
+		remaining: text,
+		matched:   true,
+	}, nil
+}
+
+func (windowShiftMiddleSlewMatcher) validate() error { return nil }
+func (windowShiftMiddleSlewMatcher) goType() reflect.Type {
+	return reflect.TypeFor[WindowShiftMiddleSlew]()
+}
+func (windowShiftMiddleSlewMatcher) consumesClick() bool { return true }
 
 type windowSlewMatcher struct{}
 
@@ -843,6 +884,8 @@ func makeMatchers(spec string) ([]matcher, error) {
 				matchers = append(matchers, displaySlewMatcher{})
 			case "WINDOW MSLEW":
 				matchers = append(matchers, windowMiddleSlewMatcher{})
+			case "WINDOW SMSLEW":
+				matchers = append(matchers, windowShiftMiddleSlewMatcher{})
 			case "WINDOW SLEW":
 				matchers = append(matchers, windowSlewMatcher{})
 			case "DCB MSLEW":
@@ -1328,9 +1371,14 @@ func (ap *ASDEXPane) consumeCommandClicksInWindow(
 	}
 
 	if clickType == CommandClickMiddle {
+		command := "[WINDOW REPOS]"
+		if ctx.Keyboard != nil && ctx.Keyboard.IsDown(platform.KeyShift) {
+			command = "[WINDOW RESIZE]"
+		}
+
 		status, err, handled := ap.tryExecuteUserCommandInWindow(
 			ctx,
-			"[WINDOW REPOS]",
+			command,
 			nil,
 			CommandClickMiddle,
 			localMouse,
