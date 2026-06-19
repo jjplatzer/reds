@@ -37,6 +37,8 @@ const (
 	aircraftCoastDelay = 60 * time.Second
 	coastDropLifetime  = 45 * time.Second
 
+	unknownTargetStaleLifetime = 8 * time.Second
+
 	// New CRC ASDE-X RANGE uses RangeMeasurement.FullHorizontal and
 	// RangeUnits._100sFeet. RANGE n means the full horizontal width of the
 	// main display is n*100 feet. Secondary windows use the same feet-per-pixel
@@ -356,6 +358,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	now := time.Now().UTC()
 	p.expireTemporaryBeaconDisplays(now)
+	p.targets.ExpireRawUnknownTargets(now, unknownTargetStaleLifetime)
 	p.targets.ExpireSuspendedTracks(now)
 	p.targets.UpdateCoastDropTracks(
 		now,
