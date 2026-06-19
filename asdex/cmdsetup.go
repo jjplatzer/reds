@@ -526,6 +526,22 @@ func registerSetupCommands() {
 
 	registerCommand(
 		CommandModeNone,
+		"[WINDOW SWITCH][WINDOW SLEW]",
+		func(ap *ASDEXPane, ctx *panes.Context, slew WindowSlew) CommandStatus {
+			return ap.cmdWindowSwitchWindowSlew(ctx, slew)
+		},
+	)
+
+	registerCommand(
+		CommandModeNone,
+		"[WINDOW SWITCH][DCB MSLEW]",
+		func(ap *ASDEXPane, ctx *panes.Context, slew DcbMiddleSlew) CommandStatus {
+			return ap.cmdWindowSwitchDcbMiddleSlew(ctx, slew)
+		},
+	)
+
+	registerCommand(
+		CommandModeNone,
 		"[TWR RDOUT]",
 		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
 			return ap.cmdTowerReadout(ctx)
@@ -664,6 +680,39 @@ func (ap *ASDEXPane) cmdWindowRepositionMiddleSlew(
 		NewShortcutWindowRepositionCommand(slew.WindowID, slew.Rect),
 	)
 
+	return CommandStatus{Clear: ClearNone}
+}
+
+func (ap *ASDEXPane) cmdWindowSwitchWindowSlew(
+	_ *panes.Context,
+	slew WindowSlew,
+) CommandStatus {
+	if ap == nil || slew.Rect.Empty() || ap.activeWindowID() == slew.WindowID {
+		return CommandStatus{Clear: ClearNone}
+	}
+
+	ap.windows.SetActiveWindow(slew.WindowID)
+	ap.previewArea.SetSystemResponse("")
+	ap.clearHighlightedTarget()
+	return CommandStatus{Clear: ClearNone}
+}
+
+func (ap *ASDEXPane) cmdWindowSwitchDcbMiddleSlew(
+	_ *panes.Context,
+	_ DcbMiddleSlew,
+) CommandStatus {
+	if ap == nil {
+		return CommandStatus{Clear: ClearNone}
+	}
+
+	next, ok := ap.nextWindowSwitchID()
+	if !ok {
+		return CommandStatus{Clear: ClearNone}
+	}
+
+	ap.windows.SetActiveWindow(next)
+	ap.previewArea.SetSystemResponse("")
+	ap.clearHighlightedTarget()
 	return CommandStatus{Clear: ClearNone}
 }
 

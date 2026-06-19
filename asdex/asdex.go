@@ -451,12 +451,13 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		}
 	} else if p.dcbMenuCommand != nil {
 		p.clearHighlightedTarget()
-		p.consumeDcbInput(ctx)
+		if !p.consumeDcbWindowSwitchShortcut(ctx) {
+			p.consumeDcbInput(ctx)
+		}
 	} else {
 		if p.consumeDcbInput(ctx) {
 			p.clearHighlightedTarget()
 		} else {
-			p.maybeActivateScopeWindowOnLeftPress(ctx)
 			if ctx.Mouse == nil {
 				p.clearHighlightedTarget()
 			} else {
@@ -1293,6 +1294,33 @@ func (p *ASDEXPane) consumeDcbInput(ctx *panes.Context) bool {
 		mouse.Wheel.X != 0 ||
 		mouse.Wheel.Y != 0 ||
 		hit.OverDcb
+}
+
+func (p *ASDEXPane) consumeDcbWindowSwitchShortcut(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || ctx.Mouse == nil || ctx.Keyboard == nil {
+		return false
+	}
+	if !ctx.Keyboard.IsDown(platform.KeyShift) ||
+		!ctx.Mouse.WasReleased(platform.MouseButtonMiddle) ||
+		!p.mouseOverDcb(ctx) {
+		return false
+	}
+
+	status, err, handled := p.tryExecuteUserCommandForDcb(
+		ctx,
+		"[WINDOW SWITCH]",
+		CommandClickMiddle,
+		ctx.Mouse.Pos,
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return true
+	}
+	if handled {
+		p.applyCommandStatus(status)
+		return true
+	}
+	return false
 }
 
 func (p *ASDEXPane) consumeDcbOnOffClick(ctx *panes.Context) bool {
@@ -3039,6 +3067,64 @@ func (p *ASDEXPane) activeWindowID() ScopeWindowID {
 		return mainScopeWindowID
 	}
 	return p.windows.ActiveWindowID()
+}
+
+func (p *ASDEXPane) nextWindowSwitchID() (ScopeWindowID, bool) {
+	if p == nil {
+		return mainScopeWindowID, false
+	}
+
+	secondaryIDs := p.windows.SecondaryWindowIDsSorted()
+	if len(secondaryIDs) == 0 {
+		return mainScopeWindowID, true
+	}
+
+	active := p.activeWindowID()
+	if active == mainScopeWindowID {
+		return secondaryIDs[0], true
+	}
+
+	for i, id := range secondaryIDs {
+		if id != active {
+			continue
+		}
+		if i+1 < len(secondaryIDs) {
+			return secondaryIDs[i+1], true
+		}
+		return mainScopeWindowID, true
+	}
+
+	return secondaryIDs[0], true
+}
+
+func (p *ASDEXPane) noScopeModalCommandActive() bool {
+	if p == nil {
+		return false
+	}
+
+	return p.commandEntry.Empty() &&
+		p.datablockEdit == nil &&
+		p.initControlEntry == nil &&
+		p.termControlEntry == nil &&
+		p.multiFunction == nil &&
+		p.previewReposition == nil &&
+		p.coastListReposition == nil &&
+		p.mapReposition == nil &&
+		p.mapRotate == nil &&
+		p.runwayConfigCommand == nil &&
+		p.towerReadout == nil &&
+		p.dcbSpinner == nil &&
+		p.dcbMenuCommand == nil &&
+		p.dbAreaDraft == nil &&
+		p.dbAreaSelection == nil &&
+		p.tempAreaDraft == nil &&
+		p.tempTextCommand == nil &&
+		p.tempTextPlacement == nil &&
+		p.tempDataSelectMode == TempDataSelectNone &&
+		p.newWindow == nil &&
+		p.deleteWindow == nil &&
+		p.windowReposition == nil &&
+		p.resizeWindow == nil
 }
 
 func (p *ASDEXPane) displayStateForWindow(id ScopeWindowID) *WindowDisplayState {

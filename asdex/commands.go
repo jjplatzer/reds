@@ -341,6 +341,17 @@ type WindowMiddleSlew struct {
 	Point    redsmath.Vec2
 }
 
+type WindowSlew struct {
+	WindowID ScopeWindowID
+	Rect     redsmath.Rect
+	Point    redsmath.Vec2
+}
+
+type DcbMiddleSlew struct {
+	Point redsmath.Vec2
+	Menu  DcbMenu
+}
+
 type CommandInput struct {
 	text      string
 	entryType CommandTextEntryType
@@ -353,6 +364,9 @@ type CommandInput struct {
 
 	windowID   ScopeWindowID
 	windowRect redsmath.Rect
+
+	overDcb   bool
+	shiftDown bool
 }
 
 type matchResult struct {
@@ -474,7 +488,7 @@ func (windowMiddleSlewMatcher) match(
 	input *CommandInput,
 	text string,
 ) (*matchResult, error) {
-	if input == nil || input.clickType != CommandClickMiddle {
+	if input == nil || input.clickType != CommandClickMiddle || input.shiftDown {
 		return nil, nil
 	}
 	if input.windowID == mainScopeWindowID || input.windowRect.Empty() {
@@ -499,6 +513,73 @@ func (windowMiddleSlewMatcher) goType() reflect.Type {
 	return reflect.TypeFor[WindowMiddleSlew]()
 }
 func (windowMiddleSlewMatcher) consumesClick() bool { return true }
+
+type windowSlewMatcher struct{}
+
+func (windowSlewMatcher) match(
+	_ *ASDEXPane,
+	_ *panes.Context,
+	input *CommandInput,
+	text string,
+) (*matchResult, error) {
+	if input == nil || input.clickType != CommandClickLeft || input.windowRect.Empty() {
+		return nil, nil
+	}
+
+	return &matchResult{
+		values: []any{
+			WindowSlew{
+				WindowID: input.windowID,
+				Rect:     input.windowRect,
+				Point:    input.mousePosition,
+			},
+		},
+		remaining: text,
+		matched:   true,
+	}, nil
+}
+
+func (windowSlewMatcher) validate() error { return nil }
+func (windowSlewMatcher) goType() reflect.Type {
+	return reflect.TypeFor[WindowSlew]()
+}
+func (windowSlewMatcher) consumesClick() bool { return true }
+
+type dcbShiftMiddleSlewMatcher struct{}
+
+func (dcbShiftMiddleSlewMatcher) match(
+	ap *ASDEXPane,
+	_ *panes.Context,
+	input *CommandInput,
+	text string,
+) (*matchResult, error) {
+	if ap == nil || input == nil {
+		return nil, nil
+	}
+	if input.clickType != CommandClickMiddle || !input.shiftDown || !input.overDcb {
+		return nil, nil
+	}
+	if ap.dcb.Menu() == DcbMenuMain || ap.dcb.Menu() == DcbMenuOff {
+		return nil, nil
+	}
+
+	return &matchResult{
+		values: []any{
+			DcbMiddleSlew{
+				Point: input.mousePosition,
+				Menu:  ap.dcb.Menu(),
+			},
+		},
+		remaining: text,
+		matched:   true,
+	}, nil
+}
+
+func (dcbShiftMiddleSlewMatcher) validate() error { return nil }
+func (dcbShiftMiddleSlewMatcher) goType() reflect.Type {
+	return reflect.TypeFor[DcbMiddleSlew]()
+}
+func (dcbShiftMiddleSlewMatcher) consumesClick() bool { return true }
 
 type ldrDirMatcher struct{}
 
@@ -762,6 +843,10 @@ func makeMatchers(spec string) ([]matcher, error) {
 				matchers = append(matchers, displaySlewMatcher{})
 			case "WINDOW MSLEW":
 				matchers = append(matchers, windowMiddleSlewMatcher{})
+			case "WINDOW SLEW":
+				matchers = append(matchers, windowSlewMatcher{})
+			case "DCB MSLEW":
+				matchers = append(matchers, dcbShiftMiddleSlewMatcher{})
 			default:
 				matchers = append(matchers, literalMatcher{text: "[" + name + "]"})
 			}
@@ -999,6 +1084,32 @@ func (ap *ASDEXPane) tryExecuteUserCommandInWindow(
 		windowID:      windowID,
 		windowRect:    windowRect,
 	}
+	if ctx != nil && ctx.Keyboard != nil {
+		input.shiftDown = ctx.Keyboard.IsDown(platform.KeyShift)
+	}
+	return ap.dispatchCommand(ctx, userCommands[ap.commandMode], input)
+}
+
+func (ap *ASDEXPane) tryExecuteUserCommandForDcb(
+	ctx *panes.Context,
+	cmd string,
+	clickType CommandClickType,
+	mousePosition redsmath.Vec2,
+) (CommandStatus, error, bool) {
+	if ap == nil {
+		return CommandStatus{}, nil, false
+	}
+
+	input := &CommandInput{
+		text:          strings.ToUpper(cmd),
+		entryType:     CommandTextEntryNone,
+		clickType:     clickType,
+		mousePosition: mousePosition,
+		overDcb:       ap.mouseOverDcb(ctx),
+	}
+	if ctx != nil && ctx.Keyboard != nil {
+		input.shiftDown = ctx.Keyboard.IsDown(platform.KeyShift)
+	}
 	return ap.dispatchCommand(ctx, userCommands[ap.commandMode], input)
 }
 
@@ -1191,6 +1302,30 @@ func (ap *ASDEXPane) consumeCommandClicksInWindow(
 		return false
 	}
 	localMouse := mouse.Pos.Sub(windowRect.Min)
+
+	if clickType == CommandClickLeft &&
+		windowID != ap.activeWindowID() &&
+		ap.commandMode == CommandModeNone &&
+		ap.noScopeModalCommandActive() {
+		status, err, handled := ap.tryExecuteUserCommandInWindow(
+			ctx,
+			"[WINDOW SWITCH]",
+			nil,
+			CommandClickLeft,
+			localMouse,
+			transforms,
+			windowID,
+			windowRect,
+		)
+		if err != nil {
+			ap.previewArea.SetSystemResponse(err.Error())
+			return true
+		}
+		if handled {
+			ap.applyCommandStatus(status)
+			return true
+		}
+	}
 
 	if clickType == CommandClickMiddle {
 		status, err, handled := ap.tryExecuteUserCommandInWindow(

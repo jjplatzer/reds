@@ -1,6 +1,8 @@
 package asdex
 
 import (
+	"sort"
+
 	redsmath "github.com/juliusplatzer/reds/math"
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/platform"
@@ -381,6 +383,23 @@ func (wm *ScopeWindowManager) ActiveWindowID() ScopeWindowID {
 		return mainScopeWindowID
 	}
 	return wm.activeID
+}
+
+func (wm *ScopeWindowManager) SecondaryWindowIDsSorted() []ScopeWindowID {
+	if wm == nil {
+		return nil
+	}
+
+	ids := make([]ScopeWindowID, 0, len(wm.secondary))
+	for _, window := range wm.secondary {
+		if !window.Hidden {
+			ids = append(ids, window.ID)
+		}
+	}
+	sort.Slice(ids, func(i, j int) bool {
+		return ids[i] < ids[j]
+	})
+	return ids
 }
 
 func (wm *ScopeWindowManager) ProposedWindowIsValid(rect redsmath.Rect, paneSize redsmath.Vec2) bool {
@@ -979,40 +998,6 @@ func (p *ASDEXPane) cancelResizeWindowCommand() {
 	}
 
 	p.finishResizeWindowCommand("")
-}
-
-func (p *ASDEXPane) maybeActivateScopeWindowOnLeftPress(ctx *panes.Context) {
-	if p == nil || ctx == nil || ctx.Mouse == nil {
-		return
-	}
-	if !ctx.Mouse.WasPressed(platform.MouseButtonLeft) {
-		return
-	}
-
-	if p.commandMode != CommandModeNone ||
-		p.datablockEdit != nil ||
-		p.newWindow != nil ||
-		p.deleteWindow != nil ||
-		p.windowReposition != nil ||
-		p.resizeWindow != nil ||
-		p.towerReadout != nil ||
-		p.mapReposition != nil ||
-		p.mapRotate != nil ||
-		p.listRepositionActive() ||
-		p.dbAreaDraft != nil ||
-		p.dbAreaSelection != nil ||
-		p.tempAreaDraft != nil ||
-		p.tempTextCommand != nil ||
-		p.tempTextPlacement != nil ||
-		p.tempDataSelectMode != TempDataSelectNone {
-		return
-	}
-
-	windowID, _, _, ok := p.scopeWindowAtPoint(ctx.Mouse.Pos, ctx.PaneSize())
-	if !ok {
-		return
-	}
-	p.windows.SetActiveWindow(windowID)
 }
 
 func (p *ASDEXPane) handleNewWindowKeyboard(ctx *panes.Context) bool {
