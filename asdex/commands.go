@@ -332,7 +332,14 @@ const (
 	CommandClickNone CommandClickType = iota
 	CommandClickLeft
 	CommandClickRight
+	CommandClickMiddle
 )
+
+type WindowMiddleSlew struct {
+	WindowID ScopeWindowID
+	Rect     redsmath.Rect
+	Point    redsmath.Vec2
+}
 
 type CommandInput struct {
 	text      string
@@ -343,6 +350,9 @@ type CommandInput struct {
 
 	mousePosition redsmath.Vec2
 	transforms    radar.ScopeTransformations
+
+	windowID   ScopeWindowID
+	windowRect redsmath.Rect
 }
 
 type matchResult struct {
@@ -455,6 +465,40 @@ func (displaySlewMatcher) match(
 func (displaySlewMatcher) validate() error      { return nil }
 func (displaySlewMatcher) goType() reflect.Type { return reflect.TypeFor[DisplayPoint]() }
 func (displaySlewMatcher) consumesClick() bool  { return true }
+
+type windowMiddleSlewMatcher struct{}
+
+func (windowMiddleSlewMatcher) match(
+	_ *ASDEXPane,
+	_ *panes.Context,
+	input *CommandInput,
+	text string,
+) (*matchResult, error) {
+	if input == nil || input.clickType != CommandClickMiddle {
+		return nil, nil
+	}
+	if input.windowID == mainScopeWindowID || input.windowRect.Empty() {
+		return nil, nil
+	}
+
+	return &matchResult{
+		values: []any{
+			WindowMiddleSlew{
+				WindowID: input.windowID,
+				Rect:     input.windowRect,
+				Point:    input.mousePosition,
+			},
+		},
+		remaining: text,
+		matched:   true,
+	}, nil
+}
+
+func (windowMiddleSlewMatcher) validate() error { return nil }
+func (windowMiddleSlewMatcher) goType() reflect.Type {
+	return reflect.TypeFor[WindowMiddleSlew]()
+}
+func (windowMiddleSlewMatcher) consumesClick() bool { return true }
 
 type ldrDirMatcher struct{}
 
@@ -716,6 +760,8 @@ func makeMatchers(spec string) ([]matcher, error) {
 				matchers = append(matchers, rightSlewMatcher{})
 			case "DISPLAY SLEW":
 				matchers = append(matchers, displaySlewMatcher{})
+			case "WINDOW MSLEW":
+				matchers = append(matchers, windowMiddleSlewMatcher{})
 			default:
 				matchers = append(matchers, literalMatcher{text: "[" + name + "]"})
 			}
@@ -912,6 +958,28 @@ func (ap *ASDEXPane) tryExecuteUserCommand(
 	mousePosition redsmath.Vec2,
 	transforms radar.ScopeTransformations,
 ) (CommandStatus, error, bool) {
+	return ap.tryExecuteUserCommandInWindow(
+		ctx,
+		cmd,
+		clickedTarget,
+		clickType,
+		mousePosition,
+		transforms,
+		mainScopeWindowID,
+		redsmath.Rect{},
+	)
+}
+
+func (ap *ASDEXPane) tryExecuteUserCommandInWindow(
+	ctx *panes.Context,
+	cmd string,
+	clickedTarget *Target,
+	clickType CommandClickType,
+	mousePosition redsmath.Vec2,
+	transforms radar.ScopeTransformations,
+	windowID ScopeWindowID,
+	windowRect redsmath.Rect,
+) (CommandStatus, error, bool) {
 	if ap == nil {
 		return CommandStatus{}, nil, false
 	}
@@ -928,6 +996,8 @@ func (ap *ASDEXPane) tryExecuteUserCommand(
 		clickType:     clickType,
 		mousePosition: mousePosition,
 		transforms:    transforms,
+		windowID:      windowID,
+		windowRect:    windowRect,
 	}
 	return ap.dispatchCommand(ctx, userCommands[ap.commandMode], input)
 }
@@ -1080,6 +1150,7 @@ func (ap *ASDEXPane) consumeCommandClicks(
 	}
 	return ap.consumeCommandClicksInWindow(
 		ctx,
+		mainScopeWindowID,
 		redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height()),
 		transforms,
 	)
@@ -1087,6 +1158,7 @@ func (ap *ASDEXPane) consumeCommandClicks(
 
 func (ap *ASDEXPane) consumeCommandClicksInWindow(
 	ctx *panes.Context,
+	windowID ScopeWindowID,
 	windowRect redsmath.Rect,
 	transforms radar.ScopeTransformations,
 ) bool {
@@ -1108,6 +1180,8 @@ func (ap *ASDEXPane) consumeCommandClicksInWindow(
 		clickType = CommandClickLeft
 	} else if rightReleased && ap.rightClickCandidate && !ap.rightClickDragged {
 		clickType = CommandClickRight
+	} else if mouse.WasReleased(platform.MouseButtonMiddle) {
+		clickType = CommandClickMiddle
 	}
 	if clickType == CommandClickNone {
 		return false
@@ -1117,6 +1191,28 @@ func (ap *ASDEXPane) consumeCommandClicksInWindow(
 		return false
 	}
 	localMouse := mouse.Pos.Sub(windowRect.Min)
+
+	if clickType == CommandClickMiddle {
+		status, err, handled := ap.tryExecuteUserCommandInWindow(
+			ctx,
+			"[WINDOW REPOS]",
+			nil,
+			CommandClickMiddle,
+			localMouse,
+			transforms,
+			windowID,
+			windowRect,
+		)
+		if err != nil {
+			ap.previewArea.SetSystemResponse(err.Error())
+			return true
+		}
+		if handled {
+			ap.applyCommandStatus(status)
+			return true
+		}
+		return false
+	}
 
 	target := ap.highlightedTarget()
 	if target == nil {

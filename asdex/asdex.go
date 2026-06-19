@@ -474,7 +474,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 					}
 					p.updateHighlightedTargetInWindow(ctx, windowID, windowRect, scopeTransforms)
 					if !p.consumeCoastListClicks(ctx) {
-						p.consumeCommandClicksInWindow(ctx, windowRect, scopeTransforms)
+						p.consumeCommandClicksInWindow(ctx, windowID, windowRect, scopeTransforms)
 					}
 				} else {
 					p.clearHighlightedTarget()
@@ -2133,10 +2133,38 @@ func (p *ASDEXPane) startWindowRepositionCommand(ctx *panes.Context) {
 		return
 	}
 
+	p.startWindowRepositionForWindow(
+		windowID,
+		rect,
+		NewToolsWindowRepositionCommand(windowID, rect),
+	)
+}
+
+func (p *ASDEXPane) startWindowRepositionForWindow(
+	windowID ScopeWindowID,
+	rect redsmath.Rect,
+	command *WindowRepositionCommand,
+) {
+	if p == nil || command == nil || windowID == mainScopeWindowID || rect.Empty() {
+		return
+	}
+
 	p.clearDcbModalConflicts()
-	p.dcb.SetMenu(DcbMenuTools)
-	p.dcbMenuCommand = nil
-	p.windowReposition = NewWindowRepositionCommand(windowID, rect)
+	p.windows.SetActiveWindow(windowID)
+
+	if command.restoreDcbMenu {
+		p.dcb.SetMenu(command.returnMenu)
+		if len(command.returnLines) > 0 {
+			p.dcbMenuCommand = NewDcbMenuCommand(command.returnLines...)
+		} else {
+			p.dcbMenuCommand = nil
+		}
+	} else {
+		p.dcb.ReturnToMainMenu()
+		p.dcbMenuCommand = nil
+	}
+
+	p.windowReposition = command
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }

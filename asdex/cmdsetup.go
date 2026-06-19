@@ -518,6 +518,14 @@ func registerSetupCommands() {
 
 	registerCommand(
 		CommandModeNone,
+		"[WINDOW REPOS][WINDOW MSLEW]",
+		func(ap *ASDEXPane, ctx *panes.Context, slew WindowMiddleSlew) CommandStatus {
+			return ap.cmdWindowRepositionMiddleSlew(ctx, slew)
+		},
+	)
+
+	registerCommand(
+		CommandModeNone,
 		"[TWR RDOUT]",
 		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
 			return ap.cmdTowerReadout(ctx)
@@ -631,6 +639,30 @@ func (ap *ASDEXPane) cmdNewWindow(_ *panes.Context) CommandStatus {
 	}
 
 	ap.startNewWindowCommand(NewNewWindowCommand())
+
+	return CommandStatus{Clear: ClearNone}
+}
+
+func (ap *ASDEXPane) cmdWindowRepositionMiddleSlew(
+	ctx *panes.Context,
+	slew WindowMiddleSlew,
+) CommandStatus {
+	if ap == nil || ctx == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+	if slew.WindowID == mainScopeWindowID || slew.Rect.Empty() {
+		return CommandStatus{
+			Clear:     ClearAll,
+			Output:    "",
+			HasOutput: true,
+		}
+	}
+
+	ap.startWindowRepositionForWindow(
+		slew.WindowID,
+		slew.Rect,
+		NewShortcutWindowRepositionCommand(slew.WindowID, slew.Rect),
+	)
 
 	return CommandStatus{Clear: ClearNone}
 }
