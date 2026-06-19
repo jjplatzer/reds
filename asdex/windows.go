@@ -1,6 +1,8 @@
 package asdex
 
 import (
+	"sort"
+
 	redsmath "github.com/juliusplatzer/reds/math"
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/platform"
@@ -149,6 +151,12 @@ type ResizeWindowCommand struct {
 
 	Point    redsmath.Vec2
 	HasPoint bool
+
+	displayLines []string
+
+	restoreDcbMenu bool
+	returnMenu     DcbMenu
+	returnLines    []string
 }
 
 type WindowRepositionCommand struct {
@@ -156,6 +164,12 @@ type WindowRepositionCommand struct {
 
 	OuterMin redsmath.Vec2
 	HasOuter bool
+
+	displayLines []string
+
+	restoreDcbMenu bool
+	returnMenu     DcbMenu
+	returnLines    []string
 }
 
 const (
@@ -241,20 +255,60 @@ func (op ResizeOperation) IsPositiveDirection() bool {
 		op == ResizeBottomLeft
 }
 
-func NewResizeWindowCommand(windowID ScopeWindowID) *ResizeWindowCommand {
-	return &ResizeWindowCommand{WindowID: windowID}
+func NewResizeWindowCommand(
+	windowID ScopeWindowID,
+	displayLines []string,
+	restoreDcbMenu bool,
+	returnMenu DcbMenu,
+	returnLines []string,
+) *ResizeWindowCommand {
+	return &ResizeWindowCommand{
+		WindowID: windowID,
+
+		displayLines:   append([]string(nil), displayLines...),
+		restoreDcbMenu: restoreDcbMenu,
+		returnMenu:     returnMenu,
+		returnLines:    append([]string(nil), returnLines...),
+	}
+}
+
+func NewToolsResizeWindowCommand(windowID ScopeWindowID) *ResizeWindowCommand {
+	return NewResizeWindowCommand(
+		windowID,
+		[]string{"TOOLS", "RESIZE WINDOW"},
+		true,
+		DcbMenuTools,
+		[]string{"TOOLS"},
+	)
+}
+
+func NewShortcutResizeWindowCommand(windowID ScopeWindowID) *ResizeWindowCommand {
+	return NewResizeWindowCommand(
+		windowID,
+		[]string{"WINDOW RESIZE"},
+		false,
+		DcbMenuMain,
+		nil,
+	)
 }
 
 func (cmd *ResizeWindowCommand) DisplayLines() []string {
 	if cmd == nil {
 		return nil
 	}
-	return []string{"TOOLS", "RESIZE WINDOW"}
+	if len(cmd.displayLines) == 0 {
+		return []string{"WINDOW RESIZE"}
+	}
+	return append([]string(nil), cmd.displayLines...)
 }
 
 func NewWindowRepositionCommand(
 	windowID ScopeWindowID,
 	rect redsmath.Rect,
+	displayLines []string,
+	restoreDcbMenu bool,
+	returnMenu DcbMenu,
+	returnLines []string,
 ) *WindowRepositionCommand {
 	return &WindowRepositionCommand{
 		WindowID: windowID,
@@ -263,14 +317,50 @@ func NewWindowRepositionCommand(
 			Y: rect.Min.Y - 2,
 		},
 		HasOuter: true,
+
+		displayLines:   append([]string(nil), displayLines...),
+		restoreDcbMenu: restoreDcbMenu,
+		returnMenu:     returnMenu,
+		returnLines:    append([]string(nil), returnLines...),
 	}
+}
+
+func NewToolsWindowRepositionCommand(
+	windowID ScopeWindowID,
+	rect redsmath.Rect,
+) *WindowRepositionCommand {
+	return NewWindowRepositionCommand(
+		windowID,
+		rect,
+		[]string{"TOOLS", "WINDOW RPOS"},
+		true,
+		DcbMenuTools,
+		[]string{"TOOLS"},
+	)
+}
+
+func NewShortcutWindowRepositionCommand(
+	windowID ScopeWindowID,
+	rect redsmath.Rect,
+) *WindowRepositionCommand {
+	return NewWindowRepositionCommand(
+		windowID,
+		rect,
+		[]string{"WINDOW REPOS"},
+		false,
+		DcbMenuMain,
+		nil,
+	)
 }
 
 func (cmd *WindowRepositionCommand) DisplayLines() []string {
 	if cmd == nil {
 		return nil
 	}
-	return []string{"TOOLS", "WINDOW RPOS"}
+	if len(cmd.displayLines) == 0 {
+		return []string{"WINDOW REPOS"}
+	}
+	return append([]string(nil), cmd.displayLines...)
 }
 
 func (wm *ScopeWindowManager) CanAddSecondary() bool {
@@ -335,6 +425,23 @@ func (wm *ScopeWindowManager) ActiveWindowID() ScopeWindowID {
 		return mainScopeWindowID
 	}
 	return wm.activeID
+}
+
+func (wm *ScopeWindowManager) SecondaryWindowIDsSorted() []ScopeWindowID {
+	if wm == nil {
+		return nil
+	}
+
+	ids := make([]ScopeWindowID, 0, len(wm.secondary))
+	for _, window := range wm.secondary {
+		if !window.Hidden {
+			ids = append(ids, window.ID)
+		}
+	}
+	sort.Slice(ids, func(i, j int) bool {
+		return ids[i] < ids[j]
+	})
+	return ids
 }
 
 func (wm *ScopeWindowManager) ProposedWindowIsValid(rect redsmath.Rect, paneSize redsmath.Vec2) bool {
@@ -786,9 +893,19 @@ func (p *ASDEXPane) finishWindowRepositionCommand(response string) {
 		return
 	}
 
+	cmd := p.windowReposition
 	p.windowReposition = nil
-	p.dcb.SetMenu(DcbMenuTools)
-	p.dcbMenuCommand = NewDcbMenuCommand("TOOLS")
+	if cmd != nil && cmd.restoreDcbMenu {
+		p.dcb.SetMenu(cmd.returnMenu)
+		if len(cmd.returnLines) > 0 {
+			p.dcbMenuCommand = NewDcbMenuCommand(cmd.returnLines...)
+		} else {
+			p.dcbMenuCommand = nil
+		}
+	} else {
+		p.dcb.ReturnToMainMenu()
+		p.dcbMenuCommand = nil
+	}
 	p.previewArea.SetSystemResponse(response)
 	p.clearHighlightedTarget()
 }
@@ -910,9 +1027,19 @@ func (p *ASDEXPane) finishResizeWindowCommand(response string) {
 		return
 	}
 
+	cmd := p.resizeWindow
 	p.resizeWindow = nil
-	p.dcb.SetMenu(DcbMenuTools)
-	p.dcbMenuCommand = NewDcbMenuCommand("TOOLS")
+	if cmd != nil && cmd.restoreDcbMenu {
+		p.dcb.SetMenu(cmd.returnMenu)
+		if len(cmd.returnLines) > 0 {
+			p.dcbMenuCommand = NewDcbMenuCommand(cmd.returnLines...)
+		} else {
+			p.dcbMenuCommand = nil
+		}
+	} else {
+		p.dcb.ReturnToMainMenu()
+		p.dcbMenuCommand = nil
+	}
 	p.previewArea.SetSystemResponse(response)
 	p.clearHighlightedTarget()
 }
@@ -923,40 +1050,6 @@ func (p *ASDEXPane) cancelResizeWindowCommand() {
 	}
 
 	p.finishResizeWindowCommand("")
-}
-
-func (p *ASDEXPane) maybeActivateScopeWindowOnLeftPress(ctx *panes.Context) {
-	if p == nil || ctx == nil || ctx.Mouse == nil {
-		return
-	}
-	if !ctx.Mouse.WasPressed(platform.MouseButtonLeft) {
-		return
-	}
-
-	if p.commandMode != CommandModeNone ||
-		p.datablockEdit != nil ||
-		p.newWindow != nil ||
-		p.deleteWindow != nil ||
-		p.windowReposition != nil ||
-		p.resizeWindow != nil ||
-		p.towerReadout != nil ||
-		p.mapReposition != nil ||
-		p.mapRotate != nil ||
-		p.listRepositionActive() ||
-		p.dbAreaDraft != nil ||
-		p.dbAreaSelection != nil ||
-		p.tempAreaDraft != nil ||
-		p.tempTextCommand != nil ||
-		p.tempTextPlacement != nil ||
-		p.tempDataSelectMode != TempDataSelectNone {
-		return
-	}
-
-	windowID, _, _, ok := p.scopeWindowAtPoint(ctx.Mouse.Pos, ctx.PaneSize())
-	if !ok {
-		return
-	}
-	p.windows.SetActiveWindow(windowID)
 }
 
 func (p *ASDEXPane) handleNewWindowKeyboard(ctx *panes.Context) bool {

@@ -344,6 +344,8 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		return
 	}
 
+	p.clampDcbSubmenuCursor(ctx)
+
 	referenceExtent := mainReferenceExtent(ctx.PaneSize())
 	transforms := scopeTransformForWindow(
 		referenceExtent,
@@ -449,12 +451,13 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		}
 	} else if p.dcbMenuCommand != nil {
 		p.clearHighlightedTarget()
-		p.consumeDcbInput(ctx)
+		if !p.consumeDcbWindowSwitchShortcut(ctx) {
+			p.consumeDcbInput(ctx)
+		}
 	} else {
 		if p.consumeDcbInput(ctx) {
 			p.clearHighlightedTarget()
 		} else {
-			p.maybeActivateScopeWindowOnLeftPress(ctx)
 			if ctx.Mouse == nil {
 				p.clearHighlightedTarget()
 			} else {
@@ -472,7 +475,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 					}
 					p.updateHighlightedTargetInWindow(ctx, windowID, windowRect, scopeTransforms)
 					if !p.consumeCoastListClicks(ctx) {
-						p.consumeCommandClicksInWindow(ctx, windowRect, scopeTransforms)
+						p.consumeCommandClicksInWindow(ctx, windowID, windowRect, scopeTransforms)
 					}
 				} else {
 					p.clearHighlightedTarget()
@@ -976,11 +979,95 @@ func (p *ASDEXPane) dcbCursorUnlocked() bool {
 		p.towerReadout == nil
 }
 
-func (p *ASDEXPane) dcbMouseCaptured() bool {
+func (p *ASDEXPane) dcbSubmenuCursorCaptured() bool {
 	if p == nil {
 		return false
 	}
-	return false
+	if !p.dcb.Visible() || p.dcb.Collapsed() {
+		return false
+	}
+
+	switch p.dcb.Menu() {
+	case DcbMenuMain, DcbMenuOff:
+		return false
+	}
+
+	if p.dbAreaSelection != nil ||
+		p.dbAreaDraft != nil ||
+		p.tempAreaDraft != nil ||
+		p.tempTextCommand != nil ||
+		p.tempTextPlacement != nil ||
+		p.tempDataSelectMode != TempDataSelectNone ||
+		p.newWindow != nil ||
+		p.deleteWindow != nil ||
+		p.windowReposition != nil ||
+		p.resizeWindow != nil ||
+		p.previewReposition != nil ||
+		p.coastListReposition != nil ||
+		p.mapReposition != nil ||
+		p.mapRotate != nil ||
+		p.towerReadout != nil {
+		return false
+	}
+
+	return p.dcbMenuCommand != nil
+}
+
+func (p *ASDEXPane) dcbMouseCaptured() bool {
+	return p != nil && p.dcbSubmenuCursorCaptured()
+}
+
+func (p *ASDEXPane) dcbCursorCaptureRect(ctx *panes.Context) (redsmath.Rect, bool) {
+	if p == nil || ctx == nil || p.fonts.font == nil {
+		return redsmath.Rect{}, false
+	}
+	if !p.dcbSubmenuCursorCaptured() {
+		return redsmath.Rect{}, false
+	}
+
+	layout := p.dcb.Layout(ctx.PaneSize(), p.fonts.font, p.dcbState())
+	if layout.MenuBounds.Empty() {
+		return redsmath.Rect{}, false
+	}
+
+	return layout.MenuBounds, true
+}
+
+func (p *ASDEXPane) clampDcbSubmenuCursor(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Mouse == nil || ctx.Platform == nil {
+		return
+	}
+
+	bounds, ok := p.dcbCursorCaptureRect(ctx)
+	if !ok {
+		return
+	}
+
+	const edgeInset = float32(0.5)
+
+	minX := bounds.Min.X + edgeInset
+	minY := bounds.Min.Y + edgeInset
+	maxX := bounds.Max.X - edgeInset
+	maxY := bounds.Max.Y - edgeInset
+	if maxX < minX {
+		maxX = minX
+	}
+	if maxY < minY {
+		maxY = minY
+	}
+
+	pos := ctx.Mouse.Pos
+	clamped := redsmath.Vec2{
+		X: clamp(pos.X, minX, maxX),
+		Y: clamp(pos.Y, minY, maxY),
+	}
+	if clamped == pos {
+		return
+	}
+
+	ctx.Platform.SetMousePosition(clamped.Add(ctx.PaneRect.Min))
+	ctx.Mouse.Pos = clamped
+	ctx.Mouse.Delta = redsmath.Vec2{}
 }
 
 func (p *ASDEXPane) dcbState() DcbState {
@@ -1207,6 +1294,33 @@ func (p *ASDEXPane) consumeDcbInput(ctx *panes.Context) bool {
 		mouse.Wheel.X != 0 ||
 		mouse.Wheel.Y != 0 ||
 		hit.OverDcb
+}
+
+func (p *ASDEXPane) consumeDcbWindowSwitchShortcut(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || ctx.Mouse == nil || ctx.Keyboard == nil {
+		return false
+	}
+	if !ctx.Keyboard.IsDown(platform.KeyShift) ||
+		!ctx.Mouse.WasReleased(platform.MouseButtonMiddle) ||
+		!p.mouseOverDcb(ctx) {
+		return false
+	}
+
+	status, err, handled := p.tryExecuteUserCommandForDcb(
+		ctx,
+		"[WINDOW SWITCH]",
+		CommandClickMiddle,
+		ctx.Mouse.Pos,
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return true
+	}
+	if handled {
+		p.applyCommandStatus(status)
+		return true
+	}
+	return false
 }
 
 func (p *ASDEXPane) consumeDcbOnOffClick(ctx *panes.Context) bool {
@@ -2047,10 +2161,38 @@ func (p *ASDEXPane) startWindowRepositionCommand(ctx *panes.Context) {
 		return
 	}
 
+	p.startWindowRepositionForWindow(
+		windowID,
+		rect,
+		NewToolsWindowRepositionCommand(windowID, rect),
+	)
+}
+
+func (p *ASDEXPane) startWindowRepositionForWindow(
+	windowID ScopeWindowID,
+	rect redsmath.Rect,
+	command *WindowRepositionCommand,
+) {
+	if p == nil || command == nil || windowID == mainScopeWindowID || rect.Empty() {
+		return
+	}
+
 	p.clearDcbModalConflicts()
-	p.dcb.SetMenu(DcbMenuTools)
-	p.dcbMenuCommand = nil
-	p.windowReposition = NewWindowRepositionCommand(windowID, rect)
+	p.windows.SetActiveWindow(windowID)
+
+	if command.restoreDcbMenu {
+		p.dcb.SetMenu(command.returnMenu)
+		if len(command.returnLines) > 0 {
+			p.dcbMenuCommand = NewDcbMenuCommand(command.returnLines...)
+		} else {
+			p.dcbMenuCommand = nil
+		}
+	} else {
+		p.dcb.ReturnToMainMenu()
+		p.dcbMenuCommand = nil
+	}
+
+	p.windowReposition = command
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
@@ -2068,10 +2210,39 @@ func (p *ASDEXPane) startResizeWindowCommand() {
 		return
 	}
 
+	p.startResizeWindowForWindow(
+		windowID,
+		NewToolsResizeWindowCommand(windowID),
+	)
+}
+
+func (p *ASDEXPane) startResizeWindowForWindow(
+	windowID ScopeWindowID,
+	command *ResizeWindowCommand,
+) {
+	if p == nil || command == nil || windowID == mainScopeWindowID {
+		return
+	}
+	if _, ok := p.scopeViewForWindow(windowID); !ok {
+		return
+	}
+
 	p.clearDcbModalConflicts()
-	p.dcb.SetMenu(DcbMenuTools)
-	p.dcbMenuCommand = nil
-	p.resizeWindow = NewResizeWindowCommand(windowID)
+	p.windows.SetActiveWindow(windowID)
+
+	if command.restoreDcbMenu {
+		p.dcb.SetMenu(command.returnMenu)
+		if len(command.returnLines) > 0 {
+			p.dcbMenuCommand = NewDcbMenuCommand(command.returnLines...)
+		} else {
+			p.dcbMenuCommand = nil
+		}
+	} else {
+		p.dcb.ReturnToMainMenu()
+		p.dcbMenuCommand = nil
+	}
+
+	p.resizeWindow = command
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
@@ -2925,6 +3096,64 @@ func (p *ASDEXPane) activeWindowID() ScopeWindowID {
 		return mainScopeWindowID
 	}
 	return p.windows.ActiveWindowID()
+}
+
+func (p *ASDEXPane) nextWindowSwitchID() (ScopeWindowID, bool) {
+	if p == nil {
+		return mainScopeWindowID, false
+	}
+
+	secondaryIDs := p.windows.SecondaryWindowIDsSorted()
+	if len(secondaryIDs) == 0 {
+		return mainScopeWindowID, true
+	}
+
+	active := p.activeWindowID()
+	if active == mainScopeWindowID {
+		return secondaryIDs[0], true
+	}
+
+	for i, id := range secondaryIDs {
+		if id != active {
+			continue
+		}
+		if i+1 < len(secondaryIDs) {
+			return secondaryIDs[i+1], true
+		}
+		return mainScopeWindowID, true
+	}
+
+	return secondaryIDs[0], true
+}
+
+func (p *ASDEXPane) noScopeModalCommandActive() bool {
+	if p == nil {
+		return false
+	}
+
+	return p.commandEntry.Empty() &&
+		p.datablockEdit == nil &&
+		p.initControlEntry == nil &&
+		p.termControlEntry == nil &&
+		p.multiFunction == nil &&
+		p.previewReposition == nil &&
+		p.coastListReposition == nil &&
+		p.mapReposition == nil &&
+		p.mapRotate == nil &&
+		p.runwayConfigCommand == nil &&
+		p.towerReadout == nil &&
+		p.dcbSpinner == nil &&
+		p.dcbMenuCommand == nil &&
+		p.dbAreaDraft == nil &&
+		p.dbAreaSelection == nil &&
+		p.tempAreaDraft == nil &&
+		p.tempTextCommand == nil &&
+		p.tempTextPlacement == nil &&
+		p.tempDataSelectMode == TempDataSelectNone &&
+		p.newWindow == nil &&
+		p.deleteWindow == nil &&
+		p.windowReposition == nil &&
+		p.resizeWindow == nil
 }
 
 func (p *ASDEXPane) displayStateForWindow(id ScopeWindowID) *WindowDisplayState {
