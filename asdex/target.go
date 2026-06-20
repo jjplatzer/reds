@@ -544,6 +544,84 @@ func (s *TargetStore) CoastDropTargetByCoastListID(id string) *Target {
 	return nil
 }
 
+func (s *TargetStore) CoastDropTargetByLogicalKey(key string) *Target {
+	return s.coastDropTargetByLogicalKeyExcept(key, "", time.Time{})
+}
+
+func (s *TargetStore) coastDropTargetByLogicalKeyExcept(
+	key string,
+	excludedID string,
+	now time.Time,
+) *Target {
+	key = strings.ToUpper(strings.TrimSpace(key))
+	if s == nil || key == "" {
+		return nil
+	}
+
+	for _, id := range s.order {
+		target := s.targets[id]
+		if target == nil || target.ID == excludedID ||
+			(!target.Coasting && !target.Dropped) {
+			continue
+		}
+		if !now.IsZero() &&
+			!target.CoastUntil.IsZero() &&
+			!target.CoastUntil.After(now) {
+			continue
+		}
+		if targetLogicalTrackKey(target) == key {
+			return target
+		}
+	}
+	return nil
+}
+
+func shouldReplaceCoastDrop(existing, candidate *Target) bool {
+	if existing == nil {
+		return true
+	}
+	if candidate == nil {
+		return false
+	}
+	return candidate.CoastUntil.After(existing.CoastUntil)
+}
+
+func (s *TargetStore) removeDuplicateCoastDropTargets() {
+	if s == nil {
+		return
+	}
+
+	keepers := make(map[string]*Target)
+	var remove []string
+	for _, id := range s.order {
+		target := s.targets[id]
+		if target == nil || (!target.Coasting && !target.Dropped) {
+			continue
+		}
+
+		key := targetLogicalTrackKey(target)
+		if key == "" {
+			continue
+		}
+
+		existing := keepers[key]
+		if existing == nil {
+			keepers[key] = target
+			continue
+		}
+		if shouldReplaceCoastDrop(existing, target) {
+			remove = append(remove, existing.ID)
+			keepers[key] = target
+		} else {
+			remove = append(remove, target.ID)
+		}
+	}
+
+	for _, id := range remove {
+		s.Remove(id)
+	}
+}
+
 func (s *TargetStore) TargetByCoastListID(id string) *Target {
 	id = strings.ToUpper(strings.TrimSpace(id))
 	if s == nil || id == "" {
@@ -821,6 +899,8 @@ func (s *TargetStore) UpdateCoastDropTracks(
 		return
 	}
 
+	s.removeDuplicateCoastDropTargets()
+
 	var remove []string
 	for _, target := range s.targets {
 		if target == nil {
@@ -849,6 +929,15 @@ func (s *TargetStore) UpdateCoastDropTracks(
 		}
 		if last.IsZero() || now.Sub(last) < coastDelay {
 			continue
+		}
+
+		key := targetLogicalTrackKey(target)
+		if key != "" {
+			existing := s.coastDropTargetByLogicalKeyExcept(key, target.ID, now)
+			if existing != nil {
+				remove = append(remove, target.ID)
+				continue
+			}
 		}
 
 		coastID := s.NextAvailableNumericCoastListID()
@@ -956,6 +1045,16 @@ func (s *TargetStore) ApplySmesFrame(frame redsnet.SmesFrame, vm *VideoMap) {
 		target.ShowDB = true
 	}
 	s.Upsert(target)
+
+	liveTarget := s.TargetByID(target.ID)
+	key := targetLogicalTrackKey(liveTarget)
+	for key != "" {
+		old := s.coastDropTargetByLogicalKeyExcept(key, target.ID, time.Time{})
+		if old == nil {
+			break
+		}
+		s.Remove(old.ID)
+	}
 }
 
 func applySmesChanged(target *Target, changed map[string]json.RawMessage, vm *VideoMap) {
@@ -1222,6 +1321,20 @@ func targetCanHaveDataBlock(target *Target) bool {
 		return false
 	}
 	return target.ForceDataBlock || targetHasDatablock(classifyTarget(target))
+}
+
+func targetLogicalTrackKey(target *Target) string {
+	if target == nil || !targetCanHaveDataBlock(target) {
+		return ""
+	}
+
+	if callsign := strings.ToUpper(strings.TrimSpace(target.Callsign)); callsign != "" {
+		return "ACID:" + callsign
+	}
+	if beacon := strings.ToUpper(strings.TrimSpace(target.Beacon)); beacon != "" {
+		return "BCN:" + beacon
+	}
+	return ""
 }
 
 func targetIsRawUnknown(target *Target) bool {

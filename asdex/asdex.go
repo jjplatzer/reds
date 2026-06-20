@@ -4997,9 +4997,20 @@ func (p *ASDEXPane) buildCoastSuspendEntries(now time.Time) []CoastListEntry {
 	}
 
 	var entries []CoastListEntry
+	seenCoastDropKeys := make(map[string]bool)
 	for _, target := range p.targets.All() {
 		if target == nil {
 			continue
+		}
+
+		if target.Coasting || target.Dropped {
+			key := targetLogicalTrackKey(target)
+			if key != "" {
+				if seenCoastDropKeys[key] {
+					continue
+				}
+				seenCoastDropKeys[key] = true
+			}
 		}
 
 		entry := CoastListEntry{
