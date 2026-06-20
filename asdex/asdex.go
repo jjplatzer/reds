@@ -1571,16 +1571,7 @@ func (p *ASDEXPane) activateSafetyLogicDcbHit(ctx *panes.Context, hit DcbHit) bo
 		p.startTrackAlertInhibitFromDcb(ctx)
 		return true
 	case DcbFunctionAllTracksEnableAlerts:
-		p.alertRepository.ClearInhibitedAircraft(func(targetID string) bool {
-			return p.targets.AlertsInhibited(targetID)
-		})
-		p.targets.ClearAlertInhibits()
-		if p.auralAlerts != nil && !p.alertRepository.AlertInProgress() {
-			p.auralAlerts.Stop()
-		}
-		p.previewArea.SetTrackAlertsInhibited(false)
-		p.previewArea.SetSystemResponse("")
-		p.clearHighlightedTarget()
+		p.enableAllTrackAlerts()
 		return true
 	case DcbFunctionArrivalAlerts,
 		DcbFunctionAlertReposition,
@@ -1593,6 +1584,27 @@ func (p *ASDEXPane) activateSafetyLogicDcbHit(ctx *panes.Context, hit DcbHit) bo
 	default:
 		return false
 	}
+}
+
+func (p *ASDEXPane) enableAllTrackAlerts() {
+	if p == nil {
+		return
+	}
+
+	if p.commandMode == CommandModeTrackAlertInhibit {
+		p.commandMode = CommandModeNone
+		p.commandEntry.Clear()
+		p.clearTrackAlertInhibitReturnContext()
+	}
+
+	p.targets.ClearAlertInhibits()
+
+	p.dcb.SetMenu(DcbMenuSafetyLogic)
+	p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC")
+
+	p.previewArea.SetTrackAlertsInhibited(false)
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
 }
 
 func (p *ASDEXPane) activateRunwayConfigDcbHit(_ *panes.Context, hit DcbHit) bool {

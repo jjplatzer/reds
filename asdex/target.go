@@ -433,9 +433,9 @@ func (s *TargetStore) AlertInhibitedIDs() map[string]bool {
 	return out
 }
 
-func (s *TargetStore) ClearAlertInhibits() {
+func (s *TargetStore) ClearAlertInhibits() bool {
 	if s == nil {
-		return
+		return false
 	}
 
 	changed := false
@@ -448,6 +448,7 @@ func (s *TargetStore) ClearAlertInhibits() {
 	if changed {
 		s.hoverRevision++
 	}
+	return changed
 }
 
 func (s *TargetStore) SuspendedCount() int {
