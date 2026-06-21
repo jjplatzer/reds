@@ -400,7 +400,7 @@ type AuralAlertManager struct {
 func NewAuralAlertManager() *AuralAlertManager {
 	manager := &AuralAlertManager{
 		sounds: make(map[SafetyAuralAlert][]byte),
-		volume: 99,
+		volume: defaultAuralVolume,
 	}
 	manager.loadSounds()
 
@@ -618,14 +618,12 @@ func (m *AuralAlertManager) playLoop() {
 }
 
 func applyPCMVolume(pcm []byte, volume int) []byte {
-	if volume >= 99 {
+	volume = clampInt(volume, minAuralVolume, maxAuralVolume)
+	if volume >= maxAuralVolume {
 		return pcm
 	}
-	if volume <= 0 {
-		return make([]byte, len(pcm))
-	}
 
-	scale := float64(volume) / 99.0
+	scale := float64(volume) / float64(maxAuralVolume)
 	for i := 0; i+1 < len(pcm); i += 2 {
 		sample := int16(binary.LittleEndian.Uint16(pcm[i : i+2]))
 		scaled := int16(float64(sample) * scale)
@@ -655,7 +653,7 @@ func (m *AuralAlertManager) SetVolume(volume int) {
 	}
 
 	m.mu.Lock()
-	m.volume = clampInt(volume, 0, 99)
+	m.volume = clampInt(volume, minAuralVolume, maxAuralVolume)
 	m.mu.Unlock()
 }
 
