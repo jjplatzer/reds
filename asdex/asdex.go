@@ -1584,9 +1584,11 @@ func (p *ASDEXPane) activateSafetyLogicDcbHit(ctx *panes.Context, hit DcbHit) bo
 	case DcbFunctionVolume:
 		p.startSafetyVolumeSpinner()
 		return true
+	case DcbFunctionVolumeTest:
+		p.executeVolumeTestCommand(ctx)
+		return true
 	case DcbFunctionArrivalAlerts,
 		DcbFunctionAlertReposition,
-		DcbFunctionVolumeTest,
 		DcbFunctionClosedRunway:
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
@@ -1615,6 +1617,31 @@ func (p *ASDEXPane) enableAllTrackAlerts() {
 	p.previewArea.SetTrackAlertsInhibited(false)
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) executeVolumeTestCommand(ctx *panes.Context) {
+	if p == nil {
+		return
+	}
+
+	status, err, handled := p.tryExecuteUserCommand(
+		ctx,
+		"[VOL TEST]",
+		nil,
+		CommandClickNone,
+		redsmath.Vec2{},
+		radar.ScopeTransformations{},
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return
+	}
+	if handled {
+		p.applyCommandStatus(status)
+	}
+
+	p.dcb.SetMenu(DcbMenuSafetyLogic)
+	p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC")
 }
 
 func (p *ASDEXPane) activateRunwayConfigDcbHit(_ *panes.Context, hit DcbHit) bool {
@@ -4515,6 +4542,9 @@ func (p *ASDEXPane) handleMultiFunctionKeyboard(ctx *panes.Context) bool {
 		if p.multiFunction.Value() == "B" {
 			return true
 		}
+		if p.tryExecuteMultiFunctionValue(ctx) {
+			return true
+		}
 		p.multiFunction = nil
 		p.applyCommandStatus(commandOutputClearAll("INVALID ENTRY"))
 		return true
@@ -4535,9 +4565,47 @@ func (p *ASDEXPane) handleMultiFunctionKeyboard(ctx *panes.Context) bool {
 
 		p.multiFunction.Insert(r)
 		p.previewArea.SetSystemResponse("")
-		return true
 	}
 
+	return len(keyboard.Text) > 0
+}
+
+func (p *ASDEXPane) tryExecuteMultiFunctionValue(ctx *panes.Context) bool {
+	if p == nil || p.multiFunction == nil {
+		return false
+	}
+
+	value := p.multiFunction.Value()
+	if value == "" {
+		return false
+	}
+	switch value {
+	case "B", "V":
+		return false
+	}
+
+	input := &CommandInput{
+		text:      value,
+		entryType: CommandTextEntryNone,
+		clickType: CommandClickNone,
+	}
+	status, err, handled := p.dispatchCommand(
+		ctx,
+		userCommands[CommandModeMultiFunction],
+		input,
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return true
+	}
+	if handled {
+		p.applyCommandStatus(status)
+		return true
+	}
+	if len([]rune(value)) >= multiFunctionMaxLength {
+		p.applyCommandStatus(commandOutputClearAll("INVALID ENTRY"))
+		return true
+	}
 	return false
 }
 
