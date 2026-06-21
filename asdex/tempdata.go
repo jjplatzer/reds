@@ -1579,6 +1579,7 @@ func (p *ASDEXPane) clearTempDataCommandConflicts() {
 	p.initControlEntry = nil
 	p.termControlEntry = nil
 	p.multiFunction = nil
+	p.scratchpadEntry = nil
 	p.previewReposition = nil
 	p.coastListReposition = nil
 	p.mapReposition = nil

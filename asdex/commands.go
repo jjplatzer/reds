@@ -24,6 +24,7 @@ const (
 	CommandModeInitiateControl
 	CommandModeTerminateControl
 	CommandModeMultiFunction
+	CommandModeScratchpadEntry
 	CommandModePreviewReposition
 	CommandModeCoastListReposition
 	CommandModeMapReposition
@@ -1190,6 +1191,7 @@ func (ap *ASDEXPane) applyCommandStatus(status CommandStatus) {
 		ap.initControlEntry = nil
 		ap.termControlEntry = nil
 		ap.multiFunction = nil
+		ap.scratchpadEntry = nil
 		ap.previewReposition = nil
 		ap.coastListReposition = nil
 		ap.mapReposition = nil
@@ -1421,6 +1423,14 @@ func (ap *ASDEXPane) consumeCommandClicksInWindow(
 				ap.termControlEntry = nil
 				ap.applyCommandStatus(commandOutputClearAll("NO SLEW"))
 				return true
+			case CommandModeMultiFunction:
+				if ap.multiFunction != nil {
+					switch ap.multiFunction.Value() {
+					case "B", "Y", "H":
+						ap.applyCommandStatus(commandOutputClearAll("NO SLEW"))
+						return true
+					}
+				}
 			}
 		}
 		return false

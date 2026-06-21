@@ -19,6 +19,7 @@ type MultiFunctionCommand struct {
 }
 
 const multiFunctionMaxLength = 2
+const maxScratchpadCommandLength = 7
 
 func NewMultiFunctionCommand() *MultiFunctionCommand {
 	return &MultiFunctionCommand{}
@@ -76,6 +77,126 @@ func (command *MultiFunctionCommand) Value() string {
 		return ""
 	}
 	return strings.ToUpper(strings.TrimSpace(command.value))
+}
+
+type ScratchpadEntryCommand struct {
+	ScratchpadNumber int
+	TargetID         string
+	value            string
+	cursor           int
+}
+
+func NewScratchpadEntryCommand(targetID string, scratchpadNumber int) *ScratchpadEntryCommand {
+	if scratchpadNumber != 1 {
+		scratchpadNumber = 2
+	}
+	return &ScratchpadEntryCommand{
+		ScratchpadNumber: scratchpadNumber,
+		TargetID:         targetID,
+	}
+}
+
+func (command *ScratchpadEntryCommand) DisplayLines() []string {
+	if command == nil {
+		return nil
+	}
+	if command.ScratchpadNumber == 1 {
+		return []string{"MULT Y", command.value}
+	}
+	return []string{"MULT H", command.value}
+}
+
+func (command *ScratchpadEntryCommand) CursorLine() int {
+	return 2
+}
+
+func (command *ScratchpadEntryCommand) CursorColumn() int {
+	if command == nil {
+		return 0
+	}
+	return command.cursor
+}
+
+func (command *ScratchpadEntryCommand) Insert(r rune) {
+	if command == nil {
+		return
+	}
+
+	r = unicode.ToUpper(r)
+	if !unicode.IsLetter(r) && !unicode.IsDigit(r) {
+		return
+	}
+
+	value := []rune(command.value)
+	if len(value) >= maxScratchpadCommandLength {
+		return
+	}
+
+	command.cursor = clampInt(command.cursor, 0, len(value))
+	value = append(value[:command.cursor], append([]rune{r}, value[command.cursor:]...)...)
+	command.value = string(value)
+	command.cursor++
+}
+
+func (command *ScratchpadEntryCommand) Backspace() {
+	if command == nil || command.cursor <= 0 {
+		return
+	}
+
+	value := []rune(command.value)
+	command.cursor = clampInt(command.cursor, 0, len(value))
+	value = append(value[:command.cursor-1], value[command.cursor:]...)
+	command.value = string(value)
+	command.cursor--
+}
+
+func (command *ScratchpadEntryCommand) DeleteForward() {
+	if command == nil {
+		return
+	}
+
+	value := []rune(command.value)
+	command.cursor = clampInt(command.cursor, 0, len(value))
+	if command.cursor >= len(value) {
+		return
+	}
+
+	value = append(value[:command.cursor], value[command.cursor+1:]...)
+	command.value = string(value)
+}
+
+func (command *ScratchpadEntryCommand) MoveLeft() {
+	if command == nil {
+		return
+	}
+	command.cursor = max(0, command.cursor-1)
+}
+
+func (command *ScratchpadEntryCommand) MoveRight() {
+	if command == nil {
+		return
+	}
+	command.cursor = min(command.cursor+1, len([]rune(command.value)))
+}
+
+func (command *ScratchpadEntryCommand) Value() string {
+	if command == nil {
+		return ""
+	}
+	return strings.ToUpper(strings.TrimSpace(command.value))
+}
+
+func validScratchpadCommandValue(value string) bool {
+	value = strings.ToUpper(strings.TrimSpace(value))
+	if len([]rune(value)) > maxScratchpadCommandLength {
+		return false
+	}
+	for _, r := range value {
+		if !unicode.IsLetter(r) && !unicode.IsDigit(r) {
+			return false
+		}
+	}
+	return true
 }
 
 type PreviewRepositionCommand struct{}
@@ -821,6 +942,7 @@ func (ap *ASDEXPane) cmdTowerReadout(_ *panes.Context) CommandStatus {
 	ap.initControlEntry = nil
 	ap.termControlEntry = nil
 	ap.multiFunction = nil
+	ap.scratchpadEntry = nil
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
@@ -854,6 +976,7 @@ func (ap *ASDEXPane) cmdMultiFunction(_ *panes.Context) CommandStatus {
 
 	ap.commandMode = CommandModeMultiFunction
 	ap.multiFunction = NewMultiFunctionCommand()
+	ap.scratchpadEntry = nil
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
@@ -896,6 +1019,7 @@ func (ap *ASDEXPane) cmdMapReposition(ctx *panes.Context) CommandStatus {
 	ap.commandMode = CommandModeMapReposition
 	ap.mapReposition = NewMapRepositionCommand(windowID, view.Center)
 	ap.multiFunction = nil
+	ap.scratchpadEntry = nil
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
 	ap.mapRotate = nil

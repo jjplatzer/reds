@@ -161,6 +161,7 @@ type ASDEXPane struct {
 	initControlEntry    *CoastListIDEntryCommand
 	termControlEntry    *CoastListIDEntryCommand
 	multiFunction       *MultiFunctionCommand
+	scratchpadEntry     *ScratchpadEntryCommand
 	previewReposition   *PreviewRepositionCommand
 	coastListReposition *CoastListRepositionCommand
 	mapReposition       *MapRepositionCommand
@@ -982,6 +983,7 @@ func (p *ASDEXPane) dcbCursorUnlocked() bool {
 		p.initControlEntry == nil &&
 		p.termControlEntry == nil &&
 		p.multiFunction == nil &&
+		p.scratchpadEntry == nil &&
 		p.previewReposition == nil &&
 		p.coastListReposition == nil &&
 		p.mapReposition == nil &&
@@ -1790,6 +1792,7 @@ func (p *ASDEXPane) clearDcbModalConflicts() {
 	p.initControlEntry = nil
 	p.termControlEntry = nil
 	p.multiFunction = nil
+	p.scratchpadEntry = nil
 	p.previewReposition = nil
 	p.coastListReposition = nil
 	p.mapReposition = nil
@@ -2081,6 +2084,7 @@ func (p *ASDEXPane) startMapRotateCommand(command *MapRotateCommand) {
 	p.mapReposition = nil
 	p.towerReadout = nil
 	p.multiFunction = nil
+	p.scratchpadEntry = nil
 	p.previewReposition = nil
 	p.coastListReposition = nil
 	p.dcbSpinner = nil
@@ -2140,6 +2144,7 @@ func (p *ASDEXPane) startNewWindowCommand(command *NewWindowCommand) {
 	p.initControlEntry = nil
 	p.termControlEntry = nil
 	p.multiFunction = nil
+	p.scratchpadEntry = nil
 	p.previewReposition = nil
 	p.coastListReposition = nil
 	p.mapReposition = nil
@@ -2552,6 +2557,7 @@ func (p *ASDEXPane) startRangeSpinner() {
 	p.initControlEntry = nil
 	p.termControlEntry = nil
 	p.multiFunction = nil
+	p.scratchpadEntry = nil
 	p.previewReposition = nil
 	p.coastListReposition = nil
 	p.mapReposition = nil
@@ -3259,6 +3265,7 @@ func (p *ASDEXPane) noScopeModalCommandActive() bool {
 		p.initControlEntry == nil &&
 		p.termControlEntry == nil &&
 		p.multiFunction == nil &&
+		p.scratchpadEntry == nil &&
 		p.previewReposition == nil &&
 		p.coastListReposition == nil &&
 		p.mapReposition == nil &&
@@ -4082,6 +4089,9 @@ func (p *ASDEXPane) activeCommandLines() []string {
 	if p.termControlEntry != nil {
 		return p.termControlEntry.DisplayLines()
 	}
+	if p.scratchpadEntry != nil {
+		return p.scratchpadEntry.DisplayLines()
+	}
 	if p.multiFunction != nil {
 		return p.multiFunction.DisplayLines()
 	}
@@ -4152,6 +4162,9 @@ func (p *ASDEXPane) activeCommandCursor() (line int, column int, ok bool) {
 	if p.termControlEntry != nil {
 		return p.termControlEntry.CursorLine(), p.termControlEntry.CursorColumn(), true
 	}
+	if p.scratchpadEntry != nil {
+		return p.scratchpadEntry.CursorLine(), p.scratchpadEntry.CursorColumn(), true
+	}
 	if p.multiFunction != nil {
 		return p.multiFunction.CursorLine(), p.multiFunction.CursorColumn(), true
 	}
@@ -4211,6 +4224,7 @@ func (p *ASDEXPane) cancelActiveCommand() {
 	p.initControlEntry = nil
 	p.termControlEntry = nil
 	p.multiFunction = nil
+	p.scratchpadEntry = nil
 	p.previewReposition = nil
 	p.coastListReposition = nil
 	p.mapReposition = nil
@@ -4249,6 +4263,9 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.termControlEntry != nil {
 		return p.handleTerminateControlKeyboard(ctx)
+	}
+	if p.scratchpadEntry != nil {
+		return p.handleScratchpadEntryKeyboard(ctx)
 	}
 	if p.multiFunction != nil {
 		return p.handleMultiFunctionKeyboard(ctx)
@@ -4570,6 +4587,81 @@ func (p *ASDEXPane) handleMultiFunctionKeyboard(ctx *panes.Context) bool {
 	return len(keyboard.Text) > 0
 }
 
+func (p *ASDEXPane) handleScratchpadEntryKeyboard(ctx *panes.Context) bool {
+	if p == nil || p.scratchpadEntry == nil || ctx == nil || ctx.Keyboard == nil {
+		return false
+	}
+
+	keyboard := ctx.Keyboard
+	switch {
+	case keyboard.WasPressed(platform.KeyEscape):
+		p.cancelActiveCommand()
+		return true
+	case keyboard.WasPressed(platform.KeyEnter), keyboard.WasPressed(platform.KeyKeypadEnter):
+		p.submitScratchpadEntryCommand()
+		return true
+	case keyboard.WasPressed(platform.KeyBackspace):
+		p.scratchpadEntry.Backspace()
+		return true
+	case keyboard.WasPressed(platform.KeyDelete):
+		p.scratchpadEntry.DeleteForward()
+		return true
+	case keyboard.WasPressed(platform.KeyLeft):
+		p.scratchpadEntry.MoveLeft()
+		return true
+	case keyboard.WasPressed(platform.KeyRight):
+		p.scratchpadEntry.MoveRight()
+		return true
+	}
+
+	handled := false
+	for _, r := range keyboard.Text {
+		p.scratchpadEntry.Insert(r)
+		p.previewArea.SetSystemResponse("")
+		handled = true
+	}
+	return handled
+}
+
+func (p *ASDEXPane) submitScratchpadEntryCommand() {
+	if p == nil || p.scratchpadEntry == nil {
+		return
+	}
+
+	command := *p.scratchpadEntry
+	value := command.Value()
+	if !validScratchpadCommandValue(value) {
+		p.finishScratchpadEntryCommand("INVALID ENTRY")
+		return
+	}
+
+	target := p.targets.TargetByID(command.TargetID)
+	if target == nil || !targetCanHaveDataBlock(target) {
+		p.finishScratchpadEntryCommand("")
+		return
+	}
+	if !p.targets.SetTargetScratchpad(command.TargetID, command.ScratchpadNumber, value) {
+		p.finishScratchpadEntryCommand("")
+		return
+	}
+
+	p.finishScratchpadEntryCommand("")
+}
+
+func (p *ASDEXPane) finishScratchpadEntryCommand(response string) {
+	if p == nil {
+		return
+	}
+
+	p.commandMode = CommandModeNone
+	p.scratchpadEntry = nil
+	p.multiFunction = nil
+	p.dcb.ReturnToMainMenu()
+	p.dcbMenuCommand = nil
+	p.previewArea.SetSystemResponse(response)
+	p.clearHighlightedTarget()
+}
+
 func (p *ASDEXPane) tryExecuteMultiFunctionValue(ctx *panes.Context) bool {
 	if p == nil || p.multiFunction == nil {
 		return false
@@ -4580,7 +4672,7 @@ func (p *ASDEXPane) tryExecuteMultiFunctionValue(ctx *panes.Context) bool {
 		return false
 	}
 	switch value {
-	case "B", "V":
+	case "B", "V", "Y", "H":
 		return false
 	}
 
@@ -4616,6 +4708,7 @@ func (p *ASDEXPane) startMultiPreviewReposition() {
 
 	p.commandMode = CommandModePreviewReposition
 	p.multiFunction = nil
+	p.scratchpadEntry = nil
 	p.previewReposition = NewMultiPreviewRepositionCommand()
 	p.coastListReposition = nil
 	p.towerReadout = nil
@@ -4645,6 +4738,7 @@ func (p *ASDEXPane) startMultiCoastListReposition() {
 
 	p.commandMode = CommandModeCoastListReposition
 	p.multiFunction = nil
+	p.scratchpadEntry = nil
 	p.previewReposition = nil
 	p.coastListReposition = NewMultiCoastListRepositionCommand()
 	p.towerReadout = nil
