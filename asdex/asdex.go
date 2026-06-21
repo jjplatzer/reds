@@ -5409,9 +5409,6 @@ func targetWebSocketURL() string {
 	if value := os.Getenv("REDS_TARGET_WS_URL"); value != "" {
 		return value
 	}
-	if value := os.Getenv("NASCOPE_TARGET_WS_URL"); value != "" {
-		return value
-	}
 	port := os.Getenv("WS_PORT")
 	if port == "" {
 		port = "8080"

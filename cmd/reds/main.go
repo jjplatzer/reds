@@ -131,12 +131,17 @@ func main() {
 func launchScope(sel Selection, plat platform.Platform, consumer *smesConsumer) (panes.Pane, error) {
 	switch sel.Mode {
 	case DisplayASDEX:
-		if err := consumer.Start(sel.Airport); err != nil {
-			return nil, err
+		useRemoteTargets := remoteTargetURLConfigured()
+		if !useRemoteTargets {
+			if err := consumer.Start(sel.Airport); err != nil {
+				return nil, err
+			}
 		}
 		pane, err := asdex.NewPane(sel.Airport)
 		if err != nil {
-			consumer.Stop()
+			if !useRemoteTargets {
+				consumer.Stop()
+			}
 			return nil, err
 		}
 		plat.SetWindowTitle(sel.Airport + " ASDE-X")
@@ -146,6 +151,10 @@ func launchScope(sel Selection, plat platform.Platform, consumer *smesConsumer) 
 	default:
 		return nil, fmt.Errorf("%s scope is not implemented yet", sel.Mode)
 	}
+}
+
+func remoteTargetURLConfigured() bool {
+	return os.Getenv("REDS_TARGET_WS_URL") != ""
 }
 
 func switchToMenu(
