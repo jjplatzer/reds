@@ -155,6 +155,60 @@ func (s *TargetStore) SetDatablockOverride(targetID string, override DatablockFi
 	}
 }
 
+func (s *TargetStore) SetTargetScratchpad(targetID string, field int, value string) bool {
+	value = strings.ToUpper(strings.TrimSpace(value))
+	if s == nil || targetID == "" || !validScratchpadCommandValue(value) {
+		return false
+	}
+
+	target := s.TargetByID(targetID)
+	if target == nil {
+		return false
+	}
+
+	override, ok := s.overrides[targetID]
+	if !ok || !override.Active {
+		override = DatablockFieldOverride{
+			Callsign:    target.Callsign,
+			Beacon:      target.Beacon,
+			CWT:         target.CWT,
+			Fix:         target.Fix,
+			Scratchpad1: target.Scratchpad1,
+			Scratchpad2: target.Scratchpad2,
+		}
+		if target.TargetType != nil {
+			override.TargetType = *target.TargetType
+		}
+	}
+
+	switch field {
+	case 1:
+		override.Scratchpad1 = value
+	case 2:
+		override.Scratchpad2 = value
+	default:
+		return false
+	}
+
+	s.SetDatablockOverride(targetID, override)
+
+	if association, ok := s.manualAssociations[targetID]; ok && association.Active {
+		switch field {
+		case 1:
+			association.Scratchpad1 = value
+		case 2:
+			association.Scratchpad2 = value
+		}
+		s.manualAssociations[targetID] = association
+		if target := s.TargetByID(targetID); target != nil {
+			applyManualAssociation(target, association)
+		}
+	}
+
+	s.hoverRevision++
+	return true
+}
+
 func (s *TargetStore) applyDatablockOverrides(target *Target) {
 	if s == nil || target == nil || s.overrides == nil {
 		return

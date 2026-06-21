@@ -78,6 +78,63 @@ func registerOpsCommands() {
 			return ap.cmdTrackAlertInhibitSlew(ctx, target)
 		},
 	)
+
+	registerCommand(
+		CommandModeMultiFunction,
+		"Y[SLEW]",
+		func(ap *ASDEXPane, ctx *panes.Context, target *Target) CommandStatus {
+			return ap.cmdStartScratchpadEntry(ctx, target, 1)
+		},
+	)
+
+	registerCommand(
+		CommandModeMultiFunction,
+		"H[SLEW]",
+		func(ap *ASDEXPane, ctx *panes.Context, target *Target) CommandStatus {
+			return ap.cmdStartScratchpadEntry(ctx, target, 2)
+		},
+	)
+}
+
+func (ap *ASDEXPane) cmdStartScratchpadEntry(
+	_ *panes.Context,
+	target *Target,
+	scratchpadNumber int,
+) CommandStatus {
+	if ap == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+	if target == nil {
+		return commandOutputClearAll("NO SLEW")
+	}
+	if !targetCanHaveDataBlock(target) || strings.TrimSpace(target.Callsign) == "" {
+		return commandOutputClearAll("")
+	}
+
+	ap.commandMode = CommandModeScratchpadEntry
+	ap.scratchpadEntry = NewScratchpadEntryCommand(target.ID, scratchpadNumber)
+	ap.multiFunction = nil
+	ap.commandEntry.Clear()
+	ap.datablockEdit = nil
+	ap.editingTargetID = ""
+	ap.initControlEntry = nil
+	ap.termControlEntry = nil
+	ap.dcbSpinner = nil
+	ap.dcbMenuCommand = nil
+	ap.dbAreaDraft = nil
+	ap.dbAreaSelection = nil
+	ap.tempAreaDraft = nil
+	ap.tempTextCommand = nil
+	ap.tempTextPlacement = nil
+	ap.tempDataSelectMode = TempDataSelectNone
+	ap.newWindow = nil
+	ap.deleteWindow = nil
+	ap.windowReposition = nil
+	ap.resizeWindow = nil
+	ap.previewArea.SetSystemResponse("")
+	ap.clearHighlightedTarget()
+
+	return CommandStatus{Clear: ClearNone}
 }
 
 func (ap *ASDEXPane) cmdTrackSuspend(_ *panes.Context) CommandStatus {
@@ -92,6 +149,7 @@ func (ap *ASDEXPane) cmdTrackSuspend(_ *panes.Context) CommandStatus {
 	ap.initControlEntry = nil
 	ap.termControlEntry = nil
 	ap.multiFunction = nil
+	ap.scratchpadEntry = nil
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
@@ -187,6 +245,7 @@ func (ap *ASDEXPane) startTrackAlertInhibitCommand(
 	ap.initControlEntry = nil
 	ap.termControlEntry = nil
 	ap.multiFunction = nil
+	ap.scratchpadEntry = nil
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
@@ -432,6 +491,7 @@ func (ap *ASDEXPane) cmdInitControl(_ *panes.Context) CommandStatus {
 	ap.initControlEntry = NewCoastListIDEntryCommand("INIT CNTL")
 	ap.termControlEntry = nil
 	ap.multiFunction = nil
+	ap.scratchpadEntry = nil
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
@@ -567,6 +627,7 @@ func (ap *ASDEXPane) cmdTerminateControl(_ *panes.Context) CommandStatus {
 	ap.termControlEntry = NewCoastListIDEntryCommand("TERM CNTL")
 	ap.initControlEntry = nil
 	ap.multiFunction = nil
+	ap.scratchpadEntry = nil
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
 	ap.mapReposition = nil

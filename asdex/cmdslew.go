@@ -88,6 +88,7 @@ func (ap *ASDEXPane) cmdRSlew(
 	ap.initControlEntry = nil
 	ap.termControlEntry = nil
 	ap.multiFunction = nil
+	ap.scratchpadEntry = nil
 	ap.previewReposition = nil
 	ap.coastListReposition = nil
 	ap.mapReposition = nil
