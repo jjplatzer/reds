@@ -18,6 +18,8 @@ type MultiFunctionCommand struct {
 	cursor int
 }
 
+const multiFunctionMaxLength = 2
+
 func NewMultiFunctionCommand() *MultiFunctionCommand {
 	return &MultiFunctionCommand{}
 }
@@ -49,12 +51,16 @@ func (command *MultiFunctionCommand) Insert(r rune) {
 	if !unicode.IsLetter(r) && !unicode.IsDigit(r) {
 		return
 	}
-	if command.value != "" {
+
+	value := []rune(command.value)
+	if len(value) >= multiFunctionMaxLength {
 		return
 	}
 
-	command.value = string(r)
-	command.cursor = 1
+	command.cursor = clampInt(command.cursor, 0, len(value))
+	value = append(value[:command.cursor], append([]rune{r}, value[command.cursor:]...)...)
+	command.value = string(value)
+	command.cursor++
 }
 
 func (command *MultiFunctionCommand) Clear() {
@@ -462,6 +468,22 @@ func towerReadoutValues(
 func registerSetupCommands() {
 	registerCommand(
 		CommandModeNone,
+		"[VOL TEST]",
+		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
+			return ap.cmdVolumeTest(ctx)
+		},
+	)
+
+	registerCommand(
+		CommandModeMultiFunction,
+		"VT",
+		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
+			return ap.cmdVolumeTest(ctx)
+		},
+	)
+
+	registerCommand(
+		CommandModeNone,
 		"[MAP THEME]",
 		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
 			return ap.cmdMapTheme(ctx)
@@ -627,6 +649,33 @@ func (ap *ASDEXPane) cmdMapTheme(_ *panes.Context) CommandStatus {
 
 	return CommandStatus{
 		Clear:     ClearAll,
+		Output:    "",
+		HasOutput: true,
+	}
+}
+
+func (ap *ASDEXPane) cmdVolumeTest(_ *panes.Context) CommandStatus {
+	if ap == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+
+	if ap.auralAlerts != nil {
+		ap.auralAlerts.PlayVolumeTest()
+	}
+
+	ap.previewArea.SetSystemResponse("")
+	ap.clearHighlightedTarget()
+
+	if ap.commandMode == CommandModeMultiFunction {
+		return CommandStatus{
+			Clear:     ClearAll,
+			Output:    "",
+			HasOutput: true,
+		}
+	}
+
+	return CommandStatus{
+		Clear:     ClearNone,
 		Output:    "",
 		HasOutput: true,
 	}

@@ -74,6 +74,7 @@ const (
 	SafetyAuralRight
 	SafetyAuralCenter
 	SafetyAuralClosed
+	SafetyAuralTestMessage
 )
 
 type SafetyAlert struct {

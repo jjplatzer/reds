@@ -299,6 +299,7 @@ const (
 	DcbSpinnerRange
 	DcbSpinnerHistory
 	DcbSpinnerVectorLength
+	DcbSpinnerSafetyVolume
 	DcbSpinnerDbAreaCharSize
 	DcbSpinnerDbAreaBrightness
 	DcbSpinnerDbAreaLeaderLength
@@ -422,6 +423,25 @@ func NewVectorLengthDcbSpinner(current int) *DcbSpinner {
 		Value:          current,
 		Original:       current,
 		MaxInputDigits: 2,
+		input:          "",
+		cursor:         0,
+	}
+}
+
+func NewSafetyVolumeDcbSpinner(current int) *DcbSpinner {
+	current = clampInt(current, minAuralVolume, maxAuralVolume)
+
+	return &DcbSpinner{
+		Type:           DcbSpinnerSafetyVolume,
+		Function:       DcbFunctionVolume,
+		Title:          "VOL",
+		Lines:          []string{"SAFETY LOGIC", "VOL"},
+		Min:            minAuralVolume,
+		Max:            maxAuralVolume,
+		Step:           1,
+		Value:          current,
+		Original:       current,
+		MaxInputDigits: 3,
 		input:          "",
 		cursor:         0,
 	}

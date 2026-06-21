@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	stdmath "math"
 	"os"
 	"strings"
 	"sync"
@@ -400,7 +401,7 @@ type AuralAlertManager struct {
 func NewAuralAlertManager() *AuralAlertManager {
 	manager := &AuralAlertManager{
 		sounds: make(map[SafetyAuralAlert][]byte),
-		volume: 99,
+		volume: defaultAuralVolume,
 	}
 	manager.loadSounds()
 
@@ -441,6 +442,7 @@ func (m *AuralAlertManager) loadSounds() {
 		SafetyAuralRight,
 		SafetyAuralCenter,
 		SafetyAuralClosed,
+		SafetyAuralTestMessage,
 	} {
 		name := safetyAuralAlertResourceName(alert)
 		if name == "" {
@@ -496,6 +498,8 @@ func safetyAuralAlertResourceName(alert SafetyAuralAlert) string {
 		return "Center.wav"
 	case SafetyAuralClosed:
 		return "Closed.wav"
+	case SafetyAuralTestMessage:
+		return "TestMessage.wav"
 	default:
 		return ""
 	}
@@ -508,7 +512,10 @@ func loadAuralPCM(path string) ([]byte, error) {
 	}
 
 	offset := 12
-	formatOK := false
+	var audioFormat uint16
+	var channels uint16
+	var sampleRate uint32
+	var bits uint16
 	var data []byte
 
 	for offset+8 <= len(raw) {
@@ -524,14 +531,10 @@ func loadAuralPCM(path string) ([]byte, error) {
 			if chunkSize < 16 {
 				return nil, fmt.Errorf("short fmt chunk")
 			}
-			audioFormat := binary.LittleEndian.Uint16(raw[offset : offset+2])
-			channels := binary.LittleEndian.Uint16(raw[offset+2 : offset+4])
-			sampleRate := binary.LittleEndian.Uint32(raw[offset+4 : offset+8])
-			bits := binary.LittleEndian.Uint16(raw[offset+14 : offset+16])
-			formatOK = audioFormat == 1 &&
-				channels == 2 &&
-				sampleRate == 44100 &&
-				bits == 16
+			audioFormat = binary.LittleEndian.Uint16(raw[offset : offset+2])
+			channels = binary.LittleEndian.Uint16(raw[offset+2 : offset+4])
+			sampleRate = binary.LittleEndian.Uint32(raw[offset+4 : offset+8])
+			bits = binary.LittleEndian.Uint16(raw[offset+14 : offset+16])
 		case "data":
 			data = append([]byte(nil), raw[offset:offset+chunkSize]...)
 		}
@@ -542,13 +545,43 @@ func loadAuralPCM(path string) ([]byte, error) {
 		}
 	}
 
-	if !formatOK {
-		return nil, fmt.Errorf("unsupported WAV format, expected PCM s16le stereo 44100Hz")
-	}
 	if len(data) == 0 {
 		return nil, fmt.Errorf("missing data chunk")
 	}
-	return data, nil
+
+	switch {
+	case audioFormat == 1 && channels == 2 && sampleRate == 44100 && bits == 16:
+		return data, nil
+	case audioFormat == 3 && channels == 2 && sampleRate == 44100 && bits == 32:
+		return float32PCMToInt16(data)
+	default:
+		return nil, fmt.Errorf(
+			"unsupported WAV format, expected PCM s16le or IEEE float32 stereo 44100Hz",
+		)
+	}
+}
+
+func float32PCMToInt16(data []byte) ([]byte, error) {
+	if len(data)%4 != 0 {
+		return nil, fmt.Errorf("invalid float32 PCM data length")
+	}
+
+	pcm := make([]byte, len(data)/2)
+	for input, output := 0, 0; input < len(data); input, output = input+4, output+2 {
+		sample := stdmath.Float32frombits(binary.LittleEndian.Uint32(data[input : input+4]))
+		if stdmath.IsNaN(float64(sample)) {
+			sample = 0
+		}
+		sample = clamp(sample, -1, 1)
+
+		scale := float32(32767)
+		if sample < 0 {
+			scale = 32768
+		}
+		scaled := int16(sample * scale)
+		binary.LittleEndian.PutUint16(pcm[output:output+2], uint16(scaled))
+	}
+	return pcm, nil
 }
 
 func (m *AuralAlertManager) Play(alerts []SafetyAuralAlert) {
@@ -566,6 +599,15 @@ func (m *AuralAlertManager) Play(alerts []SafetyAuralAlert) {
 	m.mu.Unlock()
 
 	go m.playLoop()
+}
+
+func (m *AuralAlertManager) PlayVolumeTest() {
+	if m == nil {
+		return
+	}
+
+	m.Stop()
+	m.Play([]SafetyAuralAlert{SafetyAuralTestMessage})
 }
 
 func (m *AuralAlertManager) playLoop() {
@@ -618,14 +660,12 @@ func (m *AuralAlertManager) playLoop() {
 }
 
 func applyPCMVolume(pcm []byte, volume int) []byte {
-	if volume >= 99 {
+	volume = clampInt(volume, minAuralVolume, maxAuralVolume)
+	if volume >= maxAuralVolume {
 		return pcm
 	}
-	if volume <= 0 {
-		return make([]byte, len(pcm))
-	}
 
-	scale := float64(volume) / 99.0
+	scale := float64(volume) / float64(maxAuralVolume)
 	for i := 0; i+1 < len(pcm); i += 2 {
 		sample := int16(binary.LittleEndian.Uint16(pcm[i : i+2]))
 		scaled := int16(float64(sample) * scale)
@@ -655,7 +695,7 @@ func (m *AuralAlertManager) SetVolume(volume int) {
 	}
 
 	m.mu.Lock()
-	m.volume = clampInt(volume, 0, 99)
+	m.volume = clampInt(volume, minAuralVolume, maxAuralVolume)
 	m.mu.Unlock()
 }
 

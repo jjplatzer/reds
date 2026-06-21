@@ -39,6 +39,10 @@ const (
 
 	unknownTargetStaleLifetime = 8 * time.Second
 
+	defaultAuralVolume = 99
+	minAuralVolume     = 1
+	maxAuralVolume     = 99
+
 	// New CRC ASDE-X RANGE uses RangeMeasurement.FullHorizontal and
 	// RangeUnits._100sFeet. RANGE n means the full horizontal width of the
 	// main display is n*100 feet. Secondary windows use the same feet-per-pixel
@@ -116,6 +120,7 @@ type ASDEXPane struct {
 	listsBrightness                 int
 	dcbBrightness                   int
 	vectorLength                    int
+	auralVolume                     int
 	previewArea                     PreviewArea
 	coastList                       CoastList
 	alertRepository                 AlertRepository
@@ -224,6 +229,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	preview.SetSystemResponse("CRITICAL FAULT START")
 	coastList := NewCoastList()
 	auralAlerts := NewAuralAlertManager()
+	auralAlerts.SetVolume(defaultAuralVolume)
 	configAirport := loadConfigAirportCode(airport)
 
 	client := redsnet.NewSmesClient(targetWebSocketURL())
@@ -252,6 +258,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		listsBrightness:           brightnessDefault,
 		dcbBrightness:             brightnessDefault,
 		vectorLength:              defaultVectorLengthSeconds,
+		auralVolume:               defaultAuralVolume,
 		previewArea:               preview,
 		coastList:                 coastList,
 		alertRepository:           NewAlertRepository(auralAlerts),
@@ -1079,6 +1086,7 @@ func (p *ASDEXPane) dcbState() DcbState {
 			Mode:         ModeDay,
 			VectorOn:     false,
 			VectorLength: defaultVectorLengthSeconds,
+			Volume:       defaultAuralVolume,
 			DcbOn:        true,
 		}
 	}
@@ -1122,7 +1130,7 @@ func (p *ASDEXPane) dcbState() DcbState {
 		ShowCoastList:          p.showCoastList,
 		CursorSpeed:            1,
 		CursorHome:             false,
-		Volume:                 0,
+		Volume:                 clampInt(p.auralVolume, minAuralVolume, maxAuralVolume),
 		FullDataBlocks:         active.DB.FullDataBlocks,
 		ShowAltitude:           fields.ShowAltitude,
 		ShowTargetType:         fields.ShowTargetType,
@@ -1573,10 +1581,14 @@ func (p *ASDEXPane) activateSafetyLogicDcbHit(ctx *panes.Context, hit DcbHit) bo
 	case DcbFunctionAllTracksEnableAlerts:
 		p.enableAllTrackAlerts()
 		return true
+	case DcbFunctionVolume:
+		p.startSafetyVolumeSpinner()
+		return true
+	case DcbFunctionVolumeTest:
+		p.executeVolumeTestCommand(ctx)
+		return true
 	case DcbFunctionArrivalAlerts,
 		DcbFunctionAlertReposition,
-		DcbFunctionVolume,
-		DcbFunctionVolumeTest,
 		DcbFunctionClosedRunway:
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
@@ -1605,6 +1617,31 @@ func (p *ASDEXPane) enableAllTrackAlerts() {
 	p.previewArea.SetTrackAlertsInhibited(false)
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) executeVolumeTestCommand(ctx *panes.Context) {
+	if p == nil {
+		return
+	}
+
+	status, err, handled := p.tryExecuteUserCommand(
+		ctx,
+		"[VOL TEST]",
+		nil,
+		CommandClickNone,
+		redsmath.Vec2{},
+		radar.ScopeTransformations{},
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return
+	}
+	if handled {
+		p.applyCommandStatus(status)
+	}
+
+	p.dcb.SetMenu(DcbMenuSafetyLogic)
+	p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC")
 }
 
 func (p *ASDEXPane) activateRunwayConfigDcbHit(_ *panes.Context, hit DcbHit) bool {
@@ -2607,6 +2644,19 @@ func (p *ASDEXPane) startVectorLengthSpinner() {
 	p.clearHighlightedTarget()
 }
 
+func (p *ASDEXPane) startSafetyVolumeSpinner() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.dcb.SetMenu(DcbMenuSafetyLogic)
+	p.dcbMenuCommand = nil
+	p.dcbSpinner = NewSafetyVolumeDcbSpinner(p.auralVolume)
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
 func (p *ASDEXPane) consumeDcbSpinnerInput(ctx *panes.Context) bool {
 	if p == nil || p.dcbSpinner == nil || ctx == nil || ctx.Mouse == nil {
 		return false
@@ -2647,6 +2697,8 @@ func (p *ASDEXPane) acceptActiveDcbSpinner() {
 		p.finishHistorySpinner("")
 	case DcbSpinnerVectorLength:
 		p.finishVectorLengthSpinner("")
+	case DcbSpinnerSafetyVolume:
+		p.finishSafetyVolumeSpinner("")
 	case DcbSpinnerDbAreaCharSize,
 		DcbSpinnerDbAreaBrightness,
 		DcbSpinnerDbAreaLeaderLength,
@@ -2664,6 +2716,10 @@ func (p *ASDEXPane) cancelDcbSpinner() {
 	}
 	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerVectorLength {
 		p.finishVectorLengthSpinner("")
+		return
+	}
+	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerSafetyVolume {
+		p.finishSafetyVolumeSpinner("")
 		return
 	}
 	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerBrightness {
@@ -2740,6 +2796,9 @@ func (p *ASDEXPane) commitDcbSpinner() {
 		return
 	case DcbSpinnerVectorLength:
 		p.commitVectorLengthSpinner(spinner)
+		return
+	case DcbSpinnerSafetyVolume:
+		p.commitSafetyVolumeSpinner(spinner)
 		return
 	case DcbSpinnerDbAreaCharSize:
 		p.commitDbAreaCharSizeSpinner(spinner)
@@ -2915,6 +2974,33 @@ func (p *ASDEXPane) finishVectorLengthSpinner(systemResponse string) {
 	p.clearHighlightedTarget()
 }
 
+func (p *ASDEXPane) commitSafetyVolumeSpinner(spinner *DcbSpinner) {
+	if p == nil || spinner == nil {
+		return
+	}
+
+	value, ok := spinner.ParsedValue()
+	if !ok || value < minAuralVolume || value > maxAuralVolume {
+		p.finishSafetyVolumeSpinner("INVALID ENTRY")
+		return
+	}
+
+	p.setSafetyVolume(value)
+	p.finishSafetyVolumeSpinner("")
+}
+
+func (p *ASDEXPane) finishSafetyVolumeSpinner(systemResponse string) {
+	if p == nil {
+		return
+	}
+
+	p.dcbSpinner = nil
+	p.dcb.SetMenu(DcbMenuSafetyLogic)
+	p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC")
+	p.previewArea.SetSystemResponse(systemResponse)
+	p.clearHighlightedTarget()
+}
+
 func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 	if p == nil || p.dcbSpinner == nil || delta == 0 {
 		return
@@ -2957,6 +3043,16 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 		)
 		if next != p.vectorLength {
 			p.setVectorLength(next)
+			spinner.Value = next
+		}
+	case DcbSpinnerSafetyVolume:
+		next := clampInt(
+			p.auralVolume+delta,
+			minAuralVolume,
+			maxAuralVolume,
+		)
+		if next != p.auralVolume {
+			p.setSafetyVolume(next)
 			spinner.Value = next
 		}
 	case DcbSpinnerDbAreaCharSize:
@@ -3045,6 +3141,18 @@ func (p *ASDEXPane) setVectorLength(value int) {
 	}
 
 	p.vectorLength = ClampedTargetVectorSeconds(value)
+}
+
+func (p *ASDEXPane) setSafetyVolume(value int) {
+	if p == nil {
+		return
+	}
+
+	value = clampInt(value, minAuralVolume, maxAuralVolume)
+	p.auralVolume = value
+	if p.auralAlerts != nil {
+		p.auralAlerts.SetVolume(value)
+	}
 }
 
 func (p *ASDEXPane) setMainRangeSetting(rangeSetting int) {
@@ -4434,6 +4542,9 @@ func (p *ASDEXPane) handleMultiFunctionKeyboard(ctx *panes.Context) bool {
 		if p.multiFunction.Value() == "B" {
 			return true
 		}
+		if p.tryExecuteMultiFunctionValue(ctx) {
+			return true
+		}
 		p.multiFunction = nil
 		p.applyCommandStatus(commandOutputClearAll("INVALID ENTRY"))
 		return true
@@ -4454,9 +4565,47 @@ func (p *ASDEXPane) handleMultiFunctionKeyboard(ctx *panes.Context) bool {
 
 		p.multiFunction.Insert(r)
 		p.previewArea.SetSystemResponse("")
-		return true
 	}
 
+	return len(keyboard.Text) > 0
+}
+
+func (p *ASDEXPane) tryExecuteMultiFunctionValue(ctx *panes.Context) bool {
+	if p == nil || p.multiFunction == nil {
+		return false
+	}
+
+	value := p.multiFunction.Value()
+	if value == "" {
+		return false
+	}
+	switch value {
+	case "B", "V":
+		return false
+	}
+
+	input := &CommandInput{
+		text:      value,
+		entryType: CommandTextEntryNone,
+		clickType: CommandClickNone,
+	}
+	status, err, handled := p.dispatchCommand(
+		ctx,
+		userCommands[CommandModeMultiFunction],
+		input,
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return true
+	}
+	if handled {
+		p.applyCommandStatus(status)
+		return true
+	}
+	if len([]rune(value)) >= multiFunctionMaxLength {
+		p.applyCommandStatus(commandOutputClearAll("INVALID ENTRY"))
+		return true
+	}
 	return false
 }
 
