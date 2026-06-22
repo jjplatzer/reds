@@ -115,6 +115,7 @@ public final class TargetStore extends AbstractVerticle {
             if (airport != null && newActive.contains(airport)) return false;
             vertx.eventBus().publish(DIFF_ADDRESS, new JsonObject()
                     .put("key",       entry.getKey())
+                    .put("airport",   airport)
                     .put("removed",   true)
                     .put("updatedAt", Instant.now().toString()));
             return true;
@@ -143,6 +144,7 @@ public final class TargetStore extends AbstractVerticle {
             if (s.updatedAt.isBefore(cutoff)) {
                 vertx.eventBus().publish(DIFF_ADDRESS, new JsonObject()
                         .put("key",       entry.getKey())
+                        .put("airport",   s.airport)
                         .put("removed",   true)
                         .put("updatedAt", Instant.now().toString()));
                 return true;
