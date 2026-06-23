@@ -10,6 +10,7 @@ import (
 	"os"
 
 	"github.com/juliusplatzer/reds/asdex"
+	redsnet "github.com/juliusplatzer/reds/net"
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/platform"
 	"github.com/juliusplatzer/reds/renderer"
@@ -131,15 +132,15 @@ func main() {
 func launchScope(sel Selection, plat platform.Platform, consumer *smesConsumer) (panes.Pane, error) {
 	switch sel.Mode {
 	case DisplayASDEX:
-		useRemoteTargets := remoteTargetURLConfigured()
-		if !useRemoteTargets {
+		usePublicServer := redsnet.UsePublicServer()
+		if !usePublicServer {
 			if err := consumer.Start(sel.Airport); err != nil {
 				return nil, err
 			}
 		}
 		pane, err := asdex.NewPane(sel.Airport)
 		if err != nil {
-			if !useRemoteTargets {
+			if !usePublicServer {
 				consumer.Stop()
 			}
 			return nil, err
@@ -151,10 +152,6 @@ func launchScope(sel Selection, plat platform.Platform, consumer *smesConsumer) 
 	default:
 		return nil, fmt.Errorf("%s scope is not implemented yet", sel.Mode)
 	}
-}
-
-func remoteTargetURLConfigured() bool {
-	return os.Getenv("REDS_TARGET_WS_URL") != ""
 }
 
 func switchToMenu(

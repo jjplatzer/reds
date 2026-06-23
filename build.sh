@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build reds and its SWIM/Solace target reader, then run the menu.
+# Build reds and, in local mode, its SWIM/Solace target reader, then run the menu.
 set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -14,18 +14,23 @@ fi
 WS_PORT="${WS_PORT:-8080}"
 export WS_PORT
 
-REMOTE_TARGET_URL="${REDS_TARGET_WS_URL:-}"
-USE_REMOTE_TARGETS=0
-if [[ -n "$REMOTE_TARGET_URL" ]]; then
-    USE_REMOTE_TARGETS=1
-fi
+USE_SERVER="${USE_SERVER:-true}"
+USE_SERVER_NORMALIZED="$(printf '%s' "$USE_SERVER" | tr '[:upper:]' '[:lower:]')"
+case "$USE_SERVER_NORMALIZED" in
+    1|true|yes|on)
+        USE_PUBLIC_SERVER=1
+        ;;
+    *)
+        USE_PUBLIC_SERVER=0
+        ;;
+esac
 
 mkdir -p build
 
 echo "[build] Building reds (Go frontend)..." >&2
 go build -o build/reds ./cmd/reds
 
-if [[ "$USE_REMOTE_TARGETS" -eq 0 ]]; then
+if [[ "$USE_PUBLIC_SERVER" -eq 0 ]]; then
     echo "[build] Building SMES reader..." >&2
     mvn -q -f server/smes/pom.xml package
 
@@ -37,7 +42,7 @@ if [[ "$USE_REMOTE_TARGETS" -eq 0 ]]; then
         kill -9 $STALE_PIDS 2>/dev/null || true
     fi
 else
-    echo "[build] Remote target stream configured: $REMOTE_TARGET_URL" >&2
+    echo "[build] Public REDS server enabled: wss://reds-stdds-live.jjplatzer.com/ws" >&2
     echo "[build] Skipping local SMES build and :$WS_PORT listener cleanup." >&2
 fi
 

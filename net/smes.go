@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"os"
 	"strings"
 	"sync"
 	"time"
@@ -110,10 +109,6 @@ func (c *SmesClient) run() {
 		}
 
 		headers := http.Header{}
-		if token := targetWebSocketToken(); token != "" {
-			headers.Set("Authorization", "Bearer "+token)
-		}
-
 		conn, _, err := websocket.DefaultDialer.Dial(c.url, headers)
 		if err != nil {
 			c.reportError(fmt.Errorf("connect SMES websocket %s: %w", c.url, err))
@@ -183,13 +178,6 @@ func (c *SmesClient) readFrames(conn *websocket.Conn) error {
 			return errSmesClientClosed
 		}
 	}
-}
-
-func targetWebSocketToken() string {
-	if token := strings.TrimSpace(os.Getenv("REDS_WS_TOKEN")); token != "" {
-		return token
-	}
-	return strings.TrimSpace(os.Getenv("REDS_TARGET_WS_TOKEN"))
 }
 
 func (c *SmesClient) writeAirport(conn *websocket.Conn) error {
