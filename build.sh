@@ -27,7 +27,7 @@ go build -o build/reds ./cmd/reds
 
 if [[ "$USE_REMOTE_TARGETS" -eq 0 ]]; then
     echo "[build] Building SMES reader..." >&2
-    mvn -q -f swim/smes/pom.xml package
+    mvn -q -f server/smes/pom.xml package
 
     STALE_PIDS="$(lsof -ti "tcp:${WS_PORT}" -sTCP:LISTEN 2>/dev/null || true)"
     if [[ -n "$STALE_PIDS" ]]; then

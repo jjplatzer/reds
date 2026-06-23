@@ -72,7 +72,7 @@ jobs:
           fi
 
       - name: Build SMES reader jar
-        run: mvn -B -f swim/smes/pom.xml -DskipTests package
+        run: mvn -B -f server/smes/pom.xml -DskipTests package
 
       - name: Build REDS frontend
         run: |
@@ -85,9 +85,9 @@ jobs:
       - name: Verify build outputs
         run: |
           test -x build/reds
-          test -f swim/smes/target/faascope-stdds-1.0-SNAPSHOT.jar
+          test -f server/smes/target/faascope-stdds-1.0-SNAPSHOT.jar
           file build/reds
-          ls -lh build/reds swim/smes/target/faascope-stdds-1.0-SNAPSHOT.jar
+          ls -lh build/reds server/smes/target/faascope-stdds-1.0-SNAPSHOT.jar
 
       - name: Optional GUI smoke launch
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_gui_smoke }}
@@ -111,5 +111,5 @@ jobs:
           name: reds-macos-build
           path: |
             build/reds
-            swim/smes/target/faascope-stdds-1.0-SNAPSHOT.jar
+            server/smes/target/faascope-stdds-1.0-SNAPSHOT.jar
           if-no-files-found: error
