@@ -8,7 +8,7 @@ import (
 const PublicTargetWebSocketURL = "wss://reds-stdds-live.jjplatzer.com/ws"
 
 func UsePublicServer() bool {
-	return boolEnv("USE_SERVER", true)
+	return boolEnv("USE_PUBLIC_SERVER", true)
 }
 
 func TargetWebSocketURL() string {

@@ -15,7 +15,7 @@ REM   --help        Show this help message
 REM
 REM Prerequisites:
 REM   - Go installed and in PATH, matching go.mod
-REM   - JDK 21 and Maven in PATH when USE_SERVER=false
+REM   - JDK 21 and Maven in PATH when USE_PUBLIC_SERVER=false
 REM   - MSYS2 UCRT64 toolchain with GCC, pkgconf, and GLFW:
 REM       C:\msys64\usr\bin\pacman.exe -S --needed --noconfirm ^
 REM         base-devel ^
@@ -69,13 +69,13 @@ if exist ".env" (
 )
 
 if not defined WS_PORT set "WS_PORT=8080"
-if not defined USE_SERVER set "USE_SERVER=true"
+if not defined USE_PUBLIC_SERVER set "USE_PUBLIC_SERVER=true"
 
-set "USE_PUBLIC_SERVER=0"
-if /I "%USE_SERVER%"=="1" set "USE_PUBLIC_SERVER=1"
-if /I "%USE_SERVER%"=="true" set "USE_PUBLIC_SERVER=1"
-if /I "%USE_SERVER%"=="yes" set "USE_PUBLIC_SERVER=1"
-if /I "%USE_SERVER%"=="on" set "USE_PUBLIC_SERVER=1"
+set "USE_PUBLIC_SERVER_ENABLED=0"
+if /I "%USE_PUBLIC_SERVER%"=="1" set "USE_PUBLIC_SERVER_ENABLED=1"
+if /I "%USE_PUBLIC_SERVER%"=="true" set "USE_PUBLIC_SERVER_ENABLED=1"
+if /I "%USE_PUBLIC_SERVER%"=="yes" set "USE_PUBLIC_SERVER_ENABLED=1"
+if /I "%USE_PUBLIC_SERVER%"=="on" set "USE_PUBLIC_SERVER_ENABLED=1"
 
 set "CGO_ENABLED=1"
 
@@ -97,7 +97,7 @@ echo [build] Building reds ^(Go frontend^)...
 go build -v -o build\reds.exe .\cmd\reds
 if errorlevel 1 exit /b 1
 
-if "%USE_PUBLIC_SERVER%"=="0" (
+if "%USE_PUBLIC_SERVER_ENABLED%"=="0" (
     echo [build] Building SMES reader...
     mvn -B -f server\smes\pom.xml -DskipTests package
     if errorlevel 1 exit /b 1
@@ -117,7 +117,7 @@ if "%DO_RUN%"=="0" (
     exit /b 0
 )
 
-if "%USE_PUBLIC_SERVER%"=="0" (
+if "%USE_PUBLIC_SERVER_ENABLED%"=="0" (
     call :kill_stale_listener
     if errorlevel 1 exit /b 1
 ) else (
@@ -175,7 +175,7 @@ if errorlevel 1 (
     echo Error: Go was not found in PATH.
     exit /b 1
 )
-if "%USE_PUBLIC_SERVER%"=="0" (
+if "%USE_PUBLIC_SERVER_ENABLED%"=="0" (
     where java >nul 2>nul
     if errorlevel 1 (
         echo Error: Java was not found in PATH. Install JDK 21.
@@ -190,7 +190,7 @@ if "%USE_PUBLIC_SERVER%"=="0" (
 
 echo [tools] Go:
 go version
-if "%USE_PUBLIC_SERVER%"=="0" (
+if "%USE_PUBLIC_SERVER_ENABLED%"=="0" (
     echo [tools] Java:
     java -version
     echo [tools] Maven:
