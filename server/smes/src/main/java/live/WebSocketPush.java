@@ -31,27 +31,21 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class WebSocketPush extends AbstractVerticle {
 
-    public static final int DEFAULT_PORT = 8080;
-    public static final String DEFAULT_HOST = "127.0.0.1";
-    private static final int MAX_WS_FRAME_BYTES = 16 * 1024;
-
     private final Map<ServerWebSocket, ClientConnection> clients = new ConcurrentHashMap<>();
 
     @Override
     public void start(Promise<Void> startPromise) {
-        int port = intEnv("WS_PORT", DEFAULT_PORT);
-        String host = stringEnv("WS_HOST", DEFAULT_HOST);
-        String requiredToken = stringEnv("REDS_WS_TOKEN", "");
+        ServerConfig config = ServerConfig.fromEnv();
 
         HttpServer server = vertx.createHttpServer(new HttpServerOptions()
-                .setMaxWebSocketFrameSize(MAX_WS_FRAME_BYTES));
+                .setMaxWebSocketFrameSize(config.maxInboundBytes));
 
         server.webSocketHandler(ws -> {
             if (!"/ws".equals(ws.path())) {
                 ws.close();
                 return;
             }
-            if (!authorized(ws, requiredToken)) {
+            if (!authorized(ws, config)) {
                 ws.close();
                 return;
             }
@@ -95,10 +89,12 @@ public final class WebSocketPush extends AbstractVerticle {
             }
         });
 
-        server.listen(port, host)
+        server.listen(config.port, config.host)
                 .onSuccess(s -> {
-                    String authMode = requiredToken.isBlank() ? "open" : "bearer-token";
-                    System.out.println("[WS] Listening on ws://" + host + ":" + port + "/ws (auth=" + authMode + ")");
+                    System.out.println("[WS] Listening on ws://" + config.host + ":" + config.port
+                            + "/ws (auth=" + config.authModeLabel()
+                            + ", publicMode=" + config.publicMode
+                            + ", maxClients=" + config.maxClients + ")");
                     startPromise.complete();
                 })
                 .onFailure(startPromise::fail);
@@ -118,15 +114,16 @@ public final class WebSocketPush extends AbstractVerticle {
         vertx.eventBus().publish(AirportFilter.ADDRESS, new JsonObject().put("airports", airports));
     }
 
-    private static boolean authorized(ServerWebSocket ws, String requiredToken) {
-        if (requiredToken == null || requiredToken.isBlank()) return true;
+    private static boolean authorized(ServerWebSocket ws, ServerConfig config) {
+        if (!config.requireAuth) return true;
+        if (config.requiredToken == null || config.requiredToken.isBlank()) return false;
 
         String header = ws.headers().get("Authorization");
         if (header == null) return false;
 
         String prefix = "Bearer ";
         if (!header.startsWith(prefix)) return false;
-        return constantTimeEquals(requiredToken, header.substring(prefix.length()).strip());
+        return constantTimeEquals(config.requiredToken, header.substring(prefix.length()).strip());
     }
 
     private static boolean constantTimeEquals(String a, String b) {
@@ -148,16 +145,6 @@ public final class WebSocketPush extends AbstractVerticle {
             if (icao.matches("[A-Z]{4}")) next.add(icao);
         }
         return Collections.unmodifiableSet(next);
-    }
-
-    private static int intEnv(String key, int def) {
-        try { return Integer.parseInt(System.getenv(key).strip()); } catch (Exception e) { return def; }
-    }
-
-    private static String stringEnv(String key, String def) {
-        String val = System.getenv(key);
-        if (val == null || val.isBlank()) return def;
-        return val.strip();
     }
 
 }
