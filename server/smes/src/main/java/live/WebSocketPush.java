@@ -32,10 +32,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class WebSocketPush extends AbstractVerticle {
 
     private final Map<ServerWebSocket, ClientConnection> clients = new ConcurrentHashMap<>();
+    private ServerConfig config;
+    private IpLimiter ipLimiter;
 
     @Override
     public void start(Promise<Void> startPromise) {
-        ServerConfig config = ServerConfig.fromEnv();
+        config = ServerConfig.fromEnv();
+        ipLimiter = new IpLimiter(config);
 
         HttpServer server = vertx.createHttpServer(new HttpServerOptions()
                 .setMaxWebSocketFrameSize(config.maxInboundBytes));
@@ -50,7 +53,25 @@ public final class WebSocketPush extends AbstractVerticle {
                 return;
             }
 
-            ClientConnection client = new ClientConnection(ws);
+            long nowMs = System.currentTimeMillis();
+            String ip = ipLimiter.ipOf(ws);
+
+            if (!ipLimiter.canAcceptGlobal(clients.size())) {
+                ws.close();
+                return;
+            }
+
+            if (!ipLimiter.canReconnect(ip, nowMs)) {
+                ws.close();
+                return;
+            }
+
+            ClientConnection client = new ClientConnection(ws, ip);
+            ClientConnection old = ipLimiter.replaceForIp(ip, client);
+            if (old != null) {
+                removeClient(old.ws);
+            }
+
             clients.put(ws, client);
 
             ws.closeHandler(v -> removeClient(ws));
@@ -59,13 +80,35 @@ public final class WebSocketPush extends AbstractVerticle {
                 ws.close();
             });
 
+            vertx.setTimer(Math.max(1, config.subscribeTimeoutSeconds) * 1000L, timerId -> {
+                ClientConnection current = clients.get(ws);
+                if (current != null && current.airports.isEmpty() && !ws.isClosed()) {
+                    current.sendLimitAndClose("subscribe_timeout");
+                }
+            });
+
             // Inbound: update only this client's subscription. TargetStore receives
             // the union of all client subscriptions, not one global client value.
             ws.textMessageHandler(text -> {
+                long msgNowMs = System.currentTimeMillis();
+
+                if (text == null || text.length() > config.maxInboundBytes) {
+                    client.sendLimitAndClose("message_too_large");
+                    return;
+                }
+
+                if (!client.allowMessage(config, msgNowMs)) {
+                    client.sendLimitAndClose("message_rate_exceeded");
+                    return;
+                }
+
                 JsonObject msg;
                 try { msg = new JsonObject(text); } catch (Exception ignored) { return; }
                 if ("setAirports".equals(msg.getString("type", ""))) {
-                    client.airports = parseAirports(msg.getJsonArray("airports"));
+                    client.airports = parseAirports(
+                            msg.getJsonArray("airports"),
+                            config.maxAirportsPerConnection
+                    );
                     publishUnionFilter();
                 }
             });
@@ -101,7 +144,8 @@ public final class WebSocketPush extends AbstractVerticle {
     }
 
     private void removeClient(ServerWebSocket ws) {
-        clients.remove(ws);
+        ClientConnection client = clients.remove(ws);
+        if (client != null) ipLimiter.remove(client);
         publishUnionFilter();
     }
 
@@ -134,11 +178,13 @@ public final class WebSocketPush extends AbstractVerticle {
         return diff == 0;
     }
 
-    private static Set<String> parseAirports(JsonArray arr) {
-        if (arr == null || arr.isEmpty()) return Set.of();
+    private static Set<String> parseAirports(JsonArray arr, int maxAirports) {
+        if (arr == null || arr.isEmpty() || maxAirports <= 0) return Set.of();
 
-        Set<String> next = new HashSet<>(arr.size() * 2);
+        Set<String> next = new HashSet<>(Math.min(arr.size(), maxAirports) * 2);
         for (int i = 0; i < arr.size(); i++) {
+            if (next.size() >= maxAirports) break;
+
             String icao = arr.getString(i);
             if (icao == null) continue;
             icao = icao.strip().toUpperCase();
