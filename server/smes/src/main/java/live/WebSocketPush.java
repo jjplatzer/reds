@@ -55,8 +55,9 @@ public final class WebSocketPush extends AbstractVerticle {
 
             long nowMs = System.currentTimeMillis();
             String ip = ipLimiter.ipOf(ws);
+            boolean replacingExistingIp = ipLimiter.hasClientForIp(ip);
 
-            if (!ipLimiter.canAcceptGlobal(clients.size())) {
+            if (!replacingExistingIp && !ipLimiter.canAcceptGlobal(clients.size())) {
                 ws.close();
                 return;
             }

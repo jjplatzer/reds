@@ -15,6 +15,17 @@ final class IpLimiter {
     }
 
     String ipOf(ServerWebSocket ws) {
+        String forwardedFor = ws.headers().get("X-Forwarded-For");
+        if (forwardedFor != null && !forwardedFor.isBlank()) {
+            String first = forwardedFor.split(",", 2)[0].strip();
+            if (!first.isBlank()) return first;
+        }
+
+        String realIp = ws.headers().get("X-Real-IP");
+        if (realIp != null && !realIp.isBlank()) {
+            return realIp.strip();
+        }
+
         if (ws.remoteAddress() == null) return "unknown";
         String host = ws.remoteAddress().host();
         if (host == null || host.isBlank()) return "unknown";
@@ -23,6 +34,10 @@ final class IpLimiter {
 
     boolean canAcceptGlobal(int currentClients) {
         return currentClients < config.maxClients;
+    }
+
+    boolean hasClientForIp(String ip) {
+        return byIp.containsKey(ip);
     }
 
     boolean canReconnect(String ip, long nowMs) {
