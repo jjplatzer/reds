@@ -27,7 +27,7 @@ import java.util.Set;
  */
 public final class TargetStore extends AbstractVerticle {
 
-    /** EventBus address for outbound diffs — consumed by push/WebSocketPush. */
+    /** EventBus address for outbound diffs — consumed by live/WebSocketPush. */
     public static final String DIFF_ADDRESS = "faa.persist.diff";
 
     private static final long EVICT_INTERVAL_MS  = 60_000L;

@@ -4,7 +4,7 @@ import ingest.TargetBatch;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.ThreadingModel;
 import io.vertx.core.Vertx;
-import push.WebSocketPush;
+import live.WebSocketPush;
 import store.TargetStore;
 
 /**

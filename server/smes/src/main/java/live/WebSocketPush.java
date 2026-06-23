@@ -1,4 +1,4 @@
-package push;
+package live;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -35,7 +35,7 @@ public final class WebSocketPush extends AbstractVerticle {
     public static final String DEFAULT_HOST = "127.0.0.1";
     private static final int MAX_WS_FRAME_BYTES = 16 * 1024;
 
-    private final Map<ServerWebSocket, Client> clients = new ConcurrentHashMap<>();
+    private final Map<ServerWebSocket, ClientConnection> clients = new ConcurrentHashMap<>();
 
     @Override
     public void start(Promise<Void> startPromise) {
@@ -56,7 +56,7 @@ public final class WebSocketPush extends AbstractVerticle {
                 return;
             }
 
-            Client client = new Client(ws);
+            ClientConnection client = new ClientConnection(ws);
             clients.put(ws, client);
 
             ws.closeHandler(v -> removeClient(ws));
@@ -88,7 +88,7 @@ public final class WebSocketPush extends AbstractVerticle {
             JsonObject body = msg.body();
             String frame = body.encode();
             String airport = body.getString("airport", "");
-            for (Client client : clients.values()) {
+            for (ClientConnection client : clients.values()) {
                 ServerWebSocket ws = client.ws;
                 if (!client.accepts(airport)) continue;
                 if (!ws.isClosed() && !ws.writeQueueFull()) ws.writeTextMessage(frame);
@@ -111,7 +111,7 @@ public final class WebSocketPush extends AbstractVerticle {
 
     private void publishUnionFilter() {
         Set<String> union = new HashSet<>();
-        for (Client client : clients.values()) union.addAll(client.airports);
+        for (ClientConnection client : clients.values()) union.addAll(client.airports);
 
         JsonArray airports = new JsonArray();
         union.stream().sorted().forEach(airports::add);
@@ -160,16 +160,4 @@ public final class WebSocketPush extends AbstractVerticle {
         return val.strip();
     }
 
-    private static final class Client {
-        final ServerWebSocket ws;
-        volatile Set<String> airports = Set.of();
-
-        Client(ServerWebSocket ws) {
-            this.ws = ws;
-        }
-
-        boolean accepts(String airport) {
-            return airport != null && !airport.isBlank() && airports.contains(airport);
-        }
-    }
 }
