@@ -7,7 +7,9 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -35,9 +37,15 @@ public final class TargetStore extends AbstractVerticle {
 
     private final Map<String, TargetState> store = new HashMap<>();
     private final AirportFilter filter = new AirportFilter();
+    private Set<String> warmAirports = Set.of();
 
     @Override
     public void start() {
+        warmAirports = parseAirportList(System.getenv("REDS_WARM_AIRPORTS"));
+        if (!warmAirports.isEmpty()) {
+            System.out.println("[Store] Warm airports: " + warmAirports);
+        }
+
         // Seed filter from env so the consumer starts already scoped.
         String initial = System.getenv("INITIAL_AIRPORT");
         if (initial != null && !initial.isBlank()) {
@@ -49,16 +57,15 @@ public final class TargetStore extends AbstractVerticle {
         // Airport filter — updated by the UI via WebSocket → EventBus.
         vertx.eventBus().<JsonObject>consumer(AirportFilter.ADDRESS, msg -> {
             Set<String> newActive = filter.update(msg.body());
-            pruneToFilter(newActive);
             snapshotTo(newActive);
             System.out.println("[Store] Airport filter → " + (newActive.isEmpty() ? "none" : newActive)
-                    + " (" + store.size() + " targets retained)");
+                    + " (" + store.size() + " targets retained, warm=" + warmAirports.size() + ")");
         });
 
         // Subscribe to batched observations.
         vertx.eventBus().<TargetBatch>consumer(SurfaceTarget.ADDRESS, msg -> {
             for (SurfaceTarget obs : msg.body().targets()) {
-                if (!filter.accepts(obs.airport())) continue;
+                if (!acceptsForCache(obs.airport())) continue;
                 handleObservation(obs);
             }
         });
@@ -105,29 +112,13 @@ public final class TargetStore extends AbstractVerticle {
         }
     }
 
-    /**
-     * Immediately removes all targets not covered by the new filter and broadcasts
-     * removal diffs so the UI can clean up without waiting for TTL eviction.
-     */
-    private void pruneToFilter(Set<String> newActive) {
-        store.entrySet().removeIf(entry -> {
-            String airport = entry.getValue().airport;
-            if (airport != null && newActive.contains(airport)) return false;
-            vertx.eventBus().publish(DIFF_ADDRESS, new JsonObject()
-                    .put("key",       entry.getKey())
-                    .put("airport",   airport)
-                    .put("removed",   true)
-                    .put("updatedAt", Instant.now().toString()));
-            return true;
-        });
-    }
-
     private void handleObservation(SurfaceTarget obs) {
         String key = obs.targetKey();
         TargetState state = store.computeIfAbsent(key, k -> new TargetState(obs));
 
         JsonObject changed = state.merge(obs);
         if (changed.isEmpty()) return;
+        if (!acceptsForPublish(obs.airport())) return;
 
         vertx.eventBus().publish(DIFF_ADDRESS, new JsonObject()
                 .put("key",       key)
@@ -151,6 +142,27 @@ public final class TargetStore extends AbstractVerticle {
             }
             return false;
         });
+    }
+
+    private static Set<String> parseAirportList(String value) {
+        if (value == null || value.isBlank()) return Set.of();
+
+        Set<String> out = new HashSet<>();
+        for (String part : value.split(",")) {
+            String icao = part.strip().toUpperCase();
+            if (icao.matches("[A-Z]{4}")) out.add(icao);
+        }
+        return Collections.unmodifiableSet(out);
+    }
+
+    private boolean acceptsForCache(String airport) {
+        if (airport == null || airport.isBlank()) return false;
+        String icao = airport.strip().toUpperCase();
+        return warmAirports.contains(icao) || filter.accepts(icao);
+    }
+
+    private boolean acceptsForPublish(String airport) {
+        return filter.accepts(airport);
     }
 
     // =========================================================================
