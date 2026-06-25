@@ -121,6 +121,7 @@ type ASDEXPane struct {
 	dcbBrightness                   int
 	vectorLength                    int
 	auralVolume                     int
+	playbackHourOffset              int
 	previewArea                     PreviewArea
 	coastList                       CoastList
 	alertRepository                 AlertRepository
@@ -260,6 +261,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		dcbBrightness:             brightnessDefault,
 		vectorLength:              defaultVectorLengthSeconds,
 		auralVolume:               defaultAuralVolume,
+		playbackHourOffset:        0,
 		previewArea:               preview,
 		coastList:                 coastList,
 		alertRepository:           NewAlertRepository(auralAlerts),
@@ -1117,6 +1119,8 @@ func (p *ASDEXPane) dcbState() DcbState {
 		activeSpinnerFunction = DcbFunctionTrackAlertInhibit
 	}
 	fields := p.dbFieldSettings
+	playbackHourOffset := clampInt(p.playbackHourOffset, 0, playbackMaxHourOffset)
+	playbackHour := p.playbackHourStart()
 
 	state := DcbState{
 		Range:                  rangeSetting,
@@ -1133,6 +1137,8 @@ func (p *ASDEXPane) dcbState() DcbState {
 		CursorSpeed:            1,
 		CursorHome:             false,
 		Volume:                 clampInt(p.auralVolume, minAuralVolume, maxAuralVolume),
+		PlaybackHourStart:      playbackHour,
+		PlaybackHourOffset:     playbackHourOffset,
 		FullDataBlocks:         active.DB.FullDataBlocks,
 		ShowAltitude:           fields.ShowAltitude,
 		ShowTargetType:         fields.ShowTargetType,
@@ -1381,6 +1387,10 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return true
 	}
 
+	if p.dcb.Menu() == DcbMenuPlayBack && p.activatePlayBackDcbHit(hit) {
+		return true
+	}
+
 	if p.activateTempDataDcbHit(hit) {
 		return true
 	}
@@ -1433,6 +1443,11 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return true
 	case DcbFunctionTools:
 		p.openToolsMenu()
+		return true
+	case DcbFunctionPlayBack:
+		if p.dcb.Menu() == DcbMenuTools {
+			p.openPlayBackMenu()
+		}
 		return true
 	case DcbFunctionSafetyLogic:
 		p.openSafetyLogicMenu()
@@ -2316,8 +2331,7 @@ func isToolsPlaceholderFunction(function DcbFunction) bool {
 		DcbFunctionDcbLeft,
 		DcbFunctionDcbRight,
 		DcbFunctionDcbBottom,
-		DcbFunctionChangePassword,
-		DcbFunctionPlayBack:
+		DcbFunctionChangePassword:
 		return true
 	default:
 		return false
