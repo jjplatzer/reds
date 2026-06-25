@@ -32,6 +32,9 @@ public final class TargetStore extends AbstractVerticle {
     /** EventBus address for outbound diffs — consumed by live/WebSocketPush. */
     public static final String DIFF_ADDRESS = "faa.persist.diff";
 
+    /** EventBus address for playback recording — consumed by playback/PlaybackRecorder. */
+    public static final String RECORD_ADDRESS = "faa.persist.record";
+
     private static final long EVICT_INTERVAL_MS  = 60_000L;
     private static final long STALE_THRESHOLD_MS = 3 * 60 * 1000L;
 
@@ -118,14 +121,20 @@ public final class TargetStore extends AbstractVerticle {
 
         JsonObject changed = state.merge(obs);
         if (changed.isEmpty()) return;
-        if (!acceptsForPublish(obs.airport())) return;
 
-        vertx.eventBus().publish(DIFF_ADDRESS, new JsonObject()
+        JsonObject frame = new JsonObject()
+                .put("recordType", "diff")
                 .put("key",       key)
                 .put("airport",   obs.airport())
                 .put("updatedAt", Instant.now().toString())
                 .put("isFull",    obs.isFull())
-                .put("changed",   changed));
+                .put("changed",   changed);
+
+        vertx.eventBus().publish(RECORD_ADDRESS, frame);
+
+        if (acceptsForPublish(obs.airport())) {
+            vertx.eventBus().publish(DIFF_ADDRESS, frame);
+        }
     }
 
     private void evictStale() {
@@ -133,11 +142,18 @@ public final class TargetStore extends AbstractVerticle {
         store.entrySet().removeIf(entry -> {
             TargetState s = entry.getValue();
             if (s.updatedAt.isBefore(cutoff)) {
-                vertx.eventBus().publish(DIFF_ADDRESS, new JsonObject()
+                JsonObject frame = new JsonObject()
+                        .put("recordType", "removed")
                         .put("key",       entry.getKey())
                         .put("airport",   s.airport)
                         .put("removed",   true)
-                        .put("updatedAt", Instant.now().toString()));
+                        .put("updatedAt", Instant.now().toString());
+
+                vertx.eventBus().publish(RECORD_ADDRESS, frame);
+
+                if (acceptsForPublish(s.airport)) {
+                    vertx.eventBus().publish(DIFF_ADDRESS, frame);
+                }
                 return true;
             }
             return false;
