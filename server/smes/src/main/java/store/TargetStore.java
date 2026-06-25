@@ -37,6 +37,7 @@ public final class TargetStore extends AbstractVerticle {
 
     private static final long EVICT_INTERVAL_MS  = 60_000L;
     private static final long STALE_THRESHOLD_MS = 3 * 60 * 1000L;
+    private static final int DEFAULT_PLAYBACK_SNAPSHOT_INTERVAL_SECONDS = 60;
 
     private final Map<String, TargetState> store = new HashMap<>();
     private final AirportFilter filter = new AirportFilter();
@@ -75,6 +76,20 @@ public final class TargetStore extends AbstractVerticle {
 
         // Periodic stale-target eviction
         vertx.setPeriodic(EVICT_INTERVAL_MS, ignored -> evictStale());
+
+        // Periodic full snapshots for playback.
+        // These are record-only frames; they are not live-pushed to clients.
+        if (boolEnv("REDS_PLAYBACK_ENABLED", false)) {
+            int snapshotSeconds = intEnv(
+                    "REDS_PLAYBACK_SNAPSHOT_INTERVAL_SECONDS",
+                    DEFAULT_PLAYBACK_SNAPSHOT_INTERVAL_SECONDS
+            );
+
+            if (snapshotSeconds > 0) {
+                vertx.setPeriodic(snapshotSeconds * 1000L, ignored -> recordSnapshot());
+                System.out.println("[Store] Playback snapshots every " + snapshotSeconds + "s");
+            }
+        }
     }
 
     /**
@@ -89,21 +104,7 @@ public final class TargetStore extends AbstractVerticle {
             TargetState s = e.getValue();
             if (s.airport == null || !active.contains(s.airport)) continue;
 
-            JsonObject changed = new JsonObject();
-            if (s.positionReportTime != null) changed.put("positionReportTime", s.positionReportTime);
-            if (s.tgtType  != null) changed.put("tgtType",  s.tgtType);
-            if (s.callsign != null) changed.put("callsign", s.callsign);
-            if (s.acType   != null) changed.put("acType",   s.acType);
-            if (s.squawk   != null) changed.put("squawk",   s.squawk);
-            if (s.exitFix  != null) changed.put("exitFix",  s.exitFix);
-            if (s.wake     != null) changed.put("wake",     s.wake);
-            if (s.scratchpad1 != null) changed.put("scratchpad1", s.scratchpad1);
-            if (s.scratchpad2 != null) changed.put("scratchpad2", s.scratchpad2);
-            if (s.lat      != null) changed.put("lat",      s.lat);
-            if (s.lon      != null) changed.put("lon",      s.lon);
-            if (s.altitude != null) changed.put("altitude", s.altitude);
-            if (s.speed    != null) changed.put("speed",    s.speed);
-            if (s.heading  != null) changed.put("heading",  s.heading);
+            JsonObject changed = s.fullState();
             if (changed.isEmpty()) continue;
 
             vertx.eventBus().publish(DIFF_ADDRESS, new JsonObject()
@@ -112,6 +113,28 @@ public final class TargetStore extends AbstractVerticle {
                     .put("updatedAt", now.toString())
                     .put("isFull",    true)
                     .put("changed",   changed));
+        }
+    }
+
+    private void recordSnapshot() {
+        Instant now = Instant.now();
+
+        for (Map.Entry<String, TargetState> e : store.entrySet()) {
+            TargetState s = e.getValue();
+            if (s.airport == null || s.airport.isBlank()) continue;
+
+            JsonObject changed = s.fullState();
+            if (changed.isEmpty()) continue;
+
+            JsonObject frame = new JsonObject()
+                    .put("recordType", "snapshot")
+                    .put("key",       e.getKey())
+                    .put("airport",   s.airport)
+                    .put("updatedAt", now.toString())
+                    .put("isFull",    true)
+                    .put("changed",   changed);
+
+            vertx.eventBus().publish(RECORD_ADDRESS, frame);
         }
     }
 
@@ -169,6 +192,27 @@ public final class TargetStore extends AbstractVerticle {
             if (icao.matches("[A-Z]{4}")) out.add(icao);
         }
         return Collections.unmodifiableSet(out);
+    }
+
+    private static int intEnv(String key, int def) {
+        try {
+            String val = System.getenv(key);
+            if (val == null || val.isBlank()) return def;
+            return Integer.parseInt(val.strip());
+        } catch (Exception e) {
+            return def;
+        }
+    }
+
+    private static boolean boolEnv(String key, boolean def) {
+        String val = System.getenv(key);
+        if (val == null || val.isBlank()) return def;
+
+        return switch (val.strip().toLowerCase()) {
+            case "1", "true", "yes", "on" -> true;
+            case "0", "false", "no", "off" -> false;
+            default -> def;
+        };
     }
 
     private boolean acceptsForCache(String airport) {
@@ -246,6 +290,28 @@ public final class TargetStore extends AbstractVerticle {
             }
 
             return changed;
+        }
+
+        JsonObject fullState() {
+            JsonObject out = new JsonObject();
+
+            if (positionReportTime != null) out.put("positionReportTime", positionReportTime);
+            if (tgtType  != null) out.put("tgtType",  tgtType);
+            if (callsign != null) out.put("callsign", callsign);
+            if (acType   != null) out.put("acType",   acType);
+            if (squawk   != null) out.put("squawk",   squawk);
+            if (exitFix  != null) out.put("exitFix",  exitFix);
+            if (wake     != null) out.put("wake",     wake);
+            if (scratchpad1 != null) out.put("scratchpad1", scratchpad1);
+            if (scratchpad2 != null) out.put("scratchpad2", scratchpad2);
+
+            if (lat      != null) out.put("lat",      lat);
+            if (lon      != null) out.put("lon",      lon);
+            if (altitude != null) out.put("altitude", altitude);
+            if (speed    != null) out.put("speed",    speed);
+            if (heading  != null) out.put("heading",  heading);
+
+            return out;
         }
 
         // Partial: null incoming = keep current (no change recorded)
