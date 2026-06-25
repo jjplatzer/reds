@@ -35,11 +35,12 @@ export JAVA_HOME="$(brew --prefix openjdk@21)/libexec/openjdk.jdk/Contents/Home"
 export PATH="$JAVA_HOME/bin:$PATH"
 ```
 
-Fill in your SWIM credentials unquoted into the example `.env` file and run
+Fill in your SWIM credentials unquoted into the example `.env` file, set `USE_PUBLIC_SERVER=false` and run
 
 ```bash
 cp .env.example .env
 ```
+If you do **not** have SWIM credentials you can skip this step. 
 
 Finally, use
 
@@ -65,13 +66,13 @@ C:\msys64\usr\bin\pacman.exe -Syu --noconfirm
 C:\msys64\usr\bin\pacman.exe -S --needed --noconfirm base-devel mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-pkgconf mingw-w64-ucrt-x86_64-glfw
 ```
 
-Fill in your SWIM credentials unquoted into the example `.env` file:
+Fill in your SWIM credentials unquoted into the example `.env` file, set `USE_PUBLIC_SERVER=false` and run
 
 ```powershell
 Copy-Item .env.example .env
 notepad .env
 ```
-
+If you do **not** have SWIM credentials you can skip this step. 
 Finally, build and run:
 
 ```powershell
