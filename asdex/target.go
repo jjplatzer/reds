@@ -1071,15 +1071,23 @@ func (s *TargetStore) ApplyDelta(delta TargetDelta) {
 }
 
 func (s *TargetStore) ApplySmesFrame(frame redsnet.SmesFrame, vm *VideoMap) {
+	s.ApplySmesFrameAt(frame, vm, time.Now().UTC())
+}
+
+func (s *TargetStore) ApplySmesFrameAt(frame redsnet.SmesFrame, vm *VideoMap, now time.Time) {
 	if s == nil || frame.Key == "" {
 		return
+	}
+	if now.IsZero() {
+		now = time.Now().UTC()
+	} else {
+		now = now.UTC()
 	}
 	if frame.Removed {
 		s.RemoveLive(frame.Key)
 		return
 	}
 
-	now := time.Now().UTC()
 	target := Target{
 		ID:                frame.Key,
 		ShowDB:            true,

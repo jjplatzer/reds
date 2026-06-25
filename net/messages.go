@@ -24,6 +24,15 @@ type SmesFrame struct {
 	Changed   map[string]json.RawMessage `json:"changed,omitempty"`
 }
 
+type PlaybackBootstrapResponse struct {
+	Airport        string                                `json:"airport"`
+	At             string                                `json:"at"`
+	BaselineTime   string                                `json:"baselineTime"`
+	TargetCount    int                                   `json:"targetCount"`
+	AppliedRecords int                                   `json:"appliedRecords"`
+	Targets        map[string]map[string]json.RawMessage `json:"targets"`
+}
+
 type SetAirportsMessage struct {
 	Type     string   `json:"type"`
 	Airports []string `json:"airports"`

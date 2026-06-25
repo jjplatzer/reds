@@ -3,6 +3,7 @@ package asdex
 import (
 	"strconv"
 	"strings"
+	"time"
 	"unicode"
 
 	redsmath "github.com/juliusplatzer/reds/math"
@@ -31,6 +32,7 @@ const (
 	DcbMenuModifyTraitArea
 	DcbMenuBrightness
 	DcbMenuTools
+	DcbMenuPlayBack
 	DcbMenuSafetyLogic
 	DcbMenuTowerConfig
 	DcbMenuRunwayConfig
@@ -127,6 +129,11 @@ const (
 	DcbFunctionDcbBottom
 	DcbFunctionChangePassword
 	DcbFunctionPlayBack
+	DcbFunctionPlayBackTimeBlock
+	DcbFunctionPlayBackPrevHour
+	DcbFunctionPlayBackNextHour
+	DcbFunctionPlayBackCurrentHour
+	DcbFunctionPlayBackExitRecording
 	DcbFunctionArrivalAlerts
 	DcbFunctionTrackAlertInhibit
 	DcbFunctionAllTracksEnableAlerts
@@ -239,6 +246,9 @@ type DcbState struct {
 	CursorSpeed   int
 	CursorHome    bool
 	Volume        int
+
+	PlaybackHourStart  time.Time
+	PlaybackHourOffset int
 
 	FullDataBlocks bool
 
@@ -902,6 +912,7 @@ func isLargeDcbFunction(function DcbFunction) bool {
 		DcbFunctionAlertReposition,
 		DcbFunctionVolume,
 		DcbFunctionVolumeTest,
+		DcbFunctionPlayBackExitRecording,
 		DcbFunctionDone,
 		DcbFunctionVacant:
 		return true
@@ -1628,6 +1639,77 @@ func (d *Dcb) toolsButtonSpecs(state DcbState) []DcbButtonSpec {
 	}
 }
 
+func (d *Dcb) playBackButtonSpecs(state DcbState) []DcbButtonSpec {
+	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
+		if state.ActiveSpinnerFunction == spec.Function {
+			spec.Active = true
+		}
+		return spec
+	}
+	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonNormal,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	menuButton := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonMenu,
+			Large:    false,
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	vacant := func() DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: DcbFunctionVacant,
+			Type:     DcbButtonVacant,
+			Large:    true,
+			Visible:  true,
+		}
+	}
+
+	hourStart := state.PlaybackHourStart
+	if hourStart.IsZero() {
+		hourStart = time.Now().UTC().Truncate(time.Hour)
+	}
+
+	timeBlock := func(index int) DcbButtonSpec {
+		t := hourStart.Add(time.Duration(index*5) * time.Minute)
+		return applyState(DcbButtonSpec{
+			Function: DcbFunctionPlayBackTimeBlock,
+			Type:     DcbButtonNormal,
+			Large:    false,
+			Visible:  true,
+			Lines:    []string{t.Format("15:04")},
+			ConfigID: index,
+		})
+	}
+
+	buttons := make([]DcbButtonSpec, 0, dcbColumnCount*2)
+	buttons = append(buttons, vacant())
+	for i := 0; i < 12; i++ {
+		buttons = append(buttons, timeBlock(i))
+	}
+	buttons = append(buttons,
+		menuButton(DcbFunctionPlayBackPrevHour, "PREV", "HOUR"),
+		menuButton(DcbFunctionPlayBackNextHour, "NEXT", "HOUR"),
+		normal(DcbFunctionPlayBackExitRecording, "EXIT", "REC"),
+		normal(DcbFunctionDone, "DONE"),
+		vacant(),
+		vacant(),
+		vacant(),
+		vacant(),
+		vacant(),
+	)
+
+	return buttons
+}
+
 func (d *Dcb) rangeLabel(state DcbState) string {
 	return strconv.Itoa(clampInt(state.Range, asdexMinRangeSetting, asdexMaxRangeSetting))
 }
@@ -1666,6 +1748,8 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 		return d.brightnessButtonSpecs(state)
 	case DcbMenuTools:
 		return d.toolsButtonSpecs(state)
+	case DcbMenuPlayBack:
+		return d.playBackButtonSpecs(state)
 	case DcbMenuSafetyLogic:
 		return d.safetyLogicButtonSpecs(state)
 	case DcbMenuTowerConfig:

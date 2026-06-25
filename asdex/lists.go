@@ -665,13 +665,14 @@ func (l *CoastList) Render(
 	td *renderer.TextDrawBuilder,
 	font *renderer.BitmapFont,
 	displaySize redsmath.Vec2,
+	now time.Time,
 ) {
 	if l == nil || !l.visible || td == nil || font == nil {
 		return
 	}
 
 	l.list.SetLocation(l.LocationForDisplay(displaySize))
-	l.list.Render(td, font, l.buildFullBlock(time.Now().UTC(), font, displaySize))
+	l.list.Render(td, font, l.buildFullBlock(now.UTC(), font, displaySize))
 }
 
 func (l *CoastList) RenderOverflowArrows(

@@ -40,6 +40,13 @@
             <version>${solace.version}</version>
         </dependency>
 
+        <!-- Local playback chunk compression -->
+        <dependency>
+            <groupId>com.github.luben</groupId>
+            <artifactId>zstd-jni</artifactId>
+            <version>1.5.6-9</version>
+        </dependency>
+
         <!-- JMS API (provided by sol-jms but explicit for IDE clarity) -->
         <dependency>
             <groupId>jakarta.jms</groupId>

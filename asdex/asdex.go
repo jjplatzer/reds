@@ -121,6 +121,11 @@ type ASDEXPane struct {
 	dcbBrightness                   int
 	vectorLength                    int
 	auralVolume                     int
+	playbackHourOffset              int
+	playbackClient                  *redsnet.PlaybackClient
+	playbackSession                 *PlaybackSession
+	playbackResults                 chan PlaybackLoadResult
+	playbackLoadSeq                 uint64
 	previewArea                     PreviewArea
 	coastList                       CoastList
 	alertRepository                 AlertRepository
@@ -260,6 +265,9 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		dcbBrightness:             brightnessDefault,
 		vectorLength:              defaultVectorLengthSeconds,
 		auralVolume:               defaultAuralVolume,
+		playbackHourOffset:        0,
+		playbackClient:            redsnet.NewPlaybackClient(redsnet.PlaybackBaseURL()),
+		playbackResults:           make(chan PlaybackLoadResult, 1),
 		previewArea:               preview,
 		coastList:                 coastList,
 		alertRepository:           NewAlertRepository(auralAlerts),
@@ -345,8 +353,16 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		return
 	}
 
+	wallNow := time.Now().UTC()
+
 	p.ensureCursorsLoaded(ctx)
-	p.consumeNetworkEvents()
+	p.consumePlaybackResults()
+	if p.playbackActiveOrLoading() {
+		p.discardNetworkEvents()
+		p.advancePlayback(wallNow)
+	} else {
+		p.consumeNetworkEvents()
+	}
 	p.consumeCommandKeyboard(ctx)
 	rangeVisibleScale := rangeVisibleScaleForContext(ctx)
 	p.initView(ctx.PaneRect, rangeVisibleScale)
@@ -364,19 +380,19 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		rangeVisibleScale,
 	)
 
-	now := time.Now().UTC()
-	p.expireTemporaryBeaconDisplays(now)
-	p.targets.ExpireRawUnknownTargets(now, unknownTargetStaleLifetime)
-	p.targets.ExpireSuspendedTracks(now)
+	scopeNow := p.scopeNow(wallNow)
+	p.expireTemporaryBeaconDisplays(wallNow)
+	p.targets.ExpireRawUnknownTargets(scopeNow, unknownTargetStaleLifetime)
+	p.targets.ExpireSuspendedTracks(scopeNow)
 	p.targets.UpdateCoastDropTracks(
-		now,
+		scopeNow,
 		aircraftCoastDelay,
 		coastDropLifetime,
 		p.isDestinationCurrentAirport,
 	)
 	p.consumeOpsHotkeys(ctx, transforms)
 	p.coastList.SetVisible(p.showCoastList)
-	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
+	p.coastList.SetEntries(p.buildCoastSuspendEntries(scopeNow))
 	if p.mapReposition == nil && p.mapRotate == nil && p.towerReadout == nil && !p.listRepositionActive() && p.dbAreaDraft == nil && p.dbAreaSelection == nil &&
 		p.tempAreaDraft == nil && p.tempTextCommand == nil && p.tempTextPlacement == nil &&
 		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil && p.deleteWindow == nil &&
@@ -514,7 +530,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 	p.updateTowerReadout(ctx, referenceExtent, rangeVisibleScale)
 	p.applyCurrentCursor(ctx)
-	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
+	p.coastList.SetEntries(p.buildCoastSuspendEntries(scopeNow))
 	targets := p.targets.All()
 	p.previewArea.SetTrackAlertsInhibited(p.targets.AnyAlertsInhibited())
 	alertChanges := p.safetyLogic.Update(targets, SafetyLogicUpdateOptions{
@@ -537,7 +553,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 	alertInhibitedTargetIDs := p.targets.AlertInhibitedIDs()
 	alertInProgress := p.alertRepository.AlertInProgress()
-	alertOn := alertFlashOn(now)
+	alertOn := alertFlashOn(wallNow)
 
 	mainRect := redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y)
 	transforms = p.renderScopeWindow(
@@ -550,7 +566,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		p.mainScopeView(),
 		rangeVisibleScale,
 		targets,
-		now,
+		wallNow,
 		true,
 		alertTargetIDs,
 		alertInhibitedTargetIDs,
@@ -571,7 +587,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			win.View,
 			rangeVisibleScale,
 			targets,
-			now,
+			wallNow,
 			false,
 			alertTargetIDs,
 			alertInhibitedTargetIDs,
@@ -614,7 +630,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if coastTextureID != 0 {
 		td := renderer.GetTextDrawBuilder()
 		td.SetFont(p.fonts.font)
-		p.coastList.Render(td, p.fonts.font, ctx.PaneSize())
+		p.coastList.Render(td, p.fonts.font, ctx.PaneSize(), scopeNow)
 		td.GenerateCommands(listCB, coastTextureID)
 		renderer.ReturnTextDrawBuilder(td)
 	}
@@ -1117,6 +1133,8 @@ func (p *ASDEXPane) dcbState() DcbState {
 		activeSpinnerFunction = DcbFunctionTrackAlertInhibit
 	}
 	fields := p.dbFieldSettings
+	playbackHourOffset := clampInt(p.playbackHourOffset, 0, playbackMaxHourOffset)
+	playbackHour := p.playbackHourStart()
 
 	state := DcbState{
 		Range:                  rangeSetting,
@@ -1133,6 +1151,8 @@ func (p *ASDEXPane) dcbState() DcbState {
 		CursorSpeed:            1,
 		CursorHome:             false,
 		Volume:                 clampInt(p.auralVolume, minAuralVolume, maxAuralVolume),
+		PlaybackHourStart:      playbackHour,
+		PlaybackHourOffset:     playbackHourOffset,
 		FullDataBlocks:         active.DB.FullDataBlocks,
 		ShowAltitude:           fields.ShowAltitude,
 		ShowTargetType:         fields.ShowTargetType,
@@ -1381,6 +1401,10 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return true
 	}
 
+	if p.dcb.Menu() == DcbMenuPlayBack && p.activatePlayBackDcbHit(hit) {
+		return true
+	}
+
 	if p.activateTempDataDcbHit(hit) {
 		return true
 	}
@@ -1433,6 +1457,11 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return true
 	case DcbFunctionTools:
 		p.openToolsMenu()
+		return true
+	case DcbFunctionPlayBack:
+		if p.dcb.Menu() == DcbMenuTools {
+			p.openPlayBackMenu()
+		}
 		return true
 	case DcbFunctionSafetyLogic:
 		p.openSafetyLogicMenu()
@@ -2316,8 +2345,7 @@ func isToolsPlaceholderFunction(function DcbFunction) bool {
 		DcbFunctionDcbLeft,
 		DcbFunctionDcbRight,
 		DcbFunctionDcbBottom,
-		DcbFunctionChangePassword,
-		DcbFunctionPlayBack:
+		DcbFunctionChangePassword:
 		return true
 	default:
 		return false
