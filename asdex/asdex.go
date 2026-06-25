@@ -353,11 +353,13 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		return
 	}
 
+	wallNow := time.Now().UTC()
+
 	p.ensureCursorsLoaded(ctx)
 	p.consumePlaybackResults()
 	if p.playbackActiveOrLoading() {
 		p.discardNetworkEvents()
-		p.advancePlayback(time.Now().UTC())
+		p.advancePlayback(wallNow)
 	} else {
 		p.consumeNetworkEvents()
 	}
@@ -378,19 +380,19 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		rangeVisibleScale,
 	)
 
-	now := time.Now().UTC()
-	p.expireTemporaryBeaconDisplays(now)
-	p.targets.ExpireRawUnknownTargets(now, unknownTargetStaleLifetime)
-	p.targets.ExpireSuspendedTracks(now)
+	scopeNow := p.scopeNow(wallNow)
+	p.expireTemporaryBeaconDisplays(wallNow)
+	p.targets.ExpireRawUnknownTargets(scopeNow, unknownTargetStaleLifetime)
+	p.targets.ExpireSuspendedTracks(scopeNow)
 	p.targets.UpdateCoastDropTracks(
-		now,
+		scopeNow,
 		aircraftCoastDelay,
 		coastDropLifetime,
 		p.isDestinationCurrentAirport,
 	)
 	p.consumeOpsHotkeys(ctx, transforms)
 	p.coastList.SetVisible(p.showCoastList)
-	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
+	p.coastList.SetEntries(p.buildCoastSuspendEntries(scopeNow))
 	if p.mapReposition == nil && p.mapRotate == nil && p.towerReadout == nil && !p.listRepositionActive() && p.dbAreaDraft == nil && p.dbAreaSelection == nil &&
 		p.tempAreaDraft == nil && p.tempTextCommand == nil && p.tempTextPlacement == nil &&
 		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil && p.deleteWindow == nil &&
@@ -528,7 +530,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 	p.updateTowerReadout(ctx, referenceExtent, rangeVisibleScale)
 	p.applyCurrentCursor(ctx)
-	p.coastList.SetEntries(p.buildCoastSuspendEntries(now))
+	p.coastList.SetEntries(p.buildCoastSuspendEntries(scopeNow))
 	targets := p.targets.All()
 	p.previewArea.SetTrackAlertsInhibited(p.targets.AnyAlertsInhibited())
 	alertChanges := p.safetyLogic.Update(targets, SafetyLogicUpdateOptions{
@@ -551,7 +553,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 	alertInhibitedTargetIDs := p.targets.AlertInhibitedIDs()
 	alertInProgress := p.alertRepository.AlertInProgress()
-	alertOn := alertFlashOn(now)
+	alertOn := alertFlashOn(wallNow)
 
 	mainRect := redsmath.RectFromSize(ctx.PaneSize().X, ctx.PaneSize().Y)
 	transforms = p.renderScopeWindow(
@@ -564,7 +566,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		p.mainScopeView(),
 		rangeVisibleScale,
 		targets,
-		now,
+		wallNow,
 		true,
 		alertTargetIDs,
 		alertInhibitedTargetIDs,
@@ -585,7 +587,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			win.View,
 			rangeVisibleScale,
 			targets,
-			now,
+			wallNow,
 			false,
 			alertTargetIDs,
 			alertInhibitedTargetIDs,
@@ -628,7 +630,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if coastTextureID != 0 {
 		td := renderer.GetTextDrawBuilder()
 		td.SetFont(p.fonts.font)
-		p.coastList.Render(td, p.fonts.font, ctx.PaneSize())
+		p.coastList.Render(td, p.fonts.font, ctx.PaneSize(), scopeNow)
 		td.GenerateCommands(listCB, coastTextureID)
 		renderer.ReturnTextDrawBuilder(td)
 	}

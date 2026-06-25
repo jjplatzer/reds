@@ -226,7 +226,7 @@ func (p *ASDEXPane) applyPlaybackLoadResult(result PlaybackLoadResult) {
 			IsFull:    true,
 			Changed:   changed,
 		}
-		p.targets.ApplySmesFrame(frame, p.videomap)
+		p.targets.ApplySmesFrameAt(frame, p.videomap, result.Start)
 	}
 
 	p.playbackSession = &PlaybackSession{
@@ -255,6 +255,20 @@ func (p *ASDEXPane) playbackActiveOrLoading() bool {
 		(p.playbackSession.Active || p.playbackSession.Loading)
 }
 
+func (p *ASDEXPane) scopeNow(wallNow time.Time) time.Time {
+	wallNow = wallNow.UTC()
+
+	if p == nil || p.playbackSession == nil {
+		return wallNow
+	}
+
+	if p.playbackSession.Active && !p.playbackSession.SimTime.IsZero() {
+		return p.playbackSession.SimTime.UTC()
+	}
+
+	return wallNow
+}
+
 func (p *ASDEXPane) advancePlayback(now time.Time) {
 	if p == nil || p.playbackSession == nil || !p.playbackSession.Active {
 		return
@@ -271,7 +285,7 @@ func (p *ASDEXPane) advancePlayback(now time.Time) {
 	for session.Next < len(session.Frames) &&
 		!session.Times[session.Next].After(session.SimTime) {
 		frame := session.Frames[session.Next]
-		p.targets.ApplySmesFrame(frame, p.videomap)
+		p.targets.ApplySmesFrameAt(frame, p.videomap, session.Times[session.Next])
 		session.Next++
 	}
 
