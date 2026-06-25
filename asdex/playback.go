@@ -54,13 +54,6 @@ func (p *ASDEXPane) activatePlayBackDcbHit(hit DcbHit) bool {
 		p.clearHighlightedTarget()
 		return true
 
-	case DcbFunctionPlayBackCurrentHour:
-		p.playbackHourOffset = 0
-		p.updatePlayBackMenuCommand()
-		p.previewArea.SetSystemResponse("")
-		p.clearHighlightedTarget()
-		return true
-
 	default:
 		return false
 	}

@@ -911,9 +911,6 @@ func isLargeDcbFunction(function DcbFunction) bool {
 		DcbFunctionAlertReposition,
 		DcbFunctionVolume,
 		DcbFunctionVolumeTest,
-		DcbFunctionPlayBackPrevHour,
-		DcbFunctionPlayBackNextHour,
-		DcbFunctionPlayBackCurrentHour,
 		DcbFunctionDone,
 		DcbFunctionVacant:
 		return true
@@ -1656,6 +1653,15 @@ func (d *Dcb) playBackButtonSpecs(state DcbState) []DcbButtonSpec {
 			Lines:    append([]string(nil), lines...),
 		})
 	}
+	menuButton := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonMenu,
+			Large:    false,
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
 	vacant := func() DcbButtonSpec {
 		return DcbButtonSpec{
 			Function: DcbFunctionVacant,
@@ -1682,16 +1688,19 @@ func (d *Dcb) playBackButtonSpecs(state DcbState) []DcbButtonSpec {
 		})
 	}
 
-	buttons := make([]DcbButtonSpec, 0, 20)
+	buttons := make([]DcbButtonSpec, 0, dcbColumnCount*2)
 	buttons = append(buttons, vacant())
 	for i := 0; i < 12; i++ {
 		buttons = append(buttons, timeBlock(i))
 	}
 	buttons = append(buttons,
-		normal(DcbFunctionPlayBackPrevHour, "PREV", "HOUR"),
-		normal(DcbFunctionPlayBackNextHour, "NEXT", "HOUR"),
-		normal(DcbFunctionPlayBackCurrentHour, "CUR", "HOUR"),
+		menuButton(DcbFunctionPlayBackPrevHour, "PREV", "HOUR"),
+		menuButton(DcbFunctionPlayBackNextHour, "NEXT", "HOUR"),
 		normal(DcbFunctionDone, "DONE"),
+		vacant(),
+		vacant(),
+		vacant(),
+		vacant(),
 		vacant(),
 		vacant(),
 	)
