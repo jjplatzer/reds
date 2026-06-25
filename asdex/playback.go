@@ -87,6 +87,10 @@ func (p *ASDEXPane) activatePlayBackDcbHit(hit DcbHit) bool {
 		p.clearHighlightedTarget()
 		return true
 
+	case DcbFunctionPlayBackExitRecording:
+		p.exitPlaybackMode()
+		return true
+
 	default:
 		return false
 	}
@@ -295,19 +299,26 @@ func (p *ASDEXPane) advancePlayback(now time.Time) {
 }
 
 func (p *ASDEXPane) finishPlayback() {
+	p.exitPlaybackMode()
+}
+
+func (p *ASDEXPane) exitPlaybackMode() {
 	if p == nil {
 		return
 	}
 
+	p.playbackLoadSeq++
 	p.playbackSession = nil
 	p.targets.Clear()
 	clear(p.showBeaconUntilByTargetID)
 
 	if p.smes != nil {
 		p.smes.SetAirport(p.airport)
+		p.discardNetworkEvents()
 	}
 
 	p.previewArea.SetSystemResponse("PLAYBACK END")
+	p.clearHighlightedTarget()
 }
 
 func (p *ASDEXPane) discardNetworkEvents() {

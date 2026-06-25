@@ -133,6 +133,7 @@ const (
 	DcbFunctionPlayBackPrevHour
 	DcbFunctionPlayBackNextHour
 	DcbFunctionPlayBackCurrentHour
+	DcbFunctionPlayBackExitRecording
 	DcbFunctionArrivalAlerts
 	DcbFunctionTrackAlertInhibit
 	DcbFunctionAllTracksEnableAlerts
@@ -911,6 +912,7 @@ func isLargeDcbFunction(function DcbFunction) bool {
 		DcbFunctionAlertReposition,
 		DcbFunctionVolume,
 		DcbFunctionVolumeTest,
+		DcbFunctionPlayBackExitRecording,
 		DcbFunctionDone,
 		DcbFunctionVacant:
 		return true
@@ -1696,8 +1698,8 @@ func (d *Dcb) playBackButtonSpecs(state DcbState) []DcbButtonSpec {
 	buttons = append(buttons,
 		menuButton(DcbFunctionPlayBackPrevHour, "PREV", "HOUR"),
 		menuButton(DcbFunctionPlayBackNextHour, "NEXT", "HOUR"),
+		normal(DcbFunctionPlayBackExitRecording, "EXIT", "REC"),
 		normal(DcbFunctionDone, "DONE"),
-		vacant(),
 		vacant(),
 		vacant(),
 		vacant(),
