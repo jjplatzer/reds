@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const defaultSmesJar = "swim/smes/target/faascope-stdds-1.0-SNAPSHOT.jar"
+const defaultSmesJar = "server/smes/target/faascope-stdds-1.0-SNAPSHOT.jar"
 
 type smesConsumer struct {
 	mu sync.Mutex

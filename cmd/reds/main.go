@@ -10,6 +10,7 @@ import (
 	"os"
 
 	"github.com/juliusplatzer/reds/asdex"
+	redsnet "github.com/juliusplatzer/reds/net"
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/platform"
 	"github.com/juliusplatzer/reds/renderer"
@@ -131,12 +132,17 @@ func main() {
 func launchScope(sel Selection, plat platform.Platform, consumer *smesConsumer) (panes.Pane, error) {
 	switch sel.Mode {
 	case DisplayASDEX:
-		if err := consumer.Start(sel.Airport); err != nil {
-			return nil, err
+		usePublicServer := redsnet.UsePublicServer()
+		if !usePublicServer {
+			if err := consumer.Start(sel.Airport); err != nil {
+				return nil, err
+			}
 		}
 		pane, err := asdex.NewPane(sel.Airport)
 		if err != nil {
-			consumer.Stop()
+			if !usePublicServer {
+				consumer.Stop()
+			}
 			return nil, err
 		}
 		plat.SetWindowTitle(sel.Airport + " ASDE-X")

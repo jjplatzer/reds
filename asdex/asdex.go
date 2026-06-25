@@ -233,7 +233,7 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	auralAlerts.SetVolume(defaultAuralVolume)
 	configAirport := loadConfigAirportCode(airport)
 
-	client := redsnet.NewSmesClient(targetWebSocketURL())
+	client := redsnet.NewSmesClient(redsnet.TargetWebSocketURL())
 	client.SetAirport(airport)
 	client.Start()
 
@@ -5403,20 +5403,6 @@ func targetTimeoutSeconds(until, now time.Time) float64 {
 		return 0
 	}
 	return until.Sub(now).Seconds()
-}
-
-func targetWebSocketURL() string {
-	if value := os.Getenv("REDS_TARGET_WS_URL"); value != "" {
-		return value
-	}
-	if value := os.Getenv("NASCOPE_TARGET_WS_URL"); value != "" {
-		return value
-	}
-	port := os.Getenv("WS_PORT")
-	if port == "" {
-		port = "8080"
-	}
-	return "ws://localhost:" + port + "/ws"
 }
 
 func (p *ASDEXPane) consumeNetworkEvents() {

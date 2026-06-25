@@ -130,7 +130,7 @@ jobs:
 
       - name: Build SMES reader jar
         shell: pwsh
-        run: mvn -B -f swim/smes/pom.xml -DskipTests package
+        run: mvn -B -f server/smes/pom.xml -DskipTests package
 
       - name: Build REDS frontend
         shell: pwsh
@@ -149,11 +149,11 @@ jobs:
             Write-Error "Missing build/reds.exe"
             exit 1
           }
-          if (!(Test-Path swim/smes/target/faascope-stdds-1.0-SNAPSHOT.jar)) {
+          if (!(Test-Path server/smes/target/faascope-stdds-1.0-SNAPSHOT.jar)) {
             Write-Error "Missing SMES reader jar"
             exit 1
           }
-          Get-Item build/reds.exe, swim/smes/target/faascope-stdds-1.0-SNAPSHOT.jar | Format-Table FullName, Length
+          Get-Item build/reds.exe, server/smes/target/faascope-stdds-1.0-SNAPSHOT.jar | Format-Table FullName, Length
 
       - name: Upload Windows build artifacts
         uses: actions/upload-artifact@v4
@@ -161,5 +161,5 @@ jobs:
           name: reds-windows-build
           path: |
             build/reds.exe
-            swim/smes/target/faascope-stdds-1.0-SNAPSHOT.jar
+            server/smes/target/faascope-stdds-1.0-SNAPSHOT.jar
           if-no-files-found: error

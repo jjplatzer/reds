@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 	"sync"
 	"time"
@@ -107,7 +108,8 @@ func (c *SmesClient) run() {
 		default:
 		}
 
-		conn, _, err := websocket.DefaultDialer.Dial(c.url, nil)
+		headers := http.Header{}
+		conn, _, err := websocket.DefaultDialer.Dial(c.url, headers)
 		if err != nil {
 			c.reportError(fmt.Errorf("connect SMES websocket %s: %w", c.url, err))
 			c.reportStatus(SmesStatusDisconnected, err)

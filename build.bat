@@ -1,7 +1,7 @@
 @echo off
 setlocal DisableDelayedExpansion
 
-REM Build reds and its SWIM/Solace target reader on Windows, then run the GUI.
+REM Build reds and, in local mode, its SWIM/Solace target reader, then run the GUI.
 REM
 REM Usage: build.bat [options]
 REM
@@ -9,14 +9,13 @@ REM Options:
 REM   --check       Run gofmt check before building
 REM   --test        Run go test ./... after building
 REM   --all         Run checks and tests, then build/run
-REM   --build-only  Build build\reds.exe and the SMES jar, but do not run the GUI
+REM   --build-only  Build required artifacts, but do not run the GUI
 REM   --no-run      Alias for --build-only
 REM   --help        Show this help message
 REM
 REM Prerequisites:
 REM   - Go installed and in PATH, matching go.mod
-REM   - JDK 21 installed and in PATH
-REM   - Maven installed and in PATH
+REM   - JDK 21 and Maven in PATH when USE_PUBLIC_SERVER=false
 REM   - MSYS2 UCRT64 toolchain with GCC, pkgconf, and GLFW:
 REM       C:\msys64\usr\bin\pacman.exe -S --needed --noconfirm ^
 REM         base-devel ^
@@ -53,7 +52,7 @@ echo Options:
 echo   --check       Run gofmt check before building
 echo   --test        Run go test ./... after building
 echo   --all         Run checks and tests, then build/run
-echo   --build-only  Build build\reds.exe and the SMES jar, but do not run the GUI
+echo   --build-only  Build required artifacts, but do not run the GUI
 echo   --no-run      Alias for --build-only
 echo   --help        Show this help message
 echo.
@@ -70,6 +69,14 @@ if exist ".env" (
 )
 
 if not defined WS_PORT set "WS_PORT=8080"
+if not defined USE_PUBLIC_SERVER set "USE_PUBLIC_SERVER=true"
+
+set "USE_PUBLIC_SERVER_ENABLED=0"
+if /I "%USE_PUBLIC_SERVER%"=="1" set "USE_PUBLIC_SERVER_ENABLED=1"
+if /I "%USE_PUBLIC_SERVER%"=="true" set "USE_PUBLIC_SERVER_ENABLED=1"
+if /I "%USE_PUBLIC_SERVER%"=="yes" set "USE_PUBLIC_SERVER_ENABLED=1"
+if /I "%USE_PUBLIC_SERVER%"=="on" set "USE_PUBLIC_SERVER_ENABLED=1"
+
 set "CGO_ENABLED=1"
 
 call :configure_msys2
@@ -85,14 +92,19 @@ if "%DO_CHECK%"=="1" (
 
 if not exist "build" mkdir build
 
-REM Build order mirrors build.sh semantically: frontend + SMES reader before run.
+REM Build order mirrors build.sh semantically.
 echo [build] Building reds ^(Go frontend^)...
 go build -v -o build\reds.exe .\cmd\reds
 if errorlevel 1 exit /b 1
 
-echo [build] Building SMES reader...
-mvn -B -f swim\smes\pom.xml -DskipTests package
-if errorlevel 1 exit /b 1
+if "%USE_PUBLIC_SERVER_ENABLED%"=="0" (
+    echo [build] Building SMES reader...
+    mvn -B -f server\smes\pom.xml -DskipTests package
+    if errorlevel 1 exit /b 1
+) else (
+    echo [build] Public REDS server enabled: wss://reds-stdds-live.jjplatzer.com/ws
+    echo [build] Skipping local SMES build.
+)
 
 if "%DO_TEST%"=="1" (
     echo [test] Running Go tests...
@@ -105,8 +117,12 @@ if "%DO_RUN%"=="0" (
     exit /b 0
 )
 
-call :kill_stale_listener
-if errorlevel 1 exit /b 1
+if "%USE_PUBLIC_SERVER_ENABLED%"=="0" (
+    call :kill_stale_listener
+    if errorlevel 1 exit /b 1
+) else (
+    echo [run] Skipping stale :%WS_PORT% listener cleanup.
+)
 
 echo [run] Launching reds...
 build\reds.exe
@@ -159,23 +175,27 @@ if errorlevel 1 (
     echo Error: Go was not found in PATH.
     exit /b 1
 )
-where java >nul 2>nul
-if errorlevel 1 (
-    echo Error: Java was not found in PATH. Install JDK 21.
-    exit /b 1
-)
-where mvn >nul 2>nul
-if errorlevel 1 (
-    echo Error: Maven was not found in PATH.
-    exit /b 1
+if "%USE_PUBLIC_SERVER_ENABLED%"=="0" (
+    where java >nul 2>nul
+    if errorlevel 1 (
+        echo Error: Java was not found in PATH. Install JDK 21.
+        exit /b 1
+    )
+    where mvn >nul 2>nul
+    if errorlevel 1 (
+        echo Error: Maven was not found in PATH.
+        exit /b 1
+    )
 )
 
 echo [tools] Go:
 go version
-echo [tools] Java:
-java -version
-echo [tools] Maven:
-mvn -version
+if "%USE_PUBLIC_SERVER_ENABLED%"=="0" (
+    echo [tools] Java:
+    java -version
+    echo [tools] Maven:
+    mvn -version
+)
 echo [tools] GCC:
 "%CC%" --version
 echo [tools] GLFW:
