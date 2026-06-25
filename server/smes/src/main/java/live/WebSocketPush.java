@@ -4,9 +4,12 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import playback.PlaybackCatalog;
+import playback.PlaybackConfig;
 import store.AirportFilter;
 import store.TargetStore;
 
@@ -34,14 +37,18 @@ public final class WebSocketPush extends AbstractVerticle {
     private final Map<ServerWebSocket, ClientConnection> clients = new ConcurrentHashMap<>();
     private ServerConfig config;
     private IpLimiter ipLimiter;
+    private PlaybackConfig playbackConfig;
 
     @Override
     public void start(Promise<Void> startPromise) {
         config = ServerConfig.fromEnv();
+        playbackConfig = PlaybackConfig.fromEnv();
         ipLimiter = new IpLimiter(config);
 
         HttpServer server = vertx.createHttpServer(new HttpServerOptions()
                 .setMaxWebSocketFrameSize(config.maxInboundBytes));
+
+        server.requestHandler(this::handleHttpRequest);
 
         server.webSocketHandler(ws -> {
             if (!"/ws".equals(ws.path())) {
@@ -192,6 +199,21 @@ public final class WebSocketPush extends AbstractVerticle {
             if (icao.matches("[A-Z]{4}")) next.add(icao);
         }
         return Collections.unmodifiableSet(next);
+    }
+
+    private void handleHttpRequest(HttpServerRequest req) {
+        if ("GET".equals(req.method().name()) && "/playback/availability".equals(req.path())) {
+            String airport = req.getParam("airport");
+
+            JsonObject body = PlaybackCatalog.availability(playbackConfig, airport);
+
+            req.response()
+                    .putHeader("content-type", "application/json")
+                    .end(body.encode());
+            return;
+        }
+
+        req.response().setStatusCode(404).end("not found\n");
     }
 
 }
