@@ -122,6 +122,10 @@ type ASDEXPane struct {
 	vectorLength                    int
 	auralVolume                     int
 	playbackHourOffset              int
+	playbackClient                  *redsnet.PlaybackClient
+	playbackSession                 *PlaybackSession
+	playbackResults                 chan PlaybackLoadResult
+	playbackLoadSeq                 uint64
 	previewArea                     PreviewArea
 	coastList                       CoastList
 	alertRepository                 AlertRepository
@@ -262,6 +266,8 @@ func NewPane(airport string) (*ASDEXPane, error) {
 		vectorLength:              defaultVectorLengthSeconds,
 		auralVolume:               defaultAuralVolume,
 		playbackHourOffset:        0,
+		playbackClient:            redsnet.NewPlaybackClient(redsnet.PlaybackBaseURL()),
+		playbackResults:           make(chan PlaybackLoadResult, 1),
 		previewArea:               preview,
 		coastList:                 coastList,
 		alertRepository:           NewAlertRepository(auralAlerts),
@@ -348,7 +354,13 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 
 	p.ensureCursorsLoaded(ctx)
-	p.consumeNetworkEvents()
+	p.consumePlaybackResults()
+	if p.playbackActiveOrLoading() {
+		p.discardNetworkEvents()
+		p.advancePlayback(time.Now().UTC())
+	} else {
+		p.consumeNetworkEvents()
+	}
 	p.consumeCommandKeyboard(ctx)
 	rangeVisibleScale := rangeVisibleScaleForContext(ctx)
 	p.initView(ctx.PaneRect, rangeVisibleScale)

@@ -5,7 +5,10 @@ import (
 	"strings"
 )
 
-const PublicTargetWebSocketURL = "wss://reds-stdds-live.jjplatzer.com/ws"
+const (
+	PublicTargetWebSocketURL = "wss://reds-stdds-live.jjplatzer.com/ws"
+	PublicPlaybackBaseURL    = "https://reds-stdds-live.jjplatzer.com/playback"
+)
 
 func UsePublicServer() bool {
 	return boolEnv("USE_PUBLIC_SERVER", true)
@@ -21,6 +24,22 @@ func TargetWebSocketURL() string {
 		port = "8080"
 	}
 	return "ws://localhost:" + port + "/ws"
+}
+
+func PlaybackBaseURL() string {
+	if override := strings.TrimSpace(os.Getenv("PLAYBACK_BASE_URL")); override != "" {
+		return strings.TrimRight(override, "/")
+	}
+
+	if UsePublicServer() {
+		return PublicPlaybackBaseURL
+	}
+
+	port := strings.TrimSpace(os.Getenv("WS_PORT"))
+	if port == "" {
+		port = "8080"
+	}
+	return "http://localhost:" + port + "/playback"
 }
 
 func boolEnv(key string, def bool) bool {
