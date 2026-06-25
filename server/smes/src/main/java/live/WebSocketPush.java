@@ -8,6 +8,7 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import playback.PlaybackBootstrapReader;
 import playback.PlaybackCatalog;
 import playback.PlaybackConfig;
 import playback.PlaybackRangeReader;
@@ -221,6 +222,27 @@ public final class WebSocketPush extends AbstractVerticle {
 
             vertx.<PlaybackRangeReader.RangeResult>executeBlocking(promise -> {
                 promise.complete(PlaybackRangeReader.readRange(playbackConfig, airport, from, to));
+            }).onSuccess(result -> {
+                req.response()
+                        .setStatusCode(result.statusCode())
+                        .putHeader("content-type", result.contentType())
+                        .end(result.body());
+            }).onFailure(err -> {
+                req.response()
+                        .setStatusCode(500)
+                        .putHeader("content-type", "application/json")
+                        .end(new JsonObject().put("error", err.getMessage()).encode());
+            });
+
+            return;
+        }
+
+        if ("GET".equals(req.method().name()) && "/playback/bootstrap".equals(req.path())) {
+            String airport = req.getParam("airport");
+            String at = req.getParam("at");
+
+            vertx.<PlaybackBootstrapReader.BootstrapResult>executeBlocking(promise -> {
+                promise.complete(PlaybackBootstrapReader.bootstrap(playbackConfig, airport, at));
             }).onSuccess(result -> {
                 req.response()
                         .setStatusCode(result.statusCode())

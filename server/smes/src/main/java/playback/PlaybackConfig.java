@@ -11,6 +11,7 @@ public final class PlaybackConfig {
     public final boolean zstdEnabled;
     public final int maxRangeMinutes;
     public final int maxResponseBytes;
+    public final int bootstrapLookbackMinutes;
 
     private PlaybackConfig(
             boolean enabled,
@@ -20,7 +21,8 @@ public final class PlaybackConfig {
             int flushIntervalSeconds,
             boolean zstdEnabled,
             int maxRangeMinutes,
-            int maxResponseBytes
+            int maxResponseBytes,
+            int bootstrapLookbackMinutes
     ) {
         this.enabled = enabled;
         this.dir = dir;
@@ -30,6 +32,7 @@ public final class PlaybackConfig {
         this.zstdEnabled = zstdEnabled;
         this.maxRangeMinutes = maxRangeMinutes;
         this.maxResponseBytes = maxResponseBytes;
+        this.bootstrapLookbackMinutes = bootstrapLookbackMinutes;
     }
 
     public static PlaybackConfig fromEnv() {
@@ -41,7 +44,8 @@ public final class PlaybackConfig {
                 intEnv("REDS_PLAYBACK_FLUSH_INTERVAL_SECONDS", 5),
                 boolEnv("REDS_PLAYBACK_COMPRESS_ZSTD", true),
                 intEnv("REDS_PLAYBACK_MAX_RANGE_MINUTES", 30),
-                intEnv("REDS_PLAYBACK_MAX_RESPONSE_BYTES", 10 * 1024 * 1024)
+                intEnv("REDS_PLAYBACK_MAX_RESPONSE_BYTES", 10 * 1024 * 1024),
+                intEnv("REDS_PLAYBACK_BOOTSTRAP_LOOKBACK_MINUTES", 30)
         );
     }
 
