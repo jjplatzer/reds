@@ -8,6 +8,7 @@ final class ClientConnection {
     final ServerWebSocket ws;
     final String ip;
     final long connectedAtMs;
+    volatile long lastActivityMs;
 
     volatile Set<String> airports = Set.of();
 
@@ -18,6 +19,7 @@ final class ClientConnection {
         this.ws = ws;
         this.ip = ip;
         this.connectedAtMs = System.currentTimeMillis();
+        this.lastActivityMs = this.connectedAtMs;
     }
 
     boolean accepts(String airport) {
@@ -33,6 +35,15 @@ final class ClientConnection {
 
         messagesThisWindow++;
         return messagesThisWindow <= config.maxMessagesPerMinute;
+    }
+
+    void markActivity(long nowMs) {
+        lastActivityMs = nowMs;
+    }
+
+    boolean inactiveFor(ServerConfig config, long nowMs) {
+        if (config.clientInactivitySeconds <= 0) return false;
+        return nowMs - lastActivityMs > config.clientInactivitySeconds * 1000L;
     }
 
     void sendLimitAndClose(String reason) {

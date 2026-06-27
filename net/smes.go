@@ -12,9 +12,13 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-const smesReconnectDelay = 2 * time.Second
+const (
+	smesReconnectDelay      = 2 * time.Second
+	smesActivityMinInterval = 30 * time.Second
+)
 
 var errSmesClientClosed = errors.New("SMES client closed")
+var errSmesClientInactive = errors.New("SMES client inactive")
 
 type SmesClient struct {
 	url string
@@ -23,6 +27,7 @@ type SmesClient struct {
 	errors        chan error
 	status        chan SmesStatusEvent
 	airportChange chan struct{}
+	activity      chan struct{}
 	close         chan struct{}
 
 	startOnce sync.Once
@@ -41,6 +46,7 @@ func NewSmesClient(url string) *SmesClient {
 		errors:        make(chan error, 16),
 		status:        make(chan SmesStatusEvent, 1),
 		airportChange: make(chan struct{}, 1),
+		activity:      make(chan struct{}, 1),
 		close:         make(chan struct{}),
 	}
 }
@@ -75,6 +81,17 @@ func (c *SmesClient) SetAirport(icao string) {
 
 	select {
 	case c.airportChange <- struct{}{}:
+	default:
+	}
+}
+
+func (c *SmesClient) ReportActivity() {
+	if c == nil {
+		return
+	}
+
+	select {
+	case c.activity <- struct{}{}:
 	default:
 	}
 }
@@ -122,6 +139,12 @@ func (c *SmesClient) run() {
 		err = c.serve(conn)
 		_ = conn.Close()
 		c.reportStatus(SmesStatusDisconnected, err)
+		if errors.Is(err, errSmesClientInactive) {
+			if !c.waitForActivity() {
+				return
+			}
+			continue
+		}
 		if err != nil && !errors.Is(err, errSmesClientClosed) {
 			c.reportError(fmt.Errorf("SMES websocket %s: %w", c.url, err))
 		}
@@ -137,6 +160,8 @@ func (c *SmesClient) serve(conn *websocket.Conn) error {
 	}
 	c.reportStatus(SmesStatusConnected, nil)
 
+	lastActivitySent := time.Now().UTC()
+
 	readError := make(chan error, 1)
 	go func() {
 		readError <- c.readFrames(conn)
@@ -149,6 +174,14 @@ func (c *SmesClient) serve(conn *websocket.Conn) error {
 		case <-c.airportChange:
 			if err := c.writeAirport(conn); err != nil {
 				return err
+			}
+		case <-c.activity:
+			now := time.Now().UTC()
+			if now.Sub(lastActivitySent) >= smesActivityMinInterval {
+				if err := c.writeActivity(conn); err != nil {
+					return err
+				}
+				lastActivitySent = now
 			}
 		case err := <-readError:
 			return err
@@ -166,6 +199,12 @@ func (c *SmesClient) readFrames(conn *websocket.Conn) error {
 		var frame SmesFrame
 		if err := json.Unmarshal(payload, &frame); err != nil {
 			c.reportError(fmt.Errorf("decode SMES frame: %w", err))
+			continue
+		}
+		if frame.Type == "limit" {
+			if frame.Reason == "inactivity_timeout" {
+				return errSmesClientInactive
+			}
 			continue
 		}
 		if frame.Type == "connected" || frame.Key == "" {
@@ -192,6 +231,12 @@ func (c *SmesClient) writeAirport(conn *websocket.Conn) error {
 	return conn.WriteJSON(SetAirportsMessage{
 		Type:     "setAirports",
 		Airports: airports,
+	})
+}
+
+func (c *SmesClient) writeActivity(conn *websocket.Conn) error {
+	return conn.WriteJSON(ActivityMessage{
+		Type: "activity",
 	})
 }
 
@@ -226,6 +271,15 @@ func (c *SmesClient) reportStatus(status SmesStatus, err error) {
 	select {
 	case c.status <- event:
 	default:
+	}
+}
+
+func (c *SmesClient) waitForActivity() bool {
+	select {
+	case <-c.activity:
+		return true
+	case <-c.close:
+		return false
 	}
 }
 

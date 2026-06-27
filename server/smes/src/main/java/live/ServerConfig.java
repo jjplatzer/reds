@@ -18,6 +18,7 @@ final class ServerConfig {
     final int maxMessagesPerMinute;
     final int subscribeTimeoutSeconds;
     final int reconnectCooldownSeconds;
+    final int clientInactivitySeconds;
 
     private ServerConfig(
             String host,
@@ -31,7 +32,8 @@ final class ServerConfig {
             int maxInboundBytes,
             int maxMessagesPerMinute,
             int subscribeTimeoutSeconds,
-            int reconnectCooldownSeconds
+            int reconnectCooldownSeconds,
+            int clientInactivitySeconds
     ) {
         this.host = host;
         this.port = port;
@@ -45,6 +47,7 @@ final class ServerConfig {
         this.maxMessagesPerMinute = maxMessagesPerMinute;
         this.subscribeTimeoutSeconds = subscribeTimeoutSeconds;
         this.reconnectCooldownSeconds = reconnectCooldownSeconds;
+        this.clientInactivitySeconds = clientInactivitySeconds;
     }
 
     static ServerConfig fromEnv() {
@@ -69,7 +72,8 @@ final class ServerConfig {
                 intEnv("REDS_MAX_INBOUND_BYTES", 2048),
                 intEnv("REDS_MAX_MESSAGES_PER_MINUTE", 10),
                 intEnv("REDS_SUBSCRIBE_TIMEOUT_SECONDS", 10),
-                intEnv("REDS_RECONNECT_COOLDOWN_SECONDS", 5)
+                intEnv("REDS_RECONNECT_COOLDOWN_SECONDS", 5),
+                intEnv("REDS_CLIENT_INACTIVITY_SECONDS", 600)
         );
     }
 

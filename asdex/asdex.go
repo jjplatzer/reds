@@ -348,6 +348,52 @@ func (p *ASDEXPane) showBeaconCodeForTarget(target *Target, now time.Time) bool 
 	return ok && until.After(now)
 }
 
+func (p *ASDEXPane) reportClientActivity(ctx *panes.Context) {
+	if p == nil || p.smes == nil || ctx == nil {
+		return
+	}
+
+	if mouseActivity(ctx.Mouse) || keyboardActivity(ctx.Keyboard) {
+		p.smes.ReportActivity()
+	}
+}
+
+func mouseActivity(mouse *platform.MouseState) bool {
+	if mouse == nil {
+		return false
+	}
+
+	if abs32(mouse.Delta.X) > 0.01 || abs32(mouse.Delta.Y) > 0.01 {
+		return true
+	}
+	if mouse.Wheel.X != 0 || mouse.Wheel.Y != 0 {
+		return true
+	}
+
+	for i := platform.MouseButton(0); i < platform.MouseButtonCount; i++ {
+		if mouse.WasPressed(i) || mouse.WasReleased(i) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func keyboardActivity(keyboard *platform.KeyboardState) bool {
+	if keyboard == nil {
+		return false
+	}
+
+	if len(keyboard.Text) > 0 {
+		return true
+	}
+	if len(keyboard.Pressed) > 0 || len(keyboard.Released) > 0 {
+		return true
+	}
+
+	return false
+}
+
 func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if ctx == nil || zcb == nil || p == nil {
 		return
@@ -355,6 +401,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	wallNow := time.Now().UTC()
 
+	p.reportClientActivity(ctx)
 	p.ensureCursorsLoaded(ctx)
 	p.consumePlaybackResults()
 	if p.playbackActiveOrLoading() {
