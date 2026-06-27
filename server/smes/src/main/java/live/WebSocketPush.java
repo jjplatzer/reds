@@ -114,7 +114,15 @@ public final class WebSocketPush extends AbstractVerticle {
 
                 JsonObject msg;
                 try { msg = new JsonObject(text); } catch (Exception ignored) { return; }
-                if ("setAirports".equals(msg.getString("type", ""))) {
+                String type = msg.getString("type", "");
+
+                if ("activity".equals(type)) {
+                    client.markActivity(msgNowMs);
+                    return;
+                }
+
+                if ("setAirports".equals(type)) {
+                    client.markActivity(msgNowMs);
                     client.airports = parseAirports(
                             msg.getJsonArray("airports"),
                             config.maxAirportsPerConnection
@@ -142,6 +150,11 @@ public final class WebSocketPush extends AbstractVerticle {
             }
         });
 
+        if (config.clientInactivitySeconds > 0) {
+            long checkMs = Math.min(30_000L, Math.max(1_000L, config.clientInactivitySeconds * 500L));
+            vertx.setPeriodic(checkMs, ignored -> closeInactiveClients());
+        }
+
         server.listen(config.port, config.host)
                 .onSuccess(s -> {
                     System.out.println("[WS] Listening on ws://" + config.host + ":" + config.port
@@ -157,6 +170,19 @@ public final class WebSocketPush extends AbstractVerticle {
         ClientConnection client = clients.remove(ws);
         if (client != null) ipLimiter.remove(client);
         publishUnionFilter();
+    }
+
+    private void closeInactiveClients() {
+        long nowMs = System.currentTimeMillis();
+
+        for (ClientConnection client : clients.values()) {
+            ServerWebSocket ws = client.ws;
+            if (ws.isClosed()) continue;
+
+            if (client.inactiveFor(config, nowMs)) {
+                client.sendLimitAndClose("inactivity_timeout");
+            }
+        }
     }
 
     private void publishUnionFilter() {

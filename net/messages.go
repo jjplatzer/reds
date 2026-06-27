@@ -21,6 +21,7 @@ type SmesFrame struct {
 	UpdatedAt string                     `json:"updatedAt,omitempty"`
 	IsFull    bool                       `json:"isFull,omitempty"`
 	Removed   bool                       `json:"removed,omitempty"`
+	Reason    string                     `json:"reason,omitempty"`
 	Changed   map[string]json.RawMessage `json:"changed,omitempty"`
 }
 
@@ -36,4 +37,8 @@ type PlaybackBootstrapResponse struct {
 type SetAirportsMessage struct {
 	Type     string   `json:"type"`
 	Airports []string `json:"airports"`
+}
+
+type ActivityMessage struct {
+	Type string `json:"type"`
 }
