@@ -626,14 +626,18 @@ func (l *CoastList) HitTest(
 	if l == nil || !l.visible || asdexFont == nil {
 		return CoastListEntryHit{}
 	}
-	if l.headerBounds(asdexFont, displaySize).Contains(point) {
-		return CoastListEntryHit{Hit: true, Type: CoastListHitHeader}
-	}
+
+	// Arrows sit visually adjacent to the header and should win hit-testing.
+	// Otherwise an up-arrow click can be interpreted as a header click and
+	// ToggleExpanded collapses/expands the list instead of paging.
 	if bounds := l.upArrowBounds(asdexFont, eramTextFont, displaySize); !bounds.Empty() && bounds.Contains(point) {
 		return CoastListEntryHit{Hit: true, Type: CoastListHitUpArrow}
 	}
 	if bounds := l.downArrowBounds(asdexFont, eramTextFont, displaySize); !bounds.Empty() && bounds.Contains(point) {
 		return CoastListEntryHit{Hit: true, Type: CoastListHitDownArrow}
+	}
+	if l.headerBounds(asdexFont, displaySize).Contains(point) {
+		return CoastListEntryHit{Hit: true, Type: CoastListHitHeader}
 	}
 
 	ordered := l.orderedEntries()
