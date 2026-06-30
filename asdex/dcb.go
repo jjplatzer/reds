@@ -980,7 +980,7 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 		value(DcbFunctionRotate, false, "", "ROTATE"),
 		normal(DcbFunctionUndo, "UNDO"),
 		normal(DcbFunctionDefault, "DEFAULT"),
-		menu(DcbFunctionPrefs, "PREF"),
+		menu(DcbFunctionPrefs, "PREF", ""),
 		toggle(DcbFunctionDayNite, state.Mode == ModeDay, "DAY", "NITE"),
 		menu(DcbFunctionBrightness, "BRITE"),
 		menu(DcbFunctionCharSize, "CHAR", "SIZE"),
@@ -2141,6 +2141,12 @@ func (d *Dcb) drawCenteredTextLines(
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
 		if line == "" {
+			_, height := font.MeasureText("M", fontSize)
+			if height <= 0 {
+				continue
+			}
+			measured = append(measured, measuredLine{text: "", width: 0, height: height})
+			totalHeight += height
 			continue
 		}
 
@@ -2164,8 +2170,10 @@ func (d *Dcb) drawCenteredTextLines(
 	}
 
 	for i, line := range measured {
-		x := bounds.Min.X + (bounds.Width()-float32(line.width))*0.5
-		td.AddText(line.text, redsmath.Vec2{X: x, Y: y}, style)
+		if line.text != "" {
+			x := bounds.Min.X + (bounds.Width()-float32(line.width))*0.5
+			td.AddText(line.text, redsmath.Vec2{X: x, Y: y}, style)
+		}
 
 		y += float32(line.height)
 		if i != len(measured)-1 {
