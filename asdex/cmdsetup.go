@@ -229,6 +229,8 @@ type MapRepositionCommand struct {
 	WindowID       ScopeWindowID
 	originalCenter redsmath.Vec2
 	initialized    bool
+	UndoCaptured   bool
+	UndoBefore     UndoSnapshot
 }
 
 func NewMapRepositionCommand(windowID ScopeWindowID, center redsmath.Vec2) *MapRepositionCommand {
@@ -253,6 +255,8 @@ type MapRotateCommand struct {
 	originalRotation float32
 	displayLines     []string
 	returnMenu       DcbMenu
+	UndoCaptured     bool
+	UndoBefore       UndoSnapshot
 }
 
 type RunwayConfigCommand struct {
@@ -589,6 +593,22 @@ func towerReadoutValues(
 func registerSetupCommands() {
 	registerCommand(
 		CommandModeNone,
+		"[UNDO]",
+		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
+			return ap.cmdUndo(ctx)
+		},
+	)
+
+	registerCommand(
+		CommandModeNone,
+		"[DEFAULT]",
+		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
+			return ap.cmdDefault(ctx)
+		},
+	)
+
+	registerCommand(
+		CommandModeNone,
 		"[VOL TEST]",
 		func(ap *ASDEXPane, ctx *panes.Context) CommandStatus {
 			return ap.cmdVolumeTest(ctx)
@@ -807,11 +827,13 @@ func (ap *ASDEXPane) cmdDataBlocksOnOff(_ *panes.Context) CommandStatus {
 		return CommandStatus{Clear: ClearAll}
 	}
 
+	before := ap.pushUndoBeforeMutation()
 	windowID := ap.activeWindowID()
 	ap.updateActiveDataBlockSettings(func(settings *DataBlockSettings) {
 		settings.ShowDataBlocks = !settings.ShowDataBlocks
 	})
 	ap.clearTargetShowDBOverrides(windowID)
+	ap.commitUndoIfChanged(before)
 
 	return CommandStatus{
 		Clear:     ClearAll,
@@ -1077,7 +1099,9 @@ func (ap *ASDEXPane) cmdPreviewRepositionSlew(
 		ctx.PaneSize(),
 		ap.previewArea.RepositionSize(),
 	)
+	before := ap.pushUndoBeforeMutation()
 	ap.previewArea.SetLocation(pos, ctx.PaneSize())
+	ap.commitUndoIfChanged(before)
 
 	return CommandStatus{
 		Clear:     ClearAll,
@@ -1099,7 +1123,9 @@ func (ap *ASDEXPane) cmdCoastListRepositionSlew(
 		ctx.PaneSize(),
 		ap.coastList.RepositionSize(),
 	)
+	before := ap.pushUndoBeforeMutation()
 	ap.coastList.SetLocation(pos, ctx.PaneSize())
+	ap.commitUndoIfChanged(before)
 
 	return CommandStatus{
 		Clear:     ClearAll,
@@ -1160,10 +1186,12 @@ func (ap *ASDEXPane) cmdLeaderDirectionAll(
 	}
 
 	windowID := ap.activeWindowID()
+	before := ap.pushUndoBeforeMutation()
 	ap.updateActiveDataBlockSettings(func(settings *DataBlockSettings) {
 		settings.LeaderDirection = input.Direction
 	})
 	ap.clearLeaderDirectionOverrides(windowID)
+	ap.commitUndoIfChanged(before)
 
 	return CommandStatus{
 		Clear:     ClearAll,
@@ -1190,11 +1218,13 @@ func (ap *ASDEXPane) cmdLeaderDirectionSlew(
 		return commandOutputClearAll("INVALID ENTRY")
 	}
 
+	before := ap.pushUndoBeforeMutation()
 	ap.setTargetLeaderDirectionManualOverride(
 		ap.activeWindowID(),
 		target,
 		input.Direction,
 	)
+	ap.commitUndoIfChanged(before)
 
 	return CommandStatus{
 		Clear:     ClearAll,
@@ -1212,10 +1242,12 @@ func (ap *ASDEXPane) cmdLeaderLengthAll(
 	}
 
 	windowID := ap.activeWindowID()
+	before := ap.pushUndoBeforeMutation()
 	ap.updateActiveDataBlockSettings(func(settings *DataBlockSettings) {
 		settings.LeaderLength = input.Value
 	})
 	ap.clearLeaderLengthOverrides(windowID)
+	ap.commitUndoIfChanged(before)
 
 	return CommandStatus{
 		Clear:     ClearAll,
@@ -1242,11 +1274,13 @@ func (ap *ASDEXPane) cmdLeaderLengthSlew(
 		return commandOutputClearAll("INVALID LNG")
 	}
 
+	before := ap.pushUndoBeforeMutation()
 	ap.setTargetLeaderLengthManualOverride(
 		ap.activeWindowID(),
 		target,
 		input.Value,
 	)
+	ap.commitUndoIfChanged(before)
 
 	return CommandStatus{
 		Clear:     ClearAll,
