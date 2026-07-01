@@ -1225,13 +1225,14 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 	if ap == nil || ctx == nil || ctx.Keyboard == nil || ap.datablockEdit != nil {
 		return false
 	}
+	f9Pressed := ctx.Keyboard.WasPressed(platform.KeyF9)
 	f12Pressed := ctx.Keyboard.WasPressed(platform.KeyF12)
 	if ap.dbAreaDraft != nil || ap.dbAreaSelection != nil || ap.tempAreaDraft != nil ||
 		ap.tempTextCommand != nil || ap.tempTextPlacement != nil ||
 		ap.tempDataSelectMode != TempDataSelectNone || ap.newWindow != nil ||
 		ap.deleteWindow != nil || ap.windowReposition != nil || ap.resizeWindow != nil ||
 		ap.towerReadout != nil || ap.runwayConfigCommand != nil || ap.dcbSpinner != nil ||
-		(ap.dcbMenuCommand != nil && !f12Pressed) ||
+		(ap.dcbMenuCommand != nil && !f12Pressed && !f9Pressed) ||
 		!ap.commandEntry.Empty() {
 		return false
 	}
@@ -1255,6 +1256,8 @@ func (ap *ASDEXPane) consumeOpsHotkeys(
 		command = "[MULT FUNC]"
 	case ctx.Keyboard.WasPressed(platform.KeyF8):
 		command = "[MAP RPOS]"
+	case f9Pressed:
+		command = "[UNDO]"
 	case ctx.Keyboard.WasPressed(platform.KeyF10):
 		command = "[MAP THEME]"
 	case ctx.Keyboard.WasPressed(platform.KeyF11):

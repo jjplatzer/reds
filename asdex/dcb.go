@@ -339,6 +339,9 @@ type DcbSpinner struct {
 
 	MaxInputDigits int
 
+	UndoCaptured bool
+	UndoBefore   UndoSnapshot
+
 	input  string
 	cursor int
 }
@@ -811,6 +814,13 @@ func (d *Dcb) SetCharSize(size int) {
 		return
 	}
 	d.charSize = clampInt(size, 1, 3)
+}
+
+func (d *Dcb) CharSize() int {
+	if d == nil {
+		return 0
+	}
+	return d.charSize
 }
 
 func (d *Dcb) buttonSizeForFont(font *renderer.BitmapFont, autoSize int) redsmath.Vec2 {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	stdmath "math"
 	"os"
+	"reflect"
 	"strconv"
 	"strings"
 	"time"
@@ -114,6 +115,8 @@ type ASDEXPane struct {
 	cursorMode CursorMode
 
 	displayStateByWindow            map[ScopeWindowID]*WindowDisplayState
+	undoStack                       []UndoSnapshot
+	undoRestoring                   bool
 	dbFieldSettings                 DataBlockFieldSettings
 	datablockTimeshareStart         time.Time
 	showBeaconUntilByTargetID       map[string]time.Time
@@ -1477,6 +1480,14 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 			p.startRangeSpinner()
 		}
 		return true
+	case DcbFunctionUndo:
+		p.applyCommandStatus(p.cmdUndo(ctx))
+		p.clearHighlightedTarget()
+		return true
+	case DcbFunctionDefault:
+		p.applyCommandStatus(p.cmdDefault(ctx))
+		p.clearHighlightedTarget()
+		return true
 	case DcbFunctionRotate:
 		if p.dcb.On() {
 			p.startDcbRotateCommand()
@@ -1536,6 +1547,26 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	case DcbFunctionCoastOnOff:
 		if p.dcb.Menu() == DcbMenuTools {
 			p.toggleCoastList()
+		}
+		return true
+	case DcbFunctionDcbTop:
+		if p.dcb.Menu() == DcbMenuTools {
+			p.setDcbPositionUndoable(DcbTop)
+		}
+		return true
+	case DcbFunctionDcbLeft:
+		if p.dcb.Menu() == DcbMenuTools {
+			p.setDcbPositionUndoable(DcbLeft)
+		}
+		return true
+	case DcbFunctionDcbRight:
+		if p.dcb.Menu() == DcbMenuTools {
+			p.setDcbPositionUndoable(DcbRight)
+		}
+		return true
+	case DcbFunctionDcbBottom:
+		if p.dcb.Menu() == DcbMenuTools {
+			p.setDcbPositionUndoable(DcbBottom)
 		}
 		return true
 	case DcbFunctionNewWindow:
@@ -1920,9 +1951,11 @@ func (p *ASDEXPane) toggleDbFullPart() {
 		return
 	}
 
+	before := p.pushUndoBeforeMutation()
 	p.updateActiveDataBlockSettings(func(settings *DataBlockSettings) {
 		settings.FullDataBlocks = !settings.FullDataBlocks
 	})
+	p.commitUndoIfChanged(before)
 	p.previewArea.SetSystemResponse("")
 }
 
@@ -1931,7 +1964,9 @@ func (p *ASDEXPane) toggleDbField(update func(*DataBlockFieldSettings)) {
 		return
 	}
 
+	before := p.pushUndoBeforeMutation()
 	update(&p.dbFieldSettings)
+	p.commitUndoIfChanged(before)
 	p.previewArea.SetSystemResponse("")
 }
 
@@ -1940,11 +1975,13 @@ func (p *ASDEXPane) toggleDataBlocksOnOff() {
 		return
 	}
 
+	before := p.pushUndoBeforeMutation()
 	windowID := p.activeWindowID()
 	p.updateActiveDataBlockSettings(func(settings *DataBlockSettings) {
 		settings.ShowDataBlocks = !settings.ShowDataBlocks
 	})
 	p.clearTargetShowDBOverrides(windowID)
+	p.commitUndoIfChanged(before)
 	p.previewArea.SetSystemResponse("")
 }
 
@@ -2388,10 +2425,6 @@ func isToolsPlaceholderFunction(function DcbFunction) bool {
 		DcbFunctionPreviewReposition,
 		DcbFunctionCursorSpeed,
 		DcbFunctionCursorHomeOnOff,
-		DcbFunctionDcbTop,
-		DcbFunctionDcbLeft,
-		DcbFunctionDcbRight,
-		DcbFunctionDcbBottom,
 		DcbFunctionChangePassword:
 		return true
 	default:
@@ -2487,8 +2520,10 @@ func (p *ASDEXPane) updateSelectedDataBlockAreaTraits(
 		return false
 	}
 
+	before := p.pushUndoBeforeMutation()
 	update(&area.Traits)
 	p.clearTraitLeaderOverridesForArea(windowID, area.ID)
+	p.commitUndoIfChanged(before)
 	p.previewArea.SetSystemResponse("")
 	return true
 }
@@ -2663,8 +2698,10 @@ func (p *ASDEXPane) toggleHistoryForActiveWindow() {
 		return
 	}
 
+	before := p.pushUndoBeforeMutation()
 	state := p.displayStateForWindow(p.activeWindowID())
 	state.ShowHistory = !state.ShowHistory
+	p.commitUndoIfChanged(before)
 
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -2675,8 +2712,10 @@ func (p *ASDEXPane) toggleVectorLineForActiveWindow() {
 		return
 	}
 
+	before := p.pushUndoBeforeMutation()
 	state := p.displayStateForWindow(p.activeWindowID())
 	state.ShowVectorLine = !state.ShowVectorLine
+	p.commitUndoIfChanged(before)
 
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -2687,10 +2726,12 @@ func (p *ASDEXPane) toggleCoastList() {
 		return
 	}
 
+	before := p.pushUndoBeforeMutation()
 	p.showCoastList = !p.showCoastList
 	if !p.showCoastList {
 		p.hoveredCoastListTarget = ""
 	}
+	p.commitUndoIfChanged(before)
 
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
@@ -2772,6 +2813,10 @@ func (p *ASDEXPane) acceptActiveDcbSpinner() {
 
 	spinner := p.dcbSpinner
 	switch spinner.Type {
+	case DcbSpinnerRange:
+		p.commitSpinnerUndoIfChanged(spinner)
+		p.dcbSpinner = nil
+		p.previewArea.SetSystemResponse("")
 	case DcbSpinnerBrightness:
 		p.finishBrightnessSpinner("")
 	case DcbSpinnerHistory:
@@ -2804,6 +2849,7 @@ func (p *ASDEXPane) cancelDcbSpinner() {
 		return
 	}
 	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerBrightness {
+		p.commitSpinnerUndoIfChanged(p.dcbSpinner)
 		p.dcbSpinner = nil
 		p.dcb.SetMenu(DcbMenuBrightness)
 		p.dcbMenuCommand = NewDcbMenuCommand("BRITE")
@@ -2817,6 +2863,7 @@ func (p *ASDEXPane) cancelDcbSpinner() {
 	if p.dcbSpinner != nil && p.dcbSpinner.Type != DcbSpinnerRange {
 		p.restoreDbAreaEditCommand(p.dcbSpinner)
 	}
+	p.commitSpinnerUndoIfChanged(p.dcbSpinner)
 	p.dcbSpinner = nil
 	p.previewArea.SetSystemResponse("")
 }
@@ -2843,6 +2890,7 @@ func (p *ASDEXPane) finishDbAreaSpinner(spinner *DcbSpinner, systemResponse stri
 	}
 
 	p.restoreDbAreaEditCommand(spinner)
+	p.commitSpinnerUndoIfChanged(spinner)
 	p.dcbSpinner = nil
 	p.previewArea.SetSystemResponse(systemResponse)
 }
@@ -2856,6 +2904,7 @@ func (p *ASDEXPane) commitDcbSpinner() {
 	switch spinner.Type {
 	case DcbSpinnerRange:
 		if strings.TrimSpace(spinner.InputText()) == "" {
+			p.commitSpinnerUndoIfChanged(spinner)
 			p.dcbSpinner = nil
 			p.previewArea.SetSystemResponse("")
 			return
@@ -2863,12 +2912,15 @@ func (p *ASDEXPane) commitDcbSpinner() {
 
 		value, ok := spinner.ParsedValue()
 		if !ok {
+			p.commitSpinnerUndoIfChanged(spinner)
 			p.dcbSpinner = nil
 			p.previewArea.SetSystemResponse("INVALID RANGE")
 			return
 		}
 
+		before := p.undoBeforeForSpinnerMutation(spinner)
 		p.setRangeSettingForWindow(spinner.WindowID, value)
+		p.commitUndoIfChanged(before)
 		p.dcbSpinner = nil
 		p.previewArea.SetSystemResponse("")
 		return
@@ -2911,9 +2963,11 @@ func (p *ASDEXPane) commitDbAreaCharSizeSpinner(spinner *DcbSpinner) {
 		return
 	}
 
+	before := p.undoBeforeForSpinnerMutation(spinner)
 	if p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
 		t.FontSize = value
 	}) {
+		p.commitUndoIfChanged(before)
 		p.finishDbAreaSpinner(spinner, "")
 		return
 	}
@@ -2928,9 +2982,11 @@ func (p *ASDEXPane) commitDbAreaBrightnessSpinner(spinner *DcbSpinner) {
 		return
 	}
 
+	before := p.undoBeforeForSpinnerMutation(spinner)
 	if p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
 		t.Brightness = value
 	}) {
+		p.commitUndoIfChanged(before)
 		p.finishDbAreaSpinner(spinner, "")
 		return
 	}
@@ -2945,9 +3001,11 @@ func (p *ASDEXPane) commitDbAreaLeaderLengthSpinner(spinner *DcbSpinner) {
 		return
 	}
 
+	before := p.undoBeforeForSpinnerMutation(spinner)
 	if p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
 		t.LeaderLength = value
 	}) {
+		p.commitUndoIfChanged(before)
 		p.finishDbAreaSpinner(spinner, "")
 		return
 	}
@@ -2967,9 +3025,11 @@ func (p *ASDEXPane) commitDbAreaLeaderDirectionSpinner(spinner *DcbSpinner) {
 		p.finishDbAreaSpinner(spinner, "INVALID ENTRY")
 		return
 	}
+	before := p.undoBeforeForSpinnerMutation(spinner)
 	if p.updateDataBlockAreaTraitsByID(spinner.WindowID, spinner.AreaID, func(t *DataBlockAreaTraits) {
 		t.LeaderDirection = direction
 	}) {
+		p.commitUndoIfChanged(before)
 		p.finishDbAreaSpinner(spinner, "")
 		return
 	}
@@ -2980,6 +3040,7 @@ func (p *ASDEXPane) finishBrightnessSpinner(systemResponse string) {
 	if p == nil {
 		return
 	}
+	p.commitSpinnerUndoIfChanged(p.dcbSpinner)
 	p.dcbSpinner = nil
 	p.dcb.SetMenu(DcbMenuBrightness)
 	p.dcbMenuCommand = NewDcbMenuCommand("BRITE")
@@ -2997,7 +3058,9 @@ func (p *ASDEXPane) commitBrightnessSpinner(spinner *DcbSpinner) {
 		return
 	}
 
+	before := p.undoBeforeForSpinnerMutation(spinner)
 	p.setBrightnessValue(spinner.Function, value)
+	p.commitUndoIfChanged(before)
 	p.finishBrightnessSpinner("")
 }
 
@@ -3012,7 +3075,9 @@ func (p *ASDEXPane) commitHistorySpinner(spinner *DcbSpinner) {
 		return
 	}
 
+	before := p.undoBeforeForSpinnerMutation(spinner)
 	p.setHistoryLengthForWindow(spinner.WindowID, value)
+	p.commitUndoIfChanged(before)
 	p.finishHistorySpinner("")
 }
 
@@ -3021,6 +3086,7 @@ func (p *ASDEXPane) finishHistorySpinner(systemResponse string) {
 		return
 	}
 
+	p.commitSpinnerUndoIfChanged(p.dcbSpinner)
 	p.dcbSpinner = nil
 	p.dcb.SetMenu(DcbMenuTools)
 	p.dcbMenuCommand = NewDcbMenuCommand("TOOLS")
@@ -3039,7 +3105,9 @@ func (p *ASDEXPane) commitVectorLengthSpinner(spinner *DcbSpinner) {
 		return
 	}
 
+	before := p.undoBeforeForSpinnerMutation(spinner)
 	p.setVectorLength(value)
+	p.commitUndoIfChanged(before)
 	p.finishVectorLengthSpinner("")
 }
 
@@ -3048,6 +3116,7 @@ func (p *ASDEXPane) finishVectorLengthSpinner(systemResponse string) {
 		return
 	}
 
+	p.commitSpinnerUndoIfChanged(p.dcbSpinner)
 	p.dcbSpinner = nil
 	p.dcb.ReturnToMainMenu()
 	p.dcbMenuCommand = nil
@@ -3090,6 +3159,7 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 	spinner := p.dcbSpinner
 	switch spinner.Type {
 	case DcbSpinnerRange:
+		p.captureSpinnerUndo(spinner)
 		windowID := spinner.WindowID
 		view, ok := p.scopeViewForWindow(windowID)
 		if !ok {
@@ -3111,12 +3181,14 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 		p.setRangeSettingForWindow(windowID, next)
 		spinner.Value = next
 	case DcbSpinnerHistory:
+		p.captureSpinnerUndo(spinner)
 		next := clampInt(spinner.Value+delta, 1, 7)
 		if next != spinner.Value {
 			spinner.Value = next
 			p.setHistoryLengthForWindow(spinner.WindowID, next)
 		}
 	case DcbSpinnerVectorLength:
+		p.captureSpinnerUndo(spinner)
 		next := clampInt(
 			p.vectorLength+delta,
 			minTargetVectorSeconds,
@@ -3137,6 +3209,7 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 			spinner.Value = next
 		}
 	case DcbSpinnerDbAreaCharSize:
+		p.captureSpinnerUndo(spinner)
 		next := clampInt(spinner.Value+delta, 1, 6)
 		if next != spinner.Value {
 			spinner.Value = next
@@ -3145,6 +3218,7 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 			})
 		}
 	case DcbSpinnerDbAreaBrightness:
+		p.captureSpinnerUndo(spinner)
 		next := clampInt(spinner.Value+delta, brightnessFloorDefault, brightnessMax)
 		if next != spinner.Value {
 			spinner.Value = next
@@ -3153,6 +3227,7 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 			})
 		}
 	case DcbSpinnerDbAreaLeaderLength:
+		p.captureSpinnerUndo(spinner)
 		next := clampInt(spinner.Value+delta, leaderLengthMin, leaderLengthMax)
 		if next != spinner.Value {
 			spinner.Value = next
@@ -3161,6 +3236,7 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 			})
 		}
 	case DcbSpinnerDbAreaLeaderDirection:
+		p.captureSpinnerUndo(spinner)
 		next := spinner.Value + delta
 		if delta > 0 && next == 5 {
 			next++
@@ -3178,6 +3254,7 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 			}
 		}
 	case DcbSpinnerBrightness:
+		p.captureSpinnerUndo(spinner)
 		next := clampBrightness(p.currentBrightnessValue(spinner.Function) + delta)
 		p.setBrightnessValue(spinner.Function, next)
 		spinner.Value = next
@@ -4886,9 +4963,15 @@ func (p *ASDEXPane) submitMapRotate() {
 
 	windowID := p.mapRotate.WindowID
 	rotation := normalizeRotation(float32(value))
+	before := p.pushUndoBeforeMutation()
+	if p.mapRotate.UndoCaptured {
+		before = p.mapRotate.UndoBefore
+		p.mapRotate.UndoCaptured = false
+	}
 	p.updateScopeViewForWindow(windowID, func(view *ScopeView) {
 		view.Rotation = rotation
 	})
+	p.commitUndoIfChanged(before)
 	p.finishMapRotateCommand("")
 }
 
@@ -4898,6 +4981,10 @@ func (p *ASDEXPane) finishMapRotateCommand(response string) {
 	}
 
 	command := p.mapRotate
+	if command != nil && command.UndoCaptured {
+		p.commitUndoIfChanged(command.UndoBefore)
+		command.UndoCaptured = false
+	}
 	p.mapRotate = nil
 	p.commandMode = CommandModeNone
 	p.commandEntry.Clear()
@@ -4944,6 +5031,10 @@ func (p *ASDEXPane) incrementActiveMapRotate(delta float32) bool {
 	}
 
 	windowID := p.mapRotate.WindowID
+	if !p.mapRotate.UndoCaptured {
+		p.mapRotate.UndoBefore = p.captureUndoSnapshot()
+		p.mapRotate.UndoCaptured = true
+	}
 	p.updateScopeViewForWindow(windowID, func(view *ScopeView) {
 		view.Rotation = normalizeRotation(view.Rotation + delta)
 	})
@@ -5129,6 +5220,10 @@ func (p *ASDEXPane) consumeMapRepositionMouse(
 
 	mouse := ctx.Mouse
 	if mouse.WasPressed(platform.MouseButtonLeft) || mouse.WasReleased(platform.MouseButtonLeft) {
+		if p.mapReposition.UndoCaptured {
+			p.commitUndoIfChanged(p.mapReposition.UndoBefore)
+			p.mapReposition.UndoCaptured = false
+		}
 		p.applyCommandStatus(CommandStatus{
 			Clear:     ClearAll,
 			Output:    "",
@@ -5161,6 +5256,10 @@ func (p *ASDEXPane) consumeMapRepositionMouse(
 	}
 
 	deltaWorld := transforms.WorldFromWindowV(delta)
+	if !p.mapReposition.UndoCaptured {
+		p.mapReposition.UndoBefore = p.captureUndoSnapshot()
+		p.mapReposition.UndoCaptured = true
+	}
 	p.updateScopeViewForWindow(windowID, func(view *ScopeView) {
 		view.Center = view.Center.Sub(deltaWorld)
 	})
@@ -5667,6 +5766,326 @@ func wheelRangeDeltaForContext(wheelY float32, ctx *panes.Context) int {
 		return -step
 	}
 	return step
+}
+
+const maxUndoSnapshots = 64
+
+type UndoSnapshot struct {
+	ActiveWindowID ScopeWindowID
+
+	WindowStates map[ScopeWindowID]UndoWindowState
+
+	DBFieldSettings DataBlockFieldSettings
+
+	ShowCoastList bool
+
+	PreviewLocation RelativeScreenLocation
+	CoastLocation   RelativeScreenLocation
+
+	DcbPosition DcbPosition
+	DcbCharSize int
+
+	ListsBrightness int
+	DcbBrightness   int
+
+	VectorLength int
+}
+
+type UndoWindowState struct {
+	View    ScopeView
+	Display WindowDisplayState
+}
+
+func (ap *ASDEXPane) cmdUndo(_ *panes.Context) CommandStatus {
+	if ap == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+
+	ap.applyUndo()
+	return CommandStatus{
+		Clear:     ClearNone,
+		Output:    "",
+		HasOutput: true,
+	}
+}
+
+func (ap *ASDEXPane) cmdDefault(_ *panes.Context) CommandStatus {
+	if ap == nil {
+		return CommandStatus{Clear: ClearAll}
+	}
+
+	before := ap.pushUndoBeforeMutation()
+
+	windowID := ap.activeWindowID()
+	state := ap.displayStateForWindow(windowID)
+	state.DB = DefaultDataBlockSettings()
+	state.Brightness = NewWindowBrightnessSettings()
+	state.ShowHistory = false
+	state.HistoryLength = 7
+	state.ShowVectorLine = false
+	state.TargetShowDBOverrides = nil
+	state.TargetDBOffAreaOverrides = nil
+	state.LeaderDirectionOverrides = nil
+	state.LeaderLengthOverrides = nil
+	state.TraitLeaderDirectionOverrides = nil
+	state.TraitLeaderLengthOverrides = nil
+	state.TargetTraitAreaByTarget = nil
+
+	ap.dbFieldSettings = DefaultDataBlockFieldSettings()
+
+	ap.updateScopeViewForWindow(windowID, func(view *ScopeView) {
+		view.RangeSetting = asdexDefaultRangeSetting
+		view.RangeFullHorizontalFeet = rangeFullHorizontalFeetFromSetting(asdexDefaultRangeSetting)
+		view.Rotation = 0
+	})
+	ap.setVectorLength(defaultVectorLengthSeconds)
+
+	ap.commitUndoIfChanged(before)
+	return CommandStatus{
+		Clear:     ClearAll,
+		Output:    "",
+		HasOutput: true,
+	}
+}
+
+func (p *ASDEXPane) captureUndoSnapshot() UndoSnapshot {
+	if p == nil {
+		return UndoSnapshot{}
+	}
+
+	out := UndoSnapshot{
+		ActiveWindowID:  p.activeWindowID(),
+		WindowStates:    make(map[ScopeWindowID]UndoWindowState),
+		DBFieldSettings: p.dbFieldSettings,
+		ShowCoastList:   p.showCoastList,
+		PreviewLocation: p.previewArea.location,
+		CoastLocation:   p.coastList.location,
+		DcbPosition:     p.dcb.Position(),
+		DcbCharSize:     p.dcb.CharSize(),
+		ListsBrightness: p.listsBrightness,
+		DcbBrightness:   p.dcbBrightness,
+		VectorLength:    p.vectorLength,
+	}
+
+	for id, state := range p.displayStateByWindow {
+		if state == nil {
+			continue
+		}
+		view, ok := p.scopeViewForWindow(id)
+		if !ok {
+			continue
+		}
+		out.WindowStates[id] = UndoWindowState{
+			View:    view,
+			Display: cloneWindowDisplayState(state),
+		}
+	}
+
+	return out
+}
+
+func (p *ASDEXPane) pushUndoBeforeMutation() UndoSnapshot {
+	if p == nil {
+		return UndoSnapshot{}
+	}
+	return p.captureUndoSnapshot()
+}
+
+func (p *ASDEXPane) commitUndoIfChanged(before UndoSnapshot) {
+	if p == nil || p.undoRestoring {
+		return
+	}
+
+	after := p.captureUndoSnapshot()
+	if reflect.DeepEqual(before, after) {
+		return
+	}
+
+	p.undoStack = append(p.undoStack, before)
+	if len(p.undoStack) > maxUndoSnapshots {
+		p.undoStack = p.undoStack[len(p.undoStack)-maxUndoSnapshots:]
+	}
+}
+
+func (p *ASDEXPane) applyUndo() {
+	if p == nil {
+		return
+	}
+	if len(p.undoStack) == 0 {
+		p.previewArea.SetSystemResponse("")
+		p.clearHighlightedTarget()
+		return
+	}
+
+	last := p.undoStack[len(p.undoStack)-1]
+	p.undoStack = p.undoStack[:len(p.undoStack)-1]
+
+	p.undoRestoring = true
+	defer func() {
+		p.undoRestoring = false
+	}()
+
+	p.restoreUndoSnapshot(last)
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) restoreUndoSnapshot(snapshot UndoSnapshot) {
+	if p == nil {
+		return
+	}
+
+	for id, state := range snapshot.WindowStates {
+		if _, ok := p.scopeViewForWindow(id); !ok {
+			continue
+		}
+
+		p.updateScopeViewForWindow(id, func(view *ScopeView) {
+			*view = state.View
+		})
+
+		display := state.Display
+		if p.displayStateByWindow == nil {
+			p.displayStateByWindow = make(map[ScopeWindowID]*WindowDisplayState)
+		}
+		p.displayStateByWindow[id] = &display
+	}
+
+	if _, ok := p.scopeViewForWindow(snapshot.ActiveWindowID); ok {
+		p.windows.SetActiveWindow(snapshot.ActiveWindowID)
+	}
+
+	p.dbFieldSettings = snapshot.DBFieldSettings
+
+	p.showCoastList = snapshot.ShowCoastList
+	if !p.showCoastList {
+		p.hoveredCoastListTarget = ""
+	}
+
+	p.previewArea.location = snapshot.PreviewLocation
+	p.coastList.location = snapshot.CoastLocation
+
+	p.dcb.SetPosition(snapshot.DcbPosition)
+	if snapshot.DcbCharSize > 0 {
+		p.dcb.SetCharSize(snapshot.DcbCharSize)
+	}
+
+	p.setListsBrightness(snapshot.ListsBrightness)
+	p.setDcbBrightness(snapshot.DcbBrightness)
+	p.setVectorLength(snapshot.VectorLength)
+}
+
+func (p *ASDEXPane) setDcbPositionUndoable(position DcbPosition) {
+	if p == nil {
+		return
+	}
+
+	before := p.pushUndoBeforeMutation()
+	p.dcb.SetPosition(position)
+	p.commitUndoIfChanged(before)
+
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) captureSpinnerUndo(spinner *DcbSpinner) {
+	if p == nil || spinner == nil || spinner.UndoCaptured {
+		return
+	}
+	spinner.UndoBefore = p.captureUndoSnapshot()
+	spinner.UndoCaptured = true
+}
+
+func (p *ASDEXPane) commitSpinnerUndoIfChanged(spinner *DcbSpinner) {
+	if p == nil || spinner == nil || !spinner.UndoCaptured {
+		return
+	}
+	p.commitUndoIfChanged(spinner.UndoBefore)
+	spinner.UndoCaptured = false
+}
+
+func (p *ASDEXPane) undoBeforeForSpinnerMutation(spinner *DcbSpinner) UndoSnapshot {
+	if p == nil {
+		return UndoSnapshot{}
+	}
+	if spinner != nil && spinner.UndoCaptured {
+		spinner.UndoCaptured = false
+		return spinner.UndoBefore
+	}
+	return p.pushUndoBeforeMutation()
+}
+
+func cloneWindowDisplayState(in *WindowDisplayState) WindowDisplayState {
+	if in == nil {
+		return *NewWindowDisplayState()
+	}
+
+	out := *in
+	out.TargetShowDBOverrides = cloneBoolMap(in.TargetShowDBOverrides)
+	out.TargetDBOffAreaOverrides = cloneBoolMap(in.TargetDBOffAreaOverrides)
+	out.LeaderDirectionOverrides = cloneLeaderDirectionMap(in.LeaderDirectionOverrides)
+	out.LeaderLengthOverrides = cloneIntMap(in.LeaderLengthOverrides)
+	out.TraitLeaderDirectionOverrides = cloneLeaderDirectionMap(in.TraitLeaderDirectionOverrides)
+	out.TraitLeaderLengthOverrides = cloneIntMap(in.TraitLeaderLengthOverrides)
+	out.TargetTraitAreaByTarget = cloneStringMap(in.TargetTraitAreaByTarget)
+	out.DataBlockAreas = cloneDataBlockAreas(in.DataBlockAreas)
+	return out
+}
+
+func cloneBoolMap(in map[string]bool) map[string]bool {
+	if len(in) == 0 {
+		return nil
+	}
+	out := make(map[string]bool, len(in))
+	for k, v := range in {
+		out[k] = v
+	}
+	return out
+}
+
+func cloneIntMap(in map[string]int) map[string]int {
+	if len(in) == 0 {
+		return nil
+	}
+	out := make(map[string]int, len(in))
+	for k, v := range in {
+		out[k] = v
+	}
+	return out
+}
+
+func cloneStringMap(in map[string]string) map[string]string {
+	if len(in) == 0 {
+		return nil
+	}
+	out := make(map[string]string, len(in))
+	for k, v := range in {
+		out[k] = v
+	}
+	return out
+}
+
+func cloneLeaderDirectionMap(in map[string]LeaderDirection) map[string]LeaderDirection {
+	if len(in) == 0 {
+		return nil
+	}
+	out := make(map[string]LeaderDirection, len(in))
+	for k, v := range in {
+		out[k] = v
+	}
+	return out
+}
+
+func cloneDataBlockAreas(in []DataBlockArea) []DataBlockArea {
+	if len(in) == 0 {
+		return nil
+	}
+	out := make([]DataBlockArea, len(in))
+	for i, area := range in {
+		out[i] = area
+		out[i].Points = append([]redsmath.Vec2(nil), area.Points...)
+	}
+	return out
 }
 
 func rangeFullHorizontalFeetFromSetting(rangeSetting int) float32 {
