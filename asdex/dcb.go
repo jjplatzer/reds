@@ -1,6 +1,7 @@
 package asdex
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -24,6 +25,7 @@ type DcbMenu int
 
 const (
 	DcbMenuMain DcbMenu = iota
+	DcbMenuPrefs
 	DcbMenuTempData
 	DcbMenuClosedRunway
 	DcbMenuDbEdit
@@ -62,6 +64,14 @@ const (
 	DcbFunctionUndo
 	DcbFunctionDefault
 	DcbFunctionPrefs
+	DcbFunctionPrefPreset
+	DcbFunctionPrefPage1
+	DcbFunctionPrefPage2
+	DcbFunctionPrefOpInits
+	DcbFunctionPrefSaveAs
+	DcbFunctionPrefModify
+	DcbFunctionPrefChangePin
+	DcbFunctionPrefDelete
 	DcbFunctionDayNite
 	DcbFunctionBrightness
 	DcbFunctionCharSize
@@ -204,9 +214,10 @@ type DcbButtonSpec struct {
 	ConfigID int
 	Label    string
 
-	PrefNumber int
-	PrefName   string
-	PrefActive bool
+	PrefNumber     int
+	PrefNumberText string
+	PrefName       string
+	PrefActive     bool
 }
 
 type DcbButtonLayout struct {
@@ -247,6 +258,11 @@ type DcbState struct {
 	CursorHome    bool
 	Volume        int
 
+	OperatingInitials string
+	PrefPage          int
+	PrefSets          []DcbPrefSetState
+	CurrentPrefTitle  string
+
 	PlaybackHourStart  time.Time
 	PlaybackHourOffset int
 
@@ -281,6 +297,12 @@ type DcbState struct {
 	TowerConfigs         []DcbTowerConfigState
 
 	ActiveSpinnerFunction DcbFunction
+}
+
+type DcbPrefSetState struct {
+	Number int
+	Name   string
+	Active bool
 }
 
 type DcbRunwayClosureState struct {
@@ -923,6 +945,9 @@ func isLargeDcbFunction(function DcbFunction) bool {
 		DcbFunctionVolume,
 		DcbFunctionVolumeTest,
 		DcbFunctionPlayBackExitRecording,
+		DcbFunctionPrefPage1,
+		DcbFunctionPrefPage2,
+		DcbFunctionPrefOpInits,
 		DcbFunctionDone,
 		DcbFunctionVacant:
 		return true
@@ -983,6 +1008,10 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 	if runwayConfigName == "" {
 		runwayConfigName = "LIMITED"
 	}
+	prefTitle := state.CurrentPrefTitle
+	if strings.TrimSpace(prefTitle) == "" {
+		prefTitle = " "
+	}
 
 	return []DcbButtonSpec{
 		value(DcbFunctionRange, true, d.rangeLabel(state), "RANGE"),
@@ -990,7 +1019,7 @@ func (d *Dcb) mainButtonSpecs(state DcbState) []DcbButtonSpec {
 		value(DcbFunctionRotate, false, "", "ROTATE"),
 		normal(DcbFunctionUndo, "UNDO"),
 		normal(DcbFunctionDefault, "DEFAULT"),
-		menu(DcbFunctionPrefs, "PREF", ""),
+		menu(DcbFunctionPrefs, "PREF", prefTitle),
 		toggle(DcbFunctionDayNite, state.Mode == ModeDay, "DAY", "NITE"),
 		menu(DcbFunctionBrightness, "BRITE"),
 		menu(DcbFunctionCharSize, "CHAR", "SIZE"),
@@ -1044,6 +1073,83 @@ func (d *Dcb) offButtonSpecs(state DcbState) []DcbButtonSpec {
 		toggle(DcbFunctionDcbOnOff, state.DcbOn, "ON", "OFF", "DCB"),
 		menu(DcbFunctionOperationalMode, "OPER", "MODE"),
 	}
+}
+
+func (d *Dcb) prefsButtonSpecs(state DcbState) []DcbButtonSpec {
+	page := state.PrefPage
+	if page < 1 || page > 2 {
+		page = 1
+	}
+	offset := (page - 1) * 16
+
+	operatingInitials := strings.ToUpper(strings.TrimSpace(state.OperatingInitials))
+	if operatingInitials == "" {
+		operatingInitials = "OP"
+	}
+
+	prefByNumber := make(map[int]DcbPrefSetState, len(state.PrefSets))
+	for _, pref := range state.PrefSets {
+		if pref.Number >= 1 && pref.Number <= 32 {
+			prefByNumber[pref.Number] = pref
+		}
+	}
+
+	prefButton := func(localNumber int) DcbButtonSpec {
+		actualNumber := offset + localNumber
+		spec := DcbButtonSpec{
+			Function:       DcbFunctionPrefPreset,
+			Type:           DcbButtonPref,
+			Visible:        true,
+			ConfigID:       actualNumber,
+			PrefNumber:     actualNumber,
+			PrefNumberText: fmt.Sprintf("%s%02d", operatingInitials, actualNumber),
+			PrefName:       " ",
+		}
+		if pref, ok := prefByNumber[actualNumber]; ok {
+			spec.PrefName = pref.Name
+			spec.PrefActive = pref.Active
+		}
+		return spec
+	}
+
+	button := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonNormal,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		}
+	}
+	menuButton := func(function DcbFunction, visible bool, lines ...string) DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonMenu,
+			Large:    isLargeDcbFunction(function),
+			Visible:  visible,
+			Lines:    append([]string(nil), lines...),
+		}
+	}
+
+	buttons := make([]DcbButtonSpec, 0, 27)
+	for i := 1; i <= 16; i++ {
+		buttons = append(buttons, prefButton(i))
+	}
+
+	buttons = append(buttons,
+		menuButton(DcbFunctionPrefPage1, page != 1, "1-16"),
+		menuButton(DcbFunctionPrefPage2, page != 2, "17-32"),
+		button(DcbFunctionDefault, "DEFAULT"),
+		button(DcbFunctionUndo, "UNDO"),
+		button(DcbFunctionPrefOpInits, "OP INITS", operatingInitials),
+		button(DcbFunctionPrefSaveAs, "SAVE AS"),
+		button(DcbFunctionPrefModify, "MODIFY"),
+		button(DcbFunctionPrefChangePin, "CHG", "PIN"),
+		button(DcbFunctionPrefDelete, "DELETE"),
+		button(DcbFunctionDone, "DONE"),
+	)
+
+	return buttons
 }
 
 func (d *Dcb) tempDataButtonSpecs(state DcbState) []DcbButtonSpec {
@@ -1744,6 +1850,8 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 	switch d.menu {
 	case DcbMenuOff:
 		return d.offButtonSpecs(state)
+	case DcbMenuPrefs:
+		return d.prefsButtonSpecs(state)
 	case DcbMenuTempData:
 		return d.tempDataButtonSpecs(state)
 	case DcbMenuClosedRunway:
@@ -2256,7 +2364,10 @@ func (d *Dcb) drawPrefButtonText(
 	}
 
 	spec := button.Spec
-	numberText := strconv.Itoa(spec.PrefNumber)
+	numberText := strings.TrimSpace(spec.PrefNumberText)
+	if numberText == "" {
+		numberText = strconv.Itoa(spec.PrefNumber)
+	}
 	nameText := strings.TrimSpace(spec.PrefName)
 	if nameText == "" {
 		nameText = " "

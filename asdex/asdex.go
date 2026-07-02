@@ -124,6 +124,7 @@ type ASDEXPane struct {
 	dcbBrightness                   int
 	vectorLength                    int
 	auralVolume                     int
+	prefPage                        int
 	playbackHourOffset              int
 	playbackClient                  *redsnet.PlaybackClient
 	playbackSession                 *PlaybackSession
@@ -1201,6 +1202,9 @@ func (p *ASDEXPane) dcbState() DcbState {
 		CursorSpeed:            1,
 		CursorHome:             false,
 		Volume:                 clampInt(p.auralVolume, minAuralVolume, maxAuralVolume),
+		OperatingInitials:      "OP",
+		PrefPage:               p.prefPage,
+		CurrentPrefTitle:       "",
 		PlaybackHourStart:      playbackHour,
 		PlaybackHourOffset:     playbackHourOffset,
 		FullDataBlocks:         active.DB.FullDataBlocks,
@@ -1451,6 +1455,10 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return true
 	}
 
+	if p.dcb.Menu() == DcbMenuPrefs && p.activatePrefsDcbHit(ctx, hit) {
+		return true
+	}
+
 	if p.dcb.Menu() == DcbMenuPlayBack && p.activatePlayBackDcbHit(hit) {
 		return true
 	}
@@ -1515,6 +1523,9 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return true
 	case DcbFunctionTools:
 		p.openToolsMenu()
+		return true
+	case DcbFunctionPrefs:
+		p.openPrefsMenu()
 		return true
 	case DcbFunctionPlayBack:
 		if p.dcb.Menu() == DcbMenuTools {
@@ -2131,6 +2142,66 @@ func (p *ASDEXPane) openToolsMenu() {
 	p.dcbMenuCommand = NewDcbMenuCommand("TOOLS")
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) openPrefsMenu() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.prefPage = 1
+	p.dcb.SetMenu(DcbMenuPrefs)
+	p.dcbMenuCommand = NewDcbMenuCommand("PREFS")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) activatePrefsDcbHit(ctx *panes.Context, hit DcbHit) bool {
+	if p == nil || !hit.HasFunction {
+		return false
+	}
+
+	switch hit.Function {
+	case DcbFunctionPrefPage1:
+		p.prefPage = 1
+		p.previewArea.SetSystemResponse("")
+		p.clearHighlightedTarget()
+		return true
+	case DcbFunctionPrefPage2:
+		p.prefPage = 2
+		p.previewArea.SetSystemResponse("")
+		p.clearHighlightedTarget()
+		return true
+	case DcbFunctionPrefPreset,
+		DcbFunctionPrefOpInits,
+		DcbFunctionPrefSaveAs,
+		DcbFunctionPrefModify,
+		DcbFunctionPrefChangePin,
+		DcbFunctionPrefDelete:
+		p.previewArea.SetSystemResponse("")
+		p.clearHighlightedTarget()
+		return true
+	case DcbFunctionDefault:
+		p.applyCommandStatus(p.cmdDefault(ctx))
+		p.dcb.SetMenu(DcbMenuPrefs)
+		p.dcbMenuCommand = NewDcbMenuCommand("PREFS")
+		p.previewArea.SetSystemResponse("")
+		p.clearHighlightedTarget()
+		return true
+	case DcbFunctionUndo:
+		p.applyUndo()
+		p.dcb.SetMenu(DcbMenuPrefs)
+		p.dcbMenuCommand = NewDcbMenuCommand("PREFS")
+		p.previewArea.SetSystemResponse("")
+		p.clearHighlightedTarget()
+		return true
+	case DcbFunctionDone:
+		p.closeDcbSubmenu()
+		return true
+	default:
+		return false
+	}
 }
 
 func (p *ASDEXPane) openSafetyLogicMenu() {
