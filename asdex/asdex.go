@@ -1499,8 +1499,7 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		}
 		return true
 	case DcbFunctionUndo:
-		p.applyCommandStatus(p.cmdUndo(ctx))
-		p.clearHighlightedTarget()
+		p.executeUndoCommand(ctx)
 		return true
 	case DcbFunctionDefault:
 		p.applyCommandStatus(p.cmdDefault(ctx))
@@ -1775,6 +1774,29 @@ func (p *ASDEXPane) executeVolumeTestCommand(ctx *panes.Context) {
 
 	p.dcb.SetMenu(DcbMenuSafetyLogic)
 	p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC")
+}
+
+func (p *ASDEXPane) executeUndoCommand(ctx *panes.Context) {
+	if p == nil {
+		return
+	}
+
+	status, err, handled := p.tryExecuteUserCommand(
+		ctx,
+		"[UNDO]",
+		nil,
+		CommandClickNone,
+		redsmath.Vec2{},
+		radar.ScopeTransformations{},
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return
+	}
+	if handled {
+		p.applyCommandStatus(status)
+	}
+	p.clearHighlightedTarget()
 }
 
 func (p *ASDEXPane) activateRunwayConfigDcbHit(_ *panes.Context, hit DcbHit) bool {
@@ -2294,11 +2316,9 @@ func (p *ASDEXPane) activatePrefsDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		p.clearHighlightedTarget()
 		return true
 	case DcbFunctionUndo:
-		p.applyUndo()
+		p.executeUndoCommand(ctx)
 		p.dcb.SetMenu(DcbMenuPrefs)
 		p.dcbMenuCommand = NewDcbMenuCommand("PREFS")
-		p.previewArea.SetSystemResponse("")
-		p.clearHighlightedTarget()
 		return true
 	case DcbFunctionDone:
 		p.closeDcbSubmenu()
