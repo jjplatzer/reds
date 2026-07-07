@@ -38,6 +38,8 @@ type WindowDisplayState struct {
 	DB         DataBlockSettings
 	Brightness WindowBrightnessSettings
 
+	TempDataCharSize int
+
 	ShowHistory   bool
 	HistoryLength int
 
@@ -91,6 +93,8 @@ func NewWindowDisplayState() *WindowDisplayState {
 	return &WindowDisplayState{
 		DB:         DefaultDataBlockSettings(),
 		Brightness: NewWindowBrightnessSettings(),
+
+		TempDataCharSize: 2,
 
 		ShowHistory:   false,
 		HistoryLength: 7,
