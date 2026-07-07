@@ -802,6 +802,7 @@ func (p *ASDEXPane) renderScopeWindow(
 			return p.fonts.textureForSize(ctx.Renderer, size)
 		},
 		p.dataBlockSettingsForWindow(windowID),
+		displayState.TempDataCharSize,
 		brightness.TempMapText,
 	)
 	tempTextCB.DisableScissor()
@@ -1205,6 +1206,11 @@ func (p *ASDEXPane) dcbState() DcbState {
 		OperatingInitials:      "OP",
 		PrefPage:               p.prefPage,
 		CurrentPrefTitle:       "",
+		DataBlockCharSize:      active.DB.FontSize,
+		DcbCharSize:            p.dcb.CharSize(),
+		CoastSuspendCharSize:   p.coastList.FontSize(),
+		TempDataCharSize:       active.TempDataCharSize,
+		PreviewAreaCharSize:    p.previewArea.FontSize(),
 		PlaybackHourStart:      playbackHour,
 		PlaybackHourOffset:     playbackHourOffset,
 		FullDataBlocks:         active.DB.FullDataBlocks,
@@ -1459,6 +1465,10 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return true
 	}
 
+	if p.dcb.Menu() == DcbMenuCharSize && p.activateCharSizeDcbHit(hit) {
+		return true
+	}
+
 	if p.dcb.Menu() == DcbMenuPlayBack && p.activatePlayBackDcbHit(hit) {
 		return true
 	}
@@ -1520,6 +1530,9 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		return true
 	case DcbFunctionBrightness:
 		p.openBrightnessMenu()
+		return true
+	case DcbFunctionCharSize:
+		p.openCharSizeMenu()
 		return true
 	case DcbFunctionTools:
 		p.openToolsMenu()
@@ -2128,6 +2141,97 @@ func (p *ASDEXPane) openBrightnessMenu() {
 	p.clearDcbModalConflicts()
 	p.dcb.SetMenu(DcbMenuBrightness)
 	p.dcbMenuCommand = NewDcbMenuCommand("BRITE")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) openCharSizeMenu() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.dcb.SetMenu(DcbMenuCharSize)
+	p.dcbMenuCommand = NewDcbMenuCommand("CHAR SIZE")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) activateCharSizeDcbHit(hit DcbHit) bool {
+	if p == nil || !hit.HasFunction {
+		return false
+	}
+
+	active := p.activeDcbWindowState()
+	switch hit.Function {
+	case DcbFunctionDataBlockCharSize:
+		p.startCharSizeSpinner(
+			DcbFunctionDataBlockCharSize,
+			"DATA BLOCK",
+			active.DB.FontSize,
+			1,
+			6,
+		)
+		return true
+	case DcbFunctionDcbCharSize:
+		p.startCharSizeSpinner(
+			DcbFunctionDcbCharSize,
+			"DCB",
+			p.dcb.CharSize(),
+			1,
+			3,
+		)
+		return true
+	case DcbFunctionCoastSuspendCharSize:
+		p.startCharSizeSpinner(
+			DcbFunctionCoastSuspendCharSize,
+			"CS LIST",
+			p.coastList.FontSize(),
+			1,
+			6,
+		)
+		return true
+	case DcbFunctionTempDataCharSize:
+		p.startCharSizeSpinner(
+			DcbFunctionTempDataCharSize,
+			"TEMP DATA",
+			active.TempDataCharSize,
+			1,
+			6,
+		)
+		return true
+	case DcbFunctionPreviewAreaCharSize:
+		p.startCharSizeSpinner(
+			DcbFunctionPreviewAreaCharSize,
+			"PREVIEW",
+			p.previewArea.FontSize(),
+			1,
+			6,
+		)
+		return true
+	case DcbFunctionDone:
+		p.closeDcbSubmenu()
+		return true
+	default:
+		return false
+	}
+}
+
+func (p *ASDEXPane) startCharSizeSpinner(
+	function DcbFunction,
+	label string,
+	current int,
+	minValue int,
+	maxValue int,
+) {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.dcb.SetMenu(DcbMenuCharSize)
+	p.dcbMenuCommand = nil
+	p.dcbSpinner = NewCharSizeDcbSpinner(function, label, current, minValue, maxValue)
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
@@ -2890,6 +2994,8 @@ func (p *ASDEXPane) acceptActiveDcbSpinner() {
 		p.previewArea.SetSystemResponse("")
 	case DcbSpinnerBrightness:
 		p.finishBrightnessSpinner("")
+	case DcbSpinnerCharSize:
+		p.finishCharSizeSpinner("")
 	case DcbSpinnerHistory:
 		p.finishHistorySpinner("")
 	case DcbSpinnerVectorLength:
@@ -2917,6 +3023,10 @@ func (p *ASDEXPane) cancelDcbSpinner() {
 	}
 	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerSafetyVolume {
 		p.finishSafetyVolumeSpinner("")
+		return
+	}
+	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerCharSize {
+		p.finishCharSizeSpinner("")
 		return
 	}
 	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerBrightness {
@@ -3003,6 +3113,9 @@ func (p *ASDEXPane) commitDcbSpinner() {
 		return
 	case DcbSpinnerSafetyVolume:
 		p.commitSafetyVolumeSpinner(spinner)
+		return
+	case DcbSpinnerCharSize:
+		p.commitCharSizeSpinner(spinner)
 		return
 	case DcbSpinnerDbAreaCharSize:
 		p.commitDbAreaCharSizeSpinner(spinner)
@@ -3133,6 +3246,62 @@ func (p *ASDEXPane) commitBrightnessSpinner(spinner *DcbSpinner) {
 	p.setBrightnessValue(spinner.Function, value)
 	p.commitUndoIfChanged(before)
 	p.finishBrightnessSpinner("")
+}
+
+func (p *ASDEXPane) commitCharSizeSpinner(spinner *DcbSpinner) {
+	if p == nil || spinner == nil {
+		return
+	}
+
+	text := strings.TrimSpace(spinner.InputText())
+	value, err := strconv.Atoi(text)
+	if err != nil || value < spinner.Min || value > spinner.Max {
+		p.finishCharSizeSpinner("INVALID SIZE")
+		return
+	}
+
+	before := p.undoBeforeForSpinnerMutation(spinner)
+	p.setCharSizeValue(spinner.Function, value)
+	p.commitUndoIfChanged(before)
+	p.finishCharSizeSpinner("")
+}
+
+func (p *ASDEXPane) finishCharSizeSpinner(systemResponse string) {
+	if p == nil {
+		return
+	}
+
+	p.commitSpinnerUndoIfChanged(p.dcbSpinner)
+	p.dcbSpinner = nil
+	p.dcb.SetMenu(DcbMenuCharSize)
+	p.dcbMenuCommand = NewDcbMenuCommand("CHAR SIZE")
+	p.previewArea.SetSystemResponse(systemResponse)
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) setCharSizeValue(function DcbFunction, value int) {
+	if p == nil {
+		return
+	}
+
+	switch function {
+	case DcbFunctionDataBlockCharSize:
+		value = clampInt(value, 1, 6)
+		state := p.displayStateForWindow(p.activeWindowID())
+		state.DB.FontSize = value
+	case DcbFunctionDcbCharSize:
+		value = clampInt(value, 1, 3)
+		p.dcb.SetCharSize(value)
+	case DcbFunctionCoastSuspendCharSize:
+		value = clampInt(value, 1, 6)
+		p.coastList.SetFontSize(value)
+	case DcbFunctionTempDataCharSize:
+		value = clampInt(value, 1, 6)
+		p.displayStateForWindow(p.activeWindowID()).TempDataCharSize = value
+	case DcbFunctionPreviewAreaCharSize:
+		value = clampInt(value, 1, 6)
+		p.previewArea.SetFontSize(value)
+	}
 }
 
 func (p *ASDEXPane) commitHistorySpinner(spinner *DcbSpinner) {
@@ -3279,6 +3448,13 @@ func (p *ASDEXPane) incrementActiveDcbSpinner(delta int) {
 			p.setSafetyVolume(next)
 			spinner.Value = next
 		}
+	case DcbSpinnerCharSize:
+		p.captureSpinnerUndo(spinner)
+		next := clampInt(spinner.Value+delta, spinner.Min, spinner.Max)
+		if next != spinner.Value {
+			spinner.Value = next
+			p.setCharSizeValue(spinner.Function, next)
+		}
 	case DcbSpinnerDbAreaCharSize:
 		p.captureSpinnerUndo(spinner)
 		next := clampInt(spinner.Value+delta, 1, 6)
@@ -3400,13 +3576,14 @@ func (p *ASDEXPane) dataBlockSettings() DataBlockSettings {
 }
 
 type ActiveDcbWindowState struct {
-	WindowID       ScopeWindowID
-	View           ScopeView
-	DB             DataBlockSettings
-	Brightness     WindowBrightnessSettings
-	ShowHistory    bool
-	HistoryLength  int
-	ShowVectorLine bool
+	WindowID         ScopeWindowID
+	View             ScopeView
+	DB               DataBlockSettings
+	Brightness       WindowBrightnessSettings
+	TempDataCharSize int
+	ShowHistory      bool
+	HistoryLength    int
+	ShowVectorLine   bool
 }
 
 func (p *ASDEXPane) activeDcbWindowState() ActiveDcbWindowState {
@@ -3420,13 +3597,14 @@ func (p *ASDEXPane) activeDcbWindowState() ActiveDcbWindowState {
 
 	state := p.displayStateForWindow(windowID)
 	return ActiveDcbWindowState{
-		WindowID:       windowID,
-		View:           view,
-		DB:             p.dataBlockSettingsForWindow(windowID),
-		Brightness:     state.Brightness,
-		ShowHistory:    state.ShowHistory,
-		HistoryLength:  state.HistoryLength,
-		ShowVectorLine: state.ShowVectorLine,
+		WindowID:         windowID,
+		View:             view,
+		DB:               p.dataBlockSettingsForWindow(windowID),
+		Brightness:       state.Brightness,
+		TempDataCharSize: state.TempDataCharSize,
+		ShowHistory:      state.ShowHistory,
+		HistoryLength:    state.HistoryLength,
+		ShowVectorLine:   state.ShowVectorLine,
 	}
 }
 
@@ -5853,8 +6031,10 @@ type UndoSnapshot struct {
 	PreviewLocation RelativeScreenLocation
 	CoastLocation   RelativeScreenLocation
 
-	DcbPosition DcbPosition
-	DcbCharSize int
+	DcbPosition          DcbPosition
+	DcbCharSize          int
+	CoastSuspendCharSize int
+	PreviewAreaCharSize  int
 
 	ListsBrightness int
 	DcbBrightness   int
@@ -5925,17 +6105,19 @@ func (p *ASDEXPane) captureUndoSnapshot() UndoSnapshot {
 	}
 
 	out := UndoSnapshot{
-		ActiveWindowID:  p.activeWindowID(),
-		WindowStates:    make(map[ScopeWindowID]UndoWindowState),
-		DBFieldSettings: p.dbFieldSettings,
-		ShowCoastList:   p.showCoastList,
-		PreviewLocation: p.previewArea.location,
-		CoastLocation:   p.coastList.location,
-		DcbPosition:     p.dcb.Position(),
-		DcbCharSize:     p.dcb.CharSize(),
-		ListsBrightness: p.listsBrightness,
-		DcbBrightness:   p.dcbBrightness,
-		VectorLength:    p.vectorLength,
+		ActiveWindowID:       p.activeWindowID(),
+		WindowStates:         make(map[ScopeWindowID]UndoWindowState),
+		DBFieldSettings:      p.dbFieldSettings,
+		ShowCoastList:        p.showCoastList,
+		PreviewLocation:      p.previewArea.location,
+		CoastLocation:        p.coastList.location,
+		DcbPosition:          p.dcb.Position(),
+		DcbCharSize:          p.dcb.CharSize(),
+		CoastSuspendCharSize: p.coastList.FontSize(),
+		PreviewAreaCharSize:  p.previewArea.FontSize(),
+		ListsBrightness:      p.listsBrightness,
+		DcbBrightness:        p.dcbBrightness,
+		VectorLength:         p.vectorLength,
 	}
 
 	for id, state := range p.displayStateByWindow {
@@ -6039,6 +6221,12 @@ func (p *ASDEXPane) restoreUndoSnapshot(snapshot UndoSnapshot) {
 	p.dcb.SetPosition(snapshot.DcbPosition)
 	if snapshot.DcbCharSize > 0 {
 		p.dcb.SetCharSize(snapshot.DcbCharSize)
+	}
+	if snapshot.CoastSuspendCharSize > 0 {
+		p.coastList.SetFontSize(snapshot.CoastSuspendCharSize)
+	}
+	if snapshot.PreviewAreaCharSize > 0 {
+		p.previewArea.SetFontSize(snapshot.PreviewAreaCharSize)
 	}
 
 	p.setListsBrightness(snapshot.ListsBrightness)

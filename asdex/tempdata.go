@@ -817,13 +817,14 @@ func (td *TempData) DrawTempTexts(
 	font *renderer.BitmapFont,
 	textureForSize func(size int) renderer.TextureID,
 	settings DataBlockSettings,
+	defaultFontSize int,
 	defaultBrightness int,
 ) {
 	if td == nil || cb == nil || font == nil || textureForSize == nil || len(td.texts) == 0 {
 		return
 	}
 
-	fontSize := tempTextFontSizeDefault
+	fontSize := clampInt(defaultFontSize, 1, 6)
 	textureID := textureForSize(fontSize)
 	if textureID == 0 {
 		return

@@ -33,6 +33,7 @@ const (
 	DcbMenuDefineTraitArea
 	DcbMenuModifyTraitArea
 	DcbMenuBrightness
+	DcbMenuCharSize
 	DcbMenuTools
 	DcbMenuPlayBack
 	DcbMenuSafetyLogic
@@ -75,6 +76,11 @@ const (
 	DcbFunctionDayNite
 	DcbFunctionBrightness
 	DcbFunctionCharSize
+	DcbFunctionDataBlockCharSize
+	DcbFunctionDcbCharSize
+	DcbFunctionCoastSuspendCharSize
+	DcbFunctionTempDataCharSize
+	DcbFunctionPreviewAreaCharSize
 	DcbFunctionSafetyLogic
 	DcbFunctionTools
 	DcbFunctionVectorOnOff
@@ -263,6 +269,12 @@ type DcbState struct {
 	PrefSets          []DcbPrefSetState
 	CurrentPrefTitle  string
 
+	DataBlockCharSize    int
+	DcbCharSize          int
+	CoastSuspendCharSize int
+	TempDataCharSize     int
+	PreviewAreaCharSize  int
+
 	PlaybackHourStart  time.Time
 	PlaybackHourOffset int
 
@@ -332,6 +344,7 @@ const (
 	DcbSpinnerHistory
 	DcbSpinnerVectorLength
 	DcbSpinnerSafetyVolume
+	DcbSpinnerCharSize
 	DcbSpinnerDbAreaCharSize
 	DcbSpinnerDbAreaBrightness
 	DcbSpinnerDbAreaLeaderLength
@@ -477,6 +490,31 @@ func NewSafetyVolumeDcbSpinner(current int) *DcbSpinner {
 		Value:          current,
 		Original:       current,
 		MaxInputDigits: 3,
+		input:          "",
+		cursor:         0,
+	}
+}
+
+func NewCharSizeDcbSpinner(
+	function DcbFunction,
+	label string,
+	current int,
+	minValue int,
+	maxValue int,
+) *DcbSpinner {
+	current = clampInt(current, minValue, maxValue)
+
+	return &DcbSpinner{
+		Type:           DcbSpinnerCharSize,
+		Function:       function,
+		Title:          "CHAR SIZE",
+		Lines:          []string{"CHAR SIZE", label},
+		Min:            minValue,
+		Max:            maxValue,
+		Step:           1,
+		Value:          current,
+		Original:       current,
+		MaxInputDigits: 1,
 		input:          "",
 		cursor:         0,
 	}
@@ -937,6 +975,11 @@ func isLargeDcbFunction(function DcbFunction) bool {
 		DcbFunctionTempMapAreasBrightness,
 		DcbFunctionTempMapTextBrightness,
 		DcbFunctionDcbBrightness,
+		DcbFunctionDataBlockCharSize,
+		DcbFunctionDcbCharSize,
+		DcbFunctionCoastSuspendCharSize,
+		DcbFunctionTempDataCharSize,
+		DcbFunctionPreviewAreaCharSize,
 		DcbFunctionCursorHomeOnOff,
 		DcbFunctionArrivalAlerts,
 		DcbFunctionTrackAlertInhibit,
@@ -1481,6 +1524,60 @@ func (d *Dcb) brightnessButtonSpecs(state DcbState) []DcbButtonSpec {
 	}
 }
 
+func (d *Dcb) charSizeButtonSpecs(state DcbState) []DcbButtonSpec {
+	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
+		if state.ActiveSpinnerFunction == spec.Function {
+			spec.Active = true
+		}
+		return spec
+	}
+	normal := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonNormal,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    append([]string(nil), lines...),
+		})
+	}
+	value := func(function DcbFunction, current int, lines ...string) DcbButtonSpec {
+		return applyState(DcbButtonSpec{
+			Function:  function,
+			Type:      DcbButtonValue,
+			Large:     isLargeDcbFunction(function),
+			Visible:   true,
+			Lines:     append([]string(nil), lines...),
+			ShowValue: true,
+			Value:     strconv.Itoa(current),
+		})
+	}
+	vacant := func() DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: DcbFunctionVacant,
+			Type:     DcbButtonVacant,
+			Large:    true,
+			Visible:  true,
+		}
+	}
+
+	return []DcbButtonSpec{
+		vacant(),
+		vacant(),
+		vacant(),
+		vacant(),
+		value(DcbFunctionDataBlockCharSize, state.DataBlockCharSize, "DATA", "BLOCK"),
+		value(DcbFunctionDcbCharSize, state.DcbCharSize, "DCB"),
+		value(DcbFunctionCoastSuspendCharSize, state.CoastSuspendCharSize, "COAST", "SUSPEND"),
+		value(DcbFunctionTempDataCharSize, state.TempDataCharSize, "TEMP DATA"),
+		value(DcbFunctionPreviewAreaCharSize, state.PreviewAreaCharSize, "PREVIEW", "AREA"),
+		normal(DcbFunctionDone, "DONE"),
+		vacant(),
+		vacant(),
+		vacant(),
+		vacant(),
+	}
+}
+
 func (d *Dcb) safetyLogicButtonSpecs(state DcbState) []DcbButtonSpec {
 	applyState := func(spec DcbButtonSpec) DcbButtonSpec {
 		if state.ActiveSpinnerFunction == spec.Function {
@@ -1864,6 +1961,8 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 		return d.traitAreaButtonSpecs(state)
 	case DcbMenuBrightness:
 		return d.brightnessButtonSpecs(state)
+	case DcbMenuCharSize:
+		return d.charSizeButtonSpecs(state)
 	case DcbMenuTools:
 		return d.toolsButtonSpecs(state)
 	case DcbMenuPlayBack:
