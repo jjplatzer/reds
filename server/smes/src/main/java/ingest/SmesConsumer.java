@@ -40,44 +40,76 @@ public final class SmesConsumer extends AbstractVerticle {
 
     @Override
     public void start(Promise<Void> startPromise) {
+        Config cfg;
+        DocumentBuilder db;
+
+        try {
+            cfg = Config.fromEnv();
+            db = newDocumentBuilder();
+        } catch (Exception e) {
+            startPromise.fail(e);
+            return;
+        }
+
         // The JMS receive loop runs forever, so it doesn't belong on a Vert.x
         // worker thread — the block detector would flag it at 60 s. A dedicated
         // daemon thread is the idiomatic home for unbounded blocking I/O.
-        consumerThread = new Thread(() -> run(startPromise), "smes-consumer");
+        consumerThread = new Thread(() -> runReconnectLoop(cfg, db), "smes-consumer");
         consumerThread.setDaemon(true);
+        consumerThread.setUncaughtExceptionHandler((thread, err) ->
+                System.err.println("[SMES] Uncaught consumer error: " + err.getMessage()));
         consumerThread.start();
+
+        startPromise.complete();
     }
 
     @Override
     public void stop() {
-        if (consumerThread != null) consumerThread.interrupt();
+        if (consumerThread != null) {
+            consumerThread.interrupt();
+            try {
+                consumerThread.join(3000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
-    private void run(Promise<Void> startPromise) {
-        Config cfg;
-        try {
-            cfg = Config.fromEnv();
-        } catch (Exception e) {
-            startPromise.fail(e);
-            return;
+    private void runReconnectLoop(Config cfg, DocumentBuilder db) {
+        int delayMs = cfg.reconnectInitialMs;
+        long attempt = 0;
+
+        while (!Thread.currentThread().isInterrupted()) {
+            attempt++;
+
+            try {
+                System.out.println("[SMES] Connecting. Queue: " + cfg.queueName + " attempt=" + attempt);
+                consumeOnce(cfg, db);
+
+                if (!Thread.currentThread().isInterrupted()) {
+                    System.err.println("[SMES] Consumer stopped unexpectedly; reconnecting");
+                }
+
+                delayMs = cfg.reconnectInitialMs;
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            } catch (Exception e) {
+                System.err.println("[SMES] Disconnected: " + e.getMessage());
+            }
+
+            if (Thread.currentThread().isInterrupted()) {
+                break;
+            }
+
+            sleepBeforeReconnect(delayMs);
+            delayMs = Math.min(cfg.reconnectMaxMs, Math.max(cfg.reconnectInitialMs, delayMs * 2));
         }
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        tryFeature(dbf, "http://apache.org/xml/features/disallow-doctype-decl", true);
-        tryFeature(dbf, "http://xml.org/sax/features/external-general-entities", false);
-        tryFeature(dbf, "http://xml.org/sax/features/external-parameter-entities", false);
-        dbf.setExpandEntityReferences(false);
-        dbf.setNamespaceAware(true);
+        System.out.println("[SMES] Consumer thread stopped");
+    }
 
-        DocumentBuilder db;
-        try {
-            db = dbf.newDocumentBuilder();
-            db.setErrorHandler(null);
-        } catch (Exception e) {
-            startPromise.fail(e);
-            return;
-        }
-
+    private void consumeOnce(Config cfg, DocumentBuilder db) throws Exception {
         SolConnectionFactory cf;
         Connection conn = null;
         Session session = null;
@@ -96,7 +128,6 @@ public final class SmesConsumer extends AbstractVerticle {
             consumer = session.createConsumer(session.createQueue(cfg.queueName));
             conn.start();
 
-            startPromise.complete();
             System.out.println("[SMES] Connected. Queue: " + cfg.queueName);
 
             long msgCount = 0, obsCount = 0;
@@ -145,13 +176,19 @@ public final class SmesConsumer extends AbstractVerticle {
                 msg.acknowledge();
                 msgCount++;
             }
-        } catch (Exception e) {
-            if (!startPromise.future().isComplete()) startPromise.fail(e);
-            else System.err.println("[SMES] Fatal: " + e.getMessage());
         } finally {
             closeQuietly(consumer);
             closeQuietly(session);
             closeQuietly(conn);
+        }
+    }
+
+    private static void sleepBeforeReconnect(int delayMs) {
+        try {
+            System.err.println("[SMES] Reconnecting in " + delayMs + "ms");
+            Thread.sleep(delayMs);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -289,6 +326,19 @@ public final class SmesConsumer extends AbstractVerticle {
     // XML helpers
     // -------------------------------------------------------------------------
 
+    private static DocumentBuilder newDocumentBuilder() throws Exception {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        tryFeature(dbf, "http://apache.org/xml/features/disallow-doctype-decl", true);
+        tryFeature(dbf, "http://xml.org/sax/features/external-general-entities", false);
+        tryFeature(dbf, "http://xml.org/sax/features/external-parameter-entities", false);
+        dbf.setExpandEntityReferences(false);
+        dbf.setNamespaceAware(true);
+
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        db.setErrorHandler(null);
+        return db;
+    }
+
     private static Element child(Element parent, String localName) {
         if (parent == null) return null;
         NodeList nl = parent.getChildNodes();
@@ -388,14 +438,16 @@ public final class SmesConsumer extends AbstractVerticle {
 
     static final class Config {
         final String  jmsUrl, vpn, username, password, queueName;
-        final int     maxBytes, statsIntervalMs;
+        final int     maxBytes, statsIntervalMs, reconnectInitialMs, reconnectMaxMs;
         final boolean printStats;
 
         private Config(String jmsUrl, String vpn, String username, String password,
-                       String queueName, int maxBytes, boolean printStats, int statsIntervalMs) {
+                       String queueName, int maxBytes, boolean printStats, int statsIntervalMs,
+                       int reconnectInitialMs, int reconnectMaxMs) {
             this.jmsUrl = jmsUrl; this.vpn = vpn; this.username = username; this.password = password;
             this.queueName = queueName; this.maxBytes = maxBytes;
             this.printStats = printStats; this.statsIntervalMs = statsIntervalMs;
+            this.reconnectInitialMs = reconnectInitialMs; this.reconnectMaxMs = reconnectMaxMs;
         }
 
         static Config fromEnv() {
@@ -407,7 +459,9 @@ public final class SmesConsumer extends AbstractVerticle {
             return new Config(jmsUrl, vpn, user, pass, queue,
                     intEnv("SMES_MAX_BYTES", 10 * 1024 * 1024),
                     boolEnv("SMES_PRINT_STATS", false),
-                    Math.max(250, intEnv("SMES_STATS_INTERVAL_MS", 2000)));
+                    Math.max(250, intEnv("SMES_STATS_INTERVAL_MS", 2000)),
+                    Math.max(1000, intEnv("SMES_RECONNECT_INITIAL_MS", 5000)),
+                    Math.max(1000, intEnv("SMES_RECONNECT_MAX_MS", 60000)));
         }
 
         private static String env(String k) { return System.getenv(k); }
