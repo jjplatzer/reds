@@ -1600,13 +1600,35 @@ func (p *ASDEXPane) openTempDataDcbMenu() {
 }
 
 func (p *ASDEXPane) openTempDataClosedRunwayDcbMenu() {
+	p.openClosedRunwayDcbMenu(
+		DcbMenuTempData,
+		[]string{"TEMP DATA"},
+		[]string{"TEMP DATA", "CLOSED RUNWAY"},
+	)
+}
+
+func (p *ASDEXPane) openSafetyLogicClosedRunwayDcbMenu() {
+	p.openClosedRunwayDcbMenu(
+		DcbMenuSafetyLogic,
+		[]string{"SAFETY LOGIC"},
+		[]string{"SAFETY LOGIC", "CLOSED RUNWAY"},
+	)
+}
+
+func (p *ASDEXPane) openClosedRunwayDcbMenu(
+	returnMenu DcbMenu,
+	returnLines []string,
+	displayLines []string,
+) {
 	if p == nil {
 		return
 	}
 
 	p.dcb.SetMenu(DcbMenuClosedRunway)
 	p.clearTempDataCommandConflicts()
-	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA", "CLOSED RUNWAY")
+	p.closedRunwayReturnMenu = returnMenu
+	p.closedRunwayReturnLines = append([]string(nil), returnLines...)
+	p.dcbMenuCommand = NewDcbMenuCommand(displayLines...)
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
@@ -1618,8 +1640,7 @@ func (p *ASDEXPane) closeDcbCurrentSubmenu() {
 
 	switch p.dcb.Menu() {
 	case DcbMenuClosedRunway:
-		p.dcb.SetMenu(DcbMenuTempData)
-		p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
+		p.restoreClosedRunwayReturnMenu()
 	case DcbMenuTempData:
 		p.dcb.SetMenu(DcbMenuMain)
 		p.dcbMenuCommand = nil
@@ -1638,6 +1659,37 @@ func (p *ASDEXPane) closeDcbCurrentSubmenu() {
 	p.dcbSpinner = nil
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) restoreClosedRunwayReturnMenu() {
+	if p == nil {
+		return
+	}
+
+	returnMenu := p.closedRunwayReturnMenu
+	if returnMenu == DcbMenuOff || returnMenu == DcbMenuClosedRunway {
+		returnMenu = DcbMenuTempData
+	}
+	if returnMenu == DcbMenuMain {
+		p.dcb.SetMenu(DcbMenuMain)
+		p.dcbMenuCommand = nil
+		return
+	}
+
+	p.dcb.SetMenu(returnMenu)
+	if len(p.closedRunwayReturnLines) > 0 {
+		p.dcbMenuCommand = NewDcbMenuCommand(p.closedRunwayReturnLines...)
+		return
+	}
+
+	switch returnMenu {
+	case DcbMenuSafetyLogic:
+		p.dcbMenuCommand = NewDcbMenuCommand("SAFETY LOGIC")
+	case DcbMenuTempData:
+		p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
+	default:
+		p.dcbMenuCommand = nil
+	}
 }
 
 func (p *ASDEXPane) closeDcbSubmenu() {
