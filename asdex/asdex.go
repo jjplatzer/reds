@@ -146,6 +146,8 @@ type ASDEXPane struct {
 	dcb                             Dcb
 	dcbSpinner                      *DcbSpinner
 	dcbMenuCommand                  *DcbMenuCommand
+	closedRunwayReturnMenu          DcbMenu
+	closedRunwayReturnLines         []string
 	trackAlertInhibitReturnMenu     DcbMenu
 	trackAlertInhibitReturnLines    []string
 	trackAlertInhibitHasReturnState bool
@@ -1719,9 +1721,11 @@ func (p *ASDEXPane) activateSafetyLogicDcbHit(ctx *panes.Context, hit DcbHit) bo
 	case DcbFunctionVolumeTest:
 		p.executeVolumeTestCommand(ctx)
 		return true
+	case DcbFunctionClosedRunway:
+		p.openSafetyLogicClosedRunwayDcbMenu()
+		return true
 	case DcbFunctionArrivalAlerts,
-		DcbFunctionAlertReposition,
-		DcbFunctionClosedRunway:
+		DcbFunctionAlertReposition:
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
 		return true
