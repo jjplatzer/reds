@@ -4,6 +4,42 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+DO_RUN=1
+DO_APP=0
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --build-only|--no-run)
+            DO_RUN=0
+            ;;
+
+        --app)
+            DO_APP=1
+            DO_RUN=0
+            ;;
+
+        --help)
+            cat <<'EOF'
+Usage: ./build.sh [options]
+
+Options:
+  --build-only  Build REDS but do not run it
+  --no-run      Alias for --build-only
+  --app         Build REDS.app but do not run it
+  --help        Show this help
+EOF
+            exit 0
+            ;;
+
+        *)
+            echo "Unknown option: $1" >&2
+            exit 2
+            ;;
+    esac
+
+    shift
+done
+
 if [[ -f .env ]]; then
     set -o allexport
     # shellcheck disable=SC1091
@@ -30,6 +66,10 @@ mkdir -p build
 echo "[build] Building reds (Go frontend)..." >&2
 go build -o build/reds ./cmd/reds
 
+if [[ "$DO_APP" -eq 1 ]]; then
+    ./osx/make-reds-app.sh
+fi
+
 if [[ "$USE_PUBLIC_SERVER_ENABLED" -eq 0 ]]; then
     echo "[build] Building SMES reader..." >&2
     mvn -q -f server/smes/pom.xml package
@@ -46,5 +86,13 @@ else
     echo "[build] Skipping local SMES build and :$WS_PORT listener cleanup." >&2
 fi
 
-echo "[run] Launching reds..." >&2
-./build/reds
+if [[ "$DO_RUN" -eq 1 ]]; then
+    echo "[run] Launching reds..." >&2
+    ./build/reds
+else
+    echo "[done] Build complete: build/reds" >&2
+
+    if [[ "$DO_APP" -eq 1 ]]; then
+        echo "[done] App bundle: build/REDS.app" >&2
+    fi
+fi

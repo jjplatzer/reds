@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"runtime/debug"
 	"time"
 
 	"github.com/juliusplatzer/reds/asdex"
@@ -54,7 +55,7 @@ func main() {
 	os.Exit(realMain())
 }
 
-func realMain() int {
+func realMain() (exitCode int) {
 	flag.Parse()
 
 	logger, err := redslog.New(*logLevel, *logDir)
@@ -63,6 +64,17 @@ func realMain() int {
 		return 1
 	}
 	slog.SetDefault(logger.Logger)
+
+	defer func() {
+		if recovered := recover(); recovered != nil {
+			logger.Error(
+				"REDS crashed",
+				slog.Any("panic", recovered),
+				slog.String("stack", string(debug.Stack())),
+			)
+			exitCode = 1
+		}
+	}()
 
 	logger.Info(
 		"Log initialized",

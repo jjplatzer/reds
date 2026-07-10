@@ -51,17 +51,31 @@ func candidateRoots() []string {
 		if abs, err := filepath.Abs(p); err == nil {
 			p = abs
 		}
+		p = filepath.Clean(p)
 		if !seen[p] {
 			seen[p] = true
 			roots = append(roots, p)
 		}
 	}
 
+	// Explicit override for development, tests, and non-standard installs.
+	add(os.Getenv("REDS_RESOURCE_ROOT"))
+
 	if cwd, err := os.Getwd(); err == nil {
 		add(cwd)
 	}
 	if exe, err := os.Executable(); err == nil {
 		exeDir := filepath.Dir(exe)
+
+		// macOS application bundle:
+		//
+		// REDS.app/
+		//   Contents/
+		//     MacOS/reds
+		//     Resources/resources/videomaps/...
+		add(filepath.Join(exeDir, "..", "Resources"))
+
+		// Existing development/build layouts.
 		add(exeDir)
 		add(filepath.Join(exeDir, ".."))
 		add(filepath.Join(exeDir, "..", ".."))
@@ -95,15 +109,23 @@ func findProjectRootFrom(path string) (string, bool) {
 	}
 }
 
+func findRootFromCandidates(candidates []string) (string, bool) {
+	for _, candidate := range candidates {
+		if root, ok := findProjectRootFrom(candidate); ok {
+			return root, true
+		}
+	}
+
+	return "", false
+}
+
 // FindProjectRoot returns the project root directory, cached after first call.
 // Falls back to the current working directory if no marker is found.
 func FindProjectRoot() string {
 	rootOnce.Do(func() {
-		for _, c := range candidateRoots() {
-			if root, ok := findProjectRootFrom(c); ok {
-				rootDir = root
-				return
-			}
+		if root, ok := findRootFromCandidates(candidateRoots()); ok {
+			rootDir = root
+			return
 		}
 		if cwd, err := os.Getwd(); err == nil {
 			rootDir = cwd
