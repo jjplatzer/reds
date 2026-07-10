@@ -40,23 +40,14 @@ jobs:
           go-version-file: go.mod
           cache-dependency-path: go.sum
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
-          cache: maven
-
       - name: Install macOS native dependencies
         run: |
           brew update
-          brew install pkg-config glfw maven
+          brew install pkg-config glfw
 
       - name: Show tool versions
         run: |
           go version
-          java -version
-          mvn -version
           clang --version
           pkg-config --modversion glfw3 || true
 
@@ -71,45 +62,121 @@ jobs:
             exit 1
           fi
 
-      - name: Build SMES reader jar
-        run: mvn -B -f server/smes/pom.xml -DskipTests package
-
-      - name: Build REDS frontend
-        run: |
-          mkdir -p build
-          go build -v -o build/reds ./cmd/reds
-
       - name: Run Go tests
         run: go test -v ./...
 
-      - name: Verify build outputs
+      - name: Build REDS.app
+        run: ./build.sh --app
+
+      - name: Validate REDS.app
         run: |
-          test -x build/reds
-          test -f server/smes/target/faascope-stdds-1.0-SNAPSHOT.jar
-          file build/reds
-          ls -lh build/reds server/smes/target/faascope-stdds-1.0-SNAPSHOT.jar
+          set -euo pipefail
+
+          APP="build/REDS.app"
+          CONTENTS="$APP/Contents"
+          BINARY="$CONTENTS/MacOS/reds"
+          RESOURCES="$CONTENTS/Resources"
+
+          plutil -lint \
+            "$CONTENTS/Info.plist"
+
+          test -x \
+            "$BINARY"
+
+          test -f \
+            "$RESOURCES/reds.icns"
+
+          test -d \
+            "$RESOURCES/resources/videomaps/asdex"
+
+          test -d \
+            "$RESOURCES/resources/configs/asdex"
+
+          test -d \
+            "$RESOURCES/resources/audio/asdex"
+
+          test -d \
+            "$RESOURCES/fonts"
+
+          test -d \
+            "$RESOURCES/asdex/surface"
+
+          file \
+            "$BINARY"
+
+          du -sh \
+            "$APP"
+
+      - name: Audit native dependencies
+        run: |
+          set -euo pipefail
+
+          BINARY="build/REDS.app/Contents/MacOS/reds"
+
+          otool -L "$BINARY"
+
+          invalid="$(
+            otool -L "$BINARY" |
+            tail -n +2 |
+            awk '{print $1}' |
+            grep '^/' |
+            grep -Ev '^/System/Library/|^/usr/lib/' \
+            || true
+          )"
+
+          if [[ -n "$invalid" ]]; then
+            echo "Non-system absolute dependencies:" >&2
+            echo "$invalid" >&2
+            exit 1
+          fi
+
+      - name: Package REDS.app
+        run: |
+          set -euo pipefail
+
+          rm -f \
+            build/REDS-macOS.zip
+
+          ditto \
+            -c \
+            -k \
+            --sequesterRsrc \
+            --keepParent \
+            build/REDS.app \
+            build/REDS-macOS.zip
+
+          ls -lh \
+            build/REDS-macOS.zip
 
       - name: Optional GUI smoke launch
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_gui_smoke }}
         run: |
           set -euo pipefail
-          ./build/reds &
-          pid=$!
+
+          open \
+            build/REDS.app
+
           sleep 10
-          if kill -0 "$pid" 2>/dev/null; then
-            echo "REDS stayed alive for 10 seconds; stopping smoke process."
-            kill "$pid" 2>/dev/null || true
-            wait "$pid" 2>/dev/null || true
+
+          if pgrep -x reds >/dev/null; then
+            echo "REDS.app stayed alive for 10 seconds."
+            pkill -x reds || true
           else
-            echo "REDS exited during GUI smoke launch; checking exit status."
-            wait "$pid"
+            echo "REDS.app is no longer running." >&2
+
+            LOG="$HOME/Library/Application Support/REDS/reds.slog"
+
+            if [[ -f "$LOG" ]]; then
+              echo "=== REDS slog ==="
+              cat "$LOG"
+            fi
+
+            exit 1
           fi
 
-      - name: Upload macOS build artifacts
+      - name: Upload REDS macOS application
         uses: actions/upload-artifact@v4
         with:
-          name: reds-macos-build
-          path: |
-            build/reds
-            server/smes/target/faascope-stdds-1.0-SNAPSHOT.jar
+          name: REDS-macOS
+          path: build/REDS-macOS.zip
           if-no-files-found: error
