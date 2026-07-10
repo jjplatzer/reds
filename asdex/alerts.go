@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"log/slog"
 	stdmath "math"
-	"os"
 	"strings"
 	"sync"
 	"time"
@@ -411,7 +411,10 @@ func NewAuralAlertManager() *AuralAlertManager {
 		Format:       oto.FormatSignedInt16LE,
 	})
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "asdex aural alerts disabled: %v\n", err)
+		slog.Warn(
+			"Aural alerts disabled",
+			slog.Any("error", err),
+		)
 		return manager
 	}
 
@@ -451,13 +454,20 @@ func (m *AuralAlertManager) loadSounds() {
 
 		path := "resources/audio/asdex/" + name
 		if !util.ResourceExists(path) {
-			fmt.Fprintf(os.Stderr, "asdex aural alert %s disabled: missing resource\n", name)
+			slog.Warn(
+				"Aural alert sound disabled: missing resource",
+				slog.String("sound", name),
+			)
 			continue
 		}
 
 		data, err := loadAuralPCM(path)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "asdex aural alert %s disabled: %v\n", name, err)
+			slog.Warn(
+				"Aural alert sound disabled",
+				slog.String("sound", name),
+				slog.Any("error", err),
+			)
 			continue
 		}
 		m.sounds[alert] = data

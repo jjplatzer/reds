@@ -10,6 +10,7 @@ require (
 	github.com/gorilla/websocket v1.5.3
 	github.com/klauspost/compress v1.17.9
 	github.com/mmp/earcut-go v0.0.0-20251026231138-15f3234fdcd1
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
 
 require (

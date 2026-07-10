@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"os/exec"
 	"strings"
@@ -106,7 +107,10 @@ func (c *smesConsumer) wait(cmd *exec.Cmd, done chan struct{}) {
 
 	close(done)
 	if !stopping {
-		fmt.Fprintf(os.Stderr, "reds: SMES consumer stopped: %v\n", err)
+		slog.Warn(
+			"SMES consumer stopped",
+			slog.Any("error", err),
+		)
 	}
 }
 

@@ -4,10 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"strings"
 	"sync"
 	"time"
+
+	redslog "github.com/juliusplatzer/reds/log"
 
 	"github.com/gorilla/websocket"
 )
@@ -21,7 +24,8 @@ var errSmesClientClosed = errors.New("SMES client closed")
 var errSmesClientInactive = errors.New("SMES client inactive")
 
 type SmesClient struct {
-	url string
+	logger *redslog.Logger
+	url    string
 
 	incoming      chan SmesFrame
 	errors        chan error
@@ -39,8 +43,16 @@ type SmesClient struct {
 	lastStatus     SmesStatus
 }
 
-func NewSmesClient(url string) *SmesClient {
+func NewSmesClient(url string, logger *redslog.Logger) *SmesClient {
+	if logger == nil {
+		logger = &redslog.Logger{
+			Logger: slog.Default(),
+			Start:  time.Now(),
+		}
+	}
+
 	return &SmesClient{
+		logger:        logger,
 		url:           url,
 		incoming:      make(chan SmesFrame, 256),
 		errors:        make(chan error, 16),
@@ -126,8 +138,18 @@ func (c *SmesClient) run() {
 		}
 
 		headers := http.Header{}
+		c.logger.Info(
+			"Connecting to live server",
+			slog.String("url", c.url),
+		)
+
 		conn, _, err := websocket.DefaultDialer.Dial(c.url, headers)
 		if err != nil {
+			c.logger.Warn(
+				"Live server connection failed",
+				slog.String("url", c.url),
+				slog.Any("error", err),
+			)
 			c.reportError(fmt.Errorf("connect SMES websocket %s: %w", c.url, err))
 			c.reportStatus(SmesStatusDisconnected, err)
 			if !c.waitToReconnect() {
@@ -140,13 +162,25 @@ func (c *SmesClient) run() {
 		_ = conn.Close()
 		c.reportStatus(SmesStatusDisconnected, err)
 		if errors.Is(err, errSmesClientInactive) {
+			c.logger.Info(
+				"Live server disconnected",
+				slog.String("reason", "inactivity_timeout"),
+			)
 			if !c.waitForActivity() {
 				return
 			}
 			continue
 		}
 		if err != nil && !errors.Is(err, errSmesClientClosed) {
+			c.logger.Warn(
+				"Live server disconnected",
+				slog.Any("error", err),
+			)
 			c.reportError(fmt.Errorf("SMES websocket %s: %w", c.url, err))
+		} else if errors.Is(err, errSmesClientClosed) {
+			c.logger.Debug("Live server client closed")
+		} else {
+			c.logger.Info("Live server disconnected")
 		}
 		if !c.waitToReconnect() {
 			return
@@ -159,6 +193,10 @@ func (c *SmesClient) serve(conn *websocket.Conn) error {
 		return err
 	}
 	c.reportStatus(SmesStatusConnected, nil)
+	c.logger.Info(
+		"Live server connected",
+		slog.String("airport", c.currentAirport()),
+	)
 
 	lastActivitySent := time.Now().UTC()
 
@@ -175,6 +213,10 @@ func (c *SmesClient) serve(conn *websocket.Conn) error {
 			if err := c.writeAirport(conn); err != nil {
 				return err
 			}
+			c.logger.Debug(
+				"Live airport subscription updated",
+				slog.String("airport", c.currentAirport()),
+			)
 		case <-c.activity:
 			now := time.Now().UTC()
 			if now.Sub(lastActivitySent) >= smesActivityMinInterval {
@@ -198,6 +240,10 @@ func (c *SmesClient) readFrames(conn *websocket.Conn) error {
 
 		var frame SmesFrame
 		if err := json.Unmarshal(payload, &frame); err != nil {
+			c.logger.Warn(
+				"Malformed SMES frame",
+				slog.Any("error", err),
+			)
 			c.reportError(fmt.Errorf("decode SMES frame: %w", err))
 			continue
 		}
@@ -220,9 +266,7 @@ func (c *SmesClient) readFrames(conn *websocket.Conn) error {
 }
 
 func (c *SmesClient) writeAirport(conn *websocket.Conn) error {
-	c.mu.RLock()
-	airport := c.airport
-	c.mu.RUnlock()
+	airport := c.currentAirport()
 
 	airports := []string{}
 	if airport != "" {
@@ -232,6 +276,16 @@ func (c *SmesClient) writeAirport(conn *websocket.Conn) error {
 		Type:     "setAirports",
 		Airports: airports,
 	})
+}
+
+func (c *SmesClient) currentAirport() string {
+	if c == nil {
+		return ""
+	}
+
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	return c.airport
 }
 
 func (c *SmesClient) writeActivity(conn *websocket.Conn) error {
@@ -275,6 +329,8 @@ func (c *SmesClient) reportStatus(status SmesStatus, err error) {
 }
 
 func (c *SmesClient) waitForActivity() bool {
+	c.logger.Info("Waiting for client activity before reconnect")
+
 	select {
 	case <-c.activity:
 		return true
@@ -284,6 +340,11 @@ func (c *SmesClient) waitForActivity() bool {
 }
 
 func (c *SmesClient) waitToReconnect() bool {
+	c.logger.Debug(
+		"Waiting to reconnect",
+		slog.Duration("delay", smesReconnectDelay),
+	)
+
 	timer := time.NewTimer(smesReconnectDelay)
 	defer timer.Stop()
 
