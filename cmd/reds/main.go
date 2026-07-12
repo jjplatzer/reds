@@ -58,12 +58,25 @@ func main() {
 func realMain() (exitCode int) {
 	flag.Parse()
 
-	logger, err := redslog.New(*logLevel, *logDir)
+	resolvedLogDir := redslog.DefaultLogDir(*logDir)
+	crashStderrPath := redslog.RedirectStderrToCrashFile(resolvedLogDir)
+	if crashStderrPath != "" {
+		defer redslog.RemoveCurrentCrashStderrFile()
+	}
+
+	logger, err := redslog.New(*logLevel, resolvedLogDir)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "reds: initialize logging: %v\n", err)
 		return 1
 	}
 	slog.SetDefault(logger.Logger)
+
+	if crashStderrPath != "" {
+		logger.Info(
+			"Redirected stderr",
+			slog.String("file", crashStderrPath),
+		)
+	}
 
 	defer func() {
 		if recovered := recover(); recovered != nil {

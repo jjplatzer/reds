@@ -11,6 +11,9 @@
 # Java / Maven
 server/smes/target/
 
+# Generated Windows resources
+cmd/reds/rsrc_windows_*.syso
+
 # macOS
 .DS_Store
 __MACOSX/

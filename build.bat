@@ -11,6 +11,7 @@ REM   --test        Run go test ./... after building
 REM   --all         Run checks and tests, then build/run
 REM   --build-only  Build required artifacts, but do not run the GUI
 REM   --no-run      Alias for --build-only
+REM   --package     Build a portable REDS Windows application ZIP
 REM   --help        Show this help message
 REM
 REM Prerequisites:
@@ -26,6 +27,7 @@ REM         mingw-w64-ucrt-x86_64-glfw
 set "DO_CHECK=0"
 set "DO_TEST=0"
 set "DO_RUN=1"
+set "DO_PACKAGE=0"
 
 cd /d "%~dp0"
 
@@ -39,6 +41,10 @@ if "%~1"=="--all" (
 )
 if "%~1"=="--build-only" set "DO_RUN=0"
 if "%~1"=="--no-run" set "DO_RUN=0"
+if "%~1"=="--package" (
+    set "DO_PACKAGE=1"
+    set "DO_RUN=0"
+)
 if "%~1"=="--help" goto help
 shift
 goto parse_args
@@ -54,6 +60,7 @@ echo   --test        Run go test ./... after building
 echo   --all         Run checks and tests, then build/run
 echo   --build-only  Build required artifacts, but do not run the GUI
 echo   --no-run      Alias for --build-only
+echo   --package     Build a portable REDS Windows application ZIP
 echo   --help        Show this help message
 echo.
 exit /b 0
@@ -77,6 +84,11 @@ if /I "%USE_PUBLIC_SERVER%"=="true" set "USE_PUBLIC_SERVER_ENABLED=1"
 if /I "%USE_PUBLIC_SERVER%"=="yes" set "USE_PUBLIC_SERVER_ENABLED=1"
 if /I "%USE_PUBLIC_SERVER%"=="on" set "USE_PUBLIC_SERVER_ENABLED=1"
 
+REM Desktop release packages always use the public REDS service.
+if "%DO_PACKAGE%"=="1" (
+    set "USE_PUBLIC_SERVER_ENABLED=1"
+)
+
 set "CGO_ENABLED=1"
 
 call :configure_msys2
@@ -93,9 +105,29 @@ if "%DO_CHECK%"=="1" (
 if not exist "build" mkdir build
 
 REM Build order mirrors build.sh semantically.
-echo [build] Building reds ^(Go frontend^)...
-go build -v -o build\reds.exe .\cmd\reds
-if errorlevel 1 exit /b 1
+if "%DO_PACKAGE%"=="1" (
+    call :generate_windows_resources
+    if errorlevel 1 exit /b 1
+
+    echo [build] Building REDS Windows desktop application...
+
+    go build ^
+        -v ^
+        -ldflags="-H=windowsgui" ^
+        -o build\REDS.exe ^
+        .\cmd\reds
+
+    if errorlevel 1 exit /b 1
+) else (
+    echo [build] Building reds ^(Go development frontend^)...
+
+    go build ^
+        -v ^
+        -o build\reds.exe ^
+        .\cmd\reds
+
+    if errorlevel 1 exit /b 1
+)
 
 if "%USE_PUBLIC_SERVER_ENABLED%"=="0" (
     echo [build] Building SMES reader...
@@ -110,6 +142,25 @@ if "%DO_TEST%"=="1" (
     echo [test] Running Go tests...
     go test -v ./...
     if errorlevel 1 exit /b 1
+)
+
+if "%DO_PACKAGE%"=="1" (
+    echo [package] Staging Windows application...
+
+    powershell ^
+        -NoProfile ^
+        -ExecutionPolicy Bypass ^
+        -File windows\make-reds-package.ps1
+
+    if errorlevel 1 exit /b 1
+
+    echo [done] Windows application:
+    echo        build\REDS-Windows\
+    echo.
+    echo [done] Windows archive:
+    echo        build\REDS-Windows.zip
+
+    exit /b 0
 )
 
 if "%DO_RUN%"=="0" (
@@ -210,6 +261,24 @@ for /f "delims=" %%F in ('gofmt -l . 2^>^&1') do (
     exit /b 1
 )
 echo [check] gofmt: OK
+exit /b 0
+
+:generate_windows_resources
+echo [resources] Generating Windows application resources...
+
+del /Q cmd\reds\rsrc_windows_*.syso >nul 2>nul
+
+go run github.com/tc-hib/go-winres@latest ^
+    make ^
+    --in windows\winres.json ^
+    --out cmd\reds\rsrc
+
+if errorlevel 1 (
+    echo Error: failed to generate Windows resources.
+    exit /b 1
+)
+
+echo [resources] Windows resources generated.
 exit /b 0
 
 :kill_stale_listener
