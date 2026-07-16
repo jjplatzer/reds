@@ -1697,6 +1697,15 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	case DcbFunctionDataBlocksOnOff:
 		p.toggleDataBlocksOnOff()
 		return true
+	case DcbFunctionInitControl:
+		p.executeInitControlCommand(ctx)
+		return true
+	case DcbFunctionTrackSuspend:
+		p.executeTrackSuspendCommand(ctx)
+		return true
+	case DcbFunctionTermControl:
+		p.executeTerminateControlCommand(ctx)
+		return true
 	case DcbFunctionDcbOnOff:
 		p.dcb.ToggleOnOff()
 		p.commandMode = CommandModeNone
@@ -1816,6 +1825,75 @@ func (p *ASDEXPane) executeUndoCommand(ctx *panes.Context) {
 	status, err, handled := p.tryExecuteUserCommand(
 		ctx,
 		"[UNDO]",
+		nil,
+		CommandClickNone,
+		redsmath.Vec2{},
+		radar.ScopeTransformations{},
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return
+	}
+	if handled {
+		p.applyCommandStatus(status)
+	}
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) executeInitControlCommand(ctx *panes.Context) {
+	if p == nil {
+		return
+	}
+
+	status, err, handled := p.tryExecuteUserCommand(
+		ctx,
+		"[INIT CNTL]",
+		nil,
+		CommandClickNone,
+		redsmath.Vec2{},
+		radar.ScopeTransformations{},
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return
+	}
+	if handled {
+		p.applyCommandStatus(status)
+	}
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) executeTrackSuspendCommand(ctx *panes.Context) {
+	if p == nil {
+		return
+	}
+
+	status, err, handled := p.tryExecuteUserCommand(
+		ctx,
+		"[TRK SUSP]",
+		nil,
+		CommandClickNone,
+		redsmath.Vec2{},
+		radar.ScopeTransformations{},
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return
+	}
+	if handled {
+		p.applyCommandStatus(status)
+	}
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) executeTerminateControlCommand(ctx *panes.Context) {
+	if p == nil {
+		return
+	}
+
+	status, err, handled := p.tryExecuteUserCommand(
+		ctx,
+		"[TERM CNTL]",
 		nil,
 		CommandClickNone,
 		redsmath.Vec2{},
