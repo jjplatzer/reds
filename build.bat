@@ -89,6 +89,9 @@ if "%DO_PACKAGE%"=="1" (
     set "USE_PUBLIC_SERVER_ENABLED=1"
 )
 
+call :load_build_metadata
+if errorlevel 1 exit /b 1
+
 set "CGO_ENABLED=1"
 
 call :configure_msys2
@@ -113,7 +116,8 @@ if "%DO_PACKAGE%"=="1" (
 
     go build ^
         -v ^
-        -ldflags="-H=windowsgui" ^
+        -trimpath ^
+        -ldflags="-H=windowsgui %REDS_LDFLAGS%" ^
         -o build\REDS.exe ^
         .\cmd\reds
 
@@ -123,6 +127,8 @@ if "%DO_PACKAGE%"=="1" (
 
     go build ^
         -v ^
+        -trimpath ^
+        -ldflags="%REDS_LDFLAGS%" ^
         -o build\reds.exe ^
         .\cmd\reds
 
@@ -158,7 +164,7 @@ if "%DO_PACKAGE%"=="1" (
     echo        build\REDS-Windows\
     echo.
     echo [done] Windows archive:
-    echo        build\REDS-Windows.zip
+    echo        build\REDS-%REDS_VERSION%-Windows.zip
 
     exit /b 0
 )
@@ -253,6 +259,40 @@ echo [tools] GLFW:
 "%PKG_CONFIG%" --modversion glfw3
 exit /b 0
 
+:load_build_metadata
+if not defined REDS_VERSION (
+    if exist "VERSION" (
+        set /p "REDS_VERSION="<VERSION
+    )
+)
+if not defined REDS_VERSION set "REDS_VERSION=dev"
+
+for /f "tokens=1 delims=-" %%V in ("%REDS_VERSION%") do (
+    set "REDS_VERSION_CORE=%%V"
+)
+
+if not defined REDS_COMMIT (
+    for /f "delims=" %%G in ('git rev-parse --short^=12 HEAD 2^>nul') do (
+        set "REDS_COMMIT=%%G"
+    )
+)
+if not defined REDS_COMMIT set "REDS_COMMIT=unknown"
+
+if not defined REDS_BUILD_TIME (
+    for /f "delims=" %%T in ('powershell -NoProfile -Command "[DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ssZ')"') do (
+        set "REDS_BUILD_TIME=%%T"
+    )
+)
+if not defined REDS_BUILD_TIME set "REDS_BUILD_TIME=unknown"
+
+set "REDS_LDFLAGS=-X github.com/juliusplatzer/reds/util/buildinfo.Version=%REDS_VERSION%"
+set "REDS_LDFLAGS=%REDS_LDFLAGS% -X github.com/juliusplatzer/reds/util/buildinfo.Commit=%REDS_COMMIT%"
+set "REDS_LDFLAGS=%REDS_LDFLAGS% -X github.com/juliusplatzer/reds/util/buildinfo.BuildTime=%REDS_BUILD_TIME%"
+
+echo [build] REDS version: %REDS_VERSION%
+echo [build] REDS commit: %REDS_COMMIT%
+exit /b 0
+
 :run_checks
 echo [check] Checking gofmt...
 for /f "delims=" %%F in ('gofmt -l . 2^>^&1') do (
@@ -268,9 +308,21 @@ echo [resources] Generating Windows application resources...
 
 del /Q cmd\reds\rsrc_windows_*.syso >nul 2>nul
 
-go run github.com/tc-hib/go-winres@latest ^
+powershell ^
+    -NoProfile ^
+    -ExecutionPolicy Bypass ^
+    -File windows\make-winres.ps1
+
+if errorlevel 1 (
+    echo Error: failed to generate Windows resource metadata.
+    exit /b 1
+)
+
+if not defined GO_WINRES_VERSION set "GO_WINRES_VERSION=v0.3.3"
+
+go run github.com/tc-hib/go-winres@%GO_WINRES_VERSION% ^
     make ^
-    --in windows\winres.json ^
+    --in build\winres.json ^
     --out cmd\reds\rsrc
 
 if errorlevel 1 (

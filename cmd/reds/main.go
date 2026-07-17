@@ -19,6 +19,7 @@ import (
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/platform"
 	"github.com/juliusplatzer/reds/renderer"
+	"github.com/juliusplatzer/reds/util/buildinfo"
 
 	"github.com/AllenDang/cimgui-go/imgui"
 	implogl3 "github.com/AllenDang/cimgui-go/impl/opengl3"
@@ -42,6 +43,11 @@ var (
 		"",
 		"log file directory",
 	)
+	showVersion = flag.Bool(
+		"version",
+		false,
+		"print REDS version and exit",
+	)
 )
 
 type appMode int
@@ -57,6 +63,11 @@ func main() {
 
 func realMain() (exitCode int) {
 	flag.Parse()
+
+	if *showVersion {
+		fmt.Println(buildinfo.String())
+		return 0
+	}
 
 	resolvedLogDir := redslog.DefaultLogDir(*logDir)
 	crashStderrPath := redslog.RedirectStderrToCrashFile(resolvedLogDir)
@@ -91,6 +102,9 @@ func realMain() (exitCode int) {
 
 	logger.Info(
 		"Log initialized",
+		slog.String("version", buildinfo.Version),
+		slog.String("commit", buildinfo.Commit),
+		slog.String("build_time", buildinfo.BuildTime),
 		slog.String("file", logger.LogFile),
 	)
 

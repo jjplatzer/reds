@@ -4,13 +4,28 @@ param(
 
     [string]$OutputDirectory = "build\REDS-Windows",
 
-    [string]$Archive = "build\REDS-Windows.zip"
+    [string]$Archive = ""
 )
 
 $ErrorActionPreference = "Stop"
 
 $Root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 Set-Location $Root
+
+$Version = $env:REDS_VERSION
+if ([string]::IsNullOrWhiteSpace($Version)) {
+    if (Test-Path "VERSION") {
+        $Version = (Get-Content "VERSION" -Raw).Trim()
+    } else {
+        $Version = "dev"
+    }
+}
+if ([string]::IsNullOrWhiteSpace($Version)) {
+    $Version = "dev"
+}
+if ([string]::IsNullOrWhiteSpace($Archive)) {
+    $Archive = "build\REDS-$Version-Windows.zip"
+}
 
 $BinaryPath = (Resolve-Path $Binary).Path
 $RepositoryRoot = (Get-Location).Path
@@ -49,6 +64,8 @@ Copy-Item -Recurse -Force "fonts" (Join-Path $OutputPath "fonts")
 
 New-Item -ItemType Directory -Force (Join-Path $OutputPath "asdex") | Out-Null
 Copy-Item -Recurse -Force "asdex\surface" (Join-Path $OutputPath "asdex\surface")
+
+Copy-Item -Force "LICENSE" (Join-Path $OutputPath "LICENSE.txt")
 
 function Get-ImportedDlls {
     param(
@@ -116,7 +133,8 @@ $RequiredPaths = @(
     (Join-Path $OutputPath "resources\configs\asdex"),
     (Join-Path $OutputPath "resources\audio\asdex"),
     (Join-Path $OutputPath "fonts"),
-    (Join-Path $OutputPath "asdex\surface")
+    (Join-Path $OutputPath "asdex\surface"),
+    (Join-Path $OutputPath "LICENSE.txt")
 )
 
 foreach ($Path in $RequiredPaths) {
@@ -155,6 +173,11 @@ Compress-Archive `
     -DestinationPath $ArchivePath `
     -CompressionLevel Optimal
 
+$Hash = Get-FileHash $ArchivePath -Algorithm SHA256
+"$($Hash.Hash.ToLower())  $(Split-Path $ArchivePath -Leaf)" |
+    Set-Content "$ArchivePath.sha256"
+
 Write-Host ""
 Write-Host "[package] Created $OutputPath"
 Write-Host "[package] Created $ArchivePath"
+Write-Host "[package] Created $ArchivePath.sha256"
