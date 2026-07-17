@@ -156,9 +156,21 @@ if "%DO_PACKAGE%"=="1" (
     powershell ^
         -NoProfile ^
         -ExecutionPolicy Bypass ^
-        -File windows\make-reds-package.ps1
+        -File windows\make-reds-package.ps1 ^
+        -Archive "build\REDS-%REDS_VERSION%-Windows.zip"
 
     if errorlevel 1 exit /b 1
+
+    if not exist "build\REDS-%REDS_VERSION%-Windows.zip" (
+        echo Error: expected Windows archive was not created: build\REDS-%REDS_VERSION%-Windows.zip
+        dir build
+        exit /b 1
+    )
+    if not exist "build\REDS-%REDS_VERSION%-Windows.zip.sha256" (
+        echo Error: expected Windows checksum was not created: build\REDS-%REDS_VERSION%-Windows.zip.sha256
+        dir build
+        exit /b 1
+    )
 
     echo [done] Windows application:
     echo        build\REDS-Windows\

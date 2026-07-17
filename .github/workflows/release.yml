@@ -201,6 +201,9 @@ jobs:
       - name: Validate Windows checksum
         shell: pwsh
         run: |
+          Write-Host "Build directory:"
+          Get-ChildItem "build" -Force | Format-Table Name, Length
+
           $Archive = Get-ChildItem "build" -Filter "REDS-*-Windows.zip" |
             Select-Object -First 1
           $Checksum = Get-ChildItem "build" -Filter "REDS-*-Windows.zip.sha256" |
