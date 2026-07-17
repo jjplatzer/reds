@@ -387,7 +387,7 @@ func renderAlertBorder(cb *renderer.CmdBuffer, rect redsmath.Rect) {
 
 type AuralAlertManager struct {
 	ctx   *oto.Context
-	ready chan struct{}
+	ready <-chan struct{}
 
 	sounds map[SafetyAuralAlert][]byte
 	queue  []SafetyAuralAlert
@@ -398,6 +398,13 @@ type AuralAlertManager struct {
 	mu      sync.Mutex
 }
 
+var (
+	auralOtoContextOnce sync.Once
+	auralOtoContext     *oto.Context
+	auralOtoReady       <-chan struct{}
+	auralOtoContextErr  error
+)
+
 func NewAuralAlertManager() *AuralAlertManager {
 	manager := &AuralAlertManager{
 		sounds: make(map[SafetyAuralAlert][]byte),
@@ -405,11 +412,7 @@ func NewAuralAlertManager() *AuralAlertManager {
 	}
 	manager.loadSounds()
 
-	ctx, ready, err := oto.NewContext(&oto.NewContextOptions{
-		SampleRate:   44100,
-		ChannelCount: 2,
-		Format:       oto.FormatSignedInt16LE,
-	})
+	ctx, ready, err := sharedAuralOtoContext()
 	if err != nil {
 		slog.Warn(
 			"Aural alerts disabled",
@@ -421,6 +424,25 @@ func NewAuralAlertManager() *AuralAlertManager {
 	manager.ctx = ctx
 	manager.ready = ready
 	return manager
+}
+
+func sharedAuralOtoContext() (*oto.Context, <-chan struct{}, error) {
+	auralOtoContextOnce.Do(func() {
+		ctx, ready, err := oto.NewContext(&oto.NewContextOptions{
+			SampleRate:   44100,
+			ChannelCount: 2,
+			Format:       oto.FormatSignedInt16LE,
+		})
+		if err != nil {
+			auralOtoContextErr = err
+			return
+		}
+
+		auralOtoContext = ctx
+		auralOtoReady = ready
+	})
+
+	return auralOtoContext, auralOtoReady, auralOtoContextErr
 }
 
 func (m *AuralAlertManager) loadSounds() {
