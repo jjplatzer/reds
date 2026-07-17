@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"log/slog"
 	stdmath "math"
-	"os"
 	"strings"
 	"sync"
 	"time"
@@ -387,7 +387,7 @@ func renderAlertBorder(cb *renderer.CmdBuffer, rect redsmath.Rect) {
 
 type AuralAlertManager struct {
 	ctx   *oto.Context
-	ready chan struct{}
+	ready <-chan struct{}
 
 	sounds map[SafetyAuralAlert][]byte
 	queue  []SafetyAuralAlert
@@ -398,6 +398,13 @@ type AuralAlertManager struct {
 	mu      sync.Mutex
 }
 
+var (
+	auralOtoContextOnce sync.Once
+	auralOtoContext     *oto.Context
+	auralOtoReady       <-chan struct{}
+	auralOtoContextErr  error
+)
+
 func NewAuralAlertManager() *AuralAlertManager {
 	manager := &AuralAlertManager{
 		sounds: make(map[SafetyAuralAlert][]byte),
@@ -405,19 +412,37 @@ func NewAuralAlertManager() *AuralAlertManager {
 	}
 	manager.loadSounds()
 
-	ctx, ready, err := oto.NewContext(&oto.NewContextOptions{
-		SampleRate:   44100,
-		ChannelCount: 2,
-		Format:       oto.FormatSignedInt16LE,
-	})
+	ctx, ready, err := sharedAuralOtoContext()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "asdex aural alerts disabled: %v\n", err)
+		slog.Warn(
+			"Aural alerts disabled",
+			slog.Any("error", err),
+		)
 		return manager
 	}
 
 	manager.ctx = ctx
 	manager.ready = ready
 	return manager
+}
+
+func sharedAuralOtoContext() (*oto.Context, <-chan struct{}, error) {
+	auralOtoContextOnce.Do(func() {
+		ctx, ready, err := oto.NewContext(&oto.NewContextOptions{
+			SampleRate:   44100,
+			ChannelCount: 2,
+			Format:       oto.FormatSignedInt16LE,
+		})
+		if err != nil {
+			auralOtoContextErr = err
+			return
+		}
+
+		auralOtoContext = ctx
+		auralOtoReady = ready
+	})
+
+	return auralOtoContext, auralOtoReady, auralOtoContextErr
 }
 
 func (m *AuralAlertManager) loadSounds() {
@@ -451,13 +476,20 @@ func (m *AuralAlertManager) loadSounds() {
 
 		path := "resources/audio/asdex/" + name
 		if !util.ResourceExists(path) {
-			fmt.Fprintf(os.Stderr, "asdex aural alert %s disabled: missing resource\n", name)
+			slog.Warn(
+				"Aural alert sound disabled: missing resource",
+				slog.String("sound", name),
+			)
 			continue
 		}
 
 		data, err := loadAuralPCM(path)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "asdex aural alert %s disabled: %v\n", name, err)
+			slog.Warn(
+				"Aural alert sound disabled",
+				slog.String("sound", name),
+				slog.Any("error", err),
+			)
 			continue
 		}
 		m.sounds[alert] = data

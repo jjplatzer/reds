@@ -3,14 +3,15 @@ package asdex
 import (
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	stdmath "math"
-	"os"
 	"reflect"
 	"strconv"
 	"strings"
 	"time"
 	"unicode"
 
+	redslog "github.com/juliusplatzer/reds/log"
 	redsmath "github.com/juliusplatzer/reds/math"
 	redsnet "github.com/juliusplatzer/reds/net"
 	"github.com/juliusplatzer/reds/panes"
@@ -99,6 +100,7 @@ func scopeWindowZ(stackIndex int, localZ renderer.Z) renderer.Z {
 }
 
 type ASDEXPane struct {
+	logger            *redslog.Logger
 	airport           string
 	configAirportCode string
 	mode              Mode
@@ -193,7 +195,14 @@ type ASDEXPane struct {
 	viewInitialized         bool
 }
 
-func NewPane(airport string) (*ASDEXPane, error) {
+func NewPane(airport string, logger *redslog.Logger) (*ASDEXPane, error) {
+	if logger == nil {
+		logger = &redslog.Logger{
+			Logger: slog.Default(),
+			Start:  time.Now(),
+		}
+	}
+
 	airport = strings.ToUpper(strings.TrimSpace(airport))
 	if airport == "" {
 		return nil, fmt.Errorf("empty ASDE-X airport")
@@ -206,15 +215,24 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	}
 	towerReference, hasTowerReference, towerErr := LoadTowerReference(airport, vm)
 	if towerErr != nil {
-		fmt.Fprintf(os.Stderr, "reds: %v\n", towerErr)
+		logger.Warn(
+			"Unable to load tower reference",
+			slog.Any("error", towerErr),
+		)
 	}
 	runwayConfigs, defaultRunwayConfigID, runwayConfigErr := loadRunwayConfigurations(airport)
 	if runwayConfigErr != nil {
-		fmt.Fprintf(os.Stderr, "reds: %v\n", runwayConfigErr)
+		logger.Warn(
+			"Unable to load runway configurations",
+			slog.Any("error", runwayConfigErr),
+		)
 	}
 	towerConfigs, defaultTowerConfigID, towerConfigErr := loadTowerConfigurations(airport)
 	if towerConfigErr != nil {
-		fmt.Fprintf(os.Stderr, "reds: %v\n", towerConfigErr)
+		logger.Warn(
+			"Unable to load tower configurations",
+			slog.Any("error", towerConfigErr),
+		)
 	}
 	activeTowerConfigIDs := make(map[string]bool)
 	if defaultTowerConfigID != "" {
@@ -222,7 +240,10 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	}
 	safetyLogic, err := LoadSafetyLogic(airport, vm)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "reds: %v\n", err)
+		logger.Warn(
+			"Unable to initialize safety logic",
+			slog.Any("error", err),
+		)
 	}
 
 	fonts, err := loadFontCache()
@@ -236,7 +257,10 @@ func NewPane(airport string) (*ASDEXPane, error) {
 
 	preview := NewPreviewArea()
 	if err := preview.LoadDefaultStateFromAirportConfig(airport); err != nil {
-		fmt.Fprintf(os.Stderr, "reds: %v\n", err)
+		logger.Warn(
+			"Unable to load preview-area default state",
+			slog.Any("error", err),
+		)
 	}
 	preview.SetSystemResponse("CRITICAL FAULT START")
 	coastList := NewCoastList()
@@ -244,11 +268,15 @@ func NewPane(airport string) (*ASDEXPane, error) {
 	auralAlerts.SetVolume(defaultAuralVolume)
 	configAirport := loadConfigAirportCode(airport)
 
-	client := redsnet.NewSmesClient(redsnet.TargetWebSocketURL())
+	client := redsnet.NewSmesClient(
+		redsnet.TargetWebSocketURL(),
+		logger.With(slog.String("component", "smes")),
+	)
 	client.SetAirport(airport)
 	client.Start()
 
 	pane := &ASDEXPane{
+		logger:            logger,
 		airport:           airport,
 		configAirportCode: configAirport,
 		mode:              ModeDay,
@@ -1669,6 +1697,15 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	case DcbFunctionDataBlocksOnOff:
 		p.toggleDataBlocksOnOff()
 		return true
+	case DcbFunctionInitControl:
+		p.executeInitControlCommand(ctx)
+		return true
+	case DcbFunctionTrackSuspend:
+		p.executeTrackSuspendCommand(ctx)
+		return true
+	case DcbFunctionTermControl:
+		p.executeTerminateControlCommand(ctx)
+		return true
 	case DcbFunctionDcbOnOff:
 		p.dcb.ToggleOnOff()
 		p.commandMode = CommandModeNone
@@ -1788,6 +1825,75 @@ func (p *ASDEXPane) executeUndoCommand(ctx *panes.Context) {
 	status, err, handled := p.tryExecuteUserCommand(
 		ctx,
 		"[UNDO]",
+		nil,
+		CommandClickNone,
+		redsmath.Vec2{},
+		radar.ScopeTransformations{},
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return
+	}
+	if handled {
+		p.applyCommandStatus(status)
+	}
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) executeInitControlCommand(ctx *panes.Context) {
+	if p == nil {
+		return
+	}
+
+	status, err, handled := p.tryExecuteUserCommand(
+		ctx,
+		"[INIT CNTL]",
+		nil,
+		CommandClickNone,
+		redsmath.Vec2{},
+		radar.ScopeTransformations{},
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return
+	}
+	if handled {
+		p.applyCommandStatus(status)
+	}
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) executeTrackSuspendCommand(ctx *panes.Context) {
+	if p == nil {
+		return
+	}
+
+	status, err, handled := p.tryExecuteUserCommand(
+		ctx,
+		"[TRK SUSP]",
+		nil,
+		CommandClickNone,
+		redsmath.Vec2{},
+		radar.ScopeTransformations{},
+	)
+	if err != nil {
+		p.previewArea.SetSystemResponse(err.Error())
+		return
+	}
+	if handled {
+		p.applyCommandStatus(status)
+	}
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) executeTerminateControlCommand(ctx *panes.Context) {
+	if p == nil {
+		return
+	}
+
+	status, err, handled := p.tryExecuteUserCommand(
+		ctx,
+		"[TERM CNTL]",
 		nil,
 		CommandClickNone,
 		redsmath.Vec2{},
@@ -4268,7 +4374,17 @@ func (p *ASDEXPane) ensureCursorsLoaded(ctx *panes.Context) {
 		return
 	}
 	if err := p.cursors.Load(); err != nil {
-		fmt.Fprintf(os.Stderr, "reds: %v\n", err)
+		if p.logger != nil {
+			p.logger.Warn(
+				"Unable to load cursors",
+				slog.Any("error", err),
+			)
+		} else {
+			slog.Warn(
+				"Unable to load cursors",
+				slog.Any("error", err),
+			)
+		}
 	}
 }
 

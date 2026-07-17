@@ -6,10 +6,15 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"log/slog"
 	"os"
+	"runtime/debug"
+	"time"
 
 	"github.com/juliusplatzer/reds/asdex"
+	redslog "github.com/juliusplatzer/reds/log"
 	redsnet "github.com/juliusplatzer/reds/net"
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/platform"
@@ -26,6 +31,19 @@ const (
 	asdexWindowHeight = 800
 )
 
+var (
+	logLevel = flag.String(
+		"loglevel",
+		"info",
+		"logging level: debug, info, warn, error",
+	)
+	logDir = flag.String(
+		"logdir",
+		"",
+		"log file directory",
+	)
+)
+
 type appMode int
 
 const (
@@ -34,6 +52,64 @@ const (
 )
 
 func main() {
+	os.Exit(realMain())
+}
+
+func realMain() (exitCode int) {
+	flag.Parse()
+
+	resolvedLogDir := redslog.DefaultLogDir(*logDir)
+	crashStderrPath := redslog.RedirectStderrToCrashFile(resolvedLogDir)
+	if crashStderrPath != "" {
+		defer redslog.RemoveCurrentCrashStderrFile()
+	}
+
+	logger, err := redslog.New(*logLevel, resolvedLogDir)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "reds: initialize logging: %v\n", err)
+		return 1
+	}
+	slog.SetDefault(logger.Logger)
+
+	if crashStderrPath != "" {
+		logger.Info(
+			"Redirected stderr",
+			slog.String("file", crashStderrPath),
+		)
+	}
+
+	defer func() {
+		if recovered := recover(); recovered != nil {
+			logger.Error(
+				"REDS crashed",
+				slog.Any("panic", recovered),
+				slog.String("stack", string(debug.Stack())),
+			)
+			exitCode = 1
+		}
+	}()
+
+	logger.Info(
+		"Log initialized",
+		slog.String("file", logger.LogFile),
+	)
+
+	if err := run(logger); err != nil {
+		logger.Error(
+			"REDS exited with an error",
+			slog.Any("error", err),
+		)
+		return 1
+	}
+
+	logger.Info(
+		"REDS stopped",
+		slog.Duration("runtime", time.Since(logger.Start)),
+	)
+	return 0
+}
+
+func run(logger *redslog.Logger) error {
 	// ImGui context must exist before the platform touches CurrentIO().
 	imgui.CreateContext()
 	defer imgui.DestroyContext()
@@ -46,28 +122,38 @@ func main() {
 		Resizable:         true,
 	})
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "reds: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("initialize platform: %w", err)
 	}
 	defer plat.Dispose()
+	logger.Info("Platform initialized")
 
 	r := renderer.NewOpenGLRenderer()
 	if err := r.Init(); err != nil {
-		fmt.Fprintf(os.Stderr, "reds: renderer init failed: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("initialize renderer: %w", err)
 	}
 	defer r.Dispose()
+	logger.Info("Renderer initialized")
 
 	loadFont()
 	if err := initSVGIcons(); err != nil {
-		fmt.Fprintf(os.Stderr, "reds: failed to initialize SVG icons: %v\n", err)
+		logger.Warn(
+			"Unable to initialize SVG icons",
+			slog.Any("error", err),
+		)
 	}
 	defer disposeSVGIcons()
 
 	m := newMenu()
 	if len(m.airports) == 0 {
-		fmt.Fprintln(os.Stderr, "reds: no ASDE-X facilities found under resources/videomaps/asdex")
+		logger.Error(
+			"No ASDE-X facilities found",
+			slog.String("path", "resources/videomaps/asdex"),
+		)
 	}
+	logger.Info(
+		"Startup menu loaded",
+		slog.Int("asdex_facilities", len(m.airports)),
+	)
 
 	mode := appModeMenu
 	var active panes.Pane
@@ -91,9 +177,17 @@ func main() {
 
 			switch res {
 			case menuConfirmed:
-				pane, err := launchScope(m.selection, plat, consumer)
+				logger.Info(
+					"Facility selected",
+					slog.String("mode", m.selection.Mode.String()),
+					slog.String("airport", m.selection.Airport),
+				)
+				pane, err := launchScope(m.selection, plat, consumer, logger)
 				if err != nil {
-					fmt.Fprintf(os.Stderr, "reds: %v\n", err)
+					logger.Error(
+						"Scope launch failed",
+						slog.Any("error", err),
+					)
 					plat.SetWindowTitle("REDS")
 					continue
 				}
@@ -101,7 +195,7 @@ func main() {
 				scopeTitle = m.selection.Airport + " ASDE-X"
 				mode = appModeScope
 			case menuCancelled:
-				return
+				return nil
 			}
 
 		case appModeScope:
@@ -127,18 +221,30 @@ func main() {
 			}
 		}
 	}
+	return nil
 }
 
-func launchScope(sel Selection, plat platform.Platform, consumer *smesConsumer) (panes.Pane, error) {
+func launchScope(
+	sel Selection,
+	plat platform.Platform,
+	consumer *smesConsumer,
+	logger *redslog.Logger,
+) (panes.Pane, error) {
 	switch sel.Mode {
 	case DisplayASDEX:
+		scopeLogger := logger.With(
+			slog.String("display", "asdex"),
+			slog.String("airport", sel.Airport),
+		)
+		scopeLogger.Info("Launching scope")
+
 		usePublicServer := redsnet.UsePublicServer()
 		if !usePublicServer {
 			if err := consumer.Start(sel.Airport); err != nil {
 				return nil, err
 			}
 		}
-		pane, err := asdex.NewPane(sel.Airport)
+		pane, err := asdex.NewPane(sel.Airport, scopeLogger)
 		if err != nil {
 			if !usePublicServer {
 				consumer.Stop()
@@ -148,6 +254,7 @@ func launchScope(sel Selection, plat platform.Platform, consumer *smesConsumer) 
 		plat.SetWindowTitle(sel.Airport + " ASDE-X")
 		plat.SetWindowDecorated(false)
 		plat.SetWindowSizeCentered(asdexWindowWidth, asdexWindowHeight)
+		scopeLogger.Info("ASDE-X scope launched")
 		return pane, nil
 	default:
 		return nil, fmt.Errorf("%s scope is not implemented yet", sel.Mode)
