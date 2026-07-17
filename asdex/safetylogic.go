@@ -21,6 +21,9 @@ const (
 	landingFinalRangeFeet         = 6076.12
 	landingPastThresholdFeet      = 800.0
 	landingMaxLateralOffsetFeet   = 1200.0
+	landingParallelMinAxisCos     = 0.984807753012208
+	landingMinLateralOffsetFeet   = 250.0
+	landingLateralTieTolerance    = 25.0
 	landingSpeedThresholdKt       = 40.0
 	landingAlignmentMinCos        = 0.9396926207859084
 	landingMaxAGLFeet             = 1500.0
@@ -347,6 +350,8 @@ type surfaceRunway struct {
 	MaxAlongFeet  float32
 	MinAcrossFeet float32
 	MaxAcrossFeet float32
+
+	approachLateralLimitFeet float32
 }
 
 type surfaceHoldBar struct {
@@ -386,6 +391,13 @@ type activeRunwayOperation struct {
 	StationFeet float32
 
 	SpeedKt float32
+}
+
+type approachLandingCandidate struct {
+	operation activeRunwayOperation
+
+	thresholdDistanceFeet float32
+	lateralOffsetFeet     float32
 }
 
 type surfaceJSON struct {
@@ -449,6 +461,7 @@ func LoadSafetyLogic(airport string, vm *VideoMap) (SafetyLogic, error) {
 		runwayByID[rwy.ID] = len(sl.runways)
 		sl.runways = append(sl.runways, rwy)
 	}
+	populateApproachLateralLimits(sl.runways)
 
 	for _, src := range surface.HoldBars {
 		runwayID := strings.ToUpper(strings.TrimSpace(src.Runway))
@@ -585,6 +598,44 @@ func populateHoldBarStations(hb *surfaceHoldBar, rwy surfaceRunway) {
 		if i == 0 || station > hb.StationMaxFeet {
 			hb.StationMaxFeet = station
 		}
+	}
+}
+
+func populateApproachLateralLimits(runways []surfaceRunway) {
+	for i := range runways {
+		runways[i].approachLateralLimitFeet = landingMaxLateralOffsetFeet
+
+		closestParallelFeet := float32(0)
+		for j := range runways {
+			if i == j {
+				continue
+			}
+
+			if abs32(safetyDot(runways[i].AxisFeet, runways[j].AxisFeet)) < landingParallelMinAxisCos {
+				continue
+			}
+
+			lateral := abs32(safetyDot(
+				runways[j].CenterFeet.Sub(runways[i].CenterFeet),
+				runways[i].NormalFeet,
+			))
+			if lateral <= runways[i].HalfWidthFeet+runways[j].HalfWidthFeet {
+				continue
+			}
+
+			if closestParallelFeet == 0 || lateral < closestParallelFeet {
+				closestParallelFeet = lateral
+			}
+		}
+
+		if closestParallelFeet <= 0 {
+			continue
+		}
+
+		runways[i].approachLateralLimitFeet = min32(
+			landingMaxLateralOffsetFeet,
+			max32(landingMinLateralOffsetFeet, closestParallelFeet/2),
+		)
 	}
 }
 
@@ -976,28 +1027,25 @@ func (sl *SafetyLogic) detectApproachLanding(target *Target) (activeRunwayOperat
 	}
 
 	track := headingUnitVector(target.HeadingDeg)
-	var best activeRunwayOperation
-	bestDistance := float32(0)
+	var best approachLandingCandidate
 	found := false
 
 	for i, rwy := range sl.runways {
-		if landing, distance, ok := approachLandingForRunwayEnd(target, track, rwy, i, false); ok {
-			if !found || distance < bestDistance {
+		if landing, ok := approachLandingForRunwayEnd(target, track, rwy, i, false); ok {
+			if !found || approachLandingCandidateBetter(landing, best) {
 				best = landing
-				bestDistance = distance
 				found = true
 			}
 		}
-		if landing, distance, ok := approachLandingForRunwayEnd(target, track, rwy, i, true); ok {
-			if !found || distance < bestDistance {
+		if landing, ok := approachLandingForRunwayEnd(target, track, rwy, i, true); ok {
+			if !found || approachLandingCandidateBetter(landing, best) {
 				best = landing
-				bestDistance = distance
 				found = true
 			}
 		}
 	}
 
-	return best, found
+	return best.operation, found
 }
 
 func approachLandingForRunwayEnd(
@@ -1006,7 +1054,7 @@ func approachLandingForRunwayEnd(
 	rwy surfaceRunway,
 	runwayIndex int,
 	reverse bool,
-) (activeRunwayOperation, float32, bool) {
+) (approachLandingCandidate, bool) {
 	threshold := rwy.ThresholdMinFeet
 	direction := rwy.AxisFeet
 	if reverse {
@@ -1017,13 +1065,15 @@ func approachLandingForRunwayEnd(
 	rel := target.PosFeet.Sub(threshold)
 	station := safetyDot(rel, direction)
 	if station < -landingFinalRangeFeet || station > landingPastThresholdFeet {
-		return activeRunwayOperation{}, 0, false
+		return approachLandingCandidate{}, false
 	}
-	if abs32(safetyDot(rel, rwy.NormalFeet)) > landingMaxLateralOffsetFeet {
-		return activeRunwayOperation{}, 0, false
+
+	lateralOffset := abs32(safetyDot(rel, rwy.NormalFeet))
+	if lateralOffset > approachLateralLimitFeet(rwy) {
+		return approachLandingCandidate{}, false
 	}
 	if safetyDot(track, direction) < landingAlignmentMinCos {
-		return activeRunwayOperation{}, 0, false
+		return approachLandingCandidate{}, false
 	}
 
 	distance := float32(0)
@@ -1031,16 +1081,37 @@ func approachLandingForRunwayEnd(
 		distance = -station
 	}
 
-	return activeRunwayOperation{
-		TargetID:           target.ID,
-		RunwayID:           rwy.ID,
-		RunwayIndex:        runwayIndex,
-		Type:               activeRunwayOperationLanding,
-		DirectionFeet:      direction,
-		StartThresholdFeet: threshold,
-		StationFeet:        station,
-		SpeedKt:            target.GroundSpeedKt,
-	}, distance, true
+	return approachLandingCandidate{
+		operation: activeRunwayOperation{
+			TargetID:           target.ID,
+			RunwayID:           rwy.ID,
+			RunwayIndex:        runwayIndex,
+			Type:               activeRunwayOperationLanding,
+			DirectionFeet:      direction,
+			StartThresholdFeet: threshold,
+			StationFeet:        station,
+			SpeedKt:            target.GroundSpeedKt,
+		},
+		thresholdDistanceFeet: distance,
+		lateralOffsetFeet:     lateralOffset,
+	}, true
+}
+
+func approachLateralLimitFeet(rwy surfaceRunway) float32 {
+	if rwy.approachLateralLimitFeet > 0 {
+		return rwy.approachLateralLimitFeet
+	}
+	return landingMaxLateralOffsetFeet
+}
+
+func approachLandingCandidateBetter(candidate, current approachLandingCandidate) bool {
+	if candidate.lateralOffsetFeet < current.lateralOffsetFeet-landingLateralTieTolerance {
+		return true
+	}
+	if candidate.lateralOffsetFeet > current.lateralOffsetFeet+landingLateralTieTolerance {
+		return false
+	}
+	return candidate.thresholdDistanceFeet < current.thresholdDistanceFeet
 }
 
 func (sl *SafetyLogic) detectDeparture(target *Target) (activeRunwayOperation, bool) {
