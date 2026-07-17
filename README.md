@@ -1,4 +1,4 @@
-The **Radar Emulation Display System** (REDS) is a high-fidelity emulation of [ASDE-X](https://www.faa.gov/air_traffic/technology/asde-x).
+The **Radar Emulation Display System** (REDS) is a high-fidelity emulation of [ASDE-X](https://www.faa.gov/air_traffic/technology/asde-x) and [ERAM](https://www.faa.gov/air_traffic/technology/eram).
 
 REDS uses the public live REDS server by default. You do not need SWIM credentials, Java, Maven, or a local SMES process for the desktop app.
 
@@ -13,29 +13,16 @@ xcode-select --install
 brew install go pkg-config glfw
 ```
 
-Build the app bundle:
+Build the app bundle using:
 
 ```bash
 ./build.sh --app
 ```
 
-This creates:
+which creates
 
 ```text
 build/REDS.app
-```
-
-Launch it:
-
-```bash
-open build/REDS.app
-```
-
-Optional: copy it to Applications:
-
-```bash
-rm -rf /Applications/REDS.app
-cp -R build/REDS.app /Applications/REDS.app
 ```
 
 #### Windows
@@ -74,7 +61,7 @@ Run:
 
 ### Local SWIM development
 
-Only set up `.env` if you want REDS to use your own SWIM/SMES connection instead of the public server:
+Only set up `.env` if you want REDS to use your own SWIM connection instead of the public server:
 
 ```bash
 cp .env.example .env
@@ -88,4 +75,4 @@ USE_PUBLIC_SERVER=false
 
 ### Documentation
 
-See [Virtual NAS ASDE-X documentation](https://docs.virtualnas.net/crc/asdex/).
+See [Virtual NAS documentation](https://docs.virtualnas.net/crc/asdex/).
