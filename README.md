@@ -13,16 +13,17 @@ xcode-select --install
 brew install go pkg-config glfw
 ```
 
-Build the app bundle using:
+Build the app bundle and ZIP using:
 
 ```bash
-./build.sh --app
+./build.sh --package
 ```
 
 which creates
 
 ```text
 build/REDS.app
+build/REDS-<version>-macOS.zip
 ```
 
 #### Windows
@@ -50,7 +51,7 @@ This creates:
 
 ```text
 build\REDS-Windows\
-build\REDS-Windows.zip
+build\REDS-<version>-Windows.zip
 ```
 
 Run:

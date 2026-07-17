@@ -17,6 +17,21 @@ RESOURCES="$CONTENTS/Resources"
 ICON_SOURCE="cmd/reds/icons/reds-1024x1024.png"
 ICONSET="build/reds.iconset"
 ICON="$RESOURCES/reds.icns"
+PLIST_BUDDY="/usr/libexec/PlistBuddy"
+
+if [[ -n "${REDS_VERSION:-}" ]]; then
+	VERSION="$REDS_VERSION"
+elif [[ -f VERSION ]]; then
+	VERSION="$(tr -d '[:space:]' < VERSION)"
+else
+	VERSION="dev"
+fi
+VERSION="${VERSION:-dev}"
+
+VERSION_CORE="${REDS_VERSION_CORE:-${VERSION%%-*}}"
+if [[ ! "$VERSION_CORE" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+	VERSION_CORE="0.0.0"
+fi
 
 if [[ ! -x "$BINARY" ]]; then
 	echo "Error: $BINARY does not exist." >&2
@@ -40,6 +55,10 @@ for tool in sips iconutil plutil; do
 		exit 1
 	fi
 done
+if [[ ! -x "$PLIST_BUDDY" ]]; then
+	echo "Error: required macOS tool not found: $PLIST_BUDDY" >&2
+	exit 1
+fi
 
 echo "[app] Creating REDS.app..."
 
@@ -54,6 +73,21 @@ cp "$BINARY" \
 
 cp "osx/Info.plist" \
 	"$CONTENTS/Info.plist"
+
+"$PLIST_BUDDY" \
+	-c "Set :CFBundleShortVersionString $VERSION_CORE" \
+	-c "Set :CFBundleVersion $VERSION_CORE" \
+	"$CONTENTS/Info.plist"
+
+if ! "$PLIST_BUDDY" \
+	-c "Set :REDSVersion $VERSION" \
+	"$CONTENTS/Info.plist" \
+	2>/dev/null; then
+
+	"$PLIST_BUDDY" \
+		-c "Add :REDSVersion string $VERSION" \
+		"$CONTENTS/Info.plist"
+fi
 
 echo "[app] Creating application icon..."
 
@@ -159,6 +193,10 @@ cp -R \
 	"asdex/surface" \
 	"$RESOURCES/asdex/surface"
 
+cp \
+	"LICENSE" \
+	"$RESOURCES/LICENSE.txt"
+
 chmod +x \
 	"$MACOS/reds"
 
@@ -188,6 +226,9 @@ test -d \
 
 test -d \
 	"$RESOURCES/asdex/surface"
+
+test -f \
+	"$RESOURCES/LICENSE.txt"
 
 echo "[app] Created $APP"
 echo "[app] Binary: $MACOS/reds"

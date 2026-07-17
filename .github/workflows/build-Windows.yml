@@ -142,6 +142,21 @@ jobs:
 
           $Root = "build\REDS-Windows"
 
+          Write-Host "Build directory:"
+          Get-ChildItem "build" -Force | Format-Table Name, Length
+
+          $Archive = Get-ChildItem "build" -Filter "REDS-*-Windows.zip" |
+            Select-Object -First 1
+          $Checksum = Get-ChildItem "build" -Filter "REDS-*-Windows.zip.sha256" |
+            Select-Object -First 1
+
+          if (-not $Archive) {
+            throw "Missing versioned Windows archive."
+          }
+          if (-not $Checksum) {
+            throw "Missing Windows archive checksum."
+          }
+
           $Required = @(
             "$Root\REDS.exe",
             "$Root\resources\videomaps\asdex",
@@ -149,7 +164,9 @@ jobs:
             "$Root\resources\audio\asdex",
             "$Root\fonts",
             "$Root\asdex\surface",
-            "build\REDS-Windows.zip"
+            "$Root\LICENSE.txt",
+            $Archive.FullName,
+            $Checksum.FullName
           )
 
           foreach ($Path in $Required) {
@@ -168,6 +185,12 @@ jobs:
           }
 
           Get-ChildItem $Root | Format-Table Name, Length
+
+          $Expected = Get-Content $Checksum.FullName
+          $Hash = (Get-FileHash $Archive.FullName -Algorithm SHA256).Hash.ToLower()
+          if ($Expected -notmatch $Hash) {
+            throw "Checksum did not match $($Archive.Name)"
+          }
 
       - name: Optional packaged GUI smoke test
         if: >
@@ -212,5 +235,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: REDS-Windows
-          path: build/REDS-Windows.zip
+          path: |
+            build/REDS-*-Windows.zip
+            build/REDS-*-Windows.zip.sha256
           if-no-files-found: error

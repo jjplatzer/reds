@@ -66,7 +66,7 @@ jobs:
         run: go test -v ./...
 
       - name: Build REDS.app
-        run: ./build.sh --app
+        run: ./build.sh --package
 
       - name: Validate REDS.app
         run: |
@@ -130,23 +130,18 @@ jobs:
             exit 1
           fi
 
-      - name: Package REDS.app
+      - name: Validate macOS archive
         run: |
           set -euo pipefail
 
-          rm -f \
-            build/REDS-macOS.zip
-
-          ditto \
-            -c \
-            -k \
-            --sequesterRsrc \
-            --keepParent \
-            build/REDS.app \
-            build/REDS-macOS.zip
-
           ls -lh \
-            build/REDS-macOS.zip
+            build/REDS-*-macOS.zip \
+            build/REDS-*-macOS.zip.sha256
+
+          shasum \
+            -a 256 \
+            -c \
+            build/REDS-*-macOS.zip.sha256
 
       - name: Optional GUI smoke launch
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_gui_smoke }}
@@ -178,5 +173,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: REDS-macOS
-          path: build/REDS-macOS.zip
+          path: |
+            build/REDS-*-macOS.zip
+            build/REDS-*-macOS.zip.sha256
           if-no-files-found: error
