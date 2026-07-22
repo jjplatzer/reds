@@ -1597,6 +1597,9 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	case DcbFunctionVectorLength:
 		p.startVectorLengthSpinner()
 		return true
+	case DcbFunctionLeaderLength:
+		p.startLeaderLengthCommand()
+		return true
 	case DcbFunctionCoastOnOff:
 		if p.dcb.Menu() == DcbMenuTools {
 			p.toggleCoastList()
@@ -1906,6 +1909,17 @@ func (p *ASDEXPane) executeTerminateControlCommand(ctx *panes.Context) {
 	if handled {
 		p.applyCommandStatus(status)
 	}
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) startLeaderLengthCommand() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.commandEntry.StartLeaderLength()
+	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
 
@@ -2724,8 +2738,7 @@ func (p *ASDEXPane) startResizeWindowForWindow(
 
 func isToolsPlaceholderFunction(function DcbFunction) bool {
 	switch function {
-	case DcbFunctionRange,
-		DcbFunctionMapReposition,
+	case DcbFunctionMapReposition,
 		DcbFunctionCoastReposition,
 		DcbFunctionPreviewReposition,
 		DcbFunctionCursorSpeed,
