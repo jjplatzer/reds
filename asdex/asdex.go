@@ -6559,7 +6559,7 @@ func backgroundColor(mode Mode) renderer.RGB {
 	if mode == ModeDay {
 		return renderer.RGB8(0, 96, 120)
 	}
-	return renderer.RGB8(60, 60, 60)
+	return renderer.RGB8(80, 80, 80)
 }
 
 func applyBrightness(color renderer.RGB, brightness int, minBrightness int) renderer.RGB {
