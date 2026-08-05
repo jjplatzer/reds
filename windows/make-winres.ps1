@@ -48,8 +48,14 @@ if (-not [string]::IsNullOrWhiteSpace($OutputParent)) {
     New-Item -ItemType Directory -Force $OutputParent | Out-Null
 }
 
-$Json |
-    ConvertTo-Json -Depth 50 |
-    Set-Content -Encoding UTF8 $OutputFile
+$OutputJson = $Json |
+    ConvertTo-Json -Depth 50
+
+$Utf8NoBom = New-Object System.Text.UTF8Encoding $false
+[System.IO.File]::WriteAllText(
+    (Join-Path (Get-Location) $OutputFile),
+    $OutputJson,
+    $Utf8NoBom
+)
 
 Write-Host "[resources] Wrote $OutputFile with REDS version $Version"

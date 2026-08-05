@@ -174,8 +174,13 @@ Compress-Archive `
     -CompressionLevel Optimal
 
 $Hash = Get-FileHash $ArchivePath -Algorithm SHA256
-"$($Hash.Hash.ToLower())  $(Split-Path $ArchivePath -Leaf)" |
-    Set-Content "$ArchivePath.sha256"
+$ChecksumText = "$($Hash.Hash.ToLower())  $(Split-Path $ArchivePath -Leaf)"
+$Utf8NoBom = New-Object System.Text.UTF8Encoding $false
+[System.IO.File]::WriteAllText(
+    "$ArchivePath.sha256",
+    $ChecksumText,
+    $Utf8NoBom
+)
 
 Write-Host ""
 Write-Host "[package] Created $OutputPath"
