@@ -106,11 +106,35 @@ if "%DO_CHECK%"=="1" (
 )
 
 if not exist "build" mkdir build
+if not defined GO_WINRES_VERSION set "GO_WINRES_VERSION=v0.3.3"
 
 REM Build order mirrors build.sh semantically.
 if "%DO_PACKAGE%"=="1" (
-    call :generate_windows_resources
-    if errorlevel 1 exit /b 1
+    echo [resources] Generating Windows application resources...
+
+    del /Q cmd\reds\rsrc_windows_*.syso >nul 2>nul
+
+    powershell ^
+        -NoProfile ^
+        -ExecutionPolicy Bypass ^
+        -File windows\make-winres.ps1
+
+    if errorlevel 1 (
+        echo Error: failed to generate Windows resource metadata.
+        exit /b 1
+    )
+
+    go run github.com/tc-hib/go-winres@%GO_WINRES_VERSION% ^
+        make ^
+        --in build\winres.json ^
+        --out cmd\reds\rsrc
+
+    if errorlevel 1 (
+        echo Error: failed to generate Windows resources.
+        exit /b 1
+    )
+
+    echo [resources] Windows resources generated.
 
     echo [build] Building REDS Windows desktop application...
 
@@ -313,36 +337,6 @@ for /f "delims=" %%F in ('gofmt -l . 2^>^&1') do (
     exit /b 1
 )
 echo [check] gofmt: OK
-exit /b 0
-
-:generate_windows_resources
-echo [resources] Generating Windows application resources...
-
-del /Q cmd\reds\rsrc_windows_*.syso >nul 2>nul
-
-powershell ^
-    -NoProfile ^
-    -ExecutionPolicy Bypass ^
-    -File windows\make-winres.ps1
-
-if errorlevel 1 (
-    echo Error: failed to generate Windows resource metadata.
-    exit /b 1
-)
-
-if not defined GO_WINRES_VERSION set "GO_WINRES_VERSION=v0.3.3"
-
-go run github.com/tc-hib/go-winres@%GO_WINRES_VERSION% ^
-    make ^
-    --in build\winres.json ^
-    --out cmd\reds\rsrc
-
-if errorlevel 1 (
-    echo Error: failed to generate Windows resources.
-    exit /b 1
-)
-
-echo [resources] Windows resources generated.
 exit /b 0
 
 :kill_stale_listener
