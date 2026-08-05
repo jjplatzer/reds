@@ -1,5 +1,5 @@
 @echo off
-setlocal DisableDelayedExpansion
+setlocal EnableExtensions DisableDelayedExpansion
 
 REM Build reds and, in local mode, its SWIM/Solace target reader, then run the GUI.
 REM
@@ -109,55 +109,54 @@ if not exist "build" mkdir build
 if not defined GO_WINRES_VERSION set "GO_WINRES_VERSION=v0.3.3"
 
 REM Build order mirrors build.sh semantically.
-if "%DO_PACKAGE%"=="1" (
-    echo [resources] Generating Windows application resources...
+if "%DO_PACKAGE%"=="1" goto build_package_frontend
+goto build_development_frontend
 
-    del /Q cmd\reds\rsrc_windows_*.syso >nul 2>nul
+:build_package_frontend
+echo [resources] Generating Windows application resources...
 
-    powershell ^
-        -NoProfile ^
-        -ExecutionPolicy Bypass ^
-        -File windows\make-winres.ps1
+del /Q cmd\reds\rsrc_windows_*.syso >nul 2>nul
 
-    if errorlevel 1 (
-        echo Error: failed to generate Windows resource metadata.
-        exit /b 1
-    )
-
-    go run github.com/tc-hib/go-winres@%GO_WINRES_VERSION% ^
-        make ^
-        --in build\winres.json ^
-        --out cmd\reds\rsrc
-
-    if errorlevel 1 (
-        echo Error: failed to generate Windows resources.
-        exit /b 1
-    )
-
-    echo [resources] Windows resources generated.
-
-    echo [build] Building REDS Windows desktop application...
-
-    go build ^
-        -v ^
-        -trimpath ^
-        -ldflags="-H=windowsgui %REDS_LDFLAGS%" ^
-        -o build\REDS.exe ^
-        .\cmd\reds
-
-    if errorlevel 1 exit /b 1
-) else (
-    echo [build] Building reds ^(Go development frontend^)...
-
-    go build ^
-        -v ^
-        -trimpath ^
-        -ldflags="%REDS_LDFLAGS%" ^
-        -o build\reds.exe ^
-        .\cmd\reds
-
-    if errorlevel 1 exit /b 1
+powershell -NoProfile -ExecutionPolicy Bypass -File windows\make-winres.ps1
+if errorlevel 1 (
+    echo Error: failed to generate Windows resource metadata.
+    exit /b 1
 )
+
+go run github.com/tc-hib/go-winres@%GO_WINRES_VERSION% make --in build\winres.json --out cmd\reds\rsrc
+if errorlevel 1 (
+    echo Error: failed to generate Windows resources.
+    exit /b 1
+)
+
+if not exist "cmd\reds\rsrc_windows_*.syso" (
+    echo Error: expected Windows resource object was not generated.
+    dir cmd\reds
+    exit /b 1
+)
+
+echo [resources] Windows resources generated.
+
+echo [build] Building REDS Windows desktop application...
+go build -v -trimpath -ldflags="-H=windowsgui %REDS_LDFLAGS%" -o build\REDS.exe .\cmd\reds
+if errorlevel 1 exit /b 1
+
+if not exist "build\REDS.exe" (
+    echo Error: expected Windows executable was not created: build\REDS.exe
+    dir build
+    exit /b 1
+)
+
+goto after_frontend_build
+
+:build_development_frontend
+echo [build] Building reds ^(Go development frontend^)...
+go build -v -trimpath -ldflags="%REDS_LDFLAGS%" -o build\reds.exe .\cmd\reds
+if errorlevel 1 exit /b 1
+
+goto after_frontend_build
+
+:after_frontend_build
 
 if "%USE_PUBLIC_SERVER_ENABLED%"=="0" (
     echo [build] Building SMES reader...
@@ -174,36 +173,35 @@ if "%DO_TEST%"=="1" (
     if errorlevel 1 exit /b 1
 )
 
-if "%DO_PACKAGE%"=="1" (
-    echo [package] Staging Windows application...
+if "%DO_PACKAGE%"=="1" goto package_windows_app
+goto after_package_windows_app
 
-    powershell ^
-        -NoProfile ^
-        -ExecutionPolicy Bypass ^
-        -File windows\make-reds-package.ps1 ^
-        -Archive "build\REDS-%REDS_VERSION%-Windows.zip"
+:package_windows_app
+echo [package] Staging Windows application...
 
-    if errorlevel 1 exit /b 1
+powershell -NoProfile -ExecutionPolicy Bypass -File windows\make-reds-package.ps1 -Archive "build\REDS-%REDS_VERSION%-Windows.zip"
+if errorlevel 1 exit /b 1
 
-    if not exist "build\REDS-%REDS_VERSION%-Windows.zip" (
-        echo Error: expected Windows archive was not created: build\REDS-%REDS_VERSION%-Windows.zip
-        dir build
-        exit /b 1
-    )
-    if not exist "build\REDS-%REDS_VERSION%-Windows.zip.sha256" (
-        echo Error: expected Windows checksum was not created: build\REDS-%REDS_VERSION%-Windows.zip.sha256
-        dir build
-        exit /b 1
-    )
-
-    echo [done] Windows application:
-    echo        build\REDS-Windows\
-    echo.
-    echo [done] Windows archive:
-    echo        build\REDS-%REDS_VERSION%-Windows.zip
-
-    exit /b 0
+if not exist "build\REDS-%REDS_VERSION%-Windows.zip" (
+    echo Error: expected Windows archive was not created: build\REDS-%REDS_VERSION%-Windows.zip
+    dir build
+    exit /b 1
 )
+if not exist "build\REDS-%REDS_VERSION%-Windows.zip.sha256" (
+    echo Error: expected Windows checksum was not created: build\REDS-%REDS_VERSION%-Windows.zip.sha256
+    dir build
+    exit /b 1
+)
+
+echo [done] Windows application:
+echo        build\REDS-Windows\
+echo.
+echo [done] Windows archive:
+echo        build\REDS-%REDS_VERSION%-Windows.zip
+
+exit /b 0
+
+:after_package_windows_app
 
 if "%DO_RUN%"=="0" (
     echo [done] Build complete: build\reds.exe
