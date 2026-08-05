@@ -8,7 +8,6 @@ package asdex
 // Line 0:
 //   Duplicate beacon field:
 //     "DUP BCN" when duplicate beacon logic is active.
-//     Not implemented in the first REDS pass.
 //
 // Line 1:
 //   ACID field:
@@ -399,11 +398,14 @@ func buildDataBlock(
 	settings DataBlockSettings,
 	font *renderer.BitmapFont,
 	showBeaconCode bool,
+	duplicateBeacon bool,
 ) builtDataBlock {
 	var out builtDataBlock
 
-	// Duplicate beacon warnings are reserved for the next target-logic pass.
 	duplicateBeaconLine := ""
+	if duplicateBeacon {
+		duplicateBeaconLine = "DUP BCN"
+	}
 	out.lines = append(out.lines, duplicateBeaconLine)
 
 	if !effectiveFullDataBlock(settings) {
@@ -470,12 +472,13 @@ func drawOneDataBlock(
 	font *renderer.BitmapFont,
 	settings DataBlockSettings,
 	showBeaconCode bool,
+	duplicateBeacon bool,
 ) {
 	if target == nil || lineBuilder == nil || td == nil || font == nil {
 		return
 	}
 
-	block := buildDataBlock(target, settings, font, showBeaconCode)
+	block := buildDataBlock(target, settings, font, showBeaconCode, duplicateBeacon)
 	if block.maxLineWidth <= 0 {
 		return
 	}
@@ -566,6 +569,8 @@ func DrawDatablocks(
 		return
 	}
 
+	duplicateBeaconTargets := duplicateBeaconTargetIDs(targets)
+
 	transforms.LoadWindowViewingMatrices(cb)
 	for _, target := range targets {
 		if target == nil {
@@ -607,6 +612,7 @@ func DrawDatablocks(
 			opts.Font,
 			settings,
 			showBeaconCode,
+			duplicateBeaconTargets[target.ID],
 		)
 
 		cb.SetRGB(applyBrightness(
@@ -621,6 +627,50 @@ func DrawDatablocks(
 		renderer.ReturnTextDrawBuilder(td)
 		renderer.ReturnLinesBuilder(lineBuilder)
 	}
+}
+
+func duplicateBeaconTargetIDs(targets []*Target) map[string]bool {
+	if len(targets) < 2 {
+		return nil
+	}
+
+	firstTargetByBeacon := make(map[string]string, len(targets))
+	var duplicateTargetIDs map[string]bool
+
+	for _, target := range targets {
+		if target == nil || target.ID == "" ||
+			target.Suspended || target.Dropped ||
+			!targetCanHaveDataBlock(target) {
+			continue
+		}
+
+		beacon := duplicateBeaconCode(target)
+		if beacon == "" {
+			continue
+		}
+
+		firstTargetID, seen := firstTargetByBeacon[beacon]
+		if !seen {
+			firstTargetByBeacon[beacon] = target.ID
+			continue
+		}
+
+		if duplicateTargetIDs == nil {
+			duplicateTargetIDs = make(map[string]bool, 2)
+		}
+		duplicateTargetIDs[firstTargetID] = true
+		duplicateTargetIDs[target.ID] = true
+	}
+
+	return duplicateTargetIDs
+}
+
+func duplicateBeaconCode(target *Target) string {
+	if target == nil {
+		return ""
+	}
+
+	return strings.TrimSpace(target.Beacon)
 }
 
 func clampInt(value, lo, hi int) int {
