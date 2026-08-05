@@ -173,8 +173,26 @@ Compress-Archive `
     -DestinationPath $ArchivePath `
     -CompressionLevel Optimal
 
-$Hash = Get-FileHash $ArchivePath -Algorithm SHA256
-$ChecksumText = "$($Hash.Hash.ToLower())  $(Split-Path $ArchivePath -Leaf)"
+$Sha256 = [System.Security.Cryptography.SHA256]::Create()
+try {
+    $Stream = [System.IO.File]::OpenRead($ArchivePath)
+    try {
+        $HashBytes = $Sha256.ComputeHash($Stream)
+    } finally {
+        $Stream.Dispose()
+    }
+} finally {
+    $Sha256.Dispose()
+}
+
+$Hash = -join (
+    $HashBytes |
+        ForEach-Object {
+            $_.ToString("x2")
+        }
+)
+
+$ChecksumText = "$Hash  $(Split-Path $ArchivePath -Leaf)"
 $Utf8NoBom = New-Object System.Text.UTF8Encoding $false
 [System.IO.File]::WriteAllText(
     "$ArchivePath.sha256",

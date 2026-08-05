@@ -181,7 +181,19 @@ jobs:
           Get-ChildItem $Root | Format-Table Name, Length
 
           $Expected = Get-Content $Checksum.FullName
-          $Hash = (Get-FileHash $Archive.FullName -Algorithm SHA256).Hash.ToLower()
+          $Sha256 = [System.Security.Cryptography.SHA256]::Create()
+          try {
+            $Stream = [System.IO.File]::OpenRead($Archive.FullName)
+            try {
+              $HashBytes = $Sha256.ComputeHash($Stream)
+            } finally {
+              $Stream.Dispose()
+            }
+          } finally {
+            $Sha256.Dispose()
+          }
+          $Hash = -join ($HashBytes | ForEach-Object { $_.ToString("x2") })
+
           if ($Expected -notmatch $Hash) {
             throw "Checksum did not match $($Archive.Name)"
           }
