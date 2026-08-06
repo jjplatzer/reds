@@ -1,0 +1,44 @@
+{
+  "defaultCenter": {
+    "lat": 13.483889,
+    "lon": 144.797222
+  },
+  "sectors": [
+    {
+      "id": "01",
+      "name": "Oceanic Radar",
+      "visualCenter": {
+        "lat": 13.483889,
+        "lon": 144.797222
+      },
+      "freq": 118.7
+    },
+    {
+      "id": "05",
+      "name": "Domestic Radar",
+      "visualCenter": {
+        "lat": 13.483889,
+        "lon": 144.797222
+      },
+      "freq": 118.9
+    },
+    {
+      "id": "06",
+      "name": "Terminal Radar",
+      "visualCenter": {
+        "lat": 13.483889,
+        "lon": 144.797222
+      },
+      "freq": 120.5
+    },
+    {
+      "id": "99",
+      "name": "ZUA Guard",
+      "visualCenter": {
+        "lat": 13.483889,
+        "lon": 144.797222
+      },
+      "freq": 121.5
+    }
+  ]
+}
