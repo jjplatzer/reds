@@ -11,6 +11,7 @@ type DrawMode int
 const (
 	DrawSolid DrawMode = iota
 	DrawHatched
+	DrawCheckered
 )
 
 // Mat4 is a column-major 4x4 matrix, matching OpenGL's uniform matrix layout.
@@ -83,6 +84,7 @@ const (
 	cmdBlend
 	cmdDisableBlend
 	cmdSetColor
+	cmdSetCheckerOffset
 	cmdLineWidth
 	cmdDrawLines
 	cmdDrawColoredLines
@@ -101,6 +103,8 @@ type command struct {
 
 	lineWidth   float32
 	hatchOffset float32
+	checkerX    float32
+	checkerY    float32
 	textureID   TextureID
 
 	x, y, w, h int
@@ -194,6 +198,10 @@ func (cb *CmdBuffer) SetRGBA(color RGBA) {
 
 func (cb *CmdBuffer) SetRGB(color RGB) {
 	cb.SetRGBA(color.ToRGBA())
+}
+
+func (cb *CmdBuffer) SetCheckerOffset(x, y float32) {
+	cb.commands = append(cb.commands, command{type_: cmdSetCheckerOffset, checkerX: x, checkerY: y})
 }
 
 func (cb *CmdBuffer) LineWidth(width float32) {
