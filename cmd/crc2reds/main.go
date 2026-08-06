@@ -30,6 +30,7 @@ func printUsageAndExit() {
 	fmt.Fprintln(os.Stderr, `usage:
   go run ./cmd/crc2reds asdex font    -in /path/to/font.bin.zst -out asdex/assets/font.go
   go run ./cmd/crc2reds asdex cursors -in /path/to/cursors-or-cursor.cur.zst -out asdex/assets/cursors.go
-  go run ./cmd/crc2reds eram  font    -in /path/to/eram-fonts-or-font.bin.zst -out eram/assets/font.go`)
+  go run ./cmd/crc2reds eram  font    -in /path/to/eram-fonts-or-font.bin.zst -out eram/assets/font.go
+  go run ./cmd/crc2reds eram  cursors -in /path/to/CRC/Cursors -out eram/assets/cursors.go`)
 	os.Exit(2)
 }
