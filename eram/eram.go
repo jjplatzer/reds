@@ -3,11 +3,29 @@ package eram
 import (
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"regexp"
 	"strings"
+	"time"
 
+	redslog "github.com/juliusplatzer/reds/log"
+	"github.com/juliusplatzer/reds/panes"
+	"github.com/juliusplatzer/reds/renderer"
 	"github.com/juliusplatzer/reds/util"
 )
+
+const (
+	// CRC's BCG defaults. Background brightness is additionally scaled by
+	// system brightness, whose ERAM backlight floor is 66 percent.
+	defaultBackgroundBrightness = 26
+	defaultSystemBrightness     = 90
+	systemBrightnessFloor       = 66
+
+	zBackground renderer.Z = -1000
+)
+
+// CRC StyleManager.SituationDisplayBackground uses EramColor.DarkBlue.
+var defaultBackgroundColor = renderer.RGB8(0, 0, 212)
 
 type LatLon struct {
 	Lat float64 `json:"lat"`
@@ -17,7 +35,7 @@ type LatLon struct {
 type Sector struct {
 	ID           string  `json:"id"`
 	Name         string  `json:"name"`
-	VisualCenter LatLon  `json:"visualCenter"`
+	VisualCenter *LatLon `json:"visualCenter,omitempty"`
 	Frequency    float64 `json:"freq"`
 }
 
@@ -32,6 +50,23 @@ func (s Sector) Label() string {
 type Facility struct {
 	DefaultCenter LatLon   `json:"defaultCenter"`
 	Sectors       []Sector `json:"sectors"`
+}
+
+// ERAMPane is the controller-selected ERAM situation display. The first
+// implementation intentionally owns only the persistent view center and the
+// display defaults needed to draw the empty scope; maps and tracks build on
+// this state later.
+type ERAMPane struct {
+	logger *redslog.Logger
+
+	artcc  string
+	sector Sector
+	center LatLon
+
+	backgroundBrightness int
+	systemBrightness     int
+
+	cursors CursorSet
 }
 
 func LoadFacility(artcc string) (Facility, error) {
@@ -51,6 +86,110 @@ func LoadFacility(artcc string) (Facility, error) {
 	}
 
 	return facility, nil
+}
+
+func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, error) {
+	if logger == nil {
+		logger = &redslog.Logger{
+			Logger: slog.Default(),
+			Start:  time.Now(),
+		}
+	}
+
+	artcc = strings.ToUpper(strings.TrimSpace(artcc))
+	if artcc == "" {
+		return nil, fmt.Errorf("empty ERAM ARTCC")
+	}
+
+	facility, err := LoadFacility(artcc)
+	if err != nil {
+		return nil, err
+	}
+
+	center, source := initialCenter(facility, sector)
+	pane := &ERAMPane{
+		logger:               logger,
+		artcc:                artcc,
+		sector:               sector,
+		center:               center,
+		backgroundBrightness: defaultBackgroundBrightness,
+		systemBrightness:     defaultSystemBrightness,
+	}
+
+	logger.Info(
+		"ERAM pane initialized",
+		slog.Float64("center_lat", center.Lat),
+		slog.Float64("center_lon", center.Lon),
+		slog.String("center_source", source),
+	)
+	return pane, nil
+}
+
+func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil {
+		return
+	}
+
+	p.ensureCursorLoaded()
+	p.applyCursor(ctx)
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	backgroundCB := zcb.At(zBackground)
+	backgroundCB.Viewport(x, y, width, height)
+	backgroundCB.Scissor(x, y, width, height)
+	backgroundCB.ClearRGB(p.scopeBackgroundColor())
+	backgroundCB.DisableScissor()
+
+	p.renderCursor(ctx, zcb)
+}
+
+func (p *ERAMPane) Dispose() {}
+
+func initialCenter(facility Facility, sector Sector) (LatLon, string) {
+	if sector.VisualCenter != nil {
+		return *sector.VisualCenter, "visualCenter"
+	}
+	return facility.DefaultCenter, "defaultCenter"
+}
+
+func (p *ERAMPane) scopeBackgroundColor() renderer.RGB {
+	if p == nil {
+		return renderer.RGB{}
+	}
+	return applyERAMBrightness(
+		defaultBackgroundColor,
+		p.backgroundBrightness,
+		p.systemBrightness,
+	)
+}
+
+// applyERAMBrightness mirrors CRC Style.Calculate: a BCG is first reduced by
+// the system-brightness backlight factor, truncated to an integer percentage,
+// and then applied to the raw ERAM color.
+func applyERAMBrightness(color renderer.RGB, brightness, systemBrightness int) renderer.RGB {
+	brightness = clampBrightness(brightness)
+	systemBrightness = clampBrightness(systemBrightness)
+
+	systemScale := (float32(systemBrightnessFloor) +
+		float32(systemBrightness)*float32(100-systemBrightnessFloor)/100) / 100
+	effectiveBrightness := int(float32(brightness) * systemScale)
+	scale := float32(effectiveBrightness) / 100
+
+	return renderer.RGB{
+		R: color.R * scale,
+		G: color.G * scale,
+		B: color.B * scale,
+	}
+}
+
+func clampBrightness(value int) int {
+	if value < 0 {
+		return 0
+	}
+	if value > 100 {
+		return 100
+	}
+	return value
 }
 
 func sectorDisplayName(id, name string) string {

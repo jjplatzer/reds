@@ -58,9 +58,15 @@ type Selection struct {
 func (s Selection) ScopeTitle() string {
 	switch s.Mode {
 	case DisplayERAM:
-		return s.Facility + " ERAM"
+		parts := []string{DisplayERAM.String(), s.Facility}
+		if s.Sector != nil {
+			if name := strings.TrimSpace(s.Sector.Name); name != "" {
+				parts = append(parts, name)
+			}
+		}
+		return strings.Join(parts, " ")
 	default:
-		return s.Facility + " ASDE-X"
+		return strings.Join([]string{DisplayASDEX.String(), s.Facility}, " ")
 	}
 }
 
