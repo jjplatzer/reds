@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/juliusplatzer/reds/asdex"
+	"github.com/juliusplatzer/reds/eram"
 	redslog "github.com/juliusplatzer/reds/log"
 	redsnet "github.com/juliusplatzer/reds/net"
 	"github.com/juliusplatzer/reds/panes"
@@ -30,6 +31,8 @@ const (
 
 	asdexWindowWidth  = 1280
 	asdexWindowHeight = 800
+	eramWindowWidth   = 1280
+	eramWindowHeight  = 800
 )
 
 var (
@@ -303,7 +306,16 @@ func launchScope(
 			slog.String("sector_name", sel.Sector.Name),
 		)
 		scopeLogger.Info("Launching scope")
-		return nil, fmt.Errorf("ERAM scope is not implemented yet")
+
+		pane, err := eram.NewPane(sel.Facility, *sel.Sector, scopeLogger)
+		if err != nil {
+			return nil, err
+		}
+		plat.SetWindowTitle(sel.ScopeTitle())
+		plat.SetWindowDecorated(false)
+		plat.SetWindowSizeCentered(eramWindowWidth, eramWindowHeight)
+		scopeLogger.Info("ERAM scope launched")
+		return pane, nil
 	default:
 		return nil, fmt.Errorf("%s scope is not implemented yet", sel.Mode)
 	}
