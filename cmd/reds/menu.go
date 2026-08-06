@@ -1,9 +1,8 @@
 // cmd/reds/menu.go
 //
 // The startup menu, a faithful port of ui/menu.cpp: a "Display Type" dropdown
-// locked to ASDE-X, a "Facility" dropdown populated from the ASDE-X videomaps,
-// and Cancel / Confirm buttons. Confirm will eventually hand the Selection off
-// to the ASDE-X / STARS / ERAM scope; for now it just returns the choice.
+// populated with launchable display types, a mode-dependent "Facility"
+// dropdown, and Cancel / Confirm buttons.
 
 package main
 
@@ -13,14 +12,13 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/juliusplatzer/reds/eram"
 	"github.com/juliusplatzer/reds/util"
 
 	"github.com/AllenDang/cimgui-go/imgui"
 )
 
-// DisplayMode is the scope the user is launching into. The dropdown is locked
-// to ASDEX for now, but the enum carries all three so Confirm can dispatch to
-// the right scope once they exist.
+// DisplayMode is the scope the user is launching into.
 type DisplayMode int
 
 const (
@@ -40,10 +38,30 @@ func (d DisplayMode) String() string {
 	}
 }
 
+var startupDisplayModes = []DisplayMode{
+	DisplayASDEX,
+	DisplayERAM,
+}
+
+var startupDisplayNames = []string{
+	DisplayASDEX.String(),
+	DisplayERAM.String(),
+}
+
 // Selection is what the menu produces on Confirm.
 type Selection struct {
-	Mode    DisplayMode
-	Airport string // ICAO, e.g. "KATL"
+	Mode     DisplayMode
+	Facility string
+	Sector   *eram.Sector
+}
+
+func (s Selection) ScopeTitle() string {
+	switch s.Mode {
+	case DisplayERAM:
+		return s.Facility + " ERAM"
+	default:
+		return s.Facility + " ASDE-X"
+	}
 }
 
 // menuResult signals how the menu frame ended.
@@ -57,20 +75,34 @@ const (
 
 // menu holds the menu's transient UI state across frames.
 type menu struct {
-	airports      []string
-	displayIndex  int // locked to 0 (ASDE-X)
+	asdexFacilities []string
+	eramFacilities  []string
+
+	displayIndex  int
 	facilityIndex int
-	firstFrame    bool
-	selection     Selection
+	sectorIndex   int
+
+	loadedEramFacility string
+	eramFacility       eram.Facility
+	eramSectorLabels   []string
+	eramLoadErr        error
+
+	firstFrame bool
+	selection  Selection
 }
 
 // newMenu loads the facility list, mirroring loadAsdexAirports(): every
 // *.geojson.zst under resources/videomaps/asdex, reduced to its ICAO prefix.
 func newMenu() *menu {
-	return &menu{
-		airports:   loadAsdexAirports(),
-		firstFrame: true,
+	m := &menu{
+		asdexFacilities: loadAsdexAirports(),
+		eramFacilities:  loadEramFacilities(),
+		firstFrame:      true,
 	}
+	if m.currentDisplayMode() == DisplayERAM {
+		m.loadCurrentEramFacility()
+	}
+	return m
 }
 
 func loadAsdexAirports() []string {
@@ -106,21 +138,174 @@ func loadAsdexAirports() []string {
 	return unique
 }
 
+func loadEramFacilities() []string {
+	dir := util.FindProjectRelativeDir(filepath.Join("resources", "configs", "eram"))
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return nil
+	}
+
+	facilities := make([]string, 0, len(entries))
+	for _, entry := range entries {
+		if entry.IsDir() {
+			continue
+		}
+
+		name := entry.Name()
+		if filepath.Ext(name) != ".json" {
+			continue
+		}
+
+		facility := strings.TrimSuffix(name, ".json")
+		if facility != "" {
+			facilities = append(facilities, facility)
+		}
+	}
+
+	sort.Strings(facilities)
+	return facilities
+}
+
 func (m *menu) currentSelection() (Selection, bool) {
-	if len(m.airports) == 0 {
-		return Selection{Mode: DisplayASDEX}, false
+	if m == nil {
+		return Selection{}, false
+	}
+
+	switch m.currentDisplayMode() {
+	case DisplayASDEX:
+		facilities := m.asdexFacilities
+		if len(facilities) == 0 {
+			return Selection{Mode: DisplayASDEX}, false
+		}
+		m.clampFacilityIndex(facilities)
+
+		return Selection{
+			Mode:     DisplayASDEX,
+			Facility: facilities[m.facilityIndex],
+		}, true
+
+	case DisplayERAM:
+		facilities := m.eramFacilities
+		if len(facilities) == 0 || m.eramLoadErr != nil {
+			return Selection{Mode: DisplayERAM}, false
+		}
+		m.clampFacilityIndex(facilities)
+		if m.loadedEramFacility != facilities[m.facilityIndex] {
+			m.loadCurrentEramFacility()
+		}
+		if len(m.eramFacility.Sectors) == 0 {
+			return Selection{Mode: DisplayERAM}, false
+		}
+		if m.sectorIndex < 0 {
+			m.sectorIndex = 0
+		}
+		if m.sectorIndex >= len(m.eramFacility.Sectors) {
+			m.sectorIndex = len(m.eramFacility.Sectors) - 1
+		}
+
+		sector := m.eramFacility.Sectors[m.sectorIndex]
+		return Selection{
+			Mode:     DisplayERAM,
+			Facility: facilities[m.facilityIndex],
+			Sector:   &sector,
+		}, true
+
+	default:
+		return Selection{}, false
+	}
+}
+
+func (m *menu) currentDisplayMode() DisplayMode {
+	if m == nil || len(startupDisplayModes) == 0 {
+		return DisplayASDEX
+	}
+	if m.displayIndex < 0 {
+		m.displayIndex = 0
+	}
+	if m.displayIndex >= len(startupDisplayModes) {
+		m.displayIndex = len(startupDisplayModes) - 1
+	}
+	return startupDisplayModes[m.displayIndex]
+}
+
+func (m *menu) currentFacilities() []string {
+	if m == nil {
+		return nil
+	}
+
+	switch m.currentDisplayMode() {
+	case DisplayERAM:
+		return m.eramFacilities
+	default:
+		return m.asdexFacilities
+	}
+}
+
+func (m *menu) handleDisplayChanged() {
+	if m == nil {
+		return
+	}
+
+	m.facilityIndex = 0
+	m.sectorIndex = 0
+	if m.currentDisplayMode() == DisplayERAM {
+		m.loadCurrentEramFacility()
+	}
+}
+
+func (m *menu) handleFacilityChanged() {
+	if m == nil {
+		return
+	}
+
+	m.sectorIndex = 0
+	if m.currentDisplayMode() == DisplayERAM {
+		m.loadCurrentEramFacility()
+	}
+}
+
+func (m *menu) loadCurrentEramFacility() {
+	if m == nil {
+		return
+	}
+
+	m.loadedEramFacility = ""
+	m.eramFacility = eram.Facility{}
+	m.eramSectorLabels = nil
+	m.sectorIndex = 0
+	m.eramLoadErr = nil
+
+	facilities := m.eramFacilities
+	if len(facilities) == 0 {
+		return
+	}
+	m.clampFacilityIndex(facilities)
+
+	artcc := facilities[m.facilityIndex]
+	config, err := eram.LoadFacility(artcc)
+	if err != nil {
+		m.eramLoadErr = err
+		return
+	}
+
+	m.loadedEramFacility = artcc
+	m.eramFacility = config
+	m.eramSectorLabels = make([]string, 0, len(config.Sectors))
+	for _, sector := range config.Sectors {
+		m.eramSectorLabels = append(m.eramSectorLabels, sector.Label())
+	}
+}
+
+func (m *menu) clampFacilityIndex(facilities []string) {
+	if m == nil || len(facilities) == 0 {
+		return
 	}
 	if m.facilityIndex < 0 {
 		m.facilityIndex = 0
 	}
-	if m.facilityIndex >= len(m.airports) {
-		m.facilityIndex = len(m.airports) - 1
+	if m.facilityIndex >= len(facilities) {
+		m.facilityIndex = len(facilities) - 1
 	}
-
-	return Selection{
-		Mode:    DisplayMode(m.displayIndex), // ASDE-X today
-		Airport: m.airports[m.facilityIndex],
-	}, true
 }
 
 // draw renders one frame of the menu and returns whether it is still pending,
@@ -142,18 +327,48 @@ func (m *menu) draw(displaySize [2]float32) menuResult {
 	result := menuPending
 	imgui.BeginV("nascope##menu", nil, flags)
 
-	// Display Type — locked to ASDE-X, grayed, not selectable.
 	label("Display Type")
-	dropdown("##displayType", statePast, []string{DisplayASDEX.String()}, &m.displayIndex, false)
+	displayChanged := dropdown(
+		"##displayType",
+		stateCurrent,
+		startupDisplayNames,
+		&m.displayIndex,
+		true,
+	)
+	if displayChanged {
+		m.handleDisplayChanged()
+	}
 
 	imgui.Dummy(imgui.Vec2{X: 0, Y: 12})
 
-	// Facility — populated from the ASDE-X videomaps.
 	label("Facility")
 	if m.firstFrame {
 		imgui.SetKeyboardFocusHere()
 	}
-	dropdown("##facility", stateCurrent, m.airports, &m.facilityIndex, len(m.airports) > 0)
+	facilities := m.currentFacilities()
+	facilityChanged := dropdown(
+		"##facility",
+		stateCurrent,
+		facilities,
+		&m.facilityIndex,
+		len(facilities) > 0,
+	)
+	if facilityChanged {
+		m.handleFacilityChanged()
+	}
+
+	if m.currentDisplayMode() == DisplayERAM {
+		imgui.Dummy(imgui.Vec2{X: 0, Y: 12})
+
+		label("Sector")
+		dropdown(
+			"##sector",
+			stateCurrent,
+			m.eramSectorLabels,
+			&m.sectorIndex,
+			len(m.eramSectorLabels) > 0 && m.eramLoadErr == nil,
+		)
+	}
 
 	// Push the buttons to the bottom of the window.
 	avail := imgui.ContentRegionAvail()
@@ -181,7 +396,8 @@ func (m *menu) draw(displaySize [2]float32) menuResult {
 	// Modal keys: Enter confirms, Escape cancels (QDialog default/reject).
 	enter := imgui.IsKeyPressedBool(imgui.KeyEnter) || imgui.IsKeyPressedBool(imgui.KeyKeypadEnter)
 	if confirm || (enter && result == menuPending) {
-		if len(m.airports) > 0 {
+		if selection, valid := m.currentSelection(); valid {
+			m.selection = selection
 			result = menuConfirmed
 		}
 	}

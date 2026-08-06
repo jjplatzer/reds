@@ -131,7 +131,7 @@ func run(logger *redslog.Logger) error {
 
 	plat, err := platform.New(&platform.Config{
 		Title:             "REDS",
-		InitialWindowSize: [2]int{200, 350},
+		InitialWindowSize: [2]int{275, 350},
 		MinWindowSize:     [2]int{200, 200},
 		Resizable:         true,
 	})
@@ -158,15 +158,23 @@ func run(logger *redslog.Logger) error {
 	defer disposeSVGIcons()
 
 	m := newMenu()
-	if len(m.airports) == 0 {
+	if len(m.asdexFacilities) == 0 {
 		logger.Error(
 			"No ASDE-X facilities found",
 			slog.String("path", "resources/videomaps/asdex"),
 		)
 	}
+	if len(m.eramFacilities) == 0 {
+		logger.Error(
+			"No ERAM facilities found",
+			slog.String("path", "resources/configs/eram"),
+			slog.Any("error", m.eramLoadErr),
+		)
+	}
 	logger.Info(
 		"Startup menu loaded",
-		slog.Int("asdex_facilities", len(m.airports)),
+		slog.Int("asdex_facilities", len(m.asdexFacilities)),
+		slog.Int("eram_facilities", len(m.eramFacilities)),
 	)
 
 	mode := appModeMenu
@@ -193,8 +201,7 @@ func run(logger *redslog.Logger) error {
 			case menuConfirmed:
 				logger.Info(
 					"Facility selected",
-					slog.String("mode", m.selection.Mode.String()),
-					slog.String("airport", m.selection.Airport),
+					selectionLogAttrs(m.selection)...,
 				)
 				pane, err := launchScope(m.selection, plat, consumer, logger)
 				if err != nil {
@@ -206,7 +213,7 @@ func run(logger *redslog.Logger) error {
 					continue
 				}
 				active = pane
-				scopeTitle = m.selection.Airport + " ASDE-X"
+				scopeTitle = m.selection.ScopeTitle()
 				mode = appModeScope
 			case menuCancelled:
 				return nil
@@ -238,6 +245,21 @@ func run(logger *redslog.Logger) error {
 	return nil
 }
 
+func selectionLogAttrs(selection Selection) []any {
+	attrs := []any{
+		slog.String("mode", selection.Mode.String()),
+		slog.String("facility", selection.Facility),
+	}
+	if selection.Mode == DisplayERAM && selection.Sector != nil {
+		attrs = append(
+			attrs,
+			slog.String("sector_id", selection.Sector.ID),
+			slog.String("sector_name", selection.Sector.Name),
+		)
+	}
+	return attrs
+}
+
 func launchScope(
 	sel Selection,
 	plat platform.Platform,
@@ -248,28 +270,40 @@ func launchScope(
 	case DisplayASDEX:
 		scopeLogger := logger.With(
 			slog.String("display", "asdex"),
-			slog.String("airport", sel.Airport),
+			slog.String("facility", sel.Facility),
 		)
 		scopeLogger.Info("Launching scope")
 
 		usePublicServer := redsnet.UsePublicServer()
 		if !usePublicServer {
-			if err := consumer.Start(sel.Airport); err != nil {
+			if err := consumer.Start(sel.Facility); err != nil {
 				return nil, err
 			}
 		}
-		pane, err := asdex.NewPane(sel.Airport, scopeLogger)
+		pane, err := asdex.NewPane(sel.Facility, scopeLogger)
 		if err != nil {
 			if !usePublicServer {
 				consumer.Stop()
 			}
 			return nil, err
 		}
-		plat.SetWindowTitle(sel.Airport + " ASDE-X")
+		plat.SetWindowTitle(sel.ScopeTitle())
 		plat.SetWindowDecorated(false)
 		plat.SetWindowSizeCentered(asdexWindowWidth, asdexWindowHeight)
 		scopeLogger.Info("ASDE-X scope launched")
 		return pane, nil
+	case DisplayERAM:
+		if sel.Sector == nil {
+			return nil, fmt.Errorf("ERAM sector is required")
+		}
+		scopeLogger := logger.With(
+			slog.String("display", "eram"),
+			slog.String("facility", sel.Facility),
+			slog.String("sector_id", sel.Sector.ID),
+			slog.String("sector_name", sel.Sector.Name),
+		)
+		scopeLogger.Info("Launching scope")
+		return nil, fmt.Errorf("ERAM scope is not implemented yet")
 	default:
 		return nil, fmt.Errorf("%s scope is not implemented yet", sel.Mode)
 	}
@@ -301,7 +335,7 @@ func switchToMenu(
 		plat.ClearCursorOverride()
 		plat.SetWindowDecorated(true)
 		plat.SetWindowTitle("REDS")
-		plat.SetWindowSizeCentered(200, 350)
+		plat.SetWindowSizeCentered(275, 350)
 		plat.ShowSystemCursor()
 	}
 	if m != nil {

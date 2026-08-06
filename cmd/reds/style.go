@@ -66,6 +66,8 @@ const (
 	minButtonWidth  = 74
 	popupItemHeight = 24 // QComboBox QAbstractItemView::item min-height
 	maxVisibleItems = 5  // kDropdownMaxVisible
+
+	dropdownChevronZoneWidth = 26
 )
 
 // dropdown draws a QComboBox-styled selector. id must be unique and is hidden
@@ -122,7 +124,14 @@ func dropdown(id string, st dropState, items []string, selected *int, enabled bo
 		textCol = colTextDisabled
 	}
 	textY := rmin.Y + (controlHeight-imgui.FontSize())/2
-	dl.AddTextVec2(imgui.Vec2{X: rmin.X + controlPaddingX, Y: textY}, imgui.ColorU32Vec4(textCol), preview)
+	drawDropdownClippedText(
+		dl,
+		imgui.Vec2{X: rmin.X + controlPaddingX, Y: textY},
+		imgui.ColorU32Vec4(textCol),
+		preview,
+		imgui.Vec2{X: rmin.X + controlPaddingX, Y: rmin.Y},
+		imgui.Vec2{X: rmax.X - dropdownChevronZoneWidth, Y: rmax.Y},
+	)
 	drawChevron(rmin, rmax, enabled)
 
 	itemH := float32(popupItemHeight)
@@ -153,10 +162,13 @@ func dropdown(id string, st dropState, items []string, selected *int, enabled bo
 				imgui.WindowDrawList().AddRectFilled(rowMin, rowMax, imgui.ColorU32Vec4(colSelection))
 			}
 			textY := rowMin.Y + (itemH-imgui.FontSize())/2
-			imgui.WindowDrawList().AddTextVec2(
+			drawDropdownClippedText(
+				imgui.WindowDrawList(),
 				imgui.Vec2{X: rowMin.X + popupTextInset, Y: textY},
 				imgui.ColorU32Vec4(colText),
 				it,
+				imgui.Vec2{X: rowMin.X + popupTextInset, Y: rowMin.Y},
+				imgui.Vec2{X: rowMax.X - popupTextInset, Y: rowMax.Y},
 			)
 			if clicked {
 				if i != *selected {
@@ -180,17 +192,47 @@ func dropdown(id string, st dropState, items []string, selected *int, enabled bo
 	return changed
 }
 
+func drawDropdownClippedText(
+	drawList *imgui.DrawList,
+	pos imgui.Vec2,
+	color uint32,
+	text string,
+	clipMin imgui.Vec2,
+	clipMax imgui.Vec2,
+) {
+	if drawList == nil || text == "" ||
+		clipMax.X <= clipMin.X ||
+		clipMax.Y <= clipMin.Y {
+		return
+	}
+
+	clip := imgui.Vec4{
+		X: clipMin.X,
+		Y: clipMin.Y,
+		Z: clipMax.X,
+		W: clipMax.Y,
+	}
+	drawList.AddTextFontPtrV(
+		imgui.CurrentFont(),
+		imgui.FontSize(),
+		pos,
+		color,
+		text,
+		0,
+		&clip,
+	)
+}
+
 // drawChevron renders the same path as chevron.svg:
 // <path d="M1 1 L5 5 L9 1"/> in a 10x6 viewBox.
 func drawChevron(rmin, rmax imgui.Vec2, enabled bool) {
 	const (
-		viewBoxW       = 10
-		viewBoxH       = 6
-		strokeWidth    = 1.4
-		arrowZoneWidth = 26
+		viewBoxW    = 10
+		viewBoxH    = 6
+		strokeWidth = 1.4
 	)
 
-	cx := rmax.X - arrowZoneWidth/2
+	cx := rmax.X - dropdownChevronZoneWidth/2
 	cy := (rmin.Y + rmax.Y) / 2
 	x0 := cx - viewBoxW/2
 	y0 := cy - viewBoxH/2
