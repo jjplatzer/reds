@@ -1,7 +1,6 @@
 package eram
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"log/slog"
@@ -13,6 +12,7 @@ import (
 	"github.com/juliusplatzer/reds/cmd/wx"
 	redslog "github.com/juliusplatzer/reds/log"
 	"github.com/juliusplatzer/reds/panes"
+	"github.com/juliusplatzer/reds/radar"
 	"github.com/juliusplatzer/reds/renderer"
 	"github.com/juliusplatzer/reds/util"
 )
@@ -28,8 +28,12 @@ const (
 	zNexrad     renderer.Z = -900
 	zMapData    renderer.Z = -800
 
-	initialWxRadiusNM       = 350
+	minRangeNM              = 0.25
+	maxRangeNM              = 1300
 	defaultRangeNM          = 300
+	initialWxRadiusNM       = 700
+	wxPrefetchMarginNM      = 100
+	wxRefreshMarginNM       = 50
 	defaultNexradLevels     = 3
 	defaultNexradBrightness = 50
 )
@@ -75,22 +79,29 @@ type ERAMPane struct {
 	sector Sector
 	center LatLon
 
+	longitudeScaleFactor float64
+
 	backgroundBrightness int
 	systemBrightness     int
 
-	rangeNM float32
+	rangeNM float64
 
 	nexradLevels     int
 	nexradBrightness int
 
-	wxStream *wx.Stream
-	wxGrid   *wx.Grid
+	wxDomain   wx.Domain
+	wxLogger   *redslog.Logger
+	wxCenter   LatLon
+	wxRadiusNM float64
+	wxStream   *wx.Stream
+	wxGrid     *wx.Grid
 
 	nexradGeneration      uint64
 	nexradBuiltGeneration uint64
 	nexrad                nexradCmdBuffers
 
 	cursors CursorSet
+	panDrag *eramPanDrag
 }
 
 func LoadFacility(artcc string) (Facility, error) {
@@ -136,6 +147,7 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 		artcc:                artcc,
 		sector:               sector,
 		center:               center,
+		longitudeScaleFactor: radar.LongitudeScaleFactorForLat(center.Lat),
 		backgroundBrightness: defaultBackgroundBrightness,
 		systemBrightness:     defaultSystemBrightness,
 		rangeNM:              defaultRangeNM,
@@ -143,22 +155,16 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 		nexradBrightness:     defaultNexradBrightness,
 	}
 
-	domain := wx.DomainForARTCC(artcc)
-	bounds := wx.BoundsAround(center.Lat, center.Lon, initialWxRadiusNM)
-	pane.wxStream = wx.Start(
-		context.Background(),
-		mrmsHTTPClient,
-		domain,
-		bounds,
-		logger.With(slog.String("component", "wx")),
-	)
+	pane.wxDomain = wx.DomainForARTCC(artcc)
+	pane.wxLogger = logger.With(slog.String("component", "wx"))
+	pane.restartWxStream(initialWxRadiusNM)
 
 	logger.Info(
 		"ERAM pane initialized",
 		slog.Float64("center_lat", center.Lat),
 		slog.Float64("center_lon", center.Lon),
 		slog.String("center_source", source),
-		slog.String("wx_domain", string(domain)),
+		slog.String("wx_domain", string(pane.wxDomain)),
 	)
 	return pane, nil
 }
@@ -169,6 +175,8 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 
 	p.consumeWxUpdates()
+	p.consumeInput(ctx)
+	p.ensureWxCoverage(ctx)
 	p.rebuildNexradIfNeeded()
 
 	p.ensureCursorLoaded()

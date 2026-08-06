@@ -59,6 +59,8 @@ const (
 	KeyRight
 	KeyUp
 	KeyDown
+	KeyPageUp
+	KeyPageDown
 	KeyF1
 	KeyF2
 	KeyF3

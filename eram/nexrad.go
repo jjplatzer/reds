@@ -112,6 +112,7 @@ func (p *ERAMPane) drawNexrad(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		paneExtent,
 		p.center.Lat,
 		p.center.Lon,
+		p.longitudeScaleFactor,
 		p.rangeNM,
 	)
 
