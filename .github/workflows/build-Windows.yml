@@ -154,8 +154,11 @@ jobs:
           $Required = @(
             "$Root\REDS.exe",
             "$Root\resources\videomaps\asdex",
+            "$Root\resources\videomaps\eram",
             "$Root\resources\configs\asdex",
+            "$Root\resources\configs\eram",
             "$Root\resources\audio\asdex",
+            "$Root\resources\audio\eram",
             "$Root\fonts",
             "$Root\asdex\surface",
             "$Root\LICENSE.txt",

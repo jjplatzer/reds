@@ -216,10 +216,19 @@ test -d \
 	"$RESOURCES/resources/videomaps/asdex"
 
 test -d \
+	"$RESOURCES/resources/videomaps/eram"
+
+test -d \
 	"$RESOURCES/resources/configs/asdex"
 
 test -d \
+	"$RESOURCES/resources/configs/eram"
+
+test -d \
 	"$RESOURCES/resources/audio/asdex"
+
+test -d \
+	"$RESOURCES/resources/audio/eram"
 
 test -d \
 	"$RESOURCES/fonts"

@@ -130,8 +130,11 @@ Write-Host "[package] Validating application..."
 $RequiredPaths = @(
     $ExecutablePath,
     (Join-Path $OutputPath "resources\videomaps\asdex"),
+    (Join-Path $OutputPath "resources\videomaps\eram"),
     (Join-Path $OutputPath "resources\configs\asdex"),
+    (Join-Path $OutputPath "resources\configs\eram"),
     (Join-Path $OutputPath "resources\audio\asdex"),
+    (Join-Path $OutputPath "resources\audio\eram"),
     (Join-Path $OutputPath "fonts"),
     (Join-Path $OutputPath "asdex\surface"),
     (Join-Path $OutputPath "LICENSE.txt")
