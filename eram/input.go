@@ -22,15 +22,38 @@ func (p *ERAMPane) consumeInput(ctx *panes.Context) {
 		return
 	}
 
+	// Captured placement modes own all input until they are completed/canceled.
+	// Keep toolbar tearoff movement first because it was the original captured
+	// interaction in REDS; movable ERAM views use the same exclusivity.
+	if p.toolbar.moving != nil {
+		p.consumeToolbarInput(ctx)
+		return
+	}
+	if p.viewUI.Moving != nil {
+		p.consumeViewMoveInput(ctx)
+		return
+	}
+
 	// A right-button scope pan is captured from its starting point and remains
-	// active even if the pointer later crosses the toolbar.
-	if p.panDrag != nil && p.toolbar.moving == nil {
+	// active even if the pointer later crosses another view.
+	if p.panDrag != nil {
 		p.consumePanInput(ctx)
 		return
 	}
 
-	// CRC gives toolbar buttons, menus, tearoffs, and a pending tearoff move
-	// precedence over new scope pan/zoom input.
+	// CRC view settings menus have higher pick precedence than ordinary views.
+	// An outside click closes the menu and is intentionally allowed to continue
+	// to the underlying object in the same frame.
+	if p.consumeViewMenuInput(ctx) {
+		return
+	}
+
+	// The default clock is a semi-transparent view in CRC and therefore picks
+	// ahead of lowered toolbar/tearoff buttons.
+	if p.consumeClockInput(ctx) {
+		return
+	}
+
 	if p.consumeToolbarInput(ctx) {
 		return
 	}

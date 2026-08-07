@@ -27,11 +27,14 @@ const (
 	defaultToolbarFontSize      = 1
 	defaultToolbarVisible       = true
 
-	zBackground           renderer.Z = -1000
-	zNexrad               renderer.Z = -900
-	zMapData              renderer.Z = -800
-	zLoweredMasterToolbar renderer.Z = -700
-	zTimeView             renderer.Z = -500
+	zBackground              renderer.Z = -1000
+	zNexrad                  renderer.Z = -900
+	zMapData                 renderer.Z = -800
+	zLoweredMasterToolbar    renderer.Z = -700
+	zTimeViewSemiTransparent renderer.Z = -500
+	zTimeViewOpaque          renderer.Z = -400
+	zViewSettingsMenu        renderer.Z = 800
+	zViewMoveFrame           renderer.Z = 899
 
 	minRangeNM              = 0.25
 	maxRangeNM              = 1300
@@ -115,6 +118,7 @@ type ERAMPane struct {
 	toolbarFontSize           int
 	toolbar                   toolbarState
 	clock                     eramClockState
+	viewUI                    eramViewUIState
 	maps                      eramMapState
 
 	rangeNM float64
@@ -260,6 +264,7 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawGeoMaps(ctx, zcb)
 	p.drawToolbar(ctx, zcb)
 	p.drawClock(ctx, zcb)
+	p.drawViewUI(ctx, zcb)
 	p.renderCursor(ctx, zcb)
 }
 
