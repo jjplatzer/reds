@@ -27,10 +27,14 @@ const (
 	defaultToolbarFontSize      = 1
 	defaultToolbarVisible       = true
 
-	zBackground           renderer.Z = -1000
-	zNexrad               renderer.Z = -900
-	zMapData              renderer.Z = -800
-	zLoweredMasterToolbar renderer.Z = -700
+	zBackground              renderer.Z = -1000
+	zNexrad                  renderer.Z = -900
+	zMapData                 renderer.Z = -800
+	zLoweredMasterToolbar    renderer.Z = -700
+	zTimeViewSemiTransparent renderer.Z = -500
+	zTimeViewOpaque          renderer.Z = -400
+	zViewSettingsMenu        renderer.Z = 800
+	zViewMoveFrame           renderer.Z = 899
 
 	minRangeNM              = 0.25
 	maxRangeNM              = 1300
@@ -113,6 +117,8 @@ type ERAMPane struct {
 	toolbarBrightness         int
 	toolbarFontSize           int
 	toolbar                   toolbarState
+	clock                     eramClockState
+	viewUI                    eramViewUIState
 	maps                      eramMapState
 
 	rangeNM float64
@@ -211,6 +217,7 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 	// CRC always ensures one special TOOLBAR control tear-off exists at
 	// TopLeft (90, 71). It remains present even when MASTER TOOLBAR is hidden.
 	pane.initializeToolbarState()
+	pane.initializeClockState()
 	pane.initializeMapState()
 	if err := pane.loadGeoMapMetadata(); err != nil {
 		return nil, err
@@ -256,6 +263,9 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawNexrad(ctx, zcb)
 	p.drawGeoMaps(ctx, zcb)
 	p.drawToolbar(ctx, zcb)
+	p.drawClock(ctx, zcb)
+	p.drawViewSettingsMenu(ctx, zcb)
+	p.drawViewMoveFrame(ctx, zcb)
 	p.renderCursor(ctx, zcb)
 }
 
