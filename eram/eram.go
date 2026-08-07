@@ -93,6 +93,7 @@ type ERAMPane struct {
 	toolbarVisible       bool
 	toolbarBrightness    int
 	toolbarFontSize      int
+	toolbar              toolbarState
 
 	rangeNM float64
 
@@ -203,7 +204,7 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	backgroundCB.DisableScissor()
 
 	p.drawNexrad(ctx, zcb)
-	p.drawToolbarBackground(ctx, zcb)
+	p.drawToolbar(ctx, zcb)
 	p.renderCursor(ctx, zcb)
 }
 
