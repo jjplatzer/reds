@@ -611,8 +611,27 @@ func (p *ERAMPane) toolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 	spec := baseToolbarSpec(id)
 
 	if id == toolbarGeomap {
-		spec.Lines = [2]string{p.artcc, "MAP"}
 		spec.Kind = toolbarMenuButton
+		if geoMap := p.activeGeoMap(); geoMap != nil {
+			spec.Lines = [2]string{
+				geoMap.LabelLine1,
+				geoMap.LabelLine2,
+			}
+		}
+		return spec
+	}
+
+	if index, ok := mapFilterButtonIndex(id); ok {
+		spec.Kind = toolbarToggleButton
+		if geoMap := p.activeGeoMap(); geoMap != nil && index < len(geoMap.FilterMenu) {
+			filter := geoMap.FilterMenu[index]
+			spec.Lines = [2]string{
+				filter.LabelLine1,
+				filter.LabelLine2,
+			}
+		}
+		spec.Active = p.maps.filters&(uint64(1)<<uint(index)) != 0
+		return spec
 	}
 
 	return spec
@@ -1245,7 +1264,7 @@ func (p *ERAMPane) consumeToolbarInput(ctx *panes.Context) bool {
 				return true
 			}
 			if layout.Pick.Contains(mouse.Pos) {
-				p.toggleToolbarExpansion(layout)
+				p.activateToolbarButton(layout)
 				return true
 			}
 		}
@@ -1277,6 +1296,15 @@ func (p *ERAMPane) toolbarControlEligible(layout toolbarButtonLayout) bool {
 		return true
 	}
 	return !p.hasToolbarTearoff(layout.Spec.ID)
+}
+
+func (p *ERAMPane) activateToolbarButton(layout toolbarButtonLayout) {
+	if index, ok := mapFilterButtonIndex(layout.Spec.ID); ok {
+		p.toggleMapFilter(index)
+		return
+	}
+
+	p.toggleToolbarExpansion(layout)
 }
 
 func (p *ERAMPane) startToolbarMove(ctx *panes.Context, layout toolbarButtonLayout, metrics toolbarMetrics) {

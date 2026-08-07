@@ -94,6 +94,7 @@ type ERAMPane struct {
 	toolbarBrightness    int
 	toolbarFontSize      int
 	toolbar              toolbarState
+	maps                 eramMapState
 
 	rangeNM float64
 
@@ -167,6 +168,11 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 		rangeNM:              defaultRangeNM,
 		nexradLevels:         defaultNexradLevels,
 		nexradBrightness:     defaultNexradBrightness,
+	}
+
+	pane.initializeMapState()
+	if err := pane.loadGeoMapMetadata(); err != nil {
+		return nil, err
 	}
 
 	pane.wxDomain = wx.DomainForARTCC(artcc)
