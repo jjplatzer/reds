@@ -88,13 +88,32 @@ type ERAMPane struct {
 
 	longitudeScaleFactor float64
 
-	backgroundBrightness int
-	systemBrightness     int
-	toolbarVisible       bool
-	toolbarBrightness    int
-	toolbarFontSize      int
-	toolbar              toolbarState
-	maps                 eramMapState
+	backgroundBrightness      int
+	systemBrightness          int
+	buttonBrightness          int
+	borderBrightness          int
+	cursorBrightness          int
+	textBrightness            int
+	toolbarBorderBrightness   int
+	pairedTargetBrightness    int
+	unpairedTargetBrightness  int
+	fdbBrightness             int
+	pairedHistoryBrightness   int
+	unpairedHistoryBrightness int
+	satCommBrightness         int
+	ldbBrightness             int
+	onFrequencyBrightness     int
+	weatherBrightness         int
+	fenceBrightness           int
+	dbfelBrightness           int
+	outageBrightness          int
+	nonADSBrightness          int
+	activeBorderBrightness    int
+	toolbarVisible            bool
+	toolbarBrightness         int
+	toolbarFontSize           int
+	toolbar                   toolbarState
+	maps                      eramMapState
 
 	rangeNM float64
 
@@ -155,19 +174,38 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 
 	center, source := initialCenter(facility, sector)
 	pane := &ERAMPane{
-		logger:               logger,
-		artcc:                artcc,
-		sector:               sector,
-		center:               center,
-		longitudeScaleFactor: radar.LongitudeScaleFactorForLat(center.Lat),
-		backgroundBrightness: defaultBackgroundBrightness,
-		systemBrightness:     defaultSystemBrightness,
-		toolbarVisible:       defaultToolbarVisible,
-		toolbarBrightness:    defaultToolbarBrightness,
-		toolbarFontSize:      defaultToolbarFontSize,
-		rangeNM:              defaultRangeNM,
-		nexradLevels:         defaultNexradLevels,
-		nexradBrightness:     defaultNexradBrightness,
+		logger:                    logger,
+		artcc:                     artcc,
+		sector:                    sector,
+		center:                    center,
+		longitudeScaleFactor:      radar.LongitudeScaleFactorForLat(center.Lat),
+		backgroundBrightness:      defaultBackgroundBrightness,
+		systemBrightness:          defaultSystemBrightness,
+		buttonBrightness:          defaultButtonBrightness,
+		borderBrightness:          defaultBorderBrightness,
+		cursorBrightness:          defaultCursorBrightness,
+		textBrightness:            defaultTextBrightness,
+		toolbarBorderBrightness:   defaultToolbarBorderBrightness,
+		pairedTargetBrightness:    defaultPairedTargetBrightness,
+		unpairedTargetBrightness:  defaultUnpairedTargetBrightness,
+		fdbBrightness:             defaultFDBBrightness,
+		pairedHistoryBrightness:   defaultPairedHistoryBrightness,
+		unpairedHistoryBrightness: defaultUnpairedHistoryBrightness,
+		satCommBrightness:         defaultSatCommBrightness,
+		ldbBrightness:             defaultLDBBrightness,
+		onFrequencyBrightness:     defaultOnFrequencyBrightness,
+		weatherBrightness:         defaultWeatherBrightness,
+		fenceBrightness:           defaultFenceBrightness,
+		dbfelBrightness:           defaultDBFELBrightness,
+		outageBrightness:          defaultOutageBrightness,
+		nonADSBrightness:          defaultNonADSBrightness,
+		activeBorderBrightness:    defaultActiveBorderBrightness,
+		toolbarVisible:            defaultToolbarVisible,
+		toolbarBrightness:         defaultToolbarBrightness,
+		toolbarFontSize:           defaultToolbarFontSize,
+		rangeNM:                   defaultRangeNM,
+		nexradLevels:              defaultNexradLevels,
+		nexradBrightness:          defaultNexradBrightness,
 	}
 
 	pane.initializeMapState()

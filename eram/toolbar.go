@@ -2,7 +2,9 @@ package eram
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/juliusplatzer/reds/eram/assets"
 	redsmath "github.com/juliusplatzer/reds/math"
@@ -26,11 +28,28 @@ const (
 	toolbarMoveWidthChars    = 1.5
 	toolbarExpansionBorder   = 2
 
-	defaultButtonBrightness        = 80
-	defaultBorderBrightness        = 56
-	defaultTextBrightness          = 90
-	defaultToolbarBorderBrightness = 50
-	defaultPairedTargetBrightness  = 92
+	defaultButtonBrightness          = 80
+	defaultBorderBrightness          = 56
+	defaultCursorBrightness          = 100
+	defaultTextBrightness            = 90
+	defaultToolbarBorderBrightness   = 50
+	defaultPairedTargetBrightness    = 92
+	defaultUnpairedTargetBrightness  = 92
+	defaultFDBBrightness             = 90
+	defaultPairedHistoryBrightness   = 16
+	defaultUnpairedHistoryBrightness = 16
+	defaultSatCommBrightness         = 90
+	defaultLDBBrightness             = 60
+	defaultOnFrequencyBrightness     = 90
+	defaultWeatherBrightness         = 50
+	defaultFenceBrightness           = 90
+	defaultDBFELBrightness           = 80
+	defaultOutageBrightness          = 80
+	defaultNonADSBrightness          = 90
+	defaultActiveBorderBrightness    = 56
+
+	toolbarRepeatInitialDelay = 350 * time.Millisecond
+	toolbarRepeatDelay        = 80 * time.Millisecond
 
 	zTearoffButtons  renderer.Z = -600
 	zButtonMoveFrame renderer.Z = 900
@@ -59,6 +78,13 @@ const (
 	toolbarCommandButton
 	toolbarIncDecButton
 	toolbarPressHoldButton
+)
+
+type toolbarPickAction uint8
+
+const (
+	toolbarSelect toolbarPickAction = iota
+	toolbarEnter
 )
 
 type toolbarButtonID string
@@ -153,8 +179,17 @@ type toolbarButtonLayout struct {
 }
 
 type toolbarExpansionLayout struct {
-	Owner  toolbarOwner
-	Bounds redsmath.Rect
+	Owner          toolbarOwner
+	Depth          int
+	Bounds         redsmath.Rect
+	SuppressBorder bool
+}
+
+type toolbarRepeat struct {
+	ID          toolbarButtonID
+	Action      toolbarPickAction
+	MouseButton platform.MouseButton
+	Next        time.Time
 }
 
 // The slices are retained and reused every frame. The toolbar can contain a
@@ -172,6 +207,7 @@ type toolbarState struct {
 	tearoffs        []toolbarTearoff
 	nextTearoffID   int
 	moving          *toolbarTearoffMove
+	repeat          *toolbarRepeat
 
 	layout toolbarLayoutScratch
 }
@@ -281,8 +317,8 @@ var dbFieldsToolbarEntries = []toolbarMenuEntry{
 }
 
 var (
-	geomapToolbarEntries        = makeNumberedToolbarEntries("map-filter", 20)
-	mapBrightnessToolbarEntries = makeNumberedToolbarEntries("map-bcg", 20)
+	geomapToolbarEntries        = makeNumberedToolbarEntries("map-filter", 40)
+	mapBrightnessToolbarEntries = makeNumberedToolbarEntries("map-bcg", 40)
 )
 
 func makeNumberedToolbarEntries(prefix string, count int) []toolbarMenuEntry {
@@ -477,59 +513,59 @@ func baseToolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 		spec.Lines, spec.Kind, spec.NoControl = [2]string{"VOLUME", "5"}, toolbarIncDecButton, true
 
 	case "backlight-brightness":
-		spec = brightnessSpec(id, "BCKLGHT", "90")
+		spec = brightnessSpec(id, "BCKLGHT")
 	case "cpdlc-brightness":
 		spec.Lines, spec.Kind = [2]string{"CPDLC", ""}, toolbarMenuButton
 	case "button-brightness":
-		spec = brightnessSpec(id, "BUTTON", "80")
+		spec = brightnessSpec(id, "BUTTON")
 	case "background-brightness":
-		spec = brightnessSpec(id, "BCKGRD", "26")
+		spec = brightnessSpec(id, "BCKGRD")
 	case "border-brightness":
-		spec = brightnessSpec(id, "BORDER", "56")
+		spec = brightnessSpec(id, "BORDER")
 	case "cursor-brightness":
-		spec = brightnessSpec(id, "CURSOR", "100")
+		spec = brightnessSpec(id, "CURSOR")
 	case "toolbar-brightness":
-		spec = brightnessSpec(id, "TOOLBAR", "40")
+		spec = brightnessSpec(id, "TOOLBAR")
 	case "text-brightness":
-		spec = brightnessSpec(id, "TEXT", "90")
+		spec = brightnessSpec(id, "TEXT")
 	case "toolbar-border-brightness":
-		spec = brightnessSpec(id, "TB BRDR", "50")
+		spec = brightnessSpec(id, "TB BRDR")
 	case "paired-target-brightness":
-		spec = brightnessSpec(id, "PR TGT", "92")
+		spec = brightnessSpec(id, "PR TGT")
 	case "sd-border-brightness":
-		spec = brightnessSpec(id, "AB BRDR", "56")
+		spec = brightnessSpec(id, "AB BRDR")
 	case "unpaired-target-brightness":
-		spec = brightnessSpec(id, "UNP TGT", "92")
+		spec = brightnessSpec(id, "UNP TGT")
 	case "fdb-brightness":
-		spec = brightnessSpec(id, "FDB", "90")
+		spec = brightnessSpec(id, "FDB")
 	case "paired-history-brightness":
-		spec = brightnessSpec(id, "PR HST", "16")
+		spec = brightnessSpec(id, "PR HST")
 	case "portal-brightness":
-		spec = brightnessSpec(id, "PORTAL", "=")
+		spec = incDecSpec(id, "PORTAL", "=")
 	case "unpaired-history-brightness":
-		spec = brightnessSpec(id, "UNP HST", "16")
+		spec = brightnessSpec(id, "UNP HST")
 	case "satcomm-brightness":
-		spec = brightnessSpec(id, "SATCOMM", "90")
+		spec = brightnessSpec(id, "SATCOMM")
 	case "ldb-brightness":
-		spec = brightnessSpec(id, "LDB", "60")
+		spec = brightnessSpec(id, "LDB")
 	case "on-frequency-brightness":
-		spec = brightnessSpec(id, "ON-FREQ", "90")
+		spec = brightnessSpec(id, "ON-FREQ")
 	case "select-ldb-brightness":
-		spec = brightnessSpec(id, "SLDB", "+5")
+		spec = incDecSpec(id, "SLDB", "+5")
 	case "line4-brightness":
-		spec = brightnessSpec(id, "LINE 4", "=")
+		spec = incDecSpec(id, "LINE 4", "=")
 	case "weather-brightness":
-		spec = brightnessSpec(id, "WX", "50")
+		spec = brightnessSpec(id, "WX")
 	case "dwell-brightness":
-		spec = brightnessSpec(id, "DWELL", "+20")
+		spec = incDecSpec(id, "DWELL", "+20")
 	case "nexrad-brightness":
-		spec = brightnessSpec(id, "NEXRAD", "50")
+		spec = brightnessSpec(id, "NEXRAD")
 	case "fence-brightness":
-		spec = brightnessSpec(id, "FENCE", "90")
+		spec = brightnessSpec(id, "FENCE")
 	case "dbfel-brightness":
-		spec = brightnessSpec(id, "DBFEL", "80")
+		spec = brightnessSpec(id, "DBFEL")
 	case "outage-brightness":
-		spec = brightnessSpec(id, "OUTAGE", "80")
+		spec = brightnessSpec(id, "OUTAGE")
 
 	case "all-ldbs":
 		spec.Lines = [2]string{"ALL", "LDBS"}
@@ -572,7 +608,7 @@ func baseToolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 	case "db-vri":
 		spec.Lines, spec.Kind = [2]string{"VRI", ""}, toolbarPressHoldButton
 	case "non-adsb-brightness":
-		spec = brightnessSpec(id, "NONADSB", "90")
+		spec = brightnessSpec(id, "NONADSB")
 	case "db-code":
 		spec.Lines, spec.Kind = [2]string{"CODE", ""}, toolbarPressHoldButton
 	case "db-satcomm":
@@ -634,10 +670,23 @@ func (p *ERAMPane) toolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 		return spec
 	}
 
+	if index, ok := mapBCGButtonIndex(id); ok {
+		spec.Kind = toolbarIncDecButton
+		spec.NoControl = true
+		if geoMap := p.activeGeoMap(); geoMap != nil && index < len(geoMap.BCGMenu) {
+			spec.Lines[0] = geoMap.BCGMenu[index]
+		}
+		return spec
+	}
+
 	return spec
 }
 
-func brightnessSpec(id toolbarButtonID, label, value string) toolbarButtonSpec {
+func brightnessSpec(id toolbarButtonID, label string) toolbarButtonSpec {
+	return incDecSpec(id, label, "")
+}
+
+func incDecSpec(id toolbarButtonID, label, value string) toolbarButtonSpec {
 	return toolbarButtonSpec{
 		ID:        id,
 		Lines:     [2]string{label, value},
@@ -646,7 +695,21 @@ func brightnessSpec(id toolbarButtonID, label, value string) toolbarButtonSpec {
 	}
 }
 
-func toolbarSubmenu(id toolbarButtonID) []toolbarMenuEntry {
+func mapBCGButtonIndex(id toolbarButtonID) (int, bool) {
+	const prefix = "map-bcg-"
+
+	value := string(id)
+	if !strings.HasPrefix(value, prefix) {
+		return 0, false
+	}
+	n, err := strconv.Atoi(strings.TrimPrefix(value, prefix))
+	if err != nil || n < 1 || n > eramMapBCGCount {
+		return 0, false
+	}
+	return n - 1, true
+}
+
+func toolbarSubmenu(id toolbarButtonID, alternate bool) []toolbarMenuEntry {
 	switch id {
 	case toolbarViews:
 		return viewsToolbarEntries
@@ -657,13 +720,13 @@ func toolbarSubmenu(id toolbarButtonID) []toolbarMenuEntry {
 	case toolbarCheckLists:
 		return checkListsToolbarEntries
 	case toolbarGeomap:
-		return geomapToolbarEntries
+		return toolbarBankedEntries(geomapToolbarEntries, alternate)
 	case toolbarCursor:
 		return cursorToolbarEntries
 	case toolbarBrightness:
 		return brightnessToolbarEntries
 	case toolbarMapBrightness:
-		return mapBrightnessToolbarEntries
+		return toolbarBankedEntries(mapBrightnessToolbarEntries, alternate)
 	case toolbarRadar:
 		return radarToolbarEntries
 	case toolbarFont:
@@ -675,11 +738,82 @@ func toolbarSubmenu(id toolbarButtonID) []toolbarMenuEntry {
 	}
 }
 
+func toolbarBankedEntries(entries []toolbarMenuEntry, alternate bool) []toolbarMenuEntry {
+	if len(entries) <= 20 {
+		return entries
+	}
+	if alternate {
+		if len(entries) > 40 {
+			return entries[20:40]
+		}
+		return entries[20:]
+	}
+	return entries[:20]
+}
+
+func toolbarHasSubmenu(id toolbarButtonID) bool {
+	return len(toolbarSubmenu(id, false)) > 0 || len(toolbarSubmenu(id, true)) > 0
+}
+
+func toolbarAlternateBank(ctx *panes.Context) bool {
+	return ctx != nil && ctx.Keyboard != nil && ctx.Keyboard.IsDown(platform.KeyAlt)
+}
+
 func (p *ERAMPane) toolbarButtonLines(spec toolbarButtonSpec) [2]string {
 	lines := spec.Lines
+	if index, ok := mapBCGButtonIndex(spec.ID); ok {
+		lines[1] = strconv.Itoa(p.maps.brightness[index])
+		return lines
+	}
 	switch spec.ID {
 	case toolbarRange:
 		lines[1] = fmt.Sprintf("%g", p.rangeNM)
+	case "backlight-brightness":
+		lines[1] = strconv.Itoa(p.systemBrightness)
+	case "button-brightness":
+		lines[1] = strconv.Itoa(p.buttonBrightness)
+	case "background-brightness":
+		lines[1] = strconv.Itoa(p.backgroundBrightness)
+	case "border-brightness":
+		lines[1] = strconv.Itoa(p.borderBrightness)
+	case "cursor-brightness":
+		lines[1] = strconv.Itoa(p.cursorBrightness)
+	case "toolbar-brightness":
+		lines[1] = strconv.Itoa(p.toolbarBrightness)
+	case "text-brightness":
+		lines[1] = strconv.Itoa(p.textBrightness)
+	case "toolbar-border-brightness":
+		lines[1] = strconv.Itoa(p.toolbarBorderBrightness)
+	case "paired-target-brightness":
+		lines[1] = strconv.Itoa(p.pairedTargetBrightness)
+	case "sd-border-brightness":
+		lines[1] = strconv.Itoa(p.activeBorderBrightness)
+	case "unpaired-target-brightness":
+		lines[1] = strconv.Itoa(p.unpairedTargetBrightness)
+	case "fdb-brightness":
+		lines[1] = strconv.Itoa(p.fdbBrightness)
+	case "paired-history-brightness":
+		lines[1] = strconv.Itoa(p.pairedHistoryBrightness)
+	case "unpaired-history-brightness":
+		lines[1] = strconv.Itoa(p.unpairedHistoryBrightness)
+	case "satcomm-brightness":
+		lines[1] = strconv.Itoa(p.satCommBrightness)
+	case "ldb-brightness":
+		lines[1] = strconv.Itoa(p.ldbBrightness)
+	case "on-frequency-brightness":
+		lines[1] = strconv.Itoa(p.onFrequencyBrightness)
+	case "weather-brightness":
+		lines[1] = strconv.Itoa(p.weatherBrightness)
+	case "nexrad-brightness":
+		lines[1] = strconv.Itoa(p.nexradBrightness)
+	case "fence-brightness":
+		lines[1] = strconv.Itoa(p.fenceBrightness)
+	case "dbfel-brightness":
+		lines[1] = strconv.Itoa(p.dbfelBrightness)
+	case "outage-brightness":
+		lines[1] = strconv.Itoa(p.outageBrightness)
+	case "non-adsb-brightness":
+		lines[1] = strconv.Itoa(p.nonADSBrightness)
 	case "nexrad-intensity":
 		switch p.nexradLevels {
 		case 3:
@@ -714,6 +848,7 @@ func (p *ERAMPane) buildToolbarLayout(ctx *panes.Context) ([]toolbarButtonLayout
 	}
 
 	metrics := p.toolbarMetrics()
+	alternate := toolbarAlternateBank(ctx)
 	masterOwner := toolbarOwner{Kind: toolbarOwnerMaster}
 	masterTop := float32(toolbarWrapperYPadding)
 	masterLeft := metrics.moveWidth + toolbarWrapperXPadding
@@ -733,7 +868,7 @@ func (p *ERAMPane) buildToolbarLayout(ctx *panes.Context) ([]toolbarButtonLayout
 		scratch.buttons = append(scratch.buttons, write...)
 		masterLayouts = write
 	}
-	p.appendExpandedMenus(masterLayouts, masterOwner, p.toolbar.masterExpansion, metrics)
+	p.appendExpandedMenus(masterLayouts, masterOwner, p.toolbar.masterExpansion, alternate, metrics)
 
 	paneSize := ctx.PaneSize()
 	for i := range p.toolbar.tearoffs {
@@ -743,7 +878,7 @@ func (p *ERAMPane) buildToolbarLayout(ctx *panes.Context) ([]toolbarButtonLayout
 		topLeft := toolbarTearoffTopLeft(*tearoff, paneSize, size)
 		owner := toolbarOwner{Kind: toolbarOwnerTearoff, TearoffID: tearoff.ID}
 		layout := p.appendToolbarButton(spec, topLeft.X, topLeft.Y, owner, 0, 0, metrics)
-		p.appendExpandedMenus([]toolbarButtonLayout{layout}, owner, tearoff.Expansion, metrics)
+		p.appendExpandedMenus([]toolbarButtonLayout{layout}, owner, tearoff.Expansion, alternate, metrics)
 	}
 
 	return scratch.buttons, scratch.expansions
@@ -830,6 +965,7 @@ func (p *ERAMPane) appendExpandedMenus(
 	rootLayouts []toolbarButtonLayout,
 	owner toolbarOwner,
 	expansion toolbarExpansion,
+	alternate bool,
 	metrics toolbarMetrics,
 ) {
 	if expansion.Root == "" {
@@ -845,7 +981,7 @@ func (p *ERAMPane) appendExpandedMenus(
 	if parent == nil {
 		return
 	}
-	entries := toolbarSubmenu(parent.Spec.ID)
+	entries := toolbarSubmenu(parent.Spec.ID, alternate)
 	if len(entries) == 0 {
 		return
 	}
@@ -857,12 +993,14 @@ func (p *ERAMPane) appendExpandedMenus(
 	children, width, height := p.appendToolbarMenu(entries, contentLeft, contentTop, owner, parent.Depth+1, metrics)
 	p.toolbar.layout.expansions = append(p.toolbar.layout.expansions, toolbarExpansionLayout{
 		Owner: owner,
+		Depth: parent.Depth + 1,
 		Bounds: redsmath.NewRect(
 			parent.Root.Max.X,
 			contentTop-toolbarExpansionBorder,
 			contentLeft+width+toolbarExpansionBorder,
 			contentTop+height+toolbarExpansionBorder,
 		),
+		SuppressBorder: expansion.Child != "",
 	})
 
 	if expansion.Child == "" {
@@ -872,7 +1010,7 @@ func (p *ERAMPane) appendExpandedMenus(
 		if child.Spec.ID != expansion.Child {
 			continue
 		}
-		grandchildren := toolbarSubmenu(child.Spec.ID)
+		grandchildren := toolbarSubmenu(child.Spec.ID, alternate)
 		if len(grandchildren) == 0 {
 			return
 		}
@@ -884,6 +1022,7 @@ func (p *ERAMPane) appendExpandedMenus(
 		_, grandWidth, grandHeight := p.appendToolbarMenu(grandchildren, grandLeft, grandTop, owner, child.Depth+1, metrics)
 		p.toolbar.layout.expansions = append(p.toolbar.layout.expansions, toolbarExpansionLayout{
 			Owner: owner,
+			Depth: child.Depth + 1,
 			Bounds: redsmath.NewRect(
 				child.Root.Max.X,
 				grandTop-toolbarExpansionBorder,
@@ -929,41 +1068,49 @@ func (p *ERAMPane) drawToolbar(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	buttons, expansions := p.buildToolbarLayout(ctx)
 
 	x, y, width, fbHeight := ctx.PaneFramebufferRect()
-	masterCB := zcb.At(zLoweredMasterToolbar)
-	prepareToolbarCB(masterCB, ctx, x, y, width, fbHeight)
-	drawSolidRect(masterCB, redsmath.NewRect(0, 0, paneWidth, metrics.toolbarHeight), applyERAMBrightness(toolbarGray, p.toolbarBrightness, p.systemBrightness))
-
-	// CRC's visible lower half of the master-toolbar move-down control.
 	moveRect := redsmath.NewRect(0, (metrics.toolbarHeight-toolbarInteriorLineWidth)/2, metrics.moveWidth, metrics.toolbarHeight-toolbarInteriorLineWidth)
-	p.drawToolbarBorderedRect(masterCB, moveRect, toolbarGray, defaultButtonBrightness, false, toolbarWhite, defaultBorderBrightness, 1)
+	for depth := 0; depth <= maxToolbarDepth(buttons, expansions, toolbarOwner{Kind: toolbarOwnerMaster}); depth++ {
+		masterCB := zcb.At(toolbarZ(depth))
+		prepareToolbarCB(masterCB, ctx, x, y, width, fbHeight)
+		if depth == 0 {
+			drawSolidRect(masterCB, redsmath.NewRect(0, 0, paneWidth, metrics.toolbarHeight), applyERAMBrightness(toolbarGray, p.toolbarBrightness, p.systemBrightness))
 
-	for _, expansion := range expansions {
-		if expansion.Owner.Kind == toolbarOwnerMaster {
-			p.drawToolbarExpansion(masterCB, expansion.Bounds)
+			// CRC's visible lower half of the master-toolbar move-down control.
+			p.drawToolbarBorderedRect(masterCB, moveRect, toolbarGray, p.buttonBrightness, false, toolbarWhite, p.borderBrightness, 1)
 		}
-	}
-	p.drawToolbarButtons(ctx, masterCB, buttons, toolbarOwner{Kind: toolbarOwnerMaster}, metrics)
-	p.drawToolbarText(ctx, masterCB, buttons, toolbarOwner{Kind: toolbarOwnerMaster}, metrics)
 
-	// The one-pixel interior line is part of CRC's 73-pixel footprint.
-	drawSolidRect(masterCB, redsmath.NewRect(0, metrics.toolbarHeight-1, paneWidth, metrics.toolbarHeight), applyERAMBrightness(toolbarWhite, defaultToolbarBorderBrightness, p.systemBrightness))
-	p.drawToolbarArrow(ctx, masterCB, moveRect, metrics)
-	masterCB.Blend()
-	masterCB.DisableScissor()
+		for _, expansion := range expansions {
+			if expansion.Owner == (toolbarOwner{Kind: toolbarOwnerMaster}) && expansion.Depth == depth {
+				p.drawToolbarExpansion(masterCB, expansion.Bounds, expansion.SuppressBorder)
+			}
+		}
+		p.drawToolbarButtons(ctx, masterCB, buttons, toolbarOwner{Kind: toolbarOwnerMaster}, depth, metrics)
+		p.drawToolbarText(ctx, masterCB, buttons, toolbarOwner{Kind: toolbarOwnerMaster}, depth, metrics)
+
+		if depth == 0 {
+			// The one-pixel interior line is part of CRC's 73-pixel footprint.
+			drawSolidRect(masterCB, redsmath.NewRect(0, metrics.toolbarHeight-1, paneWidth, metrics.toolbarHeight), applyERAMBrightness(toolbarWhite, p.toolbarBorderBrightness, p.systemBrightness))
+			p.drawToolbarArrow(ctx, masterCB, moveRect, metrics)
+		}
+		masterCB.Blend()
+		masterCB.DisableScissor()
+	}
 
 	for i := range p.toolbar.tearoffs {
 		owner := toolbarOwner{Kind: toolbarOwnerTearoff, TearoffID: p.toolbar.tearoffs[i].ID}
-		cb := zcb.At(zTearoffButtons + renderer.Z(i*2))
-		prepareToolbarCB(cb, ctx, x, y, width, fbHeight)
-		for _, expansion := range expansions {
-			if expansion.Owner == owner {
-				p.drawToolbarExpansion(cb, expansion.Bounds)
+		for depth := 0; depth <= maxToolbarDepth(buttons, expansions, owner); depth++ {
+			cb := zcb.At(zTearoffButtons + renderer.Z(i*4+depth))
+			prepareToolbarCB(cb, ctx, x, y, width, fbHeight)
+			for _, expansion := range expansions {
+				if expansion.Owner == owner && expansion.Depth == depth {
+					p.drawToolbarExpansion(cb, expansion.Bounds, expansion.SuppressBorder)
+				}
 			}
+			p.drawToolbarButtons(ctx, cb, buttons, owner, depth, metrics)
+			p.drawToolbarText(ctx, cb, buttons, owner, depth, metrics)
+			cb.Blend()
+			cb.DisableScissor()
 		}
-		p.drawToolbarButtons(ctx, cb, buttons, owner, metrics)
-		p.drawToolbarText(ctx, cb, buttons, owner, metrics)
-		cb.Blend()
-		cb.DisableScissor()
 	}
 
 	if p.toolbar.moving != nil {
@@ -975,10 +1122,29 @@ func (p *ERAMPane) drawToolbar(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			p.toolbar.moving.Position.X+p.toolbar.moving.Size.X,
 			p.toolbar.moving.Position.Y+p.toolbar.moving.Size.Y,
 		)
-		drawBorderOnly(cb, bounds, applyERAMBrightness(toolbarWhite, defaultPairedTargetBrightness, p.systemBrightness), 1)
+		drawBorderOnly(cb, bounds, applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness), 1)
 		cb.Blend()
 		cb.DisableScissor()
 	}
+}
+
+func toolbarZ(depth int) renderer.Z {
+	return zLoweredMasterToolbar + renderer.Z(depth)
+}
+
+func maxToolbarDepth(buttons []toolbarButtonLayout, expansions []toolbarExpansionLayout, owner toolbarOwner) int {
+	maxDepth := 0
+	for _, layout := range buttons {
+		if layout.Owner == owner && layout.Depth > maxDepth {
+			maxDepth = layout.Depth
+		}
+	}
+	for _, expansion := range expansions {
+		if expansion.Owner == owner && expansion.Depth > maxDepth {
+			maxDepth = expansion.Depth
+		}
+	}
+	return maxDepth
 }
 
 func prepareToolbarCB(cb *renderer.CmdBuffer, ctx *panes.Context, x, y, width, height int) {
@@ -988,15 +1154,19 @@ func prepareToolbarCB(cb *renderer.CmdBuffer, ctx *panes.Context, x, y, width, h
 	cb.DisableBlend()
 }
 
-func (p *ERAMPane) drawToolbarExpansion(cb *renderer.CmdBuffer, bounds redsmath.Rect) {
+func (p *ERAMPane) drawToolbarExpansion(cb *renderer.CmdBuffer, bounds redsmath.Rect, suppressBorder bool) {
+	if suppressBorder {
+		drawSolidRect(cb, bounds, applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness))
+		return
+	}
 	p.drawToolbarBorderedRect(
 		cb,
 		bounds,
 		toolbarGray,
-		defaultButtonBrightness,
+		p.buttonBrightness,
 		false,
 		toolbarBrightCoral,
-		defaultBorderBrightness,
+		p.borderBrightness,
 		toolbarExpansionBorder,
 	)
 }
@@ -1006,10 +1176,11 @@ func (p *ERAMPane) drawToolbarButtons(
 	cb *renderer.CmdBuffer,
 	buttons []toolbarButtonLayout,
 	owner toolbarOwner,
+	depth int,
 	metrics toolbarMetrics,
 ) {
 	for _, layout := range buttons {
-		if layout.Owner != owner {
+		if layout.Owner != owner || layout.Depth != depth {
 			continue
 		}
 		hoverControl := p.toolbar.moving == nil && ctx.Mouse != nil && !layout.Control.Empty() &&
@@ -1021,7 +1192,7 @@ func (p *ERAMPane) drawToolbarButtons(
 			if owner.Kind != toolbarOwnerTearoff && p.hasToolbarTearoff(layout.Spec.ID) {
 				controlColor = toolbarGray
 			}
-			p.drawToolbarBorderedRect(cb, layout.Control, controlColor, defaultButtonBrightness, hoverControl, toolbarWhite, defaultBorderBrightness, 1)
+			p.drawToolbarBorderedRect(cb, layout.Control, controlColor, p.buttonBrightness, hoverControl, toolbarWhite, p.borderBrightness, 1)
 		}
 
 		background := toolbarBlack
@@ -1042,12 +1213,12 @@ func (p *ERAMPane) drawToolbarButtons(
 				background = toolbarGray
 			}
 		}
-		p.drawToolbarBorderedRect(cb, layout.Pick, background, defaultButtonBrightness, hoverPick, toolbarWhite, defaultBorderBrightness, 1)
+		p.drawToolbarBorderedRect(cb, layout.Pick, background, p.buttonBrightness, hoverPick, toolbarWhite, p.borderBrightness, 1)
 
 		if layout.Spec.Kind == toolbarPressHoldButton {
 			// CRC's inactive press/hold buttons have a 10x10 gray cut corner.
 			x1, y0 := layout.Pick.Max.X-1, layout.Pick.Min.Y+1
-			cb.SetRGB(applyERAMBrightness(toolbarGray, defaultButtonBrightness, p.systemBrightness))
+			cb.SetRGB(applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness))
 			cb.DrawTriangles(
 				[]renderer.PointVertex{{X: x1 - 10, Y: y0}, {X: x1, Y: y0}, {X: x1, Y: y0 + 10}},
 				[]uint32{0, 1, 2}, renderer.DrawSolid, 0,
@@ -1061,6 +1232,7 @@ func (p *ERAMPane) drawToolbarText(
 	cb *renderer.CmdBuffer,
 	buttons []toolbarButtonLayout,
 	owner toolbarOwner,
+	depth int,
 	metrics toolbarMetrics,
 ) {
 	texture := p.toolbarTexture(ctx.Renderer, metrics.fontSize)
@@ -1071,7 +1243,7 @@ func (p *ERAMPane) drawToolbarText(
 	defer renderer.ReturnTextDrawBuilder(td)
 	td.SetFont(p.toolbar.font)
 	for _, layout := range buttons {
-		if layout.Owner != owner {
+		if layout.Owner != owner || layout.Depth != depth {
 			continue
 		}
 		lines := p.toolbarButtonLines(layout.Spec)
@@ -1091,8 +1263,8 @@ func (p *ERAMPane) drawToolbarText(
 				float32(lineIndex*(metrics.lineHeight+2*toolbarTextYPadding))
 			td.AddText(line, redsmath.Vec2{X: float32(int(x)), Y: y}, renderer.TextStyle{
 				Size:       metrics.fontSize,
-				Color:      applyERAMBrightness(textColor, defaultTextBrightness, p.systemBrightness).ToRGBA(),
-				Background: applyERAMBrightness(background, defaultButtonBrightness, p.systemBrightness).ToRGBA(),
+				Color:      applyERAMBrightness(textColor, p.textBrightness, p.systemBrightness).ToRGBA(),
+				Background: applyERAMBrightness(background, p.buttonBrightness, p.systemBrightness).ToRGBA(),
 			})
 		}
 	}
@@ -1113,8 +1285,8 @@ func (p *ERAMPane) drawToolbarArrow(ctx *panes.Context, cb *renderer.CmdBuffer, 
 	td.SetFont(p.toolbar.font)
 	td.AddText(arrow, redsmath.Vec2{X: float32(int(x)), Y: float32(int(y))}, renderer.TextStyle{
 		Size:       metrics.fontSize,
-		Color:      applyERAMBrightness(toolbarWhite, defaultTextBrightness, p.systemBrightness).ToRGBA(),
-		Background: applyERAMBrightness(toolbarGray, defaultButtonBrightness, p.systemBrightness).ToRGBA(),
+		Color:      applyERAMBrightness(toolbarWhite, p.textBrightness, p.systemBrightness).ToRGBA(),
+		Background: applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness).ToRGBA(),
 	})
 	td.GenerateCommands(cb, texture)
 }
@@ -1154,7 +1326,7 @@ func (p *ERAMPane) drawToolbarBorderedRect(
 		return
 	}
 	if hover {
-		borderBrightness = defaultPairedTargetBrightness
+		borderBrightness = p.pairedTargetBrightness
 	}
 	drawSolidRect(cb, bounds, applyERAMBrightness(border, borderBrightness, p.systemBrightness))
 	inner := redsmath.NewRect(
@@ -1250,23 +1422,22 @@ func (p *ERAMPane) consumeToolbarInput(ctx *panes.Context) bool {
 		return true
 	}
 	if mouse == nil {
+		p.toolbar.repeat = nil
 		return false
+	}
+	if p.consumeToolbarRepeat(mouse) {
+		return true
 	}
 
 	buttons, expansions := p.buildToolbarLayout(ctx)
-	pressed := mouse.WasPressed(platform.MouseButtonLeft) || mouse.WasPressed(platform.MouseButtonMiddle)
-	if pressed {
-		// Later tearoffs and nested menus are rendered above earlier entries.
-		for i := len(buttons) - 1; i >= 0; i-- {
-			layout := buttons[i]
-			if !layout.Control.Empty() && layout.Control.Contains(mouse.Pos) && p.toolbarControlEligible(layout) {
-				p.startToolbarMove(ctx, layout, metrics)
-				return true
-			}
-			if layout.Pick.Contains(mouse.Pos) {
-				p.activateToolbarButton(layout)
-				return true
-			}
+	if mouse.WasPressed(platform.MouseButtonLeft) {
+		if p.activateToolbarAt(ctx, buttons, mouse.Pos, metrics, toolbarSelect, platform.MouseButtonLeft) {
+			return true
+		}
+	}
+	if mouse.WasPressed(platform.MouseButtonMiddle) {
+		if p.activateToolbarAt(ctx, buttons, mouse.Pos, metrics, toolbarEnter, platform.MouseButtonMiddle) {
+			return true
 		}
 	}
 
@@ -1288,6 +1459,39 @@ func (p *ERAMPane) consumeToolbarInput(ctx *panes.Context) bool {
 	return false
 }
 
+func (p *ERAMPane) activateToolbarAt(
+	ctx *panes.Context,
+	buttons []toolbarButtonLayout,
+	position redsmath.Vec2,
+	metrics toolbarMetrics,
+	action toolbarPickAction,
+	button platform.MouseButton,
+) bool {
+	maxDepth := 0
+	for _, layout := range buttons {
+		if layout.Depth > maxDepth {
+			maxDepth = layout.Depth
+		}
+	}
+	for depth := maxDepth; depth >= 0; depth-- {
+		for i := len(buttons) - 1; i >= 0; i-- {
+			layout := buttons[i]
+			if layout.Depth != depth {
+				continue
+			}
+			if !layout.Control.Empty() && layout.Control.Contains(position) && p.toolbarControlEligible(layout) {
+				p.startToolbarMove(ctx, layout, metrics)
+				return true
+			}
+			if layout.Pick.Contains(position) {
+				p.activateToolbarButton(layout, action, button)
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func (p *ERAMPane) toolbarControlEligible(layout toolbarButtonLayout) bool {
 	if layout.Spec.NoControl {
 		return false
@@ -1298,13 +1502,121 @@ func (p *ERAMPane) toolbarControlEligible(layout toolbarButtonLayout) bool {
 	return !p.hasToolbarTearoff(layout.Spec.ID)
 }
 
-func (p *ERAMPane) activateToolbarButton(layout toolbarButtonLayout) {
+func (p *ERAMPane) activateToolbarButton(layout toolbarButtonLayout, action toolbarPickAction, button platform.MouseButton) {
+	if layout.Spec.Kind == toolbarIncDecButton {
+		if p.activateToolbarIncDec(layout.Spec.ID, action) {
+			p.startToolbarRepeat(layout.Spec.ID, action, button)
+		}
+		return
+	}
+
 	if index, ok := mapFilterButtonIndex(layout.Spec.ID); ok {
 		p.toggleMapFilter(index)
 		return
 	}
 
 	p.toggleToolbarExpansion(layout)
+}
+
+func (p *ERAMPane) activateToolbarIncDec(id toolbarButtonID, action toolbarPickAction) bool {
+	increment := action == toolbarEnter
+	if index, ok := mapBCGButtonIndex(id); ok {
+		adjustBrightness(&p.maps.brightness[index], increment, 0, 100)
+		return true
+	}
+	return p.adjustToolbarBrightness(id, increment)
+}
+
+func (p *ERAMPane) startToolbarRepeat(id toolbarButtonID, action toolbarPickAction, button platform.MouseButton) {
+	p.toolbar.repeat = &toolbarRepeat{
+		ID:          id,
+		Action:      action,
+		MouseButton: button,
+		Next:        time.Now().Add(toolbarRepeatInitialDelay),
+	}
+}
+
+func (p *ERAMPane) consumeToolbarRepeat(mouse *platform.MouseState) bool {
+	repeat := p.toolbar.repeat
+	if repeat == nil {
+		return false
+	}
+	if mouse == nil || !mouse.IsDown(repeat.MouseButton) {
+		p.toolbar.repeat = nil
+		return false
+	}
+	now := time.Now()
+	if now.Before(repeat.Next) {
+		return false
+	}
+	if !p.activateToolbarIncDec(repeat.ID, repeat.Action) {
+		p.toolbar.repeat = nil
+		return false
+	}
+	repeat.Next = now.Add(toolbarRepeatDelay)
+	return true
+}
+
+func (p *ERAMPane) adjustToolbarBrightness(id toolbarButtonID, increment bool) bool {
+	switch id {
+	case "backlight-brightness":
+		adjustBrightness(&p.systemBrightness, increment, 0, 100)
+	case "button-brightness":
+		adjustBrightness(&p.buttonBrightness, increment, 0, 100)
+	case "background-brightness":
+		adjustBrightness(&p.backgroundBrightness, increment, 0, 60)
+	case "border-brightness":
+		adjustBrightness(&p.borderBrightness, increment, 0, 100)
+	case "cursor-brightness":
+		adjustBrightness(&p.cursorBrightness, increment, 0, 100)
+	case "toolbar-brightness":
+		adjustBrightness(&p.toolbarBrightness, increment, 0, 100)
+	case "text-brightness":
+		adjustBrightness(&p.textBrightness, increment, 0, 100)
+	case "toolbar-border-brightness":
+		adjustBrightness(&p.toolbarBorderBrightness, increment, 0, 100)
+	case "paired-target-brightness":
+		adjustBrightness(&p.pairedTargetBrightness, increment, 0, 100)
+	case "sd-border-brightness":
+		adjustBrightness(&p.activeBorderBrightness, increment, 0, 100)
+	case "unpaired-target-brightness":
+		adjustBrightness(&p.unpairedTargetBrightness, increment, 0, 100)
+	case "fdb-brightness":
+		adjustBrightness(&p.fdbBrightness, increment, 0, 100)
+	case "paired-history-brightness":
+		adjustBrightness(&p.pairedHistoryBrightness, increment, 0, 100)
+	case "unpaired-history-brightness":
+		adjustBrightness(&p.unpairedHistoryBrightness, increment, 0, 100)
+	case "satcomm-brightness":
+		adjustBrightness(&p.satCommBrightness, increment, 0, 100)
+	case "ldb-brightness":
+		adjustBrightness(&p.ldbBrightness, increment, 0, 100)
+	case "on-frequency-brightness":
+		adjustBrightness(&p.onFrequencyBrightness, increment, 0, 100)
+	case "weather-brightness":
+		adjustBrightness(&p.weatherBrightness, increment, 0, 100)
+	case "nexrad-brightness":
+		adjustBrightness(&p.nexradBrightness, increment, 30, 100)
+	case "fence-brightness":
+		adjustBrightness(&p.fenceBrightness, increment, 0, 100)
+	case "dbfel-brightness":
+		adjustBrightness(&p.dbfelBrightness, increment, 0, 100)
+	case "outage-brightness":
+		adjustBrightness(&p.outageBrightness, increment, 0, 100)
+	case "non-adsb-brightness":
+		adjustBrightness(&p.nonADSBrightness, increment, 0, 100)
+	default:
+		return false
+	}
+	return true
+}
+
+func adjustBrightness(value *int, increment bool, minValue, maxValue int) {
+	delta := -2
+	if increment {
+		delta = 2
+	}
+	*value = clampInt(*value+delta, minValue, maxValue)
 }
 
 func (p *ERAMPane) startToolbarMove(ctx *panes.Context, layout toolbarButtonLayout, metrics toolbarMetrics) {
@@ -1400,7 +1712,7 @@ func clampToolbarPosition(position, size, paneSize redsmath.Vec2) redsmath.Vec2 
 }
 
 func (p *ERAMPane) toggleToolbarExpansion(layout toolbarButtonLayout) {
-	if len(toolbarSubmenu(layout.Spec.ID)) == 0 {
+	if !toolbarHasSubmenu(layout.Spec.ID) {
 		return
 	}
 	expansion := p.toolbarExpansionFor(layout.Owner)
