@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -25,7 +27,7 @@ type eramFamilyFonts struct {
 
 func runEram(args []string) error {
 	if len(args) < 1 {
-		return fmt.Errorf("usage: crc2reds eram <font|cursors> ...")
+		return fmt.Errorf("usage: crc2reds eram <font|cursors|maps> ...")
 	}
 
 	switch args[0] {
@@ -33,8 +35,10 @@ func runEram(args []string) error {
 		return runEramFont(args[1:])
 	case "cursors":
 		return runEramCursors(args[1:])
+	case "maps":
+		return runEramMaps(args[1:])
 	default:
-		return fmt.Errorf("unknown ERAM conversion %q; expected font or cursors", args[0])
+		return fmt.Errorf("unknown ERAM conversion %q; expected font, cursors, or maps", args[0])
 	}
 }
 
@@ -252,6 +256,200 @@ func exportedFamilyVarName(family string) string {
 
 func exportedFamilyFuncName(family string) string {
 	return sanitizeIdent(family) + "Font"
+}
+
+type crcARTCC struct {
+	Facility struct {
+		ID string `json:"id"`
+
+		ERAMConfiguration struct {
+			GeoMaps []crcERAMGeoMap `json:"geoMaps"`
+		} `json:"eramConfiguration"`
+	} `json:"facility"`
+
+	VideoMaps []crcVideoMap `json:"videoMaps"`
+}
+
+type crcERAMGeoMap struct {
+	Name       string `json:"name"`
+	LabelLine1 string `json:"labelLine1"`
+	LabelLine2 string `json:"labelLine2"`
+
+	FilterMenu []struct {
+		LabelLine1 string `json:"labelLine1"`
+		LabelLine2 string `json:"labelLine2"`
+	} `json:"filterMenu"`
+
+	BCGMenu     []string `json:"bcgMenu"`
+	VideoMapIDs []string `json:"videoMapIds"`
+}
+
+type crcVideoMap struct {
+	ID      string `json:"id"`
+	Name    string `json:"name"`
+	TDMOnly bool   `json:"tdmOnly"`
+}
+
+type redsERAMMapPackage struct {
+	ARTCC     string             `json:"artcc"`
+	GeoMaps   []redsERAMGeoMap   `json:"geoMaps"`
+	VideoMaps []redsERAMVideoMap `json:"videoMaps"`
+}
+
+type redsERAMGeoMap struct {
+	Name        string          `json:"name"`
+	LabelLine1  string          `json:"labelLine1"`
+	LabelLine2  string          `json:"labelLine2"`
+	FilterMenu  []redsMapFilter `json:"filterMenu"`
+	BCGMenu     []string        `json:"bcgMenu"`
+	VideoMapIDs []string        `json:"videoMapIds"`
+}
+
+type redsMapFilter struct {
+	LabelLine1 string `json:"labelLine1"`
+	LabelLine2 string `json:"labelLine2"`
+}
+
+type redsERAMVideoMap struct {
+	ID      string          `json:"id"`
+	Name    string          `json:"name"`
+	TDMOnly bool            `json:"tdmOnly,omitempty"`
+	GeoJSON json.RawMessage `json:"geojson"`
+}
+
+func runEramMaps(args []string) error {
+	fs := flag.NewFlagSet("eram maps", flag.ContinueOnError)
+
+	inPath := fs.String("in", "", "CRC data root containing ARTCCs/ and VideoMaps/")
+	artcc := fs.String("artcc", "", "ARTCC identifier, e.g. ZLA")
+	outPath := fs.String("out", "", "output .json.zst file")
+
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *inPath == "" || *artcc == "" || *outPath == "" {
+		return fmt.Errorf("usage: crc2reds eram maps -in /path/to/CRC -artcc ZLA -out resources/videomaps/eram/ZLA.json.zst")
+	}
+
+	return convertEramMaps(*inPath, strings.ToUpper(strings.TrimSpace(*artcc)), *outPath)
+}
+
+func convertEramMaps(root, artcc, outPath string) error {
+	if artcc == "" {
+		return fmt.Errorf("empty ARTCC")
+	}
+
+	artccPath := filepath.Join(root, "ARTCCs", artcc+".json")
+	raw, err := os.ReadFile(artccPath)
+	if err != nil {
+		return fmt.Errorf("read %s: %w", artccPath, err)
+	}
+
+	var src crcARTCC
+	if err := json.Unmarshal(raw, &src); err != nil {
+		return fmt.Errorf("decode %s: %w", artccPath, err)
+	}
+
+	dst, err := buildRedsERAMMapPackage(root, artcc, src)
+	if err != nil {
+		return err
+	}
+
+	encoded, err := json.Marshal(dst)
+	if err != nil {
+		return fmt.Errorf("encode ERAM maps: %w", err)
+	}
+
+	if err := writeZstd(outPath, encoded); err != nil {
+		return err
+	}
+
+	fmt.Printf(
+		"wrote %s: %d GeoMap groups, %d source videomaps\n",
+		outPath,
+		len(dst.GeoMaps),
+		len(dst.VideoMaps),
+	)
+
+	return nil
+}
+
+func buildRedsERAMMapPackage(root, artcc string, src crcARTCC) (redsERAMMapPackage, error) {
+	dst := redsERAMMapPackage{
+		ARTCC: artcc,
+	}
+
+	videoMapByID := make(map[string]crcVideoMap, len(src.VideoMaps))
+	for _, vm := range src.VideoMaps {
+		if vm.ID == "" {
+			continue
+		}
+		videoMapByID[vm.ID] = vm
+	}
+
+	referenced := make(map[string]struct{})
+	for _, gm := range src.Facility.ERAMConfiguration.GeoMaps {
+		dst.GeoMaps = append(dst.GeoMaps, copyERAMGeoMap(gm))
+		for _, id := range gm.VideoMapIDs {
+			if id == "" {
+				return redsERAMMapPackage{}, fmt.Errorf("ERAM GeoMap %q references an empty video map id", gm.Name)
+			}
+			referenced[id] = struct{}{}
+		}
+	}
+
+	ids := make([]string, 0, len(referenced))
+	for id := range referenced {
+		ids = append(ids, id)
+	}
+	sort.Strings(ids)
+
+	for _, id := range ids {
+		meta, ok := videoMapByID[id]
+		if !ok {
+			return redsERAMMapPackage{}, fmt.Errorf("ERAM GeoMap references unknown video map %q", id)
+		}
+
+		geoJSONPath := filepath.Join(root, "VideoMaps", artcc, id+".geojson")
+		geoJSON, err := os.ReadFile(geoJSONPath)
+		if err != nil {
+			return redsERAMMapPackage{}, fmt.Errorf("read ERAM videomap %s: %w", id, err)
+		}
+
+		geoJSON = bytes.TrimPrefix(geoJSON, []byte{0xEF, 0xBB, 0xBF})
+		if !json.Valid(geoJSON) {
+			return redsERAMMapPackage{}, fmt.Errorf("invalid GeoJSON in %s", geoJSONPath)
+		}
+
+		dst.VideoMaps = append(dst.VideoMaps, redsERAMVideoMap{
+			ID:      id,
+			Name:    meta.Name,
+			TDMOnly: meta.TDMOnly,
+			GeoJSON: json.RawMessage(geoJSON),
+		})
+	}
+
+	return dst, nil
+}
+
+func copyERAMGeoMap(src crcERAMGeoMap) redsERAMGeoMap {
+	dst := redsERAMGeoMap{
+		Name:        src.Name,
+		LabelLine1:  src.LabelLine1,
+		LabelLine2:  src.LabelLine2,
+		BCGMenu:     append([]string(nil), src.BCGMenu...),
+		VideoMapIDs: append([]string(nil), src.VideoMapIDs...),
+		FilterMenu:  make([]redsMapFilter, len(src.FilterMenu)),
+	}
+
+	for i, fm := range src.FilterMenu {
+		dst.FilterMenu[i] = redsMapFilter{
+			LabelLine1: fm.LabelLine1,
+			LabelLine2: fm.LabelLine2,
+		}
+	}
+
+	return dst
 }
 
 func atlasIsBinary(atlas []byte) bool {

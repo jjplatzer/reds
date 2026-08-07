@@ -22,6 +22,19 @@ func (p *ERAMPane) consumeInput(ctx *panes.Context) {
 		return
 	}
 
+	// A right-button scope pan is captured from its starting point and remains
+	// active even if the pointer later crosses the toolbar.
+	if p.panDrag != nil && p.toolbar.moving == nil {
+		p.consumePanInput(ctx)
+		return
+	}
+
+	// CRC gives toolbar buttons, menus, tearoffs, and a pending tearoff move
+	// precedence over new scope pan/zoom input.
+	if p.consumeToolbarInput(ctx) {
+		return
+	}
+
 	p.consumePanInput(ctx)
 	p.consumeZoomInput(ctx)
 }

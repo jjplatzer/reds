@@ -23,10 +23,14 @@ const (
 	defaultBackgroundBrightness = 26
 	defaultSystemBrightness     = 90
 	systemBrightnessFloor       = 66
+	defaultToolbarBrightness    = 40
+	defaultToolbarFontSize      = 1
+	defaultToolbarVisible       = true
 
-	zBackground renderer.Z = -1000
-	zNexrad     renderer.Z = -900
-	zMapData    renderer.Z = -800
+	zBackground           renderer.Z = -1000
+	zNexrad               renderer.Z = -900
+	zMapData              renderer.Z = -800
+	zLoweredMasterToolbar renderer.Z = -700
 
 	minRangeNM              = 0.25
 	maxRangeNM              = 1300
@@ -40,6 +44,9 @@ const (
 
 // CRC StyleManager.SituationDisplayBackground uses EramColor.DarkBlue.
 var defaultBackgroundColor = renderer.RGB8(0, 0, 212)
+
+// CRC toolbar backgrounds use EramColor.Gray before BCG scaling.
+var toolbarGray = renderer.RGB8(199, 199, 199)
 
 var mrmsHTTPClient = &http.Client{Timeout: 20 * time.Second}
 
@@ -81,8 +88,32 @@ type ERAMPane struct {
 
 	longitudeScaleFactor float64
 
-	backgroundBrightness int
-	systemBrightness     int
+	backgroundBrightness      int
+	systemBrightness          int
+	buttonBrightness          int
+	borderBrightness          int
+	cursorBrightness          int
+	textBrightness            int
+	toolbarBorderBrightness   int
+	pairedTargetBrightness    int
+	unpairedTargetBrightness  int
+	fdbBrightness             int
+	pairedHistoryBrightness   int
+	unpairedHistoryBrightness int
+	satCommBrightness         int
+	ldbBrightness             int
+	onFrequencyBrightness     int
+	weatherBrightness         int
+	fenceBrightness           int
+	dbfelBrightness           int
+	outageBrightness          int
+	nonADSBrightness          int
+	activeBorderBrightness    int
+	toolbarVisible            bool
+	toolbarBrightness         int
+	toolbarFontSize           int
+	toolbar                   toolbarState
+	maps                      eramMapState
 
 	rangeNM float64
 
@@ -143,16 +174,49 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 
 	center, source := initialCenter(facility, sector)
 	pane := &ERAMPane{
-		logger:               logger,
-		artcc:                artcc,
-		sector:               sector,
-		center:               center,
-		longitudeScaleFactor: radar.LongitudeScaleFactorForLat(center.Lat),
-		backgroundBrightness: defaultBackgroundBrightness,
-		systemBrightness:     defaultSystemBrightness,
-		rangeNM:              defaultRangeNM,
-		nexradLevels:         defaultNexradLevels,
-		nexradBrightness:     defaultNexradBrightness,
+		logger:                    logger,
+		artcc:                     artcc,
+		sector:                    sector,
+		center:                    center,
+		longitudeScaleFactor:      radar.LongitudeScaleFactorForLat(center.Lat),
+		backgroundBrightness:      defaultBackgroundBrightness,
+		systemBrightness:          defaultSystemBrightness,
+		buttonBrightness:          defaultButtonBrightness,
+		borderBrightness:          defaultBorderBrightness,
+		cursorBrightness:          defaultCursorBrightness,
+		textBrightness:            defaultTextBrightness,
+		toolbarBorderBrightness:   defaultToolbarBorderBrightness,
+		pairedTargetBrightness:    defaultPairedTargetBrightness,
+		unpairedTargetBrightness:  defaultUnpairedTargetBrightness,
+		fdbBrightness:             defaultFDBBrightness,
+		pairedHistoryBrightness:   defaultPairedHistoryBrightness,
+		unpairedHistoryBrightness: defaultUnpairedHistoryBrightness,
+		satCommBrightness:         defaultSatCommBrightness,
+		ldbBrightness:             defaultLDBBrightness,
+		onFrequencyBrightness:     defaultOnFrequencyBrightness,
+		weatherBrightness:         defaultWeatherBrightness,
+		fenceBrightness:           defaultFenceBrightness,
+		dbfelBrightness:           defaultDBFELBrightness,
+		outageBrightness:          defaultOutageBrightness,
+		nonADSBrightness:          defaultNonADSBrightness,
+		activeBorderBrightness:    defaultActiveBorderBrightness,
+		toolbarVisible:            defaultToolbarVisible,
+		toolbarBrightness:         defaultToolbarBrightness,
+		toolbarFontSize:           defaultToolbarFontSize,
+		rangeNM:                   defaultRangeNM,
+		nexradLevels:              defaultNexradLevels,
+		nexradBrightness:          defaultNexradBrightness,
+	}
+
+	// CRC always ensures one special TOOLBAR control tear-off exists at
+	// TopLeft (90, 71). It remains present even when MASTER TOOLBAR is hidden.
+	pane.initializeToolbarState()
+	pane.initializeMapState()
+	if err := pane.loadGeoMapMetadata(); err != nil {
+		return nil, err
+	}
+	if err := pane.loadActiveGeoMapGeometry(); err != nil {
+		return nil, err
 	}
 
 	pane.wxDomain = wx.DomainForARTCC(artcc)
@@ -190,6 +254,8 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	backgroundCB.DisableScissor()
 
 	p.drawNexrad(ctx, zcb)
+	p.drawGeoMaps(ctx, zcb)
+	p.drawToolbar(ctx, zcb)
 	p.renderCursor(ctx, zcb)
 }
 
@@ -202,6 +268,7 @@ func (p *ERAMPane) Dispose() {
 		p.wxStream = nil
 	}
 	p.releaseNexradCmdBuffers()
+	p.releaseGeoMapCmdBuffers()
 	p.wxGrid = nil
 }
 

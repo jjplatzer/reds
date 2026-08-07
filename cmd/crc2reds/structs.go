@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"sort"
 	"strings"
 )
@@ -53,6 +54,37 @@ func readMaybeZstd(path string) ([]byte, error) {
 		return nil, fmt.Errorf("zstd failed: %w: %s", err, strings.TrimSpace(stderr.String()))
 	}
 	return out, nil
+}
+
+func writeZstd(path string, data []byte) error {
+	zstdPath, err := exec.LookPath("zstd")
+	if err != nil {
+		return fmt.Errorf("zstd is required; install it first, e.g. `brew install zstd`")
+	}
+
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return err
+	}
+
+	cmd := exec.Command(
+		zstdPath,
+		"-q",
+		"-f",
+		"-19",
+		"-o",
+		path,
+		"-",
+	)
+	cmd.Stdin = bytes.NewReader(data)
+
+	var stderr bytes.Buffer
+	cmd.Stderr = &stderr
+
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("zstd failed: %w: %s", err, strings.TrimSpace(stderr.String()))
+	}
+
+	return nil
 }
 
 func parseLegacyFont(family string, data []byte) ([]legacyFontSize, error) {
