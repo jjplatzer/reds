@@ -208,6 +208,9 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 		nexradBrightness:          defaultNexradBrightness,
 	}
 
+	// CRC always ensures one special TOOLBAR control tear-off exists at
+	// TopLeft (90, 71). It remains present even when MASTER TOOLBAR is hidden.
+	pane.initializeToolbarState()
 	pane.initializeMapState()
 	if err := pane.loadGeoMapMetadata(); err != nil {
 		return nil, err

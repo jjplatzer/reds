@@ -110,6 +110,20 @@ const (
 
 	toolbarWeather       toolbarButtonID = "weather"
 	toolbarMapBrightness toolbarButtonID = "map-brightness"
+
+	// CRC keeps a special TOOLBAR menu torn off by default. Its submenu
+	// controls visibility/precedence of the available toolbar families.
+	toolbarControlMenu       toolbarButtonID = "toolbar-control-menu"
+	toolbarMasterDisplay     toolbarButtonID = "master-toolbar-display"
+	toolbarMasterRaiseLower  toolbarButtonID = "master-toolbar-raise-lower"
+	toolbarMCADisplay        toolbarButtonID = "mca-toolbar-display"
+	toolbarMCARaiseLower     toolbarButtonID = "mca-toolbar-raise-lower"
+	toolbarHorizontalDisplay toolbarButtonID = "horizontal-toolbar-display"
+	toolbarHorizontalRaise   toolbarButtonID = "horizontal-toolbar-raise-lower"
+	toolbarLeftDisplay       toolbarButtonID = "left-toolbar-display"
+	toolbarLeftRaiseLower    toolbarButtonID = "left-toolbar-raise-lower"
+	toolbarRightDisplay      toolbarButtonID = "right-toolbar-display"
+	toolbarRightRaiseLower   toolbarButtonID = "right-toolbar-raise-lower"
 )
 
 type toolbarButtonSpec struct {
@@ -316,6 +330,16 @@ var dbFieldsToolbarEntries = []toolbarMenuEntry{
 	{"db-portal-fence", 0, 8},
 }
 
+// CRC ToolbarControlMenu: five columns, display toggle on row 0 and the
+// corresponding raise/lower control immediately below it on row 1.
+var toolbarControlEntries = []toolbarMenuEntry{
+	{toolbarMasterDisplay, 0, 0}, {toolbarMasterRaiseLower, 1, 0},
+	{toolbarMCADisplay, 0, 1}, {toolbarMCARaiseLower, 1, 1},
+	{toolbarHorizontalDisplay, 0, 2}, {toolbarHorizontalRaise, 1, 2},
+	{toolbarLeftDisplay, 0, 3}, {toolbarLeftRaiseLower, 1, 3},
+	{toolbarRightDisplay, 0, 4}, {toolbarRightRaiseLower, 1, 4},
+}
+
 var (
 	geomapToolbarEntries        = makeNumberedToolbarEntries("map-filter", 40)
 	mapBrightnessToolbarEntries = makeNumberedToolbarEntries("map-bcg", 40)
@@ -336,6 +360,22 @@ func makeNumberedToolbarEntries(prefix string, count int) []toolbarMenuEntry {
 func toolbarHeight(lineHeight int) int {
 	buttonHeight := 2*(lineHeight+2*toolbarTextYPadding) + 2*toolbarButtonBorderWidth
 	return 2*buttonHeight + toolbarButtonRowGap + 2*toolbarWrapperYPadding + toolbarInteriorLineWidth
+}
+
+func (p *ERAMPane) initializeToolbarState() {
+	if p == nil {
+		return
+	}
+
+	// EramDisplayContext in CRC guarantees this special tear-off exists. Its
+	// initial location is AnchoredLocation(Point(90, 71), Anchor.TopLeft).
+	p.toolbar.nextTearoffID = 1
+	p.toolbar.tearoffs = append(p.toolbar.tearoffs, toolbarTearoff{
+		ID:     1,
+		Type:   toolbarControlMenu,
+		Anchor: toolbarAnchorTopLeft,
+		Offset: redsmath.Vec2{X: 90, Y: 71},
+	})
 }
 
 func (p *ERAMPane) toolbarLineHeight() int {
@@ -447,6 +487,28 @@ func baseToolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 		spec.Lines, spec.Kind = [2]string{"WX", ""}, toolbarMenuButton
 	case toolbarMapBrightness:
 		spec.Lines, spec.Kind = [2]string{"MAP", "BRIGHT"}, toolbarMenuButton
+	case toolbarControlMenu:
+		spec.Lines, spec.Kind = [2]string{"TOOLBAR", ""}, toolbarMenuButton
+	case toolbarMasterDisplay:
+		spec.Lines = [2]string{"MASTER", "TOOLBAR"}
+	case toolbarMasterRaiseLower:
+		spec.Lines = [2]string{"MASTER", "RAISE"}
+	case toolbarMCADisplay:
+		spec.Lines = [2]string{"MCA", "TOOLBAR"}
+	case toolbarMCARaiseLower:
+		spec.Lines = [2]string{"MCA", "RAISE"}
+	case toolbarHorizontalDisplay:
+		spec.Lines = [2]string{"HORIZ", "TOOLBAR"}
+	case toolbarHorizontalRaise:
+		spec.Lines = [2]string{"HORIZ", "RAISE"}
+	case toolbarLeftDisplay:
+		spec.Lines = [2]string{"LEFT", "TOOLBAR"}
+	case toolbarLeftRaiseLower:
+		spec.Lines = [2]string{"LEFT", "RAISE"}
+	case toolbarRightDisplay:
+		spec.Lines = [2]string{"RIGHT", "TOOLBAR"}
+	case toolbarRightRaiseLower:
+		spec.Lines = [2]string{"RIGHT", "RAISE"}
 
 	case "as-view":
 		spec.Lines = [2]string{"ALTIM", "SET"}
@@ -646,6 +708,12 @@ func baseToolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 func (p *ERAMPane) toolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 	spec := baseToolbarSpec(id)
 
+	if id == toolbarMasterDisplay {
+		// CRC highlights MASTER TOOLBAR while the master toolbar is visible.
+		spec.Active = p.toolbarVisible
+		return spec
+	}
+
 	if id == toolbarGeomap {
 		spec.Kind = toolbarMenuButton
 		if geoMap := p.activeGeoMap(); geoMap != nil {
@@ -733,6 +801,8 @@ func toolbarSubmenu(id toolbarButtonID, alternate bool) []toolbarMenuEntry {
 		return fontToolbarEntries
 	case toolbarDBFields:
 		return dbFieldsToolbarEntries
+	case toolbarControlMenu:
+		return toolbarControlEntries
 	default:
 		return nil
 	}
@@ -843,32 +913,34 @@ func (p *ERAMPane) buildToolbarLayout(ctx *panes.Context) ([]toolbarButtonLayout
 	scratch := &p.toolbar.layout
 	scratch.buttons = scratch.buttons[:0]
 	scratch.expansions = scratch.expansions[:0]
-	if ctx == nil || !p.toolbarVisible {
+	if ctx == nil {
 		return scratch.buttons, scratch.expansions
 	}
 
 	metrics := p.toolbarMetrics()
 	alternate := toolbarAlternateBank(ctx)
 	masterOwner := toolbarOwner{Kind: toolbarOwnerMaster}
-	masterTop := float32(toolbarWrapperYPadding)
-	masterLeft := metrics.moveWidth + toolbarWrapperXPadding
+	if p.toolbarVisible {
+		masterTop := float32(toolbarWrapperYPadding)
+		masterLeft := metrics.moveWidth + toolbarWrapperXPadding
 
-	// Preserve the original column locations while CRC suppresses all master
-	// buttons except the expanded one.
-	masterLayouts, _, _ := p.appendToolbarMenu(masterToolbarEntries, masterLeft, masterTop, masterOwner, 0, metrics)
-	if p.toolbar.masterExpansion.Root != "" {
-		write := masterLayouts[:0]
-		for _, layout := range masterLayouts {
-			if layout.Spec.ID == p.toolbar.masterExpansion.Root {
-				write = append(write, layout)
+		// Preserve the original column locations while CRC suppresses all master
+		// buttons except the expanded one.
+		masterLayouts, _, _ := p.appendToolbarMenu(masterToolbarEntries, masterLeft, masterTop, masterOwner, 0, metrics)
+		if p.toolbar.masterExpansion.Root != "" {
+			write := masterLayouts[:0]
+			for _, layout := range masterLayouts {
+				if layout.Spec.ID == p.toolbar.masterExpansion.Root {
+					write = append(write, layout)
+				}
 			}
+			// appendToolbarMenu appended into scratch; remove the suppressed entries.
+			scratch.buttons = scratch.buttons[:len(scratch.buttons)-len(masterLayouts)]
+			scratch.buttons = append(scratch.buttons, write...)
+			masterLayouts = write
 		}
-		// appendToolbarMenu appended into scratch; remove the suppressed entries.
-		scratch.buttons = scratch.buttons[:len(scratch.buttons)-len(masterLayouts)]
-		scratch.buttons = append(scratch.buttons, write...)
-		masterLayouts = write
+		p.appendExpandedMenus(masterLayouts, masterOwner, p.toolbar.masterExpansion, alternate, metrics)
 	}
-	p.appendExpandedMenus(masterLayouts, masterOwner, p.toolbar.masterExpansion, alternate, metrics)
 
 	paneSize := ctx.PaneSize()
 	for i := range p.toolbar.tearoffs {
@@ -1065,7 +1137,7 @@ func toolbarTearoffTopLeft(tearoff toolbarTearoff, paneSize, size redsmath.Vec2)
 }
 
 func (p *ERAMPane) drawToolbar(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
-	if p == nil || ctx == nil || zcb == nil || !p.toolbarVisible {
+	if p == nil || ctx == nil || zcb == nil {
 		return
 	}
 	paneWidth := ctx.PaneRect.Width()
@@ -1077,31 +1149,33 @@ func (p *ERAMPane) drawToolbar(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	x, y, width, fbHeight := ctx.PaneFramebufferRect()
 	moveRect := redsmath.NewRect(0, (metrics.toolbarHeight-toolbarInteriorLineWidth)/2, metrics.moveWidth, metrics.toolbarHeight-toolbarInteriorLineWidth)
-	for depth := 0; depth <= maxToolbarDepth(buttons, expansions, toolbarOwner{Kind: toolbarOwnerMaster}); depth++ {
-		masterCB := zcb.At(toolbarZ(depth))
-		prepareToolbarCB(masterCB, ctx, x, y, width, fbHeight)
-		if depth == 0 {
-			drawSolidRect(masterCB, redsmath.NewRect(0, 0, paneWidth, metrics.toolbarHeight), applyERAMBrightness(toolbarGray, p.toolbarBrightness, p.systemBrightness))
+	if p.toolbarVisible {
+		for depth := 0; depth <= maxToolbarDepth(buttons, expansions, toolbarOwner{Kind: toolbarOwnerMaster}); depth++ {
+			masterCB := zcb.At(toolbarZ(depth))
+			prepareToolbarCB(masterCB, ctx, x, y, width, fbHeight)
+			if depth == 0 {
+				drawSolidRect(masterCB, redsmath.NewRect(0, 0, paneWidth, metrics.toolbarHeight), applyERAMBrightness(toolbarGray, p.toolbarBrightness, p.systemBrightness))
 
-			// CRC's visible lower half of the master-toolbar move-down control.
-			p.drawToolbarBorderedRect(masterCB, moveRect, toolbarGray, p.buttonBrightness, false, toolbarWhite, p.borderBrightness, 1)
-		}
-
-		for _, expansion := range expansions {
-			if expansion.Owner == (toolbarOwner{Kind: toolbarOwnerMaster}) && expansion.Depth == depth {
-				p.drawToolbarExpansion(masterCB, expansion.Bounds, expansion.SuppressBorder)
+				// CRC's visible lower half of the master-toolbar move-down control.
+				p.drawToolbarBorderedRect(masterCB, moveRect, toolbarGray, p.buttonBrightness, false, toolbarWhite, p.borderBrightness, 1)
 			}
-		}
-		p.drawToolbarButtons(ctx, masterCB, buttons, toolbarOwner{Kind: toolbarOwnerMaster}, depth, metrics)
-		p.drawToolbarText(ctx, masterCB, buttons, toolbarOwner{Kind: toolbarOwnerMaster}, depth, metrics)
 
-		if depth == 0 {
-			// The one-pixel interior line is part of CRC's 73-pixel footprint.
-			drawSolidRect(masterCB, redsmath.NewRect(0, metrics.toolbarHeight-1, paneWidth, metrics.toolbarHeight), applyERAMBrightness(toolbarWhite, p.toolbarBorderBrightness, p.systemBrightness))
-			p.drawToolbarArrow(ctx, masterCB, moveRect, metrics)
+			for _, expansion := range expansions {
+				if expansion.Owner == (toolbarOwner{Kind: toolbarOwnerMaster}) && expansion.Depth == depth {
+					p.drawToolbarExpansion(masterCB, expansion.Bounds, expansion.SuppressBorder)
+				}
+			}
+			p.drawToolbarButtons(ctx, masterCB, buttons, toolbarOwner{Kind: toolbarOwnerMaster}, depth, metrics)
+			p.drawToolbarText(ctx, masterCB, buttons, toolbarOwner{Kind: toolbarOwnerMaster}, depth, metrics)
+
+			if depth == 0 {
+				// The one-pixel interior line is part of CRC's 73-pixel footprint.
+				drawSolidRect(masterCB, redsmath.NewRect(0, metrics.toolbarHeight-1, paneWidth, metrics.toolbarHeight), applyERAMBrightness(toolbarWhite, p.toolbarBorderBrightness, p.systemBrightness))
+				p.drawToolbarArrow(ctx, masterCB, moveRect, metrics)
+			}
+			masterCB.Blend()
+			masterCB.DisableScissor()
 		}
-		masterCB.Blend()
-		masterCB.DisableScissor()
 	}
 
 	for i := range p.toolbar.tearoffs {
@@ -1414,7 +1488,7 @@ func (p *ERAMPane) hasToolbarTearoff(id toolbarButtonID) bool {
 }
 
 func (p *ERAMPane) consumeToolbarInput(ctx *panes.Context) bool {
-	if p == nil || ctx == nil || !p.toolbarVisible {
+	if p == nil || ctx == nil {
 		return false
 	}
 	metrics := p.toolbarMetrics()
@@ -1455,7 +1529,7 @@ func (p *ERAMPane) consumeToolbarInput(ctx *panes.Context) bool {
 
 	// Toolbar UI owns all pointer input over its visible background, expansion
 	// panels, and floating copies, even when a particular face has no action.
-	if mouse.Pos.Y >= 0 && mouse.Pos.Y < metrics.toolbarHeight && mouse.Pos.X >= 0 && mouse.Pos.X < ctx.PaneRect.Width() {
+	if p.toolbarVisible && mouse.Pos.Y >= 0 && mouse.Pos.Y < metrics.toolbarHeight && mouse.Pos.X >= 0 && mouse.Pos.X < ctx.PaneRect.Width() {
 		return true
 	}
 	for _, expansion := range expansions {
@@ -1520,6 +1594,14 @@ func (p *ERAMPane) toolbarControlEligible(layout toolbarButtonLayout) bool {
 }
 
 func (p *ERAMPane) activateToolbarButton(layout toolbarButtonLayout, action toolbarPickAction, button platform.MouseButton) {
+	if layout.Spec.ID == toolbarMasterDisplay {
+		// CRC's MASTER TOOLBAR control only changes the master toolbar. The
+		// special floating TOOLBAR tear-off remains visible so this can always
+		// be toggled back on.
+		p.toolbarVisible = !p.toolbarVisible
+		return
+	}
+
 	if layout.Spec.Kind == toolbarIncDecButton {
 		if p.activateToolbarIncDec(layout.Spec.ID, action) {
 			p.startToolbarRepeat(layout.Spec.ID, action, button)
