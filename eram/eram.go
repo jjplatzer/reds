@@ -23,10 +23,14 @@ const (
 	defaultBackgroundBrightness = 26
 	defaultSystemBrightness     = 90
 	systemBrightnessFloor       = 66
+	defaultToolbarBrightness    = 40
+	defaultToolbarFontSize      = 1
+	defaultToolbarVisible       = true
 
-	zBackground renderer.Z = -1000
-	zNexrad     renderer.Z = -900
-	zMapData    renderer.Z = -800
+	zBackground           renderer.Z = -1000
+	zNexrad               renderer.Z = -900
+	zMapData              renderer.Z = -800
+	zLoweredMasterToolbar renderer.Z = -700
 
 	minRangeNM              = 0.25
 	maxRangeNM              = 1300
@@ -40,6 +44,9 @@ const (
 
 // CRC StyleManager.SituationDisplayBackground uses EramColor.DarkBlue.
 var defaultBackgroundColor = renderer.RGB8(0, 0, 212)
+
+// CRC toolbar backgrounds use EramColor.Gray before BCG scaling.
+var toolbarGray = renderer.RGB8(199, 199, 199)
 
 var mrmsHTTPClient = &http.Client{Timeout: 20 * time.Second}
 
@@ -83,6 +90,9 @@ type ERAMPane struct {
 
 	backgroundBrightness int
 	systemBrightness     int
+	toolbarVisible       bool
+	toolbarBrightness    int
+	toolbarFontSize      int
 
 	rangeNM float64
 
@@ -150,6 +160,9 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 		longitudeScaleFactor: radar.LongitudeScaleFactorForLat(center.Lat),
 		backgroundBrightness: defaultBackgroundBrightness,
 		systemBrightness:     defaultSystemBrightness,
+		toolbarVisible:       defaultToolbarVisible,
+		toolbarBrightness:    defaultToolbarBrightness,
+		toolbarFontSize:      defaultToolbarFontSize,
 		rangeNM:              defaultRangeNM,
 		nexradLevels:         defaultNexradLevels,
 		nexradBrightness:     defaultNexradBrightness,
@@ -190,6 +203,7 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	backgroundCB.DisableScissor()
 
 	p.drawNexrad(ctx, zcb)
+	p.drawToolbarBackground(ctx, zcb)
 	p.renderCursor(ctx, zcb)
 }
 
