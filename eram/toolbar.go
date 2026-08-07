@@ -928,9 +928,17 @@ func (p *ERAMPane) appendToolbarMenu(
 		if entry.Column < 0 || entry.Column >= maxColumns || entry.Row < 0 {
 			continue
 		}
-		x := left + offsets[entry.Column]
+		spec := p.toolbarSpec(entry.ID)
+		buttonWidth := p.toolbarButtonWidth(spec, metrics)
+		// CRC gives every ButtonBase root HorizontalAlignment.Right. A column's
+		// width is therefore set by its widest button (often a menu button with
+		// a tear-off/BCPA strip), while narrower buttons in that same column are
+		// shifted right. This leaves the compensating gray strip on the left; in
+		// BRIGHT this is visible on BCKLGHT below MAP BRIGHT and BUTTON below
+		// CPDLC.
+		x := left + offsets[entry.Column] + widths[entry.Column] - buttonWidth
 		y := top + float32(entry.Row)*(metrics.buttonHeight+toolbarButtonRowGap)
-		p.appendToolbarButton(p.toolbarSpec(entry.ID), x, y, owner, depth, entry.Row, metrics)
+		p.appendToolbarButton(spec, x, y, owner, depth, entry.Row, metrics)
 	}
 	return p.toolbar.layout.buttons[start:], contentWidth, contentHeight
 }
