@@ -18,6 +18,8 @@ type eramViewKind uint8
 const (
 	eramViewNone eramViewKind = iota
 	eramViewTime
+	eramViewMCA
+	eramViewResponseArea
 )
 
 type eramViewAnchor uint8
@@ -63,6 +65,70 @@ type eramClockState struct {
 	fontSize   int
 	showBorder bool
 	isOpaque   bool
+}
+
+const (
+	// CRC McaViewSettings / ResponseAreaViewSettings defaults. Preview and
+	// Feedback are one MCA view; Response Area is a separate movable view.
+	defaultMCAWidth              = 30
+	defaultResponseAreaWidth     = 25
+	defaultAreaFontSize          = 2
+	defaultAreaBrightness        = 80
+	eramAreaBorderWidth          = 1
+	eramAreaPaddingX             = 7
+	eramAreaPaddingY             = 3
+	eramAreaLineSpacing          = 6
+	eramAreaScrollReserve        = 19
+	eramMCAPreviewMinLines       = 2
+	eramMCAPreviewMaxLines       = 6
+	eramMCAFeedbackMinLines      = 4
+	eramResponseAreaMinimumLines = 4
+)
+
+var eramAreaBlack = renderer.RGB8(0, 0, 0) // EramColor.Black
+
+type eramMCAState struct {
+	location   eramAnchoredLocation
+	input      []rune
+	cursor     int
+	width      int
+	fontSize   int
+	brightness int
+}
+
+type eramResponseAreaState struct {
+	location   eramAnchoredLocation
+	width      int
+	fontSize   int
+	brightness int
+}
+
+func (p *ERAMPane) initializeAreaStates() {
+	if p == nil {
+		return
+	}
+	p.mca = eramMCAState{
+		// CRC McaViewSettings.Location = BottomLeft (0, 1).
+		location: eramAnchoredLocation{
+			Offset: redsmath.Vec2{X: 0, Y: 1},
+			Anchor: eramViewAnchorBottomLeft,
+		},
+		width:      defaultMCAWidth,
+		fontSize:   defaultAreaFontSize,
+		brightness: defaultAreaBrightness,
+	}
+	p.responseArea = eramResponseAreaState{
+		// CRC ResponseAreaViewSettings.Location = BottomLeft (395, 1). The
+		// default MCA is 395 px wide at ERAM font size 2, so the two views
+		// touch exactly at startup.
+		location: eramAnchoredLocation{
+			Offset: redsmath.Vec2{X: 395, Y: 1},
+			Anchor: eramViewAnchorBottomLeft,
+		},
+		width:      defaultResponseAreaWidth,
+		fontSize:   defaultAreaFontSize,
+		brightness: defaultAreaBrightness,
+	}
 }
 
 func (p *ERAMPane) initializeClockState() {
@@ -201,6 +267,10 @@ func (p *ERAMPane) viewBounds(kind eramViewKind, paneSize redsmath.Vec2) redsmat
 	switch kind {
 	case eramViewTime:
 		return p.clockBounds(paneSize)
+	case eramViewMCA:
+		return p.mcaBounds(paneSize)
+	case eramViewResponseArea:
+		return p.responseAreaBounds(paneSize)
 	default:
 		return redsmath.Rect{}
 	}
@@ -210,6 +280,10 @@ func (p *ERAMPane) setViewTopLeft(kind eramViewKind, topLeft, size, paneSize red
 	switch kind {
 	case eramViewTime:
 		p.clock.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
+	case eramViewMCA:
+		p.mca.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
+	case eramViewResponseArea:
+		p.responseArea.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
 	}
 }
 
@@ -365,6 +439,340 @@ func (p *ERAMPane) drawClock(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.Blend()
 	td.GenerateCommands(cb, texture)
 
+	cb.DisableScissor()
+}
+
+func eramAreaTextHeight(lines, lineHeight int) int {
+	if lines <= 0 || lineHeight <= 0 {
+		return 0
+	}
+	return lines*lineHeight + maxInt(0, lines-1)*eramAreaLineSpacing
+}
+
+func (p *ERAMPane) eramAreaSize(widthChars, textLines, fontSize int) redsmath.Vec2 {
+	if p == nil || widthChars <= 0 || textLines <= 0 {
+		return redsmath.Vec2{}
+	}
+	p.ensureToolbarFont()
+	font := p.toolbar.font
+	if font == nil {
+		return redsmath.Vec2{}
+	}
+	charAdvance, lineHeight := font.CharSize(fontSize)
+	if charAdvance <= 0 || lineHeight <= 0 {
+		return redsmath.Vec2{}
+	}
+	return redsmath.Vec2{
+		X: float32(2*eramAreaBorderWidth + 2*eramAreaPaddingX + widthChars*charAdvance + eramAreaScrollReserve),
+		Y: float32(2*eramAreaBorderWidth + 2*eramAreaPaddingY + eramAreaTextHeight(textLines, lineHeight)),
+	}
+}
+
+func (p *ERAMPane) mcaPreviewTotalLines() int {
+	if p == nil || p.mca.width <= 0 {
+		return 1
+	}
+	// CRC forces a fresh line when the input ends exactly on the configured
+	// width so the overstrike cursor always has a visible cell.
+	return len(p.mca.input)/p.mca.width + 1
+}
+
+func (p *ERAMPane) mcaSectionLines() (previewLines, feedbackLines int, separatorVisible bool) {
+	total := p.mcaPreviewTotalLines()
+	previewLines = maxInt(eramMCAPreviewMinLines, minInt(total, eramMCAPreviewMaxLines))
+	if total >= eramMCAPreviewMaxLines {
+		return previewLines, 0, false
+	}
+	feedbackLines = maxInt(eramMCAFeedbackMinLines-(previewLines-eramMCAPreviewMinLines), 0)
+	return previewLines, feedbackLines, true
+}
+
+func (p *ERAMPane) mcaSize() redsmath.Vec2 {
+	if p == nil {
+		return redsmath.Vec2{}
+	}
+	p.ensureToolbarFont()
+	font := p.toolbar.font
+	if font == nil {
+		return redsmath.Vec2{}
+	}
+	charAdvance, lineHeight := font.CharSize(p.mca.fontSize)
+	if charAdvance <= 0 || lineHeight <= 0 {
+		return redsmath.Vec2{}
+	}
+	previewLines, feedbackLines, separatorVisible := p.mcaSectionLines()
+	previewHeight := 2*eramAreaPaddingY + eramAreaTextHeight(previewLines, lineHeight)
+	feedbackHeight := 0
+	if feedbackLines > 0 {
+		feedbackHeight = 2*eramAreaPaddingY + eramAreaTextHeight(feedbackLines, lineHeight)
+	}
+	separatorHeight := 0
+	if separatorVisible {
+		separatorHeight = 1
+	}
+	return redsmath.Vec2{
+		X: float32(2*eramAreaBorderWidth + 2*eramAreaPaddingX + p.mca.width*charAdvance + eramAreaScrollReserve),
+		Y: float32(2*eramAreaBorderWidth + previewHeight + separatorHeight + feedbackHeight),
+	}
+}
+
+func (p *ERAMPane) mcaBounds(paneSize redsmath.Vec2) redsmath.Rect {
+	if p == nil {
+		return redsmath.Rect{}
+	}
+	size := p.mcaSize()
+	if size.X <= 0 || size.Y <= 0 {
+		return redsmath.Rect{}
+	}
+	topLeft := resolveERAMAnchoredLocation(p.mca.location, size, paneSize)
+	return redsmath.NewRect(topLeft.X, topLeft.Y, topLeft.X+size.X, topLeft.Y+size.Y)
+}
+
+func (p *ERAMPane) responseAreaSize() redsmath.Vec2 {
+	if p == nil {
+		return redsmath.Vec2{}
+	}
+	return p.eramAreaSize(p.responseArea.width, eramResponseAreaMinimumLines, p.responseArea.fontSize)
+}
+
+func (p *ERAMPane) responseAreaBounds(paneSize redsmath.Vec2) redsmath.Rect {
+	if p == nil {
+		return redsmath.Rect{}
+	}
+	size := p.responseAreaSize()
+	if size.X <= 0 || size.Y <= 0 {
+		return redsmath.Rect{}
+	}
+	topLeft := resolveERAMAnchoredLocation(p.responseArea.location, size, paneSize)
+	return redsmath.NewRect(topLeft.X, topLeft.Y, topLeft.X+size.X, topLeft.Y+size.Y)
+}
+
+func (p *ERAMPane) consumeMCAInput(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || ctx.Mouse == nil {
+		return false
+	}
+	bounds := p.mcaBounds(ctx.PaneSize())
+	if bounds.Empty() || !bounds.Contains(ctx.Mouse.Pos) {
+		return false
+	}
+	if ctx.Mouse.WasPressed(platform.MouseButtonLeft) {
+		p.startViewMove(ctx, eramViewMCA)
+		return true
+	}
+	// CRC middle-click requests the MCA settings menu. That menu is not part of
+	// this first area pass yet, but consume the pick so it cannot leak through
+	// the view while preserving the correct future interaction point.
+	if ctx.Mouse.WasPressed(platform.MouseButtonMiddle) {
+		return true
+	}
+	return false
+}
+
+func (p *ERAMPane) consumeResponseAreaInput(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || ctx.Mouse == nil {
+		return false
+	}
+	bounds := p.responseAreaBounds(ctx.PaneSize())
+	if bounds.Empty() || !bounds.Contains(ctx.Mouse.Pos) {
+		return false
+	}
+	if ctx.Mouse.WasPressed(platform.MouseButtonLeft) {
+		p.startViewMove(ctx, eramViewResponseArea)
+		return true
+	}
+	if ctx.Mouse.WasPressed(platform.MouseButtonMiddle) {
+		return true
+	}
+	return false
+}
+
+func (p *ERAMPane) consumeMCAKeyboard(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Keyboard == nil {
+		return
+	}
+	keyboard := ctx.Keyboard
+
+	if keyboard.WasPressed(platform.KeyEscape) {
+		p.mca.input = p.mca.input[:0]
+		p.mca.cursor = 0
+		return
+	}
+	if keyboard.WasPressed(platform.KeyBackspace) {
+		if p.mca.cursor > 0 {
+			copy(p.mca.input[p.mca.cursor-1:], p.mca.input[p.mca.cursor:])
+			p.mca.input = p.mca.input[:len(p.mca.input)-1]
+			p.mca.cursor--
+		}
+	}
+	if keyboard.WasPressed(platform.KeyDelete) && p.mca.cursor < len(p.mca.input) {
+		copy(p.mca.input[p.mca.cursor:], p.mca.input[p.mca.cursor+1:])
+		p.mca.input = p.mca.input[:len(p.mca.input)-1]
+	}
+	if keyboard.WasPressed(platform.KeyLeft) && p.mca.cursor > 0 {
+		p.mca.cursor--
+	}
+	if keyboard.WasPressed(platform.KeyRight) && p.mca.cursor < len(p.mca.input) {
+		p.mca.cursor++
+	}
+	if keyboard.WasPressed(platform.KeyUp) && p.mca.cursor > 0 {
+		p.mca.cursor = maxInt(0, p.mca.cursor-p.mca.width)
+	}
+	if keyboard.WasPressed(platform.KeyDown) && p.mca.cursor < len(p.mca.input) {
+		p.mca.cursor = minInt(len(p.mca.input), p.mca.cursor+p.mca.width)
+	}
+
+	// CRC uppercases ordinary printable keyboard input before putting it into
+	// the Preview Area. Control/Command chords should not leak their letters.
+	if keyboard.IsDown(platform.KeyControl) || keyboard.IsDown(platform.KeyCommand) {
+		return
+	}
+	for _, r := range keyboard.Text {
+		if r < ' ' || r > '~' {
+			continue
+		}
+		if r >= 'a' && r <= 'z' {
+			r -= 'a' - 'A'
+		}
+		p.insertMCACharacter(r)
+	}
+}
+
+func (p *ERAMPane) insertMCACharacter(r rune) {
+	if p == nil || p.mca.width <= 0 {
+		return
+	}
+	maxCharacters := 1500
+	if p.mca.width == 30 {
+		maxCharacters = 1020
+	}
+	if p.mca.cursor >= maxCharacters {
+		return
+	}
+	// CRC starts in overstrike mode: replace an existing character at the
+	// cursor, otherwise append. Insert-mode support can be layered on later.
+	if p.mca.cursor < len(p.mca.input) {
+		p.mca.input[p.mca.cursor] = r
+	} else if len(p.mca.input) < maxCharacters {
+		p.mca.input = append(p.mca.input, r)
+	}
+	if p.mca.cursor+1 < maxCharacters {
+		p.mca.cursor++
+	}
+}
+
+func (p *ERAMPane) drawMCA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil || ctx.Renderer == nil {
+		return
+	}
+	p.ensureToolbarFont()
+	font := p.toolbar.font
+	if font == nil {
+		return
+	}
+	texture := p.toolbarTexture(ctx.Renderer, p.mca.fontSize)
+	if texture == 0 {
+		return
+	}
+	charAdvance, lineHeight := font.CharSize(p.mca.fontSize)
+	if charAdvance <= 0 || lineHeight <= 0 {
+		return
+	}
+	bounds := p.mcaBounds(ctx.PaneSize())
+	if bounds.Empty() {
+		return
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zMCAView)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.DisableBlend()
+	drawSolidRect(cb, bounds, eramAreaBlack)
+	borderColor := applyERAMBrightness(clockWhite, p.borderBrightness, p.systemBrightness)
+	drawBorderOnly(cb, bounds, borderColor, eramAreaBorderWidth)
+
+	previewLines, _, separatorVisible := p.mcaSectionLines()
+	previewHeight := 2*eramAreaPaddingY + eramAreaTextHeight(previewLines, lineHeight)
+	if separatorVisible {
+		separatorY := bounds.Min.Y + eramAreaBorderWidth + float32(previewHeight)
+		drawSolidRect(cb, redsmath.NewRect(
+			bounds.Min.X+eramAreaBorderWidth,
+			separatorY,
+			bounds.Max.X-eramAreaBorderWidth,
+			separatorY+1,
+		), borderColor)
+	}
+
+	textColor := applyERAMBrightness(clockWhite, p.mca.brightness, p.systemBrightness).ToRGBA()
+	cursorColor := applyERAMBrightness(clockWhite, p.pairedTargetBrightness, p.systemBrightness).ToRGBA()
+	black := eramAreaBlack.ToRGBA()
+	contentOrigin := redsmath.Vec2{
+		X: bounds.Min.X + eramAreaBorderWidth + eramAreaPaddingX,
+		Y: bounds.Min.Y + eramAreaBorderWidth + eramAreaPaddingY,
+	}
+
+	cursorLine := 0
+	cursorColumn := 0
+	if p.mca.width > 0 {
+		cursorLine = p.mca.cursor / p.mca.width
+		cursorColumn = p.mca.cursor % p.mca.width
+	}
+	topLine := 0
+	if cursorLine >= previewLines {
+		topLine = cursorLine - previewLines + 1
+	}
+	maxTop := maxInt(0, p.mcaPreviewTotalLines()-previewLines)
+	topLine = minInt(topLine, maxTop)
+
+	td := renderer.GetTextDrawBuilder()
+	defer renderer.ReturnTextDrawBuilder(td)
+	td.SetFont(font)
+	for row := 0; row < previewLines; row++ {
+		lineIndex := topLine + row
+		start := lineIndex * p.mca.width
+		if start >= len(p.mca.input) {
+			continue
+		}
+		end := minInt(start+p.mca.width, len(p.mca.input))
+		line := string(p.mca.input[start:end])
+		if line == "" {
+			continue
+		}
+		td.AddText(line, redsmath.Vec2{
+			X: contentOrigin.X,
+			Y: contentOrigin.Y + float32(row*(lineHeight+eramAreaLineSpacing)),
+		}, renderer.TextStyle{Size: p.mca.fontSize, Color: textColor, Background: black})
+	}
+	if cursorLine >= topLine && cursorLine < topLine+previewLines {
+		row := cursorLine - topLine
+		td.AddText("_", redsmath.Vec2{
+			X: contentOrigin.X + float32(cursorColumn*charAdvance),
+			Y: contentOrigin.Y + float32(row*(lineHeight+eramAreaLineSpacing)),
+		}, renderer.TextStyle{Size: p.mca.fontSize, Color: cursorColor})
+	}
+	cb.Blend()
+	td.GenerateCommands(cb, texture)
+	cb.DisableScissor()
+}
+
+func (p *ERAMPane) drawResponseArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil {
+		return
+	}
+	bounds := p.responseAreaBounds(ctx.PaneSize())
+	if bounds.Empty() {
+		return
+	}
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zResponseAreaView)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.DisableBlend()
+	drawSolidRect(cb, bounds, eramAreaBlack)
+	drawBorderOnly(cb, bounds, applyERAMBrightness(clockWhite, p.borderBrightness, p.systemBrightness), eramAreaBorderWidth)
+	cb.Blend()
 	cb.DisableScissor()
 }
 
