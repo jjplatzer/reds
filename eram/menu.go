@@ -506,8 +506,13 @@ func (p *ERAMPane) drawViewSettingsMenu(ctx *panes.Context, zcb *renderer.ZCmdBu
 	hoverBorder := applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness)
 	textColor := applyERAMBrightness(toolbarWhite, p.textBrightness, p.systemBrightness).ToRGBA()
 
-	drawViewMenuFace(cb, layout.Title, gray, border, hoverBorder, layout.Title.Contains(mousePos))
-	drawViewMenuFace(cb, layout.Close, gray, border, hoverBorder, layout.Close.Contains(mousePos))
+	// CRC overlaps adjacent MenuPickArea borders by one pixel. Draw all normal
+	// faces first, then draw the hovered outline last. Otherwise the next row's
+	// background overwrites the bottom edge of a hovered middle row (T, BORDER,
+	// FONT), while the final row happens to look correct because nothing follows
+	// it.
+	drawViewMenuFace(cb, layout.Title, gray, border)
+	drawViewMenuFace(cb, layout.Close, gray, border)
 	for i := 0; i < layout.Count; i++ {
 		row := layout.Rows[i]
 		background := green
@@ -518,7 +523,21 @@ func (p *ERAMPane) drawViewSettingsMenu(ctx *panes.Context, zcb *renderer.ZCmdBu
 				background = black
 			}
 		}
-		drawViewMenuFace(cb, row.Bounds, background, border, hoverBorder, row.Bounds.Contains(mousePos))
+		drawViewMenuFace(cb, row.Bounds, background, border)
+	}
+
+	// Hover chrome sits above every overlapping row face, matching CRC's
+	// highlighted pick-area outline on all four sides.
+	if layout.Title.Contains(mousePos) {
+		drawBorderOnly(cb, layout.Title, hoverBorder, eramViewMenuBorderWidth)
+	}
+	if layout.Close.Contains(mousePos) {
+		drawBorderOnly(cb, layout.Close, hoverBorder, eramViewMenuBorderWidth)
+	}
+	for i := 0; i < layout.Count; i++ {
+		if layout.Rows[i].Bounds.Contains(mousePos) {
+			drawBorderOnly(cb, layout.Rows[i].Bounds, hoverBorder, eramViewMenuBorderWidth)
+		}
 	}
 
 	td := renderer.GetTextDrawBuilder()
@@ -569,11 +588,8 @@ func (p *ERAMPane) drawViewSettingsMenu(ctx *panes.Context, zcb *renderer.ZCmdBu
 	cb.DisableScissor()
 }
 
-func drawViewMenuFace(cb *renderer.CmdBuffer, bounds redsmath.Rect, background, border, hoverBorder renderer.RGB, hovering bool) {
+func drawViewMenuFace(cb *renderer.CmdBuffer, bounds redsmath.Rect, background, border renderer.RGB) {
 	drawSolidRect(cb, bounds, background)
-	if hovering {
-		border = hoverBorder
-	}
 	drawBorderOnly(cb, bounds, border, eramViewMenuBorderWidth)
 }
 
