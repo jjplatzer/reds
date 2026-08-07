@@ -174,6 +174,9 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 	if err := pane.loadGeoMapMetadata(); err != nil {
 		return nil, err
 	}
+	if err := pane.loadActiveGeoMapGeometry(); err != nil {
+		return nil, err
+	}
 
 	pane.wxDomain = wx.DomainForARTCC(artcc)
 	pane.wxLogger = logger.With(slog.String("component", "wx"))
@@ -210,6 +213,7 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	backgroundCB.DisableScissor()
 
 	p.drawNexrad(ctx, zcb)
+	p.drawGeoMaps(ctx, zcb)
 	p.drawToolbar(ctx, zcb)
 	p.renderCursor(ctx, zcb)
 }
@@ -223,6 +227,7 @@ func (p *ERAMPane) Dispose() {
 		p.wxStream = nil
 	}
 	p.releaseNexradCmdBuffers()
+	p.releaseGeoMapCmdBuffers()
 	p.wxGrid = nil
 }
 
