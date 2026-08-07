@@ -4,12 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"regexp"
 	"strings"
 	"time"
 
+	"github.com/juliusplatzer/reds/cmd/wx"
 	redslog "github.com/juliusplatzer/reds/log"
 	"github.com/juliusplatzer/reds/panes"
+	"github.com/juliusplatzer/reds/radar"
 	"github.com/juliusplatzer/reds/renderer"
 	"github.com/juliusplatzer/reds/util"
 )
@@ -22,10 +25,23 @@ const (
 	systemBrightnessFloor       = 66
 
 	zBackground renderer.Z = -1000
+	zNexrad     renderer.Z = -900
+	zMapData    renderer.Z = -800
+
+	minRangeNM              = 0.25
+	maxRangeNM              = 1300
+	defaultRangeNM          = 300
+	initialWxRadiusNM       = 700
+	wxPrefetchMarginNM      = 100
+	wxRefreshMarginNM       = 50
+	defaultNexradLevels     = 3
+	defaultNexradBrightness = 50
 )
 
 // CRC StyleManager.SituationDisplayBackground uses EramColor.DarkBlue.
 var defaultBackgroundColor = renderer.RGB8(0, 0, 212)
+
+var mrmsHTTPClient = &http.Client{Timeout: 20 * time.Second}
 
 type LatLon struct {
 	Lat float64 `json:"lat"`
@@ -63,10 +79,29 @@ type ERAMPane struct {
 	sector Sector
 	center LatLon
 
+	longitudeScaleFactor float64
+
 	backgroundBrightness int
 	systemBrightness     int
 
+	rangeNM float64
+
+	nexradLevels     int
+	nexradBrightness int
+
+	wxDomain   wx.Domain
+	wxLogger   *redslog.Logger
+	wxCenter   LatLon
+	wxRadiusNM float64
+	wxStream   *wx.Stream
+	wxGrid     *wx.Grid
+
+	nexradGeneration      uint64
+	nexradBuiltGeneration uint64
+	nexrad                nexradCmdBuffers
+
 	cursors CursorSet
+	panDrag *eramPanDrag
 }
 
 func LoadFacility(artcc string) (Facility, error) {
@@ -112,15 +147,24 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 		artcc:                artcc,
 		sector:               sector,
 		center:               center,
+		longitudeScaleFactor: radar.LongitudeScaleFactorForLat(center.Lat),
 		backgroundBrightness: defaultBackgroundBrightness,
 		systemBrightness:     defaultSystemBrightness,
+		rangeNM:              defaultRangeNM,
+		nexradLevels:         defaultNexradLevels,
+		nexradBrightness:     defaultNexradBrightness,
 	}
+
+	pane.wxDomain = wx.DomainForARTCC(artcc)
+	pane.wxLogger = logger.With(slog.String("component", "wx"))
+	pane.restartWxStream(initialWxRadiusNM)
 
 	logger.Info(
 		"ERAM pane initialized",
 		slog.Float64("center_lat", center.Lat),
 		slog.Float64("center_lon", center.Lon),
 		slog.String("center_source", source),
+		slog.String("wx_domain", string(pane.wxDomain)),
 	)
 	return pane, nil
 }
@@ -129,6 +173,11 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if p == nil || ctx == nil || zcb == nil {
 		return
 	}
+
+	p.consumeWxUpdates()
+	p.consumeInput(ctx)
+	p.ensureWxCoverage(ctx)
+	p.rebuildNexradIfNeeded()
 
 	p.ensureCursorLoaded()
 	p.applyCursor(ctx)
@@ -140,10 +189,21 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	backgroundCB.ClearRGB(p.scopeBackgroundColor())
 	backgroundCB.DisableScissor()
 
+	p.drawNexrad(ctx, zcb)
 	p.renderCursor(ctx, zcb)
 }
 
-func (p *ERAMPane) Dispose() {}
+func (p *ERAMPane) Dispose() {
+	if p == nil {
+		return
+	}
+	if p.wxStream != nil {
+		p.wxStream.Close()
+		p.wxStream = nil
+	}
+	p.releaseNexradCmdBuffers()
+	p.wxGrid = nil
+}
 
 func initialCenter(facility Facility, sector Sector) (LatLon, string) {
 	if sector.VisualCenter != nil {
@@ -176,10 +236,21 @@ func applyERAMBrightness(color renderer.RGB, brightness, systemBrightness int) r
 	scale := float32(effectiveBrightness) / 100
 
 	return renderer.RGB{
-		R: color.R * scale,
-		G: color.G * scale,
-		B: color.B * scale,
+		R: truncateBrightnessComponent(color.R, scale),
+		G: truncateBrightnessComponent(color.G, scale),
+		B: truncateBrightnessComponent(color.B, scale),
 	}
+}
+
+func truncateBrightnessComponent(component, scale float32) float32 {
+	value := int(component * 255 * scale)
+	if value < 0 {
+		value = 0
+	}
+	if value > 255 {
+		value = 255
+	}
+	return float32(value) / 255
 }
 
 func clampBrightness(value int) int {

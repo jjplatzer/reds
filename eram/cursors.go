@@ -76,6 +76,10 @@ func (p *ERAMPane) applyCursor(ctx *panes.Context) {
 	if p == nil || ctx == nil || ctx.Platform == nil {
 		return
 	}
+	if p.isPanning() {
+		ctx.Platform.SetCursorHiddenOverride()
+		return
+	}
 	if ctx.Mouse == nil {
 		ctx.Platform.ClearCursorOverride()
 		return
@@ -90,6 +94,10 @@ func (p *ERAMPane) applyCursor(ctx *panes.Context) {
 	// The cursor assets are already exact RGBA conversions of CRC's .cur
 	// files, so use the same software-cursor path as ASDE-X.
 	ctx.Platform.SetCursorHiddenOverride()
+}
+
+func (p *ERAMPane) isPanning() bool {
+	return p != nil && p.panDrag != nil && p.panDrag.panning
 }
 
 func (p *ERAMPane) renderCursor(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {

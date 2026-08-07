@@ -38,6 +38,10 @@ func (p shaderProgram) setFloat(name string, f float32) {
 	gl.Uniform1f(p.uniform(name), f)
 }
 
+func (p shaderProgram) setVec2(name string, x, y float32) {
+	gl.Uniform2f(p.uniform(name), x, y)
+}
+
 func (p shaderProgram) setInt(name string, i int32) {
 	gl.Uniform1i(p.uniform(name), i)
 }
@@ -46,6 +50,7 @@ func (p shaderProgram) setInt(name string, i int32) {
 type OpenGLRenderer struct {
 	solidShader    shaderProgram
 	hatchShader    shaderProgram
+	checkerShader  shaderProgram
 	coloredShader  shaderProgram
 	texturedShader shaderProgram
 	fontShader     shaderProgram
@@ -59,6 +64,8 @@ type OpenGLRenderer struct {
 
 	projection Mat4
 	color      RGBA
+	checkerX   float32
+	checkerY   float32
 	lineWidth  float32
 	ready      bool
 }
@@ -85,6 +92,10 @@ func (r *OpenGLRenderer) Init() error {
 		return err
 	}
 	if r.hatchShader, err = compileProgram("hatch", "solid.vert", "hatch.frag"); err != nil {
+		r.Dispose()
+		return err
+	}
+	if r.checkerShader, err = compileProgram("checkered", "solid.vert", "checkered.frag"); err != nil {
 		r.Dispose()
 		return err
 	}
@@ -129,6 +140,7 @@ func (r *OpenGLRenderer) Dispose() {
 	}
 	r.solidShader.dispose()
 	r.hatchShader.dispose()
+	r.checkerShader.dispose()
 	r.coloredShader.dispose()
 	r.texturedShader.dispose()
 	r.fontShader.dispose()
@@ -149,6 +161,8 @@ func (r *OpenGLRenderer) resetState() {
 	gl.UseProgram(0)
 	r.projection = Identity()
 	r.color = RGBA{A: 1}
+	r.checkerX = 0
+	r.checkerY = 0
 	r.lineWidth = 1
 	gl.LineWidth(1)
 }
@@ -278,6 +292,9 @@ func (r *OpenGLRenderer) renderCmdBuffer(cb *CmdBuffer, reset bool) RendererStat
 			gl.Disable(gl.BLEND)
 		case cmdSetColor:
 			r.color = cmd.color
+		case cmdSetCheckerOffset:
+			r.checkerX = cmd.checkerX
+			r.checkerY = cmd.checkerY
 		case cmdLineWidth:
 			r.lineWidth = cmd.lineWidth
 			gl.LineWidth(cmd.lineWidth)
@@ -320,12 +337,16 @@ func (r *OpenGLRenderer) drawPoints(vertices []PointVertex, indices []uint32, tr
 	shader := r.solidShader
 	if triangles && mode == DrawHatched {
 		shader = r.hatchShader
+	} else if triangles && mode == DrawCheckered {
+		shader = r.checkerShader
 	}
 	shader.use()
 	shader.setMat4("u_projection", r.projection)
 	shader.setRGBA("u_color", r.color)
 	if triangles && mode == DrawHatched {
 		shader.setFloat("u_offset", hatchOffset)
+	} else if triangles && mode == DrawCheckered {
+		shader.setVec2("u_offset", r.checkerX, r.checkerY)
 	}
 
 	r.bindIndexedBuffers(len(vertices)*int(unsafe.Sizeof(PointVertex{})), unsafe.Pointer(&vertices[0]), indices)
