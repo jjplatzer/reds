@@ -31,6 +31,7 @@ const (
 	zNexrad               renderer.Z = -900
 	zMapData              renderer.Z = -800
 	zLoweredMasterToolbar renderer.Z = -700
+	zTimeView             renderer.Z = -500
 
 	minRangeNM              = 0.25
 	maxRangeNM              = 1300
@@ -113,6 +114,7 @@ type ERAMPane struct {
 	toolbarBrightness         int
 	toolbarFontSize           int
 	toolbar                   toolbarState
+	clock                     eramClockState
 	maps                      eramMapState
 
 	rangeNM float64
@@ -211,6 +213,7 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 	// CRC always ensures one special TOOLBAR control tear-off exists at
 	// TopLeft (90, 71). It remains present even when MASTER TOOLBAR is hidden.
 	pane.initializeToolbarState()
+	pane.initializeClockState()
 	pane.initializeMapState()
 	if err := pane.loadGeoMapMetadata(); err != nil {
 		return nil, err
@@ -256,6 +259,7 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawNexrad(ctx, zcb)
 	p.drawGeoMaps(ctx, zcb)
 	p.drawToolbar(ctx, zcb)
+	p.drawClock(ctx, zcb)
 	p.renderCursor(ctx, zcb)
 }
 
