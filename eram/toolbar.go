@@ -1197,7 +1197,11 @@ func (p *ERAMPane) drawToolbarButtons(
 
 		if !layout.Spec.NoControl {
 			controlColor := toolbarBrightGold
-			if owner.Kind != toolbarOwnerTearoff && p.hasToolbarTearoff(layout.Spec.ID) {
+			// A button that already has a floating copy loses its tear-off action.
+			// The exception is the depth-0 root of that floating copy: its control
+			// remains active because it is the handle used to reposition it.
+			if p.hasToolbarTearoff(layout.Spec.ID) &&
+				!(owner.Kind == toolbarOwnerTearoff && layout.Depth == 0) {
 				controlColor = toolbarGray
 			}
 			p.drawToolbarBorderedRect(cb, layout.Control, controlColor, p.buttonBrightness, hoverControl, toolbarWhite, p.borderBrightness, 1)
@@ -1504,7 +1508,12 @@ func (p *ERAMPane) toolbarControlEligible(layout toolbarButtonLayout) bool {
 	if layout.Spec.NoControl {
 		return false
 	}
-	if layout.Owner.Kind == toolbarOwnerTearoff {
+	// Only the depth-0 button is the root of an existing floating tear-off.
+	// Controls on menus opened from that tear-off (depth 1+) still belong to
+	// their own button and may therefore create their own tear-off. Treating
+	// every descendant as part of the parent's tear-off makes dragging, e.g.,
+	// MAP BRIGHT from a floating BRIGHT menu move BRIGHT itself.
+	if layout.Owner.Kind == toolbarOwnerTearoff && layout.Depth == 0 {
 		return true
 	}
 	return !p.hasToolbarTearoff(layout.Spec.ID)
@@ -1629,7 +1638,11 @@ func adjustBrightness(value *int, increment bool, minValue, maxValue int) {
 
 func (p *ERAMPane) startToolbarMove(ctx *panes.Context, layout toolbarButtonLayout, metrics toolbarMetrics) {
 	existingID := 0
-	if layout.Owner.Kind == toolbarOwnerTearoff {
+	// Descendants of a floating menu share its layout owner so their expansion
+	// can be positioned/rendered with the parent. They are not, however, the
+	// existing tear-off itself. Only the depth-0 root should move that existing
+	// tear-off; a depth-1+ control starts a new tear-off for the child button.
+	if layout.Owner.Kind == toolbarOwnerTearoff && layout.Depth == 0 {
 		existingID = layout.Owner.TearoffID
 	}
 	p.toolbar.moving = &toolbarTearoffMove{
