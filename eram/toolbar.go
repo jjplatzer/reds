@@ -368,7 +368,7 @@ func (p *ERAMPane) toolbarTexture(r renderer.Renderer, size int) renderer.Textur
 	return texture
 }
 
-func toolbarSpec(id toolbarButtonID) toolbarButtonSpec {
+func baseToolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 	spec := toolbarButtonSpec{ID: id, Kind: toolbarToggleButton}
 	switch id {
 	case toolbarDraw:
@@ -607,6 +607,17 @@ func toolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 	return spec
 }
 
+func (p *ERAMPane) toolbarSpec(id toolbarButtonID) toolbarButtonSpec {
+	spec := baseToolbarSpec(id)
+
+	if id == toolbarGeomap {
+		spec.Lines = [2]string{p.artcc, "MAP"}
+		spec.Kind = toolbarMenuButton
+	}
+
+	return spec
+}
+
 func brightnessSpec(id toolbarButtonID, label, value string) toolbarButtonSpec {
 	return toolbarButtonSpec{
 		ID:        id,
@@ -708,7 +719,7 @@ func (p *ERAMPane) buildToolbarLayout(ctx *panes.Context) ([]toolbarButtonLayout
 	paneSize := ctx.PaneSize()
 	for i := range p.toolbar.tearoffs {
 		tearoff := &p.toolbar.tearoffs[i]
-		spec := toolbarSpec(tearoff.Type)
+		spec := p.toolbarSpec(tearoff.Type)
 		size := redsmath.Vec2{X: p.toolbarButtonWidth(spec, metrics), Y: metrics.buttonHeight}
 		topLeft := toolbarTearoffTopLeft(*tearoff, paneSize, size)
 		owner := toolbarOwner{Kind: toolbarOwnerTearoff, TearoffID: tearoff.ID}
@@ -736,7 +747,7 @@ func (p *ERAMPane) appendToolbarMenu(
 		if entry.Column < 0 || entry.Column >= maxColumns || entry.Row < 0 {
 			continue
 		}
-		width := p.toolbarButtonWidth(toolbarSpec(entry.ID), metrics)
+		width := p.toolbarButtonWidth(p.toolbarSpec(entry.ID), metrics)
 		if width > widths[entry.Column] {
 			widths[entry.Column] = width
 		}
@@ -765,7 +776,7 @@ func (p *ERAMPane) appendToolbarMenu(
 		}
 		x := left + offsets[entry.Column]
 		y := top + float32(entry.Row)*(metrics.buttonHeight+toolbarButtonRowGap)
-		p.appendToolbarButton(toolbarSpec(entry.ID), x, y, owner, depth, entry.Row, metrics)
+		p.appendToolbarButton(p.toolbarSpec(entry.ID), x, y, owner, depth, entry.Row, metrics)
 	}
 	return p.toolbar.layout.buttons[start:], contentWidth, contentHeight
 }
