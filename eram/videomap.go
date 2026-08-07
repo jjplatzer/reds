@@ -3,6 +3,7 @@ package eram
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -59,6 +60,9 @@ type eramMapState struct {
 	brightness [eramMapBCGCount]int
 
 	lines []eramMapLineBatch
+
+	dashCacheKey   eramMapDashCacheKey
+	dashCacheValid bool
 }
 
 type eramMapLineStyle uint8
@@ -85,7 +89,26 @@ type eramMapLineBatchKey struct {
 
 type eramMapLineBatch struct {
 	Key eramMapLineBatchKey
-	Cmd *renderer.CmdBuffer
+
+	// Solid maps are pre-baked in geographic (lon/lat) coordinates and can be
+	// replayed directly under the geographic projection. Dashed maps keep their
+	// original polylines so dash lengths can be reconstructed in framebuffer
+	// pixels for the current range/viewport, matching CRC's screen-space
+	// stippling behavior.
+	Cmd       *renderer.CmdBuffer
+	Polylines [][]renderer.PointVertex
+}
+
+type eramMapLineAccumulator struct {
+	Builder   *renderer.LinesBuilder
+	Polylines [][]renderer.PointVertex
+}
+
+type eramMapDashCacheKey struct {
+	PaneWidth            float32
+	PaneHeight           float32
+	RangeNM              float64
+	LongitudeScaleFactor float64
 }
 
 type eramGeoJSONFeatureCollection struct {
@@ -326,13 +349,13 @@ func (p *ERAMPane) loadActiveGeoMapGeometry() error {
 	r := util.LoadResource(path)
 	defer r.Close()
 
-	builders, err := p.buildActiveGeoMapLineBuilders(json.NewDecoder(r), wanted)
+	accumulators, err := p.buildActiveGeoMapLineAccumulators(json.NewDecoder(r), wanted)
 	if err != nil {
 		return fmt.Errorf("load ERAM map geometry %s: %w", path, err)
 	}
 
-	keys := make([]eramMapLineBatchKey, 0, len(builders))
-	for key := range builders {
+	keys := make([]eramMapLineBatchKey, 0, len(accumulators))
+	for key := range accumulators {
 		keys = append(keys, key)
 	}
 	sort.Slice(keys, func(i, j int) bool {
@@ -340,25 +363,29 @@ func (p *ERAMPane) loadActiveGeoMapGeometry() error {
 	})
 
 	for _, key := range keys {
-		builder := builders[key]
-		cb := renderer.GetCmdBuffer()
-		builder.GenerateCommands(cb)
-		p.maps.lines = append(p.maps.lines, eramMapLineBatch{
-			Key: key,
-			Cmd: cb,
-		})
-		renderer.ReturnLinesBuilder(builder)
-		delete(builders, key)
+		acc := accumulators[key]
+		batch := eramMapLineBatch{Key: key}
+
+		if acc.Builder != nil {
+			cb := renderer.GetCmdBuffer()
+			acc.Builder.GenerateCommands(cb)
+			batch.Cmd = cb
+			renderer.ReturnLinesBuilder(acc.Builder)
+		}
+		batch.Polylines = acc.Polylines
+
+		p.maps.lines = append(p.maps.lines, batch)
+		delete(accumulators, key)
 	}
 
 	return nil
 }
 
-func (p *ERAMPane) buildActiveGeoMapLineBuilders(
+func (p *ERAMPane) buildActiveGeoMapLineAccumulators(
 	dec *json.Decoder,
 	wanted map[string]struct{},
-) (map[eramMapLineBatchKey]*renderer.LinesBuilder, error) {
-	builders := make(map[eramMapLineBatchKey]*renderer.LinesBuilder)
+) (map[eramMapLineBatchKey]*eramMapLineAccumulator, error) {
+	accumulators := make(map[eramMapLineBatchKey]*eramMapLineAccumulator)
 
 	token, err := dec.Token()
 	if err != nil {
@@ -401,7 +428,7 @@ func (p *ERAMPane) buildActiveGeoMapLineBuilders(
 			if _, ok := wanted[vm.ID]; !ok {
 				continue
 			}
-			if err := parseERAMVideoMapLines(vm, builders); err != nil {
+			if err := parseERAMVideoMapLines(vm, accumulators); err != nil {
 				return nil, fmt.Errorf("parse video map %s: %w", vm.ID, err)
 			}
 		}
@@ -414,13 +441,13 @@ func (p *ERAMPane) buildActiveGeoMapLineBuilders(
 			return nil, fmt.Errorf("expected end of videoMaps array")
 		}
 
-		return builders, nil
+		return accumulators, nil
 	}
 
-	return builders, nil
+	return accumulators, nil
 }
 
-func parseERAMVideoMapLines(vm eramVideoMap, builders map[eramMapLineBatchKey]*renderer.LinesBuilder) error {
+func parseERAMVideoMapLines(vm eramVideoMap, accumulators map[eramMapLineBatchKey]*eramMapLineAccumulator) error {
 	if len(vm.GeoJSON) == 0 {
 		return nil
 	}
@@ -452,20 +479,27 @@ func parseERAMVideoMapLines(vm eramVideoMap, builders map[eramMapLineBatchKey]*r
 			TDMOnly:   vm.TDMOnly,
 		}
 
-		// Dashed ERAM maps need screen-distance stipple support. Skip them for
-		// this first visible-map milestone instead of drawing them incorrectly.
-		if key.Style != eramMapLineSolid {
+		acc := accumulators[key]
+		if acc == nil {
+			acc = &eramMapLineAccumulator{}
+			accumulators[key] = acc
+		}
+
+		if key.Style == eramMapLineSolid {
+			if acc.Builder == nil {
+				acc.Builder = renderer.GetLinesBuilder()
+			}
+			if err := appendERAMLineGeometry(acc.Builder, feature.Geometry); err != nil {
+				return err
+			}
 			continue
 		}
 
-		builder := builders[key]
-		if builder == nil {
-			builder = renderer.GetLinesBuilder()
-			builders[key] = builder
-		}
-		if err := appendERAMLineGeometry(builder, feature.Geometry); err != nil {
+		polylines, err := eramLineGeometryPolylines(feature.Geometry)
+		if err != nil {
 			return err
 		}
+		acc.Polylines = append(acc.Polylines, polylines...)
 	}
 
 	return nil
@@ -550,29 +584,53 @@ func mapLineVisible(mask eramMapFilterMask, enabled uint64) bool {
 }
 
 func appendERAMLineGeometry(builder *renderer.LinesBuilder, geometry eramGeoJSONGeometry) error {
-	if builder == nil || len(geometry.Coordinates) == 0 {
+	if builder == nil {
 		return nil
+	}
+
+	polylines, err := eramLineGeometryPolylines(geometry)
+	if err != nil {
+		return err
+	}
+	for _, points := range polylines {
+		builder.AddLineStrip(points)
+	}
+	return nil
+}
+
+func eramLineGeometryPolylines(geometry eramGeoJSONGeometry) ([][]renderer.PointVertex, error) {
+	if len(geometry.Coordinates) == 0 {
+		return nil, nil
 	}
 
 	switch geometry.Type {
 	case "LineString":
 		var coords [][]float64
 		if err := json.Unmarshal(geometry.Coordinates, &coords); err != nil {
-			return err
+			return nil, err
 		}
-		builder.AddLineStrip(eramLineStringPoints(coords))
+		points := eramLineStringPoints(coords)
+		if len(points) < 2 {
+			return nil, nil
+		}
+		return [][]renderer.PointVertex{points}, nil
 
 	case "MultiLineString":
 		var lines [][][]float64
 		if err := json.Unmarshal(geometry.Coordinates, &lines); err != nil {
-			return err
+			return nil, err
 		}
+		out := make([][]renderer.PointVertex, 0, len(lines))
 		for _, line := range lines {
-			builder.AddLineStrip(eramLineStringPoints(line))
+			points := eramLineStringPoints(line)
+			if len(points) >= 2 {
+				out = append(out, points)
+			}
 		}
+		return out, nil
 	}
 
-	return nil
+	return nil, nil
 }
 
 func eramLineStringPoints(coords [][]float64) []renderer.PointVertex {
@@ -604,6 +662,15 @@ func (p *ERAMPane) drawGeoMaps(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	)
 
 	x, y, width, height := ctx.PaneFramebufferRect()
+	if width <= 0 || height <= 0 || paneExtent.Empty() {
+		return
+	}
+
+	// Dashed line boundaries depend on range/logical viewport scale, but not on
+	// pan: the geographic projection is affine, so translating the center leaves
+	// all segment lengths unchanged. Rebuild only when the scale itself changes.
+	p.ensureERAMDashedLineCmdBuffers(paneExtent, transforms)
+
 	cb := zcb.At(zMapData)
 	cb.Viewport(x, y, width, height)
 	cb.Scissor(x, y, width, height)
@@ -613,7 +680,7 @@ func (p *ERAMPane) drawGeoMaps(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		for _, batch := range p.maps.lines {
 			if int(batch.Key.BCG) != bcg ||
 				batch.Key.TDMOnly ||
-				batch.Key.Style != eramMapLineSolid ||
+				batch.Cmd == nil ||
 				!mapLineVisible(batch.Key.Filters, p.maps.filters) {
 				continue
 			}
@@ -631,6 +698,176 @@ func (p *ERAMPane) drawGeoMaps(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	cb.LineWidth(1)
 	cb.DisableScissor()
+}
+
+func (p *ERAMPane) ensureERAMDashedLineCmdBuffers(
+	paneExtent redsmath.Rect,
+	transforms radar.LatLonTransformations,
+) {
+	if p == nil || paneExtent.Empty() {
+		return
+	}
+
+	key := eramMapDashCacheKey{
+		PaneWidth:            paneExtent.Width(),
+		PaneHeight:           paneExtent.Height(),
+		RangeNM:              p.rangeNM,
+		LongitudeScaleFactor: p.longitudeScaleFactor,
+	}
+	if p.maps.dashCacheValid && p.maps.dashCacheKey == key {
+		return
+	}
+
+	for i := range p.maps.lines {
+		batch := &p.maps.lines[i]
+		if batch.Key.Style == eramMapLineSolid {
+			continue
+		}
+
+		if batch.Cmd != nil {
+			renderer.ReturnCmdBuffer(batch.Cmd)
+			batch.Cmd = nil
+		}
+		if len(batch.Polylines) == 0 {
+			continue
+		}
+
+		builder := renderer.GetLinesBuilder()
+		appendERAMDashedPolylines(
+			builder,
+			batch.Polylines,
+			transforms,
+			batch.Key.Style,
+		)
+
+		cb := renderer.GetCmdBuffer()
+		builder.GenerateCommands(cb)
+		renderer.ReturnLinesBuilder(builder)
+		if cb.Empty() {
+			renderer.ReturnCmdBuffer(cb)
+			continue
+		}
+		batch.Cmd = cb
+	}
+
+	p.maps.dashCacheKey = key
+	p.maps.dashCacheValid = true
+}
+
+func appendERAMDashedPolylines(
+	builder *renderer.LinesBuilder,
+	polylines [][]renderer.PointVertex,
+	transforms radar.LatLonTransformations,
+	style eramMapLineStyle,
+) {
+	if builder == nil {
+		return
+	}
+
+	pattern, factor, patternLength := eramMapStipple(style)
+	if factor <= 0 || patternLength <= 0 {
+		return
+	}
+
+	for _, geographic := range polylines {
+		if len(geographic) < 2 {
+			continue
+		}
+
+		// CRC stores cumulative screen distance on each LineStrip vertex and its
+		// fragment shader evaluates:
+		//
+		//   round(distance / stippleFactor) % patternLength
+		//
+		// Keep one cumulative distance for the entire strip so the dash phase
+		// continues through bends rather than restarting at every segment.
+		distance := float32(0)
+		prevGeo := geographic[0]
+		prevScreen := eramMapScreenDistancePoint(prevGeo, transforms)
+
+		for i := 1; i < len(geographic); i++ {
+			nextGeo := geographic[i]
+			nextScreen := eramMapScreenDistancePoint(nextGeo, transforms)
+			dx := nextScreen.X - prevScreen.X
+			dy := nextScreen.Y - prevScreen.Y
+			segmentLength := float32(math.Hypot(float64(dx), float64(dy)))
+			if segmentLength <= 1e-5 {
+				prevGeo = nextGeo
+				prevScreen = nextScreen
+				continue
+			}
+
+			consumed := float32(0)
+			for consumed < segmentLength {
+				cell := int(math.Floor(float64(distance/factor) + 0.5))
+				bit := cell % patternLength
+				nextBoundary := (float32(cell) + 0.5) * factor
+				if nextBoundary <= distance+1e-5 {
+					nextBoundary += factor
+				}
+
+				step := nextBoundary - distance
+				if left := segmentLength - consumed; step > left {
+					step = left
+				}
+				if step <= 1e-5 {
+					// Guard against floating-point equality at a stipple boundary.
+					step = segmentLength - consumed
+				}
+
+				if pattern&(uint32(1)<<uint(bit)) != 0 {
+					t0 := consumed / segmentLength
+					t1 := (consumed + step) / segmentLength
+					a := lerpERAMMapPoint(prevGeo, nextGeo, t0)
+					b := lerpERAMMapPoint(prevGeo, nextGeo, t1)
+					builder.AddLine(a, b)
+				}
+
+				consumed += step
+				distance += step
+			}
+
+			prevGeo = nextGeo
+			prevScreen = nextScreen
+		}
+	}
+}
+
+func lerpERAMMapPoint(a, b renderer.PointVertex, t float32) renderer.PointVertex {
+	return renderer.PointVertex{
+		X: a.X + (b.X-a.X)*t,
+		Y: a.Y + (b.Y-a.Y)*t,
+	}
+}
+
+func eramMapScreenDistancePoint(
+	point renderer.PointVertex,
+	transforms radar.LatLonTransformations,
+) renderer.PointVertex {
+	window := transforms.WindowFromLatLon(float64(point.Y), float64(point.X))
+
+	// CRC measures stipple distance in logical display coordinates before the
+	// framebuffer/DPI scale is applied. Keep the floating-point position here:
+	// unlike CRC's System.Drawing.Point helper this avoids a <=1 px quantization
+	// dependency on pan, so the expensive dashed geometry only needs rebuilding
+	// when range or viewport scale changes.
+	return renderer.PointVertex{X: window.X, Y: window.Y}
+}
+
+// eramMapStipple mirrors Vatsim.Nas.Render.Engine's LineStyleExtensions.
+// The pattern bits are consumed least-significant bit first by CRC's line
+// shader. Factor and pattern length are measured in logical screen pixels/cells.
+func eramMapStipple(style eramMapLineStyle) (pattern uint32, factor float32, patternLength int) {
+	switch style {
+	case eramMapLineShortDashed:
+		return 1, 12, 2
+	case eramMapLineLongDashed:
+		return 1, 24, 2
+	case eramMapLineLongDashShortDash:
+		return 11, 12, 5
+	default:
+		return 0, 0, 0
+	}
 }
 
 func (p *ERAMPane) orderedMapBCGs() [eramMapBCGCount]int {
@@ -653,9 +890,13 @@ func (p *ERAMPane) releaseGeoMapCmdBuffers() {
 	}
 
 	for _, batch := range p.maps.lines {
-		renderer.ReturnCmdBuffer(batch.Cmd)
+		if batch.Cmd != nil {
+			renderer.ReturnCmdBuffer(batch.Cmd)
+		}
 	}
 	p.maps.lines = nil
+	p.maps.dashCacheKey = eramMapDashCacheKey{}
+	p.maps.dashCacheValid = false
 }
 
 func compareMapLineBatchKeys(a, b eramMapLineBatchKey) int {
