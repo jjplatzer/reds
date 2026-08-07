@@ -10,37 +10,10 @@ import (
 	"github.com/juliusplatzer/reds/renderer"
 )
 
-// CRC implements a number of ERAM display objects as MovableViewBase views:
-// left-click enters captured placement mode and middle-click requests a small
-// settings menu associated with the view. Keep that interaction machinery
-// independent of the clock so later RA/MCA/list views can share it.
-type eramViewKind uint8
-
-const (
-	eramViewNone eramViewKind = iota
-	eramViewTime
-)
-
-type eramViewAnchor uint8
-
-const (
-	eramViewAnchorTopLeft eramViewAnchor = iota
-	eramViewAnchorTopRight
-	eramViewAnchorBottomLeft
-	eramViewAnchorBottomRight
-)
-
-type eramAnchoredLocation struct {
-	Offset redsmath.Vec2
-	Anchor eramViewAnchor
-}
-
-type eramViewMove struct {
-	View     eramViewKind
-	Position redsmath.Vec2
-	Size     redsmath.Vec2
-}
-
+// ERAM has many middle-click configuration menus attached to movable views.
+// Keep the menu model/render/input path generic: each view contributes only a
+// menu spec and action handling, while placement, hit testing, row chrome,
+// auto-repeat and cursor warping are shared.
 type eramViewMenuKind uint8
 
 const (
@@ -92,14 +65,24 @@ type eramViewMenuRepeat struct {
 	Next        time.Time
 }
 
+// eramViewMenuAnchor describes which host edge is pinned to a popup that was
+// placed beside it. Once a menu opens its Origin never follows later host-size
+// changes; instead the adjacent host edge stays pinned. This is what CRC does
+// in practice and is also how VICE's viewPopupPlacement works.
+type eramViewMenuAnchor uint8
+
+const (
+	eramViewMenuAnchorNone  eramViewMenuAnchor = iota
+	eramViewMenuAnchorRight                    // host right edge == PinX (menu is on the right)
+	eramViewMenuAnchorLeft                     // host left edge == PinX (menu is on the left)
+)
+
 type eramViewMenuState struct {
 	Kind   eramViewMenuKind
+	Origin redsmath.Vec2
+	Anchor eramViewMenuAnchor
+	PinX   float32
 	Repeat *eramViewMenuRepeat
-}
-
-type eramViewUIState struct {
-	Moving *eramViewMove
-	Menu   eramViewMenuState
 }
 
 const (
@@ -107,7 +90,18 @@ const (
 	eramViewMenuWidthChars     = 11
 	eramViewMenuBorderWidth    = 1
 	eramViewMenuCloseWidthChar = 2
+	// CRC Text has a fixed 3 px top and bottom pad. Header and MenuPickArea
+	// each add a 1 px border around that Text node.
+	eramViewMenuTextPadY = 3
 )
+
+type eramViewMenuMetrics struct {
+	Width       float32
+	RowHeight   float32
+	CloseWidth  float32
+	CharAdvance int
+	TextHeight  int
+}
 
 type eramViewMenuRowLayout struct {
 	Row    eramViewMenuRow
@@ -120,155 +114,6 @@ type eramViewMenuLayout struct {
 	Close  redsmath.Rect
 	Rows   [maxERAMViewMenuRows]eramViewMenuRowLayout
 	Count  int
-}
-
-func resolveERAMAnchoredLocation(location eramAnchoredLocation, size, paneSize redsmath.Vec2) redsmath.Vec2 {
-	switch location.Anchor {
-	case eramViewAnchorTopRight:
-		return redsmath.Vec2{X: paneSize.X - location.Offset.X - size.X, Y: location.Offset.Y}
-	case eramViewAnchorBottomLeft:
-		return redsmath.Vec2{X: location.Offset.X, Y: paneSize.Y - location.Offset.Y - size.Y}
-	case eramViewAnchorBottomRight:
-		return redsmath.Vec2{X: paneSize.X - location.Offset.X - size.X, Y: paneSize.Y - location.Offset.Y - size.Y}
-	default:
-		return location.Offset
-	}
-}
-
-// anchoredLocationForTopLeft mirrors LocatedViewBase.SetLocation in CRC. The
-// nearest horizontal/vertical edge becomes the persistence anchor so a moved
-// view stays against the same side when the display is resized.
-func anchoredLocationForTopLeft(topLeft, size, paneSize redsmath.Vec2) eramAnchoredLocation {
-	topLeft = clampERAMViewPosition(topLeft, size, paneSize)
-
-	leftOffset := topLeft.X
-	rightOffset := paneSize.X - topLeft.X - size.X
-	topOffset := topLeft.Y
-	bottomOffset := paneSize.Y - topLeft.Y - size.Y
-
-	anchorRight := size.X < paneSize.X && rightOffset < leftOffset
-	anchorBottom := size.Y < paneSize.Y && bottomOffset < topOffset
-
-	if size.X >= paneSize.X {
-		leftOffset = 0
-		anchorRight = false
-	}
-	if size.Y >= paneSize.Y {
-		topOffset = 0
-		anchorBottom = false
-	}
-
-	switch {
-	case anchorRight && anchorBottom:
-		return eramAnchoredLocation{Offset: redsmath.Vec2{X: maxFloat32(0, rightOffset), Y: maxFloat32(0, bottomOffset)}, Anchor: eramViewAnchorBottomRight}
-	case anchorRight:
-		return eramAnchoredLocation{Offset: redsmath.Vec2{X: maxFloat32(0, rightOffset), Y: maxFloat32(0, topOffset)}, Anchor: eramViewAnchorTopRight}
-	case anchorBottom:
-		return eramAnchoredLocation{Offset: redsmath.Vec2{X: maxFloat32(0, leftOffset), Y: maxFloat32(0, bottomOffset)}, Anchor: eramViewAnchorBottomLeft}
-	default:
-		return eramAnchoredLocation{Offset: redsmath.Vec2{X: maxFloat32(0, leftOffset), Y: maxFloat32(0, topOffset)}, Anchor: eramViewAnchorTopLeft}
-	}
-}
-
-func clampERAMViewPosition(position, size, paneSize redsmath.Vec2) redsmath.Vec2 {
-	maxX := maxFloat32(0, paneSize.X-size.X)
-	maxY := maxFloat32(0, paneSize.Y-size.Y)
-	position.X = minFloat32(maxFloat32(position.X, 0), maxX)
-	position.Y = minFloat32(maxFloat32(position.Y, 0), maxY)
-	return position
-}
-
-func minFloat32(a, b float32) float32 {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-func maxFloat32(a, b float32) float32 {
-	if a > b {
-		return a
-	}
-	return b
-}
-
-func (p *ERAMPane) viewBounds(kind eramViewKind, paneSize redsmath.Vec2) redsmath.Rect {
-	switch kind {
-	case eramViewTime:
-		return p.clockBounds(paneSize)
-	default:
-		return redsmath.Rect{}
-	}
-}
-
-func (p *ERAMPane) setViewTopLeft(kind eramViewKind, topLeft, size, paneSize redsmath.Vec2) {
-	switch kind {
-	case eramViewTime:
-		p.clock.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
-	}
-}
-
-func (p *ERAMPane) startViewMove(ctx *panes.Context, kind eramViewKind) {
-	if p == nil || ctx == nil || kind == eramViewNone {
-		return
-	}
-	bounds := p.viewBounds(kind, ctx.PaneSize())
-	if bounds.Empty() {
-		return
-	}
-	p.viewUI.Menu = eramViewMenuState{}
-	p.viewUI.Moving = &eramViewMove{
-		View:     kind,
-		Position: bounds.Min,
-		Size:     bounds.Size(),
-	}
-	// CRC StartMove repositions the cursor to the view's top-left. REDS has no
-	// mouse clipping primitive yet, but cursor warping preserves the placement
-	// interaction and the position itself is clamped every frame.
-	setPaneMousePosition(ctx, bounds.Min)
-}
-
-func (p *ERAMPane) consumeViewMoveInput(ctx *panes.Context) bool {
-	if p == nil || ctx == nil || p.viewUI.Moving == nil {
-		return false
-	}
-	move := p.viewUI.Moving
-	if ctx.Keyboard != nil && ctx.Keyboard.WasPressed(platform.KeyEscape) {
-		p.viewUI.Moving = nil
-		return true
-	}
-	if ctx.Mouse == nil {
-		return true
-	}
-
-	move.Position = clampERAMViewPosition(ctx.Mouse.Pos, move.Size, ctx.PaneSize())
-	if ctx.Mouse.WasPressed(platform.MouseButtonLeft) || ctx.Mouse.WasPressed(platform.MouseButtonMiddle) {
-		p.setViewTopLeft(move.View, move.Position, move.Size, ctx.PaneSize())
-		p.viewUI.Moving = nil
-	}
-	// Captured move input owns every mouse button until placement or Escape,
-	// matching MovableViewBase's CapturedInput behavior in CRC.
-	return true
-}
-
-func (p *ERAMPane) openViewMenu(ctx *panes.Context, kind eramViewMenuKind) {
-	if p == nil || ctx == nil || kind == eramViewMenuNone {
-		return
-	}
-	p.viewUI.Menu = eramViewMenuState{Kind: kind}
-	if layout, ok := p.buildViewMenuLayout(ctx, kind); ok {
-		setPaneMousePosition(ctx, redsmath.Vec2{
-			X: (layout.Close.Min.X + layout.Close.Max.X) * 0.5,
-			Y: (layout.Close.Min.Y + layout.Close.Max.Y) * 0.5,
-		})
-	}
-}
-
-func (p *ERAMPane) closeViewMenu() {
-	if p == nil {
-		return
-	}
-	p.viewUI.Menu = eramViewMenuState{}
 }
 
 func (p *ERAMPane) activeViewMenuSpec(kind eramViewMenuKind) (eramViewMenuSpec, bool) {
@@ -319,79 +164,163 @@ func (p *ERAMPane) viewMenuTargetBounds(kind eramViewMenuKind, paneSize redsmath
 	}
 }
 
+func (p *ERAMPane) viewMenuMetrics(kind eramViewMenuKind) (eramViewMenuMetrics, bool) {
+	var metrics eramViewMenuMetrics
+	if p == nil {
+		return metrics, false
+	}
+	if _, ok := p.activeViewMenuSpec(kind); !ok {
+		return metrics, false
+	}
+	p.ensureToolbarFont()
+	font := p.toolbar.font
+	if font == nil {
+		return metrics, false
+	}
+	charAdvance, _ := font.CharSize(eramViewMenuFontSize)
+	_, textHeight := font.MeasureText("0", eramViewMenuFontSize)
+	if charAdvance <= 0 || textHeight <= 0 {
+		return metrics, false
+	}
+
+	// MenuPickAreaBase MinWidth is 11 characters of content. Non-centered
+	// rows add a 0.5-character left Padding, which makes them the widest child
+	// and therefore determines the root Column width in CRC.
+	leftPad := int(float64(charAdvance) * 0.5)
+	metrics.Width = float32(eramViewMenuWidthChars*charAdvance + leftPad + 2*eramViewMenuBorderWidth)
+	metrics.RowHeight = float32(textHeight + 2*eramViewMenuTextPadY + 2*eramViewMenuBorderWidth)
+	// ClosePickArea uses MinWidth=2 chars with addPixels=-1 plus a 1 px border;
+	// its -1 left margin makes the header/close borders overlap by one pixel.
+	metrics.CloseWidth = float32(eramViewMenuCloseWidthChar*charAdvance + 1)
+	metrics.CharAdvance = charAdvance
+	metrics.TextHeight = textHeight
+	return metrics, true
+}
+
+func viewMenuHeight(rowHeight float32, rowCount int) float32 {
+	if rowCount <= 0 {
+		return rowHeight
+	}
+	// The header does not overlap the first MenuPickArea. Each subsequent
+	// MenuPickArea has Margin.Bottom=-1, so content-row borders overlap by 1 px.
+	return rowHeight + float32(rowCount)*rowHeight - float32(maxInt(0, rowCount-1))
+}
+
+func (p *ERAMPane) openViewMenu(ctx *panes.Context, kind eramViewMenuKind) {
+	if p == nil || ctx == nil || kind == eramViewMenuNone {
+		return
+	}
+	spec, ok := p.activeViewMenuSpec(kind)
+	if !ok {
+		return
+	}
+	metrics, ok := p.viewMenuMetrics(kind)
+	if !ok {
+		return
+	}
+
+	// Resolve the target before installing menu state so clockBounds doesn't
+	// attempt to pin against a half-initialized popup.
+	target := p.viewMenuTargetBounds(kind, ctx.PaneSize())
+	if target.Empty() {
+		return
+	}
+	menuHeight := viewMenuHeight(metrics.RowHeight, spec.RowCount)
+	paneSize := ctx.PaneSize()
+
+	x := target.Max.X
+	anchor := eramViewMenuAnchorRight
+	pinX := target.Max.X
+	if x+metrics.Width > paneSize.X {
+		if target.Min.X-metrics.Width >= 0 {
+			x = target.Min.X - metrics.Width
+			anchor = eramViewMenuAnchorLeft
+			pinX = target.Min.X
+		} else {
+			x = maxFloat32(0, paneSize.X-metrics.Width)
+			anchor = eramViewMenuAnchorRight
+			pinX = x
+		}
+	}
+	if x < 0 {
+		x = 0
+		anchor = eramViewMenuAnchorLeft
+		pinX = x + metrics.Width
+	}
+	y := target.Min.Y
+	if y < 0 {
+		y = 0
+	}
+	if y+menuHeight > paneSize.Y {
+		y = maxFloat32(0, paneSize.Y-menuHeight)
+	}
+
+	p.viewUI.Menu = eramViewMenuState{
+		Kind:   kind,
+		Origin: redsmath.Vec2{X: x, Y: y},
+		Anchor: anchor,
+		PinX:   pinX,
+	}
+	if layout, ok := p.buildViewMenuLayout(ctx, kind); ok {
+		setPaneMousePosition(ctx, redsmath.Vec2{
+			X: (layout.Close.Min.X + layout.Close.Max.X) * 0.5,
+			Y: (layout.Close.Min.Y + layout.Close.Max.Y) * 0.5,
+		})
+	}
+}
+
+func (p *ERAMPane) closeViewMenu() {
+	if p == nil {
+		return
+	}
+	p.viewUI.Menu = eramViewMenuState{}
+}
+
+func (p *ERAMPane) pinnedViewTopLeft(kind eramViewMenuKind, current, size, paneSize redsmath.Vec2) (redsmath.Vec2, bool) {
+	if p == nil || p.viewUI.Menu.Kind != kind {
+		return current, false
+	}
+	position := current
+	switch p.viewUI.Menu.Anchor {
+	case eramViewMenuAnchorRight:
+		position.X = p.viewUI.Menu.PinX - size.X
+	case eramViewMenuAnchorLeft:
+		position.X = p.viewUI.Menu.PinX
+	default:
+		return current, false
+	}
+	return clampERAMViewPosition(position, size, paneSize), true
+}
+
 func (p *ERAMPane) buildViewMenuLayout(ctx *panes.Context, kind eramViewMenuKind) (eramViewMenuLayout, bool) {
 	var layout eramViewMenuLayout
-	if p == nil || ctx == nil {
+	if p == nil || ctx == nil || p.viewUI.Menu.Kind != kind {
 		return layout, false
 	}
 	spec, ok := p.activeViewMenuSpec(kind)
 	if !ok {
 		return layout, false
 	}
-
-	p.ensureToolbarFont()
-	if p.toolbar.font == nil {
-		return layout, false
-	}
-	charAdvance, lineHeight := p.toolbar.font.CharSize(eramViewMenuFontSize)
-	if charAdvance <= 0 || lineHeight <= 0 {
+	metrics, ok := p.viewMenuMetrics(kind)
+	if !ok {
 		return layout, false
 	}
 
-	menuWidth := float32(eramViewMenuWidthChars*charAdvance + 2*eramViewMenuBorderWidth)
-	headerHeight := float32(lineHeight + 2*eramViewMenuBorderWidth)
-	centeredToggleHeight := headerHeight
-	paddedRowHeight := float32(lineHeight + int(float64(lineHeight)*0.5) + 2*eramViewMenuBorderWidth)
+	x := p.viewUI.Menu.Origin.X
+	y := p.viewUI.Menu.Origin.Y
+	menuHeight := viewMenuHeight(metrics.RowHeight, spec.RowCount)
+	layout.Bounds = redsmath.NewRect(x, y, x+metrics.Width, y+menuHeight)
+	layout.Close = redsmath.NewRect(layout.Bounds.Max.X-metrics.CloseWidth, y, layout.Bounds.Max.X, y+metrics.RowHeight)
+	layout.Title = redsmath.NewRect(x, y, layout.Close.Min.X, y+metrics.RowHeight)
 
-	// CRC nodes overlap successive 1 px borders (Margin.Bottom = -1).
-	menuHeight := headerHeight
+	rowY := y + metrics.RowHeight
 	for i := 0; i < spec.RowCount; i++ {
-		menuHeight -= 1
-		if spec.Rows[i].Centered {
-			menuHeight += centeredToggleHeight
-		} else {
-			menuHeight += paddedRowHeight
-		}
-	}
-
-	target := p.viewMenuTargetBounds(kind, ctx.PaneSize())
-	if target.Empty() {
-		return layout, false
-	}
-	xRight := target.Max.X
-	xLeft := target.Min.X - menuWidth
-	x := xRight
-	// GetStandardLocationOptions tries the view's right edge first and then its
-	// left edge with the menu right-aligned to the view's left edge.
-	if !(xRight > 0 && xRight+menuWidth < ctx.PaneSize().X) && xLeft > 0 && xLeft+menuWidth < ctx.PaneSize().X {
-		x = xLeft
-	}
-	y := target.Min.Y
-	if y < 0 {
-		y = 0
-	}
-	if y+menuHeight > ctx.PaneSize().Y {
-		y = maxFloat32(0, ctx.PaneSize().Y-menuHeight)
-	}
-
-	layout.Bounds = redsmath.NewRect(x, y, x+menuWidth, y+menuHeight)
-	closeContentWidth := eramViewMenuCloseWidthChar*charAdvance - 1
-	closeWidth := float32(closeContentWidth + 2*eramViewMenuBorderWidth)
-	layout.Close = redsmath.NewRect(layout.Bounds.Max.X-closeWidth, y, layout.Bounds.Max.X, y+headerHeight)
-	layout.Title = redsmath.NewRect(x, y, layout.Close.Min.X, y+headerHeight)
-
-	rowY := y + headerHeight - 1
-	for i := 0; i < spec.RowCount; i++ {
-		height := paddedRowHeight
-		if spec.Rows[i].Centered {
-			height = centeredToggleHeight
-		}
 		layout.Rows[i] = eramViewMenuRowLayout{
 			Row:    spec.Rows[i],
-			Bounds: redsmath.NewRect(x, rowY, x+menuWidth, rowY+height),
+			Bounds: redsmath.NewRect(x, rowY, x+metrics.Width, rowY+metrics.RowHeight),
 		}
 		layout.Count++
-		rowY += height - 1
+		rowY += metrics.RowHeight - 1
 	}
 	return layout, true
 }
@@ -532,33 +461,8 @@ func maxInt(a, b int) int {
 	return b
 }
 
-func (p *ERAMPane) drawViewUI(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
-	if p == nil || ctx == nil || zcb == nil || ctx.Renderer == nil {
-		return
-	}
-	p.drawViewSettingsMenu(ctx, zcb)
-	p.drawViewMoveFrame(ctx, zcb)
-}
-
-func (p *ERAMPane) drawViewMoveFrame(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
-	if p.viewUI.Moving == nil {
-		return
-	}
-	move := p.viewUI.Moving
-	bounds := redsmath.NewRect(move.Position.X, move.Position.Y, move.Position.X+move.Size.X, move.Position.Y+move.Size.Y)
-	x, y, width, height := ctx.PaneFramebufferRect()
-	cb := zcb.At(zViewMoveFrame)
-	cb.Viewport(x, y, width, height)
-	cb.Scissor(x, y, width, height)
-	cb.LoadProjectionMatrix(ctx.ScreenProjection())
-	cb.DisableBlend()
-	drawBorderOnly(cb, bounds, applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness), 1)
-	cb.Blend()
-	cb.DisableScissor()
-}
-
 func (p *ERAMPane) drawViewSettingsMenu(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
-	if p.viewUI.Menu.Kind == eramViewMenuNone {
+	if p == nil || ctx == nil || zcb == nil || ctx.Renderer == nil || p.viewUI.Menu.Kind == eramViewMenuNone {
 		return
 	}
 	layout, ok := p.buildViewMenuLayout(ctx, p.viewUI.Menu.Kind)
@@ -566,6 +470,10 @@ func (p *ERAMPane) drawViewSettingsMenu(ctx *panes.Context, zcb *renderer.ZCmdBu
 		return
 	}
 	spec, ok := p.activeViewMenuSpec(p.viewUI.Menu.Kind)
+	if !ok {
+		return
+	}
+	metrics, ok := p.viewMenuMetrics(p.viewUI.Menu.Kind)
 	if !ok {
 		return
 	}
@@ -618,8 +526,7 @@ func (p *ERAMPane) drawViewSettingsMenu(ctx *panes.Context, zcb *renderer.ZCmdBu
 	td.SetFont(font)
 	addCenteredMenuText(td, font, spec.Title, layout.Title, eramViewMenuFontSize, textColor, gray.ToRGBA())
 	addCenteredMenuText(td, font, "X", layout.Close, eramViewMenuFontSize, textColor, gray.ToRGBA())
-	charAdvance, _ := font.CharSize(eramViewMenuFontSize)
-	leftPad := float32(int(float64(charAdvance) * 0.5))
+	leftPad := float32(int(float64(metrics.CharAdvance) * 0.5))
 	for i := 0; i < layout.Count; i++ {
 		rowLayout := layout.Rows[i]
 		row := rowLayout.Row
@@ -643,9 +550,12 @@ func (p *ERAMPane) drawViewSettingsMenu(ctx *panes.Context, zcb *renderer.ZCmdBu
 		if row.Centered {
 			addCenteredMenuText(td, font, label, rowLayout.Bounds, eramViewMenuFontSize, textColor, background.ToRGBA())
 		} else {
+			// CRC's Text node contributes 3 px top/bottom padding inside the
+			// MenuPickArea. Centering by measured glyph height reproduces the
+			// same baseline and avoids the vertically cramped appearance.
 			td.AddText(label, redsmath.Vec2{
 				X: rowLayout.Bounds.Min.X + eramViewMenuBorderWidth + leftPad,
-				Y: rowLayout.Bounds.Min.Y + eramViewMenuBorderWidth,
+				Y: rowLayout.Bounds.Min.Y + (rowLayout.Bounds.Height()-float32(metrics.TextHeight))*0.5,
 			}, renderer.TextStyle{
 				Size:       eramViewMenuFontSize,
 				Color:      textColor,
@@ -683,14 +593,4 @@ func addCenteredMenuText(
 		X: bounds.Min.X + (bounds.Width()-float32(w))*0.5,
 		Y: bounds.Min.Y + (bounds.Height()-float32(h))*0.5,
 	}, renderer.TextStyle{Size: fontSize, Color: color, Background: background})
-}
-
-func setPaneMousePosition(ctx *panes.Context, panePosition redsmath.Vec2) {
-	if ctx == nil || ctx.Platform == nil {
-		return
-	}
-	ctx.Platform.SetMousePosition(redsmath.Vec2{
-		X: ctx.PaneRect.Min.X + panePosition.X,
-		Y: ctx.PaneRect.Min.Y + panePosition.Y,
-	})
 }

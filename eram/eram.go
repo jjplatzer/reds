@@ -264,7 +264,8 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawGeoMaps(ctx, zcb)
 	p.drawToolbar(ctx, zcb)
 	p.drawClock(ctx, zcb)
-	p.drawViewUI(ctx, zcb)
+	p.drawViewSettingsMenu(ctx, zcb)
+	p.drawViewMoveFrame(ctx, zcb)
 	p.renderCursor(ctx, zcb)
 }
 
