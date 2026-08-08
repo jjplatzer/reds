@@ -99,6 +99,7 @@ type ERAMPane struct {
 	buttonBrightness          int
 	borderBrightness          int
 	cursorBrightness          int
+	cursorSize                int
 	textBrightness            int
 	toolbarBorderBrightness   int
 	pairedTargetBrightness    int
@@ -194,6 +195,7 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 		buttonBrightness:          defaultButtonBrightness,
 		borderBrightness:          defaultBorderBrightness,
 		cursorBrightness:          defaultCursorBrightness,
+		cursorSize:                defaultCursorSize,
 		textBrightness:            defaultTextBrightness,
 		toolbarBorderBrightness:   defaultToolbarBorderBrightness,
 		pairedTargetBrightness:    defaultPairedTargetBrightness,
