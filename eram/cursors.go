@@ -177,8 +177,8 @@ func (p *ERAMPane) showInvalidSelectionCursor() {
 		Type:  eramCursorInvalidSelection,
 		Until: time.Now().Add(invalidCursorDuration),
 	}
-	if p.sounds != nil {
-		p.sounds.Play(eramSoundError)
+	if p.audio != nil {
+		p.audio.Play(eramAudioError)
 	}
 }
 

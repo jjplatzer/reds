@@ -144,7 +144,7 @@ type ERAMPane struct {
 
 	cursors         CursorSet
 	transientCursor eramTransientCursor
-	sounds          *eramSoundManager
+	audio           *eramAudioManager
 	panDrag         *eramPanDrag
 }
 
@@ -224,7 +224,7 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 
 	// CRC always ensures one special TOOLBAR control tear-off exists at
 	// TopLeft (90, 71). It remains present even when MASTER TOOLBAR is hidden.
-	pane.sounds = newERAMSoundManager(logger.With(slog.String("component", "audio")))
+	pane.audio = newERAMAudioManager(logger.With(slog.String("component", "audio")))
 	pane.initializeToolbarState()
 	pane.initializeClockState()
 	pane.initializeAreaStates()

@@ -1428,6 +1428,9 @@ func (p *ERAMPane) toolbarButtonBackground(layout toolbarButtonLayout) renderer.
 		}
 		return toolbarBlue
 	case toolbarCommandButton:
+		if layout.Spec.Active {
+			return toolbarBurntCoral
+		}
 		return toolbarTeal
 	case toolbarIncDecButton:
 		return toolbarIncDecGreen

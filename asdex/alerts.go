@@ -1,20 +1,16 @@
 package asdex
 
 import (
-	"bytes"
 	"encoding/binary"
-	"fmt"
 	"log/slog"
-	stdmath "math"
 	"strings"
 	"sync"
 	"time"
 
 	redsmath "github.com/juliusplatzer/reds/math"
+	"github.com/juliusplatzer/reds/platform"
 	"github.com/juliusplatzer/reds/renderer"
 	"github.com/juliusplatzer/reds/util"
-
-	"github.com/ebitengine/oto/v3"
 )
 
 const (
@@ -386,24 +382,16 @@ func renderAlertBorder(cb *renderer.CmdBuffer, rect redsmath.Rect) {
 }
 
 type AuralAlertManager struct {
-	ctx   *oto.Context
-	ready <-chan struct{}
+	player *platform.AudioPlayer
 
 	sounds map[SafetyAuralAlert][]byte
 	queue  []SafetyAuralAlert
 
-	current *oto.Player
+	current *platform.AudioPlayback
 	playing bool
 	volume  int
 	mu      sync.Mutex
 }
-
-var (
-	auralOtoContextOnce sync.Once
-	auralOtoContext     *oto.Context
-	auralOtoReady       <-chan struct{}
-	auralOtoContextErr  error
-)
 
 func NewAuralAlertManager() *AuralAlertManager {
 	manager := &AuralAlertManager{
@@ -412,7 +400,7 @@ func NewAuralAlertManager() *AuralAlertManager {
 	}
 	manager.loadSounds()
 
-	ctx, ready, err := sharedAuralOtoContext()
+	player, err := platform.NewAudioPlayer()
 	if err != nil {
 		slog.Warn(
 			"Aural alerts disabled",
@@ -421,28 +409,8 @@ func NewAuralAlertManager() *AuralAlertManager {
 		return manager
 	}
 
-	manager.ctx = ctx
-	manager.ready = ready
+	manager.player = player
 	return manager
-}
-
-func sharedAuralOtoContext() (*oto.Context, <-chan struct{}, error) {
-	auralOtoContextOnce.Do(func() {
-		ctx, ready, err := oto.NewContext(&oto.NewContextOptions{
-			SampleRate:   44100,
-			ChannelCount: 2,
-			Format:       oto.FormatSignedInt16LE,
-		})
-		if err != nil {
-			auralOtoContextErr = err
-			return
-		}
-
-		auralOtoContext = ctx
-		auralOtoReady = ready
-	})
-
-	return auralOtoContext, auralOtoReady, auralOtoContextErr
 }
 
 func (m *AuralAlertManager) loadSounds() {
@@ -483,7 +451,7 @@ func (m *AuralAlertManager) loadSounds() {
 			continue
 		}
 
-		data, err := loadAuralPCM(path)
+		pcm, err := platform.DecodeWAV(util.LoadResourceBytes(path))
 		if err != nil {
 			slog.Warn(
 				"Aural alert sound disabled",
@@ -492,7 +460,7 @@ func (m *AuralAlertManager) loadSounds() {
 			)
 			continue
 		}
-		m.sounds[alert] = data
+		m.sounds[alert] = pcm.Data
 	}
 }
 
@@ -537,87 +505,8 @@ func safetyAuralAlertResourceName(alert SafetyAuralAlert) string {
 	}
 }
 
-func loadAuralPCM(path string) ([]byte, error) {
-	raw := util.LoadResourceBytes(path)
-	if len(raw) < 12 || string(raw[0:4]) != "RIFF" || string(raw[8:12]) != "WAVE" {
-		return nil, fmt.Errorf("not a RIFF/WAVE file")
-	}
-
-	offset := 12
-	var audioFormat uint16
-	var channels uint16
-	var sampleRate uint32
-	var bits uint16
-	var data []byte
-
-	for offset+8 <= len(raw) {
-		chunkID := string(raw[offset : offset+4])
-		chunkSize := int(binary.LittleEndian.Uint32(raw[offset+4 : offset+8]))
-		offset += 8
-		if chunkSize < 0 || offset+chunkSize > len(raw) {
-			return nil, fmt.Errorf("invalid WAV chunk")
-		}
-
-		switch chunkID {
-		case "fmt ":
-			if chunkSize < 16 {
-				return nil, fmt.Errorf("short fmt chunk")
-			}
-			audioFormat = binary.LittleEndian.Uint16(raw[offset : offset+2])
-			channels = binary.LittleEndian.Uint16(raw[offset+2 : offset+4])
-			sampleRate = binary.LittleEndian.Uint32(raw[offset+4 : offset+8])
-			bits = binary.LittleEndian.Uint16(raw[offset+14 : offset+16])
-		case "data":
-			data = append([]byte(nil), raw[offset:offset+chunkSize]...)
-		}
-
-		offset += chunkSize
-		if chunkSize%2 == 1 {
-			offset++
-		}
-	}
-
-	if len(data) == 0 {
-		return nil, fmt.Errorf("missing data chunk")
-	}
-
-	switch {
-	case audioFormat == 1 && channels == 2 && sampleRate == 44100 && bits == 16:
-		return data, nil
-	case audioFormat == 3 && channels == 2 && sampleRate == 44100 && bits == 32:
-		return float32PCMToInt16(data)
-	default:
-		return nil, fmt.Errorf(
-			"unsupported WAV format, expected PCM s16le or IEEE float32 stereo 44100Hz",
-		)
-	}
-}
-
-func float32PCMToInt16(data []byte) ([]byte, error) {
-	if len(data)%4 != 0 {
-		return nil, fmt.Errorf("invalid float32 PCM data length")
-	}
-
-	pcm := make([]byte, len(data)/2)
-	for input, output := 0, 0; input < len(data); input, output = input+4, output+2 {
-		sample := stdmath.Float32frombits(binary.LittleEndian.Uint32(data[input : input+4]))
-		if stdmath.IsNaN(float64(sample)) {
-			sample = 0
-		}
-		sample = clamp(sample, -1, 1)
-
-		scale := float32(32767)
-		if sample < 0 {
-			scale = 32768
-		}
-		scaled := int16(sample * scale)
-		binary.LittleEndian.PutUint16(pcm[output:output+2], uint16(scaled))
-	}
-	return pcm, nil
-}
-
 func (m *AuralAlertManager) Play(alerts []SafetyAuralAlert) {
-	if m == nil || len(alerts) == 0 || m.ctx == nil {
+	if m == nil || len(alerts) == 0 || m.player == nil {
 		return
 	}
 
@@ -643,12 +532,8 @@ func (m *AuralAlertManager) PlayVolumeTest() {
 }
 
 func (m *AuralAlertManager) playLoop() {
-	if m == nil || m.ctx == nil {
+	if m == nil || m.player == nil {
 		return
-	}
-
-	if m.ready != nil {
-		<-m.ready
 	}
 
 	for {
@@ -671,20 +556,21 @@ func (m *AuralAlertManager) playLoop() {
 		}
 
 		data = applyPCMVolume(data, volume)
-		player := m.ctx.NewPlayer(bytes.NewReader(data))
+		playback, err := m.player.PlayPCM(data)
+		if err != nil {
+			slog.Warn("Aural alert playback failed", slog.Any("error", err))
+			continue
+		}
 
 		m.mu.Lock()
-		m.current = player
+		m.current = playback
 		m.mu.Unlock()
 
-		player.Play()
-		for player.IsPlaying() {
-			time.Sleep(10 * time.Millisecond)
-		}
-		_ = player.Close()
+		playback.Wait()
+		_ = playback.Close()
 
 		m.mu.Lock()
-		if m.current == player {
+		if m.current == playback {
 			m.current = nil
 		}
 		m.mu.Unlock()
