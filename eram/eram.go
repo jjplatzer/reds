@@ -27,16 +27,18 @@ const (
 	defaultToolbarFontSize      = 1
 	defaultToolbarVisible       = true
 
-	zBackground              renderer.Z = -1000
-	zNexrad                  renderer.Z = -900
-	zMapData                 renderer.Z = -800
-	zLoweredMasterToolbar    renderer.Z = -700
-	zTimeViewSemiTransparent renderer.Z = -500
-	zTimeViewOpaque          renderer.Z = -400
-	zResponseAreaView        renderer.Z = 590
-	zMCAView                 renderer.Z = 600
-	zViewSettingsMenu        renderer.Z = 800
-	zViewMoveFrame           renderer.Z = 899
+	zBackground                   renderer.Z = -1000
+	zNexrad                       renderer.Z = -900
+	zMapData                      renderer.Z = -800
+	zLoweredMasterToolbar         renderer.Z = -700
+	zTimeViewSemiTransparent      renderer.Z = -500
+	zChecklistViewSemiTransparent renderer.Z = -490
+	zTimeViewOpaque               renderer.Z = -400
+	zChecklistViewOpaque          renderer.Z = -390
+	zResponseAreaView             renderer.Z = 590
+	zMCAView                      renderer.Z = 600
+	zViewSettingsMenu             renderer.Z = 800
+	zViewMoveFrame                renderer.Z = 899
 
 	minRangeNM              = 0.25
 	maxRangeNM              = 1300
@@ -77,8 +79,10 @@ func (s Sector) Label() string {
 }
 
 type Facility struct {
-	DefaultCenter LatLon   `json:"defaultCenter"`
-	Sectors       []Sector `json:"sectors"`
+	DefaultCenter           LatLon   `json:"defaultCenter"`
+	Sectors                 []Sector `json:"sectors"`
+	EmergencyChecklist      []string `json:"emergencyChecklist"`
+	PositionReliefChecklist []string `json:"positionReliefChecklist"`
 }
 
 // ERAMPane is the controller-selected ERAM situation display. The first
@@ -123,6 +127,7 @@ type ERAMPane struct {
 	clock                     eramClockState
 	mca                       eramMCAState
 	responseArea              eramResponseAreaState
+	checklist                 eramChecklistState
 	viewUI                    eramViewUIState
 	maps                      eramMapState
 
@@ -228,6 +233,7 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 	pane.initializeToolbarState()
 	pane.initializeClockState()
 	pane.initializeAreaStates()
+	pane.initializeChecklistState(facility)
 	pane.initializeMapState()
 	if err := pane.loadGeoMapMetadata(); err != nil {
 		return nil, err
@@ -274,6 +280,7 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawGeoMaps(ctx, zcb)
 	p.drawToolbar(ctx, zcb)
 	p.drawClock(ctx, zcb)
+	p.drawChecklist(ctx, zcb)
 	p.drawResponseArea(ctx, zcb)
 	p.drawMCA(ctx, zcb)
 	p.drawViewSettingsMenu(ctx, zcb)

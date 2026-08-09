@@ -18,6 +18,7 @@ type eramViewKind uint8
 const (
 	eramViewNone eramViewKind = iota
 	eramViewTime
+	eramViewChecklist
 	eramViewMCA
 	eramViewResponseArea
 )
@@ -267,6 +268,8 @@ func (p *ERAMPane) viewBounds(kind eramViewKind, paneSize redsmath.Vec2) redsmat
 	switch kind {
 	case eramViewTime:
 		return p.clockBounds(paneSize)
+	case eramViewChecklist:
+		return p.checklistBounds(paneSize)
 	case eramViewMCA:
 		return p.mcaBounds(paneSize)
 	case eramViewResponseArea:
@@ -280,6 +283,8 @@ func (p *ERAMPane) setViewTopLeft(kind eramViewKind, topLeft, size, paneSize red
 	switch kind {
 	case eramViewTime:
 		p.clock.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
+	case eramViewChecklist:
+		p.checklist.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
 	case eramViewMCA:
 		p.mca.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
 	case eramViewResponseArea:

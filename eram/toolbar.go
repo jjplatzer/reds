@@ -715,6 +715,17 @@ func (p *ERAMPane) toolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 		return spec
 	}
 
+	if id == "position-check" {
+		spec.Kind = toolbarToggleButton
+		spec.Active = p.checklist.active == eramChecklistPositionRelief
+		return spec
+	}
+	if id == "emergency-check" {
+		spec.Kind = toolbarToggleButton
+		spec.Active = p.checklist.active == eramChecklistEmergency
+		return spec
+	}
+
 	if id == toolbarMasterDisplay {
 		// CRC highlights MASTER TOOLBAR while the master toolbar is visible.
 		spec.Active = p.toolbarVisible
@@ -1774,6 +1785,15 @@ func (p *ERAMPane) toolbarControlEligible(layout toolbarButtonLayout) bool {
 func (p *ERAMPane) activateToolbarButton(layout toolbarButtonLayout, action toolbarPickAction, button platform.MouseButton) {
 	if layout.Spec.ID == toolbarDelete {
 		p.beginDeleteTearoffs()
+		return
+	}
+
+	if layout.Spec.ID == "position-check" {
+		p.toggleChecklist(eramChecklistPositionRelief)
+		return
+	}
+	if layout.Spec.ID == "emergency-check" {
+		p.toggleChecklist(eramChecklistEmergency)
 		return
 	}
 

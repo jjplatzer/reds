@@ -73,6 +73,9 @@ func (p *ERAMPane) consumeInput(ctx *panes.Context) {
 	if p.consumeClockInput(ctx) {
 		return
 	}
+	if p.consumeChecklistInput(ctx) {
+		return
+	}
 
 	// CRC's DELETE_TEAROFF_ACTIVE pick list still leaves the MCA/RA and view
 	// settings layers above the lowered toolbar, but removes SituationDisplay
