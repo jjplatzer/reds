@@ -12,15 +12,18 @@ import (
 )
 
 const (
-	// CRC EramDisplaySettings.CursorSize defaults to 1, which selects the
-	// first cursor loaded by EramDisplay: Eram1.cur.
-	defaultCursorAssetName = "Eram1"
-	zMouseCursor           = renderer.Z(1000)
+	// CRC EramDisplaySettings.CursorSize is 1..5 and directly selects
+	// Eram1.cur through Eram5.cur. The bitmap itself is not scaled.
+	defaultCursorSize = 1
+	minCursorSize     = 1
+	maxCursorSize     = 5
+
+	zMouseCursor = renderer.Z(1000)
 )
 
 type CursorSet struct {
-	cursor  *renderer.CursorBitmap
-	texture renderer.TextureID
+	cursors  [maxCursorSize]*renderer.CursorBitmap
+	textures [maxCursorSize]renderer.TextureID
 
 	loaded bool
 	err    error
@@ -35,28 +38,51 @@ func (cs *CursorSet) Load() error {
 	}
 
 	cs.loaded = true
-	cs.cursor = assets.EramCursors[defaultCursorAssetName]
-	if cs.cursor == nil {
-		cs.err = fmt.Errorf("ERAM cursor %s is missing", defaultCursorAssetName)
+	for size := minCursorSize; size <= maxCursorSize; size++ {
+		name := fmt.Sprintf("Eram%d", size)
+		cursor := assets.EramCursors[name]
+		if cursor == nil {
+			cs.err = fmt.Errorf("ERAM cursor %s is missing", name)
+			return cs.err
+		}
+		cs.cursors[size-1] = cursor
 	}
 	return cs.err
 }
 
-func (cs *CursorSet) textureForCursor(r renderer.Renderer) renderer.TextureID {
-	if cs == nil || cs.cursor == nil || r == nil {
+func (cs *CursorSet) cursorForSize(size int) *renderer.CursorBitmap {
+	if cs == nil {
+		return nil
+	}
+	if size < minCursorSize || size > maxCursorSize {
+		size = defaultCursorSize
+	}
+	return cs.cursors[size-1]
+}
+
+func (cs *CursorSet) textureForSize(r renderer.Renderer, size int) renderer.TextureID {
+	if cs == nil || r == nil {
 		return 0
 	}
-	if cs.texture != 0 {
-		return cs.texture
+	if size < minCursorSize || size > maxCursorSize {
+		size = defaultCursorSize
+	}
+	index := size - 1
+	cursor := cs.cursors[index]
+	if cursor == nil {
+		return 0
+	}
+	if cs.textures[index] != 0 {
+		return cs.textures[index]
 	}
 
-	cs.texture = r.CreateTextureRGBA(
-		cs.cursor.Width,
-		cs.cursor.Height,
-		cs.cursor.RGBABytes(),
+	cs.textures[index] = r.CreateTextureRGBA(
+		cursor.Width,
+		cursor.Height,
+		cursor.RGBABytes(),
 		true,
 	)
-	return cs.texture
+	return cs.textures[index]
 }
 
 func (p *ERAMPane) ensureCursorLoaded() {
@@ -86,7 +112,7 @@ func (p *ERAMPane) applyCursor(ctx *panes.Context) {
 	}
 
 	paneLocal := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
-	if !paneLocal.Contains(ctx.Mouse.Pos) || p.cursors.cursor == nil {
+	if !paneLocal.Contains(ctx.Mouse.Pos) || p.cursors.cursorForSize(p.cursorSize) == nil {
 		ctx.Platform.ClearCursorOverride()
 		return
 	}
@@ -101,12 +127,16 @@ func (p *ERAMPane) isPanning() bool {
 }
 
 func (p *ERAMPane) renderCursor(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
-	if p == nil || ctx == nil || zcb == nil || ctx.Mouse == nil || p.cursors.cursor == nil {
+	if p == nil || ctx == nil || zcb == nil || ctx.Mouse == nil {
 		return
 	}
 
-	cursor := p.cursors.cursor
-	textureID := p.cursors.textureForCursor(ctx.Renderer)
+	cursor := p.cursors.cursorForSize(p.cursorSize)
+	if cursor == nil {
+		return
+	}
+
+	textureID := p.cursors.textureForSize(ctx.Renderer, p.cursorSize)
 	if textureID == 0 {
 		return
 	}

@@ -48,6 +48,19 @@ func (p *ERAMPane) consumeInput(ctx *panes.Context) {
 		return
 	}
 
+	// ERAM keyboard entry is global command input and is displayed in the MCA
+	// Preview Area. Captured move/menu interactions above get first refusal.
+	p.consumeMCAKeyboard(ctx)
+
+	// CRC gives MCA higher pick precedence than the Response Area, and both are
+	// above ordinary semi-transparent views such as TIME.
+	if p.consumeMCAInput(ctx) {
+		return
+	}
+	if p.consumeResponseAreaInput(ctx) {
+		return
+	}
+
 	// The default clock is a semi-transparent view in CRC and therefore picks
 	// ahead of lowered toolbar/tearoff buttons.
 	if p.consumeClockInput(ctx) {

@@ -570,7 +570,7 @@ func baseToolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 	case "cursor-speed":
 		spec.Lines, spec.Kind, spec.NoControl = [2]string{"SPEED", "1"}, toolbarIncDecButton, true
 	case "cursor-size":
-		spec.Lines, spec.Kind, spec.NoControl = [2]string{"SIZE", "1"}, toolbarIncDecButton, true
+		spec.Lines, spec.Kind, spec.NoControl = [2]string{"SIZE", ""}, toolbarIncDecButton, true
 	case "audio-volume":
 		spec.Lines, spec.Kind, spec.NoControl = [2]string{"VOLUME", "5"}, toolbarIncDecButton, true
 
@@ -848,6 +848,8 @@ func (p *ERAMPane) toolbarButtonLines(spec toolbarButtonSpec) [2]string {
 		lines[1] = strconv.Itoa(p.borderBrightness)
 	case "cursor-brightness":
 		lines[1] = strconv.Itoa(p.cursorBrightness)
+	case "cursor-size":
+		lines[1] = strconv.Itoa(p.cursorSize)
 	case "toolbar-brightness":
 		lines[1] = strconv.Itoa(p.toolbarBrightness)
 	case "text-brightness":
@@ -1604,7 +1606,11 @@ func (p *ERAMPane) activateToolbarButton(layout toolbarButtonLayout, action tool
 
 	if layout.Spec.Kind == toolbarIncDecButton {
 		if p.activateToolbarIncDec(layout.Spec.ID, action) {
-			p.startToolbarRepeat(layout.Spec.ID, action, button)
+			if toolbarIncDecAutoRepeats(layout.Spec.ID) {
+				p.startToolbarRepeat(layout.Spec.ID, action, button)
+			} else {
+				p.toolbar.repeat = nil
+			}
 		}
 		return
 	}
@@ -1623,7 +1629,58 @@ func (p *ERAMPane) activateToolbarIncDec(id toolbarButtonID, action toolbarPickA
 		adjustBrightness(&p.maps.brightness[index], increment, 0, 100)
 		return true
 	}
+	if id == "cursor-size" {
+		p.adjustCursorSize(increment)
+		return true
+	}
 	return p.adjustToolbarBrightness(id, increment)
+}
+
+func toolbarIncDecAutoRepeats(id toolbarButtonID) bool {
+	if _, ok := mapBCGButtonIndex(id); ok {
+		return true
+	}
+
+	switch id {
+	case "backlight-brightness",
+		"button-brightness",
+		"background-brightness",
+		"border-brightness",
+		"cursor-brightness",
+		"toolbar-brightness",
+		"text-brightness",
+		"toolbar-border-brightness",
+		"paired-target-brightness",
+		"sd-border-brightness",
+		"unpaired-target-brightness",
+		"fdb-brightness",
+		"paired-history-brightness",
+		"unpaired-history-brightness",
+		"satcomm-brightness",
+		"ldb-brightness",
+		"on-frequency-brightness",
+		"weather-brightness",
+		"nexrad-brightness",
+		"fence-brightness",
+		"dbfel-brightness",
+		"outage-brightness",
+		"non-adsb-brightness":
+		return true
+	default:
+		return false
+	}
+}
+
+func (p *ERAMPane) adjustCursorSize(increment bool) {
+	if increment {
+		if p.cursorSize < maxCursorSize {
+			p.cursorSize++
+		}
+		return
+	}
+	if p.cursorSize > minCursorSize {
+		p.cursorSize--
+	}
 }
 
 func (p *ERAMPane) startToolbarRepeat(id toolbarButtonID, action toolbarPickAction, button platform.MouseButton) {

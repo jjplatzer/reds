@@ -33,6 +33,8 @@ const (
 	zLoweredMasterToolbar    renderer.Z = -700
 	zTimeViewSemiTransparent renderer.Z = -500
 	zTimeViewOpaque          renderer.Z = -400
+	zResponseAreaView        renderer.Z = 590
+	zMCAView                 renderer.Z = 600
 	zViewSettingsMenu        renderer.Z = 800
 	zViewMoveFrame           renderer.Z = 899
 
@@ -97,6 +99,7 @@ type ERAMPane struct {
 	buttonBrightness          int
 	borderBrightness          int
 	cursorBrightness          int
+	cursorSize                int
 	textBrightness            int
 	toolbarBorderBrightness   int
 	pairedTargetBrightness    int
@@ -118,6 +121,8 @@ type ERAMPane struct {
 	toolbarFontSize           int
 	toolbar                   toolbarState
 	clock                     eramClockState
+	mca                       eramMCAState
+	responseArea              eramResponseAreaState
 	viewUI                    eramViewUIState
 	maps                      eramMapState
 
@@ -190,6 +195,7 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 		buttonBrightness:          defaultButtonBrightness,
 		borderBrightness:          defaultBorderBrightness,
 		cursorBrightness:          defaultCursorBrightness,
+		cursorSize:                defaultCursorSize,
 		textBrightness:            defaultTextBrightness,
 		toolbarBorderBrightness:   defaultToolbarBorderBrightness,
 		pairedTargetBrightness:    defaultPairedTargetBrightness,
@@ -218,6 +224,7 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 	// TopLeft (90, 71). It remains present even when MASTER TOOLBAR is hidden.
 	pane.initializeToolbarState()
 	pane.initializeClockState()
+	pane.initializeAreaStates()
 	pane.initializeMapState()
 	if err := pane.loadGeoMapMetadata(); err != nil {
 		return nil, err
@@ -264,6 +271,8 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawGeoMaps(ctx, zcb)
 	p.drawToolbar(ctx, zcb)
 	p.drawClock(ctx, zcb)
+	p.drawResponseArea(ctx, zcb)
+	p.drawMCA(ctx, zcb)
 	p.drawViewSettingsMenu(ctx, zcb)
 	p.drawViewMoveFrame(ctx, zcb)
 	p.renderCursor(ctx, zcb)
