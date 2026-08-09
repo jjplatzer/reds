@@ -47,7 +47,7 @@
         "lat": 25.98185667,
         "lon": -76.699767
       },
-      "freq": 132.5
+      "freq": 133.5
     },
     {
       "id": "06",
@@ -373,5 +373,31 @@
       },
       "freq": 121.5
     }
+  ],
+  "emergencyChecklist": [
+    "AIRCRAFT ALTITUDE",
+    "FUEL REMAINING IN TIME",
+    "PILOT REPORTED WEATHER",
+    "PILOT CAPABILITY FOR IFR FLIGHT",
+    "TIME AND PLACE FOR LAST KNOWN POSITION",
+    "HEADING SINCE LAST KNOWN POSITION",
+    "AIRSPEED",
+    "NAVIGATION EQUIPMENT CAPABILITY",
+    "VISIBLE LANDMARK",
+    "AIRCRAFT COLOR",
+    "NUMBER OF PEOPLE ON BOARD",
+    "POINT OF DEPARTURE AND DESTINATION",
+    "EMERGENCY EQUIPMENT ON BOARD"
+  ],
+  "positionReliefChecklist": [
+    "STATUS INFORMATION AREA",
+    "WEATHER",
+    "EQUIPMENT",
+    "SPECIAL/MILITARY OPERATIONS",
+    "RESTRICTIONS",
+    "APPLICABLE NOTAMS",
+    "OTHER INFORMATION",
+    "NON RVSM APRVD ACFT OPS",
+    "TRAFFIC"
   ]
 }

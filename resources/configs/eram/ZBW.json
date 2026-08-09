@@ -275,6 +275,15 @@
       "freq": 118.825
     },
     {
+      "id": "96",
+      "name": "RCO",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 129.45
+    },
+    {
       "id": "97",
       "name": "ZBW Guard",
       "visualCenter": {
@@ -301,5 +310,23 @@
       },
       "freq": 127.65
     }
+  ],
+  "emergencyChecklist": [
+    "AIRCRAFT ID AND TYPE",
+    "NATURE OF EMERGENCY",
+    "PILOT'S DESIRES",
+    "AIRCRAFT ALTITUDE",
+    "FUEL REMAINING IN TIME",
+    "FLIGHT CONDITIONS/WEATHER",
+    "LAST KNOWN POSITION",
+    "NUMBER OF PEOPLE ON BOARD",
+    "HAZMAT ON BOARD"
+  ],
+  "positionReliefChecklist": [
+    "1. AIRPORTS",
+    "2. AIRSPACE",
+    "3. SPECIAL ACTIVITIES",
+    "4. ENROUTE WEATHER",
+    "5. TRAFFIC"
   ]
 }

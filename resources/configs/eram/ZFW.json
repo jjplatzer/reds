@@ -375,12 +375,31 @@
     },
     {
       "id": "99",
-      "name": "ZFW TMU",
+      "name": "TMU",
       "visualCenter": {
         "lat": 33.55328401,
         "lon": -97.43688567
       },
       "freq": 118.0
     }
+  ],
+  "emergencyChecklist": [
+    "AIRCRAFT CALLSIGN AND TYPE",
+    "NATURE OF EMERGENCY",
+    "PILOTS INTENTIONS",
+    "===================================",
+    "FUEL REMAINING IN TIME",
+    "NUMBER OF PEOPLE ON BOARD",
+    "POINT OF DEPARTURE AND DESTINATION",
+    "===================================",
+    "OTHER PERTINENT INFORMATION"
+  ],
+  "positionReliefChecklist": [
+    "SIAS",
+    "TRAFFIC MANAGEMENT INITIATIVES",
+    "SPECIAL USE AIRSPACE/SPECIAL ACTIVITIES",
+    "WEATHER/RIDES/ALTIMETERS",
+    "SURROUNDING AIRSPACE CONFIGURATIONS",
+    "TRAFFIC AND COMMUNICATION STATUS"
   ]
 }

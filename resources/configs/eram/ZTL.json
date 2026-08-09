@@ -401,6 +401,24 @@
       "freq": 124.375
     },
     {
+      "id": "51",
+      "name": "AREA 1",
+      "visualCenter": {
+        "lat": 33.90558407,
+        "lon": -83.96840667
+      },
+      "freq": 132.975
+    },
+    {
+      "id": "52",
+      "name": "ALL AREAS",
+      "visualCenter": {
+        "lat": 33.90558407,
+        "lon": -83.96840667
+      },
+      "freq": 132.975
+    },
+    {
       "id": "69",
       "name": "ZTL GUARD Combined",
       "visualCenter": {
@@ -454,5 +472,29 @@
       },
       "freq": 125.55
     }
+  ],
+  "emergencyChecklist": [
+    "NATURE OF EMERGENCY",
+    "FUEL REMAINING IN TIME",
+    "PIREP WX/IFR CAPABILITY",
+    "PILOT INTENTIONS",
+    "LAST KNOWN POSITION",
+    "HEADING & AIRSPEED",
+    "NAVIGATION EQUIPMENT",
+    "NAVAID SIGNALS RECEIVED",
+    "VISIBLE LANDMARKS",
+    "ACFT COLOR/SOULS"
+  ],
+  "positionReliefChecklist": [
+    "AIRSPACE VIEWER",
+    "EQUIPMENT STATUS",
+    "STAFFING",
+    "AIRPORT CONDITIONS",
+    "WEATHER",
+    "TMI/FLOW CONTROL PROGRAM",
+    "SPECIAL ACTIVITIES",
+    "SPECIAL INSTRUCTIONS",
+    "TRAINING IN PROGRESS",
+    "TRAFFIC INFORMATION"
   ]
 }
