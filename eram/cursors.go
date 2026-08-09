@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	stdmath "math"
+	"time"
 
 	"github.com/juliusplatzer/reds/eram/assets"
 	redsmath "github.com/juliusplatzer/reds/math"
@@ -18,12 +19,31 @@ const (
 	minCursorSize     = 1
 	maxCursorSize     = 5
 
-	zMouseCursor = renderer.Z(1000)
+	invalidCursorDuration = 500 * time.Millisecond
+	zMouseCursor          = renderer.Z(1000)
 )
+
+type eramCursorType uint8
+
+const (
+	eramCursorScope eramCursorType = iota
+	eramCursorDeletion
+	eramCursorInvalidSelection
+)
+
+type eramTransientCursor struct {
+	Type  eramCursorType
+	Until time.Time
+}
 
 type CursorSet struct {
 	cursors  [maxCursorSize]*renderer.CursorBitmap
 	textures [maxCursorSize]renderer.TextureID
+
+	deletion                *renderer.CursorBitmap
+	deletionTexture         renderer.TextureID
+	invalidSelection        *renderer.CursorBitmap
+	invalidSelectionTexture renderer.TextureID
 
 	loaded bool
 	err    error
@@ -47,6 +67,17 @@ func (cs *CursorSet) Load() error {
 		}
 		cs.cursors[size-1] = cursor
 	}
+
+	cs.deletion = assets.EramCursors["EramDeletion"]
+	if cs.deletion == nil {
+		cs.err = fmt.Errorf("ERAM cursor EramDeletion is missing")
+		return cs.err
+	}
+	cs.invalidSelection = assets.EramCursors["EramInvalidSelection"]
+	if cs.invalidSelection == nil {
+		cs.err = fmt.Errorf("ERAM cursor EramInvalidSelection is missing")
+		return cs.err
+	}
 	return cs.err
 }
 
@@ -58,6 +89,20 @@ func (cs *CursorSet) cursorForSize(size int) *renderer.CursorBitmap {
 		size = defaultCursorSize
 	}
 	return cs.cursors[size-1]
+}
+
+func (cs *CursorSet) cursorForType(cursorType eramCursorType, size int) *renderer.CursorBitmap {
+	if cs == nil {
+		return nil
+	}
+	switch cursorType {
+	case eramCursorDeletion:
+		return cs.deletion
+	case eramCursorInvalidSelection:
+		return cs.invalidSelection
+	default:
+		return cs.cursorForSize(size)
+	}
 }
 
 func (cs *CursorSet) textureForSize(r renderer.Renderer, size int) renderer.TextureID {
@@ -83,6 +128,64 @@ func (cs *CursorSet) textureForSize(r renderer.Renderer, size int) renderer.Text
 		true,
 	)
 	return cs.textures[index]
+}
+
+func (cs *CursorSet) textureForType(r renderer.Renderer, cursorType eramCursorType, size int) renderer.TextureID {
+	if cs == nil || r == nil {
+		return 0
+	}
+	switch cursorType {
+	case eramCursorDeletion:
+		if cs.deletion == nil {
+			return 0
+		}
+		if cs.deletionTexture == 0 {
+			cs.deletionTexture = r.CreateTextureRGBA(cs.deletion.Width, cs.deletion.Height, cs.deletion.RGBABytes(), true)
+		}
+		return cs.deletionTexture
+	case eramCursorInvalidSelection:
+		if cs.invalidSelection == nil {
+			return 0
+		}
+		if cs.invalidSelectionTexture == 0 {
+			cs.invalidSelectionTexture = r.CreateTextureRGBA(cs.invalidSelection.Width, cs.invalidSelection.Height, cs.invalidSelection.RGBABytes(), true)
+		}
+		return cs.invalidSelectionTexture
+	default:
+		return cs.textureForSize(r, size)
+	}
+}
+
+func (p *ERAMPane) activeCursorType() eramCursorType {
+	if p == nil {
+		return eramCursorScope
+	}
+	if p.transientCursor.Type != eramCursorScope && time.Now().Before(p.transientCursor.Until) {
+		return p.transientCursor.Type
+	}
+	if p.toolbar.deletingTearoffs {
+		return eramCursorDeletion
+	}
+	return eramCursorScope
+}
+
+func (p *ERAMPane) showInvalidSelectionCursor() {
+	if p == nil {
+		return
+	}
+	p.transientCursor = eramTransientCursor{
+		Type:  eramCursorInvalidSelection,
+		Until: time.Now().Add(invalidCursorDuration),
+	}
+	if p.sounds != nil {
+		p.sounds.Play(eramSoundError)
+	}
+}
+
+func (p *ERAMPane) clearTransientCursor() {
+	if p != nil {
+		p.transientCursor = eramTransientCursor{}
+	}
 }
 
 func (p *ERAMPane) ensureCursorLoaded() {
@@ -111,8 +214,9 @@ func (p *ERAMPane) applyCursor(ctx *panes.Context) {
 		return
 	}
 
+	cursorType := p.activeCursorType()
 	paneLocal := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
-	if !paneLocal.Contains(ctx.Mouse.Pos) || p.cursors.cursorForSize(p.cursorSize) == nil {
+	if !paneLocal.Contains(ctx.Mouse.Pos) || p.cursors.cursorForType(cursorType, p.cursorSize) == nil {
 		ctx.Platform.ClearCursorOverride()
 		return
 	}
@@ -131,12 +235,13 @@ func (p *ERAMPane) renderCursor(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		return
 	}
 
-	cursor := p.cursors.cursorForSize(p.cursorSize)
+	cursorType := p.activeCursorType()
+	cursor := p.cursors.cursorForType(cursorType, p.cursorSize)
 	if cursor == nil {
 		return
 	}
 
-	textureID := p.cursors.textureForSize(ctx.Renderer, p.cursorSize)
+	textureID := p.cursors.textureForType(ctx.Renderer, cursorType, p.cursorSize)
 	if textureID == 0 {
 		return
 	}
