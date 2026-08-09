@@ -142,8 +142,10 @@ type ERAMPane struct {
 	nexradBuiltGeneration uint64
 	nexrad                nexradCmdBuffers
 
-	cursors CursorSet
-	panDrag *eramPanDrag
+	cursors         CursorSet
+	transientCursor eramTransientCursor
+	audio           *eramAudioManager
+	panDrag         *eramPanDrag
 }
 
 func LoadFacility(artcc string) (Facility, error) {
@@ -222,6 +224,7 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 
 	// CRC always ensures one special TOOLBAR control tear-off exists at
 	// TopLeft (90, 71). It remains present even when MASTER TOOLBAR is hidden.
+	pane.audio = newERAMAudioManager(logger.With(slog.String("component", "audio")))
 	pane.initializeToolbarState()
 	pane.initializeClockState()
 	pane.initializeAreaStates()

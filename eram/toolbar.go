@@ -156,11 +156,12 @@ const (
 )
 
 type toolbarTearoff struct {
-	ID        int
-	Type      toolbarButtonID
-	Anchor    toolbarAnchor
-	Offset    redsmath.Vec2
-	Expansion toolbarExpansion
+	ID            int
+	Type          toolbarButtonID
+	Anchor        toolbarAnchor
+	Offset        redsmath.Vec2
+	Expansion     toolbarExpansion
+	PendingDelete bool
 }
 
 type toolbarTearoffMove struct {
@@ -217,11 +218,12 @@ type toolbarState struct {
 	font     *renderer.BitmapFont
 	textures map[int]renderer.TextureID
 
-	masterExpansion toolbarExpansion
-	tearoffs        []toolbarTearoff
-	nextTearoffID   int
-	moving          *toolbarTearoffMove
-	repeat          *toolbarRepeat
+	masterExpansion  toolbarExpansion
+	tearoffs         []toolbarTearoff
+	nextTearoffID    int
+	moving           *toolbarTearoffMove
+	repeat           *toolbarRepeat
+	deletingTearoffs bool
 
 	layout toolbarLayoutScratch
 }
@@ -708,6 +710,11 @@ func baseToolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 func (p *ERAMPane) toolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 	spec := baseToolbarSpec(id)
 
+	if id == toolbarDelete {
+		spec.Active = p.toolbar.deletingTearoffs
+		return spec
+	}
+
 	if id == toolbarMasterDisplay {
 		// CRC highlights MASTER TOOLBAR while the master toolbar is visible.
 		spec.Active = p.toolbarVisible
@@ -1192,6 +1199,9 @@ func (p *ERAMPane) drawToolbar(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			}
 			p.drawToolbarButtons(ctx, cb, buttons, owner, depth, metrics)
 			p.drawToolbarText(ctx, cb, buttons, owner, depth, metrics)
+			if depth == 0 && p.toolbar.tearoffs[i].PendingDelete {
+				p.drawTearoffDeletionX(cb, buttons, owner)
+			}
 			cb.Blend()
 			cb.DisableScissor()
 		}
@@ -1209,6 +1219,30 @@ func (p *ERAMPane) drawToolbar(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		drawBorderOnly(cb, bounds, applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness), 1)
 		cb.Blend()
 		cb.DisableScissor()
+	}
+}
+
+func (p *ERAMPane) drawTearoffDeletionX(cb *renderer.CmdBuffer, buttons []toolbarButtonLayout, owner toolbarOwner) {
+	if p == nil || cb == nil {
+		return
+	}
+	for _, layout := range buttons {
+		if layout.Owner != owner || layout.Depth != 0 {
+			continue
+		}
+		color := applyERAMBrightness(toolbarWhite, p.borderBrightness, p.systemBrightness)
+		cb.SetRGB(color)
+		cb.LineWidth(1)
+		cb.DrawLines(
+			[]renderer.PointVertex{
+				{X: layout.Root.Min.X, Y: layout.Root.Min.Y},
+				{X: layout.Root.Max.X, Y: layout.Root.Max.Y},
+				{X: layout.Root.Min.X, Y: layout.Root.Max.Y},
+				{X: layout.Root.Max.X, Y: layout.Root.Min.Y},
+			},
+			[]uint32{0, 1, 2, 3},
+		)
+		return
 	}
 }
 
@@ -1284,6 +1318,7 @@ func (p *ERAMPane) drawToolbarButtons(
 		}
 
 		background := toolbarBlack
+		borderBrightness := p.borderBrightness
 		switch layout.Spec.Kind {
 		case toolbarMenuButton:
 			background = toolbarBlue
@@ -1292,6 +1327,12 @@ func (p *ERAMPane) drawToolbarButtons(
 			}
 		case toolbarCommandButton:
 			background = toolbarTeal
+			if layout.Spec.Active {
+				// CRC CommandButtonActiveOutline uses PairedTarget BCG and the
+				// active command face changes from Teal to BurntCoral.
+				background = toolbarBurntCoral
+				borderBrightness = p.pairedTargetBrightness
+			}
 		case toolbarIncDecButton:
 			background = toolbarIncDecGreen
 		case toolbarPressHoldButton:
@@ -1301,7 +1342,7 @@ func (p *ERAMPane) drawToolbarButtons(
 				background = toolbarGray
 			}
 		}
-		p.drawToolbarBorderedRect(cb, layout.Pick, background, p.buttonBrightness, hoverPick, toolbarWhite, p.borderBrightness, 1)
+		p.drawToolbarBorderedRect(cb, layout.Pick, background, p.buttonBrightness, hoverPick, toolbarWhite, borderBrightness, 1)
 
 		if layout.Spec.Kind == toolbarPressHoldButton {
 			// CRC's inactive press/hold buttons have a 10x10 gray cut corner.
@@ -1387,6 +1428,9 @@ func (p *ERAMPane) toolbarButtonBackground(layout toolbarButtonLayout) renderer.
 		}
 		return toolbarBlue
 	case toolbarCommandButton:
+		if layout.Spec.Active {
+			return toolbarBurntCoral
+		}
 		return toolbarTeal
 	case toolbarIncDecButton:
 		return toolbarIncDecGreen
@@ -1486,6 +1530,138 @@ func (p *ERAMPane) hasToolbarTearoff(id toolbarButtonID) bool {
 			return true
 		}
 	}
+	return false
+}
+
+func (p *ERAMPane) beginDeleteTearoffs() {
+	if p == nil {
+		return
+	}
+	p.clearPendingTearoffDeletes()
+	p.clearTransientCursor()
+	p.toolbar.repeat = nil
+	p.toolbar.deletingTearoffs = true
+}
+
+func (p *ERAMPane) cancelDeleteTearoffs() {
+	if p == nil {
+		return
+	}
+	p.clearPendingTearoffDeletes()
+	p.toolbar.deletingTearoffs = false
+	p.clearTransientCursor()
+}
+
+func (p *ERAMPane) clearPendingTearoffDeletes() {
+	if p == nil {
+		return
+	}
+	for i := range p.toolbar.tearoffs {
+		p.toolbar.tearoffs[i].PendingDelete = false
+	}
+}
+
+func (p *ERAMPane) confirmDeleteTearoffs() {
+	if p == nil {
+		return
+	}
+	write := p.toolbar.tearoffs[:0]
+	for _, tearoff := range p.toolbar.tearoffs {
+		// CRC never permits deleting the special permanent TOOLBAR control.
+		if tearoff.PendingDelete && tearoff.Type != toolbarControlMenu {
+			continue
+		}
+		tearoff.PendingDelete = false
+		write = append(write, tearoff)
+	}
+	p.toolbar.tearoffs = write
+	p.toolbar.deletingTearoffs = false
+	p.clearTransientCursor()
+}
+
+// consumeDeleteTearoffInput mirrors CRC ViewTearoffs deletion mode. Left-click
+// toggles a tear-off's pending-delete X; middle-click marks that tear-off and
+// immediately confirms every currently marked deletion. Invalid toolbar picks
+// produce Error.wav plus EramInvalidSelection for 500 ms.
+func (p *ERAMPane) consumeDeleteTearoffInput(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || !p.toolbar.deletingTearoffs {
+		return false
+	}
+	if ctx.Keyboard != nil && ctx.Keyboard.WasPressed(platform.KeyEscape) {
+		p.cancelDeleteTearoffs()
+		return true
+	}
+
+	mouse := ctx.Mouse
+	if mouse == nil {
+		return false
+	}
+	action := toolbarSelect
+	pressed := false
+	if mouse.WasPressed(platform.MouseButtonLeft) {
+		action = toolbarSelect
+		pressed = true
+	} else if mouse.WasPressed(platform.MouseButtonMiddle) {
+		action = toolbarEnter
+		pressed = true
+	}
+	if !pressed {
+		return false
+	}
+
+	buttons, expansions := p.buildToolbarLayout(ctx)
+
+	// Floating tear-offs are stacked in slice order; the latest entry is on
+	// top. Any button face/control belonging to that floating menu selects the
+	// owning tear-off, which is the useful behavior CRC intends for nested menus.
+	for i := len(p.toolbar.tearoffs) - 1; i >= 0; i-- {
+		tearoff := &p.toolbar.tearoffs[i]
+		owner := toolbarOwner{Kind: toolbarOwnerTearoff, TearoffID: tearoff.ID}
+		hit := false
+		for j := len(buttons) - 1; j >= 0; j-- {
+			layout := buttons[j]
+			if layout.Owner == owner && layout.Root.Contains(mouse.Pos) {
+				hit = true
+				break
+			}
+		}
+		if !hit {
+			continue
+		}
+
+		if tearoff.Type == toolbarControlMenu {
+			p.showInvalidSelectionCursor()
+			return true
+		}
+		if action == toolbarEnter {
+			tearoff.PendingDelete = true
+			p.confirmDeleteTearoffs()
+		} else {
+			tearoff.PendingDelete = !tearoff.PendingDelete
+		}
+		return true
+	}
+
+	// A pick on any non-tear-off toolbar button/control is invalid while CRC's
+	// deletion mode is active. This includes pressing DELETE TEAROFF itself.
+	for i := len(buttons) - 1; i >= 0; i-- {
+		layout := buttons[i]
+		if layout.Owner.Kind != toolbarOwnerMaster {
+			continue
+		}
+		if layout.Root.Contains(mouse.Pos) {
+			p.showInvalidSelectionCursor()
+			return true
+		}
+	}
+
+	// Expansion background belongs to toolbar UI but has no deletion action.
+	for _, expansion := range expansions {
+		if expansion.Bounds.Contains(mouse.Pos) {
+			return true
+		}
+	}
+
 	return false
 }
 
@@ -1596,6 +1772,11 @@ func (p *ERAMPane) toolbarControlEligible(layout toolbarButtonLayout) bool {
 }
 
 func (p *ERAMPane) activateToolbarButton(layout toolbarButtonLayout, action toolbarPickAction, button platform.MouseButton) {
+	if layout.Spec.ID == toolbarDelete {
+		p.beginDeleteTearoffs()
+		return
+	}
+
 	if layout.Spec.ID == toolbarMasterDisplay {
 		// CRC's MASTER TOOLBAR control only changes the master toolbar. The
 		// special floating TOOLBAR tear-off remains visible so this can always

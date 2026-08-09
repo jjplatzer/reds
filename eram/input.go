@@ -41,6 +41,13 @@ func (p *ERAMPane) consumeInput(ctx *panes.Context) {
 		return
 	}
 
+	// ViewTearoffs owns Escape while deletion mode is active. Handle it before
+	// MCA keyboard entry so the same key does not also clear the Preview Area.
+	if p.toolbar.deletingTearoffs && ctx.Keyboard != nil && ctx.Keyboard.WasPressed(platform.KeyEscape) {
+		p.cancelDeleteTearoffs()
+		return
+	}
+
 	// CRC view settings menus have higher pick precedence than ordinary views.
 	// An outside click closes the menu and is intentionally allowed to continue
 	// to the underlying object in the same frame.
@@ -64,6 +71,16 @@ func (p *ERAMPane) consumeInput(ctx *panes.Context) {
 	// The default clock is a semi-transparent view in CRC and therefore picks
 	// ahead of lowered toolbar/tearoff buttons.
 	if p.consumeClockInput(ctx) {
+		return
+	}
+
+	// CRC's DELETE_TEAROFF_ACTIVE pick list still leaves the MCA/RA and view
+	// settings layers above the lowered toolbar, but removes SituationDisplay
+	// input. Preserve that ordering: views above have already had first refusal,
+	// deletion-mode toolbar picks are handled here, and scope pan/zoom below is
+	// suppressed until deletion is confirmed or canceled.
+	if p.toolbar.deletingTearoffs {
+		p.consumeDeleteTearoffInput(ctx)
 		return
 	}
 
