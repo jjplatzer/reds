@@ -892,12 +892,24 @@ func (p *ERAMPane) checklistLayout(paneSize redsmath.Vec2) eramChecklistLayout {
 		longest = 1
 	}
 
-	// ViewChecklist creates mEntriesWrapper with 0.5-character padding and a
-	// 1 px gap. Each Text adds CRC's standard 3 px top/bottom padding.
+	// ViewChecklist puts mEntriesWrapper and ScrollPickAreas next to each other
+	// in one Row. ScrollPickAreas is Visibility.Hidden (not Collapsed) when the
+	// checklist does not need scrolling, so CRC still reserves its full width
+	// beneath the header's '-' cell. At ERAM font size 2 that width is 19 px:
+	// 1 px margin on each side + a 17 px scroll pick-area cell.
+	//
+	// mEntriesWrapper itself has 0.5-character padding. Measure the padded
+	// entry text using the actual bitmap glyph width instead of N*advance; this
+	// is important because the final glyph is 10 px wide while its advance is
+	// 12 px. With the 19 px scroll reserve, CRC's +2 px text circumscription
+	// ends exactly 24 px before the view's right edge, aligned with the '-'
+	// header cell.
 	wrapperPadX := float32(int(float64(charAdvance) * 0.5))
 	wrapperPadY := float32(int(float64(lineHeight) * 0.5))
 	entryHeight := float32(lineHeight + 2*checklistTextYPadding)
-	bodyWidth := float32(2*checklistBorderWidth) + 2*wrapperPadX + float32(longest*charAdvance)
+	paddedTextWidth, _ := font.MeasureText(strings.Repeat(" ", longest), p.checklist.prefs.fontSize)
+	scrollReserveWidth := checklistScrollReserveWidth(font)
+	bodyWidth := float32(2*checklistBorderWidth) + 2*wrapperPadX + float32(paddedTextWidth) + scrollReserveWidth
 	bodyHeight := float32(2*checklistBorderWidth) + 2*wrapperPadY +
 		float32(visibleCount)*entryHeight + float32(maxInt(0, visibleCount-1)*checklistEntryGap)
 
@@ -942,7 +954,7 @@ func (p *ERAMPane) checklistLayout(paneSize redsmath.Vec2) eramChecklistLayout {
 		Y: layout.Body.Min.Y + checklistBorderWidth + wrapperPadY,
 	}
 	layout.EntryText = make([]redsmath.Rect, len(entries))
-	textWidth := float32(longest * charAdvance)
+	textWidth := float32(paddedTextWidth)
 	for i := range entries {
 		y := layout.ContentOrigin.Y + float32(i)*(entryHeight+checklistEntryGap)
 		// Text.HandleMouseMove uses the text circumscription box: two pixels
@@ -955,6 +967,21 @@ func (p *ERAMPane) checklistLayout(paneSize redsmath.Vec2) eramChecklistLayout {
 		)
 	}
 	return layout
+}
+
+// checklistScrollReserveWidth reproduces CRC ScrollPickAreas' natural width
+// while hidden. ScrollPickAreas has a 1 px margin on both sides; each arrow
+// pick area has a 1 px border, 2 px left padding, 3 px right padding, and a
+// size-2 ERAM triangle glyph. Hidden nodes still participate in CRC layout.
+func checklistScrollReserveWidth(font *renderer.BitmapFont) float32 {
+	if font == nil {
+		return 0
+	}
+	triangleWidth, _ := font.MeasureText(string(rune(138)), 2) // EramChar.UpTriangle
+	if triangleWidth <= 0 {
+		return 0
+	}
+	return float32(2 + 2 + 2 + 3 + triangleWidth)
 }
 
 func (p *ERAMPane) checklistBounds(paneSize redsmath.Vec2) redsmath.Rect {
@@ -1076,29 +1103,6 @@ func (p *ERAMPane) drawChecklist(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		drawSolidRect(cb, entry, fill)
 	}
 
-	// CRC gives borders / selected entries a Paired Target white outline while
-	// hovering. Draw it last so adjacent one-pixel borders cannot overwrite it.
-	if ctx.Mouse != nil {
-		hover := ctx.Mouse.Pos
-		emphasis := applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness)
-		switch {
-		case layout.Menu.Contains(hover):
-			drawBorderOnly(cb, layout.Menu, emphasis, 1)
-		case layout.Title.Contains(hover):
-			drawBorderOnly(cb, layout.Title, emphasis, 1)
-		case layout.Suppress.Contains(hover):
-			drawBorderOnly(cb, layout.Suppress, emphasis, 1)
-		default:
-			for i, entry := range layout.EntryText {
-				if entry.Contains(hover) {
-					drawBorderOnly(cb, entry, emphasis, 1)
-					_ = i
-					break
-				}
-			}
-		}
-	}
-
 	// Text uses the actual extracted ERAM bitmap font. Header controls are
 	// always size 2; list entries use ChecklistViewSettings.FontSize (default 2).
 	headerTD := renderer.GetTextDrawBuilder()
@@ -1129,6 +1133,31 @@ func (p *ERAMPane) drawChecklist(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 	td.GenerateCommands(cb, texture)
 	renderer.ReturnTextDrawBuilder(td)
+
+	// TextDrawBuilder emits opaque glyph-cell backgrounds. If the hover
+	// circumscription is drawn before text, those cells can overwrite portions
+	// of its bottom edge and make it look dotted. CRC renders the Text node's
+	// circumscription above its text, so draw all hover chrome after both header
+	// and entry text have been submitted.
+	if ctx.Mouse != nil {
+		hover := ctx.Mouse.Pos
+		emphasis := applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness)
+		switch {
+		case layout.Menu.Contains(hover):
+			drawBorderOnly(cb, layout.Menu, emphasis, 1)
+		case layout.Title.Contains(hover):
+			drawBorderOnly(cb, layout.Title, emphasis, 1)
+		case layout.Suppress.Contains(hover):
+			drawBorderOnly(cb, layout.Suppress, emphasis, 1)
+		default:
+			for _, entry := range layout.EntryText {
+				if entry.Contains(hover) {
+					drawBorderOnly(cb, entry, emphasis, 1)
+					break
+				}
+			}
+		}
+	}
 
 	cb.DisableScissor()
 }
