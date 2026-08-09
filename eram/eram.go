@@ -27,18 +27,23 @@ const (
 	defaultToolbarFontSize      = 1
 	defaultToolbarVisible       = true
 
-	zBackground                   renderer.Z = -1000
-	zNexrad                       renderer.Z = -900
-	zMapData                      renderer.Z = -800
-	zLoweredMasterToolbar         renderer.Z = -700
-	zTimeViewSemiTransparent      renderer.Z = -500
-	zChecklistViewSemiTransparent renderer.Z = -490
+	zBackground              renderer.Z = -1000
+	zNexrad                  renderer.Z = -900
+	zMapData                 renderer.Z = -800
+	zLoweredMasterToolbar    renderer.Z = -700
+	zTimeViewSemiTransparent renderer.Z = -500
+	// CRC keeps the default transparent checklist below TIME and the floating
+	// tear-off buttons. Tear-offs start at -600 and their child menus are drawn
+	// above that, so -610 preserves that ordering while keeping the checklist
+	// above the lowered master toolbar at -700.
+	zChecklistViewSemiTransparent renderer.Z = -610
 	zTimeViewOpaque               renderer.Z = -400
-	zChecklistViewOpaque          renderer.Z = -390
-	zResponseAreaView             renderer.Z = 590
-	zMCAView                      renderer.Z = 600
-	zViewSettingsMenu             renderer.Z = 800
-	zViewMoveFrame                renderer.Z = 899
+	// Within CRC's opaque-view group TIME precedes CHECKLIST as well.
+	zChecklistViewOpaque renderer.Z = -410
+	zResponseAreaView    renderer.Z = 590
+	zMCAView             renderer.Z = 600
+	zViewSettingsMenu    renderer.Z = 800
+	zViewMoveFrame       renderer.Z = 899
 
 	minRangeNM              = 0.25
 	maxRangeNM              = 1300
