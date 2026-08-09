@@ -290,9 +290,11 @@ func (p *ERAMPane) toggleChecklist(kind eramChecklistType) {
 	if p.checklist.active == kind {
 		p.checklist.active = eramChecklistNone
 		p.checklist.selected = make(map[int]bool)
+		p.checklist.topLine = 0
 		return
 	}
 	p.checklist.active = kind
+	p.checklist.topLine = 0
 	// CRC BuildChecklist constructs fresh Text nodes whenever the active type
 	// changes, so selection emphasis is reset on checklist switches.
 	p.checklist.selected = make(map[int]bool)

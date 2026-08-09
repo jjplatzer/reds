@@ -41,6 +41,7 @@ type eramChecklistState struct {
 	// Entry emphasis is transient view state and resets when the active list
 	// changes, matching CRC's BuildChecklist behavior.
 	selected map[int]bool
+	topLine  int
 }
 
 func defaultChecklistPreferences() eramChecklistPreferences {
@@ -67,5 +68,6 @@ func (p *ERAMPane) initializeChecklistState(facility Facility) {
 		positionRelief: append([]string(nil), facility.PositionReliefChecklist...),
 		emergency:      append([]string(nil), facility.EmergencyChecklist...),
 		selected:       make(map[int]bool),
+		topLine:        0,
 	}
 }
