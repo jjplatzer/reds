@@ -281,6 +281,23 @@ var checkListsToolbarEntries = []toolbarMenuEntry{
 	{"emergency-check", 0, 1},
 }
 
+// toggleChecklist is toolbar behavior: CHECK LISTS owns which adapted list is
+// visible, while prefs.go owns its display settings and views.go renders it.
+func (p *ERAMPane) toggleChecklist(kind eramChecklistType) {
+	if p == nil || kind == eramChecklistNone {
+		return
+	}
+	if p.checklist.active == kind {
+		p.checklist.active = eramChecklistNone
+		p.checklist.selected = make(map[int]bool)
+		return
+	}
+	p.checklist.active = kind
+	// CRC BuildChecklist constructs fresh Text nodes whenever the active type
+	// changes, so selection emphasis is reset on checklist switches.
+	p.checklist.selected = make(map[int]bool)
+}
+
 var cursorToolbarEntries = []toolbarMenuEntry{
 	{"cursor-speed", 0, 0},
 	{"cursor-size", 0, 1},
