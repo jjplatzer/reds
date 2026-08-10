@@ -19,6 +19,7 @@ type eramViewMenuKind uint8
 const (
 	eramViewMenuNone eramViewMenuKind = iota
 	eramViewMenuTime
+	eramViewMenuChecklist
 )
 
 type eramViewMenuRowKind uint8
@@ -36,6 +37,12 @@ const (
 	eramViewMenuTimeBorder
 	eramViewMenuTimeFont
 	eramViewMenuTimeBrightness
+	eramViewMenuChecklistOpaque
+	eramViewMenuChecklistBorder
+	eramViewMenuChecklistLines
+	eramViewMenuChecklistFont
+	eramViewMenuChecklistHighlight
+	eramViewMenuChecklistText
 )
 
 type eramViewMenuRow struct {
@@ -46,6 +53,7 @@ type eramViewMenuRow struct {
 	InactiveLabel string
 	Active        bool
 	Value         int
+	ValueText     string
 	Centered      bool
 	AutoRepeat    bool
 }
@@ -87,7 +95,6 @@ type eramViewMenuState struct {
 
 const (
 	eramViewMenuFontSize       = 2
-	eramViewMenuWidthChars     = 11
 	eramViewMenuBorderWidth    = 1
 	eramViewMenuCloseWidthChar = 2
 	// CRC Text has a fixed 3 px top and bottom pad. Header and MenuPickArea
@@ -150,6 +157,59 @@ func (p *ERAMPane) activeViewMenuSpec(kind eramViewMenuKind) (eramViewMenuSpec, 
 		}
 		spec.RowCount = 4
 		return spec, true
+	case eramViewMenuChecklist:
+		spec.Title = "POS CHK"
+		if p.checklist.active == eramChecklistEmergency {
+			spec.Title = "EMRG CHK"
+		}
+		spec.Rows[0] = eramViewMenuRow{
+			Action:        eramViewMenuChecklistOpaque,
+			Kind:          eramViewMenuToggle,
+			ActiveLabel:   "O",
+			InactiveLabel: "T",
+			Active:        p.checklist.prefs.isOpaque,
+			Centered:      true,
+		}
+		spec.Rows[1] = eramViewMenuRow{
+			Action: eramViewMenuChecklistBorder,
+			Kind:   eramViewMenuToggle,
+			Label:  "BORDER",
+			Active: p.checklist.prefs.showBorder,
+		}
+		linesValue := strconv.Itoa(p.checklist.prefs.lines)
+		if p.checklist.prefs.lines == defaultChecklistLines {
+			linesValue = "21+"
+		}
+		spec.Rows[2] = eramViewMenuRow{
+			Action:     eramViewMenuChecklistLines,
+			Kind:       eramViewMenuIncDec,
+			Label:      "LINES",
+			Value:      p.checklist.prefs.lines,
+			ValueText:  linesValue,
+			AutoRepeat: true,
+		}
+		spec.Rows[3] = eramViewMenuRow{
+			Action: eramViewMenuChecklistFont,
+			Kind:   eramViewMenuIncDec,
+			Label:  "FONT",
+			Value:  p.checklist.prefs.fontSize,
+		}
+		spec.Rows[4] = eramViewMenuRow{
+			Action:     eramViewMenuChecklistHighlight,
+			Kind:       eramViewMenuIncDec,
+			Label:      "HIGHLIGHT",
+			Value:      p.checklist.prefs.highlightBrightness,
+			AutoRepeat: true,
+		}
+		spec.Rows[5] = eramViewMenuRow{
+			Action:     eramViewMenuChecklistText,
+			Kind:       eramViewMenuIncDec,
+			Label:      "TEXT",
+			Value:      p.checklist.prefs.brightness,
+			AutoRepeat: true,
+		}
+		spec.RowCount = 6
+		return spec, true
 	default:
 		return spec, false
 	}
@@ -159,6 +219,8 @@ func (p *ERAMPane) viewMenuTargetBounds(kind eramViewMenuKind, paneSize redsmath
 	switch kind {
 	case eramViewMenuTime:
 		return p.clockBounds(paneSize)
+	case eramViewMenuChecklist:
+		return p.checklistBounds(paneSize)
 	default:
 		return redsmath.Rect{}
 	}
@@ -187,7 +249,11 @@ func (p *ERAMPane) viewMenuMetrics(kind eramViewMenuKind) (eramViewMenuMetrics, 
 	// rows add a 0.5-character left Padding, which makes them the widest child
 	// and therefore determines the root Column width in CRC.
 	leftPad := int(float64(charAdvance) * 0.5)
-	metrics.Width = float32(eramViewMenuWidthChars*charAdvance + leftPad + 2*eramViewMenuBorderWidth)
+	widthChars := 11
+	if kind == eramViewMenuChecklist {
+		widthChars = 14
+	}
+	metrics.Width = float32(widthChars*charAdvance + leftPad + 2*eramViewMenuBorderWidth)
 	metrics.RowHeight = float32(textHeight + 2*eramViewMenuTextPadY + 2*eramViewMenuBorderWidth)
 	// ClosePickArea uses MinWidth=2 chars with addPixels=-1 plus a 1 px border;
 	// its -1 left margin makes the header/close borders overlap by one pixel.
@@ -442,6 +508,47 @@ func (p *ERAMPane) activateViewMenuAction(action eramViewMenuAction, increment b
 			p.clock.brightness = maxInt(old-2, 0)
 		}
 		return p.clock.brightness != old
+	case eramViewMenuChecklistOpaque:
+		p.checklist.prefs.isOpaque = !p.checklist.prefs.isOpaque
+		return true
+	case eramViewMenuChecklistBorder:
+		p.checklist.prefs.showBorder = !p.checklist.prefs.showBorder
+		return true
+	case eramViewMenuChecklistLines:
+		old := p.checklist.prefs.lines
+		if increment {
+			p.checklist.prefs.lines = minInt(old+1, defaultChecklistLines)
+		} else {
+			p.checklist.prefs.lines = maxInt(old-1, 3)
+		}
+		if p.checklist.prefs.lines != old {
+			p.clampChecklistTopLine()
+		}
+		return p.checklist.prefs.lines != old
+	case eramViewMenuChecklistFont:
+		old := p.checklist.prefs.fontSize
+		if increment {
+			p.checklist.prefs.fontSize = minInt(old+1, 3)
+		} else {
+			p.checklist.prefs.fontSize = maxInt(old-1, 1)
+		}
+		return p.checklist.prefs.fontSize != old
+	case eramViewMenuChecklistHighlight:
+		old := p.checklist.prefs.highlightBrightness
+		if increment {
+			p.checklist.prefs.highlightBrightness = minInt(old+2, 100)
+		} else {
+			p.checklist.prefs.highlightBrightness = maxInt(old-2, 0)
+		}
+		return p.checklist.prefs.highlightBrightness != old
+	case eramViewMenuChecklistText:
+		old := p.checklist.prefs.brightness
+		if increment {
+			p.checklist.prefs.brightness = minInt(old+2, 100)
+		} else {
+			p.checklist.prefs.brightness = maxInt(old-2, 0)
+		}
+		return p.checklist.prefs.brightness != old
 	default:
 		return false
 	}
@@ -564,7 +671,11 @@ func (p *ERAMPane) drawViewSettingsMenu(ctx *panes.Context, zcb *renderer.ZCmdBu
 				}
 			}
 		} else {
-			label += " " + strconv.Itoa(row.Value)
+			value := row.ValueText
+			if value == "" {
+				value = strconv.Itoa(row.Value)
+			}
+			label += " " + value
 		}
 		if row.Centered {
 			addCenteredMenuText(td, font, label, rowLayout.Bounds, eramViewMenuFontSize, textColor, background.ToRGBA())

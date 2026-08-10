@@ -281,6 +281,25 @@ var checkListsToolbarEntries = []toolbarMenuEntry{
 	{"emergency-check", 0, 1},
 }
 
+// toggleChecklist is toolbar behavior: CHECK LISTS owns which adapted list is
+// visible, while prefs.go owns its display settings and views.go renders it.
+func (p *ERAMPane) toggleChecklist(kind eramChecklistType) {
+	if p == nil || kind == eramChecklistNone {
+		return
+	}
+	if p.checklist.active == kind {
+		p.checklist.active = eramChecklistNone
+		p.checklist.selected = make(map[int]bool)
+		p.checklist.topLine = 0
+		return
+	}
+	p.checklist.active = kind
+	p.checklist.topLine = 0
+	// CRC BuildChecklist constructs fresh Text nodes whenever the active type
+	// changes, so selection emphasis is reset on checklist switches.
+	p.checklist.selected = make(map[int]bool)
+}
+
 var cursorToolbarEntries = []toolbarMenuEntry{
 	{"cursor-speed", 0, 0},
 	{"cursor-size", 0, 1},
@@ -712,6 +731,17 @@ func (p *ERAMPane) toolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 
 	if id == toolbarDelete {
 		spec.Active = p.toolbar.deletingTearoffs
+		return spec
+	}
+
+	if id == "position-check" {
+		spec.Kind = toolbarToggleButton
+		spec.Active = p.checklist.active == eramChecklistPositionRelief
+		return spec
+	}
+	if id == "emergency-check" {
+		spec.Kind = toolbarToggleButton
+		spec.Active = p.checklist.active == eramChecklistEmergency
 		return spec
 	}
 
@@ -1774,6 +1804,15 @@ func (p *ERAMPane) toolbarControlEligible(layout toolbarButtonLayout) bool {
 func (p *ERAMPane) activateToolbarButton(layout toolbarButtonLayout, action toolbarPickAction, button platform.MouseButton) {
 	if layout.Spec.ID == toolbarDelete {
 		p.beginDeleteTearoffs()
+		return
+	}
+
+	if layout.Spec.ID == "position-check" {
+		p.toggleChecklist(eramChecklistPositionRelief)
+		return
+	}
+	if layout.Spec.ID == "emergency-check" {
+		p.toggleChecklist(eramChecklistEmergency)
 		return
 	}
 

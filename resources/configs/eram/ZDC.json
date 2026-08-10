@@ -248,6 +248,15 @@
       "freq": 134.4
     },
     {
+      "id": "30",
+      "name": "Outer Banks 30",
+      "visualCenter": {
+        "lat": 37.0,
+        "lon": -77.0
+      },
+      "freq": 127.275
+    },
+    {
       "id": "31",
       "name": "Azalea 31",
       "visualCenter": {
@@ -472,5 +481,25 @@
       },
       "freq": 132.05
     }
+  ],
+  "emergencyChecklist": [
+    "AIRCRAFT CALLSIGN & TYPE",
+    "NATURE OF EMERGENCY",
+    "PILOT INTENTIONS",
+    "FUEL ONBOARD (MIN/LBS)",
+    "PERSONS ONBOARD",
+    "DANGEROUS CARGO"
+  ],
+  "positionReliefChecklist": [
+    "SECTORIZATION (ABV/BLW)",
+    "TRAFFIC MGMT INITATIVES",
+    "NOTAMS/SUA",
+    "LDIR BWI DCA IAD RIC RDU CLT",
+    "WEATHER (VFR/MVFR/IFR)",
+    "LOW ALTIMETER AREAS",
+    "NON-STD CONDITIONS",
+    "AIRCFT WITH CLRNC ON GRND",
+    "ACTIVE POINT OUTS",
+    "REVIEW AIRBORNE TRAFFIC"
   ]
 }

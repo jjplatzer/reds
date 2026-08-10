@@ -263,7 +263,30 @@
         "lat": 37.9016125,
         "lon": -120.687685
       },
-      "freq": 118.025
+      "freq": 118.035
     }
+  ],
+  "emergencyChecklist": [
+    "A/C ID/TYPE",
+    "NATURE OF EMERG",
+    "PILOT'S DESIRES",
+    "A/C ALTITUDE",
+    "FUEL",
+    "WX PILOT/REPORT",
+    "IFR QUALIFIED",
+    "LAST KNOWN PSN",
+    "HDG FRM LST PSN"
+  ],
+  "positionReliefChecklist": [
+    "SIA DATA",
+    "EQUIP STATUS",
+    "WEATHER/TRENDS",
+    "ALTM/TRENDS",
+    "ARPT/APCH/INFO",
+    "AIRSPACE RSTRNS",
+    "SPL ACTIVITIES",
+    "FLOW CONTROL",
+    "TRAFFIC",
+    "CURRENT/PENDING"
   ]
 }

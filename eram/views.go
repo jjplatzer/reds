@@ -1,6 +1,7 @@
 package eram
 
 import (
+	"strings"
 	"time"
 
 	redsmath "github.com/juliusplatzer/reds/math"
@@ -18,6 +19,7 @@ type eramViewKind uint8
 const (
 	eramViewNone eramViewKind = iota
 	eramViewTime
+	eramViewChecklist
 	eramViewMCA
 	eramViewResponseArea
 )
@@ -267,6 +269,8 @@ func (p *ERAMPane) viewBounds(kind eramViewKind, paneSize redsmath.Vec2) redsmat
 	switch kind {
 	case eramViewTime:
 		return p.clockBounds(paneSize)
+	case eramViewChecklist:
+		return p.checklistBounds(paneSize)
 	case eramViewMCA:
 		return p.mcaBounds(paneSize)
 	case eramViewResponseArea:
@@ -280,6 +284,8 @@ func (p *ERAMPane) setViewTopLeft(kind eramViewKind, topLeft, size, paneSize red
 	switch kind {
 	case eramViewTime:
 		p.clock.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
+	case eramViewChecklist:
+		p.checklist.prefs.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
 	case eramViewMCA:
 		p.mca.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
 	case eramViewResponseArea:
@@ -801,4 +807,472 @@ func setPaneMousePosition(ctx *panes.Context, panePosition redsmath.Vec2) {
 		X: ctx.PaneRect.Min.X + panePosition.X,
 		Y: ctx.PaneRect.Min.Y + panePosition.Y,
 	})
+}
+
+// CRC ViewChecklist layout constants. Preference defaults live in prefs.go;
+// the geometry and interaction live with the other ERAM views here.
+const (
+	checklistBorderWidth  = 1
+	checklistEntryGap     = 1
+	checklistTextYPadding = 3
+)
+
+var checklistGray = renderer.RGB8(199, 199, 199) // EramColor.Gray
+
+func (p *ERAMPane) checklistEntries() []string {
+	if p == nil {
+		return nil
+	}
+	switch p.checklist.active {
+	case eramChecklistPositionRelief:
+		return p.checklist.positionRelief
+	case eramChecklistEmergency:
+		return p.checklist.emergency
+	default:
+		return nil
+	}
+}
+
+func (p *ERAMPane) checklistTitle() string {
+	switch p.checklist.active {
+	case eramChecklistPositionRelief:
+		return "POS CHECK"
+	case eramChecklistEmergency:
+		return "EMERG CHECK"
+	default:
+		return ""
+	}
+}
+
+type eramChecklistLayout struct {
+	Bounds        redsmath.Rect
+	Header        redsmath.Rect
+	Menu          redsmath.Rect
+	Title         redsmath.Rect
+	Suppress      redsmath.Rect
+	Body          redsmath.Rect
+	EntryText     []redsmath.Rect
+	EntryIndices  []int
+	Entries       []string
+	ScrollUp      redsmath.Rect
+	ScrollDown    redsmath.Rect
+	ScrollVisible bool
+	LongestChars  int
+	EntryHeight   float32
+	WrapperPadX   float32
+	WrapperPadY   float32
+	HeaderHeight  float32
+	ContentOrigin redsmath.Vec2
+}
+
+func (p *ERAMPane) checklistLayout(paneSize redsmath.Vec2) eramChecklistLayout {
+	var layout eramChecklistLayout
+	if p == nil || p.checklist.active == eramChecklistNone {
+		return layout
+	}
+	p.ensureToolbarFont()
+	font := p.toolbar.font
+	if font == nil {
+		return layout
+	}
+	charAdvance, lineHeight := font.CharSize(p.checklist.prefs.fontSize)
+	if charAdvance <= 0 || lineHeight <= 0 {
+		return layout
+	}
+
+	allEntries := p.checklistEntries()
+	if len(allEntries) == 0 {
+		return layout
+	}
+	p.clampChecklistTopLine()
+	start := 0
+	visibleCount := len(allEntries)
+	if p.checklist.prefs.lines < defaultChecklistLines {
+		start = p.checklist.topLine
+		visibleCount = minInt(p.checklist.prefs.lines, len(allEntries)-start)
+	}
+	entries := allEntries[start : start+visibleCount]
+	longest := 0
+	for _, entry := range allEntries {
+		if n := len([]rune(entry)); n > longest {
+			longest = n
+		}
+	}
+	if longest == 0 {
+		longest = 1
+	}
+
+	// ViewChecklist puts mEntriesWrapper and ScrollPickAreas next to each other
+	// in one Row. ScrollPickAreas is Visibility.Hidden (not Collapsed) when the
+	// checklist does not need scrolling, so CRC still reserves its full width
+	// beneath the header's '-' cell. At ERAM font size 2 that width is 19 px:
+	// 1 px margin on each side + a 17 px scroll pick-area cell.
+	//
+	// mEntriesWrapper itself has 0.5-character padding. Measure the padded
+	// entry text using the actual bitmap glyph width instead of N*advance; this
+	// is important because the final glyph is 10 px wide while its advance is
+	// 12 px. With the 19 px scroll reserve, CRC's +2 px text circumscription
+	// ends exactly 24 px before the view's right edge, aligned with the '-'
+	// header cell.
+	wrapperPadX := float32(int(float64(charAdvance) * 0.5))
+	wrapperPadY := float32(int(float64(lineHeight) * 0.5))
+	entryHeight := float32(lineHeight + 2*checklistTextYPadding)
+	paddedTextWidth, _ := font.MeasureText(strings.Repeat(" ", longest), p.checklist.prefs.fontSize)
+	scrollReserveWidth := checklistScrollReserveWidth(font)
+	bodyWidth := float32(2*checklistBorderWidth) + 2*wrapperPadX + float32(paddedTextWidth) + scrollReserveWidth
+	bodyHeight := float32(2*checklistBorderWidth) + 2*wrapperPadY +
+		float32(visibleCount)*entryHeight + float32(maxInt(0, visibleCount-1)*checklistEntryGap)
+
+	// Header, MenuPickArea and SuppressPickArea use font size 2 regardless of
+	// the list font. Header Text is 11 px high at size 2, has 3 px Y padding,
+	// and a 1 px border. HeaderRow overlaps the body by one pixel.
+	headerCharAdvance, headerLineHeight := font.CharSize(2)
+	if headerCharAdvance <= 0 || headerLineHeight <= 0 {
+		return layout
+	}
+	headerHeight := float32(headerLineHeight + 2*checklistTextYPadding + 2*checklistBorderWidth)
+	headerRowHeight := headerHeight - 1
+	// MinWidth = 2 chars - 1 px, then 1 px border on both sides and a -1 px
+	// inner margin. The resulting M and suppression cells are each 24 px with
+	// the extracted CRC font (12 px advance), matching CRC's Node calculation.
+	headerSideWidth := float32(2 * headerCharAdvance)
+
+	viewWidth := bodyWidth
+	minimumHeaderWidth := 2*headerSideWidth + float32(len(p.checklistTitle())*headerCharAdvance+2*checklistTextYPadding+2*checklistBorderWidth)
+	if viewWidth < minimumHeaderWidth {
+		viewWidth = minimumHeaderWidth
+	}
+	viewHeight := headerRowHeight + bodyHeight
+	size := redsmath.Vec2{X: viewWidth, Y: viewHeight}
+	topLeft := resolveERAMAnchoredLocation(p.checklist.prefs.location, size, paneSize)
+	if pinned, ok := p.pinnedViewTopLeft(eramViewMenuChecklist, topLeft, size, paneSize); ok {
+		topLeft = pinned
+		p.checklist.prefs.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
+	}
+	topLeft = clampERAMViewPosition(topLeft, size, paneSize)
+
+	layout.Bounds = redsmath.NewRect(topLeft.X, topLeft.Y, topLeft.X+viewWidth, topLeft.Y+viewHeight)
+	layout.Header = redsmath.NewRect(topLeft.X, topLeft.Y, topLeft.X+viewWidth, topLeft.Y+headerHeight)
+	layout.Menu = redsmath.NewRect(topLeft.X, topLeft.Y, topLeft.X+headerSideWidth, topLeft.Y+headerHeight)
+	layout.Suppress = redsmath.NewRect(topLeft.X+viewWidth-headerSideWidth, topLeft.Y, topLeft.X+viewWidth, topLeft.Y+headerHeight)
+	layout.Title = redsmath.NewRect(layout.Menu.Max.X-1, topLeft.Y, layout.Suppress.Min.X+1, topLeft.Y+headerHeight)
+	layout.Body = redsmath.NewRect(topLeft.X, topLeft.Y+headerRowHeight, topLeft.X+viewWidth, topLeft.Y+viewHeight)
+	layout.Entries = entries
+	layout.EntryIndices = make([]int, len(entries))
+	for i := range entries {
+		layout.EntryIndices[i] = start + i
+	}
+	layout.LongestChars = longest
+	layout.EntryHeight = entryHeight
+	layout.WrapperPadX = wrapperPadX
+	layout.WrapperPadY = wrapperPadY
+	layout.HeaderHeight = headerHeight
+	layout.ContentOrigin = redsmath.Vec2{
+		X: layout.Body.Min.X + checklistBorderWidth + wrapperPadX,
+		Y: layout.Body.Min.Y + checklistBorderWidth + wrapperPadY,
+	}
+	layout.ScrollVisible = p.checklist.prefs.lines < defaultChecklistLines && len(allEntries) > p.checklist.prefs.lines
+	if layout.ScrollVisible {
+		reserve := scrollReserveWidth
+		scrollX0 := layout.Body.Max.X - checklistBorderWidth - reserve + 1
+		scrollX1 := layout.Body.Max.X - checklistBorderWidth - 1
+		scrollY0 := layout.Body.Min.Y + checklistBorderWidth + 1
+		scrollY1 := layout.Body.Max.Y - checklistBorderWidth - 1
+		gap := float32(1)
+		mid := scrollY0 + (scrollY1-scrollY0-gap)/2
+		layout.ScrollUp = redsmath.NewRect(scrollX0+1, scrollY0, scrollX1-1, mid)
+		layout.ScrollDown = redsmath.NewRect(scrollX0+1, mid+gap, scrollX1-1, scrollY1)
+	}
+	layout.EntryText = make([]redsmath.Rect, len(entries))
+	textWidth := float32(paddedTextWidth)
+	for i := range entries {
+		y := layout.ContentOrigin.Y + float32(i)*(entryHeight+checklistEntryGap)
+		// Text.HandleMouseMove uses the text circumscription box: two pixels
+		// around the measured text, not the whole body row.
+		layout.EntryText[i] = redsmath.NewRect(
+			layout.ContentOrigin.X-2,
+			y+checklistTextYPadding-2,
+			layout.ContentOrigin.X+textWidth+2,
+			y+checklistTextYPadding+float32(lineHeight)+2,
+		)
+	}
+	return layout
+}
+
+// checklistScrollReserveWidth reproduces CRC ScrollPickAreas' natural width
+// while hidden. ScrollPickAreas has a 1 px margin on both sides; each arrow
+// pick area has a 1 px border, 2 px left padding, 3 px right padding, and a
+// size-2 ERAM triangle glyph. Hidden nodes still participate in CRC layout.
+func checklistScrollReserveWidth(font *renderer.BitmapFont) float32 {
+	if font == nil {
+		return 0
+	}
+	triangleWidth, _ := font.MeasureText(string(rune(138)), 2) // EramChar.UpTriangle
+	if triangleWidth <= 0 {
+		return 0
+	}
+	return float32(2 + 2 + 2 + 3 + triangleWidth)
+}
+
+func (p *ERAMPane) clampChecklistTopLine() {
+	if p == nil {
+		return
+	}
+	entries := p.checklistEntries()
+	if p.checklist.prefs.lines >= defaultChecklistLines || len(entries) <= p.checklist.prefs.lines {
+		p.checklist.topLine = 0
+		return
+	}
+	maxTop := maxInt(0, len(entries)-p.checklist.prefs.lines)
+	p.checklist.topLine = maxInt(0, minInt(p.checklist.topLine, maxTop))
+}
+
+func (p *ERAMPane) scrollChecklist(down bool) bool {
+	if p == nil || p.checklist.prefs.lines >= defaultChecklistLines {
+		return false
+	}
+	entries := p.checklistEntries()
+	pageSize := p.checklist.prefs.lines
+	if len(entries) <= pageSize {
+		return false
+	}
+	old := p.checklist.topLine
+	if down {
+		p.checklist.topLine = minInt(old+pageSize, len(entries)-pageSize)
+	} else {
+		p.checklist.topLine = maxInt(old-pageSize, 0)
+	}
+	return p.checklist.topLine != old
+}
+
+func (p *ERAMPane) checklistBounds(paneSize redsmath.Vec2) redsmath.Rect {
+	return p.checklistLayout(paneSize).Bounds
+}
+
+func (p *ERAMPane) consumeChecklistInput(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || ctx.Mouse == nil || p.checklist.active == eramChecklistNone {
+		return false
+	}
+	layout := p.checklistLayout(ctx.PaneSize())
+	if layout.Bounds.Empty() || !layout.Bounds.Contains(ctx.Mouse.Pos) {
+		return false
+	}
+	left := ctx.Mouse.WasPressed(platform.MouseButtonLeft)
+	middle := ctx.Mouse.WasPressed(platform.MouseButtonMiddle)
+	if !left && !middle {
+		return false
+	}
+
+	// ViewListBase's M cell requests the shared ChecklistView settings menu.
+	// CRC accepts both TBP and TBE on this pick area.
+	if layout.Menu.Contains(ctx.Mouse.Pos) {
+		p.openViewMenu(ctx, eramViewMenuChecklist)
+		return true
+	}
+	// The centered header is the MovableViewBase move handle. CRC permits TBP
+	// or TBE here and then captures placement until the next TBP/TBE or Escape.
+	if layout.Title.Contains(ctx.Mouse.Pos) {
+		p.startViewMove(ctx, eramViewChecklist)
+		return true
+	}
+	if layout.Suppress.Contains(ctx.Mouse.Pos) {
+		p.checklist.active = eramChecklistNone
+		p.checklist.selected = make(map[int]bool)
+		p.checklist.topLine = 0
+		return true
+	}
+	if layout.ScrollVisible {
+		if layout.ScrollUp.Contains(ctx.Mouse.Pos) {
+			p.scrollChecklist(false)
+			return true
+		}
+		if layout.ScrollDown.Contains(ctx.Mouse.Pos) {
+			p.scrollChecklist(true)
+			return true
+		}
+	}
+	for i, bounds := range layout.EntryText {
+		if bounds.Contains(ctx.Mouse.Pos) {
+			index := layout.EntryIndices[i]
+			p.checklist.selected[index] = !p.checklist.selected[index]
+			return true
+		}
+	}
+	// CRC consumes picks in the body even when they do not hit an entry.
+	return true
+}
+
+func (p *ERAMPane) drawChecklist(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil || ctx.Renderer == nil || p.checklist.active == eramChecklistNone {
+		return
+	}
+	layout := p.checklistLayout(ctx.PaneSize())
+	if layout.Bounds.Empty() {
+		return
+	}
+	p.ensureToolbarFont()
+	font := p.toolbar.font
+	if font == nil {
+		return
+	}
+	texture := p.toolbarTexture(ctx.Renderer, p.checklist.prefs.fontSize)
+	headerTexture := p.toolbarTexture(ctx.Renderer, 2)
+	if texture == 0 || headerTexture == 0 {
+		return
+	}
+	_, lineHeight := font.CharSize(p.checklist.prefs.fontSize)
+	if lineHeight <= 0 {
+		return
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	z := zChecklistViewSemiTransparent
+	if p.checklist.prefs.isOpaque {
+		z = zChecklistViewOpaque
+	}
+	cb := zcb.At(z)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.DisableBlend()
+
+	border := applyERAMBrightness(toolbarWhite, p.borderBrightness, p.systemBrightness)
+	text := applyERAMBrightness(toolbarWhite, p.checklist.prefs.brightness, p.systemBrightness)
+	black := toolbarBlack
+	headerBackground := black
+	if p.checklist.prefs.isOpaque {
+		headerBackground = applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness)
+	}
+
+	// ViewListBase always gives its contents a black body. ShowBorder only
+	// controls the body's 1 px border; it does not remove the black list body.
+	// Draw it before the header: HeaderRow has ZIndex 0.0001 in CRC specifically
+	// so its one-pixel overlap remains above the list body.
+	drawSolidRect(cb, layout.Body, black)
+	if p.checklist.prefs.showBorder {
+		drawBorderOnly(cb, layout.Body, border, checklistBorderWidth)
+	}
+
+	// HeaderRow: M | centered checklist title | suppression '-'. Adjacent header
+	// cells overlap by one pixel in CRC; drawing the shared borders in this
+	// order produces the same one-pixel dividers.
+	drawSolidRect(cb, layout.Menu, headerBackground)
+	drawBorderOnly(cb, layout.Menu, border, checklistBorderWidth)
+	drawSolidRect(cb, layout.Title, headerBackground)
+	drawBorderOnly(cb, layout.Title, border, checklistBorderWidth)
+	drawSolidRect(cb, layout.Suppress, headerBackground)
+	drawBorderOnly(cb, layout.Suppress, border, checklistBorderWidth)
+
+	// Selection emphasis is White on Gray with derived text brightness 76 and
+	// derived background brightness 40. CRC pads each entry to the longest
+	// adapted checklist string, making every selection rectangle the same width.
+	for i := range layout.Entries {
+		if !p.checklist.selected[layout.EntryIndices[i]] {
+			continue
+		}
+		entry := layout.EntryText[i]
+		fill := applyERAMBrightness(checklistGray, p.checklist.prefs.highlightBrightness, p.systemBrightness)
+		// Selection circumscription extends 2 px around measured text.
+		drawSolidRect(cb, entry, fill)
+	}
+
+	// ScrollPickAreas remains hidden at the default 21+ setting. When LINES is
+	// reduced below the checklist length, CRC exposes the reserved right column
+	// as page-up/page-down controls. Enabled arrows use the checklist text
+	// brightness; disabled arrows are dimmed.
+	if layout.ScrollVisible {
+		upEnabled := p.checklist.topLine > 0
+		downEnabled := p.checklist.topLine+p.checklist.prefs.lines < len(p.checklistEntries())
+		dim := applyERAMBrightness(checklistGray, p.checklist.prefs.brightness, p.systemBrightness)
+		upColor := dim
+		downColor := dim
+		if upEnabled {
+			upColor = text
+		}
+		if downEnabled {
+			downColor = text
+		}
+		drawBorderOnly(cb, layout.ScrollUp, upColor, checklistBorderWidth)
+		drawBorderOnly(cb, layout.ScrollDown, downColor, checklistBorderWidth)
+		scrollTD := renderer.GetTextDrawBuilder()
+		scrollTD.SetFont(font)
+		addChecklistCenteredText(scrollTD, font, string(rune(138)), layout.ScrollUp, 2, upColor.ToRGBA(), black.ToRGBA())
+		addChecklistCenteredText(scrollTD, font, string(rune(139)), layout.ScrollDown, 2, downColor.ToRGBA(), black.ToRGBA())
+		cb.Blend()
+		scrollTD.GenerateCommands(cb, headerTexture)
+		renderer.ReturnTextDrawBuilder(scrollTD)
+	}
+
+	// Text uses the actual extracted ERAM bitmap font. Header controls are
+	// always size 2; list entries use ChecklistViewSettings.FontSize (default 2).
+	headerTD := renderer.GetTextDrawBuilder()
+	headerTD.SetFont(font)
+	addChecklistCenteredText(headerTD, font, "M", layout.Menu, 2, text.ToRGBA(), headerBackground.ToRGBA())
+	addChecklistCenteredText(headerTD, font, p.checklistTitle(), layout.Title, 2, text.ToRGBA(), headerBackground.ToRGBA())
+	addChecklistCenteredText(headerTD, font, "-", layout.Suppress, 2, text.ToRGBA(), headerBackground.ToRGBA())
+	cb.Blend()
+	headerTD.GenerateCommands(cb, headerTexture)
+	renderer.ReturnTextDrawBuilder(headerTD)
+
+	td := renderer.GetTextDrawBuilder()
+	td.SetFont(font)
+	for i, raw := range layout.Entries {
+		entry := raw + strings.Repeat(" ", maxInt(0, layout.LongestChars-len([]rune(raw))))
+		background := black.ToRGBA()
+		if p.checklist.selected[layout.EntryIndices[i]] {
+			background = applyERAMBrightness(checklistGray, p.checklist.prefs.highlightBrightness, p.systemBrightness).ToRGBA()
+		}
+		td.AddText(entry, redsmath.Vec2{
+			X: layout.ContentOrigin.X,
+			Y: layout.ContentOrigin.Y + float32(i)*(layout.EntryHeight+checklistEntryGap) + checklistTextYPadding,
+		}, renderer.TextStyle{
+			Size:       p.checklist.prefs.fontSize,
+			Color:      text.ToRGBA(),
+			Background: background,
+		})
+	}
+	td.GenerateCommands(cb, texture)
+	renderer.ReturnTextDrawBuilder(td)
+
+	// TextDrawBuilder emits opaque glyph-cell backgrounds. If the hover
+	// circumscription is drawn before text, those cells can overwrite portions
+	// of its bottom edge and make it look dotted. CRC renders the Text node's
+	// circumscription above its text, so draw all hover chrome after both header
+	// and entry text have been submitted.
+	if ctx.Mouse != nil {
+		hover := ctx.Mouse.Pos
+		emphasis := applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness)
+		switch {
+		case layout.Menu.Contains(hover):
+			drawBorderOnly(cb, layout.Menu, emphasis, 1)
+		case layout.Title.Contains(hover):
+			drawBorderOnly(cb, layout.Title, emphasis, 1)
+		case layout.Suppress.Contains(hover):
+			drawBorderOnly(cb, layout.Suppress, emphasis, 1)
+		case layout.ScrollVisible && layout.ScrollUp.Contains(hover):
+			drawBorderOnly(cb, layout.ScrollUp, emphasis, 1)
+		case layout.ScrollVisible && layout.ScrollDown.Contains(hover):
+			drawBorderOnly(cb, layout.ScrollDown, emphasis, 1)
+		default:
+			for _, entry := range layout.EntryText {
+				if entry.Contains(hover) {
+					drawBorderOnly(cb, entry, emphasis, 1)
+					break
+				}
+			}
+		}
+	}
+
+	cb.DisableScissor()
+}
+
+func addChecklistCenteredText(td *renderer.TextDrawBuilder, font *renderer.BitmapFont, text string, bounds redsmath.Rect, size int, color, background renderer.RGBA) {
+	if td == nil || font == nil || text == "" {
+		return
+	}
+	w, h := font.MeasureText(text, size)
+	td.AddText(text, redsmath.Vec2{
+		X: bounds.Min.X + (bounds.Width()-float32(w))/2,
+		Y: bounds.Min.Y + (bounds.Height()-float32(h))/2,
+	}, renderer.TextStyle{Size: size, Color: color, Background: background})
 }

@@ -193,5 +193,27 @@
       },
       "freq": 123.45
     }
+  ],
+  "emergencyChecklist": [
+    "A/C ID AND TYPE",
+    "NATURE OF EMERGENCY",
+    "PILOT INTENTIONS",
+    "FUEL REMAINING IN TIME",
+    "SOULS ON BOARD",
+    "CAPABILITY FOR IFR FLIGHT",
+    "NAV EQUP CAPABILITY",
+    "EMRG EQUIPMENT REQUIRED",
+    "NOTE TIME/POSITION"
+  ],
+  "positionReliefChecklist": [
+    "OUTAGES & EQUIP (ASDE-X, RDVS)",
+    "SPECIAL ACTIVITIES",
+    "FLOW & METERING",
+    "APT CONFIG (RWYs & APCHs IN USE)",
+    "APT STATUS (RWYs & TWYs CLOSED)",
+    "WEATHER, ATIS and RCCs",
+    "NOTAMs",
+    "ATC STAFFING (CTR, APP, TWR, GND)",
+    "COORDINATION & TRAFFIC"
   ]
 }

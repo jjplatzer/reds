@@ -410,15 +410,6 @@
       "freq": 128.05
     },
     {
-      "id": "95",
-      "name": "ZTL Landline",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 133.3
-    },
-    {
       "id": "96",
       "name": "ZJX Guard",
       "visualCenter": {
@@ -445,5 +436,31 @@
       },
       "freq": 136.975
     }
+  ],
+  "emergencyChecklist": [
+    "NATURE OF EMERGENCY",
+    "FUEL REMAINING IN TIME",
+    "PIREP WX/IFR CAPABILITY",
+    "PILOT INTENTIONS",
+    "LAST KNOWN POSITION",
+    "HEADING & AIRSPEED",
+    "NAVIGATION EQUIPMENT",
+    "NAVAID SIGNALS RECEIVED",
+    "VISIBLE LANDMARKS",
+    "ACFT COLOR/SOULS"
+  ],
+  "positionReliefChecklist": [
+    "STATUS INFORMATION AREA",
+    "EQUIPMENT / NOTAMS",
+    "CPDLC / FREQUENCY STATUS",
+    "FLOW",
+    "SPECIAL ACTIVITIES / WARNING AIRSPACE",
+    "WEATHER /PIREPS/SIGMETS/AIRMETS",
+    "AIRPORTS",
+    "STAFFING",
+    "TRAINING",
+    "NON-RVSM OPERATIONS",
+    "TRAFFIC",
+    "MISC"
   ]
 }

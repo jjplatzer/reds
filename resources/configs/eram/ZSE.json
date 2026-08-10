@@ -149,15 +149,6 @@
       "freq": 135.45
     },
     {
-      "id": "16",
-      "name": "Sector_16",
-      "visualCenter": {
-        "lat": 45.11604963,
-        "lon": -122.83189593
-      },
-      "freq": 135.45
-    },
-    {
       "id": "18",
       "name": "Sector 18",
       "visualCenter": {
@@ -283,5 +274,34 @@
       },
       "freq": 118.025
     }
+  ],
+  "emergencyChecklist": [
+    "Aircraft identification and type",
+    "Nature of the emergency",
+    "Pilot's desires",
+    "Fuel remaining in time",
+    "Number of people on board",
+    "Pilot reported weather",
+    "Navigation equipment capability",
+    "Visible landmarks",
+    "Assign Becon code 7700"
+  ],
+  "positionReliefChecklist": [
+    "WX TRENDS",
+    "PIREPS AND  NOTAMS",
+    "AIRPORT CONDITIONS/STATUS",
+    "SUA",
+    "TRAFFIC...",
+    ".SPECIAL ACTIVITY",
+    ".HOLDING",
+    ".PRIMARY TARGETS",
+    ".AIRCRAFT IN HANDOFF",
+    ".POINT-OUTS",
+    ".AIRCRAFT RELEASED/SUBJECTED TO RELEASE",
+    ".AIRCRAFT STANDING BY",
+    ".NON-RADAR OPS",
+    ".AIRCRAFT COM STATUS (AFK/NORDO)",
+    ".NON-STANDARD COORDINATION",
+    ".SPECIAL PROBLEMS/REQUEST"
   ]
 }
