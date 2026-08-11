@@ -902,13 +902,18 @@ func setPaneMousePosition(ctx *panes.Context, panePosition redsmath.Vec2) {
 // family as CHECKLIST, but its entries wrap at 25 characters and reserve a
 // station tear-off indicator on the left.
 const (
-	wxReportBorderWidth  = 1
-	wxReportPaddingX     = 6
-	wxReportPaddingY     = 8
-	wxReportTearoffWidth = 11
-	wxReportWrapChars    = 25
-	wxReportLineSpacing  = 6
-	wxReportEntryGap     = 1 // one blank text line between station entries
+	wxReportBorderWidth          = 1
+	wxReportPaddingX             = 6
+	wxReportPaddingY             = 8
+	wxReportTearoffContentWidth  = 11
+	wxReportTearoffBorderWidth   = 1
+	wxReportTearoffContentHeight = 15
+	wxReportTextLeftPadChars     = 1
+	wxReportEntriesMinChars      = 27
+	wxReportEntriesMinExtra      = 13
+	wxReportWrapChars            = 25
+	wxReportLineSpacing          = 6
+	wxReportEntryGap             = 1 // one blank text line between station entries
 )
 
 var wxReportGold = renderer.RGB8(207, 212, 12) // EramColor.Gold
@@ -1074,11 +1079,19 @@ func (p *ERAMPane) wxReportLayout(paneSize redsmath.Vec2) wxReportLayout {
 	}
 	visible := allLines[start:limit]
 
-	// CRC mEntriesWrapper: Padding(8, 6), 25-char wrapped text, 11x15
-	// TearOffArea at left, hidden ScrollPickAreas still reserving the right.
+	// CRC mEntriesWrapper is Padding(8, 6) with MinWidth(27 chars + 13 px).
+	// Each entry Row starts with TearOffArea: 11 px content plus a 1 px
+	// border on each side (13 px total). The following Text has one full
+	// character of LEFT padding before the first METAR glyph. ScrollPickAreas
+	// remains Hidden rather than Collapsed, so its width is always reserved.
 	textWidth := float32(wxReportWrapChars * charAdvance)
+	tearoffTotalWidth := float32(wxReportTearoffContentWidth + 2*wxReportTearoffBorderWidth)
+	textLeftPadding := float32(wxReportTextLeftPadChars * charAdvance)
+	entryNaturalWidth := tearoffTotalWidth + textLeftPadding + textWidth
+	entriesMinWidth := float32(wxReportEntriesMinChars*charAdvance + wxReportEntriesMinExtra)
+	entriesContentWidth := maxFloat32(entryNaturalWidth, entriesMinWidth)
 	scrollWidth := checklistScrollReserveWidth(font)
-	bodyWidth := float32(2*wxReportBorderWidth+2*wxReportPaddingX+wxReportTearoffWidth) + textWidth + scrollWidth
+	bodyWidth := float32(2*wxReportBorderWidth+2*wxReportPaddingX) + entriesContentWidth + scrollWidth
 	bodyHeight := float32(0)
 	if len(visible) != 0 {
 		bodyHeight = float32(2*wxReportBorderWidth+2*wxReportPaddingY) +
@@ -1239,11 +1252,13 @@ func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				continue
 			}
 			y := layout.ContentOrigin.Y + float32(i*(layout.LineHeight+wxReportLineSpacing))
+			tearoffTotalWidth := float32(wxReportTearoffContentWidth + 2*wxReportTearoffBorderWidth)
+			tearoffTotalHeight := float32(wxReportTearoffContentHeight + 2*wxReportTearoffBorderWidth)
 			tearoff := redsmath.NewRect(
 				layout.ContentOrigin.X,
 				y,
-				layout.ContentOrigin.X+wxReportTearoffWidth,
-				y+15,
+				layout.ContentOrigin.X+tearoffTotalWidth,
+				y+tearoffTotalHeight,
 			)
 			drawSolidRect(cb, tearoff, applyERAMBrightness(wxReportGold, p.wxReport.prefs.brightness, p.systemBrightness))
 			drawBorderOnly(cb, tearoff, border, 1)
@@ -1280,10 +1295,15 @@ func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		defer renderer.ReturnTextDrawBuilder(td)
 		td.SetFont(font)
 		for i, line := range layout.Lines {
-			// CRC Row lays the Text node immediately after the 11 px TearOffArea.
-			// Do not overlap the tear-off column: its Visibility may be Hidden, but
-			// it is never Collapsed, so the full width remains reserved.
-			x := layout.ContentOrigin.X + wxReportTearoffWidth
+			// CRC entry Row: TearOffArea contributes 13 px total (11 content +
+			// 1 px border per side), then Text contributes one character of left
+			// padding. At the default size-2 font this places the first METAR glyph
+			// 32 px from the body left edge: 1 border + 6 wrapper padding + 13
+			// tear-off + 12 text padding. The M/WX header divider is at 24 px, so
+			// the report text begins a real 8 px to its right, exactly as in CRC.
+			tearoffTotalWidth := float32(wxReportTearoffContentWidth + 2*wxReportTearoffBorderWidth)
+			textLeftPadding := float32(wxReportTextLeftPadChars * charAdvance)
+			x := layout.ContentOrigin.X + tearoffTotalWidth + textLeftPadding
 			y := layout.ContentOrigin.Y + float32(i*(layout.LineHeight+wxReportLineSpacing))
 			td.AddText(line.Line, redsmath.Vec2{X: x, Y: y}, renderer.TextStyle{
 				Size:       p.wxReport.prefs.fontSize,
