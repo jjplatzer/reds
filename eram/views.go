@@ -1280,7 +1280,10 @@ func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		defer renderer.ReturnTextDrawBuilder(td)
 		td.SetFont(font)
 		for i, line := range layout.Lines {
-			x := layout.ContentOrigin.X + wxReportTearoffWidth - 1
+			// CRC Row lays the Text node immediately after the 11 px TearOffArea.
+			// Do not overlap the tear-off column: its Visibility may be Hidden, but
+			// it is never Collapsed, so the full width remains reserved.
+			x := layout.ContentOrigin.X + wxReportTearoffWidth
 			y := layout.ContentOrigin.Y + float32(i*(layout.LineHeight+wxReportLineSpacing))
 			td.AddText(line.Line, redsmath.Vec2{X: x, Y: y}, renderer.TextStyle{
 				Size:       p.wxReport.prefs.fontSize,
