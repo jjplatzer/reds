@@ -20,6 +20,7 @@ const (
 	eramViewNone eramViewKind = iota
 	eramViewTime
 	eramViewChecklist
+	eramViewWX
 	eramViewMCA
 	eramViewResponseArea
 )
@@ -90,12 +91,14 @@ const (
 var eramAreaBlack = renderer.RGB8(0, 0, 0) // EramColor.Black
 
 type eramMCAState struct {
-	location   eramAnchoredLocation
-	input      []rune
-	cursor     int
-	width      int
-	fontSize   int
-	brightness int
+	location      eramAnchoredLocation
+	input         []rune
+	cursor        int
+	width         int
+	fontSize      int
+	brightness    int
+	feedback      []string
+	feedbackError bool
 }
 
 type eramResponseAreaState struct {
@@ -271,6 +274,8 @@ func (p *ERAMPane) viewBounds(kind eramViewKind, paneSize redsmath.Vec2) redsmat
 		return p.clockBounds(paneSize)
 	case eramViewChecklist:
 		return p.checklistBounds(paneSize)
+	case eramViewWX:
+		return p.wxReportBounds(paneSize)
 	case eramViewMCA:
 		return p.mcaBounds(paneSize)
 	case eramViewResponseArea:
@@ -286,6 +291,8 @@ func (p *ERAMPane) setViewTopLeft(kind eramViewKind, topLeft, size, paneSize red
 		p.clock.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
 	case eramViewChecklist:
 		p.checklist.prefs.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
+	case eramViewWX:
+		p.wxReport.prefs.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
 	case eramViewMCA:
 		p.mca.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
 	case eramViewResponseArea:
@@ -486,6 +493,11 @@ func (p *ERAMPane) mcaPreviewTotalLines() int {
 func (p *ERAMPane) mcaSectionLines() (previewLines, feedbackLines int, separatorVisible bool) {
 	total := p.mcaPreviewTotalLines()
 	previewLines = maxInt(eramMCAPreviewMinLines, minInt(total, eramMCAPreviewMaxLines))
+	if len(p.mca.feedback) != 0 {
+		// CRC keeps the Feedback Area at its full four-line minimum whenever a
+		// system response is present, even if the Preview Area has grown.
+		return previewLines, eramMCAFeedbackMinLines, true
+	}
 	if total >= eramMCAPreviewMaxLines {
 		return previewLines, 0, false
 	}
@@ -598,6 +610,11 @@ func (p *ERAMPane) consumeMCAKeyboard(ctx *panes.Context) {
 	}
 	keyboard := ctx.Keyboard
 
+	if keyboard.WasPressed(platform.KeyEnter) || keyboard.WasPressed(platform.KeyKeypadEnter) {
+		if p.executeMCACommand() {
+			return
+		}
+	}
 	if keyboard.WasPressed(platform.KeyEscape) {
 		p.mca.input = p.mca.input[:0]
 		p.mca.cursor = 0
@@ -664,6 +681,51 @@ func (p *ERAMPane) insertMCACharacter(r rune) {
 	if p.mca.cursor+1 < maxCharacters {
 		p.mca.cursor++
 	}
+}
+
+func (p *ERAMPane) setMCAFeedback(isError bool, lines ...string) {
+	if p == nil {
+		return
+	}
+	p.mca.feedback = append(p.mca.feedback[:0], lines...)
+	p.mca.feedbackError = isError
+}
+
+func wrapERAMText(text string, width int) []string {
+	if width <= 0 {
+		return nil
+	}
+	words := strings.Fields(text)
+	if len(words) == 0 {
+		return nil
+	}
+	var lines []string
+	current := ""
+	for _, word := range words {
+		for len([]rune(word)) > width {
+			if current != "" {
+				lines = append(lines, current)
+				current = ""
+			}
+			r := []rune(word)
+			lines = append(lines, string(r[:width]))
+			word = string(r[width:])
+		}
+		if current == "" {
+			current = word
+			continue
+		}
+		if len([]rune(current))+1+len([]rune(word)) <= width {
+			current += " " + word
+		} else {
+			lines = append(lines, current)
+			current = word
+		}
+	}
+	if current != "" {
+		lines = append(lines, current)
+	}
+	return lines
 }
 
 func (p *ERAMPane) drawMCA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
@@ -757,6 +819,33 @@ func (p *ERAMPane) drawMCA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			Y: contentOrigin.Y + float32(row*(lineHeight+eramAreaLineSpacing)),
 		}, renderer.TextStyle{Size: p.mca.fontSize, Color: cursorColor})
 	}
+
+	if len(p.mca.feedback) != 0 {
+		feedbackY := bounds.Min.Y + eramAreaBorderWidth + float32(previewHeight) + 1 + eramAreaPaddingY
+		marker := string(rune(132)) // EramChar.CheckMark
+		markerColor := applyERAMBrightness(renderer.RGB8(0, 243, 0), p.mca.brightness, p.systemBrightness).ToRGBA()
+		if p.mca.feedbackError {
+			marker = string(rune(133)) // EramChar.XMark
+			markerColor = applyERAMBrightness(renderer.RGB8(243, 0, 0), p.mca.brightness, p.systemBrightness).ToRGBA()
+		}
+		td.AddText(marker+" ", redsmath.Vec2{X: contentOrigin.X, Y: feedbackY}, renderer.TextStyle{
+			Size: p.mca.fontSize, Color: markerColor, Background: black,
+		})
+		feedbackLines := make([]string, 0, len(p.mca.feedback)+1)
+		for _, line := range p.mca.feedback {
+			feedbackLines = append(feedbackLines, wrapERAMText(line, p.mca.width)...)
+		}
+		for i, line := range feedbackLines {
+			x := contentOrigin.X
+			if i == 0 {
+				x += float32(2 * charAdvance)
+			}
+			td.AddText(line, redsmath.Vec2{
+				X: x,
+				Y: feedbackY + float32(i*(lineHeight+eramAreaLineSpacing)),
+			}, renderer.TextStyle{Size: p.mca.fontSize, Color: textColor, Background: black})
+		}
+	}
 	cb.Blend()
 	td.GenerateCommands(cb, texture)
 	cb.DisableScissor()
@@ -807,6 +896,401 @@ func setPaneMousePosition(ctx *panes.Context, panePosition redsmath.Vec2) {
 		X: ctx.PaneRect.Min.X + panePosition.X,
 		Y: ctx.PaneRect.Min.Y + panePosition.Y,
 	})
+}
+
+// CRC ViewWeatherStationReport geometry. The WX list uses the same list header
+// family as CHECKLIST, but its entries wrap at 25 characters and reserve a
+// station tear-off indicator on the left.
+const (
+	wxReportBorderWidth  = 1
+	wxReportPaddingX     = 6
+	wxReportPaddingY     = 8
+	wxReportTearoffWidth = 11
+	wxReportWrapChars    = 25
+	wxReportLineSpacing  = 6
+	wxReportEntryGap     = 1 // one blank text line between station entries
+)
+
+var wxReportGold = renderer.RGB8(207, 212, 12) // EramColor.Gold
+
+type wxReportVisibleLine struct {
+	StationIndex int
+	Line         string
+	First        bool
+}
+
+type wxReportLayout struct {
+	Bounds        redsmath.Rect
+	Header        redsmath.Rect
+	Menu          redsmath.Rect
+	Title         redsmath.Rect
+	Suppress      redsmath.Rect
+	Body          redsmath.Rect
+	ScrollUp      redsmath.Rect
+	ScrollDown    redsmath.Rect
+	ScrollVisible bool
+	Lines         []wxReportVisibleLine
+	LineHeight    int
+	HeaderHeight  float32
+	ContentOrigin redsmath.Vec2
+	TextWidth     float32
+	ScrollWidth   float32
+}
+
+func (p *ERAMPane) wxReportStationLines(station wxReportStation) []string {
+	if p == nil {
+		return nil
+	}
+	display := station.DisplayID
+	if display == "" {
+		display = station.ICAO
+	}
+	observation := ""
+	body := "-M-"
+	if metar, ok := p.wxReport.metars[station.ICAO]; ok {
+		if !metar.Observation.IsZero() {
+			observation = metar.Observation.UTC().Format("1504")
+		}
+		tooOld := !metar.Observation.IsZero() && metar.Observation.Add(120*time.Minute).Before(time.Now().UTC())
+		if !tooOld {
+			body = wxReportMETARBody(metar.Raw)
+			if len(body) > 240 {
+				body = body[:240]
+			}
+		}
+	}
+	line := display
+	if len([]rune(line)) < 5 {
+		line += strings.Repeat(" ", 5-len([]rune(line)))
+	}
+	line += " " + observation + " " + body
+	return wrapERAMText(strings.TrimRight(line, " "), wxReportWrapChars)
+}
+
+func wxReportMETARBody(raw string) string {
+	fields := strings.Fields(raw)
+	if len(fields) == 0 {
+		return "-M-"
+	}
+	timeField := -1
+	for i, field := range fields {
+		if len(field) < 5 || field[len(field)-1] != 'Z' {
+			continue
+		}
+		digits := true
+		for _, r := range field[:len(field)-1] {
+			if r < '0' || r > '9' {
+				digits = false
+				break
+			}
+		}
+		if digits {
+			timeField = i
+			break
+		}
+	}
+	if timeField < 0 {
+		return "-M-"
+	}
+	if timeField+1 >= len(fields) {
+		return ""
+	}
+	return strings.Join(fields[timeField+1:], " ")
+}
+
+func (p *ERAMPane) wxReportAllLines() []wxReportVisibleLine {
+	if p == nil {
+		return nil
+	}
+	var lines []wxReportVisibleLine
+	for stationIndex, station := range p.wxReport.stations {
+		wrapped := p.wxReportStationLines(station)
+		for i, line := range wrapped {
+			lines = append(lines, wxReportVisibleLine{StationIndex: stationIndex, Line: line, First: i == 0})
+		}
+		if stationIndex+1 < len(p.wxReport.stations) {
+			lines = append(lines, wxReportVisibleLine{StationIndex: stationIndex, Line: ""})
+		}
+	}
+	return lines
+}
+
+func (p *ERAMPane) clampWXTopLine() {
+	if p == nil {
+		return
+	}
+	lines := p.wxReportAllLines()
+	if p.wxReport.prefs.lines >= 21 || len(lines) <= p.wxReport.prefs.lines {
+		p.wxReport.topLine = 0
+		return
+	}
+	maxTop := maxInt(0, len(lines)-p.wxReport.prefs.lines)
+	p.wxReport.topLine = maxInt(0, minInt(p.wxReport.topLine, maxTop))
+}
+
+func (p *ERAMPane) scrollWXReport(down bool) bool {
+	if p == nil {
+		return false
+	}
+	lines := p.wxReportAllLines()
+	page := p.wxReport.prefs.lines
+	if page <= 0 || len(lines) <= page {
+		return false
+	}
+	old := p.wxReport.topLine
+	if down {
+		p.wxReport.topLine = minInt(old+page, len(lines)-page)
+	} else {
+		p.wxReport.topLine = maxInt(old-page, 0)
+	}
+	return old != p.wxReport.topLine
+}
+
+func (p *ERAMPane) wxReportLayout(paneSize redsmath.Vec2) wxReportLayout {
+	var layout wxReportLayout
+	if p == nil || !p.wxReport.prefs.visible {
+		return layout
+	}
+	p.ensureToolbarFont()
+	font := p.toolbar.font
+	if font == nil {
+		return layout
+	}
+	charAdvance, lineHeight := font.CharSize(p.wxReport.prefs.fontSize)
+	headerAdvance, headerLineHeight := font.CharSize(2)
+	if charAdvance <= 0 || lineHeight <= 0 || headerAdvance <= 0 || headerLineHeight <= 0 {
+		return layout
+	}
+
+	p.clampWXTopLine()
+	allLines := p.wxReportAllLines()
+	start := p.wxReport.topLine
+	limit := len(allLines)
+	if p.wxReport.prefs.lines < 21 {
+		limit = minInt(limit, start+p.wxReport.prefs.lines)
+	}
+	if start > limit {
+		start = limit
+	}
+	visible := allLines[start:limit]
+
+	// CRC mEntriesWrapper: Padding(8, 6), 25-char wrapped text, 11x15
+	// TearOffArea at left, hidden ScrollPickAreas still reserving the right.
+	textWidth := float32(wxReportWrapChars * charAdvance)
+	scrollWidth := checklistScrollReserveWidth(font)
+	bodyWidth := float32(2*wxReportBorderWidth+2*wxReportPaddingX+wxReportTearoffWidth) + textWidth + scrollWidth
+	bodyHeight := float32(0)
+	if len(visible) != 0 {
+		bodyHeight = float32(2*wxReportBorderWidth+2*wxReportPaddingY) +
+			float32(len(visible)*lineHeight+maxInt(0, len(visible)-1)*wxReportLineSpacing)
+	}
+
+	headerHeight := float32(headerLineHeight + 2*checklistTextYPadding + 2*wxReportBorderWidth)
+	headerRowHeight := headerHeight - 1
+	headerSideWidth := float32(2 * headerAdvance)
+	viewWidth := bodyWidth
+	minimumHeaderWidth := 2*headerSideWidth + float32(2*headerAdvance+2*checklistTextYPadding+2*wxReportBorderWidth)
+	if viewWidth < minimumHeaderWidth {
+		viewWidth = minimumHeaderWidth
+	}
+	viewHeight := headerHeight
+	if len(visible) != 0 {
+		viewHeight = headerRowHeight + bodyHeight
+	}
+	size := redsmath.Vec2{X: viewWidth, Y: viewHeight}
+	topLeft := resolveERAMAnchoredLocation(p.wxReport.prefs.location, size, paneSize)
+	if pinned, ok := p.pinnedViewTopLeft(eramViewMenuWX, topLeft, size, paneSize); ok {
+		topLeft = pinned
+		p.wxReport.prefs.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
+	}
+	topLeft = clampERAMViewPosition(topLeft, size, paneSize)
+
+	layout.Bounds = redsmath.NewRect(topLeft.X, topLeft.Y, topLeft.X+viewWidth, topLeft.Y+viewHeight)
+	layout.Header = redsmath.NewRect(topLeft.X, topLeft.Y, topLeft.X+viewWidth, topLeft.Y+headerHeight)
+	layout.Menu = redsmath.NewRect(topLeft.X, topLeft.Y, topLeft.X+headerSideWidth, topLeft.Y+headerHeight)
+	layout.Suppress = redsmath.NewRect(topLeft.X+viewWidth-headerSideWidth, topLeft.Y, topLeft.X+viewWidth, topLeft.Y+headerHeight)
+	layout.Title = redsmath.NewRect(layout.Menu.Max.X-1, topLeft.Y, layout.Suppress.Min.X+1, topLeft.Y+headerHeight)
+	if len(visible) != 0 {
+		layout.Body = redsmath.NewRect(topLeft.X, topLeft.Y+headerRowHeight, topLeft.X+viewWidth, topLeft.Y+viewHeight)
+		layout.ContentOrigin = redsmath.Vec2{
+			X: layout.Body.Min.X + wxReportBorderWidth + wxReportPaddingX,
+			Y: layout.Body.Min.Y + wxReportBorderWidth + wxReportPaddingY,
+		}
+	}
+	layout.Lines = visible
+	layout.LineHeight = lineHeight
+	layout.HeaderHeight = headerHeight
+	layout.TextWidth = textWidth
+	layout.ScrollWidth = scrollWidth
+	layout.ScrollVisible = p.wxReport.prefs.lines < 21 && len(allLines) > p.wxReport.prefs.lines
+	if layout.ScrollVisible && !layout.Body.Empty() {
+		x0 := layout.Body.Max.X - wxReportBorderWidth - scrollWidth + 2
+		x1 := layout.Body.Max.X - wxReportBorderWidth - 2
+		y0 := layout.Body.Min.Y + wxReportBorderWidth + 1
+		y1 := layout.Body.Max.Y - wxReportBorderWidth - 1
+		gap := float32(1)
+		mid := y0 + (y1-y0-gap)/2
+		layout.ScrollUp = redsmath.NewRect(x0, y0, x1, mid)
+		layout.ScrollDown = redsmath.NewRect(x0, mid+gap, x1, y1)
+	}
+	return layout
+}
+
+func (p *ERAMPane) wxReportBounds(paneSize redsmath.Vec2) redsmath.Rect {
+	return p.wxReportLayout(paneSize).Bounds
+}
+
+func (p *ERAMPane) consumeWXReportInput(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || ctx.Mouse == nil || !p.wxReport.prefs.visible {
+		return false
+	}
+	layout := p.wxReportLayout(ctx.PaneSize())
+	if layout.Bounds.Empty() || !layout.Bounds.Contains(ctx.Mouse.Pos) {
+		return false
+	}
+	left := ctx.Mouse.WasPressed(platform.MouseButtonLeft)
+	middle := ctx.Mouse.WasPressed(platform.MouseButtonMiddle)
+	if !left && !middle {
+		return false
+	}
+	if layout.Menu.Contains(ctx.Mouse.Pos) {
+		p.openViewMenu(ctx, eramViewMenuWX)
+		return true
+	}
+	if layout.Title.Contains(ctx.Mouse.Pos) {
+		p.startViewMove(ctx, eramViewWX)
+		return true
+	}
+	if layout.Suppress.Contains(ctx.Mouse.Pos) {
+		p.wxReport.prefs.visible = false
+		return true
+	}
+	if layout.ScrollVisible {
+		if layout.ScrollUp.Contains(ctx.Mouse.Pos) {
+			p.scrollWXReport(false)
+			return true
+		}
+		if layout.ScrollDown.Contains(ctx.Mouse.Pos) {
+			p.scrollWXReport(true)
+			return true
+		}
+	}
+	return true
+}
+
+func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil || ctx.Renderer == nil || !p.wxReport.prefs.visible {
+		return
+	}
+	layout := p.wxReportLayout(ctx.PaneSize())
+	if layout.Bounds.Empty() {
+		return
+	}
+	p.ensureToolbarFont()
+	font := p.toolbar.font
+	if font == nil {
+		return
+	}
+	texture := p.toolbarTexture(ctx.Renderer, p.wxReport.prefs.fontSize)
+	headerTexture := p.toolbarTexture(ctx.Renderer, 2)
+	if texture == 0 || headerTexture == 0 {
+		return
+	}
+	charAdvance, _ := font.CharSize(p.wxReport.prefs.fontSize)
+	if charAdvance <= 0 {
+		return
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	z := zWXReportViewSemiTransparent
+	if p.wxReport.prefs.isOpaque {
+		z = zWXReportViewOpaque
+	}
+	cb := zcb.At(z)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.DisableBlend()
+
+	border := applyERAMBrightness(toolbarWhite, p.borderBrightness, p.systemBrightness)
+	textColor := applyERAMBrightness(toolbarWhite, p.wxReport.prefs.brightness, p.systemBrightness)
+	black := toolbarBlack
+	headerBackground := black
+	if p.wxReport.prefs.isOpaque {
+		headerBackground = applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness)
+	}
+
+	if !layout.Body.Empty() {
+		drawSolidRect(cb, layout.Body, black)
+		if p.wxReport.prefs.showBorder {
+			drawBorderOnly(cb, layout.Body, border, wxReportBorderWidth)
+		}
+	}
+	drawSolidRect(cb, layout.Menu, headerBackground)
+	drawBorderOnly(cb, layout.Menu, border, wxReportBorderWidth)
+	drawSolidRect(cb, layout.Title, headerBackground)
+	drawBorderOnly(cb, layout.Title, border, wxReportBorderWidth)
+	drawSolidRect(cb, layout.Suppress, headerBackground)
+	drawBorderOnly(cb, layout.Suppress, border, wxReportBorderWidth)
+
+	if !layout.Body.Empty() && p.wxReport.prefs.showTearoffs {
+		for i, line := range layout.Lines {
+			if !line.First {
+				continue
+			}
+			y := layout.ContentOrigin.Y + float32(i*(layout.LineHeight+wxReportLineSpacing))
+			tearoff := redsmath.NewRect(
+				layout.ContentOrigin.X,
+				y,
+				layout.ContentOrigin.X+wxReportTearoffWidth,
+				y+15,
+			)
+			drawSolidRect(cb, tearoff, applyERAMBrightness(wxReportGold, p.wxReport.prefs.brightness, p.systemBrightness))
+			drawBorderOnly(cb, tearoff, border, 1)
+		}
+	}
+
+	if layout.ScrollVisible {
+		emphasized := textColor
+		deemphasized := applyERAMBrightness(checklistGray, p.wxReport.prefs.brightness, p.systemBrightness)
+		upColor := deemphasized
+		if p.wxReport.topLine > 0 {
+			upColor = emphasized
+		}
+		downColor := deemphasized
+		if p.wxReport.topLine+p.wxReport.prefs.lines < len(p.wxReportAllLines()) {
+			downColor = emphasized
+		}
+		drawBorderOnly(cb, layout.ScrollUp, upColor, 1)
+		drawBorderOnly(cb, layout.ScrollDown, downColor, 1)
+	}
+
+	headerTD := renderer.GetTextDrawBuilder()
+	defer renderer.ReturnTextDrawBuilder(headerTD)
+	headerTD.SetFont(font)
+	headerColor := applyERAMBrightness(toolbarWhite, p.wxReport.prefs.brightness, p.systemBrightness).ToRGBA()
+	addCenteredMenuText(headerTD, font, "M", layout.Menu, 2, headerColor, headerBackground.ToRGBA())
+	addCenteredMenuText(headerTD, font, "WX", layout.Title, 2, headerColor, headerBackground.ToRGBA())
+	addCenteredMenuText(headerTD, font, "-", layout.Suppress, 2, headerColor, headerBackground.ToRGBA())
+	cb.Blend()
+	headerTD.GenerateCommands(cb, headerTexture)
+
+	if !layout.Body.Empty() {
+		td := renderer.GetTextDrawBuilder()
+		defer renderer.ReturnTextDrawBuilder(td)
+		td.SetFont(font)
+		for i, line := range layout.Lines {
+			x := layout.ContentOrigin.X + wxReportTearoffWidth - 1
+			y := layout.ContentOrigin.Y + float32(i*(layout.LineHeight+wxReportLineSpacing))
+			td.AddText(line.Line, redsmath.Vec2{X: x, Y: y}, renderer.TextStyle{
+				Size:       p.wxReport.prefs.fontSize,
+				Color:      textColor.ToRGBA(),
+				Background: black.ToRGBA(),
+			})
+		}
+		td.GenerateCommands(cb, texture)
+	}
+	cb.DisableScissor()
 }
 
 // CRC ViewChecklist layout constants. Preference defaults live in prefs.go;

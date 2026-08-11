@@ -744,6 +744,11 @@ func (p *ERAMPane) toolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 		spec.Active = p.checklist.active == eramChecklistEmergency
 		return spec
 	}
+	if id == "wx-view" {
+		spec.Kind = toolbarToggleButton
+		spec.Active = p.wxReport.prefs.visible
+		return spec
+	}
 
 	if id == toolbarMasterDisplay {
 		// CRC highlights MASTER TOOLBAR while the master toolbar is visible.
@@ -1813,6 +1818,10 @@ func (p *ERAMPane) activateToolbarButton(layout toolbarButtonLayout, action tool
 	}
 	if layout.Spec.ID == "emergency-check" {
 		p.toggleChecklist(eramChecklistEmergency)
+		return
+	}
+	if layout.Spec.ID == "wx-view" {
+		p.wxReport.prefs.visible = !p.wxReport.prefs.visible
 		return
 	}
 

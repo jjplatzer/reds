@@ -37,9 +37,14 @@ const (
 	// above that, so -610 preserves that ordering while keeping the checklist
 	// above the lowered master toolbar at -700.
 	zChecklistViewSemiTransparent renderer.Z = -610
-	zTimeViewOpaque               renderer.Z = -400
+	// CRC places the WX station report in the same semi-transparent list-view
+	// group as ALTIM/CODE/CHECKLIST. Keep it below tear-offs and above the
+	// lowered master toolbar by default.
+	zWXReportViewSemiTransparent renderer.Z = -620
+	zTimeViewOpaque              renderer.Z = -400
 	// Within CRC's opaque-view group TIME precedes CHECKLIST as well.
 	zChecklistViewOpaque renderer.Z = -410
+	zWXReportViewOpaque  renderer.Z = -420
 	zResponseAreaView    renderer.Z = 590
 	zMCAView             renderer.Z = 600
 	zViewSettingsMenu    renderer.Z = 800
@@ -133,6 +138,7 @@ type ERAMPane struct {
 	mca                       eramMCAState
 	responseArea              eramResponseAreaState
 	checklist                 eramChecklistState
+	wxReport                  eramWXReportState
 	viewUI                    eramViewUIState
 	maps                      eramMapState
 
@@ -239,6 +245,7 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 	pane.initializeClockState()
 	pane.initializeAreaStates()
 	pane.initializeChecklistState(facility)
+	pane.initializeWXReportState()
 	pane.initializeMapState()
 	if err := pane.loadGeoMapMetadata(); err != nil {
 		return nil, err
@@ -267,6 +274,8 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 
 	p.consumeWxUpdates()
+	p.consumeWXMETARUpdates()
+	p.refreshWXMETARs()
 	p.consumeInput(ctx)
 	p.ensureWxCoverage(ctx)
 	p.rebuildNexradIfNeeded()
@@ -285,6 +294,7 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawGeoMaps(ctx, zcb)
 	p.drawToolbar(ctx, zcb)
 	p.drawClock(ctx, zcb)
+	p.drawWXReport(ctx, zcb)
 	p.drawChecklist(ctx, zcb)
 	p.drawResponseArea(ctx, zcb)
 	p.drawMCA(ctx, zcb)

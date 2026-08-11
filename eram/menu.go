@@ -20,6 +20,7 @@ const (
 	eramViewMenuNone eramViewMenuKind = iota
 	eramViewMenuTime
 	eramViewMenuChecklist
+	eramViewMenuWX
 )
 
 type eramViewMenuRowKind uint8
@@ -43,6 +44,12 @@ const (
 	eramViewMenuChecklistFont
 	eramViewMenuChecklistHighlight
 	eramViewMenuChecklistText
+	eramViewMenuWXOpaque
+	eramViewMenuWXBorder
+	eramViewMenuWXTearoffs
+	eramViewMenuWXLines
+	eramViewMenuWXFont
+	eramViewMenuWXBrightness
 )
 
 type eramViewMenuRow struct {
@@ -210,6 +217,55 @@ func (p *ERAMPane) activeViewMenuSpec(kind eramViewMenuKind) (eramViewMenuSpec, 
 		}
 		spec.RowCount = 6
 		return spec, true
+	case eramViewMenuWX:
+		spec.Title = "WX"
+		spec.Rows[0] = eramViewMenuRow{
+			Action:        eramViewMenuWXOpaque,
+			Kind:          eramViewMenuToggle,
+			ActiveLabel:   "O",
+			InactiveLabel: "T",
+			Active:        p.wxReport.prefs.isOpaque,
+			Centered:      true,
+		}
+		spec.Rows[1] = eramViewMenuRow{
+			Action: eramViewMenuWXBorder,
+			Kind:   eramViewMenuToggle,
+			Label:  "BORDER",
+			Active: p.wxReport.prefs.showBorder,
+		}
+		spec.Rows[2] = eramViewMenuRow{
+			Action: eramViewMenuWXTearoffs,
+			Kind:   eramViewMenuToggle,
+			Label:  "TEAROFF",
+			Active: p.wxReport.prefs.showTearoffs,
+		}
+		linesValue := strconv.Itoa(p.wxReport.prefs.lines)
+		if p.wxReport.prefs.lines == 21 {
+			linesValue = "21+"
+		}
+		spec.Rows[3] = eramViewMenuRow{
+			Action:     eramViewMenuWXLines,
+			Kind:       eramViewMenuIncDec,
+			Label:      "LINES",
+			Value:      p.wxReport.prefs.lines,
+			ValueText:  linesValue,
+			AutoRepeat: true,
+		}
+		spec.Rows[4] = eramViewMenuRow{
+			Action: eramViewMenuWXFont,
+			Kind:   eramViewMenuIncDec,
+			Label:  "FONT",
+			Value:  p.wxReport.prefs.fontSize,
+		}
+		spec.Rows[5] = eramViewMenuRow{
+			Action:     eramViewMenuWXBrightness,
+			Kind:       eramViewMenuIncDec,
+			Label:      "BRIGHT",
+			Value:      p.wxReport.prefs.brightness,
+			AutoRepeat: true,
+		}
+		spec.RowCount = 6
+		return spec, true
 	default:
 		return spec, false
 	}
@@ -221,6 +277,8 @@ func (p *ERAMPane) viewMenuTargetBounds(kind eramViewMenuKind, paneSize redsmath
 		return p.clockBounds(paneSize)
 	case eramViewMenuChecklist:
 		return p.checklistBounds(paneSize)
+	case eramViewMenuWX:
+		return p.wxReportBounds(paneSize)
 	default:
 		return redsmath.Rect{}
 	}
@@ -549,6 +607,42 @@ func (p *ERAMPane) activateViewMenuAction(action eramViewMenuAction, increment b
 			p.checklist.prefs.brightness = maxInt(old-2, 0)
 		}
 		return p.checklist.prefs.brightness != old
+	case eramViewMenuWXOpaque:
+		p.wxReport.prefs.isOpaque = !p.wxReport.prefs.isOpaque
+		return true
+	case eramViewMenuWXBorder:
+		p.wxReport.prefs.showBorder = !p.wxReport.prefs.showBorder
+		return true
+	case eramViewMenuWXTearoffs:
+		p.wxReport.prefs.showTearoffs = !p.wxReport.prefs.showTearoffs
+		return true
+	case eramViewMenuWXLines:
+		old := p.wxReport.prefs.lines
+		if increment {
+			p.wxReport.prefs.lines = minInt(old+1, 21)
+		} else {
+			p.wxReport.prefs.lines = maxInt(old-1, 3)
+		}
+		if p.wxReport.prefs.lines != old {
+			p.clampWXTopLine()
+		}
+		return p.wxReport.prefs.lines != old
+	case eramViewMenuWXFont:
+		old := p.wxReport.prefs.fontSize
+		if increment {
+			p.wxReport.prefs.fontSize = minInt(old+1, 3)
+		} else {
+			p.wxReport.prefs.fontSize = maxInt(old-1, 1)
+		}
+		return p.wxReport.prefs.fontSize != old
+	case eramViewMenuWXBrightness:
+		old := p.wxReport.prefs.brightness
+		if increment {
+			p.wxReport.prefs.brightness = minInt(old+2, 100)
+		} else {
+			p.wxReport.prefs.brightness = maxInt(old-2, 0)
+		}
+		return p.wxReport.prefs.brightness != old
 	default:
 		return false
 	}
