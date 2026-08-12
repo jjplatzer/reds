@@ -48,6 +48,7 @@ const (
 	zResponseAreaView    renderer.Z = 590
 	zMCAView             renderer.Z = 600
 	zViewSettingsMenu    renderer.Z = 800
+	zViewPopup           renderer.Z = 810
 	zViewMoveFrame       renderer.Z = 899
 
 	minRangeNM              = 0.25
@@ -140,6 +141,7 @@ type ERAMPane struct {
 	checklist                 eramChecklistState
 	wxReport                  eramWXReportState
 	viewUI                    eramViewUIState
+	popup                     eramPopupState
 	maps                      eramMapState
 
 	rangeNM float64
@@ -299,6 +301,7 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawResponseArea(ctx, zcb)
 	p.drawMCA(ctx, zcb)
 	p.drawViewSettingsMenu(ctx, zcb)
+	p.drawPopup(ctx, zcb)
 	p.drawViewMoveFrame(ctx, zcb)
 	p.renderCursor(ctx, zcb)
 }

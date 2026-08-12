@@ -48,6 +48,12 @@ func (p *ERAMPane) consumeInput(ctx *panes.Context) {
 		return
 	}
 
+	// CRC ViewPopup uses ViewFunctionMenus precedence and owns TBP/TBE while
+	// visible. It sits above ordinary views and list settings menus.
+	if p.consumePopupInput(ctx) {
+		return
+	}
+
 	// CRC view settings menus have higher pick precedence than ordinary views.
 	// An outside click closes the menu and is intentionally allowed to continue
 	// to the underlying object in the same frame.

@@ -182,6 +182,20 @@ func (p *ERAMPane) toggleWXStation(icao, displayID string) {
 	if p == nil {
 		return
 	}
+	if p.removeWXStation(icao) {
+		return
+	}
+
+	p.wxReport.stations = append([]wxReportStation{{ICAO: icao, DisplayID: displayID}}, p.wxReport.stations...)
+	p.wxReport.prefs.visible = true
+	p.wxReport.topLine = 0
+	p.requestWXMETAR(icao)
+}
+
+func (p *ERAMPane) removeWXStation(icao string) bool {
+	if p == nil || icao == "" {
+		return false
+	}
 	for i, station := range p.wxReport.stations {
 		if station.ICAO != icao {
 			continue
@@ -190,13 +204,12 @@ func (p *ERAMPane) toggleWXStation(icao, displayID string) {
 		delete(p.wxReport.fetching, icao)
 		delete(p.wxReport.lastAttempt, icao)
 		p.clampWXTopLine()
-		return
+		if p.popup.Kind == eramPopupDeleteWXReport && p.popup.Payload == icao {
+			p.closePopup()
+		}
+		return true
 	}
-
-	p.wxReport.stations = append([]wxReportStation{{ICAO: icao, DisplayID: displayID}}, p.wxReport.stations...)
-	p.wxReport.prefs.visible = true
-	p.wxReport.topLine = 0
-	p.requestWXMETAR(icao)
+	return false
 }
 
 func (p *ERAMPane) requestWXMETAR(icao string) {

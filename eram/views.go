@@ -610,6 +610,13 @@ func (p *ERAMPane) consumeMCAKeyboard(ctx *panes.Context) {
 	}
 	keyboard := ctx.Keyboard
 
+	// CRC ViewPopup closes when ordinary message input starts. Do the same so a
+	// stale DELETE WX confirmation never remains open while the controller types
+	// a new Preview Area command.
+	if p.popup.Kind != eramPopupNone && len(keyboard.Text) != 0 {
+		p.closePopup()
+	}
+
 	if keyboard.WasPressed(platform.KeyEnter) || keyboard.WasPressed(platform.KeyKeypadEnter) {
 		if p.executeMCACommand() {
 			return
@@ -924,6 +931,11 @@ type wxReportVisibleLine struct {
 	First        bool
 }
 
+type wxReportStationTextLayout struct {
+	StationIndex int
+	Bounds       redsmath.Rect
+}
+
 type wxReportLayout struct {
 	Bounds        redsmath.Rect
 	Header        redsmath.Rect
@@ -935,6 +947,7 @@ type wxReportLayout struct {
 	ScrollDown    redsmath.Rect
 	ScrollVisible bool
 	Lines         []wxReportVisibleLine
+	StationText   []wxReportStationTextLayout
 	LineHeight    int
 	HeaderHeight  float32
 	ContentOrigin redsmath.Vec2
@@ -1146,7 +1159,57 @@ func (p *ERAMPane) wxReportLayout(paneSize redsmath.Vec2) wxReportLayout {
 		layout.ScrollUp = redsmath.NewRect(x0, y0, x1, mid)
 		layout.ScrollDown = redsmath.NewRect(x0, mid+gap, x1, y1)
 	}
+	layout.StationText = wxReportStationTextLayouts(layout, font, p.wxReport.prefs.fontSize, charAdvance)
 	return layout
+}
+
+// CRC represents each station's wrapped METAR as one multi-line Text node. Its
+// pick/selection rectangle is Text.BorderArea: the measured text block plus a
+// 2 px circumscription on every side. REDS stores visible lines separately, so
+// rebuild that same per-station rectangle for hit testing and selection.
+func wxReportStationTextLayouts(layout wxReportLayout, font *renderer.BitmapFont, fontSize, charAdvance int) []wxReportStationTextLayout {
+	if font == nil || layout.Body.Empty() || len(layout.Lines) == 0 || charAdvance <= 0 {
+		return nil
+	}
+	tearoffTotalWidth := float32(wxReportTearoffContentWidth + 2*wxReportTearoffBorderWidth)
+	textLeftPadding := float32(wxReportTextLeftPadChars * charAdvance)
+	x := layout.ContentOrigin.X + tearoffTotalWidth + textLeftPadding
+
+	var out []wxReportStationTextLayout
+	for i := 0; i < len(layout.Lines); {
+		line := layout.Lines[i]
+		if line.Line == "" {
+			i++
+			continue
+		}
+		station := line.StationIndex
+		start := i
+		end := i
+		maxWidth := 0
+		for end < len(layout.Lines) && layout.Lines[end].StationIndex == station && layout.Lines[end].Line != "" {
+			w, _ := font.MeasureText(layout.Lines[end].Line, fontSize)
+			if w > maxWidth {
+				maxWidth = w
+			}
+			end++
+		}
+		if maxWidth > 0 {
+			y0 := layout.ContentOrigin.Y + float32(start*(layout.LineHeight+wxReportLineSpacing))
+			lineCount := end - start
+			height := float32(lineCount*layout.LineHeight + maxInt(0, lineCount-1)*wxReportLineSpacing)
+			out = append(out, wxReportStationTextLayout{
+				StationIndex: station,
+				Bounds: redsmath.NewRect(
+					x-2,
+					y0-2,
+					x+float32(maxWidth)+2,
+					y0+height+2,
+				),
+			})
+		}
+		i = maxInt(end, i+1)
+	}
+	return out
 }
 
 func (p *ERAMPane) wxReportBounds(paneSize redsmath.Vec2) redsmath.Rect {
@@ -1187,6 +1250,18 @@ func (p *ERAMPane) consumeWXReportInput(ctx *panes.Context) bool {
 			p.scrollWXReport(true)
 			return true
 		}
+	}
+	for _, stationText := range layout.StationText {
+		if !stationText.Bounds.Contains(ctx.Mouse.Pos) || stationText.StationIndex < 0 || stationText.StationIndex >= len(p.wxReport.stations) {
+			continue
+		}
+		station := p.wxReport.stations[stationText.StationIndex]
+		displayID := station.DisplayID
+		if displayID == "" {
+			displayID = station.ICAO
+		}
+		p.openPopup(ctx, eramPopupDeleteWXReport, "DELETE "+displayID, station.ICAO, stationText.Bounds)
+		return true
 	}
 	return true
 }
@@ -1246,6 +1321,22 @@ func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	drawSolidRect(cb, layout.Suppress, headerBackground)
 	drawBorderOnly(cb, layout.Suppress, border, wxReportBorderWidth)
 
+	// Clicking a WX report selects CRC's multi-line Text node while the delete
+	// popup is open. WeatherStationReportViewEntryEmphasized is Black on White,
+	// and Text.RenderCircumscription fills the measured text block +2 px.
+	selectedICAO := ""
+	if p.popup.Kind == eramPopupDeleteWXReport {
+		selectedICAO = p.popup.Payload
+	}
+	selectionFill := applyERAMBrightness(toolbarWhite, p.wxReport.prefs.brightness, p.systemBrightness)
+	for _, stationText := range layout.StationText {
+		if stationText.StationIndex < 0 || stationText.StationIndex >= len(p.wxReport.stations) || p.wxReport.stations[stationText.StationIndex].ICAO != selectedICAO {
+			continue
+		}
+		drawSolidRect(cb, stationText.Bounds, selectionFill)
+		drawBorderOnly(cb, stationText.Bounds, selectionFill, 1)
+	}
+
 	if !layout.Body.Empty() && p.wxReport.prefs.showTearoffs {
 		for i, line := range layout.Lines {
 			if !line.First {
@@ -1278,6 +1369,15 @@ func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		}
 		drawBorderOnly(cb, layout.ScrollUp, upColor, 1)
 		drawBorderOnly(cb, layout.ScrollDown, downColor, 1)
+
+		// ScrollPickAreas uses the same size-2 ERAM triangle glyphs as CHECK LISTS.
+		scrollTD := renderer.GetTextDrawBuilder()
+		scrollTD.SetFont(font)
+		addChecklistCenteredText(scrollTD, font, string(rune(138)), layout.ScrollUp, 2, upColor.ToRGBA(), black.ToRGBA())
+		addChecklistCenteredText(scrollTD, font, string(rune(139)), layout.ScrollDown, 2, downColor.ToRGBA(), black.ToRGBA())
+		cb.Blend()
+		scrollTD.GenerateCommands(cb, headerTexture)
+		renderer.ReturnTextDrawBuilder(scrollTD)
 	}
 
 	headerTD := renderer.GetTextDrawBuilder()
@@ -1305,13 +1405,31 @@ func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			textLeftPadding := float32(wxReportTextLeftPadChars * charAdvance)
 			x := layout.ContentOrigin.X + tearoffTotalWidth + textLeftPadding
 			y := layout.ContentOrigin.Y + float32(i*(layout.LineHeight+wxReportLineSpacing))
+			lineColor := textColor.ToRGBA()
+			lineBackground := black.ToRGBA()
+			if line.StationIndex >= 0 && line.StationIndex < len(p.wxReport.stations) && p.wxReport.stations[line.StationIndex].ICAO == selectedICAO {
+				lineColor = toolbarBlack.ToRGBA()
+				lineBackground = selectionFill.ToRGBA()
+			}
 			td.AddText(line.Line, redsmath.Vec2{X: x, Y: y}, renderer.TextStyle{
 				Size:       p.wxReport.prefs.fontSize,
-				Color:      textColor.ToRGBA(),
-				Background: black.ToRGBA(),
+				Color:      lineColor,
+				Background: lineBackground,
 			})
 		}
 		td.GenerateCommands(cb, texture)
+	}
+
+	// Text node cursor emphasis is a 1 px White/PairedTarget circumscription.
+	// Draw it after opaque glyph backgrounds so the bottom edge remains solid.
+	if ctx.Mouse != nil {
+		emphasis := applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness)
+		for _, stationText := range layout.StationText {
+			if stationText.Bounds.Contains(ctx.Mouse.Pos) {
+				drawBorderOnly(cb, stationText.Bounds, emphasis, 1)
+				break
+			}
+		}
 	}
 	cb.DisableScissor()
 }
