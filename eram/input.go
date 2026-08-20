@@ -48,6 +48,12 @@ func (p *ERAMPane) consumeInput(ctx *panes.Context) {
 		return
 	}
 
+	// CRC ViewPopup uses ViewFunctionMenus precedence and owns TBP/TBE while
+	// visible. It sits above ordinary views and list settings menus.
+	if p.consumePopupInput(ctx) {
+		return
+	}
+
 	// CRC view settings menus have higher pick precedence than ordinary views.
 	// An outside click closes the menu and is intentionally allowed to continue
 	// to the underlying object in the same frame.
@@ -71,6 +77,9 @@ func (p *ERAMPane) consumeInput(ctx *panes.Context) {
 	// The default clock is a semi-transparent view in CRC and therefore picks
 	// ahead of lowered toolbar/tearoff buttons.
 	if p.consumeClockInput(ctx) {
+		return
+	}
+	if p.consumeWXReportInput(ctx) {
 		return
 	}
 	if p.consumeChecklistInput(ctx) {

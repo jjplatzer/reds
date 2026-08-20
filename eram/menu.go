@@ -10,6 +10,174 @@ import (
 	"github.com/juliusplatzer/reds/renderer"
 )
 
+// Generic ERAM function popups.
+//
+// VICE keeps reusable popup placement/render/input infrastructure in menu.go,
+// while individual views decide when to open a popup. Keep REDS organized the
+// same way: WX and future list views own their actions, but the popup chrome,
+// placement, hit testing, and lifecycle are shared here.
+//
+// // CRC uses one generic ViewPopup for small confirmation popups attached to
+// list entries (WX, altimeter, CRR, ...). Keep the REDS model generic too so
+// future list views can reuse placement/render/input instead of duplicating it.
+type eramPopupKind uint8
+
+const (
+	eramPopupNone eramPopupKind = iota
+	eramPopupDeleteWXReport
+)
+
+type eramPopupState struct {
+	Kind    eramPopupKind
+	Text    string
+	Payload string
+	Origin  redsmath.Vec2
+}
+
+const (
+	eramPopupFontSize   = 2
+	eramPopupWidthChars = 13
+	eramPopupBorder     = 1
+	eramPopupRootPadY   = 2
+	eramPopupTextPadY   = 3
+)
+
+func (p *ERAMPane) closePopup() {
+	if p == nil {
+		return
+	}
+	p.popup = eramPopupState{}
+}
+
+func (p *ERAMPane) popupBounds() redsmath.Rect {
+	if p == nil || p.popup.Kind == eramPopupNone {
+		return redsmath.Rect{}
+	}
+	p.ensureToolbarFont()
+	font := p.toolbar.font
+	if font == nil {
+		return redsmath.Rect{}
+	}
+	advance, _ := font.CharSize(eramPopupFontSize)
+	_, textHeight := font.MeasureText("0", eramPopupFontSize)
+	if advance <= 0 || textHeight <= 0 {
+		return redsmath.Rect{}
+	}
+	width := float32(eramPopupWidthChars*advance + 2*eramPopupBorder)
+	// ViewPopup root: Border(1), Padding(2, 0). Text contributes its standard
+	// 3 px top/bottom padding, so total height is glyph + 12 px.
+	height := float32(textHeight + 2*eramPopupTextPadY + 2*eramPopupRootPadY + 2*eramPopupBorder)
+	return redsmath.NewRect(p.popup.Origin.X, p.popup.Origin.Y, p.popup.Origin.X+width, p.popup.Origin.Y+height)
+}
+
+func (p *ERAMPane) openPopup(ctx *panes.Context, kind eramPopupKind, text, payload string, host redsmath.Rect) {
+	if p == nil || ctx == nil || kind == eramPopupNone || host.Empty() {
+		return
+	}
+	p.closeViewMenu()
+	p.popup = eramPopupState{Kind: kind, Text: text, Payload: payload}
+	bounds := p.popupBounds()
+	if bounds.Empty() {
+		p.closePopup()
+		return
+	}
+	size := bounds.Size()
+	pane := ctx.PaneSize()
+
+	// CRC supplies two anchored locations: immediately right of the picked Text
+	// node, or immediately left if the right side does not fit. Vertically the
+	// popup is centered on the selected text node.
+	x := host.Max.X + 1
+	if x+size.X > pane.X {
+		x = host.Min.X - 1 - size.X
+	}
+	y := host.Min.Y + host.Size().Y/2 - size.Y/2
+	x = maxFloat32(0, minFloat32(x, pane.X-size.X))
+	y = maxFloat32(0, minFloat32(y, pane.Y-size.Y))
+	p.popup.Origin = redsmath.Vec2{X: x, Y: y}
+
+	// CRC moves the cursor to the popup center when it first appears.
+	popup := p.popupBounds()
+	setPaneMousePosition(ctx, redsmath.Vec2{
+		X: popup.Min.X + popup.Size().X/2,
+		Y: popup.Min.Y + popup.Size().Y/2,
+	})
+}
+
+func (p *ERAMPane) consumePopupInput(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || p.popup.Kind == eramPopupNone {
+		return false
+	}
+	if ctx.Keyboard != nil && ctx.Keyboard.WasPressed(platform.KeyEscape) {
+		p.closePopup()
+		return true
+	}
+	if ctx.Mouse == nil {
+		return false
+	}
+	if !ctx.Mouse.WasPressed(platform.MouseButtonLeft) && !ctx.Mouse.WasPressed(platform.MouseButtonMiddle) {
+		return false
+	}
+
+	picked := p.popupBounds().Contains(ctx.Mouse.Pos)
+	kind := p.popup.Kind
+	payload := p.popup.Payload
+	p.closePopup()
+	if picked {
+		switch kind {
+		case eramPopupDeleteWXReport:
+			p.removeWXStation(payload)
+		}
+	}
+	// CRC ViewPopup consumes TBP/TBE whether the click confirms or merely closes.
+	return true
+}
+
+func (p *ERAMPane) drawPopup(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil || ctx.Renderer == nil || p.popup.Kind == eramPopupNone {
+		return
+	}
+	bounds := p.popupBounds()
+	if bounds.Empty() {
+		return
+	}
+	p.ensureToolbarFont()
+	font := p.toolbar.font
+	if font == nil {
+		return
+	}
+	texture := p.toolbarTexture(ctx.Renderer, eramPopupFontSize)
+	if texture == 0 {
+		return
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zViewPopup)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.DisableBlend()
+
+	body := applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness)
+	border := applyERAMBrightness(toolbarWhite, p.borderBrightness, p.systemBrightness)
+	text := applyERAMBrightness(toolbarWhite, p.textBrightness, p.systemBrightness)
+	drawSolidRect(cb, bounds, body)
+	drawBorderOnly(cb, bounds, border, eramPopupBorder)
+
+	td := renderer.GetTextDrawBuilder()
+	td.SetFont(font)
+	addCenteredMenuText(td, font, p.popup.Text, bounds, eramPopupFontSize, text.ToRGBA(), body.ToRGBA())
+	cb.Blend()
+	td.GenerateCommands(cb, texture)
+	renderer.ReturnTextDrawBuilder(td)
+
+	if ctx.Mouse != nil && bounds.Contains(ctx.Mouse.Pos) {
+		emphasis := applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness)
+		drawBorderOnly(cb, bounds, emphasis, 1)
+	}
+	cb.DisableScissor()
+}
+
 // ERAM has many middle-click configuration menus attached to movable views.
 // Keep the menu model/render/input path generic: each view contributes only a
 // menu spec and action handling, while placement, hit testing, row chrome,
@@ -20,6 +188,7 @@ const (
 	eramViewMenuNone eramViewMenuKind = iota
 	eramViewMenuTime
 	eramViewMenuChecklist
+	eramViewMenuWX
 )
 
 type eramViewMenuRowKind uint8
@@ -43,6 +212,12 @@ const (
 	eramViewMenuChecklistFont
 	eramViewMenuChecklistHighlight
 	eramViewMenuChecklistText
+	eramViewMenuWXOpaque
+	eramViewMenuWXBorder
+	eramViewMenuWXTearoffs
+	eramViewMenuWXLines
+	eramViewMenuWXFont
+	eramViewMenuWXBrightness
 )
 
 type eramViewMenuRow struct {
@@ -210,6 +385,55 @@ func (p *ERAMPane) activeViewMenuSpec(kind eramViewMenuKind) (eramViewMenuSpec, 
 		}
 		spec.RowCount = 6
 		return spec, true
+	case eramViewMenuWX:
+		spec.Title = "WX"
+		spec.Rows[0] = eramViewMenuRow{
+			Action:        eramViewMenuWXOpaque,
+			Kind:          eramViewMenuToggle,
+			ActiveLabel:   "O",
+			InactiveLabel: "T",
+			Active:        p.wxReport.prefs.isOpaque,
+			Centered:      true,
+		}
+		spec.Rows[1] = eramViewMenuRow{
+			Action: eramViewMenuWXBorder,
+			Kind:   eramViewMenuToggle,
+			Label:  "BORDER",
+			Active: p.wxReport.prefs.showBorder,
+		}
+		spec.Rows[2] = eramViewMenuRow{
+			Action: eramViewMenuWXTearoffs,
+			Kind:   eramViewMenuToggle,
+			Label:  "TEAROFF",
+			Active: p.wxReport.prefs.showTearoffs,
+		}
+		linesValue := strconv.Itoa(p.wxReport.prefs.lines)
+		if p.wxReport.prefs.lines == 21 {
+			linesValue = "21+"
+		}
+		spec.Rows[3] = eramViewMenuRow{
+			Action:     eramViewMenuWXLines,
+			Kind:       eramViewMenuIncDec,
+			Label:      "LINES",
+			Value:      p.wxReport.prefs.lines,
+			ValueText:  linesValue,
+			AutoRepeat: true,
+		}
+		spec.Rows[4] = eramViewMenuRow{
+			Action: eramViewMenuWXFont,
+			Kind:   eramViewMenuIncDec,
+			Label:  "FONT",
+			Value:  p.wxReport.prefs.fontSize,
+		}
+		spec.Rows[5] = eramViewMenuRow{
+			Action:     eramViewMenuWXBrightness,
+			Kind:       eramViewMenuIncDec,
+			Label:      "BRIGHT",
+			Value:      p.wxReport.prefs.brightness,
+			AutoRepeat: true,
+		}
+		spec.RowCount = 6
+		return spec, true
 	default:
 		return spec, false
 	}
@@ -221,6 +445,8 @@ func (p *ERAMPane) viewMenuTargetBounds(kind eramViewMenuKind, paneSize redsmath
 		return p.clockBounds(paneSize)
 	case eramViewMenuChecklist:
 		return p.checklistBounds(paneSize)
+	case eramViewMenuWX:
+		return p.wxReportBounds(paneSize)
 	default:
 		return redsmath.Rect{}
 	}
@@ -549,6 +775,42 @@ func (p *ERAMPane) activateViewMenuAction(action eramViewMenuAction, increment b
 			p.checklist.prefs.brightness = maxInt(old-2, 0)
 		}
 		return p.checklist.prefs.brightness != old
+	case eramViewMenuWXOpaque:
+		p.wxReport.prefs.isOpaque = !p.wxReport.prefs.isOpaque
+		return true
+	case eramViewMenuWXBorder:
+		p.wxReport.prefs.showBorder = !p.wxReport.prefs.showBorder
+		return true
+	case eramViewMenuWXTearoffs:
+		p.wxReport.prefs.showTearoffs = !p.wxReport.prefs.showTearoffs
+		return true
+	case eramViewMenuWXLines:
+		old := p.wxReport.prefs.lines
+		if increment {
+			p.wxReport.prefs.lines = minInt(old+1, 21)
+		} else {
+			p.wxReport.prefs.lines = maxInt(old-1, 3)
+		}
+		if p.wxReport.prefs.lines != old {
+			p.clampWXTopLine()
+		}
+		return p.wxReport.prefs.lines != old
+	case eramViewMenuWXFont:
+		old := p.wxReport.prefs.fontSize
+		if increment {
+			p.wxReport.prefs.fontSize = minInt(old+1, 3)
+		} else {
+			p.wxReport.prefs.fontSize = maxInt(old-1, 1)
+		}
+		return p.wxReport.prefs.fontSize != old
+	case eramViewMenuWXBrightness:
+		old := p.wxReport.prefs.brightness
+		if increment {
+			p.wxReport.prefs.brightness = minInt(old+2, 100)
+		} else {
+			p.wxReport.prefs.brightness = maxInt(old-2, 0)
+		}
+		return p.wxReport.prefs.brightness != old
 	default:
 		return false
 	}
