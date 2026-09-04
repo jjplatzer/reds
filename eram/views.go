@@ -1337,9 +1337,34 @@ func (p *ERAMPane) drawAltimSet(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			advance := float32(layout.CharAdvance)
 			td.AddText(station, redsmath.Vec2{X: x, Y: y}, renderer.TextStyle{Size: p.altim.prefs.fontSize, Color: fg, Background: bg})
 			td.AddText(" ", redsmath.Vec2{X: x + 5*advance, Y: y}, renderer.TextStyle{Size: p.altim.prefs.fontSize, Color: fg, Background: bg})
-			td.AddText(obs, redsmath.Vec2{X: x + 6*advance, Y: y}, renderer.TextStyle{Size: p.altim.prefs.fontSize, Color: fg, Background: bg, Underlined: entry.Entry.Stale})
+			td.AddText(obs, redsmath.Vec2{X: x + 6*advance, Y: y}, renderer.TextStyle{Size: p.altim.prefs.fontSize, Color: fg, Background: bg})
 			td.AddText(" ", redsmath.Vec2{X: x + 10*advance, Y: y}, renderer.TextStyle{Size: p.altim.prefs.fontSize, Color: fg, Background: bg})
-			td.AddText(alt, redsmath.Vec2{X: x + 11*advance, Y: y}, renderer.TextStyle{Size: p.altim.prefs.fontSize, Color: fg, Background: bg, Underlined: entry.Entry.Below2992})
+			td.AddText(alt, redsmath.Vec2{X: x + 11*advance, Y: y}, renderer.TextStyle{Size: p.altim.prefs.fontSize, Color: fg, Background: bg})
+
+			// CRC represents stale-time and below-29.92 attention as an
+			// independently styled underline on the corresponding TextFragment.
+			// REDS' bitmap TextDrawBuilder currently does not render
+			// TextStyle.Underlined, so draw the fragment underline explicitly.
+			// The ERAM text bitmaps have two blank rows below their ink; placing
+			// the one-pixel underline at lineHeight+2 reproduces CRC's line just
+			// below the glyph ink and keeps its color independent of selection.
+			underlineY := y + float32(font.LineHeight(p.altim.prefs.fontSize)+2)
+			if entry.Entry.Stale && strings.TrimSpace(obs) != "" {
+				if underlineWidth, _ := font.MeasureText(obs, p.altim.prefs.fontSize); underlineWidth > 0 {
+					drawSolidRect(cb, redsmath.NewRect(
+						x+6*advance, underlineY,
+						x+6*advance+float32(underlineWidth), underlineY+1,
+					), textColor)
+				}
+			}
+			if entry.Entry.Below2992 && entry.Entry.Altimeter != "-M-" {
+				if underlineWidth, _ := font.MeasureText(alt, p.altim.prefs.fontSize); underlineWidth > 0 {
+					drawSolidRect(cb, redsmath.NewRect(
+						x+11*advance, underlineY,
+						x+11*advance+float32(underlineWidth), underlineY+1,
+					), textColor)
+				}
+			}
 		}
 		td.GenerateCommands(cb, texture)
 		renderer.ReturnTextDrawBuilder(td)
