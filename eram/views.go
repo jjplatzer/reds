@@ -920,6 +920,7 @@ const (
 	altimTearoffContentWidth  = 11
 	altimTearoffContentHeight = 15
 	altimTearoffBorderWidth   = 1
+	altimTextLeftPadChars     = 1 // CRC Text.Padding.Left = one ERAM character
 	altimEntryChars           = 14
 )
 
@@ -1072,8 +1073,12 @@ func (p *ERAMPane) altimLayout(paneSize redsmath.Vec2) altimLayout {
 	}
 
 	tearoffWidth := float32(altimTearoffContentWidth + 2*altimTearoffBorderWidth)
+	textLeftPadding := float32(altimTextLeftPadChars * charAdvance)
 	textWidth := float32(altimEntryChars * charAdvance)
-	columnWidth := tearoffWidth + textWidth
+	// CRC BuildText gives the Text node one full character of left padding
+	// after TearOffArea. This keeps the station text safely to the right of
+	// the M/title divider instead of touching the yellow tear-off box.
+	columnWidth := tearoffWidth + textLeftPadding + textWidth
 	entriesWidth := float32(visibleColumns)*columnWidth + float32(maxInt(0, visibleColumns-1)*charAdvance)
 	minimumEntriesWidth := float32(altimEntryChars*charAdvance) + tearoffWidth
 	entriesWidth = maxFloat32(entriesWidth, minimumEntriesWidth)
@@ -1134,8 +1139,13 @@ func (p *ERAMPane) altimLayout(paneSize redsmath.Vec2) altimLayout {
 		x := origin.X + float32(col)*(columnWidth+float32(charAdvance))
 		y := origin.Y + float32(row)*(entryHeight+altimEntrySpacing)
 		tearoff := redsmath.NewRect(x, y, x+tearoffWidth, y+float32(altimTearoffContentHeight+2*altimTearoffBorderWidth))
-		textX := x + tearoffWidth
-		text := redsmath.NewRect(textX-2, y-2, textX+textWidth+2, y+float32(lineHeight)+3)
+		textX := x + tearoffWidth + textLeftPadding
+		// CRC sets Text.Margin.Top to (-1 character height + 16 px). The
+		// rendered glyphs therefore end at y+16: the bottom of TearOffArea's
+		// 15 px content region, immediately above its 1 px bottom border.
+		textY := y + float32(altimTearoffBorderWidth+altimTearoffContentHeight-lineHeight)
+		// Text.BorderArea is CRC's measured glyph box circumscribed by 2 px.
+		text := redsmath.NewRect(textX-2, textY-2, textX+textWidth+2, textY+float32(lineHeight)+2)
 		layout.Entries = append(layout.Entries, altimEntryLayout{Entry: entry, Text: text, Tearoff: tearoff})
 	}
 
@@ -1306,8 +1316,10 @@ func (p *ERAMPane) drawAltimSet(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		td := renderer.GetTextDrawBuilder()
 		td.SetFont(font)
 		for _, entry := range layout.Entries {
-			x := entry.Tearoff.Max.X
-			y := entry.Tearoff.Min.Y
+			// The Text rect is the CRC 2 px circumscription around the actual
+			// glyph block, so +2 recovers the exact rendered text origin.
+			x := entry.Text.Min.X + 2
+			y := entry.Text.Min.Y + 2
 			selected := entry.Entry.ICAO == selectedICAO
 			fg := textColor.ToRGBA()
 			bg := black.ToRGBA()
