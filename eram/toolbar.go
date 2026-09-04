@@ -744,6 +744,11 @@ func (p *ERAMPane) toolbarSpec(id toolbarButtonID) toolbarButtonSpec {
 		spec.Active = p.checklist.active == eramChecklistEmergency
 		return spec
 	}
+	if id == "as-view" {
+		spec.Kind = toolbarToggleButton
+		spec.Active = p.altim.prefs.visible
+		return spec
+	}
 	if id == "wx-view" {
 		spec.Kind = toolbarToggleButton
 		spec.Active = p.wxReport.prefs.visible
@@ -1818,6 +1823,10 @@ func (p *ERAMPane) activateToolbarButton(layout toolbarButtonLayout, action tool
 	}
 	if layout.Spec.ID == "emergency-check" {
 		p.toggleChecklist(eramChecklistEmergency)
+		return
+	}
+	if layout.Spec.ID == "as-view" {
+		p.altim.prefs.visible = !p.altim.prefs.visible
 		return
 	}
 	if layout.Spec.ID == "wx-view" {

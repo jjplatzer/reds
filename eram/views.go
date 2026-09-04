@@ -1,6 +1,7 @@
 package eram
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -20,6 +21,7 @@ const (
 	eramViewNone eramViewKind = iota
 	eramViewTime
 	eramViewChecklist
+	eramViewAltim
 	eramViewWX
 	eramViewMCA
 	eramViewResponseArea
@@ -274,6 +276,8 @@ func (p *ERAMPane) viewBounds(kind eramViewKind, paneSize redsmath.Vec2) redsmat
 		return p.clockBounds(paneSize)
 	case eramViewChecklist:
 		return p.checklistBounds(paneSize)
+	case eramViewAltim:
+		return p.altimBounds(paneSize)
 	case eramViewWX:
 		return p.wxReportBounds(paneSize)
 	case eramViewMCA:
@@ -291,6 +295,8 @@ func (p *ERAMPane) setViewTopLeft(kind eramViewKind, topLeft, size, paneSize red
 		p.clock.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
 	case eramViewChecklist:
 		p.checklist.prefs.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
+	case eramViewAltim:
+		p.altim.prefs.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
 	case eramViewWX:
 		p.wxReport.prefs.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
 	case eramViewMCA:
@@ -903,6 +909,440 @@ func setPaneMousePosition(ctx *panes.Context, panePosition redsmath.Vec2) {
 		X: ctx.PaneRect.Min.X + panePosition.X,
 		Y: ctx.PaneRect.Min.Y + panePosition.Y,
 	})
+}
+
+// CRC ViewAltimeterSettings layout and rendering.
+const (
+	altimBorderWidth          = 1
+	altimPaddingX             = 6
+	altimPaddingY             = 8
+	altimEntrySpacing         = 4
+	altimTearoffContentWidth  = 11
+	altimTearoffContentHeight = 15
+	altimTearoffBorderWidth   = 1
+	altimEntryChars           = 14
+)
+
+type altimDisplayEntry struct {
+	StationIndex int
+	ICAO         string
+	DisplayID    string
+	Observation  string
+	Stale        bool
+	Altimeter    string
+	Below2992    bool
+}
+
+type altimEntryLayout struct {
+	Entry   altimDisplayEntry
+	Text    redsmath.Rect
+	Tearoff redsmath.Rect
+}
+
+type altimLayout struct {
+	Bounds        redsmath.Rect
+	Header        redsmath.Rect
+	Menu          redsmath.Rect
+	Title         redsmath.Rect
+	Suppress      redsmath.Rect
+	Body          redsmath.Rect
+	ScrollUp      redsmath.Rect
+	ScrollDown    redsmath.Rect
+	ScrollVisible bool
+	Entries       []altimEntryLayout
+	HeaderHeight  float32
+	ScrollWidth   float32
+	EntryHeight   float32
+	CharAdvance   int
+}
+
+func (p *ERAMPane) altimDisplayEntries() []altimDisplayEntry {
+	if p == nil {
+		return nil
+	}
+	now := time.Now().UTC()
+	entries := make([]altimDisplayEntry, 0, len(p.altim.stations))
+	for i := len(p.altim.stations) - 1; i >= 0; i-- {
+		station := p.altim.stations[i]
+		display := station.DisplayID
+		if display == "" {
+			display = station.ICAO
+		}
+		entry := altimDisplayEntry{
+			StationIndex: i,
+			ICAO:         station.ICAO,
+			DisplayID:    display,
+			Altimeter:    "-M-",
+		}
+		if metar, ok := p.wxReport.metars[station.ICAO]; ok {
+			if !metar.Observation.IsZero() {
+				entry.Observation = metar.Observation.UTC().Format("1504")
+				entry.Stale = metar.Observation.Add(65 * time.Minute).Before(now)
+				tooOld := metar.Observation.Add(120 * time.Minute).Before(now)
+				if !tooOld && metar.HasAltimeter {
+					entry.Altimeter = fmt.Sprintf("%03d", metar.Altimeter%1000)
+					entry.Below2992 = metar.Altimeter < 2992
+				}
+			}
+		}
+		entries = append(entries, entry)
+	}
+	return entries
+}
+
+func altimMaxLines(lines, columns int) int {
+	limit := 6
+	switch columns {
+	case 1:
+		limit = 24
+	case 2:
+		limit = 12
+	case 3:
+		limit = 8
+	}
+	return minInt(lines, limit)
+}
+
+func (p *ERAMPane) altimPageCapacity() int {
+	if p == nil {
+		return 0
+	}
+	columns := maxInt(1, minInt(p.altim.prefs.columns, 4))
+	return columns * altimMaxLines(p.altim.prefs.lines, columns)
+}
+
+func (p *ERAMPane) clampAltimTop() {
+	if p == nil {
+		return
+	}
+	count := len(p.altim.stations)
+	page := p.altimPageCapacity()
+	if page <= 0 || count <= page {
+		p.altim.top = 0
+		return
+	}
+	p.altim.top = maxInt(0, minInt(p.altim.top, count-page))
+}
+
+func (p *ERAMPane) scrollAltim(down bool) bool {
+	if p == nil {
+		return false
+	}
+	count := len(p.altim.stations)
+	page := p.altimPageCapacity()
+	if page <= 0 || count <= page {
+		return false
+	}
+	old := p.altim.top
+	if down {
+		p.altim.top = minInt(old+page, count-page)
+	} else {
+		p.altim.top = maxInt(old-page, 0)
+	}
+	return p.altim.top != old
+}
+
+func (p *ERAMPane) altimLayout(paneSize redsmath.Vec2) altimLayout {
+	var layout altimLayout
+	if p == nil || !p.altim.prefs.visible {
+		return layout
+	}
+	p.ensureToolbarFont()
+	font := p.toolbar.font
+	if font == nil {
+		return layout
+	}
+	charAdvance, lineHeight := font.CharSize(p.altim.prefs.fontSize)
+	headerAdvance, headerLineHeight := font.CharSize(2)
+	if charAdvance <= 0 || lineHeight <= 0 || headerAdvance <= 0 || headerLineHeight <= 0 {
+		return layout
+	}
+
+	p.clampAltimTop()
+	all := p.altimDisplayEntries()
+	start := minInt(p.altim.top, len(all))
+	page := p.altimPageCapacity()
+	end := minInt(len(all), start+page)
+	visible := all[start:end]
+	maxLines := altimMaxLines(p.altim.prefs.lines, maxInt(1, p.altim.prefs.columns))
+	visibleColumns := 1
+	if len(visible) > 0 && maxLines > 0 {
+		visibleColumns = (len(visible) + maxLines - 1) / maxLines
+		visibleColumns = minInt(visibleColumns, maxInt(1, p.altim.prefs.columns))
+	}
+
+	tearoffWidth := float32(altimTearoffContentWidth + 2*altimTearoffBorderWidth)
+	textWidth := float32(altimEntryChars * charAdvance)
+	columnWidth := tearoffWidth + textWidth
+	entriesWidth := float32(visibleColumns)*columnWidth + float32(maxInt(0, visibleColumns-1)*charAdvance)
+	minimumEntriesWidth := float32(altimEntryChars*charAdvance) + tearoffWidth
+	entriesWidth = maxFloat32(entriesWidth, minimumEntriesWidth)
+	scrollWidth := checklistScrollReserveWidth(font)
+	bodyWidth := float32(2*altimBorderWidth+2*altimPaddingX) + entriesWidth + scrollWidth
+
+	entryHeight := float32(maxInt(lineHeight+1, altimTearoffContentHeight+2*altimTearoffBorderWidth))
+	visibleRows := minInt(maxLines, len(visible))
+	bodyHeight := float32(0)
+	if len(visible) > 0 {
+		bodyHeight = float32(2*altimBorderWidth+2*altimPaddingY) +
+			float32(visibleRows)*entryHeight + float32(maxInt(0, visibleRows-1)*altimEntrySpacing)
+	}
+
+	headerHeight := float32(headerLineHeight + 2*checklistTextYPadding + 2*altimBorderWidth)
+	headerRowHeight := headerHeight - 1
+	headerSideWidth := float32(2 * headerAdvance)
+	viewWidth := bodyWidth
+	minimumHeaderWidth := 2*headerSideWidth + float32(9*headerAdvance)
+	viewWidth = maxFloat32(viewWidth, minimumHeaderWidth)
+	viewHeight := headerHeight
+	if len(visible) > 0 {
+		viewHeight = headerRowHeight + bodyHeight
+	}
+	size := redsmath.Vec2{X: viewWidth, Y: viewHeight}
+	topLeft := resolveERAMAnchoredLocation(p.altim.prefs.location, size, paneSize)
+	if pinned, ok := p.pinnedViewTopLeft(eramViewMenuAltim, topLeft, size, paneSize); ok {
+		topLeft = pinned
+		p.altim.prefs.location = anchoredLocationForTopLeft(topLeft, size, paneSize)
+	}
+	topLeft = clampERAMViewPosition(topLeft, size, paneSize)
+
+	layout.Bounds = redsmath.NewRect(topLeft.X, topLeft.Y, topLeft.X+viewWidth, topLeft.Y+viewHeight)
+	layout.Header = redsmath.NewRect(topLeft.X, topLeft.Y, topLeft.X+viewWidth, topLeft.Y+headerHeight)
+	layout.Menu = redsmath.NewRect(topLeft.X, topLeft.Y, topLeft.X+headerSideWidth, topLeft.Y+headerHeight)
+	layout.Suppress = redsmath.NewRect(topLeft.X+viewWidth-headerSideWidth, topLeft.Y, topLeft.X+viewWidth, topLeft.Y+headerHeight)
+	layout.Title = redsmath.NewRect(layout.Menu.Max.X-1, topLeft.Y, layout.Suppress.Min.X+1, topLeft.Y+headerHeight)
+	layout.HeaderHeight = headerHeight
+	layout.ScrollWidth = scrollWidth
+	layout.EntryHeight = entryHeight
+	layout.CharAdvance = charAdvance
+
+	if len(visible) == 0 {
+		return layout
+	}
+	layout.Body = redsmath.NewRect(topLeft.X, topLeft.Y+headerRowHeight, topLeft.X+viewWidth, topLeft.Y+viewHeight)
+	origin := redsmath.Vec2{
+		X: layout.Body.Min.X + altimBorderWidth + altimPaddingX,
+		Y: layout.Body.Min.Y + altimBorderWidth + altimPaddingY,
+	}
+	for i, entry := range visible {
+		col := 0
+		row := i
+		if maxLines > 0 {
+			col = i / maxLines
+			row = i % maxLines
+		}
+		x := origin.X + float32(col)*(columnWidth+float32(charAdvance))
+		y := origin.Y + float32(row)*(entryHeight+altimEntrySpacing)
+		tearoff := redsmath.NewRect(x, y, x+tearoffWidth, y+float32(altimTearoffContentHeight+2*altimTearoffBorderWidth))
+		textX := x + tearoffWidth
+		text := redsmath.NewRect(textX-2, y-2, textX+textWidth+2, y+float32(lineHeight)+3)
+		layout.Entries = append(layout.Entries, altimEntryLayout{Entry: entry, Text: text, Tearoff: tearoff})
+	}
+
+	layout.ScrollVisible = len(all) > page
+	if layout.ScrollVisible {
+		x0 := layout.Body.Max.X - altimBorderWidth - scrollWidth + 2
+		x1 := layout.Body.Max.X - altimBorderWidth - 2
+		y0 := layout.Body.Min.Y + altimBorderWidth + 1
+		y1 := layout.Body.Max.Y - altimBorderWidth - 1
+		gap := float32(1)
+		mid := y0 + (y1-y0-gap)/2
+		layout.ScrollUp = redsmath.NewRect(x0, y0, x1, mid)
+		layout.ScrollDown = redsmath.NewRect(x0, mid+gap, x1, y1)
+	}
+	return layout
+}
+
+func (p *ERAMPane) altimBounds(paneSize redsmath.Vec2) redsmath.Rect {
+	return p.altimLayout(paneSize).Bounds
+}
+
+func (p *ERAMPane) consumeAltimInput(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || ctx.Mouse == nil || !p.altim.prefs.visible {
+		return false
+	}
+	layout := p.altimLayout(ctx.PaneSize())
+	if layout.Bounds.Empty() || !layout.Bounds.Contains(ctx.Mouse.Pos) {
+		return false
+	}
+	left := ctx.Mouse.WasPressed(platform.MouseButtonLeft)
+	middle := ctx.Mouse.WasPressed(platform.MouseButtonMiddle)
+	if !left && !middle {
+		return false
+	}
+	if layout.Menu.Contains(ctx.Mouse.Pos) {
+		p.openViewMenu(ctx, eramViewMenuAltim)
+		return true
+	}
+	if layout.Title.Contains(ctx.Mouse.Pos) {
+		p.startViewMove(ctx, eramViewAltim)
+		return true
+	}
+	if layout.Suppress.Contains(ctx.Mouse.Pos) {
+		p.altim.prefs.visible = false
+		return true
+	}
+	if layout.ScrollVisible {
+		if layout.ScrollUp.Contains(ctx.Mouse.Pos) {
+			p.scrollAltim(false)
+			return true
+		}
+		if layout.ScrollDown.Contains(ctx.Mouse.Pos) {
+			p.scrollAltim(true)
+			return true
+		}
+	}
+	for _, entry := range layout.Entries {
+		if entry.Text.Contains(ctx.Mouse.Pos) {
+			p.openPopup(ctx, eramPopupDeleteAltimeter, "DELETE "+entry.Entry.DisplayID, entry.Entry.ICAO, entry.Text)
+			return true
+		}
+	}
+	return true
+}
+
+func (p *ERAMPane) drawAltimSet(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil || ctx.Renderer == nil || !p.altim.prefs.visible {
+		return
+	}
+	layout := p.altimLayout(ctx.PaneSize())
+	if layout.Bounds.Empty() {
+		return
+	}
+	p.ensureToolbarFont()
+	font := p.toolbar.font
+	if font == nil {
+		return
+	}
+	texture := p.toolbarTexture(ctx.Renderer, p.altim.prefs.fontSize)
+	headerTexture := p.toolbarTexture(ctx.Renderer, 2)
+	if texture == 0 || headerTexture == 0 {
+		return
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	z := zAltimViewSemiTransparent
+	if p.altim.prefs.isOpaque {
+		z = zAltimViewOpaque
+	}
+	cb := zcb.At(z)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.DisableBlend()
+
+	border := applyERAMBrightness(toolbarWhite, p.borderBrightness, p.systemBrightness)
+	textColor := applyERAMBrightness(toolbarWhite, p.altim.prefs.brightness, p.systemBrightness)
+	black := toolbarBlack
+	headerBackground := black
+	if p.altim.prefs.isOpaque {
+		headerBackground = applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness)
+	}
+
+	if !layout.Body.Empty() {
+		drawSolidRect(cb, layout.Body, black)
+		if p.altim.prefs.showBorder {
+			drawBorderOnly(cb, layout.Body, border, altimBorderWidth)
+		}
+	}
+	drawSolidRect(cb, layout.Menu, headerBackground)
+	drawBorderOnly(cb, layout.Menu, border, altimBorderWidth)
+	drawSolidRect(cb, layout.Title, headerBackground)
+	drawBorderOnly(cb, layout.Title, border, altimBorderWidth)
+	drawSolidRect(cb, layout.Suppress, headerBackground)
+	drawBorderOnly(cb, layout.Suppress, border, altimBorderWidth)
+
+	selectedICAO := ""
+	if p.popup.Kind == eramPopupDeleteAltimeter {
+		selectedICAO = p.popup.Payload
+	}
+	selectionFill := textColor
+	for _, entry := range layout.Entries {
+		if entry.Entry.ICAO == selectedICAO {
+			drawSolidRect(cb, entry.Text, selectionFill)
+			drawBorderOnly(cb, entry.Text, selectionFill, 1)
+		}
+	}
+
+	if p.altim.prefs.showTearoffs {
+		for _, entry := range layout.Entries {
+			drawSolidRect(cb, entry.Tearoff, applyERAMBrightness(wxReportGold, p.altim.prefs.brightness, p.systemBrightness))
+			drawBorderOnly(cb, entry.Tearoff, border, 1)
+		}
+	}
+
+	if layout.ScrollVisible {
+		deemphasized := applyERAMBrightness(checklistGray, p.altim.prefs.brightness, p.systemBrightness)
+		upColor := deemphasized
+		if p.altim.top > 0 {
+			upColor = textColor
+		}
+		downColor := deemphasized
+		if p.altim.top+p.altimPageCapacity() < len(p.altim.stations) {
+			downColor = textColor
+		}
+		drawBorderOnly(cb, layout.ScrollUp, upColor, 1)
+		drawBorderOnly(cb, layout.ScrollDown, downColor, 1)
+		scrollTD := renderer.GetTextDrawBuilder()
+		scrollTD.SetFont(font)
+		addChecklistCenteredText(scrollTD, font, string(rune(138)), layout.ScrollUp, 2, upColor.ToRGBA(), black.ToRGBA())
+		addChecklistCenteredText(scrollTD, font, string(rune(139)), layout.ScrollDown, 2, downColor.ToRGBA(), black.ToRGBA())
+		cb.Blend()
+		scrollTD.GenerateCommands(cb, headerTexture)
+		renderer.ReturnTextDrawBuilder(scrollTD)
+	}
+
+	headerTD := renderer.GetTextDrawBuilder()
+	headerTD.SetFont(font)
+	headerColor := textColor.ToRGBA()
+	addCenteredMenuText(headerTD, font, "M", layout.Menu, 2, headerColor, headerBackground.ToRGBA())
+	addCenteredMenuText(headerTD, font, "ALTIM SET", layout.Title, 2, headerColor, headerBackground.ToRGBA())
+	addCenteredMenuText(headerTD, font, "-", layout.Suppress, 2, headerColor, headerBackground.ToRGBA())
+	cb.Blend()
+	headerTD.GenerateCommands(cb, headerTexture)
+	renderer.ReturnTextDrawBuilder(headerTD)
+
+	if !layout.Body.Empty() {
+		td := renderer.GetTextDrawBuilder()
+		td.SetFont(font)
+		for _, entry := range layout.Entries {
+			x := entry.Tearoff.Max.X
+			y := entry.Tearoff.Min.Y
+			selected := entry.Entry.ICAO == selectedICAO
+			fg := textColor.ToRGBA()
+			bg := black.ToRGBA()
+			if selected {
+				fg = black.ToRGBA()
+				bg = selectionFill.ToRGBA()
+			}
+			station := entry.Entry.DisplayID
+			if len([]rune(station)) > 5 {
+				station = string([]rune(station)[:5])
+			}
+			station = fmt.Sprintf("%-5s", station)
+			obs := fmt.Sprintf("%4s", entry.Entry.Observation)
+			alt := fmt.Sprintf("%3s", entry.Entry.Altimeter)
+			advance := float32(layout.CharAdvance)
+			td.AddText(station, redsmath.Vec2{X: x, Y: y}, renderer.TextStyle{Size: p.altim.prefs.fontSize, Color: fg, Background: bg})
+			td.AddText(" ", redsmath.Vec2{X: x + 5*advance, Y: y}, renderer.TextStyle{Size: p.altim.prefs.fontSize, Color: fg, Background: bg})
+			td.AddText(obs, redsmath.Vec2{X: x + 6*advance, Y: y}, renderer.TextStyle{Size: p.altim.prefs.fontSize, Color: fg, Background: bg, Underlined: entry.Entry.Stale})
+			td.AddText(" ", redsmath.Vec2{X: x + 10*advance, Y: y}, renderer.TextStyle{Size: p.altim.prefs.fontSize, Color: fg, Background: bg})
+			td.AddText(alt, redsmath.Vec2{X: x + 11*advance, Y: y}, renderer.TextStyle{Size: p.altim.prefs.fontSize, Color: fg, Background: bg, Underlined: entry.Entry.Below2992})
+		}
+		td.GenerateCommands(cb, texture)
+		renderer.ReturnTextDrawBuilder(td)
+	}
+
+	if ctx.Mouse != nil {
+		emphasis := applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness)
+		for _, entry := range layout.Entries {
+			if entry.Text.Contains(ctx.Mouse.Pos) {
+				drawBorderOnly(cb, entry.Text, emphasis, 1)
+				break
+			}
+		}
+	}
+	cb.DisableScissor()
 }
 
 // CRC ViewWeatherStationReport geometry. The WX list uses the same list header

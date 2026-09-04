@@ -39,10 +39,12 @@ type airportDatabase struct {
 }
 
 type wxMETAR struct {
-	ICAO        string
-	Raw         string
-	Observation time.Time
-	FetchedAt   time.Time
+	ICAO         string
+	Raw          string
+	Observation  time.Time
+	FetchedAt    time.Time
+	Altimeter    int // hundredths inHg, e.g. 2992
+	HasAltimeter bool
 }
 
 type wxMETARUpdate struct {
@@ -52,9 +54,10 @@ type wxMETARUpdate struct {
 }
 
 type awcMETAR struct {
-	ICAOID  string `json:"icaoId"`
-	RawOb   string `json:"rawOb"`
-	ObsTime int64  `json:"obsTime"`
+	ICAOID  string   `json:"icaoId"`
+	RawOb   string   `json:"rawOb"`
+	ObsTime int64    `json:"obsTime"`
+	Altim   *float64 `json:"altim"`
 }
 
 func loadAirportDatabase() (airportDatabase, error) {
@@ -134,6 +137,45 @@ func resolveWXAirport(code string) (icao, displayID string, ok bool) {
 	return icao, displayID, true
 }
 
+// resolveAltimAirport mirrors CRC ProcessAR: adapted airports prefer ICAO,
+// otherwise the literal 3/4-character identifier is still accepted.
+func resolveAltimAirport(code string) (icao, displayID string) {
+	code = strings.ToUpper(strings.TrimSpace(code))
+	if db, err := loadAirportDatabase(); err == nil {
+		if len(code) == 3 {
+			if resolved, ok := db.byIATA[code]; ok {
+				display := db.toIATA[resolved]
+				if display == "" {
+					display = code
+				}
+				return resolved, display
+			}
+		}
+		if len(code) == 4 {
+			if resolved, ok := db.byICAO[code]; ok {
+				display := db.toIATA[resolved]
+				if display == "" {
+					display = code
+				}
+				return resolved, display
+			}
+		}
+	}
+	return code, code
+}
+
+func validERAMAirportID(code string) bool {
+	if len(code) != 3 && len(code) != 4 {
+		return false
+	}
+	for _, r := range code {
+		if (r < 'A' || r > 'Z') && (r < '0' || r > '9') {
+			return false
+		}
+	}
+	return true
+}
+
 func (p *ERAMPane) executeMCACommand() bool {
 	if p == nil {
 		return false
@@ -143,7 +185,7 @@ func (p *ERAMPane) executeMCACommand() bool {
 		return false
 	}
 	tokens := strings.Fields(strings.ToUpper(text))
-	if len(tokens) == 0 || tokens[0] != "WR" {
+	if len(tokens) == 0 || (tokens[0] != "WR" && tokens[0] != "AR") {
 		return false
 	}
 
@@ -161,20 +203,25 @@ func (p *ERAMPane) executeMCACommand() bool {
 		return true
 	}
 	airport := tokens[1]
-	if len(airport) != 3 && len(airport) != 4 {
+	if !validERAMAirportID(airport) {
 		p.setMCAFeedback(true, airport+" FORMAT")
 		return true
 	}
 
-	icao, displayID, ok := resolveWXAirport(airport)
-	if !ok {
-		// CRC uses NOT ADAPTED when a weather-station request cannot resolve to
-		// usable METAR data. Here the local airport adaptation is the authority.
-		p.setMCAFeedback(true, "NOT ADAPTED")
-		return true
+	switch tokens[0] {
+	case "WR":
+		icao, displayID, ok := resolveWXAirport(airport)
+		if !ok {
+			p.setMCAFeedback(true, "NOT ADAPTED")
+			return true
+		}
+		p.toggleWXStation(icao, displayID)
+		p.setMCAFeedback(false, "ACCEPT", "WEATHER STAT REQ")
+	case "AR":
+		icao, displayID := resolveAltimAirport(airport)
+		p.toggleAltimStation(icao, displayID)
+		p.setMCAFeedback(false, "ACCEPT", "ALTIMETER REQ")
 	}
-	p.toggleWXStation(icao, displayID)
-	p.setMCAFeedback(false, "ACCEPT", "WEATHER STAT REQ")
 	return true
 }
 
@@ -201,10 +248,38 @@ func (p *ERAMPane) removeWXStation(icao string) bool {
 			continue
 		}
 		p.wxReport.stations = append(p.wxReport.stations[:i], p.wxReport.stations[i+1:]...)
-		delete(p.wxReport.fetching, icao)
-		delete(p.wxReport.lastAttempt, icao)
 		p.clampWXTopLine()
 		if p.popup.Kind == eramPopupDeleteWXReport && p.popup.Payload == icao {
+			p.closePopup()
+		}
+		return true
+	}
+	return false
+}
+
+func (p *ERAMPane) toggleAltimStation(icao, displayID string) {
+	if p == nil || icao == "" {
+		return
+	}
+	if p.removeAltimStation(icao) {
+		return
+	}
+	p.altim.stations = append(p.altim.stations, altimStation{ICAO: icao, DisplayID: displayID})
+	p.altim.top = 0
+	p.requestWXMETAR(icao)
+}
+
+func (p *ERAMPane) removeAltimStation(icao string) bool {
+	if p == nil || icao == "" {
+		return false
+	}
+	for i, station := range p.altim.stations {
+		if station.ICAO != icao {
+			continue
+		}
+		p.altim.stations = append(p.altim.stations[:i], p.altim.stations[i+1:]...)
+		p.clampAltimTop()
+		if p.popup.Kind == eramPopupDeleteAltimeter && p.popup.Payload == icao {
 			p.closePopup()
 		}
 		return true
@@ -241,7 +316,7 @@ func fetchAWCMETAR(ctx context.Context, icao string) (wxMETAR, error) {
 	if err != nil {
 		return wxMETAR{}, err
 	}
-	req.Header.Set("User-Agent", "REDS WX Report")
+	req.Header.Set("User-Agent", "REDS ERAM METAR")
 
 	resp, err := wxReportHTTPClient.Do(req)
 	if err != nil {
@@ -264,12 +339,42 @@ func fetchAWCMETAR(ctx context.Context, icao string) (wxMETAR, error) {
 	if report.ObsTime == 0 {
 		obs = time.Time{}
 	}
+	altimeter, hasAltimeter := parseMETARAltimeter(report.RawOb, report.Altim)
 	return wxMETAR{
-		ICAO:        strings.ToUpper(strings.TrimSpace(report.ICAOID)),
-		Raw:         strings.TrimSpace(report.RawOb),
-		Observation: obs,
-		FetchedAt:   time.Now(),
+		ICAO:         strings.ToUpper(strings.TrimSpace(report.ICAOID)),
+		Raw:          strings.TrimSpace(report.RawOb),
+		Observation:  obs,
+		FetchedAt:    time.Now(),
+		Altimeter:    altimeter,
+		HasAltimeter: hasAltimeter,
 	}, nil
+}
+
+func parseMETARAltimeter(raw string, altimHPA *float64) (int, bool) {
+	for _, field := range strings.Fields(strings.ToUpper(raw)) {
+		if len(field) != 5 || field[0] != 'A' {
+			continue
+		}
+		value := 0
+		valid := true
+		for _, r := range field[1:] {
+			if r < '0' || r > '9' {
+				valid = false
+				break
+			}
+			value = value*10 + int(r-'0')
+		}
+		if valid {
+			return value, true
+		}
+	}
+	if altimHPA != nil && *altimHPA > 0 {
+		// AviationWeather JSON exposes altim in hPa. CRC ultimately works with
+		// the four-digit A-setting (hundredths inHg), so convert as a fallback
+		// when rawOb does not contain A####.
+		return int(*altimHPA*2.95299830714 + 0.5), true
+	}
+	return 0, false
 }
 
 func (p *ERAMPane) consumeWXMETARUpdates() {
@@ -282,7 +387,7 @@ func (p *ERAMPane) consumeWXMETARUpdates() {
 			delete(p.wxReport.fetching, update.ICAO)
 			if update.Err != nil {
 				if p.logger != nil {
-					p.logger.Warn("ERAM WX REPORT METAR request failed", slog.String("icao", update.ICAO), slog.Any("error", update.Err))
+					p.logger.Warn("ERAM METAR request failed", slog.String("icao", update.ICAO), slog.Any("error", update.Err))
 				}
 				continue
 			}
@@ -299,6 +404,12 @@ func (p *ERAMPane) refreshWXMETARs() {
 	}
 	now := time.Now()
 	for _, station := range p.wxReport.stations {
+		if last := p.wxReport.lastAttempt[station.ICAO]; !last.IsZero() && now.Sub(last) < wxReportRefreshInterval {
+			continue
+		}
+		p.requestWXMETAR(station.ICAO)
+	}
+	for _, station := range p.altim.stations {
 		if last := p.wxReport.lastAttempt[station.ICAO]; !last.IsZero() && now.Sub(last) < wxReportRefreshInterval {
 			continue
 		}

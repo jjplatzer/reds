@@ -25,6 +25,7 @@ type eramPopupKind uint8
 const (
 	eramPopupNone eramPopupKind = iota
 	eramPopupDeleteWXReport
+	eramPopupDeleteAltimeter
 )
 
 type eramPopupState struct {
@@ -127,6 +128,8 @@ func (p *ERAMPane) consumePopupInput(ctx *panes.Context) bool {
 		switch kind {
 		case eramPopupDeleteWXReport:
 			p.removeWXStation(payload)
+		case eramPopupDeleteAltimeter:
+			p.removeAltimStation(payload)
 		}
 	}
 	// CRC ViewPopup consumes TBP/TBE whether the click confirms or merely closes.
@@ -188,6 +191,7 @@ const (
 	eramViewMenuNone eramViewMenuKind = iota
 	eramViewMenuTime
 	eramViewMenuChecklist
+	eramViewMenuAltim
 	eramViewMenuWX
 )
 
@@ -212,6 +216,13 @@ const (
 	eramViewMenuChecklistFont
 	eramViewMenuChecklistHighlight
 	eramViewMenuChecklistText
+	eramViewMenuAltimOpaque
+	eramViewMenuAltimBorder
+	eramViewMenuAltimTearoffs
+	eramViewMenuAltimLines
+	eramViewMenuAltimColumns
+	eramViewMenuAltimFont
+	eramViewMenuAltimBrightness
 	eramViewMenuWXOpaque
 	eramViewMenuWXBorder
 	eramViewMenuWXTearoffs
@@ -385,6 +396,19 @@ func (p *ERAMPane) activeViewMenuSpec(kind eramViewMenuKind) (eramViewMenuSpec, 
 		}
 		spec.RowCount = 6
 		return spec, true
+	case eramViewMenuAltim:
+		spec.Title = "AS"
+		spec.Rows[0] = eramViewMenuRow{Action: eramViewMenuAltimOpaque, Kind: eramViewMenuToggle, ActiveLabel: "O", InactiveLabel: "T", Active: p.altim.prefs.isOpaque, Centered: true}
+		spec.Rows[1] = eramViewMenuRow{Action: eramViewMenuAltimBorder, Kind: eramViewMenuToggle, Label: "BORDER", Active: p.altim.prefs.showBorder}
+		spec.Rows[2] = eramViewMenuRow{Action: eramViewMenuAltimTearoffs, Kind: eramViewMenuToggle, Label: "TEAROFF", Active: p.altim.prefs.showTearoffs}
+		spec.Rows[3] = eramViewMenuRow{Action: eramViewMenuAltimLines, Kind: eramViewMenuIncDec, Label: "LINES", Value: p.altim.prefs.lines, AutoRepeat: true}
+		spec.Rows[4] = eramViewMenuRow{Action: eramViewMenuAltimColumns, Kind: eramViewMenuIncDec, Label: "COL", Value: p.altim.prefs.columns, AutoRepeat: true}
+		spec.Rows[5] = eramViewMenuRow{Action: eramViewMenuAltimFont, Kind: eramViewMenuIncDec, Label: "FONT", Value: p.altim.prefs.fontSize}
+		spec.Rows[6] = eramViewMenuRow{Action: eramViewMenuAltimBrightness, Kind: eramViewMenuIncDec, Label: "BRIGHT", Value: p.altim.prefs.brightness, AutoRepeat: true}
+		// CRC currently presents TEMPLATE as a black inactive pick area.
+		spec.Rows[7] = eramViewMenuRow{Action: eramViewMenuActionNone, Kind: eramViewMenuToggle, Label: "TEMPLATE"}
+		spec.RowCount = 8
+		return spec, true
 	case eramViewMenuWX:
 		spec.Title = "WX"
 		spec.Rows[0] = eramViewMenuRow{
@@ -445,6 +469,8 @@ func (p *ERAMPane) viewMenuTargetBounds(kind eramViewMenuKind, paneSize redsmath
 		return p.clockBounds(paneSize)
 	case eramViewMenuChecklist:
 		return p.checklistBounds(paneSize)
+	case eramViewMenuAltim:
+		return p.altimBounds(paneSize)
 	case eramViewMenuWX:
 		return p.wxReportBounds(paneSize)
 	default:
@@ -775,6 +801,53 @@ func (p *ERAMPane) activateViewMenuAction(action eramViewMenuAction, increment b
 			p.checklist.prefs.brightness = maxInt(old-2, 0)
 		}
 		return p.checklist.prefs.brightness != old
+	case eramViewMenuAltimOpaque:
+		p.altim.prefs.isOpaque = !p.altim.prefs.isOpaque
+		return true
+	case eramViewMenuAltimBorder:
+		p.altim.prefs.showBorder = !p.altim.prefs.showBorder
+		return true
+	case eramViewMenuAltimTearoffs:
+		p.altim.prefs.showTearoffs = !p.altim.prefs.showTearoffs
+		return true
+	case eramViewMenuAltimLines:
+		old := p.altim.prefs.lines
+		if increment {
+			p.altim.prefs.lines = minInt(old+1, 24)
+		} else {
+			p.altim.prefs.lines = maxInt(old-1, 3)
+		}
+		if p.altim.prefs.lines != old {
+			p.clampAltimTop()
+		}
+		return p.altim.prefs.lines != old
+	case eramViewMenuAltimColumns:
+		old := p.altim.prefs.columns
+		if increment {
+			p.altim.prefs.columns = minInt(old+1, 4)
+		} else {
+			p.altim.prefs.columns = maxInt(old-1, 1)
+		}
+		if p.altim.prefs.columns != old {
+			p.altim.top = 0
+		}
+		return p.altim.prefs.columns != old
+	case eramViewMenuAltimFont:
+		old := p.altim.prefs.fontSize
+		if increment {
+			p.altim.prefs.fontSize = minInt(old+1, 3)
+		} else {
+			p.altim.prefs.fontSize = maxInt(old-1, 1)
+		}
+		return p.altim.prefs.fontSize != old
+	case eramViewMenuAltimBrightness:
+		old := p.altim.prefs.brightness
+		if increment {
+			p.altim.prefs.brightness = minInt(old+2, 100)
+		} else {
+			p.altim.prefs.brightness = maxInt(old-2, 0)
+		}
+		return p.altim.prefs.brightness != old
 	case eramViewMenuWXOpaque:
 		p.wxReport.prefs.isOpaque = !p.wxReport.prefs.isOpaque
 		return true
