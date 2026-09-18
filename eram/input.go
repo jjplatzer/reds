@@ -79,6 +79,9 @@ func (p *ERAMPane) consumeInput(ctx *panes.Context) {
 	if p.consumeClockInput(ctx) {
 		return
 	}
+	if p.consumeAltimInput(ctx) {
+		return
+	}
 	if p.consumeWXReportInput(ctx) {
 		return
 	}

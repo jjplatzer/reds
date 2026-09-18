@@ -137,3 +137,58 @@ func (p *ERAMPane) initializeWXReportState() {
 		updates:     make(chan wxMETARUpdate, 64),
 	}
 }
+
+// CRC AltimeterSettingsViewSettings defaults.
+const (
+	defaultAltimLines      = 5
+	defaultAltimColumns    = 1
+	defaultAltimFontSize   = 2
+	defaultAltimBrightness = 80
+)
+
+type eramAltimPreferences struct {
+	location     eramAnchoredLocation
+	lines        int
+	columns      int
+	fontSize     int
+	brightness   int
+	showBorder   bool
+	showTearoffs bool
+	isOpaque     bool
+	visible      bool
+	manuallySort bool
+}
+
+type altimStation struct {
+	ICAO      string
+	DisplayID string
+}
+
+type eramAltimState struct {
+	prefs    eramAltimPreferences
+	stations []altimStation
+	top      int
+}
+
+func defaultAltimPreferences() eramAltimPreferences {
+	return eramAltimPreferences{
+		// ViewListMenuSettingsBase.Location = TopLeft (20, 110).
+		location: eramAnchoredLocation{
+			Offset: redsmath.Vec2{X: 20, Y: 110},
+			Anchor: eramViewAnchorTopLeft,
+		},
+		lines:        defaultAltimLines,
+		columns:      defaultAltimColumns,
+		fontSize:     defaultAltimFontSize,
+		brightness:   defaultAltimBrightness,
+		showBorder:   true,
+		showTearoffs: true,
+	}
+}
+
+func (p *ERAMPane) initializeAltimState() {
+	if p == nil {
+		return
+	}
+	p.altim = eramAltimState{prefs: defaultAltimPreferences()}
+}

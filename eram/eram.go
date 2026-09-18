@@ -37,12 +37,16 @@ const (
 	// above that, so -610 preserves that ordering while keeping the checklist
 	// above the lowered master toolbar at -700.
 	zChecklistViewSemiTransparent renderer.Z = -610
+	// CRC orders ALTIM SET ahead of the other semi-transparent list views.
+	// Keep it below floating tear-offs in REDS' current precedence model.
+	zAltimViewSemiTransparent renderer.Z = -605
 	// CRC places the WX station report in the same semi-transparent list-view
 	// group as ALTIM/CODE/CHECKLIST. Keep it below tear-offs and above the
 	// lowered master toolbar by default.
 	zWXReportViewSemiTransparent renderer.Z = -620
 	zTimeViewOpaque              renderer.Z = -400
 	// Within CRC's opaque-view group TIME precedes CHECKLIST as well.
+	zAltimViewOpaque     renderer.Z = -405
 	zChecklistViewOpaque renderer.Z = -410
 	zWXReportViewOpaque  renderer.Z = -420
 	zResponseAreaView    renderer.Z = 590
@@ -139,6 +143,7 @@ type ERAMPane struct {
 	mca                       eramMCAState
 	responseArea              eramResponseAreaState
 	checklist                 eramChecklistState
+	altim                     eramAltimState
 	wxReport                  eramWXReportState
 	viewUI                    eramViewUIState
 	popup                     eramPopupState
@@ -247,6 +252,7 @@ func NewPane(artcc string, sector Sector, logger *redslog.Logger) (*ERAMPane, er
 	pane.initializeClockState()
 	pane.initializeAreaStates()
 	pane.initializeChecklistState(facility)
+	pane.initializeAltimState()
 	pane.initializeWXReportState()
 	pane.initializeMapState()
 	if err := pane.loadGeoMapMetadata(); err != nil {
@@ -296,6 +302,7 @@ func (p *ERAMPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawGeoMaps(ctx, zcb)
 	p.drawToolbar(ctx, zcb)
 	p.drawClock(ctx, zcb)
+	p.drawAltimSet(ctx, zcb)
 	p.drawWXReport(ctx, zcb)
 	p.drawChecklist(ctx, zcb)
 	p.drawResponseArea(ctx, zcb)
