@@ -1,0 +1,296 @@
+{
+  "artcc": "ZKC",
+  "facility": "SZL",
+  "name": "Whiteman ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 37.593354149999996,
+    "lon": -95.43247947500001
+  },
+  "controlPositions": [
+    {
+      "id": "01HD37KG1Q88BKJ52KV5MCXRKD",
+      "name": "Approach",
+      "callsign": "SZL_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 127.45
+    },
+    {
+      "id": "01HDB9974V12DEZJ1W4BFXETD3",
+      "name": "Arrival",
+      "callsign": "SZL_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 119.25
+    },
+    {
+      "id": "01HDB9AKKPMAWFGM1BHHZQCGYT",
+      "name": "MOA",
+      "callsign": "SZL_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 124.475
+    },
+    {
+      "id": "01HDB9C5AG5YA891DMSEK90WA3",
+      "name": "Local",
+      "callsign": "SZL_TWR",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 132.4
+    },
+    {
+      "id": "01HDB9CYNWV5HMYWJ2JWZ7PYJP",
+      "name": "Ground",
+      "callsign": "SZL_GND",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 128.275
+    },
+    {
+      "id": "01HDB9DSRAQWRM7TYC9BF54P6R",
+      "name": "Clearance",
+      "callsign": "SZL_DEL",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 121.75
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1D"
+      ],
+      "mapIds": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6,
+        7,
+        9,
+        8,
+        13,
+        14,
+        16,
+        15,
+        10,
+        11,
+        12,
+        17,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        8,
+        14,
+        15,
+        11,
+        17,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        9,
+        13,
+        16,
+        10,
+        12,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HD37CMRANXM38GW3WR1V0BQ3",
+      "name": "SZL Base MAP",
+      "shortName": "PRIMARY",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD37CMRA0AN799BREQ66ED6X",
+      "name": "SZL Class-D",
+      "shortName": "CLASS-D",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD37CMR91WSSK31NPC5JWA9D",
+      "name": "SZL Arrival Boundary",
+      "shortName": "AR-BNDY",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD37CMRABV716XZZ5W83RT4V",
+      "name": "SZL ILS 01-19",
+      "shortName": "ILS-FAC",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD37CMRCZQ5DEDV878DDQ4NW",
+      "name": "SZL TACAN",
+      "shortName": "TAC-FAC",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD37CMRC59N5H04DKK32PKS8",
+      "name": "SZL MVA FUS3",
+      "shortName": "MVA3",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HD37CMRCVSGFFWHBM3RGD8JA",
+      "name": "SZL Satellite Airports",
+      "shortName": "SAT_APT",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD37CMRBGWG0N8BVRX30CT83",
+      "name": "SZL Intersections",
+      "shortName": "FIXES",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD37CMRB3NJNCMNSW0F3BRPG",
+      "name": "SZL KC_APP Split",
+      "shortName": "KC_SPLT",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD37CMRDF80FRW9QB8P0TJ1F",
+      "name": "SZL TRUMAN-A MOA",
+      "shortName": "TRUMN-A",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD37CMRD28ZY8BGW25256B1D",
+      "name": "SZL TRUMAN-B MOA",
+      "shortName": "TRUMN-B",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD37CMREV05HTSVDG4Z64J5B",
+      "name": "SZL TRUMAN-C MOA",
+      "shortName": "TRUMN-C",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD37CMREEFGQFQKN3NCAH0MH",
+      "name": "SZL 25NM Diverse Vector Area",
+      "shortName": "25DME",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD5W7RMWVY3V8P3NRCJZS8BD",
+      "name": "SZL Intersection Labels",
+      "shortName": "FIXNAM1",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HD607AZ3GP87RYTRJE77A7JD",
+      "name": "SZL Satellite FAC",
+      "shortName": "SAT_FAC",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HD8ZHR9BY5EHSCQEKNA71PE6",
+      "name": "SZL Satellite GPS Fix Names",
+      "shortName": "FIXNAM2",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HDJ9831RW4136FG0VM7Y27CH",
+      "name": "SZL Satellite Airport Labels",
+      "shortName": "APT_NAM",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HD37CMR91WSSK31NPC5JWA9D",
+      "name": "SZL Arrival Boundary",
+      "shortName": "AR-BNDY",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    }
+  ]
+}

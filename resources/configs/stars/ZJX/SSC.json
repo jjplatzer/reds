@@ -1,0 +1,189 @@
+{
+  "artcc": "ZJX",
+  "facility": "SSC",
+  "name": "Shaw Air Force ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 30.39404875,
+    "lon": -81.98462525
+  },
+  "controlPositions": [
+    {
+      "id": "01HC3HYD9T8W1PZVPHX0EDWCS9",
+      "name": "Ground",
+      "callsign": "SSC_GND",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 126.1
+    },
+    {
+      "id": "01HC3HYVPRTH850Z5VCDE292XA",
+      "name": "Tower",
+      "callsign": "SSC_TWR",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 126.65
+    },
+    {
+      "id": "01HC3HZBV4BYEWN7EPYMMP0JDF",
+      "name": "Approach",
+      "callsign": "SSC_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 125.4
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1D",
+        "1S",
+        "1T"
+      ],
+      "mapIds": [
+        100,
+        null,
+        101,
+        102,
+        103,
+        201,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        100,
+        101,
+        103,
+        null,
+        102,
+        201
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HKB60278X74K3S3SZ4ZMGGGJ",
+      "name": "SSC Global",
+      "shortName": "MASTER",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKDMNP2Z4KYE66N8J12QNTST",
+      "name": "SSC Airport",
+      "shortName": "AIRPORT",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKDMNP30HJ6KZRE5EN5MRA7D",
+      "name": "SSC Heli",
+      "shortName": "HELI",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKDMNP31XD72MXMDNJDJ06KJ",
+      "name": "SSC HIghway",
+      "shortName": "HIGHWAY",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKMYTF68QGR25T1B7HXQTK0H",
+      "name": "SSCDepartures",
+      "shortName": "SSC DEP",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    }
+  ]
+}

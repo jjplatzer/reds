@@ -1,0 +1,634 @@
+{
+  "artcc": "ZMP",
+  "facility": "SUX",
+  "name": "Sioux City ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 45.084575,
+    "lon": -93.9971125
+  },
+  "controlPositions": [
+    {
+      "id": "01GFETFH86F7RNHX28D3JWJGYR",
+      "name": "Arrival/Departure",
+      "callsign": "SUX_APP",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 124.6
+    },
+    {
+      "id": "01GFETG80S2QB2R20A8QDYF5QS",
+      "name": "Local Control",
+      "callsign": "SUX_TWR",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 118.7
+    },
+    {
+      "id": "01GFETGP5R8N8D6J3A1M2FK8VR",
+      "name": "Ground Control",
+      "callsign": "SUX_GND",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01H69DZFG4R2D2AT4YWVHP36AN",
+      "name": "Arrival/Departure TRACAB",
+      "callsign": "SUX_APP",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 124.6
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1N",
+        "1R"
+      ],
+      "mapIds": [
+        2,
+        4,
+        5,
+        6,
+        21,
+        8,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        21,
+        14,
+        15,
+        16,
+        22,
+        null,
+        19,
+        20,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        2,
+        5,
+        21,
+        4,
+        6,
+        8
+      ],
+      "submenuMapIds": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        11,
+        21,
+        15,
+        22,
+        19,
+        null,
+        null,
+        null,
+        null,
+        null,
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        14,
+        16,
+        null,
+        20,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1G",
+        "1T"
+      ],
+      "mapIds": [
+        10,
+        11,
+        12,
+        5,
+        6,
+        8,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        21,
+        14,
+        15,
+        16,
+        22,
+        null,
+        19,
+        20,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        10,
+        12,
+        6,
+        11,
+        5,
+        8
+      ],
+      "submenuMapIds": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        11,
+        21,
+        15,
+        22,
+        19,
+        null,
+        null,
+        null,
+        null,
+        null,
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        14,
+        16,
+        null,
+        20,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H7TNR2MZXRJ8RA4MM8THDXRQ",
+      "name": "SUX 001 S ILS",
+      "shortName": "S ILS",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2MZDWS2X64REB9S0B3N",
+      "name": "SUX 002 S GPS",
+      "shortName": "S GPS",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2N0M2ZTP7QCCSKWM9N7",
+      "name": "SUX 003 N ILS",
+      "shortName": "N ILS",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2N0SWG3XRC1FHGJYYZB",
+      "name": "SUX 004 N GPS",
+      "shortName": "N GPS",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2N1Z398ASYSN6X4T1WD",
+      "name": "SUX 005 MOA",
+      "shortName": "MOA",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2N1VEPG032WWJX0DSG5",
+      "name": "SUX 006 VFR",
+      "shortName": "VFR",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2N2WYDYVQN26G17MXH3",
+      "name": "SUX 007 R RINGS",
+      "shortName": "R RINGS",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2N2EJ4222AN44AT8WQB",
+      "name": "SUX 008 3NM MVA",
+      "shortName": "3NM MVA",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N2SKPFKKQC42DY0Q2S",
+      "name": "SUX 009 5NM MVA",
+      "shortName": "5NM MVA",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N3JTHGB53JF170NBH1",
+      "name": "SUX 010 TOWER",
+      "shortName": "TOWER",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2N3QAN3G4CSJAETPN10",
+      "name": "SUX 011 N TOWER",
+      "shortName": "N TOWER",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2N38W0Z9GQSMRA0PVRE",
+      "name": "SUX 012 S TOWER",
+      "shortName": "S TOWER",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2N4N8V7THMR6JSCRHE6",
+      "name": "SUX 013 RNV R13",
+      "shortName": "RNV R13",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N9T8FTYKDRNRRJB2H4",
+      "name": "SUX 014 R90",
+      "shortName": "R90",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N9FE6VXCKVK4X8H05N",
+      "name": "SUX 015 FSD",
+      "shortName": "FSD",
+      "starsId": 15,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2NB175FWS2N01VDJ1EH",
+      "name": "SUX 016 CLASS D",
+      "shortName": "CLASS D",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2NB74806XRG6DC6HDYQ",
+      "name": "SUX 017 COUNTYS",
+      "shortName": "COUNTYS",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2N4WQ4M4M1D4X8355AN",
+      "name": "SUX 018 RNV R18",
+      "shortName": "RNV R18",
+      "starsId": 18,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2NCYDQ4SD6ADFKTVTMZ",
+      "name": "SUX 019 LRR5NF",
+      "shortName": "LRR5NF",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2NCJ1Q7GEQZP73E8ZMP",
+      "name": "SUX 020 LRR5SF",
+      "shortName": "LRR5SF",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2N9HCQ5GRSE2BG5F4X9",
+      "name": "SUX 021 RNV RTE",
+      "shortName": "RNV RTE",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2NBQ74ZQBAVZFW8HSAC",
+      "name": "SUX 022 TOWNS",
+      "shortName": "TOWNS",
+      "starsId": 22,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2NE6EXEQD7RP1KAZ3CN",
+      "name": "SUX 023 ROADS",
+      "shortName": "ROADS",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N4RARNEXF8VPH7CTSC",
+      "name": "SUX 031 RNV R31",
+      "shortName": "RNV R31",
+      "starsId": 31,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N38VBFW67EKP3ND1GA",
+      "name": "SUX 032 R13 ARC",
+      "shortName": "R13 ARC",
+      "starsId": 32,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N406HSYMHM7ZMFX4D0",
+      "name": "SUX 033 R31 ARC",
+      "shortName": "R31 ARC",
+      "starsId": 33,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N5ZS5Y0EJNZECFZH9Q",
+      "name": "SUX 036 RNV R36",
+      "shortName": "RNV R36",
+      "starsId": 36,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N5G1R47TBMVNAR79TB",
+      "name": "SUX 042 LRJ R18",
+      "shortName": "LRJ R18",
+      "starsId": 42,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N6X0VD34EGGD73T3TR",
+      "name": "SUX 043 LRJ R36",
+      "shortName": "LRJ R36",
+      "starsId": 43,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N6GG4Q2CZYEVT09KKB",
+      "name": "SUX 045 OC4 R15",
+      "shortName": "OC4 R15",
+      "starsId": 45,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N64PHKZ0CEQRANB7AK",
+      "name": "SUX 046 OC4 R33",
+      "shortName": "OC4 R33",
+      "starsId": 46,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N774B8JFE8QXYTXTQY",
+      "name": "SUX 047 MEY R02",
+      "shortName": "MEY R02",
+      "starsId": 47,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N7F3QX7TPT58CZ1MTY",
+      "name": "SUX 048 MEY R20",
+      "shortName": "MEY R20",
+      "starsId": 48,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N7MPMSM3YJ22Y86101",
+      "name": "SUX 050 OB4 R31",
+      "shortName": "OB4 R31",
+      "starsId": 50,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2NBET5AY2TVPD74EB85",
+      "name": "SUX 051 OB4 R13",
+      "shortName": "OB4 R13",
+      "starsId": 51,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N7CWN4CCMM1MVGQZ97",
+      "name": "SUX 052 VMR R30",
+      "shortName": "VMR R30",
+      "starsId": 52,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N8CR2TN4PKR187F499",
+      "name": "SUX 053 VMR R12",
+      "shortName": "VMR R12",
+      "starsId": 53,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N83RSV0V9HEV14ZKAA",
+      "name": "SUX 054 TQE R15",
+      "shortName": "TQE R15",
+      "starsId": 54,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N8ZR1XHFJ7224V3VGN",
+      "name": "SUX 055 LCG R18",
+      "shortName": "LCG R18",
+      "starsId": 55,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N8A6D6S0XKYKR9GWY5",
+      "name": "SUX 056 LCG R23",
+      "shortName": "LCG R23",
+      "starsId": 56,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2N959JM6RE8MHVMHMV3",
+      "name": "SUX 057 LCG R36",
+      "shortName": "LCG R36",
+      "starsId": 57,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2NDNGF5JX10C174VTZQ",
+      "name": "SUX 058 SXK R17",
+      "shortName": "SXK R17",
+      "starsId": 58,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2NDKSWA6V83B5TNGD11",
+      "name": "SUX 059 SXK R35",
+      "shortName": "SXK R35",
+      "starsId": 59,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2NAZWQG69MARYNGNNGX",
+      "name": "SUX 060 YKN I31",
+      "shortName": "YKN I31",
+      "starsId": 60,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2NAR8V583DHNX5WTWGD",
+      "name": "SUX 061 YKN R31",
+      "shortName": "YKN R31",
+      "starsId": 61,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2NAZE8426DWDXR3F9XX",
+      "name": "SUX 062 OFK R19",
+      "shortName": "OFK R19",
+      "starsId": 62,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2NDM6NMR46899T8EF4A",
+      "name": "SUX 063 CKP R36",
+      "shortName": "CKP R36",
+      "starsId": 63,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2NA04G3Y48KPAMKF2DZ",
+      "name": "SUX 065 SUX 1",
+      "shortName": "SUX 1",
+      "starsId": 65,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2NC3DWK5EJ4NJ8PKMG4",
+      "name": "SUX 066 STADIUM",
+      "shortName": "STADIUM",
+      "starsId": 66,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TNR2NDYZTQ949XACXQMZGT",
+      "name": "SUX 067 UAS",
+      "shortName": "UAS",
+      "starsId": 67,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2NESSA4729E8K5WZ8ZF",
+      "name": "SUX 068 CUTOFFS",
+      "shortName": "CUTOFFS",
+      "starsId": 68,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2NEZBG9J3WRZ0G5GW7K",
+      "name": "SUX 300 FLCHK13",
+      "shortName": "FLCHK13",
+      "starsId": 300,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7TNR2NEQVQRQHBE1250FFEF",
+      "name": "SUX 301 FLCHK31",
+      "shortName": "FLCHK31",
+      "starsId": 301,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQ5HFXQJ5EDNPP17RZGBJCKR",
+      "name": "SUX GNDMAP",
+      "shortName": "GNDMAP",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

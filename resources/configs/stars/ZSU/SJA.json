@@ -1,0 +1,978 @@
+{
+  "artcc": "ZSU",
+  "facility": "SJA",
+  "name": "San Juan Approach",
+  "type": "Tracon",
+  "defaultCenter": {
+    "lat": 18.43877,
+    "lon": -66.00218
+  },
+  "controlPositions": [
+    {
+      "id": "01H5XEFQB71T6QFJM9BNRFPT3C",
+      "name": "Sector 1 (R1)",
+      "callsign": "SJU_1_APP",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      },
+      "freq": 119.4
+    },
+    {
+      "id": "01H5XEV9A9TDMJWM0A8T60XVZ6",
+      "name": "Sector 3 (R3)",
+      "callsign": "SJU_3_APP",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      },
+      "freq": 128.65
+    },
+    {
+      "id": "01H5XEYSDENJ1CSQ4KB507G1ZM",
+      "name": "Sector 5 (R5)",
+      "callsign": "SJU_5_APP",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      },
+      "freq": 120.9
+    },
+    {
+      "id": "01H5XEZXYEX6RTTG6BH3A3MQA3",
+      "name": "Sector 7 (R7)",
+      "callsign": "SJU_7_APP",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      },
+      "freq": 132.25
+    },
+    {
+      "id": "01H5XF0R66FTKGXS6S4DKRAE9H",
+      "name": "Sector 9 (R9)",
+      "callsign": "SJU_9_APP",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      },
+      "freq": 124.6
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 18.43877,
+        "lon": -66.00218
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1F",
+        "1G",
+        "1N",
+        "1U",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        100,
+        3,
+        4,
+        5,
+        6,
+        null,
+        null,
+        101,
+        null,
+        10,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        11,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        100,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        null,
+        101,
+        10,
+        13,
+        15,
+        17,
+        19,
+        21,
+        23,
+        25,
+        27,
+        29,
+        31,
+        11,
+        null,
+        null,
+        null,
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        24,
+        26,
+        28,
+        30,
+        32,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        34,
+        35,
+        41,
+        42,
+        36,
+        33,
+        37,
+        38,
+        39,
+        40,
+        43,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        34,
+        41,
+        36,
+        35,
+        42,
+        33
+      ],
+      "submenuMapIds": [
+        37,
+        39,
+        43,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        38,
+        40,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1D"
+      ],
+      "mapIds": [
+        44,
+        45,
+        36,
+        37,
+        33,
+        39,
+        38,
+        41,
+        40,
+        42,
+        43,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        44,
+        36,
+        33,
+        45,
+        37,
+        39
+      ],
+      "submenuMapIds": [
+        38,
+        40,
+        43,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        41,
+        42,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1A"
+      ],
+      "mapIds": [
+        46,
+        49,
+        47,
+        null,
+        48,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        46,
+        47,
+        48,
+        49,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1B"
+      ],
+      "mapIds": [
+        203,
+        200,
+        10,
+        201,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        203,
+        10,
+        null,
+        200,
+        201,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HAN101S4R1WJV1ZXRBMMHZ8Y",
+      "name": "San Juan Approach w Splits v2",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0R6219JMQT683KF9PZKSPXC",
+      "name": "Minimum Vectoring Altitude FUS 5",
+      "shortName": "MVA FUS",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBFJDGNMJEC78VCYYG3",
+      "name": "EAST OPS",
+      "shortName": "EAST",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0R8NHC0EJS2JR0BGBJDS3F3",
+      "name": "WEST OPS",
+      "shortName": "WEST",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0R8NHBC89Q2JZ5CEKJZTBXS",
+      "name": "AIRPORTS",
+      "shortName": "ARPTS",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0R8NHBECRMFFNV4581EM58R",
+      "name": "CLASS C D AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0R6219MPCQPFQ3WM90A584W",
+      "name": "PR Routes",
+      "shortName": "PR RTE",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBGAAKMBFK6E02MMTBF",
+      "name": "EOVM",
+      "shortName": "EOVM",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBWBDJBEYD0GHTYC833",
+      "name": "STANDARD HOLD PATTERNS",
+      "shortName": "HOLDS",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9XZHW8T3Y071CPGRRWSAFA9",
+      "name": "Sector 9 (R9)",
+      "shortName": "R9",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0R8NHBQ98PBYMDQVKHM6DSW",
+      "name": "MINIMUM IFR ALTITUDE TAV 22",
+      "shortName": "MIA",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBZQ827XRZ48Y5GWSEY",
+      "name": "TFRs",
+      "shortName": "TFRS",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBB0VRCV6HSC5J98HR3",
+      "name": "ACONY3 SID",
+      "shortName": "ACONY3",
+      "starsId": 15,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBDZG04MFJPZFDGFA6F",
+      "name": "BEANO3 STAR",
+      "shortName": "BEANO3",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBHGQR807BQ7D3XC1T4",
+      "name": "GANBO1 SID",
+      "shortName": "GANBO1",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBDDE0EYV0X98DBHX1S",
+      "name": "CHAKA4 STAR",
+      "shortName": "CHAKA4",
+      "starsId": 18,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBJG6TGPXWHWVE5JE71",
+      "name": "GLADA3 SID",
+      "shortName": "GLADA3",
+      "starsId": 19,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBNQJNVF60YVKA7HERA",
+      "name": "JOSHE3 STAR",
+      "shortName": "JOSHE3",
+      "starsId": 20,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBJ4D7T8GVYCBSRF2X7",
+      "name": "HAMAR2 SID",
+      "shortName": "HAMAR2",
+      "starsId": 21,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBSMFDAT9KGDF9040ZZ",
+      "name": "SAALR2 STAR",
+      "shortName": "SAALR2",
+      "starsId": 22,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBMX8GDB3BX8JYDC07F",
+      "name": "JAAWS2 SID",
+      "shortName": "JAAWS2",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBZ5H0G6CVGY15G18NK",
+      "name": "TROCO3 STAR",
+      "shortName": "TROCO3",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBN44EACWHQ2BRGMPNM",
+      "name": "JETSS1 SID",
+      "shortName": "JETSS1",
+      "starsId": 25,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBS821M1949PSSRMW03",
+      "name": "PALCO7 SID",
+      "shortName": "PALCO7",
+      "starsId": 26,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBTK18RKRC6S41B46BM",
+      "name": "SNGRA2 SID",
+      "shortName": "SNGRA2",
+      "starsId": 27,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBKCESDHS6G6HMAG117",
+      "name": "HMLTN9 SID",
+      "shortName": "HMLTN9",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHC0993DWK7TMQ6NJF4B",
+      "name": "VERMO6 SID",
+      "shortName": "VERMO6",
+      "starsId": 29,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBVKGFRV89XH7M1Z0EE",
+      "name": "SNOOZ5 SID",
+      "shortName": "SNOOZ5",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0R8NHBY03H15ZEDHDENN7ZG",
+      "name": "TDM AIRPORTS",
+      "shortName": "TDM",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0R8NHBW1F3B9SX9D188JWAW",
+      "name": "SPECIAL USE AIRSPACE",
+      "shortName": "MIL SUA",
+      "starsId": 32,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HEHETH2GMHWEW71SCQ21A8PY",
+      "name": "Tower GeoMap",
+      "shortName": "GEO",
+      "starsId": 33,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HJSS1BQR83MNS48E6HZCAPDN",
+      "name": "08-10 Centerlines v2",
+      "shortName": "08-10",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJSTBF5829W75J67DQYGW8JM",
+      "name": "26-28 Centerlines v2",
+      "shortName": "26-28",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJQCEM1ENXJ8GQ91Y2ZDKJ3F",
+      "name": "Tower Airspace",
+      "shortName": "AIRSPC",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HEHETH2GZTQ45SWYWQYA28AJ",
+      "name": "Sunny Transition",
+      "shortName": "SUNNY",
+      "starsId": 37,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HGKFVN95692M1GA0E8C0CZZD",
+      "name": "Echho Transition",
+      "shortName": "ECCHO",
+      "starsId": 38,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HEHETH2EQ0AP7GQE3575B8P3",
+      "name": "Kemmo Transition",
+      "shortName": "KEMMO",
+      "starsId": 39,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HEHETH2ENTQ5D5B2KQN7NK3K",
+      "name": "Low Offshore Transition",
+      "shortName": "LOW",
+      "starsId": 40,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HEHETH2FZAQGRDYTP947YG70",
+      "name": "Safety 08",
+      "shortName": "8 CLSD",
+      "starsId": 41,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HEHETH2FY381DKR6AB5HRRWR",
+      "name": "Safety 10",
+      "shortName": "10 CLSD",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HEHETH2FFYW3WPD04XY0PD9J",
+      "name": "Old San Juan TFR",
+      "shortName": "OLD SJ",
+      "starsId": 43,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSWA9D9J6AF3H738QQ9H54MK",
+      "name": "SIG 9 Centerline",
+      "shortName": "9",
+      "starsId": 44,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HSWD1X7823K0G78CJCQF5JYQ",
+      "name": "SIG 27 Centerline",
+      "shortName": "27",
+      "starsId": 45,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HSWAMXAR6AMRVXXJZK7SMJ23",
+      "name": "STT 10 Centerline",
+      "shortName": "10",
+      "starsId": 46,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HSWANMAVX19JT2XRYKBQTYG4",
+      "name": "STT Airspace",
+      "shortName": "STT C",
+      "starsId": 47,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HSWAPK80EXZN4ERFFDASTB9G",
+      "name": "STT GEO",
+      "shortName": "STT GEO",
+      "starsId": 48,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSWFFRGWADKX9EYXWPJ03SWE",
+      "name": "STT Labels",
+      "shortName": "VFR LBL",
+      "starsId": 49,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JPKGF6H9GCQC70T4MEDVBZJE",
+      "name": "SJU_MVA",
+      "shortName": "MVA SJU",
+      "starsId": 100,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JPKH29BC6TVNTQ2N16TC2CJ8",
+      "name": "STT_MVA",
+      "shortName": "MVA STT",
+      "starsId": 101,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K9TP4GH5SKFRN8WHGNVQWC04",
+      "name": "BQN GeoMap",
+      "shortName": "BQN GEO",
+      "starsId": 200,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K9TP4GH44WHX3KR46WAY3V2S",
+      "name": "BQN Airspace",
+      "shortName": "BQN D",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K9TP4GH4XS3YZQ8V85F7ZV26",
+      "name": "BQN 8-26 Centerline",
+      "shortName": "8-26",
+      "starsId": 203,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KWH7EYX9Y5J0860SFMK72EBS",
+      "name": "San Juan Approach v4",
+      "shortName": "MAIN2",
+      "starsId": 787,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM7N712PF5FZG96QB87VW5VJ",
+      "name": "MainMap",
+      "shortName": "MAINNEW",
+      "starsId": 805,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01K9TP4GH44WHX3KR46WAY3V2S",
+      "name": "BQN Airspace",
+      "shortName": "BQN D",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0R8NHBECRMFFNV4581EM58R",
+      "name": "CLASS C D AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0R8NHBW1F3B9SX9D188JWAW",
+      "name": "SPECIAL USE AIRSPACE",
+      "shortName": "MIL SUA",
+      "starsId": 32,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSWANMAVX19JT2XRYKBQTYG4",
+      "name": "STT Airspace",
+      "shortName": "STT C",
+      "starsId": 47,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9XZHW8T3Y071CPGRRWSAFA9",
+      "name": "Sector 9 (R9)",
+      "shortName": "R9",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJQCEM1ENXJ8GQ91Y2ZDKJ3F",
+      "name": "Tower Airspace",
+      "shortName": "AIRSPC",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    }
+  ]
+}

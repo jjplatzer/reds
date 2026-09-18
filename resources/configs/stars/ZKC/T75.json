@@ -1,0 +1,1859 @@
+{
+  "artcc": "ZKC",
+  "facility": "T75",
+  "name": "Gateway TRACON",
+  "type": "Tracon",
+  "defaultCenter": {
+    "lat": 37.593354149999996,
+    "lon": -95.43247947500001
+  },
+  "controlPositions": [
+    {
+      "id": "01G9FMACH4WSMY2KQTXYF2HY1N",
+      "name": "Feeder North",
+      "callsign": "STL_J_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 132.125
+    },
+    {
+      "id": "01G9FMBNJ2DSBN3RP8NJ3CDDY7",
+      "name": "Feeder South",
+      "callsign": "STL_Q_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 121.025
+    },
+    {
+      "id": "01G9FMCH8JTNNDJYSQF25FJJ8V",
+      "name": "Satellite West",
+      "callsign": "STL_D_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 126.5
+    },
+    {
+      "id": "01G9FME4VA2SZV6KCPW5GDYKNW",
+      "name": "Satellite East",
+      "callsign": "STL_K_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 123.7
+    },
+    {
+      "id": "01G9FMEY2TMP6CEXMMWKZAR4RF",
+      "name": "Satellite North",
+      "callsign": "STL_A_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 124.2
+    },
+    {
+      "id": "01G9FMG1828643N782SAHES8DV",
+      "name": "Satellite Scott",
+      "callsign": "STL_Z_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 125.2
+    },
+    {
+      "id": "01G9FMHGVW1RZFCE0ABEHYKFSZ",
+      "name": "Final North",
+      "callsign": "STL_N_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 124.25
+    },
+    {
+      "id": "01G9FMJB42T0Z2BBXHD70VJ0FM",
+      "name": "Final South",
+      "callsign": "STL_R_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 126.55
+    },
+    {
+      "id": "01G9FMMAVJRNVSETTD3Z5Y2B3S",
+      "name": "Departure North",
+      "callsign": "STL_E_DEP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 119.15
+    },
+    {
+      "id": "01GNEBHKJ4HK1S28CRHK7V4N4F",
+      "name": "Peoria",
+      "callsign": "PIA_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 125.8
+    },
+    {
+      "id": "01GNEBZEA620NHNSP0V98M80A2",
+      "name": "Springfield",
+      "callsign": "SPI_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 126.15
+    },
+    {
+      "id": "01GNEC01DGJ91GN6ZTYTEGSWRX",
+      "name": "Bloomington",
+      "callsign": "PIA_B_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 128.725
+    },
+    {
+      "id": "01GNEC547G7QNYEXTGHNYFFH7Q",
+      "name": "Departure South",
+      "callsign": "STL_W_DEP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 128.1
+    },
+    {
+      "id": "01HBTM4GB60TKEE712YTEXRXWQ",
+      "name": "T75 Combined",
+      "callsign": "T75_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 132.125
+    },
+    {
+      "id": "01J9J2N59383S18BK7D3JRD6CN",
+      "name": "T75 Guard",
+      "callsign": "STL_EM_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "01KE01C1NF20HXWJRTA70H9R6W",
+      "name": "T75 St Louis",
+      "callsign": "STL_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 132.125
+    },
+    {
+      "id": "11",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "12",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "13",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "14",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "16",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "17",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1J",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1K",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1Q",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1D",
+        "1E",
+        "1J",
+        "1K",
+        "1N",
+        "1Q",
+        "1R",
+        "1W",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        21,
+        23,
+        25,
+        27,
+        29,
+        31,
+        33,
+        null,
+        8,
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        24,
+        26,
+        28,
+        30,
+        32,
+        34,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1U",
+        "1V",
+        "1T"
+      ],
+      "mapIds": [
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        89,
+        91,
+        93,
+        90,
+        92,
+        94
+      ],
+      "submenuMapIds": [
+        95,
+        97,
+        99,
+        101,
+        103,
+        105,
+        107,
+        109,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        96,
+        98,
+        100,
+        102,
+        104,
+        106,
+        108,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "11"
+      ],
+      "mapIds": [
+        110,
+        null,
+        108,
+        null,
+        111,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        110,
+        108,
+        111,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "12"
+      ],
+      "mapIds": [
+        112,
+        null,
+        113,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        112,
+        113,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "13"
+      ],
+      "mapIds": [
+        114,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        114,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "14"
+      ],
+      "mapIds": [
+        115,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        115,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "17",
+        "1S"
+      ],
+      "mapIds": [
+        3,
+        23,
+        24,
+        59,
+        58,
+        60,
+        63,
+        61,
+        64,
+        68,
+        66,
+        65,
+        69,
+        70,
+        71,
+        72,
+        73,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        3,
+        24,
+        58,
+        23,
+        59,
+        60
+      ],
+      "submenuMapIds": [
+        63,
+        64,
+        66,
+        69,
+        71,
+        73,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        61,
+        68,
+        65,
+        70,
+        72,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "16",
+        "1B",
+        "1P"
+      ],
+      "mapIds": [
+        4,
+        77,
+        25,
+        27,
+        26,
+        76,
+        75,
+        74,
+        78,
+        82,
+        79,
+        83,
+        81,
+        80,
+        84,
+        85,
+        86,
+        87,
+        88,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        4,
+        25,
+        26,
+        77,
+        27,
+        76
+      ],
+      "submenuMapIds": [
+        75,
+        78,
+        79,
+        81,
+        84,
+        86,
+        88,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        74,
+        82,
+        83,
+        80,
+        85,
+        87,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GVHG0ADPD4C2TES2SSSY4W92",
+      "name": "T75 ST LOUIS ILS RWY 30R-29",
+      "shortName": "30R-29",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ADDS5MPJQFZ7R5TP98P",
+      "name": "T75 ST LOUIS ILS RWY 11-12L",
+      "shortName": "11-12L",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ACF1HPM2PC3WJ4WA2ZX",
+      "name": "T75 SRINGFIELD BASIC",
+      "shortName": "SPI BASE",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AA3JZ8A7JBHG1VZ8HE3",
+      "name": "T75 PEORIA 60 NM MAP",
+      "shortName": "PIA BASE",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AFJDS1SPC9PD6RS5CAV",
+      "name": "T75 TRACON 3NM MVA",
+      "shortName": "3NM MVA",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0AD35ENMH5MTF192TTTB",
+      "name": "T75 ST LOUIS CLASS B",
+      "shortName": "CLASS B",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0AFGDD9XXEQY60S2NVEJ",
+      "name": "T75 ST LOUIS ZKC AIRSPACE",
+      "shortName": "ZKC AIRSPACE",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0AD8QCAXN8DG9ZM8DMKB",
+      "name": "T75 ST LOUIS DEPARTURE RADIALS",
+      "shortName": "DEP RAD",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AFFJ3HRMPAHHX7WM0TT",
+      "name": "T75 ST LOUIS VICTOR AIRWAYS",
+      "shortName": "V-AWYS",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ADR9BVWQDTG1RSX60B6",
+      "name": "T75 ST LOUIS JET AIRWAYS",
+      "shortName": "J-AWYS",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0AEXZ22E0SG3N4GE571X",
+      "name": "T75 ST LOUIS ROADS \u0026 RIVERS",
+      "shortName": "ROAD/RIVER",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ADZM9REQG5WNRWA3V8N",
+      "name": "T75 ST LOUIS NW DEPARTURE AIRSPACE",
+      "shortName": "NW DEP",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AF88A4BX8FT26GJ0HJT",
+      "name": "T75 ST LOUIS SE DEPARTURE AIRSPACE",
+      "shortName": "SE DEP",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AEY7TWCMY5FB3KRWHRY",
+      "name": "T75 ST LOUIS RWY 24 OVERLAY",
+      "shortName": "RWY 24",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AEZRGFMMABYD4G46XXW",
+      "name": "T75 ST LOUIS SATELLITE FINALS",
+      "shortName": "SAT FNLS",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AF10Z0HFENVFEHYPCK9",
+      "name": "T75 ST LOUIS SATELLITE RNAV",
+      "shortName": "SAT RNAV",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AF2QVS99JMKH311454Y",
+      "name": "T75 ST LOUIS SATELLITE STARS",
+      "shortName": "SAT STAR",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ACPZD69QFEHN6FEJ5H5",
+      "name": "T75 ST LOUIS 11-12L ILS INTERCEPT",
+      "shortName": "SE ILS INT",
+      "starsId": 18,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ACQ4DCGZNBR1GBGME8F",
+      "name": "T75 ST LOUIS 11-12L VIS INTERCEPT",
+      "shortName": "SE VIS INT",
+      "starsId": 19,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ACSQMC3EKZS4Z1S8YM4",
+      "name": "T75 ST LOUIS 29-30R ILS INTERCEPT",
+      "shortName": "NW ILS INT",
+      "starsId": 20,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ACTKKJQ05F8GZ1Z753V",
+      "name": "T75 ST LOUIS 29-30R VIS INTERCEPT",
+      "shortName": "NW VIS INT",
+      "starsId": 21,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0AFBRT4F46V685ZP6MR5",
+      "name": "T75 ST LOUIS SID ARROWS",
+      "shortName": "SID ARWS",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ACH8NQPTE46M2DZAZZS",
+      "name": "T75 SRINGFIELD FINALS",
+      "shortName": "SPI FNLS",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ACJC6SE09D3XNVPTA2M",
+      "name": "T75 SRINGFIELD SATELLITE  FINALS",
+      "shortName": "SPI SAT",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AB561FDRSQDHRF56TQ7",
+      "name": "T75 PEORIA ILS",
+      "shortName": "PIA ILS",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AB0XVQYF1Y9EFMZJBQX",
+      "name": "T75 PEORIA GPS",
+      "shortName": "PIA GPS",
+      "starsId": 26,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AB95VE3QT8SYK303024",
+      "name": "T75 PEORIA SGS",
+      "shortName": "PIA SGS",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0A9XVRFHD8XDJW7DN8HV",
+      "name": "T75 AIRPORT DIAGRAMS",
+      "shortName": "APD",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ADEV45925BM8HK15870",
+      "name": "T75 ST LOUIS ILS RWY 11-12R",
+      "shortName": "11-12R",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ADBW6V5AAE41HBJ2RZG",
+      "name": "T75 ST LOUIS ILS RWY 6",
+      "shortName": "ILS 6",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ADFW070V8F86BAKBVH9",
+      "name": "T75 ST LOUIS ILS RWY 12L-12R",
+      "shortName": "12L-12R",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ADKDZNM4JR50BJZWZ2R",
+      "name": "T75 ST LOUIS ILS RWY 30L-30R",
+      "shortName": "30L-30R",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ADH91VSJ2JYV09G3QYS",
+      "name": "T75 ST LOUIS ILS RWY 29-30L",
+      "shortName": "29-30L",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AFKFRPV0G0YT984PR6J",
+      "name": "T75 TRACON 5NM MVA",
+      "shortName": "5NM MVA",
+      "starsId": 34,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0AFAR9K2VJWZ0HCP8PNZ",
+      "name": "T75 ST LOUIS SE RNAV Y",
+      "shortName": "SE RNAV Y",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AED3G11CWAGBKJCFBD2",
+      "name": "T75 ST LOUIS NW RNAV Y",
+      "shortName": "NW RNAV Y",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AFDRRAMSTH72CH3ZRSR",
+      "name": "T75 ST LOUIS TACAN FINALS",
+      "shortName": "TAC FNLS",
+      "starsId": 37,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AD6PJCE439SVYFXEMS7",
+      "name": "T75 ST LOUIS COPTER RNAV",
+      "shortName": "COP RNAV",
+      "starsId": 38,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AEGQ7J19H6CZ9KKGZJM",
+      "name": "T75 ST LOUIS RNAV SE FLOW",
+      "shortName": "RNAV SE",
+      "starsId": 39,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AEERKE47GJWMV593X1R",
+      "name": "T75 ST LOUIS RNAV NW FLOW",
+      "shortName": "RNAV NW",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AEHW70DGPHMB7RW1FVZ",
+      "name": "T75 ST LOUIS RNP RWY 11",
+      "shortName": "STL RNP 11",
+      "starsId": 41,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AEMWW8WTRX823BVBY3W",
+      "name": "T75 ST LOUIS RNP RWY 12R",
+      "shortName": "STL RNP 12R",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AEKE700SKPE8G748K4S",
+      "name": "T75 ST LOUIS RNP RWY 12L",
+      "shortName": "STL RNP 12L",
+      "starsId": 43,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AEPZ4P161KZ76V65E02",
+      "name": "T75 ST LOUIS RNP RWY 29",
+      "shortName": "STL RNP 29",
+      "starsId": 44,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AESP70CVH3KJ28J20P8",
+      "name": "T75 ST LOUIS RNP RWY 30L",
+      "shortName": "STL RNP 30L",
+      "starsId": 45,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AEV63V5P30FEHT3XQ2Y",
+      "name": "T75 ST LOUIS RNP RWY 30R",
+      "shortName": "STL RNP 30R",
+      "starsId": 46,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ACXR3EYTSNJ876TYEAW",
+      "name": "T75 ST LOUIS BLV ASR",
+      "shortName": "BLV ASR",
+      "starsId": 47,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ADSKFWVDCAVPYK9CEJ2",
+      "name": "T75 ST LOUIS MVA",
+      "shortName": "STL MVA",
+      "starsId": 48,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ACYM3FR4527HP2PRESV",
+      "name": "T75 ST LOUIS BLV MVA",
+      "shortName": "BLV MVA",
+      "starsId": 49,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ACWWHQF4S4TWNDMQ55K",
+      "name": "T75 ST LOUIS BLV ASR ALT",
+      "shortName": "BLV ASR ALT",
+      "starsId": 50,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ADXAHZJ57CGAX9AB5GE",
+      "name": "T75 ST LOUIS NW ASR",
+      "shortName": "NW ASR",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AF5VH2YN0G435WEXD25",
+      "name": "T75 ST LOUIS SE ASR",
+      "shortName": "SE ASR",
+      "starsId": 52,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ADWADFTFE0TQ77SNAQT",
+      "name": "T75 ST LOUIS NW ASR ALT",
+      "shortName": "NW ASR ALT",
+      "starsId": 53,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AF36YBTFCSM1QZT2TQV",
+      "name": "T75 ST LOUIS SE ASR ALT",
+      "shortName": "SE ASR ALT",
+      "starsId": 54,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AD04PENBH0484VMEF03",
+      "name": "T75 ST LOUIS BLV TACTICAL ",
+      "shortName": "BLV TAC",
+      "starsId": 55,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AD1QAXT3MZ07HT479BD",
+      "name": "T75 ST LOUIS BUSCH STADUIM",
+      "shortName": "BUSCH",
+      "starsId": 56,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ADAND1X25SWXHJC7X0X",
+      "name": "T75 ST LOUIS GATEWAY STADIUM",
+      "shortName": "GATE",
+      "starsId": 57,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ABY9PFD152R9M2BX4F7",
+      "name": "T75 SPRINGFIELD HOWARD",
+      "shortName": "HOWARD",
+      "starsId": 58,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ABJA7XAS2BC58XWBAJZ",
+      "name": "T75 SPRINGFIELD 3NM MVA",
+      "shortName": "SPI 3NM",
+      "starsId": 59,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ABW9CZ7FB4C9YRGV2GT",
+      "name": "T75 SPRINGFIELD EIILS-HI VOR TACAN",
+      "shortName": "ELLIS",
+      "starsId": 60,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AC974C7XQETQHTJEYA3",
+      "name": "T75 SPRINGFIELD PRUITT-IR614",
+      "shortName": "PRUITT",
+      "starsId": 61,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ABV92GCMK6S2K0ZB8DM",
+      "name": "T75 SPRINGFIELD BOUNDARIES",
+      "shortName": "BNDY",
+      "starsId": 62,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ABNM6V34MFBDES4RV8Q",
+      "name": "T75 SPRINGFIELD 5NM MVA",
+      "shortName": "SPI 5NM",
+      "starsId": 63,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ACECHBJEAP0P9MVF57K",
+      "name": "T75 SPRINGFIELD TAZ GPS",
+      "shortName": "TAZ GPS",
+      "starsId": 64,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ABTVAHJR74ES1SHK597",
+      "name": "T75 SPRINGFIELD AAA VOR",
+      "shortName": "AAA VOR",
+      "starsId": 65,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ABRDDP0ERRZ1WAAPEW3",
+      "name": "T75 SPRINGFIELD AAA GPS",
+      "shortName": "AAA GPS",
+      "starsId": 66,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AC1TBRF44489VMZHGZE",
+      "name": "T75 SPRINGFIELD IJX GPS",
+      "shortName": "IJX GPS",
+      "starsId": 67,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ACCGA8Q0HZMPXGDNMFP",
+      "name": "T75 SPRINGFIELD TAZ BLK",
+      "shortName": "TAZ BLK",
+      "starsId": 68,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ABQCQCJ0PJ83247PZRG",
+      "name": "T75 SPRINGFIELD AAA BLK",
+      "shortName": "AAA BLK",
+      "starsId": 69,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AC00RGX6E1B70SX3XNG",
+      "name": "T75 SPRINGFIELD IJX BLK",
+      "shortName": "IJX BLK",
+      "starsId": 70,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ABGAZTX7X77XWWM8473",
+      "name": "T75 SPRINGFIELD 3LF BLK",
+      "shortName": "3LF BLK",
+      "starsId": 71,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ACBH3YSGGWGM01FNTT0",
+      "name": "T75 SPRINGFIELD STADIUMS",
+      "shortName": "S-STDM",
+      "starsId": 72,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AC8AP0JK4ABCF1HJ8N7",
+      "name": "T75 SPRINGFIELD LANDMARKS",
+      "shortName": "LAND",
+      "starsId": 73,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AB3T5CN5TRBBBZVM224",
+      "name": "T75 PEORIA HOS-GPS",
+      "shortName": "HOS/GPS",
+      "starsId": 74,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AAYV9V0Y1XY23GPQ974",
+      "name": "T75 PEORIA EMERGENCY",
+      "shortName": "EMERG",
+      "starsId": 75,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AB8C1T2VVFRH2C5ZHRK",
+      "name": "T75 PEORIA MOA",
+      "shortName": "PIA_MOA",
+      "starsId": 76,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0A9YJ6C34KZFM0V7ZQ36",
+      "name": "T75 PEORIA 3NM MVA",
+      "shortName": "3NM_MVA",
+      "starsId": 77,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0AB64919WN5T2CTDBJRF",
+      "name": "T75 PEORIA MAP7",
+      "shortName": "MAP7",
+      "starsId": 78,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AA1X1R9JMJV5PGP39T7",
+      "name": "T75 PEORIA 5NM MVA",
+      "shortName": "PIA 5NM",
+      "starsId": 79,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ABCZ52K54ZVHFGX2KZZ",
+      "name": "T75 PEORIA STADIUMS",
+      "shortName": "P-STDM",
+      "starsId": 80,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVHG0ABDZT826REC5MCA7FT3",
+      "name": "T75 PEORIA V-AIRWAYS",
+      "shortName": "PIA V-AWY",
+      "starsId": 81,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ABF387PF0KBWJDTMTJB",
+      "name": "T75 PEORIA VOR APPROACHES",
+      "shortName": "PIA VOR",
+      "starsId": 82,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AA64DQ9ACC5AHYF5H7H",
+      "name": "T75 PEORIA CONT",
+      "shortName": "PIA CONT",
+      "starsId": 83,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AAS24E4M4K1DJ7APCMW",
+      "name": "T75 PEORIA ELLIS E",
+      "shortName": "ELLIS E",
+      "starsId": 84,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AAVBD5GN8GZN2FD8XQY",
+      "name": "T75 PEORIA ELLIS I",
+      "shortName": "ELLIS I",
+      "starsId": 85,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AAX9PSKJP2P7TQMYR4E",
+      "name": "T75 PEORIA ELLIS S",
+      "shortName": "ELLIS S",
+      "starsId": 86,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ABAH4JY2VCFJABMYT4K",
+      "name": "T75 PEORIA SKE R",
+      "shortName": "SKE R",
+      "starsId": 87,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AA5072E395EDSM0Y5XV",
+      "name": "T75 PEORIA CAT SKE",
+      "shortName": "CAT SKE",
+      "starsId": 88,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1PTHNABCDK86XS1MTA",
+      "name": "Tower MAP 30's",
+      "shortName": "TWR NW",
+      "starsId": 89,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1P5DD3NPC6HD3DJ797",
+      "name": "Tower MAP 12's",
+      "shortName": "TWR SE",
+      "starsId": 90,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1QRNN51HDAAXZJ4QR6",
+      "name": "RNAV DEP NW FLOW",
+      "shortName": "DEP NW",
+      "starsId": 91,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1Q891FJ369D2077G67",
+      "name": "RNAV DEP SE FLOW",
+      "shortName": "DEP SE",
+      "starsId": 92,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1RQ783KGW759B4MZ0Q",
+      "name": "STL GEO MAP",
+      "shortName": "GEO",
+      "starsId": 93,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZTNV1SME1BTZZZYD5ZCCM1",
+      "name": "STL CLASS B",
+      "shortName": "STL_B",
+      "starsId": 94,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZTNV1P8Z4T9E8D2FVRZ0JF",
+      "name": "TOWER MAP 12S",
+      "shortName": "TWR 12S",
+      "starsId": 95,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1QXT8RD78F0FYN77VC",
+      "name": "TOWER MAP 30S",
+      "shortName": "TWR 30S",
+      "starsId": 96,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1S7CNGA708XNEFKMA7",
+      "name": "T75 MVA (STL ARSR)",
+      "shortName": "MVA",
+      "starsId": 97,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZTNV1R9P5KQ9RPK3544R17",
+      "name": "VICTOR AIRWAYS",
+      "shortName": "V-ARWY",
+      "starsId": 98,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZTNV1Q21A5QJXYFP8DF8AT",
+      "name": "T75 JET AIRWAYS",
+      "shortName": "JET",
+      "starsId": 99,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZTNV1HTCE9DE8VM7T2Y6CP",
+      "name": "T75 ILS 6 OVERLAY",
+      "shortName": "STL_I6",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1KD1NT8HTJ1ZTEJE2W",
+      "name": "T75 ILS 24 OVERLAY",
+      "shortName": "ILS 24",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1NKH98S16WK7NHX47N",
+      "name": "RNAV-ILS 6 FAC",
+      "shortName": "RNAV 6 ",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1NTN6N4EC2CZ53WZ39",
+      "name": "RNP 30R",
+      "shortName": "RNP 30R",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1N3QNTQVN6FFT9RMQ3",
+      "name": "RNP 12L",
+      "shortName": "RNP 12l",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1JNHDJJAY86SH8HB74",
+      "name": "RNAV Y NW FLOW",
+      "shortName": "RNAV Y NW",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZTNV1MN0W1WB0H7HYVD1Z8",
+      "name": "RNAV Y SE FLOW",
+      "shortName": "STL_RNY",
+      "starsId": 106,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZTNV1MS0376XGAPDFFW5W9",
+      "name": "TACAN FINALS",
+      "shortName": "STL_TAC",
+      "starsId": 107,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1ZTNV1HKWYDCHN2VG491JME",
+      "name": "SUS CLASS D",
+      "shortName": "SUS D",
+      "starsId": 108,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZTNV1RQ15SJNVFDV8E63Q2",
+      "name": "SAT APT DIAGRAMS",
+      "shortName": "APTS",
+      "starsId": 109,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBSSRXCWFSEPJ9E78PT4H2E7",
+      "name": "SUS MAP",
+      "shortName": "SUS MAP",
+      "starsId": 110,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBSSRXCVB4QSZ7W0Y6QKGZDM",
+      "name": "SUS GPS 8L - 26R",
+      "shortName": "GPS FNL",
+      "starsId": 111,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBSSRXCX2Z37SFBENYRXDW7E",
+      "name": "T75 CPS MAP",
+      "shortName": "CPS MAP",
+      "starsId": 112,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBSSRXCV2H9HRETZWD7B8EQS",
+      "name": "T75 CPS GPS 30R",
+      "shortName": "GPS 30R",
+      "starsId": 113,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBSSRXCWD8JS91B3MJ2DZ9AF",
+      "name": "T75 BLV MAP",
+      "shortName": "BLV MAP",
+      "starsId": 114,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBSVF8JXT76QTKP544FCEVCY",
+      "name": "T75 ALN MAP",
+      "shortName": "ALN MAP",
+      "starsId": 115,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GVHG0ABV92GCMK6S2K0ZB8DM",
+      "name": "T75 SPRINGFIELD BOUNDARIES",
+      "shortName": "BNDY",
+      "starsId": 62,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0ADZM9REQG5WNRWA3V8N",
+      "name": "T75 ST LOUIS NW DEPARTURE AIRSPACE",
+      "shortName": "NW DEP",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AF88A4BX8FT26GJ0HJT",
+      "name": "T75 ST LOUIS SE DEPARTURE AIRSPACE",
+      "shortName": "SE DEP",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHG0AFGDD9XXEQY60S2NVEJ",
+      "name": "T75 ST LOUIS ZKC AIRSPACE",
+      "shortName": "ZKC AIRSPACE",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    }
+  ]
+}

@@ -1,0 +1,269 @@
+{
+  "artcc": "ZLC",
+  "facility": "MUO",
+  "name": "Mountain Home ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 44.1394906,
+    "lon": -111.3092792325
+  },
+  "controlPositions": [
+    {
+      "id": "01HM7KC66ZHRFDX45XBV7G0HFB",
+      "name": "Mountain Home RAPCON",
+      "callsign": "MUO_N_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 124.8
+    },
+    {
+      "id": "01HRA622WYE947F5TGWAYDM3K5",
+      "name": "Local Control",
+      "callsign": "MUO_TWR",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 133.85
+    },
+    {
+      "id": "01HRA69F909JEBAGVTKSQDXWVF",
+      "name": "Ground Control",
+      "callsign": "MUO_GND",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 120.5
+    },
+    {
+      "id": "01HRA6AN9RPERNAZ65NFE3DKPX",
+      "name": "Clearance Delivery",
+      "callsign": "MUO_DEL",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 127.1
+    },
+    {
+      "id": "01JMZWH7E0AFGHPSJTD6CQ3VZY",
+      "name": "Cowboy Range",
+      "callsign": "MUO_S_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 134.1
+    },
+    {
+      "id": "1C",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1C",
+        "1D",
+        "1G",
+        "1N",
+        "1T"
+      ],
+      "mapIds": [
+        101,
+        102,
+        103,
+        6,
+        5,
+        998,
+        9,
+        105,
+        10,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        101,
+        103,
+        5,
+        102,
+        6,
+        998
+      ],
+      "submenuMapIds": [
+        9,
+        10,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        105,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HY67ZVB5SD13WH53DYZE21QH",
+      "name": "BOI_005S - MOUNTAIN HOME SHELF",
+      "shortName": "SHELF",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVB5J7F3AG037Q22M9S7",
+      "name": "BOI_006S - ZLC SECTORS AND MILITARY DATA",
+      "shortName": "ZLC",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVB6G5F7WFBRNZNADXX8",
+      "name": "BOI_009S - R-3203 A/B/C",
+      "shortName": "3203A",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVB6CE22K2ZNC68WTNQ8",
+      "name": "BOI_010S - R-3203D/R-4601",
+      "shortName": "3203D",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM0SGSPY874AT07JE2VCJ77J",
+      "name": "STARS-MUO_E-RVM",
+      "shortName": "E-RVM",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM0TPA69609VCY1A4Y4VWSDW",
+      "name": "STARS-MUO_W-RVM",
+      "shortName": "W-RVM",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HR93SDP261WNT4QV2TESG638",
+      "name": "MUO_103DOD - MVA",
+      "shortName": "MVA",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JR0RV9CSFY4KEARXZZ8EAWQ7",
+      "name": "MUO_ILS/HIILS 12",
+      "shortName": "ILS12",
+      "starsId": 105,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JP5RMG70PTHC0FNYMEAR1FPF",
+      "name": "MUO_COWBOY_BOUNDARY",
+      "shortName": "S-RVM",
+      "starsId": 998,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HY67ZVB5J7F3AG037Q22M9S7",
+      "name": "BOI_006S - ZLC SECTORS AND MILITARY DATA",
+      "shortName": "ZLC",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JP5RMG70PTHC0FNYMEAR1FPF",
+      "name": "MUO_COWBOY_BOUNDARY",
+      "shortName": "S-RVM",
+      "starsId": 998,
+      "brightnessCategory": "A"
+    }
+  ]
+}

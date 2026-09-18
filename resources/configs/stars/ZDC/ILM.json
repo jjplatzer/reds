@@ -1,0 +1,322 @@
+{
+  "artcc": "ZDC",
+  "facility": "ILM",
+  "name": "Wilmington ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 37,
+    "lon": -77
+  },
+  "controlPositions": [
+    {
+      "id": "01HA8336CV64F7SHV4KGMMFGHZ",
+      "name": "East Approach",
+      "callsign": "ILM_E_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 135.75
+    },
+    {
+      "id": "01HA83682H18HC1ZMQ5AE3JYH8",
+      "name": "West Approach",
+      "callsign": "ILM_W_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 118.25
+    },
+    {
+      "id": "01HA8AZK63SNR09TRJ4B9MN5V8",
+      "name": "Ground",
+      "callsign": "ILM_GND",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01HA8B0V7D4ZNBR1A5RW72P2CA",
+      "name": "Local",
+      "callsign": "ILM_TWR",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 119.9
+    },
+    {
+      "id": "01JCHRAR2XVX97E4JVD20K3HFA",
+      "name": "Clearance Delivery",
+      "callsign": "ILM_DEL",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 120.875
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        10,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        null,
+        2,
+        10,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GXEFSQ1X5CS0RNPVRJ9XTHWW",
+      "name": "ILM E W RVM",
+      "shortName": "E/W RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GXEFTNERW2FSGMQ2AZW2SS06",
+      "name": "ILM N S RVM",
+      "shortName": "N/S RVM",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA8B2KF5RP9V6MR04X9JJ6JE",
+      "name": "ILM MVA",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSH47K7HJ73S8675TRMP18ZM",
+      "name": "ZDC Airspace",
+      "shortName": "AIRSPCE",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JYKNWFZZRT0N0CDS0WTHG25T",
+      "name": "IAP ILM I06Y",
+      "shortName": "I06Y",
+      "starsId": 301,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWFZZB2K8QP25Y9FX3D6C",
+      "name": "IAP ILM I06Z",
+      "shortName": "I06Z",
+      "starsId": 302,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG001284A6ZXYKVGA7C4",
+      "name": "IAP ILM I24Y",
+      "shortName": "I24Y",
+      "starsId": 303,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG00VR4571QCG9S4X4JB",
+      "name": "IAP ILM I24Z",
+      "shortName": "I24Z",
+      "starsId": 304,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG013PGE5B96R3FBHMPN",
+      "name": "IAP ILM I35Z",
+      "shortName": "I35Z",
+      "starsId": 305,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG011DP0C0V9FHFW2SGE",
+      "name": "IAP ILM L06",
+      "shortName": "L06",
+      "starsId": 306,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG02QB4H2SNEPGCGN4A3",
+      "name": "IAP ILM L24",
+      "shortName": "L24",
+      "starsId": 307,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG02T4N53ANNPP5N6ZRQ",
+      "name": "IAP ILM R06",
+      "shortName": "R06",
+      "starsId": 308,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG02FB77F8XDVAJZRV9Y",
+      "name": "IAP ILM R17",
+      "shortName": "R17",
+      "starsId": 309,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG03EFPYNCFHHBDHECV8",
+      "name": "IAP ILM R24",
+      "shortName": "R24",
+      "starsId": 310,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG030EATBEQSE0TEEHPR",
+      "name": "IAP ILM R35",
+      "shortName": "R35",
+      "starsId": 311,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWFZYCP7VPFW2QXEV1X5K",
+      "name": "IAP ACZ R09",
+      "shortName": "R09",
+      "starsId": 501,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWFZYK2Y0SYX5PZC33JC2",
+      "name": "IAP ACZ R27",
+      "shortName": "R27",
+      "starsId": 502,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG04AAYNNH9ZDXWNAWC0",
+      "name": "IAP OAJ I05",
+      "shortName": "I05",
+      "starsId": 511,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG04ZQWX95QC6HW5PJ28",
+      "name": "IAP OAJ L05",
+      "shortName": "L05",
+      "starsId": 512,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG04AQBFESSBDARWQQ88",
+      "name": "IAP OAJ R05",
+      "shortName": "R05",
+      "starsId": 513,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYKNWG05JTWFRNCBWRJH233Q",
+      "name": "IAP OAJ R23",
+      "shortName": "R23",
+      "starsId": 514,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HSH47K7HJ73S8675TRMP18ZM",
+      "name": "ZDC Airspace",
+      "shortName": "AIRSPCE",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    }
+  ]
+}

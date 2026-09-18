@@ -1,0 +1,362 @@
+{
+  "artcc": "ZME",
+  "facility": "HSV",
+  "name": "Huntsville ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 35.0424167,
+    "lon": -89.9766667
+  },
+  "controlPositions": [
+    {
+      "id": "01GMVQNXQAZ2YRY6KQEM1JKZBA",
+      "name": "Clearance",
+      "callsign": "HSV_DEL",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 120.35
+    },
+    {
+      "id": "01GMVQPR5X2GDZ1E55ATYDSP0P",
+      "name": "Ground",
+      "callsign": "HSV_GND",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GMVQQCHYY873DBAZ9N2QVWC6",
+      "name": "Local",
+      "callsign": "HSV_TWR",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 127.6
+    },
+    {
+      "id": "01GMVQQYRXKXSHHVT35H31MMPK",
+      "name": "East Radar",
+      "callsign": "HSV_E_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 125.6
+    },
+    {
+      "id": "01GMVQRQW9N37NCJ5DBE0KGKPS",
+      "name": "West Radar",
+      "callsign": "HSV_W_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 118.05
+    },
+    {
+      "id": "01GMVQSRKBPG5P7480PHFGZ9D4",
+      "name": "Final Radar",
+      "callsign": "HSV_F_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 118.75
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1E",
+        "1F",
+        "1T",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1R"
+      ],
+      "mapIds": [
+        9,
+        3,
+        5,
+        6,
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        9,
+        5,
+        7,
+        3,
+        6,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GPCHED2GQBBQ1S9SBJAF119M",
+      "name": "HSV_NORTH",
+      "shortName": "NORTH",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCHED2KWJMXN42N2ZHTQTES",
+      "name": "HSV_SOUTH",
+      "shortName": "SOUTH",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCHED2F1J9BEX8VMKJNZCPS",
+      "name": "HSV_MVA",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPCHED2JJFB1AGDCV9TYVGNH",
+      "name": "HSV_SATELLITE_GPS",
+      "shortName": "SAT GPS",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCHED2HX7AZR5GTGQW21542",
+      "name": "HSV_R2104A",
+      "shortName": "R2104A",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCHED2J52K2YYDV3TXBQVM0",
+      "name": "HSV_R2104C",
+      "shortName": "R2104C",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCHED2CNF0WCV504NN4F6F2",
+      "name": "HSV_EMRG_OBSTRUCTION",
+      "shortName": "EOVM",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JXEX8WAGC7QGB76XDPBXHB7J",
+      "name": "HSV_SATELLITE VOR",
+      "shortName": "SAT VOR",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KN0V8XVZ6T0SBGYH9P1P5E2Q",
+      "name": "HSV_HUA OPS",
+      "shortName": "HUA",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H26RM86EJVH3DYWSYDV8BZ0Y",
+      "name": "ARTCC_GROUND MAPS",
+      "shortName": "GEO",
+      "starsId": 900,
+      "brightnessCategory": "A"
+    }
+  ]
+}

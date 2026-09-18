@@ -1,0 +1,178 @@
+{
+  "artcc": "ZDC",
+  "facility": "DOV",
+  "name": "Dover ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 37,
+    "lon": -77
+  },
+  "controlPositions": [
+    {
+      "id": "01H1F27HWM2PVB18RQKA8JHWGZ",
+      "name": "Clearance",
+      "callsign": "DOV_DEL",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 125.55
+    },
+    {
+      "id": "01H1F282FW846DYG2TW5CTNRVB",
+      "name": "Ground",
+      "callsign": "DOV_GND",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 118.875
+    },
+    {
+      "id": "01H1F28GN69236DW07SQJ4RTN0",
+      "name": "Local",
+      "callsign": "DOV_TWR",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 126.35
+    },
+    {
+      "id": "01H1F294069KMSANSDSV7W9Y2X",
+      "name": "Approach",
+      "callsign": "DOV_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 132.425
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A"
+      ],
+      "mapIds": [
+        1,
+        10,
+        200,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        200,
+        null,
+        10,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HAWSB1AE7WJFTEWW3GJ104MR",
+      "name": "DOV Base",
+      "shortName": "RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HSH47K7HJ73S8675TRMP18ZM",
+      "name": "ZDC Airspace",
+      "shortName": "AIRSPCE",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JYEPSE56FV2PFATCTR2TTV0D",
+      "name": "DOV STAR ARLFT",
+      "shortName": "ARLFT",
+      "starsId": 200,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HSH47K7HJ73S8675TRMP18ZM",
+      "name": "ZDC Airspace",
+      "shortName": "AIRSPCE",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    }
+  ]
+}

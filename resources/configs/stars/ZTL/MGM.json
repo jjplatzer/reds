@@ -1,0 +1,483 @@
+{
+  "artcc": "ZTL",
+  "facility": "MGM",
+  "name": "Montgomery ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.90558406666667,
+    "lon": -83.96840666666667
+  },
+  "controlPositions": [
+    {
+      "id": "01H2MD1DBESE5Z0XGXWH3XZRJX",
+      "name": "Radar South",
+      "callsign": "MGM_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 124
+    },
+    {
+      "id": "01H2MDMV9VPX0X27WR6948WGDZ",
+      "name": "Radar North",
+      "callsign": "MGM_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.2
+    },
+    {
+      "id": "01H2MDTXWE5PDJ1C9HTQRTZT5V",
+      "name": "Radar Arrival",
+      "callsign": "MGM_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 132.45
+    },
+    {
+      "id": "01H2MDVQM5G2AQBVH76E6TC1B3",
+      "name": "Local Control",
+      "callsign": "MGM_TWR",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 119.7
+    },
+    {
+      "id": "01H2ME7C1T35SJ356ZG17A0ZTA",
+      "name": "Ground Control",
+      "callsign": "MGM_GND",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01H2MECXZ84S89ZYSG2VMXRB7Q",
+      "name": "Clearance Delivery",
+      "callsign": "MGM_DEL",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01KWQ3C4TZWEG1H8C4MGW4CGAQ",
+      "name": "MGM Guard",
+      "callsign": "MGM_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1X",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1S",
+        "1F",
+        "1N"
+      ],
+      "mapIds": [
+        2,
+        7,
+        21,
+        9,
+        22,
+        10,
+        5,
+        25,
+        6,
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        2,
+        21,
+        22,
+        7,
+        9,
+        10
+      ],
+      "submenuMapIds": [
+        5,
+        6,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        25,
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1Z"
+      ],
+      "mapIds": [
+        2,
+        6,
+        21,
+        5,
+        22,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        2,
+        21,
+        22,
+        6,
+        5,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1X"
+      ],
+      "mapIds": [
+        6,
+        null,
+        5,
+        null,
+        2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        6,
+        5,
+        2,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01J0N5GD6EHMEYDM9Q7NC3ZP9Q",
+      "name": "MGM EMERGENCY",
+      "shortName": "EMRGNCY",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0N5GD6E6E6XBWYEDKPV47Q2",
+      "name": "MGM MINIMUM VECTORING ALTITUDE",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J0N5GD6E9N36J41WE95GKXP2",
+      "name": "MAP 1",
+      "shortName": "4",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0N5GD6E94MHDDSFXTNYWZWD",
+      "name": "EAST OPERATIONS",
+      "shortName": "EAST",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0N5GD6D3C50NCTB7RB8M3Y5",
+      "name": "WEST OPERATIONS",
+      "shortName": "WEST",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0N5GD6DY71ZKQMN6ZBXCX78",
+      "name": "GPS APPROACHES",
+      "shortName": "GPS",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0N5GD6CKV2A9WNNRSJDVJC3",
+      "name": "MGM MINIMUM VECTORING ALTITUDE ISR",
+      "shortName": "MVA ISR",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0N5GD6C0R5G6KYG24H5TCB0",
+      "name": "02A RWY 26 FAC",
+      "shortName": "02A R26",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0N5GD6CE3M1PV48WMB168GE",
+      "name": "02A RWY 8 FAC",
+      "shortName": "02A R08",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0N5GD69Q976Q3NTD7J0DG4E",
+      "name": "MGM JET ROUTES",
+      "shortName": "JET RTE",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0N5GD697GSMA17GHK3MW3B3",
+      "name": "MGM VICTOR ROUTES",
+      "shortName": "VICTOR",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0N5GD68BQFPHP1TEF9H0G84",
+      "name": "MGM STADIUMS",
+      "shortName": "STADIUM",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JH2J851DT1XKQCZMBD",
+      "name": "SEM TDM ERAM",
+      "shortName": "SEMTDM",
+      "starsId": 974,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JH0HYBKEBSYBASX3P4",
+      "name": "MXF TDM ERAM",
+      "shortName": "MXFTDM",
+      "starsId": 977,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JHZMTBHPX5X4DTYJ6R",
+      "name": "MGM TDM ERAM",
+      "shortName": "MGMTDM",
+      "starsId": 978,
+      "brightnessCategory": "A"
+    }
+  ]
+}

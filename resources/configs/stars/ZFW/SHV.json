@@ -1,0 +1,342 @@
+{
+  "artcc": "ZFW",
+  "facility": "SHV",
+  "name": "Shreveport ATCT/RAPCON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.55328401,
+    "lon": -97.43688567000001
+  },
+  "controlPositions": [
+    {
+      "id": "01H721ANQDRN9DN1D6BKYN83W8",
+      "name": "Local",
+      "callsign": "SHV_TWR",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.4
+    },
+    {
+      "id": "01H7425R6CEZ8DY4ZFTWY0Q0WA",
+      "name": "Ground",
+      "callsign": "SHV_GND",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.175
+    },
+    {
+      "id": "01H7428PSFHK33CSY05H7S5C0J",
+      "name": "Clearance",
+      "callsign": "SHV_DEL",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 124.65
+    },
+    {
+      "id": "01H7429Y9HRF4QYQGJPGEQJJAT",
+      "name": "West Radar",
+      "callsign": "SHV_W_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 119.9
+    },
+    {
+      "id": "01H742CE9YQCNGHMWKW7MW9NDE",
+      "name": "East Radar",
+      "callsign": "SHV_E_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 123.75
+    },
+    {
+      "id": "01J9YHYMD80SR3DKGEXYW0RWH1",
+      "name": "Guard",
+      "callsign": "SHV_EM_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1L",
+        "1U",
+        "1W",
+        "1Z"
+      ],
+      "mapIds": [
+        123,
+        100,
+        126,
+        109,
+        111,
+        110,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        114,
+        118,
+        121,
+        122,
+        901,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        123,
+        126,
+        111,
+        100,
+        109,
+        110
+      ],
+      "submenuMapIds": [
+        102,
+        104,
+        106,
+        108,
+        118,
+        122,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        103,
+        105,
+        107,
+        114,
+        121,
+        901,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H8G4YYCK7NGW59W3WBHD1X07",
+      "name": "SHV MVA__MVA",
+      "shortName": "MVA",
+      "starsId": 100,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8G4Y5VK0BKP91B65GPJEKMH",
+      "name": "JROUTES__SHV 102 JET ROUTES",
+      "shortName": "JROUTE",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G50N69VFA8KNH886X4KY6M",
+      "name": "VFR__SHV 103 VFR",
+      "shortName": "VFR",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8G4ZEWGT17BRKRVZPTCWJD7",
+      "name": "SATGPS__SHV 104 SATALITE GPS",
+      "shortName": "SATGPS",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G507KVDJ05479ZTJWS9QY3",
+      "name": "SHVGPS__SHV 105 SHV GPS",
+      "shortName": "SHV GPS",
+      "starsId": 105,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G4PK3TXQ571JHMTK3EPC0C",
+      "name": "ANNE__SHV 106 ANNE MOA",
+      "shortName": "ANNE",
+      "starsId": 106,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G4X5MK2FAQPZ12QTBWW51R",
+      "name": "HACKET__SHV 107 HACKET MOA",
+      "shortName": "HACKET",
+      "starsId": 107,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G4W5R9B9RVZQG2VFW4BDEJ",
+      "name": "DOOC__SHV 108 DOROC MOA",
+      "shortName": "DOROC",
+      "starsId": 108,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G4P402ACMHTXNGHBKN5R4P",
+      "name": "AIRWAYS__SHV 109 AIRWAYS",
+      "shortName": "AIRWAYS",
+      "starsId": 109,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G4398F3ZDCHNMN3863ECB4",
+      "name": "AIRPORTS__SHV 110 AIRPORT LABELS",
+      "shortName": "APTS",
+      "starsId": 110,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G4WQSFVBVKJQJ070E7BM14",
+      "name": "FIXES__SHV 111 FIX LABELS",
+      "shortName": "FIXES",
+      "starsId": 111,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G4ZX0GNDS1SGFA3D7RSJ8F",
+      "name": "SHV 23__SHV 114 RWY 23",
+      "shortName": "SHV 23",
+      "starsId": 114,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G4N115MNZADPA9AHNDEB2A",
+      "name": "AIRSPACE__SHV 118 AIRSPACE",
+      "shortName": "AIRSPCE",
+      "starsId": 118,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8G4XPW3X9VZRBV9DYT86JF0",
+      "name": "IR ROUTES__SHV 121 IR ROUTES",
+      "shortName": "IR RTE",
+      "starsId": 121,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G4QAMXMZ8CZ1T5X6CJ9QP8",
+      "name": "ASR__SHV 122 ASR",
+      "shortName": "ASR",
+      "starsId": 122,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G4YK8B4VYK01VN3WG0XS30",
+      "name": "MAIN__SHV 123 MAIN",
+      "shortName": "MAIN",
+      "starsId": 123,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G4REVW8A6G7C95JM8MYN84",
+      "name": "CLASS C__SHV 126 CLASS C-D",
+      "shortName": "CLASS C",
+      "starsId": 126,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GKZZ67A9BXG6P1CB9ZMYESCR",
+      "name": "ZFW__ZFW",
+      "shortName": "ZFW",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZXKZRR6Z69P56ZJX3KDNR0",
+      "name": "GEO__GEO",
+      "shortName": "GEO",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01H8G4N115MNZADPA9AHNDEB2A",
+      "name": "AIRSPACE__SHV 118 AIRSPACE",
+      "shortName": "AIRSPCE",
+      "starsId": 118,
+      "brightnessCategory": "B"
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "artcc": "ZAB",
+  "facility": "AMA",
+  "name": "Amarillo ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 34.19564814666666,
+    "lon": -107.50666666666666
+  },
+  "controlPositions": [
+    {
+      "id": "01G98N5YTFTRDDN80PAVH38TX0",
+      "name": "Approach",
+      "callsign": "AMA_A_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 119.5
+    },
+    {
+      "id": "01G98N6Z8EMCGPH2MBHGW139PT",
+      "name": "Local Control",
+      "callsign": "AMA_TWR",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01G98N82H64T2PPGGTGTXKP924",
+      "name": "Ground",
+      "callsign": "AMA_GND",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G98N984RA4D68XKF836QA9PZ",
+      "name": "Clearance Delivery",
+      "callsign": "AMA_DEL",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 121.65
+    },
+    {
+      "id": "01GBEQJMGZ9RGT1X8A3S58H48Q",
+      "name": "Final Approach",
+      "callsign": "AMA_F_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 121.15
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "2T",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1F",
+        "2T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GQZPVN408Z8ZJ30C2224WHG4",
+      "name": "M001 TRACON",
+      "shortName": "TRACON",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GQZPVN41CQWMGKTM33ZA4Z25",
+      "name": "M002 NE FLW",
+      "shortName": "NE FLOW",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GQZPVN42C9EGSMK7CQC6JCQS",
+      "name": "M003 SW FLW",
+      "shortName": "SW FLOW",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GQZPVN43P3S71EQKMBTYZ2MC",
+      "name": "M010 AMA MVA",
+      "shortName": "MVA",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQZPVN436X106VFXYY3PZCFV",
+      "name": "M020 V Arwys",
+      "shortName": "V ARWYS",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    }
+  ]
+}

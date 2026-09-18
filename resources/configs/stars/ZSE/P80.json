@@ -1,0 +1,1401 @@
+{
+  "artcc": "ZSE",
+  "facility": "P80",
+  "name": "Portland TRACON",
+  "type": "Tracon",
+  "defaultCenter": {
+    "lat": 45.116049633333326,
+    "lon": -122.83189593333333
+  },
+  "controlPositions": [
+    {
+      "id": "01GDR9CTQ7M45AQDPCDCXZZNCW",
+      "name": "North Radar",
+      "callsign": "PDX_N_APP",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 124.35
+    },
+    {
+      "id": "01GDR9DYWZCM5WHAPBSW05KB5D",
+      "name": "Hood Radar",
+      "callsign": "PDX_D_APP",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 118.1
+    },
+    {
+      "id": "01GDR9FPMFR409GDXJENAQD0WM",
+      "name": "Final Radar",
+      "callsign": "PDX_F_APP",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 126.9
+    },
+    {
+      "id": "01GDR9H6XWRSV4B878F9YFT3Q3",
+      "name": "Newberg Radar",
+      "callsign": "PDX_V_APP",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 126
+    },
+    {
+      "id": "01J97MDY7KZS45BQPT1R9DDK6H",
+      "name": "P80 Guard",
+      "callsign": "PDX_G_APP",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "1O",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "1Y",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "9G",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1D",
+        "1F",
+        "1N",
+        "1U",
+        "1V"
+      ],
+      "mapIds": [
+        5,
+        3,
+        70,
+        6,
+        8,
+        27,
+        1,
+        2,
+        23,
+        24,
+        42,
+        43,
+        87,
+        22,
+        54,
+        82,
+        59,
+        60,
+        63,
+        65,
+        13,
+        14,
+        11,
+        10,
+        67,
+        132,
+        25,
+        66,
+        68,
+        128,
+        58,
+        100,
+        99,
+        122,
+        124,
+        126,
+        89,
+        33
+      ],
+      "mainMapIds": [
+        5,
+        70,
+        8,
+        3,
+        6,
+        27
+      ],
+      "submenuMapIds": [
+        1,
+        23,
+        42,
+        87,
+        54,
+        59,
+        63,
+        13,
+        11,
+        67,
+        25,
+        68,
+        58,
+        99,
+        124,
+        2,
+        24,
+        43,
+        22,
+        82,
+        60,
+        65,
+        14,
+        10,
+        132,
+        66,
+        128,
+        100,
+        122,
+        126
+      ]
+    },
+    {
+      "tcps": [
+        "1O",
+        "1W"
+      ],
+      "mapIds": [
+        5,
+        3,
+        13,
+        14,
+        26,
+        11,
+        6,
+        22,
+        17,
+        18,
+        23,
+        24,
+        56,
+        78,
+        80,
+        88,
+        96,
+        95,
+        98,
+        97,
+        130,
+        132,
+        133,
+        135,
+        33,
+        134,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        5,
+        13,
+        26,
+        3,
+        14,
+        11
+      ],
+      "submenuMapIds": [
+        6,
+        17,
+        23,
+        56,
+        80,
+        96,
+        98,
+        130,
+        133,
+        33,
+        null,
+        null,
+        null,
+        null,
+        null,
+        22,
+        18,
+        24,
+        78,
+        88,
+        95,
+        97,
+        132,
+        135,
+        134,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1H"
+      ],
+      "mapIds": [
+        3,
+        5,
+        9,
+        129,
+        128,
+        25,
+        13,
+        14,
+        1,
+        2,
+        38,
+        37,
+        40,
+        41,
+        42,
+        43,
+        86,
+        87,
+        66,
+        23,
+        68,
+        75,
+        81,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        3,
+        9,
+        128,
+        5,
+        129,
+        25
+      ],
+      "submenuMapIds": [
+        13,
+        1,
+        38,
+        40,
+        42,
+        86,
+        66,
+        68,
+        81,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        14,
+        2,
+        37,
+        41,
+        43,
+        87,
+        23,
+        75,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1Y"
+      ],
+      "mapIds": [
+        3,
+        5,
+        130,
+        31,
+        81,
+        26,
+        13,
+        14,
+        11,
+        24,
+        123,
+        39,
+        97,
+        98,
+        127,
+        16,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        3,
+        130,
+        81,
+        5,
+        31,
+        26
+      ],
+      "submenuMapIds": [
+        13,
+        11,
+        123,
+        97,
+        127,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        14,
+        24,
+        39,
+        98,
+        16,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "9G"
+      ],
+      "mapIds": [
+        5,
+        3,
+        70,
+        6,
+        8,
+        27,
+        136,
+        130,
+        56,
+        200,
+        207,
+        77,
+        202,
+        203,
+        129,
+        9,
+        204,
+        205,
+        206,
+        31,
+        96,
+        95,
+        97,
+        98,
+        34,
+        35,
+        61,
+        62,
+        68,
+        93,
+        54,
+        94,
+        25,
+        88,
+        26,
+        124,
+        280,
+        81
+      ],
+      "mainMapIds": [
+        5,
+        70,
+        8,
+        3,
+        6,
+        27
+      ],
+      "submenuMapIds": [
+        136,
+        56,
+        207,
+        202,
+        129,
+        204,
+        206,
+        96,
+        97,
+        34,
+        61,
+        68,
+        54,
+        25,
+        26,
+        130,
+        200,
+        77,
+        203,
+        9,
+        205,
+        31,
+        95,
+        98,
+        35,
+        62,
+        93,
+        94,
+        88,
+        124
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HQRWCF0QBK6JBBGF3Q41Z70Y",
+      "name": "RWY 10",
+      "shortName": "RWY 10",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0QP37XP395TQR04E9Z",
+      "name": "RWY 28",
+      "shortName": "RWY 28",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0RB1JY8AY1TNVYZNB3",
+      "name": "3 NM BUFFER MVA",
+      "shortName": "3NM MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF0SXDSXQYG7VJQCQXAG",
+      "name": "P80 EOVM",
+      "shortName": "EOVM",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF0SK34JG6TS3A9JBQCT",
+      "name": "V-AIRWY",
+      "shortName": "V-AIRWY",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0SS4M286857B8EX537",
+      "name": "NEWBERG",
+      "shortName": "NEWBERG",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0S8KMY08Q4AQJBWMMH",
+      "name": "ZSE-R10",
+      "shortName": "ZSE-R10",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0TT77ENDPG2H6S8YHJ",
+      "name": "HIO RWY 31L DASHED",
+      "shortName": "HIO 31L",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0TPMRF3EN9GHZRCDB2",
+      "name": "SATFNLS",
+      "shortName": "SATFNLS",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0TSMWJFZHG4PKZKN8N",
+      "name": "RVRROAD",
+      "shortName": "RVRROAD",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF0VENHK00HM76YAC5SK",
+      "name": "3 NM BUFFER BLANK MVA",
+      "shortName": "3NMBLNK",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF0VZYN3NCWNWPABTP8N",
+      "name": "VFRWYPT",
+      "shortName": "VFRWYPT",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0V1DGWG5NTMRDRX7R8",
+      "name": "VFRLABL",
+      "shortName": "VFRLABL",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0WXNT9PZXCKYJ93XNW",
+      "name": "MMV-SLE",
+      "shortName": "MMV-SLE",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0WFER8F3EP3T8VNACK",
+      "name": "P80 SIM",
+      "shortName": "P80 SIM",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0WME1HPZG6EAHYBTMB",
+      "name": "PDX MILITARY \u0026 VOR 28 APCHS",
+      "shortName": "PDX MIL",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0XZGXSGY63M4W809PY",
+      "name": "PDX MILITARY \u0026 VOR 28 LABELS",
+      "shortName": "MIL LAB",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0XG27VBH9MCNDJHWST",
+      "name": "PDX-RDR",
+      "shortName": "PDX-RDR",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0XN0RVKJP9JYPPG5YB",
+      "name": "SLE-RDR",
+      "shortName": "SLE-RDR",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0YWACDFAR81XB94AAQ",
+      "name": "5 NM BUFFER MVA",
+      "shortName": "5NM MVA",
+      "starsId": 21,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF0YWJVT64MP0110SVKY",
+      "name": "J-AIRWY",
+      "shortName": "J-AIRWY",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0YCE97D7WF1XW688F3",
+      "name": "FINAL 10",
+      "shortName": "FINAL10",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0ZHS0NEAA0NYQK8NHZ",
+      "name": "FINAL 28",
+      "shortName": "FINAL28",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0Z4A33CYGEH1AYW8HA",
+      "name": "HIO Class D",
+      "shortName": "HIO D",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0Z6PHMZNBQNTE6VB4B",
+      "name": "TTD Class D",
+      "shortName": "TTD D",
+      "starsId": 26,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF0Z82YE7GAPBKC5CED9",
+      "name": "ZSE-R28",
+      "shortName": "ZSE-R28",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF10ZGCCN6E0MKM4TKEA",
+      "name": "SKYDIVE",
+      "shortName": "SKYDIVE",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF106V7RJ049D2ZBGNFH",
+      "name": "TTD RNAV (GPS)",
+      "shortName": "TTD RNA",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF10ZZEXQBK4CFCD0F26",
+      "name": "AIRPORTS",
+      "shortName": "A-PORTS",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1097CVPXBMTP2V8PPZ",
+      "name": "KRATR-TIMBR 10",
+      "shortName": "K/T R10",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF11RG539ANW8DGA0B29",
+      "name": "KRATR-TIMBR 28",
+      "shortName": "K/T R28",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF113W93PVP0BWCS0Y10",
+      "name": "RWY 10X",
+      "shortName": "RWY 10X",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF11N93GC1KN92AQYHY3",
+      "name": "RWY 28X",
+      "shortName": "RWY 28X",
+      "starsId": 37,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF11MKZ8R8EX6X9R8HZD",
+      "name": "FINAL 10X",
+      "shortName": "FIN 10X",
+      "starsId": 38,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF12FKJFZWXVFYCV5X0S",
+      "name": "FINAL 28X",
+      "shortName": "FIN 28X",
+      "starsId": 39,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF128KEMKB17VN8XSP8V",
+      "name": "NEWBERG RWY 10",
+      "shortName": "NWBRG10",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF128PN10GBNM3W8D5JM",
+      "name": "NEWBERG RWY 28",
+      "shortName": "NWBRG28",
+      "starsId": 41,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF12D2WG5T49VY66Y9A3",
+      "name": "NEWBERG RWY 10 DASHED",
+      "shortName": "NWBG-10",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF13VKCWKSW5GJD9T0V3",
+      "name": "NEWBERG RWY 28 DASHED",
+      "shortName": "NWBG-28",
+      "starsId": 43,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF13SDNYMRRW3V9KQ2VR",
+      "name": "P80 LAB",
+      "shortName": "P80 LAB",
+      "starsId": 44,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF13Q457D5B9Z39CP0MQ",
+      "name": "RWY 10 FIXES A",
+      "shortName": "R10FIXA",
+      "starsId": 45,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF14NE10DRS73QVHC2RE",
+      "name": "RWY 10 FIXES B",
+      "shortName": "R10FIXB",
+      "starsId": 46,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF14EJ4ZGGNCGKQY3BQW",
+      "name": "RWY 28 FIXES A",
+      "shortName": "R28FIXA",
+      "starsId": 47,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF14SD7HX5J4BZ6P9VFF",
+      "name": "RWY 28 FIXES B",
+      "shortName": "R28FIXB",
+      "starsId": 48,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF14FJ5P6HHE57KQJBSF",
+      "name": "RWY 21 LOC/DME FIXES",
+      "shortName": "L21 FIX",
+      "starsId": 49,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF15RH8FZ1DD6N81N4TV",
+      "name": "RWY 10 PRE COORD AREAS",
+      "shortName": "R10 PAC",
+      "starsId": 50,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF15PJAWMR38F93S0Z0C",
+      "name": "RWY 28 PRE COORD AREAS",
+      "shortName": "R28 PAC",
+      "starsId": 51,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF15GJCJ5S43EXS36J8R",
+      "name": "RNP 28 FIXES",
+      "shortName": "RNP 28F",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF16FED35201GPHPMC52",
+      "name": "PDX HRMNS SID",
+      "shortName": "HRMNS",
+      "starsId": 53,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF16D9571Z7NSRQDS210",
+      "name": "PDX LAVAA/MINNE SIDS",
+      "shortName": "LAV/MIN",
+      "starsId": 54,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1626RAE1JE6Z5MRQ9Q",
+      "name": "RNAV DP FIXES",
+      "shortName": "RDP FIX",
+      "starsId": 55,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1796V9XBVK5VF2YB83",
+      "name": "RWY 21 LOC/DME DASHED",
+      "shortName": "RWY 21",
+      "starsId": 56,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF17DKXKPYJY8Y3E03D9",
+      "name": "RWY 21 LOC/DME DOTTED",
+      "shortName": "RWY 21X",
+      "starsId": 57,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF17D569AVFQQ7TC2FET",
+      "name": "MOLALLA RIVER",
+      "shortName": "MOL RVR",
+      "starsId": 58,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF18N0QG95EQDMFSRCZ5",
+      "name": "KRATR-TMBRS RWY 10",
+      "shortName": "K/T 10F",
+      "starsId": 59,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF184X7Y3FM1197S4YQJ",
+      "name": "KRATR-TIMBRS RWY 28",
+      "shortName": "K/T 28F",
+      "starsId": 60,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF182DXNEN9863H2BRFD",
+      "name": "HHOOD STAR EAST",
+      "shortName": "HHOOD E",
+      "starsId": 61,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF19MJVANZFG2TDFG4EE",
+      "name": "HHOOD STAR WEST",
+      "shortName": "HHOOD W",
+      "starsId": 62,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF19HDJEC1KMYWTEKG1T",
+      "name": "RWY 10 HHOOD",
+      "shortName": "R10HOOD",
+      "starsId": 63,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF19E67K6GKREG7RH0RE",
+      "name": "RWY 28 HHOOD",
+      "shortName": "R28HOOD",
+      "starsId": 65,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1AVRSJ4BWPW2YAFV6Y",
+      "name": "HIO RWY 13L/31R",
+      "shortName": "HIO FNL",
+      "starsId": 66,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1A1NTSS8JK8RCB3Z6F",
+      "name": "COUNTY BDRYS",
+      "shortName": "COUNTY",
+      "starsId": 67,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF1B30MRH3B8WZJBX4CZ",
+      "name": "HIO RNAV SIDS",
+      "shortName": "HIO SID",
+      "starsId": 68,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1C96SHWH6HGNRX3S8F",
+      "name": "RNAV STARS RWY 21",
+      "shortName": "STAR 21",
+      "starsId": 69,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1CZYADRS6XGRB2ZB49",
+      "name": "ALL FIXES (P80)",
+      "shortName": "ALL FIX",
+      "starsId": 70,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1DC0H839BYC70XRWQF",
+      "name": "RWY 10 FIXES",
+      "shortName": "10 FIXS",
+      "starsId": 71,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1D87B67GWMXDQA18HW",
+      "name": "RWY 28 FIXES",
+      "shortName": "28 FIXS",
+      "starsId": 72,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1E5XFZGMNMKE8213D3",
+      "name": "SPB DVA",
+      "shortName": "SPB DVA",
+      "starsId": 73,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF1EB58K2B35SDN5MXSD",
+      "name": "HIO RWY 30 DOTTED",
+      "shortName": "HIOR30X",
+      "starsId": 75,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1EYTFKRA9T03G37TXN",
+      "name": "SATFNLS DOTTED",
+      "shortName": "SATSDOT",
+      "starsId": 76,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K1VB3ZPH8Z6KZ8DC94HC97Q8",
+      "name": "VUO RNAV-B",
+      "shortName": "VUO RB",
+      "starsId": 77,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1FD2Y42K2X2GAR83CG",
+      "name": "VUO RNAV-B fixes",
+      "shortName": "VUO FIX",
+      "starsId": 78,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1FM3W233HE0WAWH35S",
+      "name": "RWY 28/21 DASHED",
+      "shortName": "R28/21",
+      "starsId": 80,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HYPVVQS9GSMR2CXT7YQWFCE2",
+      "name": "PDX Class-C",
+      "shortName": "CLASS-C",
+      "starsId": 81,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1FA7DMPNR0QFM6SD62",
+      "name": "RWY 21/28 AIRSPACE",
+      "shortName": "R21 SEC",
+      "starsId": 82,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1G5BY5XYFPYGVDZC8J",
+      "name": "RWY 10/28 RNAV FIXES",
+      "shortName": "RNX FIX",
+      "starsId": 83,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1GKC4F75HCDZ04ZR7T",
+      "name": "NEWBERG 28-21 DT",
+      "shortName": "N28-21X",
+      "starsId": 86,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1G3A4QJ7X2ZEZK61PS",
+      "name": "NEWBERG 28-21 DS",
+      "shortName": "N28-21D",
+      "starsId": 87,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1HF1KWEJ516BVVHQRG",
+      "name": "VUO D AIRSPACE",
+      "shortName": "VUO D",
+      "starsId": 88,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1HYS4JT87EWPDDY5RB",
+      "name": "SPB RNAV RWY 15",
+      "shortName": "SPB R15",
+      "starsId": 89,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1HJ0B9PX2XHG6K152H",
+      "name": "RNP FIXES",
+      "shortName": "RNP 10F",
+      "starsId": 92,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1HC59GZ54EJT7EVRYQ",
+      "name": "WHAMY RNAV SID",
+      "shortName": "WHAMY",
+      "starsId": 93,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1J4ABJRGN8EKMP6PE9",
+      "name": "CASCADE RNAV SID",
+      "shortName": "CASCD",
+      "starsId": 94,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1JA48QSWMHM4MGX1AS",
+      "name": "RNP RWY 10R",
+      "shortName": "RNP 10R",
+      "starsId": 95,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1J28R9278H80G4YP87",
+      "name": "RNP RWY 10L",
+      "shortName": "RNP 10L",
+      "starsId": 96,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1JTQVBCCECE1C8R08G",
+      "name": "RNP RWY 28R",
+      "shortName": "RNP 28R",
+      "starsId": 97,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1K63WCYT7CMY74B7FG",
+      "name": "RNP RWY 28L",
+      "shortName": "RNP 28L",
+      "starsId": 98,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1KFQXWKFNRD561MFKF",
+      "name": "ALT MA FIXES",
+      "shortName": "ALT MAF",
+      "starsId": 99,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1KQ9KR2VZM0YVJKTY6",
+      "name": "ILS INTERCEPT ANGLES",
+      "shortName": "ILS INT",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JDHW3F791HG4PEVJ40S5K5FW",
+      "name": "P80 Tie Points East Flow",
+      "shortName": "TIES EF",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JDHW91P7ZV9FRC76PH194XZ9",
+      "name": "P80 Tie Points West Flow",
+      "shortName": "TIES WF",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1KHXC6Q50QGJR6BBD7",
+      "name": "ADS-B 40NM",
+      "shortName": "ADSB 40",
+      "starsId": 120,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF1M5YY80RF8FJ5W9VWJ",
+      "name": "ADS-B 60NM",
+      "shortName": "ADSB 60",
+      "starsId": 121,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF1MJ7FQEJ2SRWME2SEC",
+      "name": "UAO SHELF",
+      "shortName": "UAOSHLF",
+      "starsId": 122,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1MAP9PBD1Y5YQC9SRC",
+      "name": "TTD TDW",
+      "shortName": "TTD TDW",
+      "starsId": 123,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1NK4SVNFEP0VXNYYH9",
+      "name": "UAO CLASS D",
+      "shortName": "UAO D",
+      "starsId": 124,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1NZAKKHRJYWATYR48N",
+      "name": "EEL MOAS",
+      "shortName": "EEL MOA",
+      "starsId": 126,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF1NCX3F07XJCC5HCENB",
+      "name": "TTD DVA",
+      "shortName": "TTD DVA",
+      "starsId": 127,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQRWCF1NDKWMS9QACWM2BYFM",
+      "name": "HIO RWY 2/20",
+      "shortName": "HIO R20",
+      "starsId": 128,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K280EWP94SK230VB2GFHEGG9",
+      "name": "HIO Runway 13R centerline",
+      "shortName": "HIO 13R",
+      "starsId": 129,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1PFKZ93TTSME2QJS7X",
+      "name": "RWY 28 FAC",
+      "shortName": "R28 FAC",
+      "starsId": 130,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1RVM9KFXRN79MJK99J",
+      "name": "RWY 28 FAC DOTS",
+      "shortName": "28 FACD",
+      "starsId": 131,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1R5N81A5SWVQ2VEG11",
+      "name": "STADIUMS (P80)",
+      "shortName": "STADIUM",
+      "starsId": 132,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1SRPZPW7FW0QCBWH4H",
+      "name": "TOGLE ONE",
+      "shortName": "TOGLE 1",
+      "starsId": 133,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1T9CRV0YTY90WGCQPB",
+      "name": "COPTER RNAV GPS 346",
+      "shortName": "COP R34",
+      "starsId": 134,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1VYHD0CXXHE41X6BZY",
+      "name": "COPTER RNAV GPS 312",
+      "shortName": "COP R31",
+      "starsId": 135,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K3BR4XWJBC4DK5GCTT434JGY",
+      "name": "RWY 10 FAC",
+      "shortName": "R10 FAC",
+      "starsId": 136,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K3BRBZ6E9H57RW7R2RJ5PZMJ",
+      "name": "RWY 10 FAC DOTS",
+      "shortName": "10 FACD",
+      "starsId": 137,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K39GQ984794YP871K20EN97F",
+      "name": "SPB VOR/DME-A",
+      "shortName": "SPB VOR",
+      "starsId": 200,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K3BNBC923AKXS5TMB74BN18J",
+      "name": "SPB VOR FIXES",
+      "shortName": "SPBVFIX",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K3BT1HEZ95Z9G5HN0YD4KRKQ",
+      "name": "UAO LOC and RNAV RWY 17",
+      "shortName": "UAO 17",
+      "starsId": 202,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K3BT2PFY6FME3KZS7W533JT6",
+      "name": "UAO RNAV 35",
+      "shortName": "UAO 35",
+      "starsId": 203,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K3BTMSGVXC0J327YWR6VKHRW",
+      "name": "MMV ILS and RNAV 22",
+      "shortName": "MMV 22",
+      "starsId": 204,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K3BTPTMWCCJ68FJYSB1E1Y16",
+      "name": "MMV RNAV 04",
+      "shortName": "MMV 04",
+      "starsId": 205,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K3BTQWJBTC0YE4EF5MCRW9J5",
+      "name": "MMV VOR DME-B",
+      "shortName": "MMV VOR",
+      "starsId": 206,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K3BW3FPTKBMD33G2Q6JD59V4",
+      "name": "SPB RWY 15 Approaches",
+      "shortName": "SPB 15",
+      "starsId": 207,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K3BVHK2CVRP8QT7TNCSGGZY2",
+      "name": "P80",
+      "shortName": "P80",
+      "starsId": 280,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HQRWCF1FA7DMPNR0QFM6SD62",
+      "name": "RWY 21/28 AIRSPACE",
+      "shortName": "R21 SEC",
+      "starsId": 82,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQRWCF1HF1KWEJ516BVVHQRG",
+      "name": "VUO D AIRSPACE",
+      "shortName": "VUO D",
+      "starsId": 88,
+      "brightnessCategory": "A"
+    }
+  ]
+}

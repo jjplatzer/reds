@@ -1,0 +1,204 @@
+{
+  "artcc": "ZFW",
+  "facility": "FSI",
+  "name": "Henry Post AAF RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 33.55328401,
+    "lon": -97.43688567000001
+  },
+  "controlPositions": [
+    {
+      "id": "01H185FDZWQCNNA5G86EBDYJ3N",
+      "name": "Radar",
+      "callsign": "FSI_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 120.55
+    },
+    {
+      "id": "01H1865162JXWQBT3GFN5C0HAE",
+      "name": "Local",
+      "callsign": "FSI_TWR",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 124.95
+    },
+    {
+      "id": "01H1866W3Z1EVCHD1J6BQVMS9J",
+      "name": "Ground",
+      "callsign": "FSI_GND",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01J9YHZHETJ0B635Z42JYJYY05",
+      "name": "Guard",
+      "callsign": "FSI_EM_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1R",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        901,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        901
+      ],
+      "submenuMapIds": [
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H8FRFEJVX1TQDA4C4XE33DJ9",
+      "name": "FSI MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8FTEPBHVM4P5HM0W0VGDJN5",
+      "name": "FSI MVA MAP",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8FRG8NVCBBYGKWF5PH9J2GT",
+      "name": "FSI MOA",
+      "shortName": "MOA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8FRGPHR7YKA30PMK98MRX9S",
+      "name": "FSI R5061",
+      "shortName": "R5061",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8FRDSFAH32S38S8ZSWXT9N0",
+      "name": "FSI_DELTA",
+      "shortName": "DELTA",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GKZZ67A9BXG6P1CB9ZMYESCR",
+      "name": "ZFW__ZFW",
+      "shortName": "ZFW",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZXKZRR6Z69P56ZJX3KDNR0",
+      "name": "GEO__GEO",
+      "shortName": "GEO",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    }
+  ]
+}

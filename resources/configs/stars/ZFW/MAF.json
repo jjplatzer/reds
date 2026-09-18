@@ -1,0 +1,332 @@
+{
+  "artcc": "ZFW",
+  "facility": "MAF",
+  "name": "Midland ATCT/TRACON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 33.55328401,
+    "lon": -97.43688567000001
+  },
+  "controlPositions": [
+    {
+      "id": "01H2017AFCSH5QVQPWMYFDB163",
+      "name": "North Radar",
+      "callsign": "MAF_N_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 124.6
+    },
+    {
+      "id": "01H201A6JYKXR4FY41A2QXCG8K",
+      "name": "San Angelo Radar",
+      "callsign": "SJT_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 125.35
+    },
+    {
+      "id": "01H201EBHGFY31CM7GPY8AND8H",
+      "name": "Local",
+      "callsign": "MAF_TWR",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 118.7
+    },
+    {
+      "id": "01H201FHYQAT8PGQ3F5V7ECHG6",
+      "name": "Ground",
+      "callsign": "MAF_GND",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01H89T5SBXRTVP4GTERNE6QM7B",
+      "name": "Clearance",
+      "callsign": "MAF_DEL",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 118.05
+    },
+    {
+      "id": "01J9YJ7J6SF7JTSD425NPAFND7",
+      "name": "Guard",
+      "callsign": "MAF_EM_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1J",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1N",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        901,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        902,
+        2,
+        901,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1J",
+        "1L"
+      ],
+      "mapIds": [
+        4,
+        5,
+        6,
+        901,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        4,
+        6,
+        902,
+        5,
+        901,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H200XCT7SGYCTZZDNQ8346AY",
+      "name": "Main__Midland Main",
+      "shortName": "MAF",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GKZQCBZ1B5DHNV49MEN0V6N8",
+      "name": "MAF MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H200XCT6YH06XY0B2BW3FWM7",
+      "name": "Class C__Class C",
+      "shortName": "Class-C",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H201ZZ7KR0X01J7ST18NB9T8",
+      "name": "MAIN__SJT MAIN",
+      "shortName": "SJT",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H201ZZ7MKNZECKWYMGV5YK7H",
+      "name": "MVA__SJT MVA",
+      "shortName": "SJTMVA",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H201ZZ7J3BBBAZ3E4SGQQ224",
+      "name": "DELTA__SJT DELTA",
+      "shortName": "SJT D",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GKZZ67A9BXG6P1CB9ZMYESCR",
+      "name": "ZFW__ZFW",
+      "shortName": "ZFW",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZXKZRR6Z69P56ZJX3KDNR0",
+      "name": "GEO__GEO",
+      "shortName": "GEO",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    }
+  ]
+}

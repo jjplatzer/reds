@@ -1,0 +1,365 @@
+{
+  "artcc": "ZTL",
+  "facility": "AVL",
+  "name": "Asheville ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.90558406666667,
+    "lon": -83.96840666666667
+  },
+  "controlPositions": [
+    {
+      "id": "01GYBXYKCQS1PSQXDTNKTSSWGH",
+      "name": "Radar East ",
+      "callsign": "AVL_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 125.8
+    },
+    {
+      "id": "01H4KPNDB2AN82SMG5FPDKMT49",
+      "name": "Ground Control / Clearance Delivery",
+      "callsign": "AVL_GND",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01H4KPNZ1KME4XTJR558ZEJX9Z",
+      "name": "Local Control ",
+      "callsign": "AVL_TWR",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.1
+    },
+    {
+      "id": "01H4KPQKZZF9GSQKNFA8ZWA9AC",
+      "name": "Radar West",
+      "callsign": "AVL_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 124.65
+    },
+    {
+      "id": "01JNCRGC74AD9W7H94H41Q822P",
+      "name": "AVL GUARD",
+      "callsign": "AVL_G_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        6,
+        1,
+        3,
+        8,
+        5,
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        6,
+        3,
+        5,
+        1,
+        8,
+        7
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1E",
+        "1W"
+      ],
+      "mapIds": [
+        6,
+        9,
+        3,
+        8,
+        5,
+        7,
+        11,
+        1,
+        4,
+        2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        6,
+        3,
+        5,
+        9,
+        8,
+        7
+      ],
+      "submenuMapIds": [
+        11,
+        4,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HA890625ZYDMPTE82TEC15J0",
+      "name": "AVL TOWER",
+      "shortName": "TOWER",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA8906252ASMDDTZWVRWJ2F7",
+      "name": "AVL SECTORS",
+      "shortName": "SECTORS",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA8906258WJYS8WYWH9SREHJ",
+      "name": "RUNWAY 17",
+      "shortName": "RWY 17",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA89062355ZF00V98EFENGAS",
+      "name": "3 MILE BOX",
+      "shortName": "3NM BOX",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA890626XWPG0DJBF3FY4VMZ",
+      "name": "RUNWAY 35",
+      "shortName": "RWY 35",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA890624YD9461SGXYR6PCE3",
+      "name": "AVL MINIMUM VECTORING ALTITUDES",
+      "shortName": "MVA",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA890623GZWPSDTAA761Y46N",
+      "name": "AVL EMERGENCY OBSTRUCTION VIDEO MAP",
+      "shortName": "EOVM",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA890624WBSC3W45WRG7SR19",
+      "name": "AVL CLASS C / SECTORS",
+      "shortName": "CLASS C",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA890624J5J13DM8A5DRC872",
+      "name": "AVL RNAV (GPS) RWY 17/35 APPROACHES",
+      "shortName": "AVLRNAV",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA890624ZHSVJW3FQX1WPK43",
+      "name": "AVL AIRSPACE",
+      "shortName": "AIRSPAC",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JANWCTG42FTM0YHQA2",
+      "name": "AVL TDM ERAM",
+      "shortName": "AVLTDM",
+      "starsId": 995,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8BAFV1JM7PGN70MVFHT23AK",
+      "name": "AVL Cab",
+      "shortName": "CAB",
+      "starsId": 999,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HA890624ZHSVJW3FQX1WPK43",
+      "name": "AVL AIRSPACE",
+      "shortName": "AIRSPAC",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA890624WBSC3W45WRG7SR19",
+      "name": "AVL CLASS C / SECTORS",
+      "shortName": "CLASS C",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA8906252ASMDDTZWVRWJ2F7",
+      "name": "AVL SECTORS",
+      "shortName": "SECTORS",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    }
+  ]
+}

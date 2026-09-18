@@ -1,0 +1,348 @@
+{
+  "artcc": "ZBW",
+  "facility": "PWM",
+  "name": "Portland ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 42.93753,
+    "lon": -70.70471
+  },
+  "controlPositions": [
+    {
+      "id": "01G9D3GE5F18G9YP0ERJCCDYMV",
+      "name": "Ground Control",
+      "callsign": "PWM_GND",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G9D3H1950X3RA2G2F65G09TY",
+      "name": "Local Control",
+      "callsign": "PWM_TWR",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 120.9
+    },
+    {
+      "id": "01G9D3HMVYBDVQQVQJTE5WJNEF",
+      "name": "CASCO",
+      "callsign": "PWM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 119.75
+    },
+    {
+      "id": "01G9D3K3AT8SQCNPJ14Y65DBJ4",
+      "name": "Rockland",
+      "callsign": "PWM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 120.4
+    },
+    {
+      "id": "01G9D3KZM3MKB022FBKT0TWABS",
+      "name": "Lewiston",
+      "callsign": "PWM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 125.5
+    },
+    {
+      "id": "01G9D3MYAWDMZ1B9ZW1QSYMW70",
+      "name": "Augusta",
+      "callsign": "PWM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 128.35
+    },
+    {
+      "id": "01HGKY7HDC81A92Y2EMWPR259N",
+      "name": "Clearance Delivery",
+      "callsign": "PWM_DEL",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 123.975
+    },
+    {
+      "id": "01KAMCXT7H9NAFXFPW4FXY65RN",
+      "name": "PWM Guard",
+      "callsign": "PWM_EM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1S",
+        "1L",
+        "1R",
+        "1M",
+        "1T"
+      ],
+      "mapIds": [
+        14,
+        5,
+        901,
+        18,
+        27,
+        1,
+        40,
+        43,
+        41,
+        42,
+        902,
+        903,
+        904,
+        905,
+        29,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        14,
+        901,
+        27,
+        5,
+        18,
+        1
+      ],
+      "submenuMapIds": [
+        40,
+        41,
+        902,
+        904,
+        29,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        43,
+        42,
+        903,
+        905,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GPHEYCFZ5APEV2B6Z9G7VHYF",
+      "name": "PWM IAF",
+      "shortName": "IAF",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHEYCG0GERVMQYTTM45X51F",
+      "name": "PWM MVA",
+      "shortName": "MVA",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHEYCG00FR14XDTNWV3QE8D",
+      "name": "PWM MAIN",
+      "shortName": "MAIN",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHEYCFWZ35BPN1ECE6AKAT9",
+      "name": "PWM EOVM",
+      "shortName": "EOVM",
+      "starsId": 18,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHF6CKHH236V8J37E84SNT6",
+      "name": "PWM LOW AIRWAYS",
+      "shortName": "AWY",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHEYCG1WPFMF0DE2A4P7ZYT",
+      "name": "PWM SATELLITE FINALS",
+      "shortName": "SATS",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KP736J3BSCSB5M54998N6QDR",
+      "name": "PWM RNAV RNP Z RWY 29",
+      "shortName": "RNPZ29",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0EFER15QA0Z29N2M6PHTY1K",
+      "name": "PWM RW SPLIT",
+      "shortName": "RW",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHEYCFXSQ6XRR3VYPV4DBCV",
+      "name": "PWM EVENT RWY 11",
+      "shortName": "EVT11",
+      "starsId": 41,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHEYCFYF3ZKJXKFCH85H16H",
+      "name": "PWM EVENT RWY 29",
+      "shortName": "EVT29",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHEYCFTRV2SEF87TFFC1WJ9",
+      "name": "PWM 3WAY SPLIT",
+      "shortName": "3WY",
+      "starsId": 43,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF1046VTX8SGKVPN1JMMB",
+      "name": "GROUND DIAGRAMS",
+      "shortName": "APT",
+      "starsId": 900,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10DY0KQ88H2D88NBTYS",
+      "name": "ZBW SPLIT 1",
+      "shortName": "ZBW 1",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10ETN5HPA10PFAM5SGC",
+      "name": "ZBW SPLIT 2",
+      "shortName": "ZBW 2",
+      "starsId": 903,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10E7QVGYCE97HH069A5",
+      "name": "ZBW SPLIT 3",
+      "shortName": "ZBW 3",
+      "starsId": 904,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HVM90MVHBBCM6ES6KX9WKN3D",
+      "name": "TWY LABELS",
+      "shortName": "TWY LBL",
+      "starsId": 905,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    }
+  ]
+}

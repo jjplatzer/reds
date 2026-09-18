@@ -1,0 +1,281 @@
+{
+  "artcc": "ZBW",
+  "facility": "GTB",
+  "name": "Wheeler-Sack ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 42.93753,
+    "lon": -70.70471
+  },
+  "controlPositions": [
+    {
+      "id": "01G9BRDSMK9R3VH7FDHDFJXVQ5",
+      "name": "Wheeler-Sack Radar",
+      "callsign": "GTB_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 124.875
+    },
+    {
+      "id": "01G9GNKNTQ1RCWA60K1T0Z0M8K",
+      "name": "Local Control",
+      "callsign": "GTB_TWR",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 118.75
+    },
+    {
+      "id": "01G9GNMTEBPVS6JSXGDMMSGVRA",
+      "name": "Ground Control",
+      "callsign": "GTB_GND",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 123.65
+    },
+    {
+      "id": "01HBXS4910Y2F6E59PRTG1M555",
+      "name": "Wheeler-Sack Final",
+      "callsign": "GTB_F_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 128.25
+    },
+    {
+      "id": "01KAMD1J56N6HJ13V70KVN7BWM",
+      "name": "GTB Guard",
+      "callsign": "GTB_EM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1F",
+        "1L"
+      ],
+      "mapIds": [
+        1,
+        2,
+        901,
+        905,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        901,
+        3,
+        2,
+        905,
+        4
+      ],
+      "submenuMapIds": [
+        5,
+        7,
+        9,
+        11,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        6,
+        8,
+        10,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GPHBM16RDXDXAC8FQW9DKJPF",
+      "name": "GTB MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBM16TCT9JWVQNN52XJWQ5",
+      "name": "GTB MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHBM16MXEHV76Y41B826S3R",
+      "name": "GTB COAST",
+      "shortName": "COAST",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHBM16SBT1VRJSNP2F63NVG",
+      "name": "GTB MOA",
+      "shortName": "MOA",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBM16VE3NWY0KCEPKVFSM8",
+      "name": "GTB SUA",
+      "shortName": "SUA",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBM16PJP4Y8AEZQR6RKPSF",
+      "name": "GTB GPS 03",
+      "shortName": "GPS 03",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBM16PXT4EK4ZY5WV6DZJH",
+      "name": "GTB GPS 15",
+      "shortName": "GPS 15",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBM16Q1A77Y8AF0NMQQRNT",
+      "name": "GTB GPS 21",
+      "shortName": "GPS 21",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBM16RVJMHCA7KP1J9GW6C",
+      "name": "GTB GPS 33",
+      "shortName": "GPS 33",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBM16VWSZS1DPCBMQASQEH",
+      "name": "GTB SAT GPS",
+      "shortName": "SAT GPS",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBM16NNP05JA1BFA6TGD6W",
+      "name": "GTB EVENT SPLIT",
+      "shortName": "EVENT",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF1046VTX8SGKVPN1JMMB",
+      "name": "GROUND DIAGRAMS",
+      "shortName": "APT",
+      "starsId": 900,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HVM90MVHBBCM6ES6KX9WKN3D",
+      "name": "TWY LABELS",
+      "shortName": "TWY LBL",
+      "starsId": 905,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    }
+  ]
+}

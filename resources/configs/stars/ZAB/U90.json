@@ -1,0 +1,250 @@
+{
+  "artcc": "ZAB",
+  "facility": "U90",
+  "name": "Tucson TRACON",
+  "type": "Tracon",
+  "defaultCenter": {
+    "lat": 34.19564814666666,
+    "lon": -107.50666666666666
+  },
+  "controlPositions": [
+    {
+      "id": "01G941RS5AM4C1CSD4S3QW0BPN",
+      "name": "Arrival",
+      "callsign": "TUS_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 119.4
+    },
+    {
+      "id": "01G941SV46TW415PMXCPSDRXA9",
+      "name": "Departure",
+      "callsign": "TUS_DEP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 125.1
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "2T",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "3T",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1D",
+        "3T",
+        "2T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        13,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        10,
+        12,
+        14,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GQV5JPVGJ52803KWB3GXNSCD",
+      "name": "T001 SE Flow",
+      "shortName": "SE FLOW",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GQV5JPVH25AWCQKWGNZK4ZTT",
+      "name": "T002 NW Flow",
+      "shortName": "NW FLOW",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GQV5JPVJ61WRNJRPJJD434Z3",
+      "name": "T010 U90 MVA",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQV5JPVJV85P40FEWQ3G0HQZ",
+      "name": "T020 DINGO",
+      "shortName": "DINGO",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQV5JPVKC8ZE3PQMJT9CEA1E",
+      "name": "T021 ZONNA",
+      "shortName": "ZONNA",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQV5JPVK3KMFDK4DER3Q9GZ9",
+      "name": "T030 BURRO5",
+      "shortName": "BURRO",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQV5JPVK435MREE7B6NBDXP0",
+      "name": "T031 TUS SID",
+      "shortName": "TUS SID",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQV5JPVM8X4M56SR1A8C7NBF",
+      "name": "T032 WLKT4",
+      "shortName": "WLKT",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQV5JPVM3MVRBY46BWN9S003",
+      "name": "T040 BBALL",
+      "shortName": "DMA BBALL",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQV5JPVM54T2JGF5T603ATF2",
+      "name": "T041 DMA3",
+      "shortName": "DMA3",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQV5JPVNRYNYS6B8WWG4V7WN",
+      "name": "T042MESCA",
+      "shortName": "DMA MESCA",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQV5JPVNH6QN4GADKV8TRW84",
+      "name": "T050 ALMON",
+      "shortName": "RYN ALMON",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQV5JPVN064C5KPFVY2SYB4F",
+      "name": "T060 V ARWY",
+      "shortName": "V ARWY",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQV5JPVPRV10180C9CG78G15",
+      "name": "T065 Rstctd",
+      "shortName": "RSTCTD",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    }
+  ]
+}

@@ -1,0 +1,1416 @@
+{
+  "artcc": "ZBW",
+  "facility": "A90",
+  "name": "Boston Consolidated TRACON",
+  "type": "Tracon",
+  "defaultCenter": {
+    "lat": 42.93753,
+    "lon": -70.70471
+  },
+  "controlPositions": [
+    {
+      "id": "01G40MCWS18WDRTSM64G4TV2X9",
+      "name": "Rockport",
+      "callsign": "BOS_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 118.25
+    },
+    {
+      "id": "01G40MDKTN67RSF48F8D3BEY59",
+      "name": "Plymouth",
+      "callsign": "BOS_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 120.6
+    },
+    {
+      "id": "01G40MVGMFF4KY16SXWEA3K9WJ",
+      "name": "Lincoln",
+      "callsign": "BOS_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 127.2
+    },
+    {
+      "id": "01G40N2TZEBC4NH123XYA97HKD",
+      "name": "Final One",
+      "callsign": "BOS_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 126.5
+    },
+    {
+      "id": "01G40N3C40QCCBE6DBKMDED65J",
+      "name": "Final Two",
+      "callsign": "BOS_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 119.65
+    },
+    {
+      "id": "01G40N51MH69G0Q2PQB4JQHDZQ",
+      "name": "Lynch",
+      "callsign": "BOS_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 124.1
+    },
+    {
+      "id": "01G40N7ZH7198N267CTNE16M09",
+      "name": "West",
+      "callsign": "MHT_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 134.75
+    },
+    {
+      "id": "01G40N8FT03GJ6NMXYP8JGS9TF",
+      "name": "FITZY",
+      "callsign": "MHT_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 124.9
+    },
+    {
+      "id": "01G40N91X1C69Z3DS1F9F3B4NN",
+      "name": "East",
+      "callsign": "MHT_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 125.05
+    },
+    {
+      "id": "01G40NA0ZF362YEV998WY3WGWD",
+      "name": "Low",
+      "callsign": "MHT_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 125.825
+    },
+    {
+      "id": "01G40NAJEFNHMRMTTQ0FYW79KH",
+      "name": "TOMMY",
+      "callsign": "MHT_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 127.35
+    },
+    {
+      "id": "01G40NBX7XRSMZ6QKT8CVQFQD2",
+      "name": "Cape North",
+      "callsign": "ACK_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 118.2
+    },
+    {
+      "id": "01G40NCD62EN85DW391870HXYN",
+      "name": "Otis",
+      "callsign": "ACK_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 126.3
+    },
+    {
+      "id": "01G40ND0ZKN7H3HXJSFTMTGCY9",
+      "name": "Martha's Vineyard Arrival",
+      "callsign": "ACK_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 119.7
+    },
+    {
+      "id": "01G40NDW6N6YHR33VMQF5M52A4",
+      "name": "Cape South",
+      "callsign": "ACK_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 133.75
+    },
+    {
+      "id": "01G40NEKHA7CTH764V33ENY1G5",
+      "name": "Nantucket Departure",
+      "callsign": "ACK_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 126.1
+    },
+    {
+      "id": "01G40NFF6MVX7KFY5YX7JDR79T",
+      "name": "Nantucket Arrival",
+      "callsign": "ACK_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 124.05
+    },
+    {
+      "id": "01G40NGJ7G6S49AXYAMNMKAFJD",
+      "name": "Bedford",
+      "callsign": "BOS_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 124.4
+    },
+    {
+      "id": "01G953CXAC4Q0EF2SN9NVY4QAJ",
+      "name": "Initial Departure",
+      "callsign": "BOS_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 133
+    },
+    {
+      "id": "01GFTX5XZQXGDQK1H82YK1FG6N",
+      "name": "Consolidated",
+      "callsign": "A90_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 133
+    },
+    {
+      "id": "01HBK9864AM22RFKPEX9SZX49F",
+      "name": "Initial Departure [Hidden]",
+      "callsign": "BOS_B_CTR",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 133
+    },
+    {
+      "id": "01KAMD493HA2B7NCBYGWA7DHDQ",
+      "name": "Cape Guard",
+      "callsign": "BOS_EM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "01KAMD7R7TEV046B86ZQBF3XPY",
+      "name": "BOS Guard",
+      "callsign": "BOS_EM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "01KAMDBFYN50S6GBPJT0HXRVG5",
+      "name": "MHT Guard",
+      "callsign": "MHT_EM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "01KAMDMH806NV24XWN3RRTR7FQ",
+      "name": "BOS Consolidated Guard",
+      "callsign": "BOS_EM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "01KS5C93H76KZKK2MV8G23HAMC",
+      "name": "A90 North",
+      "callsign": "A90_N_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 118.25
+    },
+    {
+      "id": "01KS5CC3W2J4G1DJWP7E770PHJ",
+      "name": "A90 South",
+      "callsign": "A90_S_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 133
+    },
+    {
+      "id": "01KSG9TV081A8P4S86B7QTNYVR",
+      "name": "A90 CIC",
+      "callsign": "BOS_T_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 122.45
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1I",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1J",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1K",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1O",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1Q",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1Y",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "2Q",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "2T",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "3Q",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "3T",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "4H",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "4J",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "4Q",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "4T",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "4V",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1D",
+        "1B",
+        "1F",
+        "1I",
+        "1U",
+        "1L",
+        "1M",
+        "1R",
+        "4Q",
+        "1Q",
+        "3Q",
+        "2Q"
+      ],
+      "mapIds": [
+        3,
+        22,
+        901,
+        20,
+        16,
+        12,
+        15,
+        26,
+        29,
+        28,
+        27,
+        30,
+        33,
+        31,
+        32,
+        34,
+        35,
+        455,
+        433,
+        444,
+        56,
+        14,
+        50,
+        52,
+        54,
+        57,
+        59,
+        17,
+        51,
+        53,
+        55,
+        60,
+        72,
+        71,
+        45,
+        46,
+        42,
+        431
+      ],
+      "mainMapIds": [
+        3,
+        901,
+        16,
+        22,
+        20,
+        12
+      ],
+      "submenuMapIds": [
+        15,
+        29,
+        27,
+        33,
+        32,
+        35,
+        433,
+        56,
+        50,
+        54,
+        59,
+        51,
+        55,
+        72,
+        45,
+        26,
+        28,
+        30,
+        31,
+        34,
+        455,
+        444,
+        14,
+        52,
+        57,
+        17,
+        53,
+        60,
+        71,
+        46
+      ]
+    },
+    {
+      "tcps": [
+        "1Z",
+        "1E",
+        "1P",
+        "1J",
+        "1W",
+        "1V",
+        "2T",
+        "3T"
+      ],
+      "mapIds": [
+        22,
+        901,
+        20,
+        16,
+        12,
+        103,
+        905,
+        62,
+        64,
+        66,
+        68,
+        46,
+        47,
+        48,
+        49,
+        902,
+        903,
+        904,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        22,
+        20,
+        12,
+        901,
+        16,
+        103
+      ],
+      "submenuMapIds": [
+        905,
+        64,
+        68,
+        47,
+        49,
+        903,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        62,
+        66,
+        46,
+        48,
+        902,
+        904,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1N",
+        "1S",
+        "1Y",
+        "1A",
+        "1O",
+        "1K",
+        "4T",
+        "4V",
+        "4H",
+        "4J"
+      ],
+      "mapIds": [
+        22,
+        901,
+        20,
+        16,
+        12,
+        91,
+        90,
+        905,
+        902,
+        903,
+        904,
+        500,
+        501,
+        507,
+        505,
+        503,
+        516,
+        517,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        22,
+        20,
+        12,
+        901,
+        16,
+        91
+      ],
+      "submenuMapIds": [
+        90,
+        902,
+        904,
+        501,
+        505,
+        516,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        905,
+        903,
+        500,
+        507,
+        503,
+        517,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T",
+        "1G",
+        "1H"
+      ],
+      "mapIds": [
+        22,
+        901,
+        12,
+        16,
+        114,
+        905,
+        104,
+        128,
+        107,
+        131,
+        25,
+        117,
+        115,
+        116,
+        150,
+        133,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        22,
+        12,
+        114,
+        901,
+        16,
+        905
+      ],
+      "submenuMapIds": [
+        104,
+        107,
+        25,
+        115,
+        150,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        128,
+        131,
+        117,
+        116,
+        133,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GP4CF10ATMNFA1TKZVZRMJK2",
+      "name": "A90 BASE",
+      "shortName": "A90",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF1069S0161VAVCKM4D5X",
+      "name": "A90 EOVM",
+      "shortName": "EOVM",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF0ZV2CRDVTYDEEJNECSR",
+      "name": "BOS RWY 15R RNAV STAR",
+      "shortName": "15 STAR",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA8D5V929TV3NNJ8SAJJJK31",
+      "name": "BOS A90 MAIN",
+      "shortName": "MAIN",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF1069G0XXYPY5MGCFEDJ",
+      "name": "A90 COASTLINE",
+      "shortName": "COAST",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF0ZVGJVHHTD782F2J6MS",
+      "name": "BOS RWY 15R RNAV SID",
+      "shortName": "15 SID",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10DGA41D84YJ4R47NZG",
+      "name": "A90 SAT FINALS",
+      "shortName": "SAT FIN",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF10BV3Y0D1SWBW739RCS",
+      "name": "A90 MVA",
+      "shortName": "MVA",
+      "starsId": 22,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP50NCQT87RHXAGD6MTYE9MP",
+      "name": "BOS_TWR 33L",
+      "shortName": "T33L",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF0ZTKMSTVER5QNKVK7J1",
+      "name": "BOS 4R/L",
+      "shortName": "4R/L",
+      "starsId": 26,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF0ZWZ8TV72HZFQGK7M5C",
+      "name": "BOS 15R/9",
+      "shortName": "15R/9",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF0ZW2WQJYXPS9X07Y6AQ",
+      "name": "BOS 15R",
+      "shortName": "15R",
+      "starsId": 28,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF0ZS3CBTFV92QZY1MF5T",
+      "name": "BOS 4R/15R",
+      "shortName": "4R/15R",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF0ZYB125P9S44H3R8V1X",
+      "name": "BOS 22L",
+      "shortName": "22L",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF1015AF5MCXD2XDD9XDW",
+      "name": "BOS 27/22",
+      "shortName": "27/22",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF101HQ4N8YD23HWYBBN3",
+      "name": "BOS 27/32",
+      "shortName": "27/32",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF100R0BBA7EDZDP3XMCY",
+      "name": "BOS 27",
+      "shortName": "27",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF103VC5BJ7H1ZX1V6VME",
+      "name": "BOS 33L/32",
+      "shortName": "33L/32",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF103Y9HP4TF1YKQ5CN0G",
+      "name": "BOS 33L",
+      "shortName": "33L",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF10939Q4B5DSJNVSY91J",
+      "name": "BOS HELI ROUTES",
+      "shortName": "HELI",
+      "starsId": 39,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K1C0P3H8YSHE804HWWPKAY9H",
+      "name": "A90-SAT__A90-SAT",
+      "shortName": "A90-SAT",
+      "starsId": 42,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF107EKE6WDVF0WFHR7Q5",
+      "name": "A90 SAT GPS 1",
+      "shortName": "GPS 1",
+      "starsId": 45,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF107N4750S2YBW6DWYVD",
+      "name": "A90 SAT GPS 2",
+      "shortName": "GPS 2",
+      "starsId": 46,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF108T2WA56MSYZ49BJA2",
+      "name": "A90 SAT GPS 3",
+      "shortName": "GPS 3",
+      "starsId": 47,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF1089HTD0161C6K19N94",
+      "name": "A90 SAT GPS 4",
+      "shortName": "GPS 4",
+      "starsId": 48,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF1098WAQXWCC6RQMB121",
+      "name": "A90 SAT GPS 5",
+      "shortName": "GPS 5",
+      "starsId": 49,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF0ZY9CWGAWXVMYK9TPVR",
+      "name": "BOS RWY 22L RNAV STAR",
+      "shortName": "22 STAR",
+      "starsId": 50,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF0ZXHGW5Y7728HCSK1ZP",
+      "name": "BOS RWY 22L RNAV SID",
+      "shortName": "22L SID",
+      "starsId": 51,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF100PG0DTY3RCZXD9VFF",
+      "name": "BOS RWY 27 RNAV STAR",
+      "shortName": "27 STAR",
+      "starsId": 52,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF0ZZHBE2GB80MNQSQPKZ",
+      "name": "BOS RWY 27 RNAV SID",
+      "shortName": "27 SID",
+      "starsId": 53,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF102FHHP6KNG5SD1M581",
+      "name": "BOS RWY 33L RNAV STAR",
+      "shortName": "33 STAR",
+      "starsId": 54,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF102526FH0QRTXJTHM52",
+      "name": "BOS RWY 33L RNAV SID",
+      "shortName": "33L SID",
+      "starsId": 55,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF0ZSXTZK6PE16V6SXNV4",
+      "name": "BOS RWY 4R/L RNAV STAR",
+      "shortName": "4 STAR",
+      "starsId": 56,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF0ZRV03XVPWGZRF6FGA9",
+      "name": "BOS RWY 4 RNAV SID",
+      "shortName": "4 SID",
+      "starsId": 57,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF0ZTZRG1TRNMK9RYF35A",
+      "name": "BOS RWY 9 RNAV SID",
+      "shortName": "9 SID",
+      "starsId": 59,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10E5QY6H2M1YG3PJ919",
+      "name": "BED ZELKA STAR",
+      "shortName": "ZELKA",
+      "starsId": 60,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF0ZTZKAVF5QXPBNDFRRA",
+      "name": "MHT RWY 6 ROZZE STAR",
+      "shortName": "6ROZZE",
+      "starsId": 62,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF0ZXDRWD57NSHJ178Y8Q",
+      "name": "MHT RWY 17 ROZZE STAR",
+      "shortName": "17ROZZE",
+      "starsId": 64,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF0ZZS69FK6EMJQA5DXJW",
+      "name": "MHT RWY 24 ROZZE STAR",
+      "shortName": "24ROZZE",
+      "starsId": 66,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF103JXGV64Y9Z0EK9YNM",
+      "name": "MHT RWY 35 ROZZE STAR",
+      "shortName": "35ROZZE",
+      "starsId": 68,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KB2WKQ9K12VRZE1GCV69YPX2",
+      "name": "BED RWY 29 DREEM STAR",
+      "shortName": "DREEM29",
+      "starsId": 71,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KB2WE4KNXJ4TGH8SBHB5W9X3",
+      "name": "BED RWY 11 DREEM STAR",
+      "shortName": "DREEM11",
+      "starsId": 72,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF105V1PTRZ2NFDXQF3GC",
+      "name": "CAPE SW FLOW",
+      "shortName": "CAPE SW",
+      "starsId": 90,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF105VE7R633999P6MSAP",
+      "name": "CAPE NE FLOW",
+      "shortName": "CAPE NE",
+      "starsId": 91,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF10A890SZY91QBQRT6CZ",
+      "name": "MHT MAIN",
+      "shortName": "MHT",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP50NCQKADRN06HF5TFXY6NF",
+      "name": "BOS_TWR 4L/R",
+      "shortName": "T4L/R",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP50NCQP7RV47K057BW3HKS5",
+      "name": "BOS_TWR 15R/9",
+      "shortName": "T15R/9",
+      "starsId": 107,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP50NCQXKT1Q8QA2673R57YF",
+      "name": "BOS_TWR HELICOPTER ROUTES",
+      "shortName": "THELI",
+      "starsId": 114,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP50NCQPN4STDCK2PXKP8RR5",
+      "name": "BOS_TWR 22/27",
+      "shortName": "T22/27",
+      "starsId": 115,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP50NCQWGE5FG8201BEMY064",
+      "name": "BOS_TWR RNAV 32",
+      "shortName": "TR32",
+      "starsId": 116,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP50NCQVQWHHARHSWPGQE65J",
+      "name": "BOS_TWR 33L/32",
+      "shortName": "T33L/32",
+      "starsId": 117,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP50NCQNE3CE307XXBEBYD4J",
+      "name": "BOS_TWR 4R/15RC",
+      "shortName": "T4R/15R",
+      "starsId": 128,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP50NCQQFAHMBT1F53TPJ77V",
+      "name": "BOS_TWR 22L",
+      "shortName": "T22L",
+      "starsId": 131,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HADJ18M5SJWGZEXQX1FRWK69",
+      "name": "BOS_TWR 27/32",
+      "shortName": "T27/32",
+      "starsId": 133,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP50NCQWA6GFPZ0TSGWQDDJH",
+      "name": "BOS_TWR FINALS",
+      "shortName": "TFIN",
+      "starsId": 150,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HYTYQ1WQXB6NABTX3F4GDHJ3",
+      "name": "BOS RNAV GPS Y 22L",
+      "shortName": "GPSY22L",
+      "starsId": 422,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JKGWEC2H8G4D0M6J6GSQE67N",
+      "name": "BOS RWY 33L FAC",
+      "shortName": "33L FAC",
+      "starsId": 431,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF10CFRKCW93GTAJ7JMSW",
+      "name": "BOS RNAV RNP X 33L",
+      "shortName": "RNPX33L",
+      "starsId": 433,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HADE7DQMBE6SG942PF4029SJ",
+      "name": "BOS RNAV RWY 4L APP",
+      "shortName": "R4L APP",
+      "starsId": 444,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF10CYFD317KGS94KJ7AT",
+      "name": "BOS RNAV RWY 32 APP",
+      "shortName": "R32 APP",
+      "starsId": 455,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KW7N3V8TFDH54KYN3SZG8EHV",
+      "name": "CAPE SAT FINALS",
+      "shortName": "SATFIN",
+      "starsId": 500,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KW7N3V8TMW49DRC4E8YZRSWR",
+      "name": "CAPE SAT FIXES",
+      "shortName": "SATFIX",
+      "starsId": 501,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KW7N3V8TSZBEJ0HDTSTM16BK",
+      "name": "CAPE NE FLOW FIXES",
+      "shortName": "NEFIXES",
+      "starsId": 503,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KW7N3V8TX6XG9ZV8AB3YDR1D",
+      "name": "CAPE NW FINALS",
+      "shortName": "NWFINAL",
+      "starsId": 505,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KW7N3V8TBDPFQK0C5FQ9MQ2G",
+      "name": "CAPE NW FLOW FIXES",
+      "shortName": "NWFIXES",
+      "starsId": 507,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KW7N3V8TE5JZQZ8G0N3ZXKVQ",
+      "name": "CAPE AREA 32",
+      "shortName": "AREA32",
+      "starsId": 516,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KW7N3V8TZ9XD84TXZW6GG5AC",
+      "name": "CAPE NEWBE HOLD",
+      "shortName": "NEWBE",
+      "starsId": 517,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF1046VTX8SGKVPN1JMMB",
+      "name": "GROUND DIAGRAMS",
+      "shortName": "APT",
+      "starsId": 900,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10DY0KQ88H2D88NBTYS",
+      "name": "ZBW SPLIT 1",
+      "shortName": "ZBW 1",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10ETN5HPA10PFAM5SGC",
+      "name": "ZBW SPLIT 2",
+      "shortName": "ZBW 2",
+      "starsId": 903,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10E7QVGYCE97HH069A5",
+      "name": "ZBW SPLIT 3",
+      "shortName": "ZBW 3",
+      "starsId": 904,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HVM90MVHBBCM6ES6KX9WKN3D",
+      "name": "TWY LABELS",
+      "shortName": "TWY LBL",
+      "starsId": 905,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    }
+  ]
+}

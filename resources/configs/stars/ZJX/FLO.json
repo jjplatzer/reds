@@ -1,0 +1,327 @@
+{
+  "artcc": "ZJX",
+  "facility": "FLO",
+  "name": "Florence ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 30.39404875,
+    "lon": -81.98462525
+  },
+  "controlPositions": [
+    {
+      "id": "01GWDGGWHVPXEQSSPNR8A6WJBH",
+      "name": "Ground",
+      "callsign": "FLO_GND",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GWDGHNCHK4H1WDATNC1RY3GM",
+      "name": "Tower",
+      "callsign": "FLO_TWR",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 125.1
+    },
+    {
+      "id": "01GWDGJ93ZNC448Y180FBNGNBT",
+      "name": "Radar",
+      "callsign": "FLO_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 118.6
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "2F",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1F"
+      ],
+      "mapIds": [
+        103,
+        107,
+        105,
+        104,
+        101,
+        106,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        500,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        103,
+        105,
+        101,
+        107,
+        104,
+        106
+      ],
+      "submenuMapIds": [
+        108,
+        110,
+        112,
+        114,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        109,
+        111,
+        113,
+        500,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "2F"
+      ],
+      "mapIds": [
+        101,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        101,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HMJ8S8HEMK2X39AAY464QE33",
+      "name": "FLO 20NM MAP TOWER",
+      "shortName": "TOWER",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8K1SE5DBDFGRNHEPCSGB6",
+      "name": "FLO OPS",
+      "shortName": "OPS",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8TFEZSE4K8S2NWT2EVM5N",
+      "name": "FLO FLOW CQW",
+      "shortName": "FLOW",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8TSVY65QCA419JYX8SFEX",
+      "name": "FLO FIX NAMES",
+      "shortName": "NAMES",
+      "starsId": 105,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8V35D8TP86Y7QZ0NXWB2E",
+      "name": "FLO EMERGENCY",
+      "shortName": "EMERG",
+      "starsId": 106,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8VF7978GD9YP58647KBD6",
+      "name": "FLO MOA",
+      "shortName": "MOA",
+      "starsId": 107,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8VRN9WHS6ZXMBG4D9AWDH",
+      "name": "BBP-DLC-MAO",
+      "shortName": "SAT 1",
+      "starsId": 108,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8W2122XTHQAMXX4MFVNNK",
+      "name": "UDG-HVS-51J",
+      "shortName": "SAT 2",
+      "starsId": 109,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8WBJTST97AWSC405JFEX6",
+      "name": "FLO MVA 5NM",
+      "shortName": "MVA 5NM",
+      "starsId": 110,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8WN6HP9R5HWW0HTCT8XTY",
+      "name": "FLO STADIUM",
+      "shortName": "STADIU",
+      "starsId": 111,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8X2CS5CJCF5VEPYRXK6VV",
+      "name": "FLO ADSB 40NM",
+      "shortName": "ADSB40",
+      "starsId": 112,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8XCMH4M4TCREZWJXY4C0G",
+      "name": "FLO ADSB 60NM",
+      "shortName": "ADSB60",
+      "starsId": 113,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8XPGHAA7CTT6XZARBQ04S",
+      "name": "FLO SC COUNTIES",
+      "shortName": "COUNTI",
+      "starsId": 114,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HMJ8Y21M7NG0PH02T4PQ1HXS",
+      "name": "FLO ILS 9",
+      "shortName": "FLOILS9",
+      "starsId": 500,
+      "brightnessCategory": "A"
+    }
+  ]
+}

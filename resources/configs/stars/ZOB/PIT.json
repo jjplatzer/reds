@@ -1,0 +1,382 @@
+{
+  "artcc": "ZOB",
+  "facility": "PIT",
+  "name": "Pittsburgh ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.65805,
+    "lon": -81.181585
+  },
+  "controlPositions": [
+    {
+      "id": "01G90WEMVQW42XZ5S8Q73NRXKN",
+      "name": "Arrival North",
+      "callsign": "PIT_B_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 124.15
+    },
+    {
+      "id": "01G90WHHGDG0PT679CSG226JQA",
+      "name": "Arrival South",
+      "callsign": "PIT_D_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 123.95
+    },
+    {
+      "id": "01G90WJJMRN7TZET5HAP1NXPFB",
+      "name": "Departure North",
+      "callsign": "PIT_N_DEP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 124.75
+    },
+    {
+      "id": "01G90WN22SC80P7XA0C3BVNCAY",
+      "name": "Departure South",
+      "callsign": "PIT_S_DEP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 119.35
+    },
+    {
+      "id": "01G90WP5B4TTSTF1GRMCH7CZHP",
+      "name": "Satellite",
+      "callsign": "PIT_U_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 125.275
+    },
+    {
+      "id": "01G90WWR5342GGFMJQDXWZSBQZ",
+      "name": "Clearance Delivery",
+      "callsign": "PIT_DEL",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 126.75
+    },
+    {
+      "id": "01G90WZAKQE2Z5A2RAASAHW5VD",
+      "name": "Ground South",
+      "callsign": "PIT_S_GND",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G90X13YRYHBY33N3DGZC22T9",
+      "name": "Ground North",
+      "callsign": "PIT_N_GND",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 127.8
+    },
+    {
+      "id": "01G90X2X1A9GRK9CNBZ6913ZFZ",
+      "name": "Local Control South",
+      "callsign": "PIT_S_TWR",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 128.3
+    },
+    {
+      "id": "01G90X66B970TV7066EWVQZT4P",
+      "name": "Local Control North",
+      "callsign": "PIT_N_TWR",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 119.1
+    },
+    {
+      "id": "01HDV202PF9XQ576RZT6QR236N",
+      "name": "TMU/OTHER",
+      "callsign": "PIT_T_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 123.45
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2L",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2T",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2U",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1B",
+        "1D",
+        "1G",
+        "1L",
+        "1S",
+        "1T",
+        "1Z",
+        "2L",
+        "2T",
+        "2U"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        9,
+        1,
+        2,
+        3,
+        5,
+        6,
+        9,
+        10,
+        13,
+        null,
+        null,
+        129,
+        131,
+        133,
+        135,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        6,
+        2,
+        5,
+        9
+      ],
+      "submenuMapIds": [
+        1,
+        3,
+        6,
+        10,
+        null,
+        129,
+        133,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        2,
+        5,
+        9,
+        13,
+        null,
+        131,
+        135,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HC3DVZB20DTK7CE8CEN10CFX",
+      "name": "PIT-001 (WEST FLOW)",
+      "shortName": "W_FLOW",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC3EBJXFZ1PCBMCWZED3GCD7",
+      "name": "PIT-002 (EAST FLOW)",
+      "shortName": "E_FLOW",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC3EC0XQNQWQYTBY2G2T55KF",
+      "name": "PIT-003 (MVA)",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC3ECFMEPWCR6Q367A3MN8YT",
+      "name": "PIT-005 (VFR)",
+      "shortName": "VFR",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC3ED2MR2DZ9GQKCVBGY4VXK",
+      "name": "PIT-006 (RNAV APPROACHES)",
+      "shortName": "RNAV",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC3EDSTE3HQ0ZDASEDR6YJS0",
+      "name": "PIT-009 (CLASS B)",
+      "shortName": "CLASS_B",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC3EEDDMY92BJQ51RQZBT1TV",
+      "name": "PIT-010 (LIFEFLIGHT APPROACHES)",
+      "shortName": "LIFEFLT",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC3EF29Z3JY8HX2Z88F71SBP",
+      "name": "PIT-013 (ADJACENT APPROACHES)",
+      "shortName": "AP_CTRL",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC3EFSX9AGEYQ59VFZB70S1C",
+      "name": "PIT-129 (DEMME)",
+      "shortName": "DEMME",
+      "starsId": 129,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC3EGMSJ5PVA99A0C3PP85H1",
+      "name": "PIT-131 (FEWGA)",
+      "shortName": "FEWGA",
+      "starsId": 131,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC3EH6M0XCJX60QKPD9A6V89",
+      "name": "PIT-133 (HAYNZ)",
+      "shortName": "HAYNZ",
+      "starsId": 133,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC3EHXJ6DD7Y9W0XNDNGZFRN",
+      "name": "PIT-135 (JESEY)",
+      "shortName": "JESEY",
+      "starsId": 135,
+      "brightnessCategory": "B"
+    }
+  ]
+}

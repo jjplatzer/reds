@@ -1,0 +1,232 @@
+{
+  "artcc": "ZDV",
+  "facility": "CYS",
+  "name": "CYS RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 40.569587575,
+    "lon": -104.96660805
+  },
+  "controlPositions": [
+    {
+      "id": "01H58SCCH99CCV92SXXEQBCSNT",
+      "name": "Ground",
+      "callsign": "CYS_GND",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01H58SCYJQS37GVS1F8KNVNYKJ",
+      "name": "Local Control",
+      "callsign": "CYS_TWR",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 118.7
+    },
+    {
+      "id": "01HB76K2CMWNP8QTMK7DXEN0E5",
+      "name": "Approach",
+      "callsign": "CYS_APP",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 124.55
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1T"
+      ],
+      "mapIds": [
+        100,
+        103,
+        106,
+        112,
+        105,
+        109,
+        113,
+        110,
+        108,
+        101,
+        111,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        100,
+        106,
+        105,
+        103,
+        112,
+        109
+      ],
+      "submenuMapIds": [
+        113,
+        108,
+        111,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        110,
+        101,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HB7662XTMVF21E5WNGYYPV6G",
+      "name": "ARSPC__CYS AIRSPACE",
+      "shortName": "ARSPC",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB7662XVPEX5NBQNSP5BYK43",
+      "name": "AWYS__VICTOR AIRWAYS",
+      "shortName": "AWYS",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB7662XV10EBA6V9VNK9CSK7",
+      "name": "CLS D__CYS CLASS DELTA",
+      "shortName": "CLS D",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB7662XWGHN3DZY1NBWX6CE0",
+      "name": "ILS27__CYS ILS RWY 27",
+      "shortName": "ILS 27",
+      "starsId": 105,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB7662XW2EYSGP8A2EPPW2CM",
+      "name": "MVA__MVA",
+      "shortName": "MVA",
+      "starsId": 106,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB7662XX52B0Y3YS4WWEYJN2",
+      "name": "RNAV13__CYS RNAV RWY 13",
+      "shortName": "RNAV 13",
+      "starsId": 108,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB7662XXY7TVXSNBMZPEBQSH",
+      "name": "RNAV27__CYS RNAV RWY 27",
+      "shortName": "RNAV 27",
+      "starsId": 109,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB7662XXJQHQXRD4Q8MXSPXB",
+      "name": "RNAV31__CYS RNAV RWY 31",
+      "shortName": "RNAV 31",
+      "starsId": 110,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB7662XWQME43134R492TSV6",
+      "name": "RNAV9__CYS RNAV RWY 09",
+      "shortName": "RNAV 09",
+      "starsId": 111,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB7662XYHK51H3DB036FBF8A",
+      "name": "RWYS__CYS RUNWAYS",
+      "shortName": "RWYS",
+      "starsId": 112,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB7662XY50CECFRKQZ9QNH66",
+      "name": "VORA__CYS VOR A ",
+      "shortName": "VORA",
+      "starsId": 113,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HB7662XTMVF21E5WNGYYPV6G",
+      "name": "ARSPC__CYS AIRSPACE",
+      "shortName": "ARSPC",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    }
+  ]
+}

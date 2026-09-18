@@ -1,0 +1,873 @@
+{
+  "artcc": "ZOA",
+  "facility": "O90",
+  "name": "Oakland Bay TRACON",
+  "type": "Tracon",
+  "defaultCenter": {
+    "lat": 37.9016125,
+    "lon": -120.687685
+  },
+  "controlPositions": [
+    {
+      "id": "01JHCNQR1GHK6EQ9C8X03H9NNT",
+      "name": "Sutro",
+      "callsign": "BAY_U_DEP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 135.1
+    },
+    {
+      "id": "01JHCP478Z5A6RH6MRBFDWNAN2",
+      "name": "Richmond",
+      "callsign": "BAY_R_DEP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.9
+    },
+    {
+      "id": "01JHCP5J9VXVRAASFMNTHS9J6A",
+      "name": "Diablo",
+      "callsign": "BAY_D_DEP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 127
+    },
+    {
+      "id": "01JHCP74G8FYCJCW46649FF27C",
+      "name": "Grove",
+      "callsign": "BAY_G_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 125.35
+    },
+    {
+      "id": "01JHCP87H2JX1V0D3PNS1V6X5G",
+      "name": "Mulford",
+      "callsign": "BAY_M_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 124.4
+    },
+    {
+      "id": "01JHCPAXWCAM689ZZEREN9W1J7",
+      "name": "Licke",
+      "callsign": "BAY_L_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.1
+    },
+    {
+      "id": "01JHCPC1F9JNAN0RDCFAVEFYWY",
+      "name": "Hooks",
+      "callsign": "BAY_K_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 135.2
+    },
+    {
+      "id": "01JHCPDEBM44086K37CNXR8830",
+      "name": "Toga",
+      "callsign": "BAY_T_DEP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.3
+    },
+    {
+      "id": "01JHCPEHAWWCNXM575C7Z99Y4G",
+      "name": "North Feeder",
+      "callsign": "BAY_N_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 134.5
+    },
+    {
+      "id": "01JHCPH0WRNHMATW003NF30W4A",
+      "name": "South Feeder",
+      "callsign": "BAY_B_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 133.95
+    },
+    {
+      "id": "01JHCPHVV482NP9BNWDR8DZAR5",
+      "name": "Woodside",
+      "callsign": "BAY_W_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 135.65
+    },
+    {
+      "id": "01JHCPJPR09BFQJZNEYHMTCX8G",
+      "name": "Foster",
+      "callsign": "BAY_F_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.35
+    },
+    {
+      "id": "01JHCTJPZ4EM2EQAZN47G71AWM",
+      "name": "SFO LC",
+      "callsign": "SFO_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.5
+    },
+    {
+      "id": "01JHCTMTJ5PND96MXYNTK0MCXN",
+      "name": "SFO GC1",
+      "callsign": "SFO_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01JHCW67Z3ZE2879XBXZKFJT09",
+      "name": "OAK LC1",
+      "callsign": "OAK_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 127.2
+    },
+    {
+      "id": "01JHCWCD5MWNF6RBGXDWDHJ3EM",
+      "name": "OAK LC2",
+      "callsign": "OAK_2_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01JHCWE02CCEFQ34HD982AQZ7S",
+      "name": "OAK GC1",
+      "callsign": "OAK_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.75
+    },
+    {
+      "id": "01JHCWG6MWM2MD9VBHWGZ720JE",
+      "name": "OAK GC2",
+      "callsign": "OAK_2_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01JHCWHBCHE96ZCANKJ1V33MPD",
+      "name": "SFO CD",
+      "callsign": "SFO_DEL",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 118.2
+    },
+    {
+      "id": "01JHCWPRHHAS1WJC81R80FWYRC",
+      "name": "SFO GC2",
+      "callsign": "SFO_2_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 124.25
+    },
+    {
+      "id": "01JHCWSEFWD7D4FNY6KPNSVHDD",
+      "name": "SQL LC",
+      "callsign": "SQL_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 119
+    },
+    {
+      "id": "01JHCWTGFFKSQSACKF1SV87X4T",
+      "name": "SQL GC",
+      "callsign": "SQL_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.6
+    },
+    {
+      "id": "01JHCXJHA700GT760NH4BERHP9",
+      "name": "PAO LC",
+      "callsign": "PAO_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 118.6
+    },
+    {
+      "id": "01JHCXM7DGBJ066F03ZKAQMZK8",
+      "name": "PAO GC",
+      "callsign": "PAO_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 125
+    },
+    {
+      "id": "01JHCXSJZMDRB1JSZACZ0XK6SG",
+      "name": "NUQ LC",
+      "callsign": "NUQ_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 119.55
+    },
+    {
+      "id": "01JHCXV6J6WPH65G6XWHYAXQJ8",
+      "name": "NUQ GC",
+      "callsign": "NUQ_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.85
+    },
+    {
+      "id": "01JHCXX2M9PPP3ME19FANXTTHT",
+      "name": "SJC LC",
+      "callsign": "SJC_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 124
+    },
+    {
+      "id": "01JHCXYXRYC7HY17AK88QME5GG",
+      "name": "SJC GC",
+      "callsign": "SJC_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01JHCY15K551DM3M3YR74V5B3E",
+      "name": "SJC CD",
+      "callsign": "SJC_DEL",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 118
+    },
+    {
+      "id": "01JHCY37DVDPYHBS73G9TCHKSP",
+      "name": "OAK CD",
+      "callsign": "OAK_DEL",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.1
+    },
+    {
+      "id": "01JHCY4G42MF5NZ86J6DTEN83E",
+      "name": "RHV LC",
+      "callsign": "RHV_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 119.8
+    },
+    {
+      "id": "01JHCY7RZC07KWWX50VN1BRZMN",
+      "name": "RHV GC",
+      "callsign": "RHV_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.65
+    },
+    {
+      "id": "01JHCY96E6241536SWQENACZW1",
+      "name": "HWD LC",
+      "callsign": "HWD_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.2
+    },
+    {
+      "id": "01JHCYAATCG8FH1MP8W1F3CBNW",
+      "name": "HWD GC",
+      "callsign": "HWD_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.4
+    },
+    {
+      "id": "01JHCYEESPAWKP4JB369Z9S2BW",
+      "name": "SFO LCA",
+      "callsign": "SFO_A_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.5
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1J",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1K",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1O",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1Q",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1X",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1Y",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1B",
+        "1D",
+        "1F",
+        "1G",
+        "1K",
+        "1L",
+        "1M",
+        "1N",
+        "1R",
+        "1T",
+        "1U",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        9,
+        10,
+        11,
+        110,
+        112,
+        114,
+        120,
+        122,
+        125,
+        127,
+        131,
+        133,
+        141,
+        143,
+        145,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        999,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        9
+      ],
+      "submenuMapIds": [
+        10,
+        110,
+        114,
+        122,
+        127,
+        133,
+        143,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        11,
+        112,
+        120,
+        125,
+        131,
+        141,
+        145,
+        null,
+        null,
+        null,
+        999,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1A",
+        "1E",
+        "1H",
+        "1J",
+        "1O",
+        "1P",
+        "1Q",
+        "1S",
+        "1V",
+        "1X",
+        "1Y",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        9,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        999,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        9
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        999,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01JHCPW7JS9TQS1DQJ99AM6SBK",
+      "name": "01 O90_WEST",
+      "shortName": "WEST",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JHCQ52R8F34DFGM0AKN106Y0",
+      "name": "02 O90_EAST",
+      "shortName": "EAST",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GE9SE1H79Z9R9W34RGMHKP1B",
+      "name": "RVMNCT903S",
+      "shortName": "MVAC",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JHCQHNC52BTXV89AKTHBSKQ0",
+      "name": "04 O90_HOLD",
+      "shortName": "HOLD",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GE9SE1GD5X8BMDT93FQJ1F4E",
+      "name": "RVMNCT905S",
+      "shortName": "EOVM",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D555P5PN8DFTCB2KKQF9P2",
+      "name": "09 O90_CBA",
+      "shortName": "CBA",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4VX9M388FQC0XMVT41EPW",
+      "name": "10 O90_LO_W",
+      "shortName": "LO_W",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4SQCZ8X4M1WKR9WSQZ6H9",
+      "name": "11 O90_HI_W_SECT",
+      "shortName": "HI_W",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4ZVE55DTFYQYEM1X3H7ZR",
+      "name": "110 O90_TOGAW",
+      "shortName": "TOGA_W",
+      "starsId": 110,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4ZVE3GY7SVVTQHVCPNETJ",
+      "name": "112 O90_LICKW",
+      "shortName": "LICKE_W",
+      "starsId": 112,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4ZVE3K56NCEMR128PFJ9G",
+      "name": "114 O90_HOOKSW",
+      "shortName": "HOOKS_W",
+      "starsId": 114,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4ZVE5MK888FMSVGMJ4J4R",
+      "name": "120 O90_WOODSW",
+      "shortName": "WOODS_W",
+      "starsId": 120,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4ZVE3DAR1F3QCHN4DEX1D",
+      "name": "122 O90_FOSTW",
+      "shortName": "FOST_W",
+      "starsId": 122,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4ZVE5MM7HJDP3P4ZSF74V",
+      "name": "125 O90_SFW",
+      "shortName": "SFEED_W",
+      "starsId": 125,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4ZVE4799AB4JFEFCND4WR",
+      "name": "127 O90_NFW",
+      "shortName": "NFEED_W",
+      "starsId": 127,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4ZVE48NPWDGW1KT4T93JG",
+      "name": "131 O90_MLFRDW",
+      "shortName": "MLFRD_W",
+      "starsId": 131,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4ZVE32VAP2N2YGQKMP6N1",
+      "name": "133 O90_GROVEW",
+      "shortName": "GROVE_W",
+      "starsId": 133,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4ZVE54J9R030865PS8XYE",
+      "name": "141 O90_SUTROW",
+      "shortName": "SUTRO_W",
+      "starsId": 141,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4ZVE41MWRBRS29H7RD3HC",
+      "name": "143 O90_RICHW",
+      "shortName": "RCHMNDW",
+      "starsId": 143,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8D4ZVE2WXZTCF12H8RGCCPP",
+      "name": "O90_DBLOW",
+      "shortName": "DIABLOW",
+      "starsId": 145,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA7QZJ0G6TG3Y03JYAQ6RSF9",
+      "name": "TDM MAP",
+      "shortName": "TDM",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

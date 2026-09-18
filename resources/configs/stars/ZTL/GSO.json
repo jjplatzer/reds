@@ -1,0 +1,978 @@
+{
+  "artcc": "ZTL",
+  "facility": "GSO",
+  "name": "Greensboro ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.90558406666667,
+    "lon": -83.96840666666667
+  },
+  "controlPositions": [
+    {
+      "id": "01GWNJAZMPGDCSNME3H4J7GTT5",
+      "name": "Local Control",
+      "callsign": "GSO_TWR",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 119.1
+    },
+    {
+      "id": "01GWNJF7WND3BXVY939YVV6A47",
+      "name": "Ground Control",
+      "callsign": "GSO_GND",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GWNJFSE729E12DKGXXSYHGVP",
+      "name": "Clearance Delivery",
+      "callsign": "GSO_DEL",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.75
+    },
+    {
+      "id": "01H2MET2DBJ73ZKPYC3XBPX5C2",
+      "name": "GSO West Radar",
+      "callsign": "GSO_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 124.35
+    },
+    {
+      "id": "01H2MF1CC4QV2AEKESTKA60DGH",
+      "name": "South Radar",
+      "callsign": "GSO_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 126.6
+    },
+    {
+      "id": "01H2MF479DAHFSPR8XCGMBCWW5",
+      "name": "East Radar",
+      "callsign": "GSO_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 120.9
+    },
+    {
+      "id": "01H2MFB85SNC86G4CVQDGBT7A2",
+      "name": "Final Radar",
+      "callsign": "GSO_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 125.6
+    },
+    {
+      "id": "01JCPETFH7Q37AND8GVZBMFFV9",
+      "name": "GSO GUARD",
+      "callsign": "GSO_G_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1I",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1H",
+        "1S",
+        "1W"
+      ],
+      "mapIds": [
+        620,
+        621,
+        622,
+        600,
+        439,
+        111,
+        600,
+        610,
+        439,
+        453,
+        400,
+        432,
+        401,
+        433,
+        434,
+        419,
+        422,
+        420,
+        421,
+        445,
+        450,
+        444,
+        448,
+        443,
+        449,
+        408,
+        409,
+        407,
+        410,
+        null,
+        23,
+        5,
+        14,
+        33,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        620,
+        622,
+        439,
+        621,
+        600,
+        111
+      ],
+      "submenuMapIds": [
+        600,
+        439,
+        400,
+        401,
+        434,
+        422,
+        421,
+        450,
+        448,
+        449,
+        409,
+        410,
+        23,
+        14,
+        null,
+        610,
+        453,
+        432,
+        433,
+        419,
+        420,
+        445,
+        444,
+        443,
+        408,
+        407,
+        null,
+        5,
+        33,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        111,
+        110,
+        442,
+        null,
+        454,
+        null,
+        5,
+        14,
+        23,
+        33,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        111,
+        442,
+        454,
+        110,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        5,
+        23,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        14,
+        33,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1I"
+      ],
+      "mapIds": [
+        111,
+        110,
+        454,
+        null,
+        442,
+        null,
+        400,
+        401,
+        432,
+        433,
+        434,
+        655,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        111,
+        454,
+        442,
+        110,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        400,
+        432,
+        434,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        401,
+        433,
+        655,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H9SEBYNQBHK68JRVKAPQ1DSR",
+      "name": "RUNWAY 5L/R BASE MAP",
+      "shortName": "5 BASE",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEEV3NMMMH0XV9KVKRDZYZ",
+      "name": "RUNWAY 14 FINAL RADAR, 3 SECTORS",
+      "shortName": "RWY143",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEGK4HP5Z7NDMZFY41MKYZ",
+      "name": "RUNWAY 14 FINAL RADAR, 2 SECTORS",
+      "shortName": "RWY142",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEHF03C712S9C8BDEPXWBY",
+      "name": "RUNWAY 14 BASE MAP",
+      "shortName": "14 BASE",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEKAAAJH3ZQSD4F8MP2YNH",
+      "name": "RUNWAY 23 FINAL RADAR, 3 SECTORS",
+      "shortName": "RWY233",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEM3K0RR46DVXKB74HJSSE",
+      "name": "RUNWAY 23 FINAL RADAR, 2 SECTORS",
+      "shortName": "RWY232",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEN6WZK143MS05EMND04QV",
+      "name": "RUNWAY 23L/R BASE MAP",
+      "shortName": "23 BASE",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEPACHNHSEMMJBD5G4RFW2",
+      "name": "RUNWAY 32 FINAL RADAR, 3 SECTORS",
+      "shortName": "RWY323",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEQNRK6MWXNVB4T3D5CZHG",
+      "name": "RUNWAY 32 FINAL RADAR, 2 SECTORS",
+      "shortName": "RWY322",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SERZ23CMPDKY1WWPVQ2QFA",
+      "name": "RUNWAY 32 BASE MAP",
+      "shortName": "32 BASE",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SETV54EAXNJP3CF09A88Y5",
+      "name": "RUNWAY 5L/R FINAL RADAR, 3 SECTORS",
+      "shortName": "RWY53",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEVVS9J7F2VW5HTMKVMTHN",
+      "name": "RUNWAY 5L/R FINAL RADAR, 2 SECTORS",
+      "shortName": "RWY52",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEYASF2K8D4Q4N402R9SAB",
+      "name": "BASE MAP",
+      "shortName": "BASE",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEZ3Z8EQWWEASMSRH5MJ0C",
+      "name": "RNAV IFR/EMERGENCY OBSTRUCTION VIDEO MAP",
+      "shortName": "REOVM",
+      "starsId": 110,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFCYWFVT6EX23Y7C9411FQ",
+      "name": "GSO MINIMUM VECTORING ALTITUDE",
+      "shortName": "MVA",
+      "starsId": 111,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFDQJP4CJ2FSV4V5QGJZGF",
+      "name": "GSO STADIUMS",
+      "shortName": "STADIUM",
+      "starsId": 113,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFEQHM7VX4BT35J7S7GRW2",
+      "name": "INT RNAV RUNWAY 33 APPROACH",
+      "shortName": "INT33",
+      "starsId": 400,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFH6NPZ43CFTH68G3R39J9",
+      "name": "INT RNAV RUNWAY 33 APPROACH FIX NAMES",
+      "shortName": "INT33F",
+      "starsId": 401,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFJ5QEXDBVPFSNJ6T5665D",
+      "name": "MTV RNAV RUNWAY 13/31 APPROACHES",
+      "shortName": "MTVRNAV",
+      "starsId": 402,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFMW769EGEFENF2Q6XEJYS",
+      "name": "MTV RNAV RUNWAY 13/31 APPROACHES FIX NAMES",
+      "shortName": "MTVFIXS",
+      "starsId": 403,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFPVD272HE3P432335NHYE",
+      "name": "MTV LOCALIZER RUNWAY 31 APPROACH",
+      "shortName": "MTVLOC",
+      "starsId": 404,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFRYPC00PM7EVCJEA3S6K1",
+      "name": "SIF RNAV RUNWAY 13/31 APPROACHES",
+      "shortName": "SIFRNAV",
+      "starsId": 405,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFVB1AGS0TAX63C6SYKESW",
+      "name": "BUY RNAV RUNWAY 06/24 APPROACHES",
+      "shortName": "BUYRFIX",
+      "starsId": 407,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFWV3J7MWCP54MRSE3CK8T",
+      "name": "BUY RNAV RUNWAY 13/31 APPROACH FIX NAMES",
+      "shortName": "BUYFIX",
+      "starsId": 408,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFY3JVA99CWEEHYHJZ9G5K",
+      "name": "BUY ILS RUNWAY 06 APPROACH",
+      "shortName": "BUYILS",
+      "starsId": 409,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFYT5FJP1B36FSR9A03KH3",
+      "name": "BUY VOR/DME-A APPROACH",
+      "shortName": "BUYVOR",
+      "starsId": 410,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SFZS917NSTSFKCEJ8GGBMX",
+      "name": "2A5 RNAV RUNWAY 02/20 APPROACHES",
+      "shortName": "2A5RNAV",
+      "starsId": 411,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SG1KEKNKHYP46FBV2T1APA",
+      "name": "2A5 RNAV RUNWAY 02/20 APPROACH FIX NAMES",
+      "shortName": "2A5FIX",
+      "starsId": 412,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SG2K3ZT44T1C8Y75W5FRVJ",
+      "name": "SCR RNAV RUNWAY 04/22 APPROACHES",
+      "shortName": "SCRRNAV",
+      "starsId": 413,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SG3G64YKS0X5D62BFHTF07",
+      "name": "SCR RNAV RUNWAY 04/22 APPROACH FIX NAMES",
+      "shortName": "SCRFIX",
+      "starsId": 414,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SG4QCHSNYT05G2SFY0FXSY",
+      "name": "43A RNAV RUNWAY 03/21 APPROACHES",
+      "shortName": "43ARNAV",
+      "starsId": 415,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SG5FC4XQW027GN9FB27KFX",
+      "name": "43A RUNWAY 03/21 APPROACHES FIX NAMES",
+      "shortName": "43AFIX",
+      "starsId": 416,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SG6BMPPW8H3EGYZ1W2PN7H",
+      "name": "HBI RNAV RUNWAY 03/21 APPROACHES",
+      "shortName": "HBIRNAV",
+      "starsId": 417,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SG6Z508YECDRNJBK92P7K1",
+      "name": "HBI RNAV RUNWAY 03/21 APPROACHES FIX NAMES",
+      "shortName": "HBIFIX",
+      "starsId": 418,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SG7SYKZWWAEXW9RWB4HBVV",
+      "name": "VUJ RNAV RUNWAY 04R/22L APPROACHES",
+      "shortName": "VUJRNAV",
+      "starsId": 419,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SG9888T906970057BK777B",
+      "name": "VUJ RNAV RUNWAY 04R/22L APPROACHES FIX NAMES",
+      "shortName": "VUJFIX",
+      "starsId": 420,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SG9XXZZ3SQCPYMFMZARTR4",
+      "name": "VUJ ILS RUNWAY 22L APPROACH",
+      "shortName": "VUJILS",
+      "starsId": 421,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGAXE7DBY8XYYRCSTS3C6R",
+      "name": "VUJ NDB RUNWAY 22L APPROACH",
+      "shortName": "VUJNDB",
+      "starsId": 422,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGBT6Y4449C5AYFPA2CHAP",
+      "name": "EXX RNAV RUNWAY 06/24 APPROACHES",
+      "shortName": "EXXRNAV",
+      "starsId": 423,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGCFT95659DNF6ECW5DC7A",
+      "name": "RNAV RUNWAY 06-24 APPROACHES FIX NAMES",
+      "shortName": "EXXFIX",
+      "starsId": 424,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGD0AC24WJ8V20WCMSA7E6",
+      "name": "EXX ILS RUNWAY 06 APPROACH",
+      "shortName": "EXXILS",
+      "starsId": 425,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGDPBEV1CBM12D0XFQ9F65",
+      "name": "RUQ RNAV RUNWAY 02-20 APPROACHES",
+      "shortName": "RUQRNAV",
+      "starsId": 426,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGEGRNHJQF3XGQJYT3NF3B",
+      "name": "RNAV RUNWAY 02/20 APPROACHES FIX NAMES",
+      "shortName": "RUQFIX",
+      "starsId": 427,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGF5MV35EBVWTTHARCVBAS",
+      "name": "RUQ ILS RUNWAY 20 APPROACH",
+      "shortName": "RUQILS",
+      "starsId": 428,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGFQHM4Y8J8DXGTPMPC64Q",
+      "name": "RUQ NDB RUNWAY 20 APPROACH",
+      "shortName": "RUQNDB",
+      "starsId": 429,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGGE2KQ49NSZ045MFSRVC4",
+      "name": "8A7 RNAV RUNWAY 09 APPROACH",
+      "shortName": "8A7RNAV",
+      "starsId": 430,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGHAV5ZH38WNXSGV37DPGN",
+      "name": "8A7 RNAV RUNWAY 09 APPROACH FIX NAMES",
+      "shortName": "8A7FIX",
+      "starsId": 431,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGJFFMTG8YV4TST07JG1KF",
+      "name": "INT RNAV RUNWAY 15 APPROACH",
+      "shortName": "INT15",
+      "starsId": 432,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGKEHC0WHQ484RN7REG8Q7",
+      "name": "INT RNAV RUNWAY 15 APPROACH FIX NAMES",
+      "shortName": "INT15F",
+      "starsId": 433,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGMC3PKMCJE4WVQ58B6WRH",
+      "name": "INT ILS RUNWAY 33 APPROACH",
+      "shortName": "INTILS",
+      "starsId": 434,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGN4M3SQZN1XZQ06HE0WWP",
+      "name": "MWK RNAV RUNWAY 18/36 APPROACHES",
+      "shortName": "MWKRNAV",
+      "starsId": 437,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGP5SJY59HZX4S10PMR70V",
+      "name": "MWK RNAV RUNWAY 18/36 APPROACHES FIX NAMES",
+      "shortName": "MWKFIX",
+      "starsId": 438,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGPXSQ3YDXCEQY46EH7BM6",
+      "name": "CLT AREA T ROUTES",
+      "shortName": "T ROUTE",
+      "starsId": 439,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGQMCYF5EYZED0XGC5TY4B",
+      "name": "US INTERSTATES/STATE ROUTES",
+      "shortName": "HIGHWAY",
+      "starsId": 441,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGRSSZK7Y8MR3RJGHG4KF7",
+      "name": "GSO COUNTIES",
+      "shortName": "COUNTY",
+      "starsId": 442,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SGSE9GBEWR9NMJZE9X1NRJ",
+      "name": "GSO RNAV RUNWAY 5R APPROACH",
+      "shortName": "RNAV05R",
+      "starsId": 443,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SGTE1GE35FBBTVRT1PWJCB",
+      "name": "GSO RNAV RUNWAY 5L APPROACH",
+      "shortName": "RNAV05L",
+      "starsId": 444,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SGTZ9XSQBRFK3D1W7EQWH2",
+      "name": "GSO RNAV RUNWAY 5L/R APPROACHES FIX NAMES",
+      "shortName": "5FIXES",
+      "starsId": 445,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SGWBEAWWNPCQKAK8SEVZJ1",
+      "name": "GSO RNAV RUNWAY 14 APPROACH",
+      "shortName": "RNAV14",
+      "starsId": 446,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SGX0YDKRJ12R0BNSK26BYD",
+      "name": "GSO RNAV RUNWAY 14 APPROACH FIX NAMES",
+      "shortName": "14FIX",
+      "starsId": 447,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SH0EJ1F7GHNK48HHPTPTY4",
+      "name": "GSO RNAV RUNWAY 23L APPROACH",
+      "shortName": "RNAV23L",
+      "starsId": 448,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SH16HVB1A192KRGA8Y1F6J",
+      "name": "GSO RNAV RUNWAY 23R APPROACH",
+      "shortName": "RNAV23R",
+      "starsId": 449,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SGXKQW5D90J9T3MJ8E3T60",
+      "name": "GSO RNAV RUNWAY 23L/R APPROACH FIX NAMES",
+      "shortName": "23FIXES",
+      "starsId": 450,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SH1SQ0N5RVCXEZTD4Z1JQ3",
+      "name": "GSO RNAV RUNWAY 32 APPROACH",
+      "shortName": "RNAV32",
+      "starsId": 451,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SH2MTYHWCHGZ1E2MK4E7PC",
+      "name": "GSO RNAV RUNWAY 32 APPROACH FIX NAMES",
+      "shortName": "32FIXES",
+      "starsId": 452,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SH34Y0PKD067QVY396M244",
+      "name": "CLT AREA T ROUTE FIX NAMES",
+      "shortName": "T NAMES",
+      "starsId": 453,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SH3YRXW9FEZ7YC6X2H5266",
+      "name": "STATE ROADS",
+      "shortName": "ROADS",
+      "starsId": 454,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SH4FV0S76V24Y32F0Q74ZG",
+      "name": "ALL RNAV APPROACHES",
+      "shortName": "RNAVS",
+      "starsId": 600,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SH5HSAMQ7KV016H6HP7ER6",
+      "name": "ALL RNAV APPROACH T FIXES",
+      "shortName": "T FIXES",
+      "starsId": 610,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9SH6YRC0MQDCQM5PE8KP1FW",
+      "name": "TRSHA DEPARTURE",
+      "shortName": "TRSHA",
+      "starsId": 620,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SH7J0RPBTAQV65B0S1WFDV",
+      "name": "TRIAD DEPARTURE",
+      "shortName": "TRIAD",
+      "starsId": 621,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SH8024D2MR4MCX5PTD96J0",
+      "name": "TRAKS ARRIVAL",
+      "shortName": "TRAKS",
+      "starsId": 622,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SH8DF419974TS2PSWXDSQW",
+      "name": "5NC7 COPTER RNAV APPROACH",
+      "shortName": "COPTER",
+      "starsId": 623,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9YJP38CWD34049ACW2C9N7E",
+      "name": "INT TOWER BASE",
+      "shortName": "INTBASE",
+      "starsId": 655,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JDKRKG7H9XS6S232V6",
+      "name": "INT TDM ERAM",
+      "shortName": "INTTDM",
+      "starsId": 984,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JE1MC8S0T2YMMPE9SR",
+      "name": "GSO TDM ERAM",
+      "shortName": "GSOTDM",
+      "starsId": 988,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01H9SEGK4HP5Z7NDMZFY41MKYZ",
+      "name": "RUNWAY 14 FINAL RADAR, 2 SECTORS",
+      "shortName": "RWY142",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEEV3NMMMH0XV9KVKRDZYZ",
+      "name": "RUNWAY 14 FINAL RADAR, 3 SECTORS",
+      "shortName": "RWY143",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEM3K0RR46DVXKB74HJSSE",
+      "name": "RUNWAY 23 FINAL RADAR, 2 SECTORS",
+      "shortName": "RWY232",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEKAAAJH3ZQSD4F8MP2YNH",
+      "name": "RUNWAY 23 FINAL RADAR, 3 SECTORS",
+      "shortName": "RWY233",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEQNRK6MWXNVB4T3D5CZHG",
+      "name": "RUNWAY 32 FINAL RADAR, 2 SECTORS",
+      "shortName": "RWY322",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEPACHNHSEMMJBD5G4RFW2",
+      "name": "RUNWAY 32 FINAL RADAR, 3 SECTORS",
+      "shortName": "RWY323",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SEVVS9J7F2VW5HTMKVMTHN",
+      "name": "RUNWAY 5L/R FINAL RADAR, 2 SECTORS",
+      "shortName": "RWY52",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9SETV54EAXNJP3CF09A88Y5",
+      "name": "RUNWAY 5L/R FINAL RADAR, 3 SECTORS",
+      "shortName": "RWY53",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    }
+  ]
+}

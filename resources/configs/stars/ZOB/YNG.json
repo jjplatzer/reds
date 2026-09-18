@@ -1,0 +1,216 @@
+{
+  "artcc": "ZOB",
+  "facility": "YNG",
+  "name": "Youngstown ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.65805,
+    "lon": -81.181585
+  },
+  "controlPositions": [
+    {
+      "id": "01G92VZ8AWTJ7TK087Q5YEQE2W",
+      "name": "Approach",
+      "callsign": "YNG_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 133.95
+    },
+    {
+      "id": "01G92W0TN49RKZV1F8V6PWG7HJ",
+      "name": "Clearance Delivery",
+      "callsign": "YNG_DEL",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 118.25
+    },
+    {
+      "id": "01G92W28CEHQ7CG62W8SKH79HN",
+      "name": "Ground",
+      "callsign": "YNG_GND",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G92W2XEG2MECTHYVK3S6YSSZ",
+      "name": "Local Control",
+      "callsign": "YNG_TWR",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 119.5
+    },
+    {
+      "id": "01HDWY6CHCCZV7GPRSPFBXY37V",
+      "name": "TMU/OTHER",
+      "callsign": "YNG_T_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 123.45
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1L",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GNMFNE3TE62XR3TXETF33HVH",
+      "name": "(YNG) RVM",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GNMG2YZZJM0ZNRBAH3NR9BAM",
+      "name": "(YNG) MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNMFNE3V51FS9TCBB9VY9VQ6",
+      "name": "(YNG) TRSA",
+      "shortName": "TRSA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNMG2YZZVXJDKS1PW1JVKEEF",
+      "name": "(YNG) TDM",
+      "shortName": "TDM",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNMG2Z00PMRM6FX9HTW6QVRR",
+      "name": "(YNG) ZOB Low",
+      "shortName": "ZOB",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GNMG2YZYKNBSKHABAD6EECQZ",
+      "name": "(YNG) Coastline",
+      "shortName": "COAST",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    }
+  ]
+}

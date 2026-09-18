@@ -1,0 +1,61 @@
+{
+  "artcc": "ZDC",
+  "facility": "GSB",
+  "name": "Seymour Johnson ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 37,
+    "lon": -77
+  },
+  "controlPositions": [
+    {
+      "id": "01HA7RJYBX051YNW8XA97JRB7D",
+      "name": "North Approach",
+      "callsign": "GSB_N_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 123.7
+    },
+    {
+      "id": "01HAANBCMF1FNH1SX1CV4H99ZY",
+      "name": "Local",
+      "callsign": "GSB_TWR",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 126.25
+    },
+    {
+      "id": "01HAANC5XFVKXRD0R79781AP03",
+      "name": "Ground",
+      "callsign": "GSB_GND",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 128.025
+    },
+    {
+      "id": "01HAQBAJBE30H2C196TYK89T9M",
+      "name": "South Approach",
+      "callsign": "GSB_S_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 119.7
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HAWSHCGSQCPWW4V4BQ69XASX",
+      "name": "GSB Base",
+      "shortName": "RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    }
+  ]
+}

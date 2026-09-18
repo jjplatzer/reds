@@ -1,0 +1,244 @@
+{
+  "artcc": "ZAU",
+  "facility": "SBN",
+  "name": "South Bend ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.879166749999996,
+    "lon": -88.975
+  },
+  "controlPositions": [
+    {
+      "id": "01H5FXTRVMN5FKCKFYHYMBSVXZ",
+      "name": "North Approach",
+      "callsign": "SBN_N_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 118.55
+    },
+    {
+      "id": "01H5FXZB02HQR84V9GGNNG7K82",
+      "name": "Local",
+      "callsign": "SBN_TWR",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 135.675
+    },
+    {
+      "id": "01H5FY0GF5MYZ8QNT1E7XH2R80",
+      "name": "Ground",
+      "callsign": "SBN_GND",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01H5FY12GT66SF4Y0D8J586HNY",
+      "name": "Clearance Delivery",
+      "callsign": "SBN_DEL",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01HGDR9X48DWJYPB1SE50Q9GSG",
+      "name": "South Approach",
+      "callsign": "SBN_S_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 132.05
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1L",
+        "1N",
+        "1S"
+      ],
+      "mapIds": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6,
+        7,
+        23,
+        8,
+        24,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        8,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        23,
+        24,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GFM267CC5VZHQMKKC71THADW",
+      "name": "SBN MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM267CA8VH82HAE92JZE5XM",
+      "name": "SBN MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK7WR04ZD1YFD6737J7DXAPE",
+      "name": "SBN VFR",
+      "shortName": "VFR",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK7WJR6PZD4HT7BEP453Q62C",
+      "name": "SBN RNAV APPROACHES",
+      "shortName": "SBN RNV",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM267CF6AWGAS6TQ710GEWZ",
+      "name": "SBN VICTOR AIRWAYS",
+      "shortName": "VT RTES",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JFD5Q9M2G39XRZK63Q7NZJZF",
+      "name": "SBN AIRPORT DIAGRAMS",
+      "shortName": "AP DIAG",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KCWM1NZDHBX0X7ZWR7SNRGA7",
+      "name": "SBN STARS",
+      "shortName": "STARS",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK7WBWVH617Y8BK2FW3S45PZ",
+      "name": "SBN SATELLITE APPROACHES A",
+      "shortName": "SAT A",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K7F53750SQG2C9BDQX5HBJPV",
+      "name": "SBN C90 AREA Z",
+      "shortName": "AREA Z",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KK7WH6BKHW35XYQTA0R050CM",
+      "name": "SBN SATELLITE APPROACHES B",
+      "shortName": "SAT B",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    }
+  ]
+}

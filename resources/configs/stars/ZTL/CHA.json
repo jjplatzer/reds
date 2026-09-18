@@ -1,0 +1,482 @@
+{
+  "artcc": "ZTL",
+  "facility": "CHA",
+  "name": "Chattanooga ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.90558406666667,
+    "lon": -83.96840666666667
+  },
+  "controlPositions": [
+    {
+      "id": "01GYBYMMXNQVD3W4DJ1WTXV2EV",
+      "name": "Radar East",
+      "callsign": "CHA_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 125.1
+    },
+    {
+      "id": "01GYBYVV8B1AZ38QH7FAB02GDX",
+      "name": "Radar West",
+      "callsign": "CHA_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 119.2
+    },
+    {
+      "id": "01GYBYX56TD4WHQ7VQA3HM368C",
+      "name": "Local Control",
+      "callsign": "CHA_TWR",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01H2H34XP8VZ2SKVB7V7K8MXSB",
+      "name": "Ground Control",
+      "callsign": "CHA_GND",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01H2H390W50YPX8KZPG2Y14AXD",
+      "name": "Clearance Delivery",
+      "callsign": "CHA_DEL",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 120.95
+    },
+    {
+      "id": "01H4Q46GNMEEPVYP10KC6H9KZM",
+      "name": "Radar Final ",
+      "callsign": "CHA_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 126.5
+    },
+    {
+      "id": "01J9W9DEEDQC08WCDRZ6VGF6DR",
+      "name": "CHA GUARD",
+      "callsign": "CHA_G_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        3,
+        10,
+        43,
+        null,
+        44,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        3,
+        43,
+        44,
+        10,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1E",
+        "1F",
+        "1W"
+      ],
+      "mapIds": [
+        3,
+        7,
+        43,
+        6,
+        44,
+        5,
+        47,
+        48,
+        30,
+        31,
+        33,
+        32,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        41,
+        45,
+        46,
+        49,
+        55,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        3,
+        43,
+        44,
+        7,
+        6,
+        5
+      ],
+      "submenuMapIds": [
+        47,
+        30,
+        33,
+        34,
+        36,
+        38,
+        41,
+        46,
+        55,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        48,
+        31,
+        32,
+        35,
+        37,
+        39,
+        45,
+        49,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HA84W25ACGHEPAKFT9BM1JQZ",
+      "name": "CHA MINIMUM VECTORING ALTITUDE",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25AZF9X7AZ31MDPTEGQ",
+      "name": "CHA EMERGENCY OBSTRUCTION VIDEO MAP",
+      "shortName": "EOVM",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25BDV59TVWMMF53SG9M",
+      "name": "WAYPOINTS/AIRPORTS",
+      "shortName": "GPS APT",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA84W25BS28P72SSKH2B6TQK",
+      "name": "CHA RNAV APPROACHES",
+      "shortName": "RNAVAPP",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25C6QD0GD2XZSRN3CEJ",
+      "name": "CHA NUCLEAR",
+      "shortName": "NUCLEAR",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA84W25CCKMX0YNGHJD2GB9M",
+      "name": "CHA TOWER MAP",
+      "shortName": "TWR",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA84W25DM02BB6PQP9ZD47YM",
+      "name": "CHA STADIUMS",
+      "shortName": "STADIUM",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25DV0GHD5S1GETWSY7J",
+      "name": "DNN ILS/LOC RWY 14",
+      "shortName": "DNN I14",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25DPNQ7A98KAKGRYGQZ",
+      "name": "DNN RNAV RWY 14/32",
+      "shortName": "DNNRNAV",
+      "starsId": 31,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25E5NRM9KYDGZX53GNK",
+      "name": "0TN8 COPTER RNAV 211",
+      "shortName": "0TN8COP",
+      "starsId": 32,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25ERCRNSWVA55MEB6H2",
+      "name": "APT RNAV RWY 4",
+      "shortName": "APTRNAV",
+      "starsId": 33,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25EYDWVC623DVY3B8H0",
+      "name": "2A0 RNAV RWY 3/21",
+      "shortName": "2A0RNAV",
+      "starsId": 34,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25ENDFSKPEVF0QZTCP9",
+      "name": "MMI RNAV RWY 2",
+      "shortName": "MMIRNAV",
+      "starsId": 35,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25FHX6M8K5YZYAZ9AVW",
+      "name": "RZR RNAV RWY 3/21",
+      "shortName": "RZRRNAV",
+      "starsId": 36,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25F9HGJPA1X2JMR89A4",
+      "name": "9A5 RNAV RWY 2/20",
+      "shortName": "9A5RNAV",
+      "starsId": 37,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25F0TSQ8G4A3K7J9P9B",
+      "name": "CZL RNAV RWY 17",
+      "shortName": "CZLRNAV",
+      "starsId": 38,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA84W25GDYS702BTXP4SG146",
+      "name": "RMG RNAV RWY 19",
+      "shortName": "RMGRNAV",
+      "starsId": 39,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA84W25GM6FK9DYM0CF8JNYZ",
+      "name": "4A6 RNAV RWY 22",
+      "shortName": "4A6RNAV",
+      "starsId": 41,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25GQ1QBB2XXNT20N1XX",
+      "name": "CHA FINAL BOX",
+      "shortName": "FNLBOX",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA84W25HP63D5CVD00VVDAN4",
+      "name": "CHA RNAV RWY 20/2",
+      "shortName": "RNAV202",
+      "starsId": 43,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA84W25HQS6JJ0BREHCRG1VC",
+      "name": "CHA RNAV RWY 15/33",
+      "shortName": "RNV1533",
+      "starsId": 44,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA84W25HH2A10D1EWMK361XH",
+      "name": "CHA RNAV 210",
+      "shortName": "RNAV210",
+      "starsId": 45,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA84W25H4HRK8J7GQH5RYWKZ",
+      "name": "4A9 RNAV RWY 22",
+      "shortName": "4A9RNAV",
+      "starsId": 46,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25J02SZ3YGAD38BHK6P",
+      "name": "CHA NORTH FLOW",
+      "shortName": "NORTH",
+      "starsId": 47,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA84W25J0EAQS2F50K2NWQMJ",
+      "name": "CHA SOUTH FLOW",
+      "shortName": "SOUTH",
+      "starsId": 48,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA84W25JW0TVFH0PZCTA6MQN",
+      "name": "18TN COPTER RNAV",
+      "shortName": "18TNCOP",
+      "starsId": 49,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA84W25BW73K4JMXBHZV8WJ5",
+      "name": "CHA EMERGENCY OBSTRUCTION VIDEO MAP 2",
+      "shortName": "EOVM2",
+      "starsId": 55,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J7D232JCGNK5D88JAG0WETGJ",
+      "name": "CHA TDM ERAM",
+      "shortName": "CHATDM",
+      "starsId": 993,
+      "brightnessCategory": "A"
+    }
+  ]
+}

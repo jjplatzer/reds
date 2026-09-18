@@ -1,0 +1,915 @@
+{
+  "artcc": "ZOB",
+  "facility": "D21",
+  "name": "Detroit TRACON",
+  "type": "Tracon",
+  "defaultCenter": {
+    "lat": 41.65805,
+    "lon": -81.181585
+  },
+  "controlPositions": [
+    {
+      "id": "01G909CYDT7WAKHR2B93KD1QME",
+      "name": "Departure East",
+      "callsign": "DTW_E_DEP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 132.025
+    },
+    {
+      "id": "01G909F7JH4VE5517STF2M4ZY0",
+      "name": "Departure West",
+      "callsign": "DTW_W_DEP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 125.525
+    },
+    {
+      "id": "01G909GJZR51PKPQSE4Y0S5Z6P",
+      "name": "Satellite West",
+      "callsign": "DTW_Y_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 118.95
+    },
+    {
+      "id": "01G909HMH36P8Z56VVFRVJ9CT8",
+      "name": "Satellite East",
+      "callsign": "DTW_D_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 134.3
+    },
+    {
+      "id": "01G909JBRP61Q5V6F7Q749F0J0",
+      "name": "Satellite North",
+      "callsign": "DTW_P_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 132.35
+    },
+    {
+      "id": "01G909K4K6AWV84SHEPX6NM2WZ",
+      "name": "Feeder Northwest",
+      "callsign": "DTW_R_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 126.85
+    },
+    {
+      "id": "01G909KZD5MVXFKV5SE8YNBYZ7",
+      "name": "Feeder Southwest",
+      "callsign": "DTW_V_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 124.975
+    },
+    {
+      "id": "01G909MNJCGC133P1AGFHK3QWS",
+      "name": "Feeder Northeast",
+      "callsign": "DTW_F_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 126.225
+    },
+    {
+      "id": "01G909NWTGPN5CZTFE0H5RGH96",
+      "name": "Feeder Southeast",
+      "callsign": "DTW_H_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 124.25
+    },
+    {
+      "id": "01G909PKH9K22NZSTSMHC30SYP",
+      "name": "Final West",
+      "callsign": "DTW_A_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 124.05
+    },
+    {
+      "id": "01G909QF6VTXW918SVQTRD1MVD",
+      "name": "Final East",
+      "callsign": "DTW_B_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 125.15
+    },
+    {
+      "id": "01G909RQBPJJ5RWCTXYP5GBMW5",
+      "name": "Final Third",
+      "callsign": "DTW_Z_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 123.9
+    },
+    {
+      "id": "01HDV18V30VBS4KED05A84XYA6",
+      "name": "TMU",
+      "callsign": "DTW_T_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 123.45
+    },
+    {
+      "id": "01HFARP32E78G0D28WQNPMP8AM",
+      "name": "Monitor West",
+      "callsign": "DTW_I_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 127.05
+    },
+    {
+      "id": "01HFARX42DQFJ1KSWZV00RVDNW",
+      "name": "Monitor East",
+      "callsign": "DTW_K_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 128.35
+    },
+    {
+      "id": "01HFARYBH1BK3WTH0HMPFV6Q52",
+      "name": "Monitor Center",
+      "callsign": "DTW_J_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 135.775
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1Q",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1X",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2D",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2L",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2M",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2N",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2P",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2T",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2Y",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1B",
+        "1E",
+        "1F",
+        "1H",
+        "1R",
+        "1V",
+        "1W",
+        "1X",
+        "1Z",
+        "2D",
+        "2L",
+        "2M",
+        "2N",
+        "2P",
+        "2T",
+        "2Y"
+      ],
+      "mapIds": [
+        1,
+        2,
+        6,
+        23,
+        28,
+        67,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        124,
+        125,
+        118,
+        119,
+        201,
+        202,
+        203,
+        211,
+        214,
+        216,
+        220,
+        225,
+        37,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        6,
+        28,
+        2,
+        23,
+        67
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        124,
+        118,
+        201,
+        203,
+        214,
+        220,
+        37,
+        null,
+        8,
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        125,
+        119,
+        202,
+        211,
+        216,
+        225,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1G",
+        "1L",
+        "1M",
+        "1N",
+        "1Q",
+        "1T"
+      ],
+      "mapIds": [
+        54,
+        52,
+        55,
+        2,
+        56,
+        37,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        124,
+        125,
+        118,
+        119,
+        133,
+        134,
+        515,
+        516,
+        517,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        54,
+        55,
+        56,
+        52,
+        2,
+        37
+      ],
+      "submenuMapIds": [
+        13,
+        15,
+        17,
+        19,
+        124,
+        118,
+        133,
+        515,
+        517,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        14,
+        16,
+        18,
+        20,
+        125,
+        119,
+        134,
+        516,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HB4J46GDVVZGTJXYDYMEVXQ1",
+      "name": "DTW-001 (MVA)",
+      "shortName": "MVA",
+      "starsId": 1,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4GJZ5CANR3ADG43ZW56QDV",
+      "name": "DTW-002 (CLASS B)",
+      "shortName": "CLASS-B",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4GKNAXYZPE5HZRVGCM33QZ",
+      "name": "DTW-006 (CLASS D)",
+      "shortName": "CLASS-D",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4GQ5CDDZJMV055ABJG76YR",
+      "name": "DTW-007 (SF-ARR FEEDER)",
+      "shortName": "S_ARR",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4GRC1SFBV1JWP3DAFYA7M3",
+      "name": "DTW-008 (SF-DEP SAT)",
+      "shortName": "S_DEP",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4GS5XFKHNE4VXZ36Q2P4GR",
+      "name": "DTW-009 (NF-ARR FEEDER)",
+      "shortName": "N_ARR",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4J38WR1EBEXJW2JBE3H5YH",
+      "name": "DTW-010 (NF-DEP SAT)",
+      "shortName": "N_DEP",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4GTWH2N38WQ6DAYYH4TDBN",
+      "name": "DTW-011 (WF-ARR FEEDER)",
+      "shortName": "W_ARR",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4GVKPWC6R5SXVZ8PJY3PCM",
+      "name": "DTW-012 (WF-DEP SAT)",
+      "shortName": "W_DEP",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4GWC6VZ29P8HG6S8073P5B",
+      "name": "DTW-013 (22R Z)",
+      "shortName": "22R-Z",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4GX6Z4DPWVCSEPNP0QT95X",
+      "name": "DTW-014 (4L Z)",
+      "shortName": "4L-Z",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4GY2RD7FJH5Z0FF51XBDMJ",
+      "name": "DTW-015 (22L)",
+      "shortName": "22L",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4GYQ59JPR36MK1YFCKAPSB",
+      "name": "DTW-016 (4R)",
+      "shortName": "4R",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4GZM4AXVXAY2J1WQE53KPZ",
+      "name": "DTW-017 (21L)",
+      "shortName": "21L",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4H0E6H9PNSEP7W737XBZGR",
+      "name": "DTW-018 (3R)",
+      "shortName": "3R",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4H145KHZ3AFY7RPDCDX1X5",
+      "name": "DTW-019 (27R)",
+      "shortName": "27R",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4H1SGEVDZC9B43NMGGXT9F",
+      "name": "DTW-020 (27L)",
+      "shortName": "27L",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4GMCQW2C78F6FJWSVZHM1V",
+      "name": "DTW-023 (SAT APCH)",
+      "shortName": "SATAPCH",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4GNFNWV7NESWEY72SBRWHC",
+      "name": "DTW-028 (ZOB)",
+      "shortName": "ZOB",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4KCAX7JA5KN7HCV668PVYQ",
+      "name": "DTW-037 (HIGHWAYS)",
+      "shortName": "HWY",
+      "starsId": 37,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4H8M1TYATS5163XHF4HX58",
+      "name": "DTW-052 (VFR REPORTING POINTS)",
+      "shortName": "VFR PTS",
+      "starsId": 52,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4H60DFF83MA9Y2JBSWH7KA",
+      "name": "DTW-054 (SF-TOWER)",
+      "shortName": "SF-TWR",
+      "starsId": 54,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4H79N0R6XSBWZSZHW62MWN",
+      "name": "DTW-055 (NF-TOWER)",
+      "shortName": "NF-TWR",
+      "starsId": 55,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4H7ZY8P3B2X73CBAZ6PYMT",
+      "name": "DTW-056 (WF-TOWER)",
+      "shortName": "WF-TWR",
+      "starsId": 56,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4GP603A9DD529CSFGK67T0",
+      "name": "DTW-067 (HOLDING PATTERNS)",
+      "shortName": "HOLD",
+      "starsId": 67,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4H3ZN7GVTDNV2EA5D349PA",
+      "name": "DTW-118 (NORTH FLOW CAGE)",
+      "shortName": "N-CAGE",
+      "starsId": 118,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4H54TCTCHD06QAYN0W9DFN",
+      "name": "DTW-119 (SOUTH FLOW CAGE)",
+      "shortName": "S-CAGE",
+      "starsId": 119,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4H2CHDS02V1N183PNK3WXS",
+      "name": "DTW-124 (4L Y)",
+      "shortName": "4L-Y",
+      "starsId": 124,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4H35VKEAMNR7QH3X58ZWX6",
+      "name": "DTW-125 (22R Y)",
+      "shortName": "22R-Y",
+      "starsId": 125,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB4KNEATMY32V5J83PZ50ZSK",
+      "name": "DTW-133 (NORTH FLOW INITIAL SIDS)",
+      "shortName": "NF_SID",
+      "starsId": 133,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4KPZPBTPAGB2QXAE841SEB",
+      "name": "DTW-134 (SOUTH FLOW INITIAL SIDS)",
+      "shortName": "SF_SID",
+      "starsId": 134,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4H9N625MVC2AV7QN2ENF26",
+      "name": "DTW-201 (NORTH FLOW SIDS)",
+      "shortName": "N_SID",
+      "starsId": 201,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4HB9YX8WB5VPFG9M1H8FDA",
+      "name": "DTW-202 (SOUTH FLOW SIDS)",
+      "shortName": "S_SID",
+      "starsId": 202,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4HCNWKR8DWCV124QKM0WF4",
+      "name": "DTW-203 (METRO SID)",
+      "shortName": "METRO",
+      "starsId": 203,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4HDDDQYCEAPCDHZW3MNVWP",
+      "name": "DTW-211 (NORTH FLOW STARS)",
+      "shortName": "N_STAR",
+      "starsId": 211,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4HE9ZK6S4CQ69BV8NSH47H",
+      "name": "DTW-214 (WEST FLOW STARS)",
+      "shortName": "W_STAR",
+      "starsId": 214,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4HF5WZZ3KP3PEQSC96TF4Z",
+      "name": "DTW-216 (SOUTH FLOW STARS)",
+      "shortName": "S_STAR",
+      "starsId": 216,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4HFXDBR8NJ4CMQZGM85DZS",
+      "name": "DTW-220 (SATELLITE STARS)",
+      "shortName": "SATSTAR",
+      "starsId": 220,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4HHAS9Z3DXTJ19P06JTVB7",
+      "name": "DTW-225 (BRWNZ STAR)",
+      "shortName": "BRWNZ",
+      "starsId": 225,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4M2QMJJ6N0VMMDAC76CRXF",
+      "name": "DTW-515 (SF-TOWER ADJACENT AIRSPACE)",
+      "shortName": "SF-ADJ",
+      "starsId": 515,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4M4MPAY5B7GDZADJHFY8X7",
+      "name": "DTW-516 (NF-TOWER ADJACENT AIRSPACE)",
+      "shortName": "NF-ADJ",
+      "starsId": 516,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4M5FAEHMWY4PPVF3NK06BQ",
+      "name": "DTW-517 (WF-TOWER ADJACENT AIRSPACE)",
+      "shortName": "WF-ADJ",
+      "starsId": 517,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4M6ADA9M7C0DP7KF5FRBKF",
+      "name": "DTW-600 (NF DEP DELEGATIONS)",
+      "shortName": "ND-DEL",
+      "starsId": 600,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4M7JDYA1ZAV1MKYWAWKZ59",
+      "name": "DTW-601 (NF SAT DELEGATIONS)",
+      "shortName": "NS-DEL",
+      "starsId": 601,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4M8SDTTQHD1R8Z0WR13R82",
+      "name": "DTW-602 (NF ARR FEEDER DELEGATIONS)",
+      "shortName": "NA-DEL",
+      "starsId": 602,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4M9GZRB33QRTPEASY77H0A",
+      "name": "DTW-604 (SF DEP DELEGATIONS)",
+      "shortName": "SD-DEL",
+      "starsId": 604,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4MABDCK6RXHCWB500F0CPP",
+      "name": "DTW-605 (SF SAT DELEGATIONS)",
+      "shortName": "SS-DEL",
+      "starsId": 605,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4MB77RWRC3R22HDECRQMM7",
+      "name": "DTW-606 (SF ARR FEEDER DELEGATIONS)",
+      "shortName": "SA-DEL",
+      "starsId": 606,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4MCEAYKBXSQ59F7PCE976M",
+      "name": "DTW-608 (WF DEP DELEGATIONS)",
+      "shortName": "WD-DEL",
+      "starsId": 608,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4MDDNHQH7M7JFE1AKRK1ZC",
+      "name": "DTW-609 (WF SAT DELEGATIONS)",
+      "shortName": "WS-DEL",
+      "starsId": 609,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4ME7ETWNJ751VWW93Z100R",
+      "name": "DTW-610 (WF ARR FEEDER DELEGATIONS)",
+      "shortName": "WA-DEL",
+      "starsId": 610,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNMM19BMBEHZY6WCKDX9BF1F",
+      "name": "(D21) APT DIAGRAM",
+      "shortName": "APT",
+      "starsId": 999,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HB4M2QMJJ6N0VMMDAC76CRXF",
+      "name": "DTW-515 (SF-TOWER ADJACENT AIRSPACE)",
+      "shortName": "SF-ADJ",
+      "starsId": 515,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4M4MPAY5B7GDZADJHFY8X7",
+      "name": "DTW-516 (NF-TOWER ADJACENT AIRSPACE)",
+      "shortName": "NF-ADJ",
+      "starsId": 516,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB4M5FAEHMWY4PPVF3NK06BQ",
+      "name": "DTW-517 (WF-TOWER ADJACENT AIRSPACE)",
+      "shortName": "WF-ADJ",
+      "starsId": 517,
+      "brightnessCategory": "B"
+    }
+  ]
+}

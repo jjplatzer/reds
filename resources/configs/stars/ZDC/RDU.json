@@ -1,0 +1,522 @@
+{
+  "artcc": "ZDC",
+  "facility": "RDU",
+  "name": "Raleigh ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 37,
+    "lon": -77
+  },
+  "controlPositions": [
+    {
+      "id": "01GS5N6N039MJ6592SSYGDCVA7",
+      "name": "North Departure Radar",
+      "callsign": "RDU_N_DEP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 132.35
+    },
+    {
+      "id": "01GS5N7KETK00W5X3MDDGTEV0N",
+      "name": "South Departure Radar",
+      "callsign": "RDU_S_DEP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 125.3
+    },
+    {
+      "id": "01GS5N84CT880KA8TP2CBZJRKB",
+      "name": "East Arrival Radar",
+      "callsign": "RDU_E_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 124.95
+    },
+    {
+      "id": "01GS5N8PYFFXQB3AKT5VM9CAC1",
+      "name": "West Arrival Radar",
+      "callsign": "RDU_W_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 127.675
+    },
+    {
+      "id": "01GS5N9B438Z112S5WVNGDJH0B",
+      "name": "East Final Radar",
+      "callsign": "RDU_U_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 124.8
+    },
+    {
+      "id": "01GS5NA0RP82T92HB3FWS8T3PF",
+      "name": "West Final Radar",
+      "callsign": "RDU_Y_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 135.15
+    },
+    {
+      "id": "01GS5NAMTSV85A2S3BEQBEKRJT",
+      "name": "Local Control East",
+      "callsign": "RDU_E_TWR",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 127.45
+    },
+    {
+      "id": "01GS5NB6EK5YX26SZ6KKB55WRR",
+      "name": "Local Control West",
+      "callsign": "RDU_W_TWR",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 119.3
+    },
+    {
+      "id": "01GS5NDG24EF1AZ3XNMW34F3WG",
+      "name": "Ground Control West",
+      "callsign": "RDU_W_GND",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01GS5NDZHYFEYW8SVGD5YF37B6",
+      "name": "Ground Control East",
+      "callsign": "RDU_E_GND",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GS5NERQZS32TWSPKXQ47AAVC",
+      "name": "Clearance Delivery",
+      "callsign": "RDU_DEL",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 120.1
+    },
+    {
+      "id": "01JB5DRRC5FFE38ZDTZQX2K105",
+      "name": "121.5 GUARD",
+      "callsign": "RDU_GG_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1T",
+        "1W",
+        "1N",
+        "1S",
+        "1F",
+        "1G",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        null,
+        999,
+        null,
+        100,
+        200,
+        101,
+        201,
+        102,
+        202,
+        103,
+        203,
+        104,
+        204,
+        105,
+        205,
+        106,
+        310,
+        301,
+        311,
+        302,
+        312,
+        303,
+        313,
+        304,
+        314,
+        305,
+        315,
+        306,
+        316,
+        307,
+        null,
+        308,
+        null,
+        309,
+        999
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        999,
+        2,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        310,
+        311,
+        312,
+        313,
+        314,
+        315,
+        316,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GXEFZGFGBYDKVP5JKCRYTMT8",
+      "name": "RDU SW RVM",
+      "shortName": "SW RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GXEFYBPQST1XZXFH545PSRPF",
+      "name": "RDU NE RVM",
+      "shortName": "NE RVM",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKBRQP0MYR20EZX2CZMTXJT1",
+      "name": "RDU MVA",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD62D774JQR1W3F7N3Z7A4P",
+      "name": "RDU SID BEXGO",
+      "shortName": "BEXGO",
+      "starsId": 100,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD62D77CBHCC8QJBY21XB2G",
+      "name": "RDU SID HOOKZ",
+      "shortName": "HOOKZ",
+      "starsId": 101,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD62D78NN97NJPX3BV2FY77",
+      "name": "RDU SID HURIC",
+      "shortName": "HURIC",
+      "starsId": 102,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD62D78HGS8R6RMX8CBDNZT",
+      "name": "RDU SID LWOOD",
+      "shortName": "LWOOD",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD62D79QZEZ5XS3KQG0WNAP",
+      "name": "RDU SID OXFRD",
+      "shortName": "OXFRD",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD62D79XK0ARYM6YCHW5P36",
+      "name": "RDU SID ROZBO",
+      "shortName": "ROZBO",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD62D7AF7691ZN3ZD7GMTR4",
+      "name": "RDU SID SHPRD",
+      "shortName": "SHPRD",
+      "starsId": 106,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD6354JHCGAH4VJEP4AJRJA",
+      "name": "RDU STAR ALDAN",
+      "shortName": "ALDAN",
+      "starsId": 200,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD6354KETJ9H0FH6RADCZDZ",
+      "name": "RDU STAR BLOGS",
+      "shortName": "BLOGS",
+      "starsId": 201,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD6354M24PAMKPAH4NEJK70",
+      "name": "RDU STAR BRADE",
+      "shortName": "BRADE",
+      "starsId": 202,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD6354MYXHYXQYKDRXH0QRQ",
+      "name": "RDU STAR BUZZY",
+      "shortName": "BUZZY",
+      "starsId": 203,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD6354NE988MEHX62XXND3W",
+      "name": "RDU STAR DMSTR",
+      "shortName": "DMSTR",
+      "starsId": 204,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD6354PGW8MJ98QDD2KD41B",
+      "name": "RDU STAR TAQLE",
+      "shortName": "TAQLE",
+      "starsId": 205,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYTP474QBW5X9VY3CR9",
+      "name": "RDU IAP I05L",
+      "shortName": "I05L",
+      "starsId": 300,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYVD520FKCYZC7NZE4D",
+      "name": "RDU IAP I05R",
+      "shortName": "I05R",
+      "starsId": 301,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYVWZGAN5JZS44PJJFG",
+      "name": "RDU IAP I23L",
+      "shortName": "I23L",
+      "starsId": 302,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYWTZ4V9HTVNT1BVABD",
+      "name": "RDU IAP I23R",
+      "shortName": "I23R",
+      "starsId": 303,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYWCAE7W0J0N0M6H23K",
+      "name": "RDU IAP L05L",
+      "shortName": "L05L",
+      "starsId": 304,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYX3M0ZD1WV0DM4CJWQ",
+      "name": "RDU IAP L05R",
+      "shortName": "L05R",
+      "starsId": 305,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYXPDXN7G911CRFKC4N",
+      "name": "RDU IAP L23L",
+      "shortName": "L23L",
+      "starsId": 306,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYX2FMETX52N278FZ9N",
+      "name": "RDU IAP L23R",
+      "shortName": "L23R",
+      "starsId": 307,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYR5KKD4NQB5ZPGBWS6",
+      "name": "RDU IAP H05LZ",
+      "shortName": "H05LZ",
+      "starsId": 308,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYSTXAM80KFZ7TSFKNA",
+      "name": "RDU IAP H05RZ",
+      "shortName": "H05RZ",
+      "starsId": 309,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYS1MCHG7J24C7XFWRV",
+      "name": "RDU IAP H23LZ",
+      "shortName": "H23LZ",
+      "starsId": 310,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYTASMKSB7GF3R5WDA5",
+      "name": "RDU IAP H23RZ",
+      "shortName": "H23RZ",
+      "starsId": 311,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYYG6QJ8JMN7K4EGPCY",
+      "name": "RDU IAP R05LY",
+      "shortName": "R05LY",
+      "starsId": 312,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYZK9KJT504CT2M3DCH",
+      "name": "RDU IAP R05RY",
+      "shortName": "R05RY",
+      "starsId": 313,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZYZRM0RGAV4QWC0ZQVG",
+      "name": "RDU IAP R23LY",
+      "shortName": "R23LY",
+      "starsId": 314,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZZ0HZXNR07VBQ34E5YY",
+      "name": "RDU IAP R23RY",
+      "shortName": "R23RY",
+      "starsId": 315,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYD1XZZ06H0TVJG7JZ90X1KW",
+      "name": "RDU IAP R32",
+      "shortName": "R32",
+      "starsId": 316,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J1WM1F49ET9ZZYGR3S1P2STF",
+      "name": "ZDC CTR BDRY",
+      "shortName": "ZDC",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

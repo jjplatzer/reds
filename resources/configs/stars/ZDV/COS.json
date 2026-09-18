@@ -1,0 +1,398 @@
+{
+  "artcc": "ZDV",
+  "facility": "COS",
+  "name": "Springs ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 40.569587575,
+    "lon": -104.96660805
+  },
+  "controlPositions": [
+    {
+      "id": "01GG8SX2YRGNH9WJ8DBH06GWYF",
+      "name": "Combined Local Control",
+      "callsign": "COS_TWR",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 119.9
+    },
+    {
+      "id": "01GG8T0CJT9QZWPXTHTBW6HKAF",
+      "name": "Ground",
+      "callsign": "COS_GND",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01GH846KWKAPKSKHWRR76DQNTC",
+      "name": "West Local Control",
+      "callsign": "COS_W_TWR",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 119.9
+    },
+    {
+      "id": "01GH84CFESYBF71V4VEAS90N8V",
+      "name": "East Local Control",
+      "callsign": "COS_E_TWR",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 133.15
+    },
+    {
+      "id": "01GH84DY91MN19CD28CAJH84C4",
+      "name": "Springs Clearance Delivery",
+      "callsign": "COS_DEL",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 134.45
+    },
+    {
+      "id": "01GH84EKVJ3CC9TN4D922RP7HQ",
+      "name": "VFR Radar",
+      "callsign": "COS_VR_APP",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 120.6
+    },
+    {
+      "id": "01GH84FK5716M8PDR54A2XER05",
+      "name": "Departure Radar",
+      "callsign": "COS_APP",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 124
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1E",
+        "1V",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        null,
+        28,
+        27,
+        24,
+        26,
+        25,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        21,
+        23,
+        28,
+        24,
+        25,
+        null,
+        null,
+        null,
+        8,
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        null,
+        27,
+        26,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GF1S6EGAE6V5SGEK8N03R7EQ",
+      "name": "COS NORTH",
+      "shortName": "NORTH",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EGVX3QYNWRQRH0J3DEX",
+      "name": "COS SOUTH",
+      "shortName": "SOUTH",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EG7B2TQX5NBFWYD811A",
+      "name": "COS MVA",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GF1S6EH3Y3AM5XZJWH6A3M1D",
+      "name": "COS V AWYS",
+      "shortName": "ARWYS",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EGDBYNW9R15TWWADF78",
+      "name": "COS ODO",
+      "shortName": "ODO",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EFZHPTX0VERDFCTG1QH",
+      "name": "COS EOVM",
+      "shortName": "EOVM",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GF1S6EFGMV1P36XRDACQKKBF",
+      "name": "COS AFF RTE",
+      "shortName": "AFF RTE",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EFMCYKA5M74XZVKHKVR",
+      "name": "COS AFF TFR",
+      "shortName": "AFF TFR",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EFQ2XJSES3SD0TY538S",
+      "name": "COS CLASS C",
+      "shortName": "CLASS C",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EFTREQQY58D2YM3M9EP",
+      "name": "COS DEN FIX",
+      "shortName": "DEN FIX",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EFXFT3JNJTT7QQ5X4BK",
+      "name": "COS DME ARC",
+      "shortName": "DME ARC",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EG2ZG5YEMKYFF7GEVSF",
+      "name": "COS GPS",
+      "shortName": "GPS",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EG4R705JTJZM903H1CH",
+      "name": "COS MID",
+      "shortName": "MID",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EGHHKQ8Y0T14H45A4CV",
+      "name": "COS RNPZ N",
+      "shortName": "RNP N",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EGMF0NB0Q4VBCDW510M",
+      "name": "COS RNPZ S",
+      "shortName": "RNP S",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EGQ50E75WKMSM5Y5022",
+      "name": "COS RNV STR",
+      "shortName": "RNV STAR",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EGYK2XKNG6EGFGPY9JJ",
+      "name": "COS STDMS",
+      "shortName": "STDMS",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EH0SWCWAVCZJGVHDV4C",
+      "name": "COS TOWER",
+      "shortName": "TOWER",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EH6MV3AB45DT0Q4X81V",
+      "name": "COS VR",
+      "shortName": "VR",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EH89PTHT8YZHW0J14E5",
+      "name": "COS Z 17L",
+      "shortName": "Z 17L",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EHBZWEYVDTP4TVZNYH7",
+      "name": "COS Z 17R",
+      "shortName": "Z 17R",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EHE2FGB5K2YSM6JRVBX",
+      "name": "COS Z 35L",
+      "shortName": "Z 35L",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF1S6EHG5DK95RPR7N8R0ZSQ",
+      "name": "COS Z 35R",
+      "shortName": "Z 35R",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J8BCQQDBWR360E6EKP67TGV2",
+      "name": "FCS - ILS31",
+      "shortName": "FCS-ILS",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J8BCNE3Q37ZZYW9MG44YDVN3",
+      "name": "FCS - RNAV 31",
+      "shortName": "FCS-R31",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J8BCBTB7QWGJV0WTMFGENB2C",
+      "name": "FCS - VOR 31",
+      "shortName": "FCS-V31",
+      "starsId": 26,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J8BCXXPBFN89J74TYZRCJYXH",
+      "name": "FLY - RNAV 33",
+      "shortName": "FLY-R33",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J8BD2Q855ECS2JC34AZKA8RD",
+      "name": "FLY - RNAV 15",
+      "shortName": "FLY-R15",
+      "starsId": 28,
+      "brightnessCategory": "A"
+    }
+  ]
+}

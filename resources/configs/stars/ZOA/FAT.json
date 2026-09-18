@@ -1,0 +1,370 @@
+{
+  "artcc": "ZOA",
+  "facility": "FAT",
+  "name": "Fresno ATCT",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 37.9016125,
+    "lon": -120.687685
+  },
+  "controlPositions": [
+    {
+      "id": "01GEAM1H5YVXKEVXCC6YX41RXC",
+      "name": "LC",
+      "callsign": "FAT_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 118.2
+    },
+    {
+      "id": "01GEAM2FM93FQ55ABPQ6WGJ57P",
+      "name": "GC",
+      "callsign": "FAT_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01GEAM36EMQ2W9AGH4T38YDBSD",
+      "name": "CD",
+      "callsign": "FAT_DEL",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 124.35
+    },
+    {
+      "id": "01GEAM5K0M20YD6EZCDD7X7Q8R",
+      "name": "Friant Radar",
+      "callsign": "FAT_F_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 119.6
+    },
+    {
+      "id": "01GEAM6ABWPGTF26HQQJX74RCE",
+      "name": "Chandler Radar",
+      "callsign": "FAT_H_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 132.35
+    },
+    {
+      "id": "01GEBM3EE5TPXWYF16DN6WRRBV",
+      "name": "South Radar",
+      "callsign": "FAT_S_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 118.5
+    },
+    {
+      "id": "01K8VYH7DY9NBEKP85NRWZBYCW",
+      "name": "ATIS",
+      "callsign": "FAT_RMP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.35
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1F",
+        "1H",
+        "1S",
+        "1T"
+      ],
+      "mapIds": [
+        321,
+        323,
+        322,
+        328,
+        330,
+        327,
+        321,
+        323,
+        322,
+        328,
+        330,
+        327,
+        329,
+        324,
+        320,
+        325,
+        326,
+        331,
+        332,
+        333,
+        334,
+        335,
+        336,
+        337,
+        338,
+        339,
+        343,
+        340,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        321,
+        322,
+        330,
+        323,
+        328,
+        327
+      ],
+      "submenuMapIds": [
+        321,
+        322,
+        330,
+        329,
+        320,
+        326,
+        332,
+        334,
+        336,
+        338,
+        343,
+        null,
+        null,
+        null,
+        null,
+        323,
+        328,
+        327,
+        324,
+        325,
+        331,
+        333,
+        335,
+        337,
+        339,
+        340,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GESV01740J1928TN5EQ4FXDA",
+      "name": "RVMFAT020S",
+      "shortName": "MVA5MI",
+      "starsId": 320,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV017E6YW9E4APAXHDZJCE",
+      "name": "RVMFAT021S",
+      "shortName": "RWY_11",
+      "starsId": 321,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV0171N5NFWEHAWATCXGXW",
+      "name": "RVMFAT022S",
+      "shortName": "MVA",
+      "starsId": 322,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GESV017HYS7MY201AQMRR9QB",
+      "name": "RVMFAT023S",
+      "shortName": "RWY_29",
+      "starsId": 323,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV015PVT0C4WJE0V0JCM3M",
+      "name": "RVMFAT024S",
+      "shortName": "3SECT11",
+      "starsId": 324,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GQ9GZ921YT1K6Z4QX5ZFXRMV",
+      "name": "RVMFAT025S",
+      "shortName": "EOVM",
+      "starsId": 325,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GE9SE1GPQSHFJJQZGC31PX2D",
+      "name": "RVMFAT026S",
+      "shortName": "GPS",
+      "starsId": 326,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV016HHKS8P39K7PX36GZP",
+      "name": "RVMFAT027S",
+      "shortName": "GPS_Z",
+      "starsId": 327,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV0184AQGS992B0HDHEMMB",
+      "name": "RVMFAT028S",
+      "shortName": "VOR_TAC",
+      "starsId": 328,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV016EGGEQNSKMKXVV5MPM",
+      "name": "RVMFAT029S",
+      "shortName": "GPS_X",
+      "starsId": 329,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV01646Y2PBTB5A2FD11XY",
+      "name": "RVMFAT030S",
+      "shortName": "GEOG_R",
+      "starsId": 330,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV016XGWS7FVJFE51VW8J8",
+      "name": "RVMFAT031S",
+      "shortName": "MAE_GPS",
+      "starsId": 331,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV0160KVB7TBKTMDW6QTFY",
+      "name": "RVMFAT032S",
+      "shortName": "FCH_GPS",
+      "starsId": 332,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV0180M7RM1W2KGA4D6Y0Q",
+      "name": "RVMFAT033S",
+      "shortName": "VIS",
+      "starsId": 333,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV017WX3W2XST2RZQ130A6",
+      "name": "RVMFAT034S",
+      "shortName": "TLR_PTV",
+      "starsId": 334,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV016PS80EJMPWJA83W79Z",
+      "name": "RVMFAT035S",
+      "shortName": "HJO",
+      "starsId": 335,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV0169PG04CDH5R36QRTZV",
+      "name": "RVMFAT036S",
+      "shortName": "GEOG_T",
+      "starsId": 336,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV015T6WKZSPDC8XAMS9PB",
+      "name": "RVMFAT037S",
+      "shortName": "AIRSPAC",
+      "starsId": 337,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV016SY9G3HXSGR0P44YYR",
+      "name": "RVMFAT038S",
+      "shortName": "HOSPT",
+      "starsId": 338,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV017NCM34Y1K2E9QE56PV",
+      "name": "RVMFAT039S",
+      "shortName": "STADIUM",
+      "starsId": 339,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GESV017941DACVH73GSX0JKE",
+      "name": "RVMFAT040S",
+      "shortName": "O32_FIN",
+      "starsId": 340,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5WM9S1T5F9FTAJK6TBYF274",
+      "name": "RVMFAT043S",
+      "shortName": "FAT_FIN",
+      "starsId": 343,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HEHBRCBR0GVX8F9DXXTRB9P6",
+      "name": "FAT_MAZE",
+      "shortName": "MAZE",
+      "starsId": 995,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA7QZJ0G6TG3Y03JYAQ6RSF9",
+      "name": "TDM MAP",
+      "shortName": "TDM",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

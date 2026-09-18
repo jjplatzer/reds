@@ -1,0 +1,624 @@
+{
+  "artcc": "ZSE",
+  "facility": "NUW",
+  "name": "Whidbey Island ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 45.116049633333326,
+    "lon": -122.83189593333333
+  },
+  "controlPositions": [
+    {
+      "id": "01GF9NC9DP4HH3CXCKV8J7Y027",
+      "name": "West Approach",
+      "callsign": "NUW_W_APP",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 118.2
+    },
+    {
+      "id": "01GF9ND469ZNMA8R585WGHBNRG",
+      "name": "East Approach",
+      "callsign": "NUW_E_APP",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 120.7
+    },
+    {
+      "id": "01GF9NE33Q83DD142XDE96SYAV",
+      "name": "Tower",
+      "callsign": "NUW_TWR",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 127.9
+    },
+    {
+      "id": "01GF9NERKV07B7K23TH5RHT2ES",
+      "name": "Ground",
+      "callsign": "NUW_GND",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 121.75
+    },
+    {
+      "id": "01GF9NF6H9GZB8NYDVQSYMT1KY",
+      "name": "Clearance Delivery",
+      "callsign": "NUW_DEL",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 135.1
+    },
+    {
+      "id": "01JGHWSFQ2YQBCY0VJY7BJ8X1S",
+      "name": "NUW Guard",
+      "callsign": "NUW_G_APP",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "01K9B7TGATND84ZFKV2MPFZFT3",
+      "name": "Downrigger",
+      "callsign": "NUW_F_APP",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 128.025
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1T",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        3,
+        2,
+        4,
+        5,
+        6,
+        78,
+        94,
+        7,
+        95,
+        207,
+        307,
+        214,
+        314,
+        14,
+        114,
+        225,
+        325,
+        25,
+        32,
+        232,
+        332,
+        35,
+        40,
+        45,
+        46,
+        50,
+        52,
+        51,
+        55,
+        67,
+        66,
+        60,
+        16,
+        200,
+        201,
+        146,
+        147
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        5,
+        3,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        78,
+        7,
+        207,
+        214,
+        14,
+        225,
+        25,
+        232,
+        35,
+        45,
+        50,
+        51,
+        67,
+        60,
+        200,
+        94,
+        95,
+        307,
+        314,
+        114,
+        325,
+        32,
+        332,
+        40,
+        46,
+        52,
+        55,
+        66,
+        16,
+        201
+      ]
+    },
+    {
+      "tcps": [
+        "1F"
+      ],
+      "mapIds": [
+        1,
+        98,
+        3,
+        99,
+        901,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        901,
+        98,
+        99,
+        902
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01JNSSFX3SHE8AWYC0EFZECQ6A",
+      "name": "NUW Base",
+      "shortName": "BASE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF9NXZYN2GWTE59MVW50FW35",
+      "name": "NUW__AIRSPACE",
+      "shortName": "ARSPCE",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF9NXZZGTF583H6655EJCA1K",
+      "name": "NUW__MVA",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GF9NXZZ0DMKWHKEF9G1GRMW8",
+      "name": "NUW EOVM",
+      "shortName": "EOVM",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQTB9EC03M1CQ4DK8578WEXV",
+      "name": "TWR MAP",
+      "shortName": "TWR",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF9NY002N0YX97K6PDX1N7W6",
+      "name": "NUW__SPLIT",
+      "shortName": "SPLIT",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JNSRWGNM0QZKK63SH63DXDYG",
+      "name": "NUW GPS 7",
+      "shortName": "GPS 7",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K9Z1TFREKYDHMP9SGPRR93AB",
+      "name": "NUW_ZSE HO",
+      "shortName": "ZSE",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JNSSN11XDYS9Y3G9A7CWGCF1",
+      "name": "NUW ILS 14",
+      "shortName": "ILS 14",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K9YZK23T267G6G0A4P31AK49",
+      "name": "NUW_MADEE Arrival",
+      "shortName": "MADEE",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JNSS7BQKX3E3TH9SNS9FXH7J",
+      "name": "NUW GPS 25",
+      "shortName": "GPS 25",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JNSS85D9JSWH6G6HJ6KJ1M7Q",
+      "name": "NUW GPS 32",
+      "shortName": "GPS 32",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6PDCNFVG2CSDTB3T599GY3V",
+      "name": "0S9 RA",
+      "shortName": "0S9 RA",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6PDDS0K64SJYEQRGKHNYZ8P",
+      "name": "BLI 34",
+      "shortName": "BLI 34",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6PDEBMP3VGJQREAE0JJKWT4",
+      "name": "BVS G11",
+      "shortName": "BVS G11",
+      "starsId": 45,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6PDF3NHE2Z2KAMKV48Q38MN",
+      "name": "BVS G29",
+      "shortName": "BVS G29",
+      "starsId": 46,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQ53WC6BJ0HPP3FTYZ58Q5DY",
+      "name": "NUW SUA",
+      "shortName": "NUW SUA",
+      "starsId": 48,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K6PDFS7TYBNGKX5QMYCFD1JR",
+      "name": "CLM G09",
+      "shortName": "CLM G09",
+      "starsId": 50,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6PDGTWF5ZVNP65FB6X960NR",
+      "name": "CLM I09",
+      "shortName": "CLM I09",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6PDHJGXQ97ANCZSC2MWTXPD",
+      "name": "CLM G27",
+      "shortName": "CLM G27",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6PDJEWWSHD0EC7QG16NKNY7",
+      "name": "FHR G34",
+      "shortName": "FHR G34",
+      "starsId": 55,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6PDK1ZN4PP3WW042HFJV756",
+      "name": "OKH G07",
+      "shortName": "OKH G07",
+      "starsId": 60,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6PDKPETVC1B66ZTG633Z0CC",
+      "name": "ORS G16",
+      "shortName": "ORS G16",
+      "starsId": 65,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6PDN0JVF7W2WHHDD40Y9NKQ",
+      "name": "ORS G34",
+      "shortName": "ORS G34",
+      "starsId": 66,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6PDQRRXN2CXP26REW0JBDY4",
+      "name": "ORS RA",
+      "shortName": "ORS RA",
+      "starsId": 67,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQ53WC6GR0CCYN9VXR16HJWC",
+      "name": "ARLINGTON SHELF",
+      "shortName": "AR SHLF",
+      "starsId": 77,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQ53WC6GGYKK12RXR8EHFN0A",
+      "name": "PAINE SHELF",
+      "shortName": "PA SHLF",
+      "starsId": 78,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K9E7BWV94F5EK061WWTT1BHK",
+      "name": "NUW_FIX Labels",
+      "shortName": "FIX LAB",
+      "starsId": 94,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K9E74RWBHARQZKNQA5QYN6Z9",
+      "name": "NUW_Airport Labels",
+      "shortName": "APT LAB",
+      "starsId": 95,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K94XFSTE84V1HE9E55X5GNNN",
+      "name": "NUW_Forks Corridor",
+      "shortName": "FORKS",
+      "starsId": 98,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K967578FT1C43ZGD0C479SMT",
+      "name": "NUW_W237",
+      "shortName": "SUA",
+      "starsId": 99,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JNSS5S9GV95B1FC33MDWWQK9",
+      "name": "NUW GPS 14",
+      "shortName": "GPS 14",
+      "starsId": 114,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JNSWP9Z9Y77GQJTGYRYQWWAG",
+      "name": "NUW S46 S HO",
+      "shortName": "S46 HOS",
+      "starsId": 146,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JNSWAYC8M4RAW34H8HFTQ8YB",
+      "name": "NUW S46 N HO",
+      "shortName": "S46 HON",
+      "starsId": 147,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF9NXZZPZ76QP42Z8A7RWWYH",
+      "name": "NUW__R6701",
+      "shortName": "R6701",
+      "starsId": 200,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GF9NXZZC27YSJF2VSPW42JBK",
+      "name": "NUW__MOA",
+      "shortName": "MOA",
+      "starsId": 201,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K6NYMNMF6EB34XY2M211CJ61",
+      "name": "NUW TACAN Y RWY 07",
+      "shortName": "TAC Y07",
+      "starsId": 207,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6P0C9KJBFEZV619V1WTY16H",
+      "name": "NUW TACAN Y RWY 14",
+      "shortName": "TAC Y14",
+      "starsId": 214,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6NWVT93GADQNPWG0Z99042T",
+      "name": "NUW TACAN Y RWY 25",
+      "shortName": "TAC Y25",
+      "starsId": 225,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JNSSR0FZAPYAVY3M6926NDMT",
+      "name": "NUW Tacan Y RWY 32",
+      "shortName": "TAC Y32",
+      "starsId": 232,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6NG5AMDY3M1Q1YQ27HT0NYG",
+      "name": "NUW HI TACAN Z RWY 7",
+      "shortName": "HTAC 7",
+      "starsId": 307,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6NMQPES47XNQ1JCNT8CA9Q9",
+      "name": "NUW HI TACAN Z RWY 14",
+      "shortName": "HTAC 14",
+      "starsId": 314,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6NNPA302ZVA8G0435MMPR83",
+      "name": "NUW HI TACAN Z RWY 25",
+      "shortName": "HTAC 25",
+      "starsId": 325,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6NPN36HS9WZSH1QST1RRNB1",
+      "name": "NUW HI TACAN Z RWY 32",
+      "shortName": "HTAC 32",
+      "starsId": 332,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GDRX6J6N8WN6TYAJ9XB0WCWF",
+      "name": "__Airport Diagrams",
+      "shortName": "APD",
+      "starsId": 900,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GYK0BY616VAC85B96R32R79G",
+      "name": "__HIGH AIRWAYS",
+      "shortName": "HI AWY",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GYK0BY63BJDMAQMTRR804DP6",
+      "name": "__LOW AIRWAYS",
+      "shortName": "LO AWY",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GF9NXZYN2GWTE59MVW50FW35",
+      "name": "NUW__AIRSPACE",
+      "shortName": "ARSPCE",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    }
+  ]
+}

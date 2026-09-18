@@ -1,0 +1,1351 @@
+{
+  "artcc": "ZTL",
+  "facility": "CLT",
+  "name": "Charlotte ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.90558406666667,
+    "lon": -83.96840666666667
+  },
+  "controlPositions": [
+    {
+      "id": "01GWG8TNFGRT9B3F1RBR6NG75Q",
+      "name": "Local Control East",
+      "callsign": "CLT_TWR",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 118.1
+    },
+    {
+      "id": "01GWG8ZF18602RB8J00F5S5QFM",
+      "name": "Local Control Center",
+      "callsign": "CLT_TWR",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 126.4
+    },
+    {
+      "id": "01GWG903A7RM8G2993JF7PTMA8",
+      "name": "Local Control West",
+      "callsign": "CLT_TWR",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 133.35
+    },
+    {
+      "id": "01GWG90PE9Z3PNVQ6SQZNGT4DX",
+      "name": "Ground Control West",
+      "callsign": "CLT_GND",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01GWG91R2KCMZW38TE74JRM90C",
+      "name": "Ground Control East",
+      "callsign": "CLT_GND",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GWG93613CT1SZF5MY61P4Z6V",
+      "name": "Clearance Delivery",
+      "callsign": "CLT_DEL",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 127.15
+    },
+    {
+      "id": "01GWG9ANV212TX2VKSY9CSHQ54",
+      "name": "Arrival Radar East",
+      "callsign": "CLT_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 126.15
+    },
+    {
+      "id": "01GWG9EQW67XZ57DAC4F334VT0",
+      "name": "Arrival Radar NW",
+      "callsign": "CLT_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 125.35
+    },
+    {
+      "id": "01GWG9FKXJW2W5B7G8040JJTWA",
+      "name": "Arrival Radar SW",
+      "callsign": "CLT_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 135.6
+    },
+    {
+      "id": "01GWG9W7GQKZZ4403A8CE6HK31",
+      "name": "Final East",
+      "callsign": "CLT_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 127.7
+    },
+    {
+      "id": "01GWG9XH4Q42HNCN9DWEV9MRDF",
+      "name": "Final Center",
+      "callsign": "CLT_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 119
+    },
+    {
+      "id": "01GWGA32BJCMDAVA49APG6FVB8",
+      "name": "Departure Radar West",
+      "callsign": "CLT_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 120.5
+    },
+    {
+      "id": "01GWGA4CD6VWD30CCZ762Q1RGB",
+      "name": "Departure Radar East",
+      "callsign": "CLT_DEP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 124
+    },
+    {
+      "id": "01GWGA5495FSZWZ5XHJ8B086QP",
+      "name": "Satellite Radar North ",
+      "callsign": "CLT_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 134.75
+    },
+    {
+      "id": "01GWGA8B2ER1GVWV1W06S36XW0",
+      "name": "Satellite Radar South",
+      "callsign": "CLT_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 120.05
+    },
+    {
+      "id": "01GWGAA0MQ71FZJ8GBXRF5YA7C",
+      "name": "Satellite Radar Concord",
+      "callsign": "CLT_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 128.325
+    },
+    {
+      "id": "01HC65BG369S8SGN7MJT4NN0ZN",
+      "name": "TRACON CIC",
+      "callsign": "CLT_TMU",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 127.26
+    },
+    {
+      "id": "01HC67KZKJ3J4FGMRQ8J49A5MJ",
+      "name": "Final West",
+      "callsign": "CLT_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 132.7
+    },
+    {
+      "id": "01HMHPDKG8RHMQ3AS3EBHHEFQP",
+      "name": "Ramp North",
+      "callsign": "CLT_RMP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 130.075
+    },
+    {
+      "id": "01HMHPE4QY2GKSJ61G1QGYHDQD",
+      "name": "Ramp South",
+      "callsign": "CLT_RMP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 131.6
+    },
+    {
+      "id": "01HMHPEGVNEKQA5NHG51MYHMC6",
+      "name": "Ramp East",
+      "callsign": "CLT_RMP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 129.225
+    },
+    {
+      "id": "01HMHPEYRSA0WKNRFX4TPJA0W8",
+      "name": "Ramp West",
+      "callsign": "CLT_RMP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 129.8
+    },
+    {
+      "id": "01J1S621KV016F9G8JVJ5J2PDC",
+      "name": "Ground Control East Backup",
+      "callsign": "CLT_B_GND",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01J88R6F4BPYW0JB2F9V6W3707",
+      "name": "Tower CIC",
+      "callsign": "CLT_TMU",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 132.1
+    },
+    {
+      "id": "01J95V25AT09A9YM36C6SHK7DP",
+      "name": "CLT GUARD Combined",
+      "callsign": "CLT_G_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1K",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1O",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1Q",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "2B",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "2E",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "2J",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "2R",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "2W",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1E",
+        "1F",
+        "1H",
+        "1M",
+        "1N",
+        "1Q",
+        "1S",
+        "1U",
+        "1W"
+      ],
+      "mapIds": [
+        18,
+        49,
+        64,
+        19,
+        59,
+        61,
+        24,
+        17,
+        32,
+        35,
+        13,
+        105,
+        37,
+        12,
+        55,
+        36,
+        107,
+        75,
+        94,
+        40,
+        107,
+        99,
+        94,
+        95,
+        25,
+        97,
+        6,
+        5,
+        2,
+        3,
+        7,
+        8,
+        34,
+        33,
+        1,
+        14,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        18,
+        64,
+        59,
+        49,
+        19,
+        61
+      ],
+      "submenuMapIds": [
+        24,
+        32,
+        13,
+        37,
+        55,
+        107,
+        94,
+        107,
+        94,
+        25,
+        6,
+        2,
+        7,
+        34,
+        1,
+        17,
+        35,
+        105,
+        12,
+        36,
+        75,
+        40,
+        99,
+        95,
+        97,
+        5,
+        3,
+        8,
+        33,
+        14
+      ]
+    },
+    {
+      "tcps": [
+        "1K",
+        "1O",
+        "1R",
+        "1T",
+        "2B",
+        "2E",
+        "2R",
+        "2W"
+      ],
+      "mapIds": [
+        18,
+        49,
+        35,
+        105,
+        64,
+        48,
+        201,
+        202,
+        32,
+        null,
+        16,
+        40,
+        4,
+        14,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        18,
+        35,
+        64,
+        49,
+        105,
+        48
+      ],
+      "submenuMapIds": [
+        201,
+        32,
+        16,
+        4,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        202,
+        null,
+        40,
+        14,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "2J"
+      ],
+      "mapIds": [
+        49,
+        18,
+        301,
+        303,
+        302,
+        64,
+        4,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        49,
+        301,
+        302,
+        18,
+        303,
+        64
+      ],
+      "submenuMapIds": [
+        4,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H8TMEJ6A3RNGJ47KWQF22HSV",
+      "name": "CLT TRACON EXTERNAL BOUNDARY",
+      "shortName": "EXBNDRY",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6ANE1C39N58XYSMZNN",
+      "name": "ARRIVAL RADAR NORTH",
+      "shortName": "AR N",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ69NKWK8R4Q90VEXSF0",
+      "name": "ARRIVAL RADAR SOUTH",
+      "shortName": "AR S",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ78BCW3Z29SFDNR7D8B",
+      "name": "SATELLITE AIRPORTS AND OBSTRUCTIONS",
+      "shortName": "ARPT OB",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ69BZ6KD3YFESB0CY9W",
+      "name": "CLT SOUTH",
+      "shortName": "CLT S",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8WZYDPMSZ3TKA6RFPTBAJ8A",
+      "name": "CLT NORTH",
+      "shortName": "CLT N",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ685EKB9DC6BSPT971Q",
+      "name": "SATELLITE RADAR NORTH",
+      "shortName": "SAT N",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ68DSDJ6QB0EH7CBC50",
+      "name": "SATELLITE RADAR SOUTH",
+      "shortName": "SAT S",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ78DZ4DGBYDS6SC0KF5",
+      "name": "ATC ZERO",
+      "shortName": "ATCZERO",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6ZH3WQ6ZXB2B13F9JK",
+      "name": "SATELLITE AIRPORT ILS AND LOC FINAL APPROACH COURSES",
+      "shortName": "SAT ILS",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6Z2BP77JHZ4AGWV13N",
+      "name": "SATELLITE AIRPORT NDB AND VOR FINAL APPROACH COURSES",
+      "shortName": "SAT OTH",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6Z0ZVKV1GV3TTMV4SX",
+      "name": "SATELLITE AIRPORT RNAV (GPS) FINAL APPROACH COURSES",
+      "shortName": "SAT GPS",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ779R1HS5VV4SEHC4FA",
+      "name": "CHARLOTTE AIRPORT RUNWAYS",
+      "shortName": "CLT RWY",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ7686TXFSEDF9KXDACH",
+      "name": "VICTOR AIRWAYS",
+      "shortName": "VTR AWY",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ7661VDFFDZ0K5DYNYG",
+      "name": "ZTL/ZJX/ZDC AIRSPACE",
+      "shortName": "CTR AIR",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ75E5YRF9BA2QAPQ7ZT",
+      "name": "CLT CLASS B",
+      "shortName": "CLASS B",
+      "starsId": 18,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ68161XZE1B6VQTPST7",
+      "name": "JUNNR3 / JOOLS1 / KABEE3 / LIINN3 / BTSEY2 STARS",
+      "shortName": "OTHSTAR",
+      "starsId": 19,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ677MY5Y0ENQ58M7XFH",
+      "name": "FINAL RADAR (BOTH)",
+      "shortName": "FR BTH",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ75ZK2CZ15TGDG7233N",
+      "name": "NON TRANGSRESSION ZONES",
+      "shortName": "NTZ",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ77YYBKJV2NARB6YCF5",
+      "name": "ADJACENT AIRSPACE",
+      "shortName": "ADJ AIR",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ763BTY7NDB3Q4TCP5G",
+      "name": "CLT AIRPORT RNAV (GPS) APPROACHES",
+      "shortName": "CLT GPS",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6GQ0M679048RTZBWT3",
+      "name": "CHSLY6 STAR SOUTH",
+      "shortName": "CHSLY S",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6GBRE1TWTHC75TWFQR",
+      "name": "CHSLY6 STAR NORTH",
+      "shortName": "CHSLY N",
+      "starsId": 31,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ74426DJCRNMH25HV35",
+      "name": "DEPARTURE RADAR SOUTH TRANSFER AREA",
+      "shortName": "S TRANS",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ74WGNFSVGGJW6WQ4JV",
+      "name": "DEPARTURE RADAR SOUTH",
+      "shortName": "DR S",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ67RAZNZ31HCBPCC1V6",
+      "name": "DEPARTURE RADAR NORTH",
+      "shortName": "DR N",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ73BRHVZJFTDXBE12D1",
+      "name": "CLT LOCAL AIRSPACE",
+      "shortName": "TWR AIR",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6K78CGATASN6TZ79KD",
+      "name": "SOUTH SATELLITE RNAV (GPS) APPROACHES",
+      "shortName": "SSATGPS",
+      "starsId": 36,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6GR53C5KJB4YJ8PE7X",
+      "name": "NORTH SATELLITE RNAV (GPS) APPROACHES",
+      "shortName": "NSATGPS",
+      "starsId": 37,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ727AWTF0ZN0DR4FN41",
+      "name": "TANGO ROUTES",
+      "shortName": "TGO RTE",
+      "starsId": 40,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ725537Y92VHTPKQAEF",
+      "name": "IFR MILITARY TRAINING ROUTES",
+      "shortName": "IR RTES",
+      "starsId": 47,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ7219S6234C7APVM83G",
+      "name": "CLT EMERGENCY OBSTRUCTION VIDEO MAP",
+      "shortName": "EOVM",
+      "starsId": 48,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ71YRH63KM2R41KBMYZ",
+      "name": "CLT MINIMUM VECTORING ALTITUDE",
+      "shortName": "MVA",
+      "starsId": 49,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ7194Q6T14WS1EWCVT4",
+      "name": "COUNTY BOUNDARIES",
+      "shortName": "COUNTY",
+      "starsId": 50,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ71EG8VVH51TMK33K7G",
+      "name": "CLT FINAL APPROACH COURSES SOUTH",
+      "shortName": "CLTSFAC",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ70QQ52JCFWTY2WAA1E",
+      "name": "CLT FINAL APPROACH COURSES NORTH",
+      "shortName": "CLTNFAC",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ7090G3W9ZT3QMHJQ4X",
+      "name": "NAVAIDS WITHIN 250 MILES",
+      "shortName": "NAVAIDS",
+      "starsId": 55,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ70BGDKWPXS9FZ926AX",
+      "name": "WILKES SECTOR CONTINGENCY",
+      "shortName": "WILKES",
+      "starsId": 56,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ65DPVE291RKJPZY3FQ",
+      "name": "NORTH RNAV STARS",
+      "shortName": "N STAR",
+      "starsId": 59,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ64K9WW4R2NETQ61W5Z",
+      "name": "SOUTH RNAV STARS",
+      "shortName": "S STARS",
+      "starsId": 61,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ64F9J5ZM2VB2JDSJ65",
+      "name": "RNAV DEPARTURES",
+      "shortName": "RNV DEP",
+      "starsId": 64,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6YYPW5A6VSHEY6RME0",
+      "name": "STADIUMS",
+      "shortName": "STADIUM",
+      "starsId": 66,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6368RQ3H9XP0F1VB7N",
+      "name": "CLT RNAV STAR FIXES",
+      "shortName": "ARR FIX",
+      "starsId": 75,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6Y4BWQZQS9G4QGPMGS",
+      "name": "CAPTURES POINTS (18R/18L)",
+      "shortName": "18R18L",
+      "starsId": 76,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6XBX48WRF4EFQEPH7Z",
+      "name": "CAPTURE POINTS (18C/18L)",
+      "shortName": "18C18L",
+      "starsId": 78,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6X7F7D00PC0CX9ZRBX",
+      "name": "CAPTURE POINTS (18R/18C)",
+      "shortName": "18R18C",
+      "starsId": 79,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6X99T9HDTP38VX9GVR",
+      "name": "TRIPS CAPTURE POINTS (SOUTH)",
+      "shortName": "TRIPS S",
+      "starsId": 80,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6W1SBM75GZM2FFPW93",
+      "name": "CAPTURE POINTS (36L/36R)",
+      "shortName": "36L36R",
+      "starsId": 82,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6VCXB1JVAGGCQE8RCK",
+      "name": "CAPTURE POINTS (36C/36R)",
+      "shortName": "36C36R",
+      "starsId": 83,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6VF4S7PKKH1S77C8KS",
+      "name": "CAPTURE POINTS (36L/36C)",
+      "shortName": "36L36C",
+      "starsId": 84,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6VNJ2NJNHM8XD3G18S",
+      "name": "TRIPS CAPTURE POINTS (NORTH)",
+      "shortName": "TRIPS N",
+      "starsId": 85,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6DHFH5KJ8Y393DZWK3",
+      "name": "FILPZ4 STAR NORTH",
+      "shortName": "FILPZ N",
+      "starsId": 89,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6CQFA5Q7RXZTP2JQVV",
+      "name": "FILPZ4 STAR SOUTH",
+      "shortName": "FILPZ S",
+      "starsId": 90,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6CYMRGFGGXMPQEFX2Q",
+      "name": "PARQR4 STAR NORTH",
+      "shortName": "PARQR N",
+      "starsId": 91,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6BQMKD742Y5SX8QHKZ",
+      "name": "PARQR4 STAR SOUTH",
+      "shortName": "PARQR S",
+      "starsId": 92,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6T7YGJPD765W2BS41X",
+      "name": "14A RNAV (GPS) RWY 14",
+      "shortName": "14A GPS",
+      "starsId": 93,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6STB4ZCFD9WMZPX4TX",
+      "name": "AKH RNAV (GPS) RWY 03 \u0026 21",
+      "shortName": "AKH GPS",
+      "starsId": 94,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6S53J1548G5KYP2AE0",
+      "name": "EHO RNAV (GPS) RWY 05 \u0026 23",
+      "shortName": "EHO GPS",
+      "starsId": 95,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6SC1QM88GPAMNCFERT",
+      "name": "EQY RNAV (GPS) RWY 05/23",
+      "shortName": "EQY GPS",
+      "starsId": 96,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6R06FKEBMJXX1JB8A1",
+      "name": "HKY RNAV (GPS) RWY 01 \u0026 06",
+      "shortName": "HKY GPS",
+      "starsId": 97,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6R3CYYS5A5GCEQ43PR",
+      "name": "IPJ RNAV (GPS) RWY 05/23",
+      "shortName": "IPJ GPS",
+      "starsId": 98,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6R2DVZ97J5X0QQRSQQ",
+      "name": "JQF RNAV (GPS) RWY 02 \u0026 20",
+      "shortName": "JQF GPS",
+      "starsId": 99,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TPAPAB9ZXA78KVSVTS982P",
+      "name": "RUQ RNAV (GPS) RWY 02 \u0026 20",
+      "shortName": "RUQ GPS",
+      "starsId": 101,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6QH0GY0WYDBAVJY4CF",
+      "name": "SVH RNAV (GPS) RWY 10 \u0026 28",
+      "shortName": "SVH GPS",
+      "starsId": 102,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6Q0FSN2EHP6Y2F09VX",
+      "name": "UZA RNAV (GPS) RWY 02 \u0026 20",
+      "shortName": "UZA GPS",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6PWYYC6D1JTY4VT4N4",
+      "name": "LKR RNAV (GPS) RWY 06 \u0026 24",
+      "shortName": "LKR GPS",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6PMEJX7CFA8FC4W76R",
+      "name": "NOISE 2NM/4NM LINES (SOUTH)",
+      "shortName": "NOISE S",
+      "starsId": 105,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6PZFQ4DB1YPZETS6XZ",
+      "name": "35A RNAV (GPS) RWY 05 \u0026 23",
+      "shortName": "35A GPS",
+      "starsId": 106,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6NFAJTAM3N95187APG",
+      "name": "VUJ RNAV (GPS) RWY 04R \u0026 22L",
+      "shortName": "VUJ GPS",
+      "starsId": 107,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6N1WN21ASAWCGE7J5Q",
+      "name": "DCM RNAV (GPS) RWY 17 \u0026 35",
+      "shortName": "DCM GPS",
+      "starsId": 108,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6N8NEYSF3411RRF2TK",
+      "name": "EXX RNAV (GPS) RWY 06 \u0026 24",
+      "shortName": "EXX GPS",
+      "starsId": 109,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6M97KZ7DEP24B4521T",
+      "name": "AFP RNAV (GPS) RWY 16 \u0026 34",
+      "shortName": "AFP GPS",
+      "starsId": 110,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6K64SN46GMCK577H37",
+      "name": "N52 RNAV (GPS) RWY 04 \u0026 22",
+      "shortName": "N52 GPS",
+      "starsId": 111,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6F2EW7XAWY8K2QW7RQ",
+      "name": "STOCR4 STAR NORTH",
+      "shortName": "STOCR N",
+      "starsId": 112,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6F045H91YJMK80H7PQ",
+      "name": "STOCR4 STAR SOUTH",
+      "shortName": "STOCR S",
+      "starsId": 113,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6FN60WE5FA2B7SQF2S",
+      "name": "JONZE5 STAR NORTH",
+      "shortName": "JONZE N",
+      "starsId": 114,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6ET7E61ADW9N4VSGQ7",
+      "name": "JONZE5 STAR SOUTH",
+      "shortName": "JONZE S",
+      "starsId": 115,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6ERKNB6HBYZHM758B3",
+      "name": "MLLET3 STAR NORTH",
+      "shortName": "MLLET N",
+      "starsId": 116,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6E7J2FRK28SDV6H9G7",
+      "name": "MLLET3 STAR SOUTH",
+      "shortName": "MLLET S",
+      "starsId": 117,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6DKED25937QXK1ZVNS",
+      "name": "BANKR5 STAR NORTH",
+      "shortName": "BANKR N",
+      "starsId": 118,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6D6BJEAN9YS2QKFZ33",
+      "name": "BANKR5 STAR SOUTH",
+      "shortName": "BANKR S",
+      "starsId": 119,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6KTA12D6RY59BWV0XH",
+      "name": "PYG RNAV (GPS) RWY 06 \u0026 24",
+      "shortName": "PYG GPS",
+      "starsId": 123,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8TMEJ6H3ZDHGTFEH4XJHSM3",
+      "name": "VFR MILITARY TRAINING ROUTES",
+      "shortName": "VR RTES",
+      "starsId": 150,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9H77JQ65E7CV3VRQ23X7FDZ",
+      "name": "CLT TOWER SOUTH",
+      "shortName": "TOWER S",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9H79CYCCET9GVHKFCRM1WZT",
+      "name": "CLT TOWER NORTH",
+      "shortName": "TOWER N",
+      "starsId": 202,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8ZAEF76A110HCD1G4J6X0C7",
+      "name": "ILS 20",
+      "shortName": "ILS20",
+      "starsId": 301,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8ZAEF779JZ69AXN43ZS2AFF",
+      "name": "GPS 02",
+      "shortName": "GPS 02",
+      "starsId": 302,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8ZAEF76B0DJCZ04WRSGSMJ3",
+      "name": "GPS 20",
+      "shortName": "GPS 20",
+      "starsId": 303,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JJQAKYCCNCVBZ9FE0T",
+      "name": "VUJ TDM ERAM",
+      "shortName": "VUJTDM",
+      "starsId": 970,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JG3H3EGZ5JAR19AGV0",
+      "name": "JQF TDM ERAM",
+      "shortName": "JQFTDM",
+      "starsId": 983,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JC7JMWB80JDE156PW0",
+      "name": "CLT TDM",
+      "shortName": "CLTTDM",
+      "starsId": 992,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01H8TMEJ77YYBKJV2NARB6YCF5",
+      "name": "ADJACENT AIRSPACE",
+      "shortName": "ADJ AIR",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ73BRHVZJFTDXBE12D1",
+      "name": "CLT LOCAL AIRSPACE",
+      "shortName": "TWR AIR",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ6A3RNGJ47KWQF22HSV",
+      "name": "CLT TRACON EXTERNAL BOUNDARY",
+      "shortName": "EXBNDRY",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ7194Q6T14WS1EWCVT4",
+      "name": "COUNTY BOUNDARIES",
+      "shortName": "COUNTY",
+      "starsId": 50,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ70BGDKWPXS9FZ926AX",
+      "name": "WILKES SECTOR CONTINGENCY",
+      "shortName": "WILKES",
+      "starsId": 56,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8TMEJ7661VDFFDZ0K5DYNYG",
+      "name": "ZTL/ZJX/ZDC AIRSPACE",
+      "shortName": "CTR AIR",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    }
+  ]
+}

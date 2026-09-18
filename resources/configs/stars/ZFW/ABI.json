@@ -1,0 +1,231 @@
+{
+  "artcc": "ZFW",
+  "facility": "ABI",
+  "name": "Abilene ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.55328401,
+    "lon": -97.43688567000001
+  },
+  "controlPositions": [
+    {
+      "id": "01H3C50QJ48MA95P4P2T1JAZ3A",
+      "name": "Radar East",
+      "callsign": "ABI_R_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 125
+    },
+    {
+      "id": "01H3C536EGGZF43GBG6HCPZN72",
+      "name": "Local",
+      "callsign": "ABI_TWR",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 120.1
+    },
+    {
+      "id": "01H3C54B1ZKDQYEHQPC0C2TVBC",
+      "name": "Ground",
+      "callsign": "ABI_GND",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01HVDEMYQSA8RDRP85G33X1VNK",
+      "name": "Radar West",
+      "callsign": "ABI_W_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 127.2
+    },
+    {
+      "id": "01J9YHPAST7DARYCD1CN5HRRQD",
+      "name": "Guard",
+      "callsign": "ABI_EM_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1L",
+        "1R"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        901,
+        6,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        901
+      ],
+      "submenuMapIds": [
+        6,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H3C4HQHD36ZSKGAFBHFZR400",
+      "name": "202 Main",
+      "shortName": "Main",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3C4JH0CC358ER473HQ40YQ8",
+      "name": "ABI MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3C4PBAGY00GDC0159V7T5FM",
+      "name": "ABI Airspace",
+      "shortName": "ARSPC",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3C4FNS90RKQY6F5PMDCP5P5",
+      "name": "203 Airways",
+      "shortName": "Airway",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3C4RF9G10FSCRZ6A3FDMGG5",
+      "name": "ABI VFR",
+      "shortName": "VFR",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3C4SRC9YGR93HX3SFZVF168",
+      "name": "ABI MOA",
+      "shortName": "MOA",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GKZZ67A9BXG6P1CB9ZMYESCR",
+      "name": "ZFW__ZFW",
+      "shortName": "ZFW",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZXKZRR6Z69P56ZJX3KDNR0",
+      "name": "GEO__GEO",
+      "shortName": "GEO",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01H3C4PBAGY00GDC0159V7T5FM",
+      "name": "ABI Airspace",
+      "shortName": "ARSPC",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    }
+  ]
+}

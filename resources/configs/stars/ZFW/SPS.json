@@ -1,0 +1,236 @@
+{
+  "artcc": "ZFW",
+  "facility": "SPS",
+  "name": "Wichita Falls AFB ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 33.55328401,
+    "lon": -97.43688567000001
+  },
+  "controlPositions": [
+    {
+      "id": "01H89VZKW9K8Y6DCXYXGT9BP6S",
+      "name": "Radar",
+      "callsign": "SPS_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 118.2
+    },
+    {
+      "id": "01H89W4P7Y749C3P66CNP8VX44",
+      "name": "Local",
+      "callsign": "SPS_TWR",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 119.75
+    },
+    {
+      "id": "01H89W5GGQ1EB6XMV6GXE8VNRK",
+      "name": "Ground",
+      "callsign": "SPS_GND",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 125.5
+    },
+    {
+      "id": "01H89W5XW6GMQN9SBX3XG96RY7",
+      "name": "Clearance",
+      "callsign": "SPS_DEL",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.2
+    },
+    {
+      "id": "01J9YJ9F1QBH5NHK8K1SJPKY62",
+      "name": "Guard",
+      "callsign": "SPS_EM_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1R",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        901,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        901,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H8G2KASQTA2QMDRW6T9Z3DAV",
+      "name": "SPS MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G2KTN2VPBN66G7R8D1GQT0",
+      "name": "SPS MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8G2M9GF35Z2HT5AQ4FWJCQH",
+      "name": "SPS DELTA",
+      "shortName": "DELTA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8G2N1NM5XTSXF6KSYVW0B2T",
+      "name": "SPS MOA",
+      "shortName": "MOA",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8G2NQ047K7NYRQFQGSXV50N",
+      "name": "TAC15__HI TACAN 15s",
+      "shortName": "TAC15",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G2Q3NF77KD10S6NP4FCW2N",
+      "name": "SPS TAC33__HI TACAN 33s",
+      "shortName": "TAC33",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G2QTRC17F81YJE0F7QEEBE",
+      "name": "SPS ODE__VOR DME E",
+      "shortName": "VORE",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G2J625EKAH3W6E3RDP2Y8P",
+      "name": "SPS ASR",
+      "shortName": "ASR",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GKZZ67A9BXG6P1CB9ZMYESCR",
+      "name": "ZFW__ZFW",
+      "shortName": "ZFW",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZXKZRR6Z69P56ZJX3KDNR0",
+      "name": "GEO__GEO",
+      "shortName": "GEO",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    }
+  ]
+}

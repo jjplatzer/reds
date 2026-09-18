@@ -1,0 +1,389 @@
+{
+  "artcc": "ZNY",
+  "facility": "MDT",
+  "name": "Harrisburg ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 35.914982499999994,
+    "lon": -73.0446825
+  },
+  "controlPositions": [
+    {
+      "id": "01GAPPT2Z3Q9BNCZERCFS5CBH4",
+      "name": "Ground",
+      "callsign": "MDT_GND",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01GAPPTJMHZ2C2BQ0KHFHM6CBR",
+      "name": "Local",
+      "callsign": "MDT_TWR",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 124.8
+    },
+    {
+      "id": "01H1EVSZH7E0MCVEBQKX60FB4J",
+      "name": "Harrisburg",
+      "callsign": "MDT_SW_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 124.1
+    },
+    {
+      "id": "01H2BC0EN94FN53HDNAYQT5YXZ",
+      "name": "Lancaster",
+      "callsign": "MDT_SE_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 126.45
+    },
+    {
+      "id": "01H2BC1HK7E9JP6KCBQSTSNW0Z",
+      "name": "Ravine",
+      "callsign": "MDT_N_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 118.25
+    },
+    {
+      "id": "01JVN9S7NPDTV420XCE3FNXFSF",
+      "name": "Reading",
+      "callsign": "MDT_R_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 125.15
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1H",
+        "1L",
+        "1R",
+        "1T"
+      ],
+      "mapIds": [
+        2,
+        9,
+        14,
+        13,
+        4,
+        12,
+        5,
+        6,
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        2,
+        14,
+        4,
+        9,
+        13,
+        12
+      ],
+      "submenuMapIds": [
+        5,
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        6,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1D"
+      ],
+      "mapIds": [
+        103,
+        4,
+        101,
+        104,
+        105,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        103,
+        101,
+        105,
+        4,
+        104,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H5TZTCVTSBKX16QRWX6GZKF5",
+      "name": "MDT-001 (ASR/TRSA)",
+      "shortName": "ASR",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5TZTCVTHY5YXH5PCHJFE34N",
+      "name": "MDT-002 (GPS EAST)",
+      "shortName": "GPSEAST",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5TZTCVSDC9QABMD5S1XASQ6",
+      "name": "MDT-004 (MVA)",
+      "shortName": "MVA",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01G912ERJYH1400T4S2PVJ3X8V",
+      "name": "MDT-005 (EAST FLOW)",
+      "shortName": "East",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01G912FPQGMZ2K97SXGKPFK50W",
+      "name": "MDT-006 (WEST FLOW)",
+      "shortName": "West",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5TZTCVRZ82SSFGR40JYWMMD",
+      "name": "MDT-009 (GPS WEST)",
+      "shortName": "GPSWEST",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5TZTCVQXGD580X5Z2175CMM",
+      "name": "MDT-012 (EOVM)",
+      "shortName": "EOVM",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5TZTCVP0VX84JYJHW6JAYX0",
+      "name": "MDT-013 (COPTER GPS)",
+      "shortName": "COPTER",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HYPRSJCMVRQQTWD1K93ND0E2",
+      "name": "MDT-014 (CLASS C)",
+      "shortName": "CLASS C",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5V1K2W00EGBDW7DX0W54BF7",
+      "name": "RDG-101 (MAP 1)",
+      "shortName": "RDG_1",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5V1K2VVGVXMKAD2RS7MYM5S",
+      "name": "RDG-103 (MAP 3)",
+      "shortName": "RDG_MAP",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5V1K2VTYQ284KGJT257PYSK",
+      "name": "RDG-104 (MAP 4 AIRPORTS-EOVM)",
+      "shortName": "RDGEOVM",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5V1K2VS6Z09ZZ3C9TC8FJW2",
+      "name": "RDG-105 (MAP 5 VFR)",
+      "shortName": "RDG VFR",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5Y4SJ9VGSYKCYQ5CYQ98Z1",
+      "name": "RDG TRACON APD",
+      "shortName": "RDGTDM",
+      "starsId": 998,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5X3YBR2B88AW3BA1GPY72J",
+      "name": "MDT TRACON APD",
+      "shortName": "APD",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

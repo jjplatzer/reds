@@ -1,0 +1,347 @@
+{
+  "artcc": "ZAB",
+  "facility": "LUF",
+  "name": "Luke ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 34.19564814666666,
+    "lon": -107.50666666666666
+  },
+  "controlPositions": [
+    {
+      "id": "01GRARC0JKQRW7S5C4256WBVQD",
+      "name": "North Approach Control",
+      "callsign": "LUF_N_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 118.15
+    },
+    {
+      "id": "01GRAREPFEKTP1N3RR5E0SFSJY",
+      "name": "Snakeye Tactical",
+      "callsign": "LUF_SN_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 122.775
+    },
+    {
+      "id": "01GRARH7BNYDC6NHPCBXJZ9NVS",
+      "name": "South Approach Control",
+      "callsign": "LUF_S_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 125.45
+    },
+    {
+      "id": "01GRARKDAKA0WXM7603RE70MNP",
+      "name": "Local Control",
+      "callsign": "LUF_TWR",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 119.1
+    },
+    {
+      "id": "01GRARN8QBH4EK8M4WA33A8M6B",
+      "name": "Ground",
+      "callsign": "LUF_GND",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 133.175
+    },
+    {
+      "id": "01GRARPHHS037JXGHW1REBHHVG",
+      "name": "Luke Clearance",
+      "callsign": "LUF_DEL",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 126.255
+    },
+    {
+      "id": "1K",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "2T",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1K",
+        "1N",
+        "1S",
+        "2T"
+      ],
+      "mapIds": [
+        801,
+        3,
+        1,
+        2,
+        4,
+        6,
+        6,
+        3,
+        1,
+        2,
+        4,
+        30,
+        31,
+        32,
+        33,
+        14,
+        5,
+        73,
+        74,
+        91,
+        104,
+        803,
+        805,
+        16,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        801,
+        1,
+        4,
+        3,
+        2,
+        6
+      ],
+      "submenuMapIds": [
+        6,
+        1,
+        4,
+        31,
+        33,
+        5,
+        74,
+        104,
+        805,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        3,
+        2,
+        30,
+        32,
+        14,
+        73,
+        91,
+        803,
+        16,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HA5KHDKH0GFNMZKYW8YXS3QQ",
+      "name": "PHX667 RWY7R_8",
+      "shortName": "RWY7R_8",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5KF4R77NGYPHQD7CN822V6",
+      "name": "PHX668 RWY2526",
+      "shortName": "RWY2526",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA35QKHJ0DS4X6WRPGGA6S4E",
+      "name": "PHX101 CLASS_B",
+      "shortName": "CLASS_B",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35QKHN7734D412QRNA9KCJ",
+      "name": "PHX165 PTACWRD",
+      "shortName": "PTACWRD",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35QKHR9H8SM941NEM0YX66",
+      "name": "PHX307 EOVM",
+      "shortName": "EOVM",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35QKHFGFD99PJ6MZGHWWED",
+      "name": "PHX003 PHX003",
+      "shortName": "PHX003",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35QKHPBYFX43WT4Y5QCZ9Z",
+      "name": "PHX166 E_ARR",
+      "shortName": "E_ARR",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA35QKHQ0K6RSVAWZ6W102ET",
+      "name": "PHX169 W_DEP",
+      "shortName": "W_DEP",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA35QKHR75EH7NS0XD79XA00",
+      "name": "PHX302 ZABSCT",
+      "shortName": "ZABSCT",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35QKHVP1FAJKBR9Q89XCK5",
+      "name": "PHX317 V_AIRWY",
+      "shortName": "V_AIRWY",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35QKHXMAEZWMK84PDK9QPF",
+      "name": "PHX333 ALLDGPS",
+      "shortName": "ALLDGPS",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35QKHX6D3D0XZ3698DXXGW",
+      "name": "PHX334 ALLDVOR",
+      "shortName": "ALLDVOR",
+      "starsId": 31,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35QKHX0A49TG4C8DNFVPW0",
+      "name": "PHX335 SAT_GPS",
+      "shortName": "SAT_GPS",
+      "starsId": 32,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35QKHYD34NBRZX0ZDJHEZY",
+      "name": "PHX336 ALL_D",
+      "shortName": "ALL_D",
+      "starsId": 33,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35RE1V47QPP1DAS5WJ3DEX",
+      "name": "PRC415 IRROUTE",
+      "shortName": "IRROUTE",
+      "starsId": 73,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35RE1V9MRQ5MX5F9FG97FW",
+      "name": "PRC416 VRROUTE",
+      "shortName": "VRROUTE",
+      "starsId": 74,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35RE1T925Q3YG454YE9K6X",
+      "name": "PRC413 GLADBAG",
+      "shortName": "GLADBAG",
+      "starsId": 91,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA35QKHK6Z2H2CDJ1Z4AM5ZF",
+      "name": "PHX104 YARNELL",
+      "shortName": "YARNELL",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB3HZGA91P0FVTMG9T3BWRFS",
+      "name": "L01 LUF BASE MAP",
+      "shortName": "BASE",
+      "starsId": 801,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB3HZGABGENH6TPNC16YVZ4A",
+      "name": "L03 A-231",
+      "shortName": "A231",
+      "starsId": 803,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC3SD8NTMERNMGC7FZSVBQ1V",
+      "name": "L04 LUF Sectors",
+      "shortName": "LUF SEC",
+      "starsId": 805,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HC3SD8NTMERNMGC7FZSVBQ1V",
+      "name": "L04 LUF Sectors",
+      "shortName": "LUF SEC",
+      "starsId": 805,
+      "brightnessCategory": "B"
+    }
+  ]
+}

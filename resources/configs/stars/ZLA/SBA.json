@@ -1,0 +1,929 @@
+{
+  "artcc": "ZLA",
+  "facility": "SBA",
+  "name": "Santa Barbara",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 34.9691453,
+    "lon": -116.63582625
+  },
+  "controlPositions": [
+    {
+      "id": "01G90MGR3A52WC4FMZK9D2XS57",
+      "name": "Clearance Delivery",
+      "callsign": "SBA_DEL",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 132.9
+    },
+    {
+      "id": "01G90MK52V6FE7HF2Y9Y69CA0X",
+      "name": "Ground Control",
+      "callsign": "SBA_GND",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01G90MKTD7TTCT9NZ3S285FFDD",
+      "name": "Local Control",
+      "callsign": "SBA_TWR",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 119.7
+    },
+    {
+      "id": "01G90MN6R8MGE3BEE4S951JPSJ",
+      "name": "Harbor",
+      "callsign": "SBA_H_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 125.4
+    },
+    {
+      "id": "01G90MNJ19RC2CH9RJX94Z6V9T",
+      "name": "Orcut",
+      "callsign": "SBA_R_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 124.15
+    },
+    {
+      "id": "01G90MP49NGYBM625S2X0D963Z",
+      "name": "Elcap",
+      "callsign": "SBA_E_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 120.55
+    },
+    {
+      "id": "01G90MPYD3C664KC34DYQK9454",
+      "name": "Pismo",
+      "callsign": "SBA_I_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 127.725
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1I",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1K",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1X",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1Y",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1D",
+        "1E",
+        "1G",
+        "1H",
+        "1I",
+        "1K",
+        "1L",
+        "1N",
+        "1R",
+        "1S",
+        "1Y"
+      ],
+      "mapIds": [
+        1,
+        37,
+        4,
+        20,
+        16,
+        38,
+        1,
+        18,
+        37,
+        16,
+        38,
+        24,
+        3,
+        26,
+        4,
+        25,
+        6,
+        29,
+        22,
+        14,
+        2,
+        36,
+        8,
+        28,
+        9,
+        5,
+        18,
+        27,
+        null,
+        12,
+        null,
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        4,
+        16,
+        37,
+        20,
+        38
+      ],
+      "submenuMapIds": [
+        1,
+        37,
+        38,
+        3,
+        4,
+        6,
+        22,
+        2,
+        8,
+        9,
+        18,
+        null,
+        null,
+        null,
+        null,
+        18,
+        16,
+        24,
+        26,
+        25,
+        29,
+        14,
+        36,
+        28,
+        5,
+        27,
+        12,
+        7,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1B",
+        "1P",
+        "1X"
+      ],
+      "mapIds": [
+        1,
+        8,
+        37,
+        2,
+        6,
+        9,
+        1,
+        8,
+        43,
+        2,
+        6,
+        9,
+        38,
+        11,
+        null,
+        7,
+        12,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        22,
+        23,
+        24,
+        27,
+        28,
+        25,
+        26,
+        29,
+        30,
+        31,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        37,
+        6,
+        8,
+        2,
+        9
+      ],
+      "submenuMapIds": [
+        1,
+        43,
+        6,
+        38,
+        null,
+        12,
+        15,
+        17,
+        19,
+        22,
+        24,
+        28,
+        26,
+        30,
+        null,
+        8,
+        2,
+        9,
+        11,
+        7,
+        14,
+        16,
+        18,
+        20,
+        23,
+        27,
+        25,
+        29,
+        31,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H8SVEVAN9ACA59ZCYSPCDYAK",
+      "name": "101S EOVM SBA",
+      "shortName": "EOVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBQRHNC1STSDFV0TZR8",
+      "name": "116S COMPOSITE OF MAPS SBA",
+      "shortName": "TRACON",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBPZMEBHR7H3ZHXVG5J",
+      "name": "112S RWY 7 OVERLAY SBA",
+      "shortName": "BNDRY07",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBPGZGJDVK3AAXJXJAS",
+      "name": "113S RWY 25 OVERLAY SBA",
+      "shortName": "BNDRY25",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBMDXB2H1S8EGGFB67Q",
+      "name": "109S GPS APCHS SBA",
+      "shortName": "IZA GPS",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBQP788TBSX4RR4ZYP5",
+      "name": "114S VICTOR AIRWAYS SBA",
+      "shortName": "AIRWAYS",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVBJC9E9DXKNEX66Q1YC",
+      "name": "107S VBG ILS APCHS SBA",
+      "shortName": "VBG ILS",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBDF6W5E5P4K9CCP5XC",
+      "name": "401S SMX VFR SBA",
+      "shortName": "TOWERS",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBQJFGEHE2ZW0TKYK6G",
+      "name": "115S CLASS AIRSPACE SBA",
+      "shortName": "CLASS_D",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVBJM022SW3AXVJGT8KK",
+      "name": "106S R-2534A-B SBA",
+      "shortName": "R2534AB",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVBK175T55MNFWW9FAE1",
+      "name": "108S VBG TACAN APCHS SBA",
+      "shortName": "VBG TAC",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVAQGHSBFFNR0F6XKM0Z",
+      "name": "117S LOCAL TOWERS SBA",
+      "shortName": "SBROADS",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVBEB6GFAM8S2YQMEAYQ",
+      "name": "402S SMX GPS RWY 30 SBA",
+      "shortName": "SMXG30",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBN1S0FP7VJJXM87Q27",
+      "name": "110S MIKE 1-2 SBA",
+      "shortName": "MIKE1_2",
+      "starsId": 15,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVAQ1591YPRX700WH8GD",
+      "name": "118S CLASS C SBA",
+      "shortName": "CLASS_C",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVAR27SQQ3EFM63KYB7R",
+      "name": "119S CLASS C ALTITUDES SBA",
+      "shortName": "C_ALT",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVASB94KA4CE530HC78J",
+      "name": "120S IR-200 SBA",
+      "shortName": "IR_200",
+      "starsId": 18,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVASRZAB5J0MFQ2637EG",
+      "name": "121S HUNTER MOAS SBA",
+      "shortName": "HNTRMOA",
+      "starsId": 19,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVAT27XSXZSTFHC80TF0",
+      "name": "122S SBA GPS RWY 7 SBA",
+      "shortName": "SBAGPS7",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBNB46FJW7EA833D6Y6",
+      "name": "111S AIRPORTS SBA",
+      "shortName": "SBA111S",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVATH9H9MM6BBW9GKYBC",
+      "name": "123S COMPOSITE OF MAP LABELS SBA",
+      "shortName": "LABELS",
+      "starsId": 22,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVAVR37QAPH7WA6ZQHW0",
+      "name": "124S R-2516 SBA",
+      "shortName": "R-2516",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVAWXYS9BQCTCSAP2MKA",
+      "name": "126S SBP GPS RWY 29 SBA",
+      "shortName": "SBPGP29",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVAV5M5E1W13X9A0PMGS",
+      "name": "125S SBP GPS RWY 11 SBA",
+      "shortName": "SBPGP11",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVAWXFERKJK1705YN2MX",
+      "name": "127S SBP VOR OR TACAN-A SBA",
+      "shortName": "SBP_VOR",
+      "starsId": 26,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVAXGA500R6MHB2J53GD",
+      "name": "128S LPC VOR-DME-A SBA",
+      "shortName": "LPC_VOR",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVAXXGB7TFM4PS9E6C69",
+      "name": "129S IZA VOR SBA",
+      "shortName": "IZA_VOR",
+      "starsId": 28,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVAX9Q2BYXRS3BJQDE88",
+      "name": "130S SMX VOR RWY 12 SBA",
+      "shortName": "SMX_VOR",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBC803DGXDV1MMBJS9D",
+      "name": "306S VBG ATCT MAP 1 SBA",
+      "shortName": "V_TOWER",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBCT1XEWB6AF8QHT8P8",
+      "name": "307S MIKE 1-2 SBA",
+      "shortName": "V_MIKES",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBDX4X9A3CQ7HM15XBY",
+      "name": "308S VBG FIX NAMES SBA",
+      "shortName": "V_LABEL",
+      "starsId": 32,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVAY3XT0GYBKP7KN2CRB",
+      "name": "133S SBA ILS 30 DEGREE LINE SBA",
+      "shortName": "SBA_30D",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVAY2ZV6SA0GX320QJRQ",
+      "name": "134S OIL RIGS SBA",
+      "shortName": "O_RIGS",
+      "starsId": 34,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVAZ6WDRNM19RJ0FF6B2",
+      "name": "135S OIL RIG NAMES SBA",
+      "shortName": "RIG_LAB",
+      "starsId": 35,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB1X2T6XZTH11A2JS93",
+      "name": "142S SMX COPTER APPROACH SBA",
+      "shortName": "SMX_G35",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVAP3W31D8CJMTW414YK",
+      "name": "143S 3NM FUSION MVA SBA",
+      "shortName": "3FUSMVA",
+      "starsId": 37,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVAP8WG81M1CJPGVHGF4",
+      "name": "144S 5NM FUSION MVA SBA",
+      "shortName": "5FUSMVA",
+      "starsId": 38,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB2XTSXARSYMZ4V4V17",
+      "name": "145S PITBUL SBA",
+      "shortName": "PITBUL",
+      "starsId": 39,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVB2TNC7N3N1ZVS90205",
+      "name": "146S MISHN SBA",
+      "shortName": "MISHN",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVB3PDN0ZF1H3SR88NX0",
+      "name": "147S GAUCH SBA",
+      "shortName": "GAUCH",
+      "starsId": 41,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVAX5N0VJZREA1RVSHQ5",
+      "name": "131S ADS-B 40NM SBA",
+      "shortName": "ADSB_40",
+      "starsId": 42,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVAYBSVYFAJF2QSVPTDQ",
+      "name": "132S ADS-B 60NM SBA",
+      "shortName": "ADSB_60",
+      "starsId": 43,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVAZNPHNKFV0RVX8GTFB",
+      "name": "136S R-2513-LIGGETT SBA",
+      "shortName": "LIGGETT",
+      "starsId": 44,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVAZ7YRKDKAA5QW3BZRE",
+      "name": "137S IR-203 SBA",
+      "shortName": "IR-203",
+      "starsId": 45,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB0MBPYMW4KXSAHQKWZ",
+      "name": "138S VR-249 SBA",
+      "shortName": "VR-249",
+      "starsId": 46,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB02387B6CH6KXFVZW0",
+      "name": "139S W-532N SBA",
+      "shortName": "W-532N",
+      "starsId": 47,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB0AJQ8TN0ZFTMVAV80",
+      "name": "140S W-532E SBA",
+      "shortName": "W-532E",
+      "starsId": 48,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB1ZF60EDNKE5J0SF08",
+      "name": "141S W-532S SBA",
+      "shortName": "W-532S",
+      "starsId": 49,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB3JH528P6WDPP6MS06",
+      "name": "148S LEMOORES SBA",
+      "shortName": "LEM_MOA",
+      "starsId": 50,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB60MYT7MCY713KAHA9",
+      "name": "154S W-412 SBA",
+      "shortName": "W-412",
+      "starsId": 52,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB4NF3B23KMM4XM90MR",
+      "name": "149S W-537 SBA",
+      "shortName": "W-537",
+      "starsId": 57,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB4CFTFNJ2NDPXKTHEA",
+      "name": "150S W-289N SBA",
+      "shortName": "W-289N",
+      "starsId": 58,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB51H2P9P59Z2A0SNBR",
+      "name": "151S W-289W SBA",
+      "shortName": "W-289W",
+      "starsId": 59,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB53X64RRG0R3ESNDDF",
+      "name": "152S W-289E SBA",
+      "shortName": "W-289E",
+      "starsId": 60,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB6BVBVVFPVX26P5YRP",
+      "name": "153S W-289S SBA",
+      "shortName": "W-289S",
+      "starsId": 61,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVBH7KPSE3JFPMQGDAHB",
+      "name": "102S IR-211 SBA",
+      "shortName": "IR-211",
+      "starsId": 63,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVBHGYVCXZP44X7BA71F",
+      "name": "103S VR-1256 SBA",
+      "shortName": "VR-1256",
+      "starsId": 64,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVBJ9CCNNV1CBSTJVWDK",
+      "name": "104S VR-1262 SBA",
+      "shortName": "VR-1262",
+      "starsId": 65,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB7364MDABDE2E77Z27",
+      "name": "155S ASA RNP 07 SBA",
+      "shortName": "RNP_07",
+      "starsId": 66,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVB84F4QN64WAWJ0G3JS",
+      "name": "156S ASA RNP 25 SBA",
+      "shortName": "RNP_25",
+      "starsId": 67,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBAP54V0R5GWHAQV5RA",
+      "name": "164S SBA RNAV VISUAL RWY 25 TF SBA",
+      "shortName": "RNV25TF",
+      "starsId": 68,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBBXDW3ZJZ3TCYPERDS",
+      "name": "165S SBA RNAV VISUAL RWY 25 RF SBA",
+      "shortName": "RNV25RF",
+      "starsId": 69,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVB94DPFHWAVWAJ3J7B1",
+      "name": "159S VBGTFIX SBA",
+      "shortName": "VBGTFIX",
+      "starsId": 70,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVB9603FHM7YR5CW8KBP",
+      "name": "160S VBGTSCT SBA",
+      "shortName": "VBGTSCT",
+      "starsId": 71,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBBEZ1JHJHSJBAQ3SSF",
+      "name": "166S SBP RNAV M RWY 11 SBA",
+      "shortName": "RNVM 11",
+      "starsId": 72,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBB27M8G3K4P37J65DZ",
+      "name": "167S SBP RNAV M RWY 29 SBA",
+      "shortName": "RNVM 29",
+      "starsId": 73,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBHXX1BKDSQNF2DFBWH",
+      "name": "100S FIXED TARGET MAP SBA",
+      "shortName": "FIXTGTS",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVB8GHBGWCTR95TWRTTD",
+      "name": "157S STADIUMS SBA",
+      "shortName": "STADIUM",
+      "starsId": 157,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVB8F000VWE47EP0094S",
+      "name": "158S EC HR SPLIT SBA",
+      "shortName": "HARBOR",
+      "starsId": 158,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBADGQ9HQ43N4RKNVFE",
+      "name": "161S DVAOBST SBA",
+      "shortName": "DVAOBST",
+      "starsId": 161,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8SVEVBE5GFNR1V3TGW9CHVD",
+      "name": "500S FLCHK-SBA ILS OR LOC 7 SBA",
+      "shortName": "SBAILS7",
+      "starsId": 500,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBEZS6H3V333QGPBJZS",
+      "name": "501S FLCHK-SBP ILS 11 SBA",
+      "shortName": "SBPI11",
+      "starsId": 501,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBF9JYD4ES9ZSV31BXS",
+      "name": "502S FLCHK-SBP LOC 11 SBA",
+      "shortName": "SBPLC11",
+      "starsId": 502,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBFG0A1SATX7V87E4XA",
+      "name": "503S FLCHK-SMX ILS OR LOC 12 SBA",
+      "shortName": "SMXI12",
+      "starsId": 503,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBFERXPH7CCA5TY5E4Z",
+      "name": "504S FLCHK-SMX LOC-DME BC-A SBA",
+      "shortName": "SMXLBCA",
+      "starsId": 504,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBGX41BX8G8CTAY4ZFD",
+      "name": "505S FLCHK-VBG ILS OR LOC-DME 12 SBA",
+      "shortName": "VBGI12",
+      "starsId": 505,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8SVEVBG00RMG7Y5N6JXM5KM",
+      "name": "506S FLCHK-VBG ILS OR LOC-DME 30 SBA",
+      "shortName": "VBGI30",
+      "starsId": 506,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H4KHCCD93A0CZHRD9PBCG6W5",
+      "name": "000 GND MAP SBA",
+      "shortName": "GNDMAP ",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01H8SVEVBQJFGEHE2ZW0TKYK6G",
+      "name": "115S CLASS AIRSPACE SBA",
+      "shortName": "CLASS_D",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    }
+  ]
+}

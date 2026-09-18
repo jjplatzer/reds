@@ -1,0 +1,194 @@
+{
+  "artcc": "ZAB",
+  "facility": "ROW",
+  "name": "Roswell ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 34.19564814666666,
+    "lon": -107.50666666666666
+  },
+  "controlPositions": [
+    {
+      "id": "01G98NM39T8XFKQ67162DZPC5N",
+      "name": "East Approach",
+      "callsign": "ROW_E_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 119.6
+    },
+    {
+      "id": "01G98NNFKAFM41GFBQ3W8NTW0R",
+      "name": "West Approach",
+      "callsign": "ROW_W_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 120.35
+    },
+    {
+      "id": "01G98NPRZNQ5VECKHSGMWRM6V7",
+      "name": "Local Control",
+      "callsign": "ROW_TWR",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 118.5
+    },
+    {
+      "id": "01G98NQT91RVEQS4RJ73EH555T",
+      "name": "Ground",
+      "callsign": "ROW_GND",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G98NRV9M4W76ADJQ1NE618FF",
+      "name": "Clearance Delivery",
+      "callsign": "ROW_DEL",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 132.875
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1W",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        null,
+        2,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GR2EBFSHZ37D2DY1HSRWBH9B",
+      "name": "R001 TRACON",
+      "shortName": "TRACON",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GR2EBFSJFBJQDQQXGHD1JXK1",
+      "name": "R010 ROW MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GR2EBFSKG37FBDT0XZ202ES2",
+      "name": "R020 SRR-ATS",
+      "shortName": "SRR-ATS",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    }
+  ]
+}

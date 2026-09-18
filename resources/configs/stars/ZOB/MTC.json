@@ -1,0 +1,160 @@
+{
+  "artcc": "ZOB",
+  "facility": "MTC",
+  "name": "Selfridge ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 41.65805,
+    "lon": -81.181585
+  },
+  "controlPositions": [
+    {
+      "id": "01JPJJE7BTZY792262S2HN2J4M",
+      "name": "Approach",
+      "callsign": "MTC_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 132.35
+    },
+    {
+      "id": "01JPJJK1ZDWQRYXWH01MSGVR79",
+      "name": "Ground",
+      "callsign": "MTC_GND",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 128.3
+    },
+    {
+      "id": "01JPJJMMJ4TSHTPRACGTTW9RDN",
+      "name": "Local Control",
+      "callsign": "MTC_TWR",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 120.15
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1L"
+      ],
+      "mapIds": [
+        1,
+        null,
+        2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01JPJHKC539TDH51CDMKE2ANGA",
+      "name": "(MTC) RVM",
+      "shortName": "RAPCON",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JQ43EKK4HA8CN8C1B4MKFF0F",
+      "name": "(MTC) Alt",
+      "shortName": "ALT",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    }
+  ]
+}

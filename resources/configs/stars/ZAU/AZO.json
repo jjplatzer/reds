@@ -1,0 +1,373 @@
+{
+  "artcc": "ZAU",
+  "facility": "AZO",
+  "name": "Great Lakes ATCT/TRACON West Wall",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.879166749999996,
+    "lon": -88.975
+  },
+  "controlPositions": [
+    {
+      "id": "01GFSX0AYEPM5KW47E9V3T0G48",
+      "name": "Griffin (Combined)",
+      "callsign": "AZO_G_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 128.4
+    },
+    {
+      "id": "01GFSX48VTWE696GQCMFBC2NSZ",
+      "name": "Griffin",
+      "callsign": "AZO_G_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 128.4
+    },
+    {
+      "id": "01GFSX9AJ6T3PR1FDMM9KXNGDW",
+      "name": "Whitecap",
+      "callsign": "AZO_W_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 124.6
+    },
+    {
+      "id": "01GFSX9WDJQJAFG3PCYGHP9T8H",
+      "name": "Bronco",
+      "callsign": "AZO_R_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.2
+    },
+    {
+      "id": "01GFSXAEV3P36105317W486FNR",
+      "name": "Bells",
+      "callsign": "AZO_E_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 119.2
+    },
+    {
+      "id": "01GFSXBBS8WBYG7NYFB7W8J1JB",
+      "name": "Lumbertown",
+      "callsign": "AZO_N_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 119.8
+    },
+    {
+      "id": "01GFSXBWT8ANBT9SBX91GDJ4P4",
+      "name": "Shoreline",
+      "callsign": "AZO_S_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 133.825
+    },
+    {
+      "id": "01GFSXDA0VQZG12WSBD55VB8B4",
+      "name": "Local",
+      "callsign": "AZO_TWR",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01GFSXEKJKXGWQN3MQGPYAJ73S",
+      "name": "Ground",
+      "callsign": "AZO_GND",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GFSXFF9BWGMQZM5BFVJ4J3H0",
+      "name": "Clearance Delivery",
+      "callsign": "AZO_DEL",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.75
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1B",
+        "1E",
+        "1G",
+        "1M",
+        "1N",
+        "1R",
+        "1S",
+        "1T",
+        "1W",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6,
+        7,
+        23,
+        8,
+        24,
+        9,
+        25,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        8,
+        9,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        23,
+        24,
+        25,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GFM1XC2NQTC3DR0BEZDAZPHQ",
+      "name": "AZO MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM1XC2QT1MYHKXRS078VM3R",
+      "name": "AZO MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM1XC2VJVAMVEXQNNWF739Q",
+      "name": "AZO VFR",
+      "shortName": "VFR",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM1XC2RM04DA2QC7N0M6EBG",
+      "name": "AZO SECTORS",
+      "shortName": "SECTORS",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8RV4JC2V9D9QNHPF6XAZF5P",
+      "name": "AZO VICTOR AIRWAYS",
+      "shortName": "VT RTES",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM1XC2M580VAD99TPY4Y29W",
+      "name": "AZO AIRPORT DIAGRAMS",
+      "shortName": "AP DIAG",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KMJQPRME6AT5CZD155YHC1XT",
+      "name": "AZO SATELLITE APPROACHES A",
+      "shortName": "SAT A",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KMK2VVNPNV92PF0S52NFY0EK",
+      "name": "AZO SATELLITE APPROACHES C",
+      "shortName": "SAT C",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM1XC2T154YEYPBQ1MRK93Y",
+      "name": "AZO ALL TOWER FINALS",
+      "shortName": "TWR FNL",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KMK2V34PVZ8PXJ67P6VK2GGP",
+      "name": "AZO SATELLITE APPROACHES B",
+      "shortName": "SAT B",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM1XC2H44R1V48S1S68ZVEZ",
+      "name": "AZO ALL APPROACHES",
+      "shortName": "ALL APP",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK1TF0W70C0RX2BTK7JE28AE",
+      "name": "AZO CLASS CHARLIE",
+      "shortName": "CLASS C",
+      "starsId": 25,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GFM1XC2RM04DA2QC7N0M6EBG",
+      "name": "AZO SECTORS",
+      "shortName": "SECTORS",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    }
+  ]
+}

@@ -1,0 +1,2052 @@
+{
+  "artcc": "ZMA",
+  "facility": "MIA",
+  "name": "Miami ATCT",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 25.98185666666667,
+    "lon": -76.699767
+  },
+  "controlPositions": [
+    {
+      "id": "01GFEMRA5QX9D8N2HH61ZPJBWS",
+      "name": "Local Control North",
+      "callsign": "MIA_N_TWR",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01GFEMSNY0QY4NVCV0RN87C7W5",
+      "name": "Ground Control North",
+      "callsign": "MIA_N_GND",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01GFEMXJDG51HFJN4TX07RDJW8",
+      "name": "Clearance Delivery",
+      "callsign": "MIA_DEL",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 135.35
+    },
+    {
+      "id": "01GFEN1CP71ETJCY5FDPAMGKSF",
+      "name": "Local Control South",
+      "callsign": "MIA_S_TWR",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 123.9
+    },
+    {
+      "id": "01GFEN25ENR6P69DXVRBXXAJVV",
+      "name": "Ground Control South",
+      "callsign": "MIA_S_GND",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 127.5
+    },
+    {
+      "id": "01GFEN51K14Z64FZN3PVGQR7HQ",
+      "name": "Gate Hold",
+      "callsign": "MIA_M_RMP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 133.725
+    },
+    {
+      "id": "01GFEN741Z5W4NKX2VBTCPZRM8",
+      "name": "Ground Control West",
+      "callsign": "MIA_W_GND",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 120.35
+    },
+    {
+      "id": "01GFENJ4X8TZ7YFMZ6JP59Z010",
+      "name": "Miami North Departure",
+      "callsign": "MIA_D_DEP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 126.85
+    },
+    {
+      "id": "01GFENKN6AHXE3HYJENGFSV0X3",
+      "name": "Miami North Final",
+      "callsign": "MIA_V_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 124.85
+    },
+    {
+      "id": "01GFENPAS9HYJMKJGTGDEE2G3P",
+      "name": "Miami South Final",
+      "callsign": "MIA_A_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 133.05
+    },
+    {
+      "id": "01GFENQ7GJ9AMBP30E88WJVGDD",
+      "name": "Miami North Feeder",
+      "callsign": "MIA_N_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 125.75
+    },
+    {
+      "id": "01GFENR3J2HBQBRRDDZYDQX8DR",
+      "name": "Miami South Feeder",
+      "callsign": "MIA_S_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 120.5
+    },
+    {
+      "id": "01GFENRT09KYWP734MHQWK14C8",
+      "name": "FLL SW Departure/E Arrival",
+      "callsign": "MIA_Q_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 132.025
+    },
+    {
+      "id": "01GFENSJJXVNJNF0K7DRNKY783",
+      "name": "TMB Arrival/Departure",
+      "callsign": "MIA_H_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 125.25
+    },
+    {
+      "id": "01GFENT2RZ428DXF3MQ3R84Q5Y",
+      "name": "Miami South Departure",
+      "callsign": "MIA_W_DEP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 125.5
+    },
+    {
+      "id": "01GFENTYPY15CXZYT5DENCVJCH",
+      "name": "FLL North Departure",
+      "callsign": "MIA_L_DEP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 126.05
+    },
+    {
+      "id": "01GFENWNCW4GH9J83036BN54CY",
+      "name": "FLL South Feeder/Final",
+      "callsign": "MIA_J_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 118.65
+    },
+    {
+      "id": "01GR2BS6G010MA48SR8HDGNT1P",
+      "name": "FLL North Feeder",
+      "callsign": "MIA_R_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 133.775
+    },
+    {
+      "id": "01JAESAN8JD9957WV0RXW80QPG",
+      "name": "ZMA Guard",
+      "callsign": "MIA_RMP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "01JE2SP0RVMBACTVKQ7BQNZZNN",
+      "name": "Ramp Control 2",
+      "callsign": "MIA_2_RMP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 130.325
+    },
+    {
+      "id": "01JE2SR70PASZKNS5VFR2ETA1H",
+      "name": "Ramp Control 1",
+      "callsign": "MIA_1_RMP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 128.025
+    },
+    {
+      "id": "01JE2T6BNGPX7TQM621BXT4Q6P",
+      "name": "Ramp Control 3",
+      "callsign": "MIA_3_RMP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 130.5
+    },
+    {
+      "id": "01JE2T6PQ3HPGG9D5KPTK5MTZG",
+      "name": "Ramp Control 4",
+      "callsign": "MIA_4_RMP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 130.95
+    },
+    {
+      "id": "01JE2T6T25DYR6ZM7BYERR8TRE",
+      "name": "Ramp Control 5",
+      "callsign": "MIA_5_RMP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 132.375
+    },
+    {
+      "id": "01JE2T6X5P896G2033NHZKPC39",
+      "name": "Ramp Control 6",
+      "callsign": "MIA_6_RMP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 129.075
+    },
+    {
+      "id": "01JEZ014QQ05E40A5T2SYBA65A",
+      "name": "FLL SE Departure/W Arrival",
+      "callsign": "MIA_Z_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 128.6
+    },
+    {
+      "id": "01JEZ0CG2P0VB8WY32BRV8M6K1",
+      "name": "FLL North Final",
+      "callsign": "MIA_F_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 133.725
+    },
+    {
+      "id": "01JEZ0F3CCTCZS7N9DNY9M91E6",
+      "name": "FXE Arrival/Departure",
+      "callsign": "MIA_G_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 119.7
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1I",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1J",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1O",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1Q",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1X",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "3I",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "3J",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "3M",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "3O",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "3S",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "3T",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "3X",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "4O",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "4S",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1B",
+        "1D",
+        "1E",
+        "1F",
+        "1G",
+        "1H",
+        "1I",
+        "1J",
+        "1L",
+        "1M",
+        "1N",
+        "1O",
+        "1P",
+        "1Q",
+        "1R",
+        "1S",
+        "1T",
+        "1U",
+        "1V",
+        "1W",
+        "1X",
+        "1Z",
+        "3I",
+        "3J",
+        "3M",
+        "3O",
+        "3S",
+        "3T",
+        "3X",
+        "4O",
+        "4S"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        77,
+        5,
+        6,
+        1,
+        2,
+        3,
+        77,
+        5,
+        6,
+        7,
+        8,
+        28,
+        17,
+        30,
+        12,
+        42,
+        41,
+        54,
+        53,
+        57,
+        56,
+        59,
+        58,
+        221,
+        223,
+        227,
+        225,
+        228,
+        226,
+        229,
+        222,
+        10,
+        9,
+        91,
+        81
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        77,
+        6
+      ],
+      "submenuMapIds": [
+        1,
+        3,
+        5,
+        7,
+        28,
+        30,
+        42,
+        54,
+        57,
+        59,
+        221,
+        227,
+        228,
+        229,
+        10,
+        2,
+        77,
+        6,
+        8,
+        17,
+        12,
+        41,
+        53,
+        56,
+        58,
+        223,
+        225,
+        226,
+        222,
+        9
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GGFQ8DHKAR1YVZY7YCJ4FPD2",
+      "name": "MIA-001S EAST OPERATIONS ARRIVAL",
+      "shortName": "MIA_E",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DHQV9H8TC09PAWA2AK5",
+      "name": "MIA-002S WEST OPERATIONS ARRIVAL",
+      "shortName": "MIA_W",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DHSVRV6ZF13XAP52RP2",
+      "name": "MIA-003S MIA DEPARTURE EAST",
+      "shortName": "MIA_DEP",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DHWCXJR4CMJ4QJ3BMFD",
+      "name": "MIA-004S EMERGENCY-ILS MONITOR",
+      "shortName": "ILS_MON",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBRGKWA4WJQ9JXDA2E3PVJZS",
+      "name": "FLL-001S EAST OPERATION",
+      "shortName": "FLL_E",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBRGKWA5S2Z03RBNHQBR0JDV",
+      "name": "FLL-002S WEST OPERATIONS",
+      "shortName": "FLL_W",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQBR33J0NQ67XVWBY6AP9WGA",
+      "name": "TMB-003S MIA CLASS B",
+      "shortName": "CLASS_B",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMMDKCT9XV23BZM9JZ7",
+      "name": "MIA-225S FLL CLASS C",
+      "shortName": "CLASS_C",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMN7TSQEXZ76DYTPS88",
+      "name": "MIA-226S HWO/OPF CLASS D",
+      "shortName": "ZCLASSD",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQBR3E9VBN71GF6W93PSXCJX",
+      "name": "PMP-001S FXE/PMP/BCT CLASS D",
+      "shortName": "GCLASSD",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBRGKWA6ZBE5B9YS0BD446VK",
+      "name": "FLL-005S OUTAGE",
+      "shortName": "OUTAGE",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DJDVHNAB8YCB9SCH95J",
+      "name": "MIA-010S SHORELINE / PRIMARY ARPTS",
+      "shortName": "256NM",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DJJEEFHBPDFAHQR0KP5",
+      "name": "MIA-011S HOSPITALS",
+      "shortName": "HOSPTLS",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMK5V9JCBY4ZKT7RMXZ",
+      "name": "MIA-224S G RNAV/GPS",
+      "shortName": "GGPS",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DJ1465VXSR05PTXK2ZA",
+      "name": "MIA-007S RNAV/GPS APPROACHES",
+      "shortName": "GPS",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8VVHB5KJN3HT230NSSYJ",
+      "name": "FLL-012S WEST OPERATION",
+      "shortName": "FLL_T_W",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8VVNA947RWYNKEFQGY8Y",
+      "name": "FLL-013S BRITE 2/FLL",
+      "shortName": "FLL_MID",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8VVE31F2EAS3G11C0GAF",
+      "name": "FLL-011S EAST OPERATION",
+      "shortName": "FLL_T_E",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DN1TC00N2062GFDVCN4",
+      "name": "MIA-315S STADIUMS",
+      "shortName": "STADIUM",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8VVR53S6E8V2SAXCCQW2",
+      "name": "FLL-015S RNAV (RNP) APPCHS",
+      "shortName": "FLL_RNP",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKKGN2KQJC4MG1W65Y3",
+      "name": "MIA-036S MIA DEPARTURE WEST",
+      "shortName": "MIADEPW",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DJZPB9ED78KZVBGA1NW",
+      "name": "MIA-018S ZMA OVR",
+      "shortName": "ZMA_OVR",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4PG53P8G3QKRKXNYCR0XD",
+      "name": "FLL-028S FLL RNP 10L",
+      "shortName": "F_R_10L",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4PG53G7WYG2SQVGDK6NPC",
+      "name": "FLL-029S FLL RNP 10R",
+      "shortName": "F_R_28R",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8VV82MJGMNEBBQJF74DS",
+      "name": "FLL-006S FLL GEO MAP",
+      "shortName": "CSTLINE",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DJ3Y64978KD8CQGSP1Z",
+      "name": "MIA-008S NOISE",
+      "shortName": "NOISE",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DNCDHWMQ4TQMVJGZ0P0",
+      "name": "MIA-332S MIA_R_E",
+      "shortName": "MIA_R_E",
+      "starsId": 35,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DNBZRDW4AJ6J7DNT41P",
+      "name": "MIA-330S MIA_R_W",
+      "shortName": "MIA_R_W",
+      "starsId": 36,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18M1KEGXQWS7W6AH8VX",
+      "name": "MIA-346S 07FA_F",
+      "shortName": "07F_GPS",
+      "starsId": 37,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8VVAHGCKS1MMDCPAY96P",
+      "name": "FLL-009S FLL_R_E",
+      "shortName": "FLL_R_E",
+      "starsId": 38,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VVCWTK0EE471QGVGDNW",
+      "name": "FLL-010S FLL_R_W",
+      "shortName": "FLL_R_W",
+      "starsId": 39,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18K4H5ESVA8N92C146A",
+      "name": "MIA-311S FLORIDATA",
+      "shortName": "CDR",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DKP9T6XPNTS97Y4NKZA",
+      "name": "MIA-048S MVA",
+      "shortName": "MVA",
+      "starsId": 41,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DJ7TF0Y91YPQD5DK6YT",
+      "name": "MIA-009S MULTI MVA",
+      "shortName": "MVA_5NM",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4Q18MX0JXG73P2WK9F433",
+      "name": "MIA-344S POTUS",
+      "shortName": "TFR_MAL",
+      "starsId": 47,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18MTP6F517SP7XAE81D",
+      "name": "MIA-345S DORAL_P",
+      "shortName": "TFR_DRL",
+      "starsId": 48,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKS40DVGXPKEC0S7CVQ",
+      "name": "MIA-093S HST ALTRV",
+      "shortName": "HSTLTRV",
+      "starsId": 49,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DNCX2ZASMD0AQWJ8FE7",
+      "name": "MIA-333S DTA ATA LETTER MAP",
+      "shortName": "DTA_LTR",
+      "starsId": 50,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DN9YE2864XJZHGBXZ59",
+      "name": "MIA-328S T_RTES",
+      "shortName": "T_RTES",
+      "starsId": 51,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DN9FHH82JJ3S31YEWSG",
+      "name": "MIA-327S TARPN",
+      "shortName": "TARPN",
+      "starsId": 52,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DMN43G1QFMAXHWGEN9Z",
+      "name": "MIA-300S FLL DEP WEST",
+      "shortName": "L_DEP_W",
+      "starsId": 53,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DMPNFZVZGE0M10HB50S",
+      "name": "MIA-301S FLL DEP EAST",
+      "shortName": "L_DEP_E",
+      "starsId": 54,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DMQ23TTK2Y151SXCWEF",
+      "name": "MIA-302S FLL ARR EAST",
+      "shortName": "FLL_A_E",
+      "starsId": 55,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DMRF6EWDGP2TFN3YFJT",
+      "name": "MIA-303S MIA NORTH DEP WEST",
+      "shortName": "D_DEP_W",
+      "starsId": 56,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DMSRD44PV7C8Z3QX2WX",
+      "name": "MIA-304S MIA NORTH DEP EAST",
+      "shortName": "D_DEP_E",
+      "starsId": 57,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DMS46TACF15GTCH8K1A",
+      "name": "MIA-305S MIA SOUTH DEP WEST",
+      "shortName": "W_DEP_W",
+      "starsId": 58,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DMTXM7YSTTBD4VHJ65C",
+      "name": "MIA-306S MIA SOUTH DEP EAST",
+      "shortName": "W_DEP_E",
+      "starsId": 59,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DMVMWPCTR1RZXRHZS5W",
+      "name": "MIA-307S FROGZ_E",
+      "shortName": "FROGZ_E",
+      "starsId": 60,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DMWXFC6SJ3DNEDAZC0C",
+      "name": "MIA-308S CSTAL_E",
+      "shortName": "CSTAL_E",
+      "starsId": 61,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DMX4DD6297CMMJBBFM4",
+      "name": "MIA-309S VIICE_E",
+      "shortName": "VIICE_E",
+      "starsId": 62,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DMYMCE76ZCZ070XSZ6Q",
+      "name": "MIA-310S SDBAR_E",
+      "shortName": "SDBAR_E",
+      "starsId": 63,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DMZT57SZ3DGPCWYBY4T",
+      "name": "MIA-312S SDBAR_W",
+      "shortName": "SDBAR_W",
+      "starsId": 64,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DN0EY5HR3QQYW8Y4R48",
+      "name": "MIA-313S OLAHS_E",
+      "shortName": "OLAHS_E",
+      "starsId": 65,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DN2FQFXZKTFZDCHVPQE",
+      "name": "MIA-319S FLL ARR WEST",
+      "shortName": "FLL_A_W",
+      "starsId": 66,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DN36AENKFEX2EQ1EWYG",
+      "name": "MIA-320S FROGZ_W",
+      "shortName": "FROGZ_W",
+      "starsId": 67,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DN3RGXCWEC3K2P5EGNZ",
+      "name": "MIA-321S CSTAL_W",
+      "shortName": "CSTAL_W",
+      "starsId": 68,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DN4K0AKX7ZY4N15S4N1",
+      "name": "MIA-322S VIICE_W",
+      "shortName": "VIICE_W",
+      "starsId": 69,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DN5NEMM3WAWR2971B7Q",
+      "name": "MIA-323S OLAHS_W",
+      "shortName": "OLAHS_W",
+      "starsId": 70,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DN6HCQXZM9JTNQTT0DR",
+      "name": "MIA-324S BAHIA_E",
+      "shortName": "BAHIA_E",
+      "starsId": 71,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DN71K3N1PK5GF3C09MF",
+      "name": "MIA-325S BAHIA_W",
+      "shortName": "BAHIA_W",
+      "starsId": 72,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DN8SQCAVT6DJR0DC21V",
+      "name": "MIA-326S KYAKS",
+      "shortName": "KYAKS",
+      "starsId": 73,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DNAWEEVESYSTBYHWPCR",
+      "name": "MIA-329S NNOCE",
+      "shortName": "NNOCE",
+      "starsId": 74,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DNDJZZJH7Z9CHJXXNMS",
+      "name": "MIA-340S D BEECH EAST",
+      "shortName": "D_BCH_E",
+      "starsId": 75,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DNEFN7RH0J2V05THXGD",
+      "name": "MIA-341S D BEECH WEST",
+      "shortName": "D_BCH_W",
+      "starsId": 76,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKQNXEMJ3KS7D84FETK",
+      "name": "MIA-049S EMERGENCY MAP",
+      "shortName": "EMERGCY",
+      "starsId": 77,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4Q18KZSEAEH8K0BGZYJCR",
+      "name": "MIA-316S GABOW",
+      "shortName": "GABOW",
+      "starsId": 78,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18KDY3KB1DQP1MD0639",
+      "name": "MIA-317S HUSIL",
+      "shortName": "HUSIL",
+      "starsId": 79,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18K9XDEDTJR1Q41TMD0",
+      "name": "MIA-318S MELLZ",
+      "shortName": "MELLZ",
+      "starsId": 80,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DNGQV3BYG6SBKYAH4PG",
+      "name": "MIA-850S CLASS D AIRSPACE",
+      "shortName": "CLASS_D",
+      "starsId": 81,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4Q18PSNV5PNAVA7XDY4NB",
+      "name": "MIA-082S TOREZ",
+      "shortName": "TOREZ",
+      "starsId": 82,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18PMX4HJXXRVPW9V773",
+      "name": "MIA-083S CUURT_E",
+      "shortName": "CUURT_E",
+      "starsId": 83,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18PKKYQ1Y0DRAA3A2RX",
+      "name": "MIA-084S CUURT_W",
+      "shortName": "CUURT_W",
+      "starsId": 84,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4PG530S4M4RE0M8A7WZDB",
+      "name": "FLL-030S FLL_7NM",
+      "shortName": "FLL_7NM",
+      "starsId": 85,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4PG54FNN3YNC5JJS1RT68",
+      "name": "FLL-031S FLL_C\u0026D",
+      "shortName": "FLL_C_D",
+      "starsId": 86,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4Q18PV5075F2RR76YKV5E",
+      "name": "MIA-038S GLADZ_W",
+      "shortName": "GLADZ_W",
+      "starsId": 87,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKTVJTG5E0DYBYP8QAV",
+      "name": "MIA-100S PBIRSWE",
+      "shortName": "PBIRSWE",
+      "starsId": 88,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4Q18R6D7Z2DEHPS5ABZP8",
+      "name": "MIA-101S PBIRSWW",
+      "shortName": "PBIRSWW",
+      "starsId": 89,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4Q18P9592812E3HS6AWSX",
+      "name": "MIA-102S HSTSP",
+      "shortName": "HSTMAP",
+      "starsId": 90,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQBR33J0J4WGDTQ4G6ZSS0A7",
+      "name": "TMB-006S TMB/HST CLASS D",
+      "shortName": "TMBHSTD",
+      "starsId": 91,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4PG54WEQ0X0JQGV8W6R7H",
+      "name": "FLL-032S FLLEAST",
+      "shortName": "FLLEAST",
+      "starsId": 92,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4PG54N4DRY83M48C13JGG",
+      "name": "FLL-033S FLLWEST",
+      "shortName": "FLLWEST",
+      "starsId": 93,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4Q18P2NEXMB1HYKP7J8R0",
+      "name": "MIA-085S MIAEAST",
+      "shortName": "MIAEAST",
+      "starsId": 94,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4Q18P40GAJZ0HTGDVZFF8",
+      "name": "MIA-086S MIAWEST",
+      "shortName": "MIAWEST",
+      "starsId": 95,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4PG544XW5RZ2HR2R5N9PW",
+      "name": "FLL-034S FLL_FE",
+      "shortName": "FLL_FE",
+      "starsId": 96,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4PG54S9X702Z0G6BBA88J",
+      "name": "FLL-035S FLL_FW",
+      "shortName": "FLL_FW",
+      "starsId": 97,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18PM5TS635KRRAN811G",
+      "name": "MIA-087S MIA_FE",
+      "shortName": "MIA_FE",
+      "starsId": 98,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18P2P2AT66T773CCBA6",
+      "name": "MIA-088S MIA_FW",
+      "shortName": "MIA_FW",
+      "starsId": 99,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18M31X19WR2G892FSAY",
+      "name": "MIA-331S MIA_MID",
+      "shortName": "MIA_MID",
+      "starsId": 101,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18RZCPW1CQY38S64D60",
+      "name": "MIA-194S EYW NQX",
+      "shortName": "EYW_NQX",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DHYCD8ETWK3N8YJEYP5",
+      "name": "MIA-005S MASTER",
+      "shortName": "MASTER",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQYWHXWEJ4G5F3AGCT0BFXSZ",
+      "name": "MIA-860S HST BOUNDARIES",
+      "shortName": "HST_BND",
+      "starsId": 121,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DN1P06TKEQK4M3ZB7E7",
+      "name": "MIA-314S MIA TRAINING MAP 1",
+      "shortName": "TRAIN",
+      "starsId": 194,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DM73J58R9JTF44Y872S",
+      "name": "MIA-200S FLCHK - FLL ILS OR LOC 28L",
+      "shortName": "FC_F28L",
+      "starsId": 200,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DM89R86G2WC7F8CEWZ7",
+      "name": "MIA-201S FLCHK - FLL ILS OR LOC 10R",
+      "shortName": "FC_F10R",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DM827N04VCQ08KDQ4ZJ",
+      "name": "MIA-202S FLCHK - FLL ILS OR LOC 10L",
+      "shortName": "FC_F10L",
+      "starsId": 202,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DM9M4SA1G5MVSBT1ZE7",
+      "name": "MIA-203S FLCHK - FLL ILS OR LOC 28R",
+      "shortName": "FC_F28R",
+      "starsId": 203,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMA5H0NRTYPDXH0C90C",
+      "name": "MIA-204S FLCHK - FXE ILS OR LOC 9",
+      "shortName": "FC_X9",
+      "starsId": 204,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMACDBCECB5G03HZ96Q",
+      "name": "MIA-205S FLCHK - MIA ILS OR LOC 9",
+      "shortName": "FC_M9",
+      "starsId": 205,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMBQFSZJWTZKRF8PNVN",
+      "name": "MIA-206S FLCHK - MIA ILS OR LOC 30",
+      "shortName": "FC_M30",
+      "starsId": 206,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMCMVDRKW0NB0AG2M07",
+      "name": "MIA-207S FLCHK - MIA ILS OR LOC 12",
+      "shortName": "FC_M12",
+      "starsId": 207,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMDRZFXY8QH2ASDJ97G",
+      "name": "MIA-208S FLCHK - MIA ILS OR LOC 8R",
+      "shortName": "FC_M8R",
+      "starsId": 208,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMEHJ77GRMGGFZGCA0E",
+      "name": "MIA-209S FLCHK - MIA ILS OR LOC 27",
+      "shortName": "FC_M27",
+      "starsId": 209,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMF1TWQ4F8W3N0EW53V",
+      "name": "MIA-210S FLCHK - MIA ILS OR LOC 26L",
+      "shortName": "FC_M26L",
+      "starsId": 210,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMF7RF14P3DQWDGJHDF",
+      "name": "MIA-211S FLCHK - OPF ILS OR LOC 12",
+      "shortName": "FC_O12",
+      "starsId": 211,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMHS0S3BV988BWZKMR6",
+      "name": "MIA-212S FLCHK - OPF ILS OR LOC 9L",
+      "shortName": "FC_O9L",
+      "starsId": 212,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMHTKT24FBD6GQNPH62",
+      "name": "MIA-213S FLCHK - OPF ILS OR LOC 27R",
+      "shortName": "FC_O27R",
+      "starsId": 213,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMJ5C81WXCZE22J38PP",
+      "name": "MIA-214S FLCHK - TMB ILS OR LOC 9R",
+      "shortName": "FC_T9R",
+      "starsId": 214,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DMKETSPR82X7ZT8154X",
+      "name": "MIA-215S FLCHK - PMP LOC 15",
+      "shortName": "FC_P15",
+      "starsId": 215,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DKXMWRQN9T8QPDXTA82",
+      "name": "MIA-131S 12 CLSD",
+      "shortName": "12_CLSD",
+      "starsId": 221,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DKXXGWAMJDBDYQ4EC5R",
+      "name": "MIA-132S 27 CLSD",
+      "shortName": "27_CLSD",
+      "starsId": 222,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DKVCPHZS9C2836M33R4",
+      "name": "MIA-130S 30 CLSD",
+      "shortName": "30_CLSD",
+      "starsId": 223,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DKYGQ8AJCRFSYHXB136",
+      "name": "MIA-135S 26R CLSD",
+      "shortName": "26RCLSD",
+      "starsId": 225,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DKZ72WEBWKWRA923WYM",
+      "name": "MIA-136S 26L CLSD",
+      "shortName": "26LCLSD",
+      "starsId": 226,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DM0HZAV2TWNNHMS1F2K",
+      "name": "MIA-137S 8L CLSD",
+      "shortName": "8L_CLSD",
+      "starsId": 227,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DM17RDPQK7WHB3A0KSZ",
+      "name": "MIA-138S 8R CLSD",
+      "shortName": "8R_CLSD",
+      "starsId": 228,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DM1H3K0406KJR8A7S12",
+      "name": "MIA-139S 9 CLSD",
+      "shortName": "9_CLSD",
+      "starsId": 229,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GGFQ8DJQ4WNMGD40257DEN8N",
+      "name": "MIA-013S S EAST AIRSPACE WO/WORPP",
+      "shortName": "SEAST",
+      "starsId": 300,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DJXM1PQDG3A2PKNVQZ9",
+      "name": "MIA-015S S WEST AIRSPACE WO/WORPP",
+      "shortName": "SWEST",
+      "starsId": 301,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DJYSZ2WNTGYZQ9DFS0M",
+      "name": "MIA-016S A EAST AIRSPACE",
+      "shortName": "AEAST",
+      "starsId": 302,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DJZST1R4PN6Y9TR4R60",
+      "name": "MIA-017S A WEST AIRSPACE",
+      "shortName": "AWEST",
+      "starsId": 303,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK3BNTQ75V114G398NQ",
+      "name": "MIA-022S V EAST AIRSPACE",
+      "shortName": "VEAST",
+      "starsId": 304,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK4YQAJ49NFHP6SJZPB",
+      "name": "MIA-023S V WEST AIRSPACE",
+      "shortName": "VWEST",
+      "starsId": 305,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK7KR553SCEVAHWQY6C",
+      "name": "MIA-026S N EAST AIRSPACE WO/WORPP",
+      "shortName": "NEAST",
+      "starsId": 306,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK9DT63C1XF0V5P859W",
+      "name": "MIA-028S N WEST AIRSPACE WO/WORPP",
+      "shortName": "NWEST",
+      "starsId": 307,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK6E9ZDE06DF45PJ085",
+      "name": "MIA-025S WORPP EAST",
+      "shortName": "WORPP_E",
+      "starsId": 308,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK8J2QX5SGHW3SVK9RZ",
+      "name": "MIA-027S WORPP WEST",
+      "shortName": "WORPP_W",
+      "starsId": 309,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VVZ13KP2W8H15TA8V4X",
+      "name": "FLL-017S R EAST AIRSPACE",
+      "shortName": "REAST",
+      "starsId": 310,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWG06W0RCTWB0EKZ6XB",
+      "name": "FLL-025S R WEST AIRSPACE",
+      "shortName": "RWEST",
+      "starsId": 311,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VW37VPJKV03XC27JEYY",
+      "name": "FLL-018S F EAST AIRSPACE",
+      "shortName": "FEAST",
+      "starsId": 312,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWDZBB94M54V95HR7GE",
+      "name": "FLL-022S F WEST AIRSPACE",
+      "shortName": "FWEST",
+      "starsId": 313,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWEKW1XVSZN4SW4X4PQ",
+      "name": "FLL-023S J EAST FINAL",
+      "shortName": "JEAST",
+      "starsId": 314,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWHBRDVK61ME597FJY8",
+      "name": "FLL-027S J WEST FINAL",
+      "shortName": "JWEST",
+      "starsId": 315,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VW7Y2E74RK80HCXCJ7D",
+      "name": "FLL-019S L EAST-EAST AIRSPACE",
+      "shortName": "LE-E",
+      "starsId": 316,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWABTD7Q4D9ZEAM4JQW",
+      "name": "FLL-020S L EAST-WEST AIRSPACE",
+      "shortName": "LE-W",
+      "starsId": 317,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWF93PZY8S32SGS882G",
+      "name": "FLL-024S L WEST WEST AIRSPACE",
+      "shortName": "LW-W",
+      "starsId": 318,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWHX1NM8BKC65PGSGTR",
+      "name": "FLL-026S L WEST EAST AIRSPACE",
+      "shortName": "LW-E",
+      "starsId": 319,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VVVS1WNHJAAG12PZBYY",
+      "name": "FLL-016S G EAST AIRSPACE",
+      "shortName": "GEAST",
+      "starsId": 320,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWC2Z00VX7X7M3VKB3P",
+      "name": "FLL-021S G WEST AIRSPACE",
+      "shortName": "GWEST",
+      "starsId": 321,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK075H0SVYW4V64JPY3",
+      "name": "MIA-019S D EAST EAST AIRSPACE",
+      "shortName": "DE-E",
+      "starsId": 322,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DJNZ5CH5A61JQQXVG5X",
+      "name": "MIA-012S D EAST WEST AIRSPACE",
+      "shortName": "DE-W",
+      "starsId": 323,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK1KZ9W2X79CNDVR3SG",
+      "name": "MIA-020S D WEST WEST AIRSPACE",
+      "shortName": "DW-W",
+      "starsId": 324,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DJW77XECXY1KMY108XQ",
+      "name": "MIA-014S D WEST EAST AIRSPACE",
+      "shortName": "DW-E",
+      "starsId": 325,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK58D5TNY316WMYPXGA",
+      "name": "MIA-024S W EAST AIRSPACE",
+      "shortName": "WEAST",
+      "starsId": 326,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKH3HHPEVCNPF1PB1H9",
+      "name": "MIA-035S W WEST AIRSPACE",
+      "shortName": "WWEST",
+      "starsId": 327,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK2GX50QKWZBSG3C399",
+      "name": "MIA-021S H EAST AIRSPACE",
+      "shortName": "HEAST",
+      "starsId": 328,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DM2ARX904M3B9CPANS6",
+      "name": "MIA-141S H WEST AIRSPACE",
+      "shortName": "HWEST",
+      "starsId": 329,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKDMYQMEYC8A79AF00K",
+      "name": "MIA-032S Z FLL EAST AIRSPACE",
+      "shortName": "ZE-E",
+      "starsId": 330,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKBX8HKEWEPM5TVKCXH",
+      "name": "MIA-030S Z EAST WEST AIRSPACE",
+      "shortName": "ZE-W",
+      "starsId": 331,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKE6PXFTBBXGX9B24K1",
+      "name": "MIA-033S Z FLL WEST AIRSPACE",
+      "shortName": "ZW-W",
+      "starsId": 332,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DM3WTHMTPAQ6GCS5SDZ",
+      "name": "MIA-148S Z WEST EAST AIRSPACE",
+      "shortName": "ZW-E",
+      "starsId": 333,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKA55D1EWCH03C8RGEJ",
+      "name": "MIA-029S Q EAST EAST AIRSPACE",
+      "shortName": "QE-E",
+      "starsId": 334,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKM52488S9GQQEQJF6T",
+      "name": "MIA-037S Q EAST WEST AIRSPACE",
+      "shortName": "QE-W",
+      "starsId": 335,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKCX4KDEJSSWZHJA0Q0",
+      "name": "MIA-031S Q WEST WEST AIRSPACE",
+      "shortName": "QW-W",
+      "starsId": 336,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKHGHQ9KFHWAW02B27B",
+      "name": "MIA-034S Q WEST EAST AIRSPACE",
+      "shortName": "QW-E",
+      "starsId": 337,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18MMV68XAQHP923QG7T",
+      "name": "MIA-342S CONT_E",
+      "shortName": "CONEAST",
+      "starsId": 338,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4Q18M4FTF4J0RP250S1ZM",
+      "name": "MIA-343S CONT_W",
+      "shortName": "CONWEST",
+      "starsId": 339,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQA4PG54895FCM37485P4BXC",
+      "name": "FLL-036S FLL_CBE",
+      "shortName": "FLL_CBE",
+      "starsId": 340,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4PG54CDJTF1AZ5VDNYNC1",
+      "name": "FLL-037S FLL_CBW",
+      "shortName": "FLL_CBW",
+      "starsId": 341,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4PG51KVJ2W7S4MEY553R5",
+      "name": "FLL-014S FLL RNAV VISUAL RY13/31",
+      "shortName": "FG1331",
+      "starsId": 514,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18P7NRVYGECG6QBFVSY",
+      "name": "MIA-050S MIA SID EAST",
+      "shortName": "MSIDE",
+      "starsId": 550,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQA4Q18P71S5T2BG0A3F71EG",
+      "name": "MIA-051S MIA SID WEST",
+      "shortName": "MSIDW",
+      "starsId": 551,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DM40H64DYKV7CQA92XG",
+      "name": "MIA-190S ADSB 40NM SV7",
+      "shortName": "ADSB47",
+      "starsId": 590,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DM4WC59NZ7B3F0AZFED",
+      "name": "MIA-191S ADSB 60NM SV7",
+      "shortName": "ADSB67",
+      "starsId": 591,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DM5KKMZHXQMA1KXSC93",
+      "name": "MIA-192S ADSB 40NM SV58",
+      "shortName": "ADSB48",
+      "starsId": 592,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DM6K120KAW66594YXEM",
+      "name": "MIA-193S ADSB 60NM SV58",
+      "shortName": "ADSB68",
+      "starsId": 593,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HASJWQ1WQ1KKE4NPNH8X1HBA",
+      "name": "TDM MAP",
+      "shortName": "TDM MAP",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GGFQ8VVVS1WNHJAAG12PZBYY",
+      "name": "FLL-016S G EAST AIRSPACE",
+      "shortName": "GEAST",
+      "starsId": 320,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VVZ13KP2W8H15TA8V4X",
+      "name": "FLL-017S R EAST AIRSPACE",
+      "shortName": "REAST",
+      "starsId": 310,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VW37VPJKV03XC27JEYY",
+      "name": "FLL-018S F EAST AIRSPACE",
+      "shortName": "FEAST",
+      "starsId": 312,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VW7Y2E74RK80HCXCJ7D",
+      "name": "FLL-019S L EAST-EAST AIRSPACE",
+      "shortName": "LE-E",
+      "starsId": 316,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWABTD7Q4D9ZEAM4JQW",
+      "name": "FLL-020S L EAST-WEST AIRSPACE",
+      "shortName": "LE-W",
+      "starsId": 317,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWC2Z00VX7X7M3VKB3P",
+      "name": "FLL-021S G WEST AIRSPACE",
+      "shortName": "GWEST",
+      "starsId": 321,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWDZBB94M54V95HR7GE",
+      "name": "FLL-022S F WEST AIRSPACE",
+      "shortName": "FWEST",
+      "starsId": 313,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWF93PZY8S32SGS882G",
+      "name": "FLL-024S L WEST WEST AIRSPACE",
+      "shortName": "LW-W",
+      "starsId": 318,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWG06W0RCTWB0EKZ6XB",
+      "name": "FLL-025S R WEST AIRSPACE",
+      "shortName": "RWEST",
+      "starsId": 311,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8VWHX1NM8BKC65PGSGTR",
+      "name": "FLL-026S L WEST EAST AIRSPACE",
+      "shortName": "LW-E",
+      "starsId": 319,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DJNZ5CH5A61JQQXVG5X",
+      "name": "MIA-012S D EAST WEST AIRSPACE",
+      "shortName": "DE-W",
+      "starsId": 323,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DJQ4WNMGD40257DEN8N",
+      "name": "MIA-013S S EAST AIRSPACE WO/WORPP",
+      "shortName": "SEAST",
+      "starsId": 300,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DJW77XECXY1KMY108XQ",
+      "name": "MIA-014S D WEST EAST AIRSPACE",
+      "shortName": "DW-E",
+      "starsId": 325,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DJXM1PQDG3A2PKNVQZ9",
+      "name": "MIA-015S S WEST AIRSPACE WO/WORPP",
+      "shortName": "SWEST",
+      "starsId": 301,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DJYSZ2WNTGYZQ9DFS0M",
+      "name": "MIA-016S A EAST AIRSPACE",
+      "shortName": "AEAST",
+      "starsId": 302,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DJZST1R4PN6Y9TR4R60",
+      "name": "MIA-017S A WEST AIRSPACE",
+      "shortName": "AWEST",
+      "starsId": 303,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK075H0SVYW4V64JPY3",
+      "name": "MIA-019S D EAST EAST AIRSPACE",
+      "shortName": "DE-E",
+      "starsId": 322,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK1KZ9W2X79CNDVR3SG",
+      "name": "MIA-020S D WEST WEST AIRSPACE",
+      "shortName": "DW-W",
+      "starsId": 324,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK2GX50QKWZBSG3C399",
+      "name": "MIA-021S H EAST AIRSPACE",
+      "shortName": "HEAST",
+      "starsId": 328,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK3BNTQ75V114G398NQ",
+      "name": "MIA-022S V EAST AIRSPACE",
+      "shortName": "VEAST",
+      "starsId": 304,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK4YQAJ49NFHP6SJZPB",
+      "name": "MIA-023S V WEST AIRSPACE",
+      "shortName": "VWEST",
+      "starsId": 305,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK58D5TNY316WMYPXGA",
+      "name": "MIA-024S W EAST AIRSPACE",
+      "shortName": "WEAST",
+      "starsId": 326,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK7KR553SCEVAHWQY6C",
+      "name": "MIA-026S N EAST AIRSPACE WO/WORPP",
+      "shortName": "NEAST",
+      "starsId": 306,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DK9DT63C1XF0V5P859W",
+      "name": "MIA-028S N WEST AIRSPACE WO/WORPP",
+      "shortName": "NWEST",
+      "starsId": 307,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKA55D1EWCH03C8RGEJ",
+      "name": "MIA-029S Q EAST EAST AIRSPACE",
+      "shortName": "QE-E",
+      "starsId": 334,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKBX8HKEWEPM5TVKCXH",
+      "name": "MIA-030S Z EAST WEST AIRSPACE",
+      "shortName": "ZE-W",
+      "starsId": 331,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKCX4KDEJSSWZHJA0Q0",
+      "name": "MIA-031S Q WEST WEST AIRSPACE",
+      "shortName": "QW-W",
+      "starsId": 336,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKDMYQMEYC8A79AF00K",
+      "name": "MIA-032S Z FLL EAST AIRSPACE",
+      "shortName": "ZE-E",
+      "starsId": 330,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKE6PXFTBBXGX9B24K1",
+      "name": "MIA-033S Z FLL WEST AIRSPACE",
+      "shortName": "ZW-W",
+      "starsId": 332,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKHGHQ9KFHWAW02B27B",
+      "name": "MIA-034S Q WEST EAST AIRSPACE",
+      "shortName": "QW-E",
+      "starsId": 337,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKH3HHPEVCNPF1PB1H9",
+      "name": "MIA-035S W WEST AIRSPACE",
+      "shortName": "WWEST",
+      "starsId": 327,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DKM52488S9GQQEQJF6T",
+      "name": "MIA-037S Q EAST WEST AIRSPACE",
+      "shortName": "QE-W",
+      "starsId": 335,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DM2ARX904M3B9CPANS6",
+      "name": "MIA-141S H WEST AIRSPACE",
+      "shortName": "HWEST",
+      "starsId": 329,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DM3WTHMTPAQ6GCS5SDZ",
+      "name": "MIA-148S Z WEST EAST AIRSPACE",
+      "shortName": "ZW-E",
+      "starsId": 333,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GGFQ8DNGQV3BYG6SBKYAH4PG",
+      "name": "MIA-850S CLASS D AIRSPACE",
+      "shortName": "CLASS_D",
+      "starsId": 81,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQYWHXWEJ4G5F3AGCT0BFXSZ",
+      "name": "MIA-860S HST BOUNDARIES",
+      "shortName": "HST_BND",
+      "starsId": 121,
+      "brightnessCategory": "B"
+    }
+  ]
+}

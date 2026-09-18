@@ -1,0 +1,420 @@
+{
+  "artcc": "ZID",
+  "facility": "EVV",
+  "name": "Evansville ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 38.6494889,
+    "lon": -84.3106305555556
+  },
+  "controlPositions": [
+    {
+      "id": "01GRVH4E2JTKATZPG8Z50M9WDC",
+      "name": "Clearance Delivery",
+      "callsign": "EVV_DEL",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 126.6
+    },
+    {
+      "id": "01GRVH5T16M4QVH0C008WCHP4T",
+      "name": "Ground Control",
+      "callsign": "EVV_GND",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GRVH6QV1H8M26T1Q3RS0RNYD",
+      "name": "Local Control",
+      "callsign": "EVV_TWR",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 118.7
+    },
+    {
+      "id": "01GRVH7VGRPZ7R4M9SMW1J1ADB",
+      "name": "East Radar",
+      "callsign": "EVV_E_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 124.025
+    },
+    {
+      "id": "01GRVH92S3E1PWJH2G4BSG6K72",
+      "name": "West Radar",
+      "callsign": "EVV_W_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 127.35
+    },
+    {
+      "id": "01JA39PSNAWTCC21JC45FV5NP8",
+      "name": "EVV GUARD",
+      "callsign": "EVV_EM_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1W"
+      ],
+      "mapIds": [
+        103,
+        107,
+        104,
+        202,
+        204,
+        203,
+        106,
+        201,
+        102,
+        105,
+        111,
+        112,
+        113,
+        108,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        103,
+        104,
+        204,
+        107,
+        202,
+        203
+      ],
+      "submenuMapIds": [
+        106,
+        102,
+        111,
+        113,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        201,
+        105,
+        112,
+        108,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        103,
+        107,
+        104,
+        202,
+        204,
+        203,
+        101,
+        null,
+        102,
+        105,
+        111,
+        112,
+        113,
+        103,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        103,
+        104,
+        204,
+        107,
+        202,
+        203
+      ],
+      "submenuMapIds": [
+        101,
+        102,
+        111,
+        113,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        105,
+        112,
+        103,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01JRK9T9GWDYAMJ15RCAZT4047",
+      "name": "EVV TOWER MAP",
+      "shortName": "TOWER",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRK9T9GPCAPQCBAS6EC5A0EA",
+      "name": "EVV ASR FINALS MAP",
+      "shortName": "ASR",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRKABCDAYKPDNPTZKCA7T788",
+      "name": "EVV MVA",
+      "shortName": "MVA",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRK9T9GTKJWFETF5KBKK90PX",
+      "name": "EVV RNAV FIX MAP",
+      "shortName": "RNV FIX",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRK9T9GTX6N3DCWABQ5S4ZWZ",
+      "name": "EVV REDHILLS MAP",
+      "shortName": "REDHILL",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRK9T9GP7VYZRNQQRRHMRYXX",
+      "name": "EVV COMBINED",
+      "shortName": "COMBI",
+      "starsId": 106,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRKARNVWX3BDXJ6D4H7Z6SJE",
+      "name": "EVV VFR",
+      "shortName": "VFR",
+      "starsId": 107,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRK9T9GR7H69D8F1RSM4NF50",
+      "name": "EVV MVA FUSION 5",
+      "shortName": "5NM MVA",
+      "starsId": 108,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRK9T9GND1KMXWNXR07990YJ",
+      "name": "EVV ADSB 40NM",
+      "shortName": "ADSB40",
+      "starsId": 109,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRK9T9GV1KWYH4ER00SBDRKM",
+      "name": "EVV STADIUMS",
+      "shortName": "STAD",
+      "starsId": 111,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRK9T9GQ47VEJKQTRKH2EFRV",
+      "name": "EVV COUNTIES",
+      "shortName": "COUNTY",
+      "starsId": 112,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRK9T9GSGB80GGXVRDQ87PTQ",
+      "name": "EVV NABB SECTOR BORDERS",
+      "shortName": "ABB BDY",
+      "starsId": 113,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JR114E1TEX3Z1R3MDM8Y5V3M",
+      "name": "EVV TRACON COMBINED",
+      "shortName": "TRACAB",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRK9T9GTCRQ55E6JKCR6R4J5",
+      "name": "EVV RNAV MAP",
+      "shortName": "RNV MAP",
+      "starsId": 202,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRK9T9GX2YHMCDWWVDEC51A9",
+      "name": "EVV VOR APPROACH MAP",
+      "shortName": "VOR MAP",
+      "starsId": 203,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRK9T9GVXPKXPDEW8CNE007M",
+      "name": "EVV SUA MAP",
+      "shortName": "SUA",
+      "starsId": 204,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRK9T9GQ23P98K3ZQCYSKCT7",
+      "name": "EVV FLCHK-EVV ILS OR LOC 4",
+      "shortName": "04FLC",
+      "starsId": 500,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRK9T9GRANW3WE8MPV3TCA2C",
+      "name": "EVV FLCHK-EVV ILS OR LOC 22",
+      "shortName": "22FLC",
+      "starsId": 501,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRK9T9GRWARJ62WDQDY4YJC2",
+      "name": "EVV FLCHK-OWB ILS OR LOC 36",
+      "shortName": "OWBFLC",
+      "starsId": 502,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J4HM862C3PBQ9VSCJV3F0C67",
+      "name": "Airports TDM",
+      "shortName": "TDM",
+      "starsId": 900,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JES4K489M5VASYV63CT66C57",
+      "name": "TAXIWAY LABELS",
+      "shortName": "TWY LBL",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01JRK9T9GSGB80GGXVRDQ87PTQ",
+      "name": "EVV NABB SECTOR BORDERS",
+      "shortName": "ABB BDY",
+      "starsId": 113,
+      "brightnessCategory": "B"
+    }
+  ]
+}

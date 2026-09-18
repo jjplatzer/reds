@@ -1,0 +1,268 @@
+{
+  "artcc": "ZDV",
+  "facility": "ASE",
+  "name": "Aspen TRACAB",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 40.569587575,
+    "lon": -104.96660805
+  },
+  "controlPositions": [
+    {
+      "id": "01GG1F41B8TD2V87SKB8YGNQD9",
+      "name": "Aspen Local",
+      "callsign": "ASE_TWR",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 118.85
+    },
+    {
+      "id": "01GG8RREGGWET4B8M76HHBM4ZB",
+      "name": "Ground",
+      "callsign": "ASE_GND",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GG8RS07YMFBN5A6PXKRBE0Z1",
+      "name": "Approach",
+      "callsign": "ASE_APP",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 123.8
+    },
+    {
+      "id": "01HX5ETCXADNJZ0C2AK4K59W9P",
+      "name": "Delivery",
+      "callsign": "ASE_DEL",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 123.75
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        13,
+        15,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        10,
+        12,
+        14,
+        16,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GA84AVCN23FSK3GJJWCEDZKP",
+      "name": "ASE BASE",
+      "shortName": "BASE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GA84AVCY90TDFVMJQD8HC8Y4",
+      "name": "ASE MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GA84AVCTMFXZJAC0P57SZ4XK",
+      "name": "ASE LOC-DME",
+      "shortName": "LOCDME",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GA84AVCWXNYP4VVY3DK185ND",
+      "name": "ASE LOC-E",
+      "shortName": "LOC-E",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GA84AVCJ4JQ7MV820KAYYDVB",
+      "name": "ASE Airwy",
+      "shortName": "AIRWY",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GA84AVD0DNK73F4YNNNHY997",
+      "name": "ASE ODO",
+      "shortName": "ODO",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GA84AVCRGXKWKPADRB38BJV8",
+      "name": "ASE EOVM",
+      "shortName": "EOVM",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GA84AVD3GA3QSBAY8H1Y1290",
+      "name": "ASE RIL ILS",
+      "shortName": "RIL ILS",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GA84AVD55YC5Q10F1RGMGR85",
+      "name": "ASE RNAV-F",
+      "shortName": "RNAVF",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GA84AVD7AN31V0NYC22XTKC3",
+      "name": "ASE RNVY-15",
+      "shortName": "RNVY15",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GA84AVD9MCA9QDBRN501JF7M",
+      "name": "ASE RNVZ 15",
+      "shortName": "RNVZ15",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GA84AVDB9XVDXM568ZP8CMD1",
+      "name": "ASE VFR",
+      "shortName": "VFR",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GA84AVDDN4Q882NR1Q653BZF",
+      "name": "ASE WRAP-D",
+      "shortName": "WRAP-D",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JS0BH6K3H5H7RG89CT9J688B",
+      "name": "ASE PUFFR1 DEP",
+      "shortName": "PUFFR1",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JS0BPDRWQZ38TF3ME7SNQTEN",
+      "name": "ASE HAREI/LOYYD STAR",
+      "shortName": "HAR/LOY",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JS0BR3TVA9JN38TN4JXR64HV",
+      "name": "ASE MMARY STAR",
+      "shortName": "MMARY",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    }
+  ]
+}

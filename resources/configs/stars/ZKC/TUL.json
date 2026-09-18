@@ -1,0 +1,760 @@
+{
+  "artcc": "ZKC",
+  "facility": "TUL",
+  "name": "Tulsa ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 37.593354149999996,
+    "lon": -95.43247947500001
+  },
+  "controlPositions": [
+    {
+      "id": "01G9HYJRC8K6DFP9KQH6GH7ZMM",
+      "name": "Radar West",
+      "callsign": "TUL_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 124
+    },
+    {
+      "id": "01G9HYKDX44S9JHV0VBBPX10YE",
+      "name": "Radar East",
+      "callsign": "TUL_E_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 119.1
+    },
+    {
+      "id": "01G9HYNFE10B68MPSZA04DBYVY",
+      "name": "Radar Satellite East",
+      "callsign": "TUL_A_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 119.85
+    },
+    {
+      "id": "01G9HYRFJNZZPVYE2CSA76H3JS",
+      "name": "Radar Satellite West",
+      "callsign": "TUL_B_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 134.7
+    },
+    {
+      "id": "01G9HYSAGJZE63KXZKJVN21TGJ",
+      "name": "Radar Final",
+      "callsign": "TUL_F_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 132.1
+    },
+    {
+      "id": "01G9HYTYB151PF2R3JPAVX51EJ",
+      "name": "Local East",
+      "callsign": "TUL_TWR",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 121.2
+    },
+    {
+      "id": "01G9HYVW9DS8WCGJ9YHGY0W6G5",
+      "name": "Local West",
+      "callsign": "TUL_V_TWR",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 118.7
+    },
+    {
+      "id": "01G9HYWN3X79Q200PGC8GAABG7",
+      "name": "Ground",
+      "callsign": "TUL_GND",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G9HYXKC93F72MCMH5VCF8FM5",
+      "name": "Clearance",
+      "callsign": "TUL_DEL",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 134.05
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1J",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1B",
+        "1E",
+        "1G",
+        "1J",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        12,
+        3,
+        2,
+        4,
+        5,
+        11,
+        10,
+        7,
+        6,
+        8,
+        9,
+        33,
+        34,
+        20,
+        29,
+        23,
+        24,
+        21,
+        22,
+        25,
+        27,
+        26,
+        37,
+        35,
+        36,
+        38,
+        30,
+        31,
+        32,
+        16,
+        17,
+        41,
+        42,
+        44,
+        43,
+        46,
+        47
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        4,
+        12,
+        2,
+        5
+      ],
+      "submenuMapIds": [
+        11,
+        7,
+        8,
+        33,
+        20,
+        23,
+        21,
+        25,
+        26,
+        35,
+        38,
+        31,
+        16,
+        41,
+        44,
+        10,
+        6,
+        9,
+        34,
+        29,
+        24,
+        22,
+        27,
+        37,
+        36,
+        30,
+        32,
+        17,
+        42,
+        43
+      ]
+    },
+    {
+      "tcps": [
+        "1T",
+        "1V"
+      ],
+      "mapIds": [
+        18,
+        12,
+        11,
+        10,
+        23,
+        21,
+        35,
+        38,
+        19,
+        30,
+        22,
+        24,
+        25,
+        27,
+        26,
+        54,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        18,
+        11,
+        23,
+        12,
+        10,
+        21
+      ],
+      "submenuMapIds": [
+        35,
+        19,
+        22,
+        25,
+        26,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        38,
+        30,
+        24,
+        27,
+        54,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GVEXS3HQ7WB6PYJ3HWNNG9BG",
+      "name": "TUL BASE MAP",
+      "shortName": "BASE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3MHAEMPK5M1FP1J8SHN",
+      "name": "TUL SOUTH FLOW",
+      "shortName": "S_FLOW",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3KFJX0WST0VYFSE2H0J",
+      "name": "TUL NORTH FLOW",
+      "shortName": "N_FLOW",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3J1NSTKM9AZ19KB3YMP",
+      "name": "TUL EAST FLOW",
+      "shortName": "E_FLOW",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3MT0ZWDYHR1ARXS0TC9",
+      "name": "TUL WEST FLOW",
+      "shortName": "W_FLOW",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3MFD7CCMSTDA1FJK9ZY",
+      "name": "TUL SOUTH FINAL BNDY",
+      "shortName": "SF_BNDY",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3KBFBJ6H29GQ1YVTNP8",
+      "name": "TUL NORTH FINAL BNDY",
+      "shortName": "NF_BNDY",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3HZJSNBXRK27221HPEH",
+      "name": "TUL EAST FINAL BNDY",
+      "shortName": "EF_BNDY",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3MR6S20790ZDZHWAJAY",
+      "name": "TUL WEST FINAL BNDY",
+      "shortName": "WF_BNDY",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3MCP0REM4VD6HXXQC7B",
+      "name": "TUL SOUTH COMBO",
+      "shortName": "S_COMBO",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3K94ZQP242BQRNGC2BK",
+      "name": "TUL NORTH COMBO",
+      "shortName": "N_COMBO",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3J2166D9YKRKJCJ4Y79",
+      "name": "TUL FUS3 MVA W Text",
+      "shortName": "FUS3_W",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVEXS3J4DHRDARP3T5M2PC67",
+      "name": "TUL FUS3 MVA W-O Text",
+      "shortName": "FUS3_WO",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVEXS3J9W3QX4EGR2J8NVHGK",
+      "name": "TUL FUS5 MVA W Text",
+      "shortName": "FUS5_W",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVEXS3JA6014M868833CCS7Z",
+      "name": "TUL FUS5 MVA W-O Text",
+      "shortName": "FUS5_WO",
+      "starsId": 15,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVEXS3HDFEPJ838FG4RPF4AE",
+      "name": "TUL 18-36 DOWNWIND MAP",
+      "shortName": "N/S_DWN",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3HCDSGZ31WVFWA2853W",
+      "name": "TUL 08-26 DOWNWIND MAP",
+      "shortName": "E/W_DWN",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3HP44SM98A92CFNECJE",
+      "name": "TUL ALL FLOWS",
+      "shortName": "ALL_FLO",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3HYK8BSWRHYZ8CKTN9Y",
+      "name": "TUL CLASS-C-Alarm Areas",
+      "shortName": "CLASS_C",
+      "starsId": 19,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVEXS3HWQVG1QNKAHYF36PMM",
+      "name": "TUL CENTER BOUNDARIES",
+      "shortName": "CENTER",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3JXATGZE8JH9GX21JVW",
+      "name": "TUL GPS S FLOW",
+      "shortName": "GPS_S",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3JWRQDGTVM7PRGX28B5",
+      "name": "TUL GPS S Flow Waypoints",
+      "shortName": "S_POINT",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3JS10TRSG6NWSXSXPHP",
+      "name": "TUL GPS N FLOW",
+      "shortName": "GPS_N",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3JP219FY5MYZ2PASEES",
+      "name": "TUL GPS N Flow Waypoints",
+      "shortName": "N_POINT",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3JKN1R1V826YSGSGP37",
+      "name": "TUL GPS E FLOW",
+      "shortName": "GPS_E",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3JN7WKCMHWM8VPJPW2Y",
+      "name": "TUL GPS E-W Flow Waypoints",
+      "shortName": "E/W_PNT",
+      "starsId": 26,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3JZZT4K6GZG22YSY7F2",
+      "name": "TUL GPS W FLOW",
+      "shortName": "GPS_W",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3K4QJ49SQ29N45BZK3K",
+      "name": "TUL HI-TAC Approach",
+      "shortName": "HI_TAC",
+      "starsId": 28,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3KXWD0YF2K2FT6RZHTV",
+      "name": "TUL RNAV WAYPOINTS",
+      "shortName": "RNAV_PT",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3MNKT4S4DP6BSCYGA2R",
+      "name": "TUL VFR-EMERGENCY",
+      "shortName": "VFR",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVEXS3K5BG8ASAJWTRC5PYET",
+      "name": "TUL JET ROUTES",
+      "shortName": "J_RTE",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3MQ3NKVGX8MR2QV50VY",
+      "name": "TUL VICTOR AIRWAYS",
+      "shortName": "V_AWY",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3KT71JPKT06ZT2FB1E8",
+      "name": "TUL RADAR SATELLITE BNDY",
+      "shortName": "SAT_BND",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3M9MWKQT9CDE023NF2H",
+      "name": "TUL RVS-OKM APCHS",
+      "shortName": "RVS/OKM",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3M5J3NW12YZMGT5K7TH",
+      "name": "TUL RVS GPS19R",
+      "shortName": "RVS_G9R",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3KZQWRM0D5SYPEDFGC6",
+      "name": "TUL RVS GPS01L",
+      "shortName": "RVS_G1L",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3M3QTZ23TDF7AK7WPY5",
+      "name": "TUL RVS GPS19R Waypoints",
+      "shortName": "19R_WPT",
+      "starsId": 37,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3M248DG8XH8HSYEFGZ1",
+      "name": "TUL RVS GPS19R In Use",
+      "shortName": "G19RUSE",
+      "starsId": 38,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3M65TH8T9PYTEE5VMDX",
+      "name": "TUL RVS RW13 FAC",
+      "shortName": "R13_FAC",
+      "starsId": 39,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3M82QHX06Q99YCHNP1S",
+      "name": "TUL RVS RW31 FAC",
+      "shortName": "R31_FAC",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3KHJC8MJKVM2B1VZX1K",
+      "name": "TUL OKM GPS18",
+      "shortName": "OKM_G18",
+      "starsId": 41,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3KMPX7TJC1TD2HF6E68",
+      "name": "TUL OKM GPS36",
+      "shortName": "OKM_G36",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3KRKCG88NW1GK5HP3FR",
+      "name": "TUL OWP NDB35",
+      "shortName": "OWP_NDB",
+      "starsId": 43,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3KNR07V0XGT225A0VJE",
+      "name": "TUL OWP GPS APCHS",
+      "shortName": "OWP_GPS",
+      "starsId": 44,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3JJ31KYG3JSKJ6K22B3",
+      "name": "TUL GCM VOR-DME-B",
+      "shortName": "GCM_VOR",
+      "starsId": 45,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3JBR8PS164SQCSMSE3W",
+      "name": "TUL GCM GPS18",
+      "shortName": "GCM_G18",
+      "starsId": 46,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3JGTS6JERNCS7VY572W",
+      "name": "TUL GCM GPS36",
+      "shortName": "GCM_G36",
+      "starsId": 47,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3HR8ZHVCK3PAZW9XP74",
+      "name": "TUL BVO GPS35",
+      "shortName": "BVO_GPS",
+      "starsId": 48,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3K07N6TW7CM1QJ8EHYH",
+      "name": "TUL H68 GPS APCHS",
+      "shortName": "H68_GPS",
+      "starsId": 49,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3K1HK0KBP9CYPPS8E3A",
+      "name": "TUL H71 GPS APCHS",
+      "shortName": "H71_GPS",
+      "starsId": 50,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3K74KGVJHJS8NF8MBZJ",
+      "name": "TUL MKO GPS13",
+      "shortName": "MKO_G13",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3HAV4X8DM2C5NQ88FGV",
+      "name": "TUL 3F7 GPS18",
+      "shortName": "3F7_GPS",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3KS16V42G0SCP1P7CW6",
+      "name": "TUL QAF 40 NM Ring",
+      "shortName": "QAF_40",
+      "starsId": 53,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVEXS3MKCGGGA24XNMMTB6DF",
+      "name": "TUL STADIUMS",
+      "shortName": "STDUM",
+      "starsId": 54,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVEXS3HJR71TN060GHKW6XE5",
+      "name": "TUL ADSB-40NM",
+      "shortName": "ADSB_40",
+      "starsId": 55,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVEXS3HM5PKTQZG1KN7V1XXQ",
+      "name": "TUL ADSB-60NM",
+      "shortName": "ADSB_60",
+      "starsId": 56,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVEXS3HFW3S20DJH7C77CV3P",
+      "name": "TUL ADSB Carat Keys",
+      "shortName": "ADSB_C",
+      "starsId": 57,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HEXV6FTKZ31TTJN6QGNE6XVN",
+      "name": "RVS_APD",
+      "shortName": "RVS_APD",
+      "starsId": 998,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVEXS3MVCMJNW9QPZ7GGD4KP",
+      "name": "TUL APD",
+      "shortName": "TUL_APD",
+      "starsId": 999,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GVEXS3HWQVG1QNKAHYF36PMM",
+      "name": "TUL CENTER BOUNDARIES",
+      "shortName": "CENTER",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    }
+  ]
+}

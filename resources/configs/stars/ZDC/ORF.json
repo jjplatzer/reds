@@ -1,0 +1,617 @@
+{
+  "artcc": "ZDC",
+  "facility": "ORF",
+  "name": "Norfolk ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 37,
+    "lon": -77
+  },
+  "controlPositions": [
+    {
+      "id": "01GS5MHY24ASZ82ASW3CFEAW6T",
+      "name": "Departure Radar 1",
+      "callsign": "ORF_G_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 125.2
+    },
+    {
+      "id": "01GS5MJQHEPZKJ56Z1NHJEPD9E",
+      "name": "Peninsula Sector Radar",
+      "callsign": "ORF_P_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 125.7
+    },
+    {
+      "id": "01GS5MKD7G1JE14N7GQAZAPJHR",
+      "name": "East Feeder Radar",
+      "callsign": "ORF_E_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 126.05
+    },
+    {
+      "id": "01GS5MKZ9FBFKREX1TJAD3WP5A",
+      "name": "West Feeder Radar",
+      "callsign": "ORF_W_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 119.45
+    },
+    {
+      "id": "01GS5MP0TS2MZ9A52DR03BT62S",
+      "name": "Local",
+      "callsign": "ORF_TWR",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 120.8
+    },
+    {
+      "id": "01GS5MS5AKNTRBVM2A5VZS6WMG",
+      "name": "Ground",
+      "callsign": "ORF_GND",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GS5MSK1SD8KR0HZGP7E6GFWR",
+      "name": "Clearance",
+      "callsign": "ORF_DEL",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 118.5
+    },
+    {
+      "id": "01HZQWG5AK4K71AM3E8Y7CJCKK",
+      "name": "South Feeder Radar",
+      "callsign": "ORF_S_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 127.9
+    },
+    {
+      "id": "01HZQWNXWA10JJX8JTJ312NVXE",
+      "name": "Final Radar",
+      "callsign": "ORF_F_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 118.9
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "4D",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "4N",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1G",
+        "1E",
+        "1P",
+        "1W",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        null,
+        2,
+        4,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "4N",
+        "4D"
+      ],
+      "mapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GXEFWNVRTM4PFPHZ7CRMYY4W",
+      "name": "ORF SW RVM",
+      "shortName": "SW RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GXEFVVG0PK5B96HRA2PTZBW3",
+      "name": "ORF NE RVM",
+      "shortName": "NE RVM",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBVA400QECPMX3RH81MDKRJQ",
+      "name": "ORF MVA",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HBVA15WW434VM6AH5F3AP8PP",
+      "name": "ORF VFR",
+      "shortName": "VFR",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KRJ9F5QQNBVQGX8V8WNG87DY",
+      "name": "SID ORF HOLND",
+      "shortName": "HOLND",
+      "starsId": 101,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KRJ9F5QQSQ99QD8BPDDY64HX",
+      "name": "SID ORF NUTIY",
+      "shortName": "NUTIY",
+      "starsId": 102,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KRJ9F5QRTK0GWADG84C9KXYK",
+      "name": "SID ORF SWOPE",
+      "shortName": "SWOPE",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KFHZYB1FQKMPWZ16RRBFKYAD",
+      "name": "STAR ORF KOHLS",
+      "shortName": "KOHLS",
+      "starsId": 201,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KFJ01T42FJ3Y9DQRADVY51V0",
+      "name": "STAR ORF OUTLA",
+      "shortName": "OUTLA",
+      "starsId": 202,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YY2N8VGH1X7Q7ZE050",
+      "name": "IAP ORF I23",
+      "shortName": "I23",
+      "starsId": 302,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YZW15BKBHMT2R2AVM3",
+      "name": "IAP ORF L23",
+      "shortName": "L23",
+      "starsId": 304,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YXVE47W8EQCDA3XYES",
+      "name": "IAP ORF H05Y",
+      "shortName": "H05Y",
+      "starsId": 305,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YXGFN1MKFQPWQ1MBQP",
+      "name": "IAP ORF H23Y",
+      "shortName": "H23Y",
+      "starsId": 306,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YZD4QFNS0SWGHEBV9M",
+      "name": "IAP ORF R05Z",
+      "shortName": "R05Z",
+      "starsId": 307,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z059WWTT66JTGFJND1",
+      "name": "IAP ORF R14",
+      "shortName": "R14",
+      "starsId": 308,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z0FVECBKT6ZP8VZ29V",
+      "name": "IAP ORF R23Z",
+      "shortName": "R23Z",
+      "starsId": 309,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z1CJEN6MXD3ETF09V9",
+      "name": "IAP ORF R32",
+      "shortName": "R32",
+      "starsId": 310,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z2ERTB4VSS5TS1F2QY",
+      "name": "IAP ORF S14",
+      "shortName": "S14",
+      "starsId": 311,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YQT4RR9G5MGYZP4K5G",
+      "name": "IAP AKQ R20",
+      "shortName": "R20",
+      "starsId": 501,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YRNB9TEEYVV8HQ19EE",
+      "name": "IAP CPK I05",
+      "shortName": "I05",
+      "starsId": 511,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YS2C2TY8DKNH18D2WV",
+      "name": "IAP CPK L05",
+      "shortName": "L05",
+      "starsId": 512,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YS8PH79K0WSR39SCSC",
+      "name": "IAP CPK R05",
+      "shortName": "R05",
+      "starsId": 513,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YT4WDRPANHWHHJKSSY",
+      "name": "IAP CPK R23",
+      "shortName": "R23",
+      "starsId": 514,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YT6H8MWN4DGD0B3WF4",
+      "name": "IAP FKN R09",
+      "shortName": "R09",
+      "starsId": 531,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YV2RRJB18CKRV5H7CB",
+      "name": "IAP FKN R27",
+      "shortName": "R27",
+      "starsId": 532,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486YWGMWMJ1H8V94Y80KT",
+      "name": "IAP ONX VDMA",
+      "shortName": "VDMA",
+      "starsId": 563,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z2TS7TKNQ2BF5J6PPZ",
+      "name": "IAP PHF I07",
+      "shortName": "I07",
+      "starsId": 571,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z35VJE482KP1X3WX3F",
+      "name": "IAP PHF I25",
+      "shortName": "I25",
+      "starsId": 572,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z3H3YM8BRCFN61796R",
+      "name": "IAP PHF L07",
+      "shortName": "L07",
+      "starsId": 573,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z38T24Z7G9M6D3AG83",
+      "name": "IAP PHF L20",
+      "shortName": "L20",
+      "starsId": 574,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z4M0MNHN1EQ3N1QDR8",
+      "name": "IAP PHF L25",
+      "shortName": "L25",
+      "starsId": 575,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z4FY5ZQSSE61CN1D9T",
+      "name": "IAP PHF R02",
+      "shortName": "R02",
+      "starsId": 576,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z4P6364TSYCQ83TQW9",
+      "name": "IAP PHF R07",
+      "shortName": "R07",
+      "starsId": 577,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z58TQWVVE77MTGPQE1",
+      "name": "IAP PHF R25",
+      "shortName": "R25",
+      "starsId": 579,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z5ASFBVXA0NZQYTZ9C",
+      "name": "IAP PVG I10",
+      "shortName": "I10",
+      "starsId": 581,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z6M88Z5XJDYH47HATG",
+      "name": "IAP PVG L10",
+      "shortName": "L10",
+      "starsId": 582,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z61JQXY5T90W6N743D",
+      "name": "IAP PVG R10",
+      "shortName": "R10",
+      "starsId": 583,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z6QMNKVPA4QFDZ4MNJ",
+      "name": "IAP PVG R28",
+      "shortName": "R28",
+      "starsId": 584,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z7NM48AQD4SGRQHDEC",
+      "name": "IAP SFQ L04",
+      "shortName": "L04",
+      "starsId": 591,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z73NNHDDGQGT2YMVET",
+      "name": "IAP SFQ R04",
+      "shortName": "R04",
+      "starsId": 592,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYM486Z8JEZQX5N9D027SKB1",
+      "name": "IAP SFQ R22",
+      "shortName": "R22",
+      "starsId": 594,
+      "brightnessCategory": "B"
+    }
+  ]
+}

@@ -1,0 +1,222 @@
+{
+  "artcc": "ZNY",
+  "facility": "ELM",
+  "name": "Elmira ATCT/TRACAB",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 35.914982499999994,
+    "lon": -73.0446825
+  },
+  "controlPositions": [
+    {
+      "id": "01GAPPRN12ZJ7WPT6JETR942Y5",
+      "name": "Ground",
+      "callsign": "ELM_GND",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 121.95
+    },
+    {
+      "id": "01GAPPS6NGE5GQFEWM2YHDM47B",
+      "name": "Local",
+      "callsign": "ELM_TWR",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 121.1
+    },
+    {
+      "id": "01H2BAXFTK80W0GVXZB8V8TFAM",
+      "name": "North (Ithaca)",
+      "callsign": "ELM_N_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 124.3
+    },
+    {
+      "id": "01H2BAYRJNW4AJQ6K79JHRBYS5",
+      "name": "South (Elmira)",
+      "callsign": "ELM_S_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 128.425
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1I",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1I",
+        "1T"
+      ],
+      "mapIds": [
+        5,
+        6,
+        9,
+        7,
+        10,
+        8,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        5,
+        9,
+        10,
+        6,
+        7,
+        8
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01G66FNFTEK4C8VWV4S64B73FK",
+      "name": "ELM-5 (AIRSPACE)",
+      "shortName": "BASE",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5S2XH5WMKVW4PVE6PX5K26Z",
+      "name": "ELM-6 (MVA)",
+      "shortName": "MVA",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5S2Q4K9EVE2C81B6XNJXQCP",
+      "name": "ELM-7 (EOVM)",
+      "shortName": "EOVM",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JXZRQ26JST6YP70GZ7AJQV0A",
+      "name": "ELM-8 (ITH-ILS)",
+      "shortName": "ITHILS",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5S2Q4K977XP8N67KYBCG789",
+      "name": "ELM-9 (VOR)",
+      "shortName": "VOR",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5S2Q4K816HFRNQB1WJ92Q86",
+      "name": "ELM-10 (SATELLITE-GPS)",
+      "shortName": "SAT_GPS",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5TQQS72TGRV6SGK5NF4CFW",
+      "name": "ELM TRACON APD",
+      "shortName": "APD",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01G66FNFTEK4C8VWV4S64B73FK",
+      "name": "ELM-5 (AIRSPACE)",
+      "shortName": "BASE",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    }
+  ]
+}

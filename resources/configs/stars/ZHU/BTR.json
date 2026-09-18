@@ -1,0 +1,426 @@
+{
+  "artcc": "ZHU",
+  "facility": "BTR",
+  "name": "Baton Rouge ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 28.71396075,
+    "lon": -90.5088095
+  },
+  "controlPositions": [
+    {
+      "id": "01GSE1B5Q870KYFR9ZXQCHH4CV",
+      "name": "Clearance Delivery",
+      "callsign": "BTR_DEL",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 119.4
+    },
+    {
+      "id": "01GSE1X3WF7TWYD2F5JWT6W12Q",
+      "name": "Ground",
+      "callsign": "BTR_GND",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GSE1Y02KVXDF1QBT9B6ZNG4M",
+      "name": "Local",
+      "callsign": "BTR_TWR",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 118.45
+    },
+    {
+      "id": "01GSE1ZD23MYVV92AKC6859XJV",
+      "name": "West Approach",
+      "callsign": "BTR_W_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 120.3
+    },
+    {
+      "id": "01GSE20Y39XC827A3NC58MM2GM",
+      "name": "East Approach",
+      "callsign": "BTR_E_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 126.5
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1L",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        3,
+        5,
+        6,
+        7,
+        8,
+        2,
+        4,
+        21,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        33,
+        34,
+        29,
+        31,
+        30,
+        32,
+        35,
+        36,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        5,
+        7,
+        3,
+        6,
+        8
+      ],
+      "submenuMapIds": [
+        2,
+        21,
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        23,
+        25,
+        27,
+        33,
+        29,
+        30,
+        35,
+        4,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        22,
+        24,
+        26,
+        28,
+        34,
+        31,
+        32,
+        36
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GZHKKBKXD1D5QVXKXWYYJBE7",
+      "name": "BTR BASE",
+      "shortName": "BASE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKJQGD0D53B44NNGY8H",
+      "name": "BTR VFR",
+      "shortName": "VFR",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKHYXB3SF4A4S2C6MH6",
+      "name": "BTR MVA 3NM",
+      "shortName": "MVA 3NM",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKJNX02APARCHYE61WK",
+      "name": "BTR RNAV",
+      "shortName": "RNAV",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKMK7MZHPYVP87D35SN",
+      "name": "BTR 4",
+      "shortName": "4",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKKDNDSW6EM0EDQKVAM",
+      "name": "BTR 22",
+      "shortName": "22",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKM13RDFY75QJB2XPT3",
+      "name": "BTR 13",
+      "shortName": "13",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKM9PGMEZNY3NNMYMQG",
+      "name": "BTR 31",
+      "shortName": "31",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKS6DJT92VNZ7SXSK8V",
+      "name": "SAT FIELD",
+      "shortName": "SAT APT",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKSY5T5R33F390QABQX",
+      "name": "HELIPAD",
+      "shortName": "HELIPAD",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKT9Q83S0ERT5MKHPN6",
+      "name": "BTR SPLIT",
+      "shortName": "SPLIT",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKXB6ZRA947AS1QGX7Q",
+      "name": "BTR ZHU",
+      "shortName": "ZHU",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKRYTEX5DEGVKQ5J5RF",
+      "name": "BTR PARISH",
+      "shortName": "PARISH",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKSZDWSYPHEG9V0B0J1",
+      "name": "BTR MIL RTE",
+      "shortName": "MIL RTE",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKQ7JFTMB8F8R8W02JF",
+      "name": "BTR VICTOR AIRWAY",
+      "shortName": "V AWY",
+      "starsId": 15,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKQG9HJT79QHA2HRPKQ",
+      "name": "BTR JET ROUTE",
+      "shortName": "J RTE",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKYQYP8HHG16DEY1QNF",
+      "name": "BTR INTERSECTION",
+      "shortName": "INT",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKYM8CAHPWCSB8W57M5",
+      "name": "BTR INT LBL",
+      "shortName": "INT LBL",
+      "starsId": 18,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKPQWTQQP9H120JP74P",
+      "name": "BTR WPNT",
+      "shortName": "WPNTS",
+      "starsId": 19,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKQ7M4AEG0WAE89B4R7",
+      "name": "BTR ADJ FIXES",
+      "shortName": "ADJ FIX",
+      "starsId": 20,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKYX490KZ3943GBS9A0",
+      "name": "VOR 4L",
+      "shortName": "VOR 4L",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKVZERG7M92C3FVB52A",
+      "name": "31 FAC",
+      "shortName": "31 FAC",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKWC4MEWSJEDR664FQ5",
+      "name": "22R FAC",
+      "shortName": "22R FAC",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKZQC4B4HMR139G3STQ",
+      "name": "BTR STADIUM",
+      "shortName": "STADIUM",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKW20XHE5FZA6V1T3BS",
+      "name": "HZR APPROACHES",
+      "shortName": "HZR APP",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKWNNR1QTTSDMVM7CFV",
+      "name": "REG APPROACHES",
+      "shortName": "REG APP",
+      "starsId": 26,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKNBDTFDFM6VT4J45A9",
+      "name": "BTR MVA 5NM",
+      "shortName": "MVA 5NM",
+      "starsId": 27,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKNNWR8A2R2T8EZMG3E",
+      "name": "BTR GEO",
+      "shortName": "GEO",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZHKKBKVPNW22FDYN8XBEYAK",
+      "name": "4 PIE",
+      "shortName": "4 PIE",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKTPQX5H23DQJJGHQ4A",
+      "name": "13 PIE",
+      "shortName": "13 PIE",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKTYVCBEKVEY17DB6AG",
+      "name": "22 PIE",
+      "shortName": "22 PIE",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKVWBFGM3EBEWKHG5F8",
+      "name": "31 PIE",
+      "shortName": "31 PIE",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKKE1E1HEE2J7K815T2",
+      "name": "TOWER FNL APP CRS",
+      "shortName": "TWR FAC",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKZ6WXAKHP72RK3RDSB",
+      "name": "BTR TWR 5NM",
+      "shortName": "TWR 5NM",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKP3PB4193PNR7ZJ94Z",
+      "name": "BTR FINALS",
+      "shortName": "BTR FNL",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZHKKBKZFMAEHTMMD7RVY4A6",
+      "name": "AT COACH",
+      "shortName": "AT COACH",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    }
+  ]
+}

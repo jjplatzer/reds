@@ -1,0 +1,223 @@
+{
+  "artcc": "ZDV",
+  "facility": "CPR",
+  "name": "Casper ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 40.569587575,
+    "lon": -104.96660805
+  },
+  "controlPositions": [
+    {
+      "id": "01H3D59PX7AD41HCG1KYZ7T7N9",
+      "name": "Casper Approach",
+      "callsign": "CPR_APP",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 120.65
+    },
+    {
+      "id": "01H3D5BEPZ3K7K3FXGZWMAS91Y",
+      "name": "Casper Tower",
+      "callsign": "CPR_TWR",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01H3D5CSX6JN8HMRFCS3KJ5M2Z",
+      "name": "Casper Ground",
+      "callsign": "CPR_GND",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        10,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H3D4T0T5BF87DZ149MKDCAC2",
+      "name": "CPR BASE",
+      "shortName": "BASE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3D4T0T9N2CSXPP0CK5YPXWN",
+      "name": "CPR MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3D4T0T8CQSXF9ARP3JVJDWH",
+      "name": "CPR ILS 3",
+      "shortName": "ILS3",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3D4T0T7X30A3VD99P4P3B8W",
+      "name": "CPR GPS 21",
+      "shortName": "GPS21",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3D4T0T83RJQYJ68TAW93YPX",
+      "name": "CPR GPS 26",
+      "shortName": "GPS26",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3D4T0T6BR0CTSJP45EKB0J7",
+      "name": "CPR EOVM",
+      "shortName": "EOVM",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3D4T0T6G41Q5NMH5E33YCAY",
+      "name": "CPR CLASS",
+      "shortName": "AIRSPC",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3D4T0T723PG2N4ZZPVX047T",
+      "name": "CPR GPS 3",
+      "shortName": "GPS3",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3D4T0T78WM9G1XN3ZN9D3HY",
+      "name": "CPR GPS 8",
+      "shortName": "GPS8",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3D4T0T8NSYTA9N8PA53BWJ9",
+      "name": "CPR LCL",
+      "shortName": "LOCAL",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3D4T0T9BJQCTPS26QAYFBWZ",
+      "name": "CPR VOR 21",
+      "shortName": "VOR21",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    }
+  ]
+}

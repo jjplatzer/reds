@@ -1,0 +1,380 @@
+{
+  "artcc": "ZBW",
+  "facility": "ALB",
+  "name": "Albany ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 42.93753,
+    "lon": -70.70471
+  },
+  "controlPositions": [
+    {
+      "id": "01G9BPDQRFK4QB3WEJ5QHHWHFN",
+      "name": "East Radar",
+      "callsign": "ALB_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 132.825
+    },
+    {
+      "id": "01G9BPFVWEY0V6Y759EDWBK82Y",
+      "name": "West Radar",
+      "callsign": "ALB_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 118.05
+    },
+    {
+      "id": "01G9BPGFWEJHXW4H38E7QPWZ1R",
+      "name": "Arrival Radar",
+      "callsign": "ALB_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 127.15
+    },
+    {
+      "id": "01G9BPQZF8QZWDDVC52ZYEEPY8",
+      "name": "Local Control",
+      "callsign": "ALB_TWR",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 119.5
+    },
+    {
+      "id": "01G9BPZES91SHBET38Z14YXM1W",
+      "name": "Ground Control",
+      "callsign": "ALB_GND",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01G9BQ071RRD8PD3Y2HRHWMCZW",
+      "name": "Clearance Delivery",
+      "callsign": "ALB_DEL",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 127.5
+    },
+    {
+      "id": "01KAMCGA65Q2PFH4Y0K9M2CH33",
+      "name": "ALB Guard",
+      "callsign": "ALB_EM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "2T",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1S",
+        "1T",
+        "1V",
+        "1W",
+        "2T"
+      ],
+      "mapIds": [
+        111,
+        8,
+        901,
+        13,
+        9,
+        36,
+        905,
+        30,
+        15,
+        4,
+        31,
+        18,
+        16,
+        23,
+        50,
+        51,
+        52,
+        902,
+        903,
+        904,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        111,
+        901,
+        9,
+        8,
+        13,
+        36
+      ],
+      "submenuMapIds": [
+        905,
+        15,
+        31,
+        16,
+        50,
+        52,
+        903,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        30,
+        4,
+        18,
+        23,
+        51,
+        902,
+        904,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GPHAJR0WGWQ3A6408VCXTVQY",
+      "name": "ALB GPS RWY 19",
+      "shortName": "GPS 19",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHAJR0Y2SKZN5C5ET3GXBKT",
+      "name": "ALB MVA",
+      "shortName": "MVA",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHAJR10CJFHKC4B1JQXEY6A",
+      "name": "ALB SAT FINALS",
+      "shortName": "SAT FIN",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHAJR0RF9DXPHDDSMQ0TWTT",
+      "name": "ALB EOVM",
+      "shortName": "EOVM",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHAJR0VZ6PYTX8J1QQV9N1W",
+      "name": "ALB GPS RWY 10",
+      "shortName": "GPS 10",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHAJR0ZDXCN8HWVBFVY7AK8",
+      "name": "ALB RNP RWY 19",
+      "shortName": "RNP 19",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHAJR0YY86AR3JZGX53F6J2",
+      "name": "ALB RNP RWY 1",
+      "shortName": "RNP 1",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHAJR11HBVEDY5F83WC5DR1",
+      "name": "SCH GPS APP",
+      "shortName": "SCH GPS",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHAJR0T6GNBZ6EJWZJ9C8HH",
+      "name": "ALB GPS RWY 1",
+      "shortName": "GPS 1",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHAJR0WQ7QPR71ZBJQ6K6CV",
+      "name": "ALB GPS RWY 28",
+      "shortName": "GPS 28",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHAJR0P33APGCP6CETJVC1B",
+      "name": "LOW AIRWAYS",
+      "shortName": "AWY",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J47FYAW55DBZ7KXDPWN5PDA6",
+      "name": "EXTERNAL_ALB MAIN",
+      "shortName": "EXTNL",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHAJR0SWFCF8ZDQASTB07V9",
+      "name": "EVENT 1/28",
+      "shortName": "EVT1/28",
+      "starsId": 50,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHAJR0TBJ0ARB94TB3HKJWB",
+      "name": "EVENT 19/28",
+      "shortName": "EVT1928",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GTFN4DJFVEVZFRK6WPYAY3QC",
+      "name": "EVENT 28",
+      "shortName": "EVT28",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHAJR0XVWZC9GDMHFEYZDD5",
+      "name": "ALB MAIN",
+      "shortName": "MAIN",
+      "starsId": 111,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF1046VTX8SGKVPN1JMMB",
+      "name": "GROUND DIAGRAMS",
+      "shortName": "APT",
+      "starsId": 900,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10DY0KQ88H2D88NBTYS",
+      "name": "ZBW SPLIT 1",
+      "shortName": "ZBW 1",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10ETN5HPA10PFAM5SGC",
+      "name": "ZBW SPLIT 2",
+      "shortName": "ZBW 2",
+      "starsId": 903,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10E7QVGYCE97HH069A5",
+      "name": "ZBW SPLIT 3",
+      "shortName": "ZBW 3",
+      "starsId": 904,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HVM90MVHBBCM6ES6KX9WKN3D",
+      "name": "TWY LABELS",
+      "shortName": "TWY LBL",
+      "starsId": 905,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    }
+  ]
+}

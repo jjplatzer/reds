@@ -1,0 +1,250 @@
+{
+  "artcc": "ZHN",
+  "facility": "NGF",
+  "name": "Kaneohe Bay ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 20.9750275,
+    "lon": -157.17449499999998
+  },
+  "controlPositions": [
+    {
+      "id": "01HC99W5JVGB8WE0TBX7TMFFSA",
+      "name": "Local Control",
+      "callsign": "NGF_TWR",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 120.7
+    },
+    {
+      "id": "01HC99YDF5WEH70P3XR7A2Q4ND",
+      "name": "Radar Control",
+      "callsign": "NGF_APP",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 125
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1T"
+      ],
+      "mapIds": [
+        20,
+        5,
+        101,
+        15,
+        13,
+        4,
+        3,
+        1,
+        2,
+        100,
+        202,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        20,
+        101,
+        13,
+        5,
+        15,
+        4
+      ],
+      "submenuMapIds": [
+        3,
+        2,
+        202,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        100,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H5BFS7YTFFKZZKJPGFP0KMBT",
+      "name": "Airports",
+      "shortName": "APRTS",
+      "starsId": 1,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5BFS7YVSNYNJD01AFCAKE3Z",
+      "name": "Airways",
+      "shortName": "ARWYS",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5BFS7YVFX5FN7R19BXC4G5R",
+      "name": "COAST__COASTLINES",
+      "shortName": "Coast",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5BFS7YVKWY62AQN72S8GY7C",
+      "name": "CTR__CENTER SPLITS",
+      "shortName": "SPLITS",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5BFS7YWXMJF6H28A1B1YXXN",
+      "name": "HNL MVA__HONOLULU MINIMUM VEC ALT",
+      "shortName": "HNL MVA",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5BFS7YWD6KZPEP1WEF49K27",
+      "name": "HNL RVM__HONOLULU RADAR VEC MAP",
+      "shortName": "HNL RVM",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5BFS7YYWFFPPGQB7MVPNT29",
+      "name": "SPLIT__TRACON SPLITS",
+      "shortName": "Split",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5BFS7YYQ3DPJ41Q7JE2DXJS",
+      "name": "TRACON__TRACON OUTLINES",
+      "shortName": "TRACON",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBHP8M221MAZ9BHFC2DFJ5CZ",
+      "name": "Honolulu TRACON Airspace",
+      "shortName": "HNLTRA",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBHPNJ63N4MCDC7Z9ZWWQ8AW",
+      "name": "Kaneohe Bay TRACON Airspace",
+      "shortName": "NGF RVM",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZ2QVKMFDE6HQ9GYED9GXM5V",
+      "name": "ZHN Airspace Classes",
+      "shortName": "AIRSPC",
+      "starsId": 100,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQQPYH2VBQJCX1TM6ZYNG23D",
+      "name": "HNL RVM BASE",
+      "shortName": "HNL_RVM",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQQPYH2WKGNSC2F7D6GZN7FP",
+      "name": "NGF_RNAV",
+      "shortName": "NGFRNAV",
+      "starsId": 202,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HBHP8M221MAZ9BHFC2DFJ5CZ",
+      "name": "Honolulu TRACON Airspace",
+      "shortName": "HNLTRA",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBHPNJ63N4MCDC7Z9ZWWQ8AW",
+      "name": "Kaneohe Bay TRACON Airspace",
+      "shortName": "NGF RVM",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZ2QVKMFDE6HQ9GYED9GXM5V",
+      "name": "ZHN Airspace Classes",
+      "shortName": "AIRSPC",
+      "starsId": 100,
+      "brightnessCategory": "B"
+    }
+  ]
+}

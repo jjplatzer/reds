@@ -1,0 +1,227 @@
+{
+  "artcc": "ZOA",
+  "facility": "MR1",
+  "name": "Monterrey ATCT",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 37.9016125,
+    "lon": -120.687685
+  },
+  "controlPositions": [
+    {
+      "id": "01K8CMJVTYSEF6Y8PAXCC95XGX",
+      "name": "Seca",
+      "callsign": "MRY_S_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 127.15
+    },
+    {
+      "id": "01K8CMP69KT4HM227ZNQBAHKQQ",
+      "name": "Fremont",
+      "callsign": "MRY_F_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 133
+    },
+    {
+      "id": "01K8CMRE8XTCT0H2TJY4N3D5DY",
+      "name": "MRY LC",
+      "callsign": "MRY_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 118.4
+    },
+    {
+      "id": "01K8CMT6QH0QX7VSCQF0FCE1D8",
+      "name": "MRY GC",
+      "callsign": "MRY_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.875
+    },
+    {
+      "id": "01K8CMVF7YC0V7VFB48SE8Q4FP",
+      "name": "SNS LC",
+      "callsign": "SNS_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 119.525
+    },
+    {
+      "id": "01K8CMWNFW50FG2AX34KY9T8C6",
+      "name": "SNS GC",
+      "callsign": "SNS_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1Y",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1F",
+        "1S",
+        "1Y",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        6,
+        103,
+        3,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        999,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        103,
+        null,
+        6,
+        3,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        999,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01K89RE0BQR5WN55YBSY5GWFE0",
+      "name": "01 MRY_28",
+      "shortName": "MRY28",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K89RKR12ST85VXB5WXFTV7Z3",
+      "name": "03 MRY_EOVM",
+      "shortName": "EOVM",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K89RV3JZVHMEEMY78F4H388G",
+      "name": "06 MRY_ASPC",
+      "shortName": "ASPC",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN94E7J39Q1S5JY79FPS7G3V",
+      "name": "MVA",
+      "shortName": "MVA",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA7QZJ0G6TG3Y03JYAQ6RSF9",
+      "name": "TDM MAP",
+      "shortName": "TDM",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "artcc": "ZNY",
+  "facility": "BGM",
+  "name": "Binghamton ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 35.914982499999994,
+    "lon": -73.0446825
+  },
+  "controlPositions": [
+    {
+      "id": "01GAPPQ0BCSHTSCWX1YR2A4380",
+      "name": "Ground",
+      "callsign": "BGM_GND",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GAPPQNY9V461JEW2AN5ZP9A7",
+      "name": "Local",
+      "callsign": "BGM_TWR",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 119.3
+    },
+    {
+      "id": "01H2BD14Z727T6GAYAX7EBZ8BV",
+      "name": "Radar Low",
+      "callsign": "BGM_L_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 118.6
+    },
+    {
+      "id": "01H2BD22RHQCGGMC8MRN6QWMKJ",
+      "name": "Radar High",
+      "callsign": "BGM_H_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 127.55
+    },
+    {
+      "id": "01H9V55MGNYF81BN7CDDA12371",
+      "name": "Clearance Delivery",
+      "callsign": "BGM_DEL",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 125.05
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1K",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1G",
+        "1H",
+        "1K"
+      ],
+      "mapIds": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        101,
+        103,
+        105,
+        102,
+        104,
+        106
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H5R6B0MXNASW52WGPJ06N19G",
+      "name": "BGM-101",
+      "shortName": "ASR",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01G66FBNM0C4CFVJXQZWP90MH6",
+      "name": "BGM-102",
+      "shortName": "BASE",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01G66FGAVN2YFAZEG622QQ46AQ",
+      "name": "BGM-103 (MVA)",
+      "shortName": "MVA",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5R6B0MX2W3WVVVGEYRVXY01",
+      "name": "BGM-104 (VFR)",
+      "shortName": "VFR",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5R6B0MWMR2C4RRAPMYVP3TZ",
+      "name": "BGM-105 (EOVM)",
+      "shortName": "EOVM",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5R6B0MV0MKQBF401CKJ4B4K",
+      "name": "BGM-106 (GPS)",
+      "shortName": "GPS",
+      "starsId": 106,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5TDFZYXH1ZMKJY5VPCY5DE",
+      "name": "BGM TRACON APD",
+      "shortName": "APD",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

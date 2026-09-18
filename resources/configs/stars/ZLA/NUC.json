@@ -1,0 +1,62 @@
+{
+  "artcc": "ZLA",
+  "facility": "NUC",
+  "name": "San Clemente Island NALF",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 34.9691453,
+    "lon": -116.63582625
+  },
+  "controlPositions": [
+    {
+      "id": "01KK3FCR4CPN8QT6SF5XF3XWC4",
+      "name": "Approach",
+      "callsign": "NUC_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 127.05
+    },
+    {
+      "id": "01KK3FGXNQ3ZT0M62K19VG79VR",
+      "name": "CCA Marshal",
+      "callsign": "NUC_M_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 127.05
+    },
+    {
+      "id": "01KK3FJ0WHY1QSW55WV1H1CVBJ",
+      "name": "RFC Feeder",
+      "callsign": "NUC_F_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 127.05
+    },
+    {
+      "id": "01KK3FJXZHE1WF4TKG385CYVX0",
+      "name": "Local",
+      "callsign": "NUC_TWR",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 126.75
+    },
+    {
+      "id": "01KK3FMB8K23TF7XJSVGE06XAR",
+      "name": "Ground",
+      "callsign": "NUC_GND",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 119.55
+    }
+  ]
+}

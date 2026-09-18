@@ -1,0 +1,231 @@
+{
+  "artcc": "ZDV",
+  "facility": "EGE",
+  "name": "Eagle ATCT",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 40.569587575,
+    "lon": -104.96660805
+  },
+  "controlPositions": [
+    {
+      "id": "01H581TFAG6YNS5T798TJ0SRVZ",
+      "name": "Local Control",
+      "callsign": "EGE_TWR",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 119.8
+    },
+    {
+      "id": "01H581VEA7K07BBBY21CF5EKDB",
+      "name": "Ground Control",
+      "callsign": "EGE_GND",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01HHNTBQV7N2ZSQ1MMAPRTKDZ7",
+      "name": "Delivery",
+      "callsign": "EGE_DEL",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      },
+      "freq": 124.75
+    },
+    {
+      "id": "4C",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    },
+    {
+      "id": "4G",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    },
+    {
+      "id": "4T",
+      "visualCenter": {
+        "lat": 40.569587575,
+        "lon": -104.96660805
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "4C",
+        "4G",
+        "4T"
+      ],
+      "mapIds": [
+        8,
+        102,
+        105,
+        108,
+        104,
+        106,
+        8,
+        102,
+        106,
+        103,
+        104,
+        105,
+        108,
+        109,
+        110,
+        112,
+        111,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        8,
+        105,
+        104,
+        102,
+        108,
+        106
+      ],
+      "submenuMapIds": [
+        8,
+        106,
+        104,
+        108,
+        110,
+        111,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        102,
+        103,
+        105,
+        109,
+        112,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HHRGGPJ4S92C6V6PNAR8A425",
+      "name": "EGE DELTA",
+      "shortName": "DELTA",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HHRGGPJ4G5JKZ0MHXCZSK5Z6",
+      "name": "EGE IFR",
+      "shortName": "IFR",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HHRGGPJ4HEDDT7BGZDSYE1A5",
+      "name": "EGE VFR-2",
+      "shortName": "VFR-2",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HHRGGPJ4FRRWCZ3E0WW1FVF6",
+      "name": "EGE GPS",
+      "shortName": "GPS",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HHRGGPJ39CFTTTJ4PQ1JJR5Q",
+      "name": "EGE TERRAIN",
+      "shortName": "EOVM",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HHRGGPJ3ZZPDMC7BQE5GRFY5",
+      "name": "EGE VFR-1",
+      "shortName": "VFR-1",
+      "starsId": 106,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HHRGGPJ2AMBCPFHMMFQH7XGA",
+      "name": "EGE RELEASE",
+      "shortName": "REL",
+      "starsId": 108,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HHRGGPJ2ZJNAHSJ0QJYQGZFZ",
+      "name": "EGE RNAV RNP M RWY 25",
+      "shortName": "RNP M",
+      "starsId": 109,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HHRGGPJ2825TFF2Z9BN59Y77",
+      "name": "EGE RNAV RNP P RWY 25",
+      "shortName": "RNP P",
+      "starsId": 110,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HHRGGPJ27SFXGXVZXZ5GQ5G1",
+      "name": "EGE RNAV GPS N RWY 25",
+      "shortName": "GPS N",
+      "starsId": 111,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HHRGGPJ1TQ3CF71MA0NAJFQ9",
+      "name": "EGE RNAV RNP Q RWY 25",
+      "shortName": "RNP Q",
+      "starsId": 112,
+      "brightnessCategory": "A"
+    }
+  ]
+}

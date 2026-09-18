@@ -1,0 +1,233 @@
+{
+  "artcc": "ZAU",
+  "facility": "GUS",
+  "name": "Grissom ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 41.879166749999996,
+    "lon": -88.975
+  },
+  "controlPositions": [
+    {
+      "id": "01H5XX1BH51C6T49MXQ79ADQ5N",
+      "name": "East Approach",
+      "callsign": "GUS_E_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.05
+    },
+    {
+      "id": "01H5XX28PEK4D10EGVCZ3NSCH6",
+      "name": "West Approach",
+      "callsign": "GUS_W_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 123.85
+    },
+    {
+      "id": "01H5XX3S5JGWR2NXDHHZ78PEEX",
+      "name": "Local",
+      "callsign": "GUS_TWR",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 133.7
+    },
+    {
+      "id": "01H5XX4VVE4PBREMNRG0R70XWW",
+      "name": "Ground",
+      "callsign": "GUS_GND",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 128.425
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1L",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6,
+        7,
+        23,
+        8,
+        24,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        8,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        23,
+        24,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GFM246HWP8SGXJSBSCN811XY",
+      "name": "GUS MAIN RWY 5",
+      "shortName": "RWY 5",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM246HJG7Z0ZGR3ZP27WFB2",
+      "name": "GUS RNAV APPROACHES",
+      "shortName": "GUS APP",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM246HSP2KV00X93R68SJXA",
+      "name": "GUS MVA",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM246HXESAPT8MT6RTC8ACD",
+      "name": "GUS MAIN RWY 23",
+      "shortName": "RWY 23",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM246HQBWWSH6XAD9GWDHHJ",
+      "name": "GUS LAF RNAV APPROACHES",
+      "shortName": "LAF APP",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8RVQVRKP77Z2QB5K0G2EBB5",
+      "name": "GUS VICTOR AIRWAYS",
+      "shortName": "VT RTES",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JFD6PZ8NY44D2CTTPW5TXFE0",
+      "name": "GUS AIRPORT DIAGRAMS",
+      "shortName": "AP DIAG",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KMG78P9WNJ3JR2VKTANW5447",
+      "name": "GUS SATELLITE APPROACHES A",
+      "shortName": "SAT A",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM246J0RH7KP1E9SGCN9NJ8",
+      "name": "GUS VOR-TACAN, LAF VOR-A APPROACHES",
+      "shortName": "VOR APP",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KMG79H1B6KPQ8RJQM0A30WT3",
+      "name": "GUS SATELLITE APPROACHES B",
+      "shortName": "SAT B",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    }
+  ]
+}

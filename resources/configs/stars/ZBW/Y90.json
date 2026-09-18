@@ -1,0 +1,451 @@
+{
+  "artcc": "ZBW",
+  "facility": "Y90",
+  "name": "Bradley TRACON",
+  "type": "Tracon",
+  "defaultCenter": {
+    "lat": 42.93753,
+    "lon": -70.70471
+  },
+  "controlPositions": [
+    {
+      "id": "01G9BMY6WSD9QEVEHBZRQS22NN",
+      "name": "Bristol Radar",
+      "callsign": "BDL_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 123.95
+    },
+    {
+      "id": "01G9BMZ54NJ4YV2FPF9K3G899X",
+      "name": "Final Vector",
+      "callsign": "BDL_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 127.225
+    },
+    {
+      "id": "01G9BN55G20EPTRD8VPANKEHE7",
+      "name": "Hartford Radar",
+      "callsign": "BDL_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 127.8
+    },
+    {
+      "id": "01G9BN5RZEPHJA83H4Y54N1PJ4",
+      "name": "West Departure Radar",
+      "callsign": "BDL_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 125.35
+    },
+    {
+      "id": "01G9BN6FBEBDVWZKK7SHWF4371",
+      "name": "Worcester Radar",
+      "callsign": "BDL_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 119
+    },
+    {
+      "id": "01KAEWBZDVTQ2FKETVBFAC3YTK",
+      "name": "BDL Guard",
+      "callsign": "BDL_EM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1Q",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1X",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1B",
+        "1H",
+        "1Q",
+        "1S",
+        "1V",
+        "1W",
+        "1X",
+        "1Z"
+      ],
+      "mapIds": [
+        3,
+        901,
+        13,
+        10,
+        7,
+        8,
+        5,
+        4,
+        6,
+        905,
+        902,
+        903,
+        904,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        3,
+        13,
+        7,
+        901,
+        10,
+        8
+      ],
+      "submenuMapIds": [
+        5,
+        6,
+        902,
+        904,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        4,
+        905,
+        903,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        120,
+        119,
+        117,
+        118,
+        3,
+        901,
+        905,
+        6,
+        13,
+        10,
+        902,
+        903,
+        904,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        120,
+        117,
+        3,
+        119,
+        118,
+        901
+      ],
+      "submenuMapIds": [
+        905,
+        13,
+        902,
+        904,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        6,
+        10,
+        903,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GPHFSWGWDFQJKK29NQ61G07M",
+      "name": "Y90 MVA",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHFSWGSTQZPSEKN7E6SB910",
+      "name": "Y90 RWY 15/24",
+      "shortName": "15/24",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHFSWGQ3CFHDYCYN0F7D56A",
+      "name": "Y90 RWY 6/15",
+      "shortName": "6/15",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBS64WRH015XNM05S73XHAPB",
+      "name": "Y90 EOVM",
+      "shortName": "EOVM",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHFSWGTQ1R3X3X952CCBKZQ",
+      "name": "Y90 RWY 24/33",
+      "shortName": "24/33",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHFSWGRV693KEJPEWANEP76",
+      "name": "Y90 RWY 6/33",
+      "shortName": "6/33",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHFSWGXZ1GWY8SXJ2KKTVFJ",
+      "name": "Y90 SATS FAC",
+      "shortName": "SATS",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHFSWGVFKD32H4V8ZPJ5QG3",
+      "name": "Y90 COASTLINE",
+      "shortName": "COAST",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HBS61KBC00P0JCE60Y71V31M",
+      "name": "BDL_TWR 15/24",
+      "shortName": "T15/24",
+      "starsId": 117,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBS5W7YE30QQD44E2YK2B5FE",
+      "name": "BDL_TWR 6/15",
+      "shortName": "T6/15",
+      "starsId": 118,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBS63XWRKQPFXH25G8PF8DBR",
+      "name": "BDL_TWR 24/33",
+      "shortName": "T24/33",
+      "starsId": 119,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBS6098TEP6123DQWPYBCV16",
+      "name": "BDL_TWR 6/33",
+      "shortName": "T6/33",
+      "starsId": 120,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF1046VTX8SGKVPN1JMMB",
+      "name": "GROUND DIAGRAMS",
+      "shortName": "APT",
+      "starsId": 900,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10DY0KQ88H2D88NBTYS",
+      "name": "ZBW SPLIT 1",
+      "shortName": "ZBW 1",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10ETN5HPA10PFAM5SGC",
+      "name": "ZBW SPLIT 2",
+      "shortName": "ZBW 2",
+      "starsId": 903,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10E7QVGYCE97HH069A5",
+      "name": "ZBW SPLIT 3",
+      "shortName": "ZBW 3",
+      "starsId": 904,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HVM90MVHBBCM6ES6KX9WKN3D",
+      "name": "TWY LABELS",
+      "shortName": "TWY LBL",
+      "starsId": 905,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    }
+  ]
+}

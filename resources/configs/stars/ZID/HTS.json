@@ -1,0 +1,441 @@
+{
+  "artcc": "ZID",
+  "facility": "HTS",
+  "name": "Huntington ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 38.6494889,
+    "lon": -84.3106305555556
+  },
+  "controlPositions": [
+    {
+      "id": "01GRVHC8WX67P3K5RZMB147ZY7",
+      "name": "Clearance Delivery",
+      "callsign": "HTS_DEL",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 118.05
+    },
+    {
+      "id": "01GRVHE6SXFPKDX80FJ7BNG0V4",
+      "name": "Ground Control",
+      "callsign": "HTS_GND",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GRVHFAV8YJGWM74NYAW21WPY",
+      "name": "Local Control",
+      "callsign": "HTS_TWR",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 118.5
+    },
+    {
+      "id": "01GRVHGM3TT865JVRZN207JKFT",
+      "name": "North Radar",
+      "callsign": "HTS_N_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 128.4
+    },
+    {
+      "id": "01GRVHHCB5XD92DHGD6FGYHJV8",
+      "name": "South Radar",
+      "callsign": "HTS_S_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 119.75
+    },
+    {
+      "id": "01JA39QW32NPJSQTPP1ZCWB3DR",
+      "name": "HTS GUARD",
+      "callsign": "HTS_EM_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1N",
+        "1S",
+        "1T"
+      ],
+      "mapIds": [
+        103,
+        104,
+        123,
+        124,
+        102,
+        106,
+        101,
+        127,
+        107,
+        108,
+        128,
+        129,
+        130,
+        null,
+        125,
+        126,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        109,
+        118,
+        117,
+        119,
+        120,
+        122,
+        121,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        103,
+        123,
+        102,
+        104,
+        124,
+        106
+      ],
+      "submenuMapIds": [
+        101,
+        107,
+        128,
+        130,
+        125,
+        110,
+        112,
+        114,
+        116,
+        118,
+        119,
+        122,
+        null,
+        null,
+        null,
+        127,
+        108,
+        129,
+        null,
+        126,
+        111,
+        113,
+        115,
+        109,
+        117,
+        120,
+        121,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01K1VB462MEFBAT4SN8ZZ0F27J",
+      "name": "HTS 60 LITE",
+      "shortName": "BASE",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K1VB462ZZQP6TP1SJHFQMX3K",
+      "name": "HTS MAP LIST",
+      "shortName": "MAP LST",
+      "starsId": 102,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB46309X4ZGJP3GJ4985JM",
+      "name": "HTS MVA 3NM",
+      "shortName": "MVA",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB46349Z5C11VAH04EZZAB",
+      "name": "HTS V ROUTE",
+      "shortName": "V ROUTE",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB46312X9KGD2JYX1P9FT2",
+      "name": "HTS MVA 5NM",
+      "shortName": "MVA 5NM",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462T5S2TE4V9355V8SHA",
+      "name": "HTS EOVM",
+      "shortName": "EOVM",
+      "starsId": 106,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462WQJNDYD5P11RQKE34",
+      "name": "HTS GPS-1",
+      "shortName": "GPS-1",
+      "starsId": 107,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462XCRNM5BZAM246XW91",
+      "name": "HTS GPS-2",
+      "shortName": "GPS-2",
+      "starsId": 108,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462YTYXS87NPGHCVBFS9",
+      "name": "HTS HTS-G",
+      "shortName": "HTS-G",
+      "starsId": 109,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462JE217Z74DDPSAKPJF",
+      "name": "HTS 12V",
+      "shortName": "12V",
+      "starsId": 110,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462H7S8NZTJ7G0YNRSZG",
+      "name": "HTS 3I2",
+      "shortName": "3I2",
+      "starsId": 111,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462SPKAEEMJ3V54DBV6Q",
+      "name": "HTS DWU",
+      "shortName": "DWU",
+      "starsId": 112,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462SJB121NJBY7DB5EF8",
+      "name": "HTS EOP",
+      "shortName": "EOP",
+      "starsId": 113,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462W9B28Z9NDEPEGJZM2",
+      "name": "HTS GAS",
+      "shortName": "GAS",
+      "starsId": 114,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462YZ7YBH2EEQSHGQR7D",
+      "name": "HTS I18",
+      "shortName": "I18",
+      "starsId": 115,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462ZM1AWSP65DWZ5PZ8D",
+      "name": "HTS I43",
+      "shortName": "I43",
+      "starsId": 116,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB46312KD64FZTE9DX85RG",
+      "name": "HTS PBX-G",
+      "shortName": "PBX-G",
+      "starsId": 117,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB4632TG8JMPM80JHYC3CD",
+      "name": "HTS PBX-I",
+      "shortName": "PBX-I",
+      "starsId": 118,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB4632Z38VHKFFF47PZ41X",
+      "name": "HTS PMH",
+      "shortName": "PMH",
+      "starsId": 119,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB4632SK44PMRB8S6M13Z2",
+      "name": "HTS SJS",
+      "shortName": "SJS",
+      "starsId": 120,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB4633NCFZWSJE4NKS9ZDS",
+      "name": "HTS UNI-G",
+      "shortName": "UNI-G",
+      "starsId": 121,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB46343WF8FWBRYWR2WZBS",
+      "name": "HTS UNI-I",
+      "shortName": "UNI-I",
+      "starsId": 122,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462XK7P37DDSF1MV98N3",
+      "name": "HTS H-SID",
+      "shortName": "H-SID",
+      "starsId": 123,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462XVA465MEDQB0JGG58",
+      "name": "HTS H-STAR",
+      "shortName": "H-STAR",
+      "starsId": 124,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB4630CQD8SWNES562SRNZ",
+      "name": "HTS MTR-VR",
+      "shortName": "MTR-VR",
+      "starsId": 125,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB4630E859AN5HRY2HZ9E6",
+      "name": "HTS MTR-IR",
+      "shortName": "MTR-IR",
+      "starsId": 126,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462RV6F04PHCYBBYRDQN",
+      "name": "HTS COUNTY",
+      "shortName": "COUNTY",
+      "starsId": 127,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462Z5919RK3DRTEJHX6B",
+      "name": "HTS MOA",
+      "shortName": "MOA",
+      "starsId": 128,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462Q6TQD3HQ9MKR90Z5E",
+      "name": "HTS ASR",
+      "shortName": "ASR",
+      "starsId": 129,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB46335DGEKW3RAC9GMFGJ",
+      "name": "HTS STADIUMS",
+      "shortName": "STAD",
+      "starsId": 130,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462NN64KBNQQ4MJR1ZFJ",
+      "name": "HTS ADSB 40NM",
+      "shortName": "ADSB40",
+      "starsId": 131,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462N3GBQPDXMCJ6ZC8BT",
+      "name": "HTS ADSB 60NM",
+      "shortName": "ADSB60",
+      "starsId": 132,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462V0REQKMMC3JEHKT6Z",
+      "name": "HTS FLCHK - UNI ILS OR LOC 25",
+      "shortName": "FLC UNI",
+      "starsId": 500,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462T0MGSK5527H3MVVRM",
+      "name": "HTS FLCHK - HTS ILS OR LOC 12",
+      "shortName": "FLC 12",
+      "starsId": 501,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1VB462V96M17Y72SE1ZD3MK",
+      "name": "HTS FLCHK - HTS OR LOC 30",
+      "shortName": "FLC 30",
+      "starsId": 502,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J4HM862C3PBQ9VSCJV3F0C67",
+      "name": "Airports TDM",
+      "shortName": "TDM",
+      "starsId": 900,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JES4K489M5VASYV63CT66C57",
+      "name": "TAXIWAY LABELS",
+      "shortName": "TWY LBL",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    }
+  ]
+}

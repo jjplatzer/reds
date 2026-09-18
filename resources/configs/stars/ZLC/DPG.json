@@ -1,0 +1,209 @@
+{
+  "artcc": "ZLC",
+  "facility": "DPG",
+  "name": "Clover RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 44.1394906,
+    "lon": -111.3092792325
+  },
+  "controlPositions": [
+    {
+      "id": "01KNJHQZC768STSX2Z0JM8VBSG",
+      "name": "Clover - South",
+      "callsign": "DPG_S_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 134.1
+    },
+    {
+      "id": "01KNJHTFBJ2PHFNDBMQ2YKA000",
+      "name": "Clover - North",
+      "callsign": "DPG_N_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 118.45
+    },
+    {
+      "id": "01KNJJ2BN6BGDH7J061W4F0XQX",
+      "name": "Dugway - Advisory",
+      "callsign": "DPG_A_TWR",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 126.2
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1N",
+        "1S"
+      ],
+      "mapIds": [
+        604,
+        601,
+        600,
+        null,
+        602,
+        603,
+        610,
+        611,
+        630,
+        631,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        604,
+        600,
+        602,
+        601,
+        null,
+        603
+      ],
+      "submenuMapIds": [
+        610,
+        630,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        611,
+        631,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01KNT2NYPQ80X98K096RZRC62R",
+      "name": "DPG_600_ATCAAMOA_CLOVER",
+      "shortName": "ARSP",
+      "starsId": 600,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KNT2QMZT0C6NJJ84NG06PFXN",
+      "name": "DPG_601_CLOVER_RVM",
+      "shortName": "RVM",
+      "starsId": 601,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KNT13WCSD8BVH7H8KKREZQZ0",
+      "name": "DPG_602_CLOVER_RNAV12",
+      "shortName": "R12",
+      "starsId": 602,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JT481Z113ZKCRS9S5JWC175X",
+      "name": "DPG_604_CLOVER_TACAN12",
+      "shortName": "T12",
+      "starsId": 603,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQ8TB32J33GFMH6P4V84R0BH",
+      "name": "DPG_603_CLOVER_MIA",
+      "shortName": "MVA",
+      "starsId": 604,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KNWRBP8MZF4YW3RHF4G5WTV0",
+      "name": "DPG_610_05U_RNAV18",
+      "shortName": "EUEAPP",
+      "starsId": 610,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KNWSEJQJHQ9CZPH0HWCQ4CZ9",
+      "name": "DPG_611_05U_MINES",
+      "shortName": "MINES",
+      "starsId": 611,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KSG6475AN843RK8GEND9XVQH",
+      "name": "DPG_630_ENV_RNAV8",
+      "shortName": "ENV8",
+      "starsId": 630,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KSG65E27J0R90WR9WQCC93N9",
+      "name": "DPG_631_ENV_RNAV26",
+      "shortName": "ENV26",
+      "starsId": 631,
+      "brightnessCategory": "A"
+    }
+  ]
+}

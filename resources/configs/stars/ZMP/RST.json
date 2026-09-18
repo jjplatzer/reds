@@ -1,0 +1,228 @@
+{
+  "artcc": "ZMP",
+  "facility": "RST",
+  "name": "Rochester ATCT/TRACAB",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 45.084575,
+    "lon": -93.9971125
+  },
+  "controlPositions": [
+    {
+      "id": "01GFERP6AQF3H5KQ1JMXQT5N4N",
+      "name": "AR-RA",
+      "callsign": "RST_A_APP",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 119.8
+    },
+    {
+      "id": "01GFERRJW555AGR26C7Y9TS07Q",
+      "name": "AR-RW",
+      "callsign": "RST_W_APP",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 119.2
+    },
+    {
+      "id": "01GFERSFMH8AY01M2YHECT6PCN",
+      "name": "Local Control",
+      "callsign": "RST_TWR",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01GFERT87TW22GSA19221D7H32",
+      "name": "Ground Control",
+      "callsign": "RST_GND",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1F",
+        "1T",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H7TN6RPN6JH5JE47DR5EDRV7",
+      "name": "RST 001 ASR VFR",
+      "shortName": "ASR VFR",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TN6RPP160G92TJZGDEFP0V",
+      "name": "RST 002 SAT",
+      "shortName": "SAT",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TN6RPQGR0B61YXN4NHWVZ4",
+      "name": "RST 003 ARDR",
+      "shortName": "ARDR",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TN6RPQG6HEFG4HVMH6YGVE",
+      "name": "RST 004 3NM MVA",
+      "shortName": "3NM MVA",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TN6RPRBTTR1BQPNGFH8JKD",
+      "name": "RST 005 GEO",
+      "shortName": "GEO",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TN6RPR0VTN1EVJ8A9BM0N1",
+      "name": "RST 006 5NM MVA",
+      "shortName": "5NM MVA",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7TN6RPSY2PBGFKNFY65516T",
+      "name": "RST 007 STADIUM",
+      "shortName": "STADIUM",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GQ5GMZKEKS96R83VHCM2QE7S",
+      "name": "RST APD",
+      "shortName": "APD",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

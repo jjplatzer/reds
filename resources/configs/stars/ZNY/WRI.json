@@ -1,0 +1,246 @@
+{
+  "artcc": "ZNY",
+  "facility": "WRI",
+  "name": "McGuire ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 35.914982499999994,
+    "lon": -73.0446825
+  },
+  "controlPositions": [
+    {
+      "id": "01GAPQ01XE7EV48JE82CW78XX6",
+      "name": "Clearance Delivery",
+      "callsign": "WRI_DEL",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 135.2
+    },
+    {
+      "id": "01GAPQ0TQ5K01NH7M4KCD4683J",
+      "name": "Ground",
+      "callsign": "WRI_GND",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01GAPQ1CCR5D4BFE8MNF3RRMZ9",
+      "name": "Local",
+      "callsign": "WRI_TWR",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 118.65
+    },
+    {
+      "id": "01H2BCF764G4E7RMQMF5X3D5XF",
+      "name": "RAPCON",
+      "callsign": "WRI_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 126.475
+    },
+    {
+      "id": "1Y",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1Y"
+      ],
+      "mapIds": [
+        100,
+        102,
+        null,
+        103,
+        null,
+        104,
+        105,
+        102,
+        106,
+        103,
+        107,
+        104,
+        108,
+        109,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        100,
+        null,
+        null,
+        102,
+        103,
+        104
+      ],
+      "submenuMapIds": [
+        105,
+        106,
+        107,
+        108,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        102,
+        103,
+        104,
+        109,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H2RKE4S2P15MC3DY5PX39J8Q",
+      "name": "PHL-016 (Class B)",
+      "shortName": "CLASS B",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01G912GC8B7DPD86DN3C028ACQ",
+      "name": "WRI-100 (WRI)",
+      "shortName": "WRI",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HYS6WKVEN0JKVRAPP4ED293V",
+      "name": "BLM_RNAV",
+      "shortName": "BLM",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HYS6WKVDA75F0EWBJ9CQ77Y5",
+      "name": "MJX_RNAV",
+      "shortName": "MJX",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HYS6WKVFKDX8HMHFFSQ1XWP8",
+      "name": "VAY_RNAV",
+      "shortName": "VAY",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HYS6WKVFXB34Z9EXMJPESAN9",
+      "name": "19N_RNAV",
+      "shortName": "19N",
+      "starsId": 105,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HYS6WKVEK2KTGKRZERKNH4CC",
+      "name": "3N6_RNAV",
+      "shortName": "3N6",
+      "starsId": 106,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HYS6WKVDAMS7YSW37D3J6VQQ",
+      "name": "N12_RNAV",
+      "shortName": "N12",
+      "starsId": 107,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HYS6WKVE0RWZASFTMJ0GZ639",
+      "name": "N14_RNAV",
+      "shortName": "N14",
+      "starsId": 108,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HYS6WKVE3VE4TT14PWJGG0B3",
+      "name": "N87_RNAV",
+      "shortName": "N87",
+      "starsId": 109,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01G90QKYAJEXQK9BPCPDVFNQBS",
+      "name": "MVA",
+      "shortName": "3NM_MVA",
+      "starsId": 803,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01G90QCP5644X1H000X3CH0ZD3",
+      "name": "NY Class B",
+      "shortName": "CLASS_B",
+      "starsId": 849,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5M0REK7BHFQXH3V9VFDC2J8",
+      "name": "EOVM",
+      "shortName": "EOVM",
+      "starsId": 870,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H2RPKPEDBGYXDAN9CRWBS28W",
+      "name": "WRI RAPCON APD",
+      "shortName": "APD",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

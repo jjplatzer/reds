@@ -1,0 +1,231 @@
+{
+  "artcc": "ZAU",
+  "facility": "CMI",
+  "name": "Champaign ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.879166749999996,
+    "lon": -88.975
+  },
+  "controlPositions": [
+    {
+      "id": "01GT53Y2P5YNPZEYP383H2VM08",
+      "name": "Local",
+      "callsign": "CMI_TWR",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 120.4
+    },
+    {
+      "id": "01GT541A4GM8C86S485WQYW837",
+      "name": "East Approach",
+      "callsign": "CMI_E_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.35
+    },
+    {
+      "id": "01GT542A6ACXGKAN7P7KHXD6AZ",
+      "name": "West Approach",
+      "callsign": "CMI_W_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 132.85
+    },
+    {
+      "id": "01GT543DC6CDC4Q9PXKCPSKWFS",
+      "name": "Ground",
+      "callsign": "CMI_GND",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01GT543SQZV0E4PYFJG558WXSZ",
+      "name": "Clearance Delivery",
+      "callsign": "CMI_DEL",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 128.75
+    },
+    {
+      "id": "1C",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1C",
+        "1E",
+        "1W",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6,
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GFM1ZXXW9KEK3XRV0GK47GEW",
+      "name": "CMI MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JNPEF9N481T35E7N7BY493RF",
+      "name": "CMI MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM1ZXXX2YWPGRH7358H9VMG",
+      "name": "CMI VFR",
+      "shortName": "VFR",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KMF0PP0BYJP0ZN5V5S1880RW",
+      "name": "CMI SATELLITE APPROACHES A",
+      "shortName": "SAT A",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK20N4FTBMSVRVT0KJSN3DTN",
+      "name": "CMI CLASS CHARLIE",
+      "shortName": "CLASS C",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM1ZXXY05QNV59V79JTTSYG",
+      "name": "CMI VICTOR AIRWAYS",
+      "shortName": "VT RTES",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JFD6N78VZ67TK9F0KN51J1C5",
+      "name": "CMI AIRPORT DIAGRAMS",
+      "shortName": "AP DIAG",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    }
+  ]
+}

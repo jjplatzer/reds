@@ -1,0 +1,1053 @@
+{
+  "artcc": "ZNY",
+  "facility": "PHL",
+  "name": "Philadelphia ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 35.914982499999994,
+    "lon": -73.0446825
+  },
+  "controlPositions": [
+    {
+      "id": "01G90MMFJ3S68Z22RCSYVVPTK6",
+      "name": "Clearance Delivery",
+      "callsign": "PHL_DEL",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 118.85
+    },
+    {
+      "id": "01G90MY85454KB6Z7KJVE221W3",
+      "name": "Ground",
+      "callsign": "PHL_GND",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G90MZ4KHSMN1MZA8WRREXH0M",
+      "name": "Ground (Secondary)",
+      "callsign": "PHL_W_GND",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 121.65
+    },
+    {
+      "id": "01G90N0PBQ4FRX6YBV2B66XFQW",
+      "name": "Local East",
+      "callsign": "PHL_TWR",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 118.5
+    },
+    {
+      "id": "01G90N1HSZHVH2H4NPBZ8YYFES",
+      "name": "Local West",
+      "callsign": "PHL_W_TWR",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 135.1
+    },
+    {
+      "id": "01G90P14023PKT3WQT9NBBC0K3",
+      "name": "North Departure",
+      "callsign": "PHL_ND_DEP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 124.35
+    },
+    {
+      "id": "01G90P2CES6SAE6CYVHFBVSH6G",
+      "name": "North Departure High",
+      "callsign": "PHL_NH_DEP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 126.075
+    },
+    {
+      "id": "01G90P5VYM5E3PG8DXBFKE3M1R",
+      "name": "South Departure",
+      "callsign": "PHL_SD_DEP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 119.75
+    },
+    {
+      "id": "01G90P6R516XGB776QQDXNJ84P",
+      "name": "South Departure High",
+      "callsign": "PHL_SH_DEP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 126.6
+    },
+    {
+      "id": "01G90PADSWVAJ9M6HC0DVRNT89",
+      "name": "North Arrival",
+      "callsign": "PHL_NA_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 128.4
+    },
+    {
+      "id": "01G90PB7FJEXK741B0NHFE8T02",
+      "name": "South Arrival",
+      "callsign": "PHL_SA_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 133.875
+    },
+    {
+      "id": "01G90PCERRTP3952MDRDM4W60E",
+      "name": "Final Vector 1",
+      "callsign": "PHL_F1_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 125.4
+    },
+    {
+      "id": "01G90PDHVKD2FEBBQS8MJQZ1QA",
+      "name": "Final Vector 2",
+      "callsign": "PHL_F2_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 132.675
+    },
+    {
+      "id": "01G90PM4HHY8A8GW6Z24990BFT",
+      "name": "Woodstown",
+      "callsign": "PHL_WD_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 127.35
+    },
+    {
+      "id": "01G90PNDS9NZP8P69088RYGKNV",
+      "name": "Dupont",
+      "callsign": "PHL_DU_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 118.35
+    },
+    {
+      "id": "01G90PP995VXTS3J1D1R9FPJKK",
+      "name": "Pottstown",
+      "callsign": "PHL_PT_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 126.85
+    },
+    {
+      "id": "01G90PPZ680XN7NNMCKA05PJ3Y",
+      "name": "Yardley",
+      "callsign": "PHL_YD_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 123.8
+    },
+    {
+      "id": "01HM475885VSYBESE97CT8VF3X",
+      "name": "TMU",
+      "callsign": "PHL_T_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 136.5
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1J",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1Q",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1Y",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1D",
+        "1E",
+        "1F",
+        "1H",
+        "1J",
+        "1L",
+        "1N",
+        "1P",
+        "1S",
+        "1T",
+        "1V",
+        "1W",
+        "1Y"
+      ],
+      "mapIds": [
+        201,
+        202,
+        16,
+        86,
+        4,
+        7,
+        14,
+        11,
+        119,
+        118,
+        127,
+        126,
+        10,
+        13,
+        36,
+        87,
+        57,
+        58,
+        206,
+        205,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        201,
+        16,
+        4,
+        202,
+        86,
+        7
+      ],
+      "submenuMapIds": [
+        14,
+        119,
+        127,
+        10,
+        36,
+        57,
+        206,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        11,
+        118,
+        126,
+        13,
+        87,
+        58,
+        205,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1B",
+        "1Q"
+      ],
+      "mapIds": [
+        205,
+        206,
+        16,
+        851,
+        4,
+        7,
+        202,
+        201,
+        20,
+        86,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        205,
+        16,
+        4,
+        206,
+        851,
+        7
+      ],
+      "submenuMapIds": [
+        202,
+        20,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        201,
+        86,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1Z"
+      ],
+      "mapIds": [
+        104,
+        null,
+        201,
+        202,
+        16,
+        86,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        104,
+        201,
+        16,
+        null,
+        202,
+        86
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": null,
+      "mapIds": [
+        119,
+        118,
+        16,
+        86,
+        4,
+        7,
+        127,
+        126,
+        2,
+        11,
+        14,
+        20,
+        null,
+        25,
+        35,
+        36,
+        87,
+        57,
+        55,
+        58,
+        null,
+        851,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        119,
+        16,
+        4,
+        118,
+        86,
+        7
+      ],
+      "submenuMapIds": [
+        127,
+        2,
+        14,
+        null,
+        35,
+        87,
+        55,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        126,
+        11,
+        20,
+        25,
+        36,
+        57,
+        58,
+        851,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1U"
+      ],
+      "mapIds": [
+        105,
+        null,
+        201,
+        202,
+        16,
+        86,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        105,
+        201,
+        16,
+        null,
+        202,
+        86
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1A"
+      ],
+      "mapIds": [
+        106,
+        null,
+        201,
+        202,
+        16,
+        86,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        106,
+        201,
+        16,
+        null,
+        202,
+        86
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01J0Q0VT5ZES9B1JPBXF114PVW",
+      "name": "PHL-002 (JUMP ZONES)",
+      "shortName": "JMPZONE",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J0Q0VT5ZBFPJPTMHP64ABMWP",
+      "name": "PHL-004 (LANDMARK 1)",
+      "shortName": "VFR 1",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J0Q0VT5Z6WHK4MNYEJT0P3Y5",
+      "name": "PHL-007 (LANDMARK 2)",
+      "shortName": "VFR 2",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1Y3CFPGMSQ3VK4CY7YWQ7RQ",
+      "name": "PHL-010 (RWY 17/35 EXTENSIONS)",
+      "shortName": "17/35",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0Q0VT61D08F6HJF0D50VJ63",
+      "name": "PHL-011 (JAIKE WACKI)",
+      "shortName": "JAIKE",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1Y3AZ677AKGWM84Y6TSZ08W",
+      "name": "PHL-013 (PHL RWYS)",
+      "shortName": "PHLRWYS",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0Q0VT5YWH7WV347VDGZ2VHG",
+      "name": "PHL-014 (CLASS D)",
+      "shortName": "CLASS D",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H2RKE4S2P15MC3DY5PX39J8Q",
+      "name": "PHL-016 (Class B)",
+      "shortName": "CLASS B",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J0Q0VT61D122VV3CK7WK0Z3K",
+      "name": "PHL-020 (PHL FACs)",
+      "shortName": "FACS",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0Q0VT5Y79JMRKRDP5HTFZA8",
+      "name": "PHL-025 (E BREAKOUT PTS)",
+      "shortName": "E BREAK",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0Q0VT5WBN4XW4C27MDV9CV3",
+      "name": "PHL-035 (N47 RNAV)",
+      "shortName": "N47",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0Q0VT611ETNMGZE8NVAVZAR",
+      "name": "PHL-036 (MQS RNAV)",
+      "shortName": "MQS",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0Q0VT61ENC8RYDM8710TJPY",
+      "name": "PHL-055 (V AIRWAY)",
+      "shortName": "V_ARWY",
+      "starsId": 55,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J0Q0VT61FAQ2NB48PWEG5VWE",
+      "name": "PHL-057 (VORS)",
+      "shortName": "VORS",
+      "starsId": 57,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J0Q0VT5Z53FMF8PYM2Z0RSQY",
+      "name": "PHL-058 (INTERSECTIONS)",
+      "shortName": "INTS",
+      "starsId": 58,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01G90NQJH9CPC4D3HB0B1BNFJ8",
+      "name": "PHL-086 (MVA)",
+      "shortName": "MVA",
+      "starsId": 86,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J0Q0VT5Y1EM1C1MVATE1X2JA",
+      "name": "PHL-087 (DYL RNAV)",
+      "shortName": "DYL",
+      "starsId": 87,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HXW16K6022X06ZZ2BRHVYV1E",
+      "name": "PHL-104 (TTN TDW)",
+      "shortName": "TTNMAP",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K40MQ0AQ5PPE5T5VDX7YQCXT",
+      "name": "PHL-105 (ILG TDW)",
+      "shortName": "ILGMAP",
+      "starsId": 105,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K41E26N713ACQJBSFJCMDNVC",
+      "name": "PHL-106 (PNE TDW)",
+      "shortName": "PNEMAP",
+      "starsId": 106,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0Q0VT5XJ9B9DBZEZWSW4WYZ",
+      "name": "PHL-118 (RWY_9R)",
+      "shortName": "RWY_9R",
+      "starsId": 118,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0Q0VT5Y01GY0DNQQDS0E4JH",
+      "name": "PHL-119 (RWY_27R)",
+      "shortName": "RWY_27R",
+      "starsId": 119,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0Q0VT5Y9KGWG409F9EPCEQ9",
+      "name": "PHL-126 (RWY_9L)",
+      "shortName": "RWY_9L",
+      "starsId": 126,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0Q0VT5Y7WV8DPKVCQS0YADJ",
+      "name": "PHL-127 (RWY_27L)",
+      "shortName": "RWY_27L",
+      "starsId": 127,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01G90NJR282RS8WB8YNXWNBNQ5",
+      "name": "PHL-201 (West)",
+      "shortName": "WEST",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01G90NP1K5DZWVH3SX1J3QGX3G",
+      "name": "PHL-202 (East)",
+      "shortName": "EAST",
+      "starsId": 202,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01G909FSTGQYZ22Z0AGQ1KXYDN",
+      "name": "PHL-205 (ATCT East)",
+      "shortName": "ATCT E",
+      "starsId": 205,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01G909EZ4RQEXDA9KNHNTT71VN",
+      "name": "PHL-206 (ATCT West)",
+      "shortName": "ATCT W",
+      "starsId": 206,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01G90NPTFQ2DK0CXJB8Q3GBPE4",
+      "name": "Coast",
+      "shortName": "COAST",
+      "starsId": 851,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5REW574151PK51E4KDF4BQ",
+      "name": "PHL TRACON APD",
+      "shortName": "TDM",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}
