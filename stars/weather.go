@@ -11,7 +11,6 @@ import (
 	"log/slog"
 	"net/http"
 	"net/url"
-	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -67,88 +66,6 @@ type systemAltimeterState struct {
 	lastAttempt time.Time
 }
 
-type starsSSAConfig struct {
-	Areas            []starsSSAArea            `json:"areas"`
-	ControlPositions []starsSSAControlPosition `json:"controlPositions"`
-}
-
-type starsSSAArea struct {
-	ID          string   `json:"id"`
-	SSAAirports []string `json:"ssaAirports"`
-}
-
-type starsSSAControlPosition struct {
-	ID               string `json:"id"`
-	AreaID           string `json:"areaId"`
-	PhysicalFacility string `json:"physicalFacility"`
-	Callsign         string `json:"callsign"`
-}
-
-// adaptedSystemAltimeterAirport resolves the best available system-altimeter
-// station from the generated CRC position adaptation. The current REDS config
-// does not yet carry CRC's explicit system-altimeter field, so prefer a real
-// airport physical facility, then the airport prefix in the position callsign,
-// and finally the area's adapted SSA-airport list.
-func adaptedSystemAltimeterAirport(artcc, tracon, positionID string) (string, error) {
-	artcc, err := normalizedSTARSResourceCode("ARTCC", artcc)
-	if err != nil {
-		return "", err
-	}
-	tracon, err = normalizedSTARSResourceCode("TRACON", tracon)
-	if err != nil {
-		return "", err
-	}
-	positionID = strings.TrimSpace(positionID)
-	if positionID == "" {
-		return "", fmt.Errorf("STARS: empty position ID")
-	}
-
-	path := filepath.ToSlash(filepath.Join("resources", "configs", "stars", artcc, tracon+".json"))
-	if !util.ResourceExists(path) {
-		return "", fmt.Errorf("STARS: facility config %s not found", path)
-	}
-
-	var cfg starsSSAConfig
-	if err := json.Unmarshal(util.LoadResourceBytes(path), &cfg); err != nil {
-		return "", fmt.Errorf("STARS: decode %s: %w", path, err)
-	}
-
-	var selected starsSSAControlPosition
-	found := false
-	for _, position := range cfg.ControlPositions {
-		if position.ID == positionID {
-			selected = position
-			found = true
-			break
-		}
-	}
-	if !found || selected.AreaID == "" {
-		return "", fmt.Errorf("STARS: position %q has no adapted area in %s", positionID, path)
-	}
-
-	if airport := adaptedAirportCode(selected.PhysicalFacility); airport != "" {
-		return airport, nil
-	}
-	if prefix, _, ok := strings.Cut(strings.TrimSpace(selected.Callsign), "_"); ok {
-		if airport := adaptedAirportCode(prefix); airport != "" {
-			return airport, nil
-		}
-	}
-
-	for _, area := range cfg.Areas {
-		if area.ID != selected.AreaID {
-			continue
-		}
-		for _, airport := range area.SSAAirports {
-			if airport := adaptedAirportCode(airport); airport != "" {
-				return airport, nil
-			}
-		}
-		return "", nil
-	}
-	return "", fmt.Errorf("STARS: position %q references unknown area %q", positionID, selected.AreaID)
-}
-
 func adaptedAirportCode(code string) string {
 	code = strings.ToUpper(strings.TrimSpace(code))
 	if code == "" {
@@ -167,17 +84,6 @@ func adaptedAirportCode(code string) string {
 		}
 	}
 	return ""
-}
-
-func normalizedSTARSResourceCode(kind, code string) (string, error) {
-	code = strings.ToUpper(strings.TrimSpace(code))
-	if code == "" {
-		return "", fmt.Errorf("STARS: empty %s", kind)
-	}
-	if strings.ContainsAny(code, `/\\`) || code == "." || code == ".." {
-		return "", fmt.Errorf("STARS: invalid %s %q", kind, code)
-	}
-	return code, nil
 }
 
 func loadSTARSAirportDatabase() (starsAirportDatabase, error) {
