@@ -368,6 +368,7 @@ var trackedKeys = []trackedKey{
 	{KeyCommand, glfw.KeyLeftSuper},
 	{KeyC, glfw.KeyC},
 	{KeyF, glfw.KeyF},
+	{KeyS, glfw.KeyS},
 }
 
 func (g *glfwPlatform) updateKeyboard() {

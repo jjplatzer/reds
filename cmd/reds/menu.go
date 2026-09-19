@@ -45,6 +45,23 @@ func (p starsControlPosition) Label() string {
 	}
 }
 
+// TitleLabel returns the compact position format used in the STARS title bar.
+// The startup selector keeps the more explicit "TCP - CALLSIGN" presentation.
+func (p starsControlPosition) TitleLabel() string {
+	tcp := strings.TrimSpace(p.TCP)
+	callsign := strings.TrimSpace(p.Callsign)
+	switch {
+	case tcp != "" && callsign != "":
+		return tcp + " " + callsign
+	case callsign != "":
+		return callsign
+	case tcp != "":
+		return tcp
+	default:
+		return strings.TrimSpace(p.ID)
+	}
+}
+
 // starsMenuFacility contains the portion of a generated STARS facility config needed
 // by the startup menu. Unknown fields remain available in the JSON resource
 // for the eventual TCW implementation and are intentionally ignored here.
@@ -183,7 +200,7 @@ func (s Selection) ScopeTitle() string {
 	case DisplaySTARS:
 		parts := []string{DisplaySTARS.String(), s.Facility, s.TRACON}
 		if s.Position != nil {
-			if label := s.Position.Label(); label != "" {
+			if label := s.Position.TitleLabel(); label != "" {
 				parts = append(parts, label)
 			}
 		}

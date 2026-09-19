@@ -534,7 +534,7 @@ func drawOneDataBlock(
 	style := renderer.TextStyle{
 		Size: settings.FontSize,
 		Color: applyBrightness(
-			renderer.RGB8(0, 208, 0),
+			monitorColors.DataBlock,
 			settings.Brightness,
 			20,
 		).ToRGBA(),
@@ -616,7 +616,7 @@ func DrawDatablocks(
 		)
 
 		cb.SetRGB(applyBrightness(
-			renderer.RGB8(0, 208, 0),
+			monitorColors.DataBlock,
 			settings.Brightness,
 			20,
 		))

@@ -21,11 +21,6 @@ const (
 	alertMessageBorderPx  = 2
 )
 
-var (
-	alertMessageTextRGB   = renderer.RGB8(0, 248, 0)
-	alertMessageBorderRGB = renderer.RGB8(255, 0, 0)
-)
-
 type AlertRepository struct {
 	alerts []SafetyAlert
 	aural  *AuralAlertManager
@@ -226,7 +221,7 @@ func NewAlertMessageBox() AlertMessageBox {
 			MinBrightness: brightnessFloorDefault,
 			LineSpacing:   alertMessageLineSpace,
 
-			BaseTextColor: alertMessageTextRGB,
+			BaseTextColor: monitorColors.AlertMessageText,
 		}),
 	}
 }
@@ -318,7 +313,7 @@ func alertMessageBlock(alert SafetyAlert) TextBlock {
 	for _, line := range alert.MessageLines {
 		block.Fragments = append(block.Fragments, TextFragment{
 			Text:       strings.TrimRight(line, "\r\n"),
-			Foreground: alertMessageTextRGB,
+			Foreground: monitorColors.AlertMessageText,
 			NewLine:    true,
 		})
 	}
@@ -377,7 +372,7 @@ func renderAlertBorder(cb *renderer.CmdBuffer, rect redsmath.Rect) {
 	builder := renderer.GetColoredTrianglesBuilder()
 	defer renderer.ReturnColoredTrianglesBuilder(builder)
 
-	addWindowBorderRect(builder, rect, alertMessageBorderPx, alertMessageBorderRGB)
+	addWindowBorderRect(builder, rect, alertMessageBorderPx, monitorColors.AlertMessageBorder)
 	builder.GenerateCommands(cb)
 }
 

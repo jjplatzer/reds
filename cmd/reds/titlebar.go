@@ -19,16 +19,21 @@ const (
 )
 
 const (
-	titleBarMenuPopupWidth       = 300
-	titleBarMenuItemHeight       = 30
-	titleBarMenuTextPadX         = 13
-	titleBarMenuShortcutPadRight = 14
-	titleBarMenuPopupRounding    = 6
-	titleBarMenuPopupBorderSize  = 1
+	titleBarMenuPopupWidth         = 300
+	titleBarStarsMenuPopupWidth    = 330
+	titleBarMenuItemHeight         = 30
+	titleBarMenuTextPadX           = 13
+	titleBarMenuCheckedTextPadX    = 40
+	titleBarMenuCheckGlyphOffsetX  = 8
+	titleBarMenuCheckGlyphBoxWidth = 20
+	titleBarMenuShortcutPadRight   = 14
+	titleBarMenuPopupRounding      = 6
+	titleBarMenuPopupBorderSize    = 1
 )
 
 const (
 	titleBarGlyphMenu     = "\ue700"
+	titleBarGlyphCheck    = "\ue73e"
 	titleBarGlyphMinimize = "\ue949"
 	titleBarGlyphMaximize = "\ue15b"
 	titleBarGlyphRestore  = "\ue158"
@@ -64,7 +69,13 @@ type titleBarAction int
 const (
 	titleBarActionNone titleBarAction = iota
 	titleBarActionSwitchFacility
+	titleBarActionToggleStarsFontSetB
 )
+
+type titleBarMenuOptions struct {
+	ShowStarsFontSetB bool
+	UseStarsFontSetB  bool
+}
 
 type titleBarButtonType int
 
@@ -84,6 +95,7 @@ func drawScopeTitleBar(
 	plat platform.Platform,
 	title string,
 	displaySize [2]float32,
+	menuOptions titleBarMenuOptions,
 ) (bool, titleBarAction) {
 	if plat == nil || displaySize[0] <= 0 {
 		return false, titleBarActionNone
@@ -112,8 +124,8 @@ func drawScopeTitleBar(
 	imgui.BeginV("##scope-titlebar", nil, flags)
 
 	drawTitleBarBackground(displaySize[0])
-	menuCaptured, menuAction := drawTitleBarMenuButton()
-	if shortcutAction := titleBarShortcutAction(plat); shortcutAction != titleBarActionNone {
+	menuCaptured, menuAction := drawTitleBarMenuButton(menuOptions)
+	if shortcutAction := titleBarShortcutAction(plat, menuOptions); shortcutAction != titleBarActionNone {
 		menuAction = shortcutAction
 	}
 	drawTitleBarTitle(title)
@@ -153,7 +165,7 @@ func drawTitleBarTitle(title string) {
 	)
 }
 
-func drawTitleBarMenuButton() (bool, titleBarAction) {
+func drawTitleBarMenuButton(menuOptions titleBarMenuOptions) (bool, titleBarAction) {
 	min := imgui.Vec2{X: 0, Y: 0}
 	max := imgui.Vec2{X: titleBarMenuButtonWidth, Y: scopeTitleBarHeight}
 
@@ -181,7 +193,7 @@ func drawTitleBarMenuButton() (bool, titleBarAction) {
 		imgui.OpenPopupStrV("##titlebar-menu-popup", imgui.PopupFlagsNone)
 	}
 
-	action := drawTitleBarMenuPopup(min, max)
+	action := drawTitleBarMenuPopup(min, max, menuOptions)
 	captured := hovered ||
 		imgui.IsItemActive() ||
 		imgui.IsPopupOpenStr("##titlebar-menu-popup")
@@ -199,14 +211,23 @@ func drawBurgerIcon(min, max imgui.Vec2) {
 	)
 }
 
-func drawTitleBarMenuPopup(buttonMin, buttonMax imgui.Vec2) titleBarAction {
+func drawTitleBarMenuPopup(
+	buttonMin, buttonMax imgui.Vec2,
+	menuOptions titleBarMenuOptions,
+) titleBarAction {
 	imgui.SetNextWindowPosV(
 		imgui.Vec2{X: buttonMin.X, Y: buttonMax.Y},
 		imgui.CondAlways,
 		imgui.Vec2{},
 	)
+	menuHeight := float32(titleBarMenuItemHeight)
+	popupWidth := float32(titleBarMenuPopupWidth)
+	if menuOptions.ShowStarsFontSetB {
+		menuHeight += float32(titleBarMenuItemHeight)
+		popupWidth = titleBarStarsMenuPopupWidth
+	}
 	imgui.SetNextWindowSizeV(
-		imgui.Vec2{X: titleBarMenuPopupWidth, Y: titleBarMenuItemHeight},
+		imgui.Vec2{X: popupWidth, Y: menuHeight},
 		imgui.CondAlways,
 	)
 
@@ -228,7 +249,7 @@ func drawTitleBarMenuPopup(buttonMin, buttonMax imgui.Vec2) titleBarAction {
 		imgui.SetCursorPos(imgui.Vec2{X: 0, Y: 0})
 		clicked := imgui.InvisibleButtonV(
 			"##switch-facility-menu-item",
-			imgui.Vec2{X: titleBarMenuPopupWidth, Y: titleBarMenuItemHeight},
+			imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
 			imgui.ButtonFlagsMouseButtonLeft,
 		)
 
@@ -244,9 +265,17 @@ func drawTitleBarMenuPopup(buttonMin, buttonMax imgui.Vec2) titleBarAction {
 			)
 		}
 
-		drawTitleBarMenuItemText(
+		textPadX := float32(titleBarMenuTextPadX)
+		if menuOptions.ShowStarsFontSetB {
+			// Reserve the same check gutter as the STARS font row so both
+			// labels start on the same vertical axis.
+			textPadX = titleBarMenuCheckedTextPadX
+		}
+		drawTitleBarMenuItemTextWithPad(
 			rowMin,
 			titleBarMenuItemHeight,
+			popupWidth,
+			textPadX,
 			"Switch Facility...",
 			titleBarSwitchFacilityShortcutParts(),
 		)
@@ -254,6 +283,43 @@ func drawTitleBarMenuPopup(buttonMin, buttonMax imgui.Vec2) titleBarAction {
 		if clicked {
 			action = titleBarActionSwitchFacility
 			imgui.CloseCurrentPopup()
+		}
+
+		if menuOptions.ShowStarsFontSetB {
+			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: titleBarMenuItemHeight})
+			fontClicked := imgui.InvisibleButtonV(
+				"##stars-font-set-b-menu-item",
+				imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
+				imgui.ButtonFlagsMouseButtonLeft,
+			)
+
+			fontRowMin := imgui.ItemRectMin()
+			fontRowMax := imgui.ItemRectMax()
+			if imgui.IsItemHovered() {
+				imgui.WindowDrawList().AddRectFilledV(
+					fontRowMin,
+					fontRowMax,
+					imgui.ColorU32Vec4(titleBarMenuHover),
+					titleBarMenuPopupRounding,
+					imgui.DrawFlagsRoundCornersAll,
+				)
+			}
+
+			if menuOptions.UseStarsFontSetB {
+				drawTitleBarMenuCheck(fontRowMin, titleBarMenuItemHeight)
+			}
+			drawTitleBarMenuItemTextWithPad(
+				fontRowMin,
+				titleBarMenuItemHeight,
+				popupWidth,
+				titleBarMenuCheckedTextPadX,
+				"Use Font Set B",
+				titleBarFontSetBShortcutParts(),
+			)
+
+			if fontClicked {
+				action = titleBarActionToggleStarsFontSetB
+			}
 		}
 
 		imgui.EndPopup()
@@ -264,9 +330,48 @@ func drawTitleBarMenuPopup(buttonMin, buttonMax imgui.Vec2) titleBarAction {
 	return action
 }
 
+func drawTitleBarMenuCheck(rowMin imgui.Vec2, itemHeight float32) {
+	min := imgui.Vec2{
+		X: rowMin.X + titleBarMenuCheckGlyphOffsetX,
+		Y: rowMin.Y,
+	}
+	max := imgui.Vec2{
+		X: min.X + titleBarMenuCheckGlyphBoxWidth,
+		Y: rowMin.Y + itemHeight,
+	}
+	drawTitleBarSymbolGlyph(
+		titleBarGlyphCheck,
+		symbolsFont12,
+		12,
+		min,
+		max,
+		titleBarFg,
+	)
+}
+
+func drawTitleBarMenuItemTextWithPad(
+	rowMin imgui.Vec2,
+	itemHeight, popupWidth, textPadX float32,
+	label string,
+	shortcut []titleBarShortcutPart,
+) {
+	textY := rowMin.Y + (itemHeight-imgui.FontSize())*0.5
+	if textY < rowMin.Y {
+		textY = rowMin.Y
+	}
+
+	imgui.WindowDrawList().AddTextVec2(
+		imgui.Vec2{X: rowMin.X + textPadX, Y: textY},
+		imgui.ColorU32Vec4(titleBarMenuFg),
+		label,
+	)
+
+	drawTitleBarShortcutParts(rowMin, itemHeight, popupWidth, shortcut)
+}
+
 func drawTitleBarMenuItemText(
 	rowMin imgui.Vec2,
-	itemHeight float32,
+	itemHeight, popupWidth float32,
 	label string,
 	shortcut []titleBarShortcutPart,
 ) {
@@ -281,7 +386,7 @@ func drawTitleBarMenuItemText(
 		label,
 	)
 
-	drawTitleBarShortcutParts(rowMin, itemHeight, shortcut)
+	drawTitleBarShortcutParts(rowMin, itemHeight, popupWidth, shortcut)
 }
 
 func titleBarSwitchFacilityShortcutParts() []titleBarShortcutPart {
@@ -299,6 +404,24 @@ func titleBarSwitchFacilityShortcutParts() []titleBarShortcutPart {
 		{Text: "+"},
 		{Text: shortcutShiftSymbol},
 		{Text: "+F"},
+	}
+}
+
+func titleBarFontSetBShortcutParts() []titleBarShortcutPart {
+	if runtime.GOOS == "darwin" {
+		return []titleBarShortcutPart{
+			{Text: shortcutCommandSymbol},
+			{Text: "+"},
+			{Text: shortcutShiftSymbol},
+			{Text: "+S"},
+		}
+	}
+
+	return []titleBarShortcutPart{
+		{Text: shortcutControlSymbol},
+		{Text: "+"},
+		{Text: shortcutShiftSymbol},
+		{Text: "+S"},
 	}
 }
 
@@ -331,14 +454,14 @@ func titleBarShortcutPartsWidth(parts []titleBarShortcutPart) float32 {
 
 func drawTitleBarShortcutParts(
 	rowMin imgui.Vec2,
-	itemHeight float32,
+	itemHeight, popupWidth float32,
 	parts []titleBarShortcutPart,
 ) {
 	if len(parts) == 0 {
 		return
 	}
 
-	x := rowMin.X + titleBarMenuPopupWidth -
+	x := rowMin.X + popupWidth -
 		titleBarMenuShortcutPadRight -
 		titleBarShortcutPartsWidth(parts)
 
@@ -382,26 +505,32 @@ func drawTitleBarShortcutParts(
 	}
 }
 
-func titleBarShortcutAction(plat platform.Platform) titleBarAction {
+func titleBarShortcutAction(
+	plat platform.Platform,
+	menuOptions titleBarMenuOptions,
+) titleBarAction {
 	if plat == nil {
 		return titleBarActionNone
 	}
 
 	keyboard := plat.GetKeyboard()
-	if !keyboard.WasPressed(platform.KeyF) ||
-		!keyboard.IsDown(platform.KeyShift) {
+	if !keyboard.IsDown(platform.KeyShift) {
 		return titleBarActionNone
 	}
 
+	modifierDown := keyboard.IsDown(platform.KeyControl)
 	if runtime.GOOS == "darwin" {
-		if keyboard.IsDown(platform.KeyCommand) {
-			return titleBarActionSwitchFacility
-		}
+		modifierDown = keyboard.IsDown(platform.KeyCommand)
+	}
+	if !modifierDown {
 		return titleBarActionNone
 	}
 
-	if keyboard.IsDown(platform.KeyControl) {
+	if keyboard.WasPressed(platform.KeyF) {
 		return titleBarActionSwitchFacility
+	}
+	if menuOptions.ShowStarsFontSetB && keyboard.WasPressed(platform.KeyS) {
+		return titleBarActionToggleStarsFontSetB
 	}
 
 	return titleBarActionNone

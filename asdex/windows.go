@@ -190,12 +190,6 @@ const (
 	minSecondaryWindowHeight = float32(80)
 )
 
-var (
-	windowBorderRGB         = renderer.RGB8(255, 255, 255)
-	activeWindowBorderRGB   = renderer.RGB8(0, 255, 0)
-	proposedWindowBorderRGB = renderer.RGB8(255, 255, 0)
-)
-
 func NewScopeWindowManager() ScopeWindowManager {
 	return ScopeWindowManager{
 		nextID:   1,
@@ -1134,9 +1128,9 @@ func (p *ASDEXPane) renderWindowBorders(
 	builder := renderer.GetColoredTrianglesBuilder()
 	defer renderer.ReturnColoredTrianglesBuilder(builder)
 
-	mainColor := windowBorderRGB
+	mainColor := monitorColors.WindowBorder
 	if p.windows.activeID == mainScopeWindowID {
-		mainColor = activeWindowBorderRGB
+		mainColor = monitorColors.ActiveWindowBorder
 	}
 	addWindowBorderRect(
 		builder,
@@ -1150,9 +1144,9 @@ func (p *ASDEXPane) renderWindowBorders(
 			continue
 		}
 
-		color := windowBorderRGB
+		color := monitorColors.WindowBorder
 		if p.windows.activeID == win.ID {
-			color = activeWindowBorderRGB
+			color = monitorColors.ActiveWindowBorder
 		}
 		addWindowBorderRect(
 			builder,
@@ -1194,7 +1188,7 @@ func (p *ASDEXPane) renderNewWindowPreview(
 		builder,
 		rect,
 		proposedWindowBorderWidth,
-		applyBrightness(proposedWindowBorderRGB, brightnessDefault, brightnessFloorDefault),
+		applyBrightness(monitorColors.ProposedWindowBorder, brightnessDefault, brightnessFloorDefault),
 	)
 	builder.GenerateCommands(cb)
 	cb.DisableScissor()
@@ -1239,7 +1233,7 @@ func (p *ASDEXPane) renderWindowRepositionPreview(
 		builder,
 		previewRect,
 		proposedWindowBorderWidth,
-		applyBrightness(proposedWindowBorderRGB, brightnessDefault, brightnessFloorDefault),
+		applyBrightness(monitorColors.ProposedWindowBorder, brightnessDefault, brightnessFloorDefault),
 	)
 	builder.GenerateCommands(cb)
 	cb.DisableScissor()
@@ -1279,7 +1273,7 @@ func (p *ASDEXPane) renderResizeWindowPreview(
 		builder,
 		previewRect,
 		proposedWindowBorderWidth,
-		applyBrightness(proposedWindowBorderRGB, brightnessDefault, brightnessFloorDefault),
+		applyBrightness(monitorColors.ProposedWindowBorder, brightnessDefault, brightnessFloorDefault),
 	)
 	builder.GenerateCommands(cb)
 	cb.DisableScissor()

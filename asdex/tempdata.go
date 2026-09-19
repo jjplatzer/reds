@@ -34,15 +34,6 @@ const (
 	tempDataTextHoverRangeFeet float32 = 150.0
 )
 
-var (
-	tempClosedAreaRGB     = renderer.RGB8(255, 0, 0)
-	tempRestrictedAreaRGB = renderer.RGB8(255, 255, 0)
-	tempAreaDrawRGB       = renderer.RGB8(255, 255, 255)
-	tempAreaHighlightRGB  = renderer.RGB8(0, 0, 255)
-	tempTextRGB           = renderer.RGB8(255, 255, 255)
-	tempTextHighlightRGB  = renderer.RGB8(0, 0, 255)
-)
-
 var tempTextAnchorGeoOffsets = []struct {
 	lat float64
 	lon float64
@@ -672,7 +663,7 @@ func (td *TempData) DrawClosedRunways(
 		buildClosedRunwayXLines(builder, rwy)
 	}
 
-	cb.SetRGB(applyBrightness(renderer.RGB8(255, 255, 255), brightness, brightnessFloorDefault))
+	cb.SetRGB(applyBrightness(monitorColors.TempClosedRunway, brightness, brightnessFloorDefault))
 	cb.LineWidth(1)
 	builder.GenerateCommands(cb)
 }
@@ -686,7 +677,7 @@ func (td *TempData) DrawClosedAreas(
 		return
 	}
 
-	td.drawAreas(cb, transforms, td.closedAreas, tempClosedAreaRGB, brightness)
+	td.drawAreas(cb, transforms, td.closedAreas, monitorColors.TempClosedArea, brightness)
 }
 
 func (td *TempData) DrawRestrictedAreas(
@@ -698,7 +689,7 @@ func (td *TempData) DrawRestrictedAreas(
 		return
 	}
 
-	td.drawAreas(cb, transforms, td.restrictedAreas, tempRestrictedAreaRGB, brightness)
+	td.drawAreas(cb, transforms, td.restrictedAreas, monitorColors.TempRestrictedArea, brightness)
 }
 
 func (td *TempData) drawAreas(
@@ -744,7 +735,7 @@ func (td *TempData) drawAreas(
 
 func tempAreaColor(area TempArea, normal renderer.RGB, brightness int) renderer.RGB {
 	if area.Highlighted {
-		return applyBrightness(tempAreaHighlightRGB, brightness, brightnessFloorDefault)
+		return applyBrightness(monitorColors.TempAreaHighlight, brightness, brightnessFloorDefault)
 	}
 	return applyBrightness(normal, brightness, brightnessFloorDefault)
 }
@@ -854,9 +845,9 @@ func (td *TempData) DrawTempTexts(
 
 func tempTextColor(text TempText) renderer.RGB {
 	if text.Highlighted {
-		return tempTextHighlightRGB
+		return monitorColors.TempTextHighlight
 	}
-	return tempTextRGB
+	return monitorColors.TempText
 }
 
 func tempTextBrightness(text TempText, defaultBrightness int) int {
@@ -1478,7 +1469,7 @@ func (p *ASDEXPane) DrawTempAreaDraft(cb *renderer.CmdBuffer) {
 	defer renderer.ReturnLinesBuilder(builder)
 
 	builder.AddLineStrip(points)
-	cb.SetRGB(applyBrightness(tempAreaDrawRGB, brightnessDefault, brightnessFloorDefault))
+	cb.SetRGB(applyBrightness(monitorColors.TempAreaDraw, brightnessDefault, brightnessFloorDefault))
 	cb.LineWidth(tempAreaDrawLineWidth)
 	builder.GenerateCommands(cb)
 }

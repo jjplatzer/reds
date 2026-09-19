@@ -20,6 +20,7 @@ import (
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/platform"
 	"github.com/juliusplatzer/reds/renderer"
+	"github.com/juliusplatzer/reds/stars"
 	"github.com/juliusplatzer/reds/util/buildinfo"
 
 	"github.com/AllenDang/cimgui-go/imgui"
@@ -31,6 +32,8 @@ const (
 
 	asdexWindowWidth  = 1280
 	asdexWindowHeight = 800
+	starsWindowWidth  = 1280
+	starsWindowHeight = 800
 	eramWindowWidth   = 1280
 	eramWindowHeight  = 800
 )
@@ -231,10 +234,17 @@ func run(logger *redslog.Logger) error {
 			}
 
 		case appModeScope:
+			menuOptions := titleBarMenuOptions{}
+			if starsPane, ok := active.(*stars.STARSPane); ok {
+				menuOptions.ShowStarsFontSetB = true
+				menuOptions.UseStarsFontSetB = starsPane.UseFontSetB()
+			}
+
 			titlebarCaptured, titlebarAction := drawScopeTitleBar(
 				plat,
 				scopeTitle,
 				plat.DisplaySize(),
+				menuOptions,
 			)
 
 			io := imgui.CurrentIO()
@@ -248,8 +258,13 @@ func run(logger *redslog.Logger) error {
 			implogl3.RenderDrawData(imgui.CurrentDrawData())
 			plat.PostRender()
 
-			if titlebarAction == titleBarActionSwitchFacility {
+			switch titlebarAction {
+			case titleBarActionSwitchFacility:
 				switchToMenu(&mode, &active, &scopeTitle, plat, consumer, m)
+			case titleBarActionToggleStarsFontSetB:
+				if starsPane, ok := active.(*stars.STARSPane); ok {
+					starsPane.ToggleFontSetB(r)
+				}
 			}
 		}
 	}
@@ -311,6 +326,26 @@ func launchScope(
 		plat.SetWindowDecorated(false)
 		plat.SetWindowSizeCentered(asdexWindowWidth, asdexWindowHeight)
 		scopeLogger.Info("ASDE-X scope launched")
+		return pane, nil
+	case DisplaySTARS:
+		if sel.Position == nil {
+			return nil, fmt.Errorf("STARS position is required")
+		}
+		scopeLogger := logger.With(
+			slog.String("display", "stars"),
+			slog.String("facility", sel.Facility),
+			slog.String("tracon", sel.TRACON),
+			slog.String("position_id", sel.Position.ID),
+			slog.String("tcp", sel.Position.TCP),
+			slog.String("callsign", sel.Position.Callsign),
+		)
+		scopeLogger.Info("Launching scope")
+
+		pane := stars.NewPane()
+		plat.SetWindowTitle(sel.ScopeTitle())
+		plat.SetWindowDecorated(false)
+		plat.SetWindowSizeCentered(starsWindowWidth, starsWindowHeight)
+		scopeLogger.Info("STARS scope launched")
 		return pane, nil
 	case DisplayERAM:
 		if sel.Sector == nil {

@@ -10,11 +10,6 @@ import (
 	"github.com/juliusplatzer/reds/renderer"
 )
 
-var (
-	nexradBlue = renderer.RGB8(0, 0, 188)
-	nexradCyan = renderer.RGB8(0, 188, 174)
-)
-
 type nexradCmdBuffers struct {
 	moderate *renderer.CmdBuffer
 	heavy    *renderer.CmdBuffer
@@ -125,15 +120,15 @@ func (p *ERAMPane) drawNexrad(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.SetCheckerOffset(offsetX, offsetY)
 
 	if p.nexradLevels == 3 {
-		cb.SetRGB(applyERAMBrightness(nexradBlue, p.nexradBrightness, p.systemBrightness))
+		cb.SetRGB(applyERAMBrightness(monitorColors.NEXRADBlue, p.nexradBrightness, p.systemBrightness))
 		cb.Call(p.nexrad.moderate)
 	}
 	if p.nexradLevels >= 2 {
-		cb.SetRGB(applyERAMBrightness(nexradCyan, p.nexradBrightness, p.systemBrightness))
+		cb.SetRGB(applyERAMBrightness(monitorColors.NEXRADCyan, p.nexradBrightness, p.systemBrightness))
 		cb.Call(p.nexrad.heavy)
 	}
 	if p.nexradLevels >= 1 {
-		cb.SetRGB(applyERAMBrightness(nexradCyan, p.nexradBrightness, p.systemBrightness))
+		cb.SetRGB(applyERAMBrightness(monitorColors.NEXRADCyan, p.nexradBrightness, p.systemBrightness))
 		cb.Call(p.nexrad.extreme)
 	}
 

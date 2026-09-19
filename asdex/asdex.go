@@ -28,6 +28,142 @@ const (
 	ModeNight
 )
 
+// MonitorColors centralizes the raw ASDE-X display palette. Brightness controls
+// are applied separately through applyBrightness.
+type MonitorColors struct {
+	BackgroundDay   renderer.RGB
+	BackgroundNight renderer.RGB
+
+	TargetNormal                 renderer.RGB
+	TargetHeavy                  renderer.RGB
+	TargetUnknown                renderer.RGB
+	TargetVehicle                renderer.RGB
+	TargetVector                 renderer.RGB
+	TargetHighlight              renderer.RGB
+	TargetSuspendedOuter         renderer.RGB
+	TargetSuspendedInner         renderer.RGB
+	TargetSuspendedSelectedInner renderer.RGB
+	TargetAlert                  renderer.RGB
+	TargetSuspendedLabel         renderer.RGB
+	TargetHistory                [7]renderer.RGB
+
+	DataBlock renderer.RGB
+
+	ListText         renderer.RGB
+	ListSelectedText renderer.RGB
+
+	AlertMessageText   renderer.RGB
+	AlertMessageBorder renderer.RGB
+
+	DCBBackground  renderer.RGB
+	DCBMenuSlab    renderer.RGB
+	DCBButton      renderer.RGB
+	DCBMenuButton  renderer.RGB
+	DCBDepressed   renderer.RGB
+	DCBErrorButton renderer.RGB
+	DCBText        renderer.RGB
+	DCBTextHover   renderer.RGB
+	DCBHighlight   renderer.RGB
+
+	VideoMapRunway         renderer.RGB
+	VideoMapTaxiwayDay     renderer.RGB
+	VideoMapTaxiwayNight   renderer.RGB
+	VideoMapApronDay       renderer.RGB
+	VideoMapApronNight     renderer.RGB
+	VideoMapStructureDay   renderer.RGB
+	VideoMapStructureNight renderer.RGB
+
+	WindowBorder         renderer.RGB
+	ActiveWindowBorder   renderer.RGB
+	ProposedWindowBorder renderer.RGB
+
+	TempClosedRunway   renderer.RGB
+	TempClosedArea     renderer.RGB
+	TempRestrictedArea renderer.RGB
+	TempAreaDraw       renderer.RGB
+	TempAreaHighlight  renderer.RGB
+	TempText           renderer.RGB
+	TempTextHighlight  renderer.RGB
+
+	DBAreaOff   renderer.RGB
+	DBAreaTrait renderer.RGB
+	DBAreaDraw  renderer.RGB
+
+	HoldBarActive            renderer.RGB
+	PreviewRepositionOutline renderer.RGB
+}
+
+var monitorColors = MonitorColors{
+	BackgroundDay:   renderer.RGB8(0, 96, 120),
+	BackgroundNight: renderer.RGB8(80, 80, 80),
+
+	TargetNormal:                 renderer.RGB8(248, 248, 248),
+	TargetHeavy:                  renderer.RGB8(248, 128, 0),
+	TargetUnknown:                renderer.RGB8(0, 255, 255),
+	TargetVehicle:                renderer.RGB8(232, 76, 253),
+	TargetVector:                 renderer.RGB8(140, 140, 140),
+	TargetHighlight:              renderer.RGB8(255, 255, 255),
+	TargetSuspendedOuter:         renderer.RGB8(0, 255, 255),
+	TargetSuspendedInner:         renderer.RGB8(128, 128, 128),
+	TargetSuspendedSelectedInner: renderer.RGB8(255, 255, 255),
+	TargetAlert:                  renderer.RGB8(255, 0, 0),
+	TargetSuspendedLabel:         renderer.RGB8(0, 0, 0),
+	TargetHistory: [7]renderer.RGB{
+		renderer.RGB8(219, 219, 219),
+		renderer.RGB8(187, 187, 187),
+		renderer.RGB8(161, 161, 161),
+		renderer.RGB8(138, 138, 138),
+		renderer.RGB8(118, 118, 118),
+		renderer.RGB8(101, 101, 101),
+		renderer.RGB8(87, 87, 87),
+	},
+
+	DataBlock: renderer.RGB8(0, 208, 0),
+
+	ListText:         renderer.RGB8(0, 248, 0),
+	ListSelectedText: renderer.RGB8(255, 255, 255),
+
+	AlertMessageText:   renderer.RGB8(0, 248, 0),
+	AlertMessageBorder: renderer.RGB8(255, 0, 0),
+
+	DCBBackground:  renderer.RGB8(56, 56, 56),
+	DCBMenuSlab:    renderer.RGB8(100, 100, 100),
+	DCBButton:      renderer.RGB8(56, 56, 56),
+	DCBMenuButton:  renderer.RGB8(80, 80, 80),
+	DCBDepressed:   renderer.RGB8(45, 45, 45),
+	DCBErrorButton: renderer.RGB8(255, 0, 0),
+	DCBText:        renderer.RGB8(255, 255, 255),
+	DCBTextHover:   renderer.RGB8(0, 255, 0),
+	DCBHighlight:   renderer.RGB8(255, 220, 40),
+
+	VideoMapRunway:         renderer.RGB8(0, 0, 0),
+	VideoMapTaxiwayDay:     renderer.RGB8(47, 47, 47),
+	VideoMapTaxiwayNight:   renderer.RGB8(17, 39, 80),
+	VideoMapApronDay:       renderer.RGB8(73, 73, 73),
+	VideoMapApronNight:     renderer.RGB8(18, 55, 97),
+	VideoMapStructureDay:   renderer.RGB8(100, 100, 100),
+	VideoMapStructureNight: renderer.RGB8(34, 63, 103),
+
+	WindowBorder:         renderer.RGB8(255, 255, 255),
+	ActiveWindowBorder:   renderer.RGB8(0, 255, 0),
+	ProposedWindowBorder: renderer.RGB8(255, 255, 0),
+
+	TempClosedRunway:   renderer.RGB8(255, 255, 255),
+	TempClosedArea:     renderer.RGB8(255, 0, 0),
+	TempRestrictedArea: renderer.RGB8(255, 255, 0),
+	TempAreaDraw:       renderer.RGB8(255, 255, 255),
+	TempAreaHighlight:  renderer.RGB8(0, 0, 255),
+	TempText:           renderer.RGB8(255, 255, 255),
+	TempTextHighlight:  renderer.RGB8(0, 0, 255),
+
+	DBAreaOff:   renderer.RGB8(255, 0, 0),
+	DBAreaTrait: renderer.RGB8(0, 255, 0),
+	DBAreaDraw:  renderer.RGB8(255, 255, 255),
+
+	HoldBarActive:            renderer.RGB8(0, 255, 0),
+	PreviewRepositionOutline: renderer.RGB8(0, 255, 255),
+}
+
 const (
 	brightnessMin          = 1
 	brightnessMax          = 99
@@ -5791,7 +5927,7 @@ func (p *ASDEXPane) renderListRepositionOutline(
 }
 
 func previewRepositionOutlineColor(brightness int) renderer.RGB {
-	return applyBrightness(renderer.RGB8(0, 255, 255), brightness, brightnessFloorDefault)
+	return applyBrightness(monitorColors.PreviewRepositionOutline, brightness, brightnessFloorDefault)
 }
 
 func (p *ASDEXPane) updateRightClickGesture(ctx *panes.Context) {
@@ -6557,9 +6693,9 @@ func clampBrightness(value int) int {
 
 func backgroundColor(mode Mode) renderer.RGB {
 	if mode == ModeDay {
-		return renderer.RGB8(0, 96, 120)
+		return monitorColors.BackgroundDay
 	}
-	return renderer.RGB8(80, 80, 80)
+	return monitorColors.BackgroundNight
 }
 
 func applyBrightness(color renderer.RGB, brightness int, minBrightness int) renderer.RGB {

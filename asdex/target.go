@@ -1052,8 +1052,8 @@ func (s *TargetStore) NearestTargetID(posFeet redsmath.Vec2) string {
 
 func (s *TargetStore) trimHistory(id string) {
 	points := s.history[id]
-	if len(points) > len(targetHistoryValues) {
-		s.history[id] = points[len(points)-len(targetHistoryValues):]
+	if len(points) > len(monitorColors.TargetHistory) {
+		s.history[id] = points[len(points)-len(monitorColors.TargetHistory):]
 	}
 }
 
@@ -1459,40 +1459,38 @@ const (
 
 // Gildea, K. M. (2018), Development of a Standard Palette for Color Coding ATC Displays,
 // FAA Office of Aerospace Medicine Technical Report DOT/FAA/AM-18/18
-var targetVehiclePink = renderer.RGB8(232, 76, 253)
-
 func targetRGB(role targetRGBRole, brightness int) renderer.RGB {
 	floor := 0
 
 	var base renderer.RGB
 	switch role {
 	case targetRGBNormal:
-		base = renderer.RGB8(248, 248, 248)
+		base = monitorColors.TargetNormal
 	case targetRGBHeavy:
-		base = renderer.RGB8(248, 128, 0)
+		base = monitorColors.TargetHeavy
 	case targetRGBUnknown:
-		base = renderer.RGB8(0, 255, 255)
+		base = monitorColors.TargetUnknown
 	case targetRGBVehicle:
-		base = targetVehiclePink
+		base = monitorColors.TargetVehicle
 	case targetRGBVector:
-		base = renderer.RGB8(140, 140, 140)
+		base = monitorColors.TargetVector
 		floor = 20
 	case targetRGBHighlight:
-		base = renderer.RGB8(255, 255, 255)
+		base = monitorColors.TargetHighlight
 	case targetRGBSuspendedOuter:
-		base = renderer.RGB8(0, 255, 255)
+		base = monitorColors.TargetSuspendedOuter
 		floor = 20
 	case targetRGBSuspendedInner:
-		base = renderer.RGB8(128, 128, 128)
+		base = monitorColors.TargetSuspendedInner
 		floor = 20
 	case targetRGBSuspendedSelectedInner:
-		base = renderer.RGB8(255, 255, 255)
+		base = monitorColors.TargetSuspendedSelectedInner
 		floor = 20
 	case targetRGBAlert:
-		base = renderer.RGB8(255, 0, 0)
+		base = monitorColors.TargetAlert
 		floor = 20
 	default:
-		base = renderer.RGB8(248, 248, 248)
+		base = monitorColors.TargetNormal
 	}
 	return applyBrightness(base, brightness, floor)
 }
@@ -1510,18 +1508,15 @@ func targetClassRGB(class targetClass, brightness int) renderer.RGB {
 	}
 }
 
-var targetHistoryValues = [...]uint8{219, 187, 161, 138, 118, 101, 87}
-
 func historyRGB(age int, brightness int) renderer.RGB {
 	if age < 0 {
 		age = 0
 	}
-	if age >= len(targetHistoryValues) {
-		age = len(targetHistoryValues) - 1
+	if age >= len(monitorColors.TargetHistory) {
+		age = len(monitorColors.TargetHistory) - 1
 	}
 
-	value := targetHistoryValues[age]
-	return applyBrightness(renderer.RGB8(value, value, value), brightness, 20)
+	return applyBrightness(monitorColors.TargetHistory[age], brightness, 20)
 }
 
 const feetPerDegree = float32(364560.0)
@@ -1919,7 +1914,7 @@ func DrawSuspendedTargetLabels(
 	lineHeight := font.LineHeight(suspendedLabelFontSize)
 	style := renderer.TextStyle{
 		Size:  suspendedLabelFontSize,
-		Color: renderer.RGB8(0, 0, 0).ToRGBA(),
+		Color: monitorColors.TargetSuspendedLabel.ToRGBA(),
 	}
 
 	for _, target := range targets {
@@ -2069,8 +2064,8 @@ func addHistoryDots(
 	if maxHistory < 1 {
 		maxHistory = 1
 	}
-	if maxHistory > len(targetHistoryValues) {
-		maxHistory = len(targetHistoryValues)
+	if maxHistory > len(monitorColors.TargetHistory) {
+		maxHistory = len(monitorColors.TargetHistory)
 	}
 
 	dotPolygon := circlePolygon(historyDotRadiusFeet, 12)

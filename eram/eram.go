@@ -65,11 +65,52 @@ const (
 	defaultNexradBrightness = 50
 )
 
-// CRC StyleManager.SituationDisplayBackground uses EramColor.DarkBlue.
-var defaultBackgroundColor = renderer.RGB8(0, 0, 212)
+// MonitorColors centralizes the raw ERAM display palette. Brightness controls
+// are applied separately through applyERAMBrightness.
+type MonitorColors struct {
+	Background  renderer.RGB
+	White       renderer.RGB
+	LightGray   renderer.RGB
+	Gray        renderer.RGB
+	Blue        renderer.RGB
+	BurntCoral  renderer.RGB
+	Teal        renderer.RGB
+	IncDecGreen renderer.RGB
+	BrightGold  renderer.RGB
+	BrightCoral renderer.RGB
+	Black       renderer.RGB
+	Gold        renderer.RGB
+	Green       renderer.RGB
+	Red         renderer.RGB
+	NEXRADBlue  renderer.RGB
+	NEXRADCyan  renderer.RGB
+}
 
-// CRC toolbar backgrounds use EramColor.Gray before BCG scaling.
-var toolbarGray = renderer.RGB8(199, 199, 199)
+var monitorColors = MonitorColors{
+	// CRC StyleManager.SituationDisplayBackground uses EramColor.DarkBlue.
+	Background: renderer.RGB8(0, 0, 212),
+
+	// CRC EramColor palette values used throughout the TCW.
+	White:       renderer.RGB8(243, 243, 243),
+	LightGray:   renderer.RGB8(210, 210, 210),
+	Gray:        renderer.RGB8(199, 199, 199),
+	Blue:        renderer.RGB8(0, 0, 212),
+	BurntCoral:  renderer.RGB8(220, 160, 155),
+	Teal:        renderer.RGB8(0, 201, 212),
+	IncDecGreen: renderer.RGB8(0, 205, 0),
+	BrightGold:  renderer.RGB8(255, 255, 161),
+	// BrightCoral's palette value (255,140,0) is one of CRC's gamma-corrected
+	// colors; EramColor.GetColor therefore supplies (255,194,0) to the style.
+	BrightCoral: renderer.RGB8(255, 194, 0),
+	Black:       renderer.RGB8(0, 0, 0),
+	Gold:        renderer.RGB8(207, 212, 12),
+	Green:       renderer.RGB8(0, 243, 0),
+	Red:         renderer.RGB8(243, 0, 0),
+
+	// NEXRAD colors are the raw ERAM weather-display colors before BCG scaling.
+	NEXRADBlue: renderer.RGB8(0, 0, 188),
+	NEXRADCyan: renderer.RGB8(0, 188, 174),
+}
 
 var mrmsHTTPClient = &http.Client{Timeout: 20 * time.Second}
 
@@ -338,7 +379,7 @@ func (p *ERAMPane) scopeBackgroundColor() renderer.RGB {
 		return renderer.RGB{}
 	}
 	return applyERAMBrightness(
-		defaultBackgroundColor,
+		monitorColors.Background,
 		p.backgroundBrightness,
 		p.systemBrightness,
 	)

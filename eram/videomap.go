@@ -151,8 +151,6 @@ type eramLineDefaults struct {
 	Thickness int
 }
 
-var eramMapWhite = renderer.RGB8(243, 243, 243)
-
 func eramMapResourcePath(artcc string) string {
 	return filepath.ToSlash(filepath.Join(
 		"resources",
@@ -687,7 +685,7 @@ func (p *ERAMPane) drawGeoMaps(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 			brightness := p.maps.brightness[bcg-1]
 			cb.SetRGB(applyERAMBrightness(
-				eramMapWhite,
+				monitorColors.White,
 				brightness,
 				p.systemBrightness,
 			))
