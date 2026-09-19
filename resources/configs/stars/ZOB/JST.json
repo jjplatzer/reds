@@ -1,0 +1,155 @@
+{
+  "artcc": "ZOB",
+  "facility": "JST",
+  "name": "Johnstown ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 41.65805,
+    "lon": -81.181585
+  },
+  "controlPositions": [
+    {
+      "id": "01JPQB0TGJN77M77EK90FQA3ZS",
+      "name": "Approach",
+      "callsign": "JST_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 121.2
+    },
+    {
+      "id": "01JPQB382ZAKXZH5YFC0K99JXG",
+      "name": "Tower",
+      "callsign": "JST_TWR",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 125.75
+    },
+    {
+      "id": "01JPQB8BTEWEGHVEKXMPZF6GAM",
+      "name": "Ground",
+      "callsign": "JST_GND",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 121.6
+    },
+    {
+      "id": "01JPQBA1MGYXFVK66X2G551FF6",
+      "name": "Clearance Delivery",
+      "callsign": "JST_DEL",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 126.85
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A"
+      ],
+      "mapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01JPQAREKXKJ53ACQ2JQR81DWR",
+      "name": "(JST) RVM",
+      "shortName": "RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    }
+  ]
+}

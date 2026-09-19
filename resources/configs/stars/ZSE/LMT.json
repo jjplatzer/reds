@@ -1,0 +1,226 @@
+{
+  "artcc": "ZSE",
+  "facility": "LMT",
+  "name": "Kingsley ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 45.116049633333326,
+    "lon": -122.83189593333333
+  },
+  "controlPositions": [
+    {
+      "id": "01GENXZAYTGRZPMTPYBQM40AHX",
+      "name": "Radar",
+      "callsign": "LMT_APP",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 123.675
+    },
+    {
+      "id": "01GENXZZY3H4QHDH79V2MP42P0",
+      "name": "Local Control",
+      "callsign": "LMT_TWR",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 133.975
+    },
+    {
+      "id": "01GENY0MQK5CKKCAST3AHZ95JT",
+      "name": "Ground Control",
+      "callsign": "LMT_GND",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01KH79PRWDF89RHQF8K6NBVP49",
+      "name": "LMT Guard",
+      "callsign": "LMT_G_APP",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 45.116049633333326,
+        "lon": -122.83189593333333
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1L",
+        "1T"
+      ],
+      "mapIds": [
+        101,
+        102,
+        103,
+        104,
+        116,
+        119,
+        117,
+        99,
+        null,
+        null,
+        114,
+        132,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        101,
+        103,
+        116,
+        102,
+        104,
+        119
+      ],
+      "submenuMapIds": [
+        117,
+        null,
+        114,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        99,
+        null,
+        132,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01K11D0A3V979A1N2D3MYEMKRD",
+      "name": "GOOSE N MOA",
+      "shortName": "MOA",
+      "starsId": 99,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GEQAYBVXGS3HXAFNWN0KHJ3X",
+      "name": "LMT BASE MAP",
+      "shortName": "BASE",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GEQAYBWJHY0NG63BWPFGHAVM",
+      "name": "LMT 3NM MOSIAC",
+      "shortName": "3NM MVA",
+      "starsId": 102,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GEQAYBW8SQJJ0R9T2V2MNGHJ",
+      "name": "LMT GPS APCH",
+      "shortName": "GPS",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GEQAYBWFKJATVDWSVJ1AMFPB",
+      "name": "ZSE HANDOFF",
+      "shortName": "ZSE",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6JNN5V57ZQD1GEEN1S57VSF",
+      "name": "LMT ILS 14  PTAC",
+      "shortName": "14 PTAC",
+      "starsId": 114,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQ2HZKR4QWPZ0KY7P8FWFDA9",
+      "name": "AIRWAYS",
+      "shortName": "AIRWAYS",
+      "starsId": 116,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQ2HZKR5CFFHHAZ2SSAEF6XJ",
+      "name": "T-ROUTES",
+      "shortName": "TROUT",
+      "starsId": 117,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQ2HZKR52WST5Y7JP3TRFX3D",
+      "name": "JET AIRWAYS",
+      "shortName": "JET RTE",
+      "starsId": 119,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6JNPH2V8N4C5CY2FHSP4FN0",
+      "name": "LMT ILS 32 PTAC",
+      "shortName": "32 PTAC",
+      "starsId": 132,
+      "brightnessCategory": "A"
+    }
+  ]
+}

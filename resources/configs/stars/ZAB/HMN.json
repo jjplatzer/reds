@@ -1,0 +1,224 @@
+{
+  "artcc": "ZAB",
+  "facility": "HMN",
+  "name": "Holloman ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 34.19564814666666,
+    "lon": -107.50666666666666
+  },
+  "controlPositions": [
+    {
+      "id": "01G98P97GZW44WZJSADW3FTS0Y",
+      "name": "Approach",
+      "callsign": "HMN_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 120.6
+    },
+    {
+      "id": "01G98PAKH6WGP1H651HSMSE09K",
+      "name": "Departure",
+      "callsign": "HMN_DEP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 128.1
+    },
+    {
+      "id": "01G9EEY76KBE8MDD51MY6P3RFH",
+      "name": "Arrival",
+      "callsign": "HMN_R_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 125.7
+    },
+    {
+      "id": "01G9EEYRZR88SAYM6XMGN90EDC",
+      "name": "Cherokee Tactical",
+      "callsign": "HMN_C_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 126.9
+    },
+    {
+      "id": "01G9EEZNZJ4EF5GAPJBC4N0A5M",
+      "name": "Local Control",
+      "callsign": "HMN_TWR",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 119.3
+    },
+    {
+      "id": "01G9EF04PRWP3WVXN6CADPXX4F",
+      "name": "Ground",
+      "callsign": "HMN_GND",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 127.05
+    },
+    {
+      "id": "01G9EF0M3D7X0X3RE08TXZA8AR",
+      "name": "Clearance Delivery",
+      "callsign": "HMN_DEL",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 126.7
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "1K",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "2T",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1R",
+        "1K",
+        "1D",
+        "2T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        null,
+        null,
+        null,
+        null,
+        1,
+        2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        null,
+        null,
+        2,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HA2T8YR540AQTGW4TQD36RWN",
+      "name": "H01 HMN BASE MAP",
+      "shortName": "BASE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB0134F6K329FTX51VBQT1GZ",
+      "name": "H02 HMN SUA",
+      "shortName": "SUA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    }
+  ]
+}

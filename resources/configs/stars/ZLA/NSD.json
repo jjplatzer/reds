@@ -1,0 +1,672 @@
+{
+  "artcc": "ZLA",
+  "facility": "NSD",
+  "name": "FACSFAC San Diego",
+  "type": "Tracon",
+  "defaultCenter": {
+    "lat": 34.9691453,
+    "lon": -116.63582625
+  },
+  "controlPositions": [
+    {
+      "id": "01KKN29EJ26P5J188KHYJ5CTA1",
+      "name": "FWS",
+      "callsign": "NSD_F_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 118.65
+    },
+    {
+      "id": "01KKN2BAC6KHGXXFS0D8P1K08D",
+      "name": "Norcal Sector",
+      "callsign": "NSD_N_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 120.85
+    },
+    {
+      "id": "01KKN2D0HPJR86DV5B25ZHDXJT",
+      "name": "Southern Sector",
+      "callsign": "NSD_S_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 118.65
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "2N",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "2P",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "2S",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1F",
+        "1P",
+        "1R",
+        "2N",
+        "2P",
+        "2S"
+      ],
+      "mapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1S"
+      ],
+      "mapIds": [
+        2,
+        4,
+        42,
+        43,
+        44,
+        45,
+        2,
+        4,
+        42,
+        43,
+        44,
+        45,
+        null,
+        null,
+        null,
+        100,
+        16,
+        17,
+        80,
+        81,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        2,
+        42,
+        44,
+        4,
+        43,
+        45
+      ],
+      "submenuMapIds": [
+        2,
+        42,
+        44,
+        null,
+        null,
+        16,
+        80,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        4,
+        43,
+        45,
+        null,
+        100,
+        17,
+        81,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1N"
+      ],
+      "mapIds": [
+        null,
+        null,
+        null,
+        null,
+        13,
+        6,
+        2,
+        4,
+        null,
+        100,
+        null,
+        83,
+        84,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        null,
+        null,
+        13,
+        null,
+        null,
+        6
+      ],
+      "submenuMapIds": [
+        2,
+        null,
+        null,
+        84,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        4,
+        100,
+        83,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01KKN2HPNRP9QME5RJRGNVMHCD",
+      "name": "2_FIXES_NSD",
+      "shortName": "FIXES",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNS3S005YTSD11FRXY9",
+      "name": "4_FIXLBLS_NSD",
+      "shortName": "FIXLBLS",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNSWF2HPKNEQ5DVPAC0",
+      "name": "6_FREQS_NSD",
+      "shortName": "FREQS",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNT0EH8D15EVFNGFYCV",
+      "name": "13_SECTORS_NSD",
+      "shortName": "SECTORS",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNTB6EXD9HF2KZCTRSH",
+      "name": "15_J-ROUTE_NSD",
+      "shortName": "J-ROUTE",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNTYGDZBVQGB941SB8B",
+      "name": "16_MVA-3NM_NSD",
+      "shortName": "MVA-3NM",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KKN2HPNV6JGCZVRGTAXB1H5N",
+      "name": "17_MVA-5NM_NSD",
+      "shortName": "MVA-5NM",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KKN2HPNV1MJZDFBKMEHWJ4QH",
+      "name": "18_MAP-REF_NSD",
+      "shortName": "MAP-REF",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNVXFWK774EH9D4ENSM",
+      "name": "19_NUC_CLD_NSD",
+      "shortName": "NUC_CLD",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNWGMYKBDG3CWQV2666",
+      "name": "20_SEC-ALT_NSD",
+      "shortName": "SEC-ALT",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNWGXYYTNQ3JA3W13AP",
+      "name": "22_EMCON1_NSD",
+      "shortName": "EMCON1",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNWB74ERCPMYAM94SMD",
+      "name": "23_EMCON2_NSD",
+      "shortName": "EMCON2",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNX4GSTYTCNHEPAZRDW",
+      "name": "24_EMCON3_NSD",
+      "shortName": "EMCON3",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNXPCKENBPXSZPX1WB9",
+      "name": "42_291QDA1_NSD",
+      "shortName": "291QDA1",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNX781H91HXTNR5WMAR",
+      "name": "43_291QDA2_NSD",
+      "shortName": "291QDA2",
+      "starsId": 43,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNYW4QBGXXSE8W7AFHQ",
+      "name": "44_291QDA3_NSD",
+      "shortName": "291QDA3",
+      "starsId": 44,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNY94JSZQFW6SVPD1XN",
+      "name": "45_291QDA4_NSD",
+      "shortName": "291QDA4",
+      "starsId": 45,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNYEK2JWHRVWX7303XN",
+      "name": "51_LEEWDX_NSD",
+      "shortName": "LEEWDX",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNZ42EKVK7S3QXG2C5Q",
+      "name": "52_LEEWD-1_NSD",
+      "shortName": "LEEWD-1",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP01CVSBHJPC9M505WD",
+      "name": "53-LEEWD-2_NSD",
+      "shortName": "LEEWD-2",
+      "starsId": 53,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP08BB1EEV63C93TVPP",
+      "name": "54_MIDLAND_NSD",
+      "shortName": "MIDLAND",
+      "starsId": 54,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPNYZDJYWX4QF5ZGWTK8",
+      "name": "50_FOXTROT_NSD",
+      "shortName": "FOXTROT",
+      "starsId": 55,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP0MYA4PFZCHAT616R1",
+      "name": "58_SHOBAEX_NSD",
+      "shortName": "SHOBAEX",
+      "starsId": 58,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP0ENG56XX2GZVC2BN2",
+      "name": "59_SHOBA_NSD",
+      "shortName": "SHOBA",
+      "starsId": 59,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP1P4A0DW79AZRGJZRE",
+      "name": "60_EXT-E_NSD",
+      "shortName": "EXT-E",
+      "starsId": 60,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP1AC96N5AP40JXKTFW",
+      "name": "61_EXT-W_NSD",
+      "shortName": "EXT-W",
+      "starsId": 61,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP1H95M1S4M42Z5YF5J",
+      "name": "62_FLETAHT_NSD",
+      "shortName": "FLETAHT",
+      "starsId": 62,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP2D7MRAN1JHR3P8ZBX",
+      "name": "69_MTR-1_NSD",
+      "shortName": "MTR-1",
+      "starsId": 69,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP2RJAFDXEHFJ9QNHRG",
+      "name": "70_MTR-2_NSD",
+      "shortName": "MTR-2",
+      "starsId": 70,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP2G1XC2XHCAMDRXTHK",
+      "name": "71_SCIUR_NSD",
+      "shortName": "SCIUR",
+      "starsId": 71,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP2VQ047KJX08JYTYTW",
+      "name": "73_AMPHOPA_NSD",
+      "shortName": "AMPHOPA",
+      "starsId": 73,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP39QGNPW9D248527VP",
+      "name": "74_PYRAMID_NSD",
+      "shortName": "PYRAMID",
+      "starsId": 74,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP3KHZ451GFEM0WDVW9",
+      "name": "76_LEONWDZ_NSD",
+      "shortName": "LEONWDZ",
+      "starsId": 76,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP35PM3CF86N1EGDEMM",
+      "name": "77_NEPTUNE_NSD",
+      "shortName": "NEPTUNE",
+      "starsId": 77,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP3Y7N2GZQ2VJS0R9AS",
+      "name": "78_MISLX9_NSD",
+      "shortName": "MISLX9",
+      "starsId": 78,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP4443S6MQD1GXENXKF",
+      "name": "79_MISLX10_NSD",
+      "shortName": "MISLX10",
+      "starsId": 79,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP4C7FHRK9X38QF68W8",
+      "name": "80_CHARGAP_NSD",
+      "shortName": "CHARGAP",
+      "starsId": 80,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP4WKSQHKVS12X357GB",
+      "name": "81_PAC-AAR_NSD",
+      "shortName": "PAC-AAR",
+      "starsId": 81,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP4MKGNR06ZYZN44XW4",
+      "name": "82_OSDO-AR_NSD",
+      "shortName": "OSDO-AR",
+      "starsId": 82,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP594PH91TTR5V66T1F",
+      "name": "83_AR-621_NSD",
+      "shortName": "AR-621",
+      "starsId": 83,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP5RN802XWQ22F8KWKK",
+      "name": "84_AR-634_NSD",
+      "shortName": "AR-634",
+      "starsId": 84,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP5D601MYJNX0B77S5T",
+      "name": "85_NEWSLNS_NSD",
+      "shortName": "NEWSLNS",
+      "starsId": 85,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKN2HPP52YPK5WDN3S67CKS7",
+      "name": "100_EST-WST_NSD",
+      "shortName": "EST-WST",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01KKN2HPNT0EH8D15EVFNGFYCV",
+      "name": "13_SECTORS_NSD",
+      "shortName": "SECTORS",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    }
+  ]
+}

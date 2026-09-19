@@ -1,0 +1,194 @@
+{
+  "artcc": "ZLA",
+  "facility": "NFG",
+  "name": "Camp Pendleton",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 34.9691453,
+    "lon": -116.63582625
+  },
+  "controlPositions": [
+    {
+      "id": "01HBKKREXHS3468TYRT0SPJKST",
+      "name": "Arrival GCA",
+      "callsign": "NFG_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 128.45
+    },
+    {
+      "id": "01HBKKTEGB7C3FKJJ856025233",
+      "name": "Local",
+      "callsign": "NFG_TWR",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 128.775
+    },
+    {
+      "id": "01HBKKVQ95943BCPHCFEX0BS4S",
+      "name": "Ground",
+      "callsign": "NFG_GND",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 134.675
+    },
+    {
+      "id": "01KK0FX52T2A4QD4XPDT079GA7",
+      "name": "Longrifle (Departure)",
+      "callsign": "NFG_DEP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 123.2
+    },
+    {
+      "id": "01KK0G0G9D2ES228YHR6NVWE8Q",
+      "name": "Fallbrook GCA",
+      "callsign": "NFG_F_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 128.45
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1B"
+      ],
+      "mapIds": [
+        1,
+        2,
+        500,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        500,
+        null,
+        2,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HBKK0ZD4Y7WMF64WA6M3Y489",
+      "name": "001 RVM NFG",
+      "shortName": "NFG RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBKK0ZD65GX8F8781PKQRCZY",
+      "name": "002 MVA NFG",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H4H6XTC53NT875E7M91X2WH3",
+      "name": "500S SB WEST SCT",
+      "shortName": "SAN",
+      "starsId": 500,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H4KGSBGB3GXZ5S9BXFWM87XZ",
+      "name": "999 GNDMAP SCT",
+      "shortName": "GNDMAP",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

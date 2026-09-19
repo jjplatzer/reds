@@ -1,0 +1,301 @@
+{
+  "artcc": "ZHN",
+  "facility": "OGG",
+  "name": "Kahului ATCT",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 20.9750275,
+    "lon": -157.17449499999998
+  },
+  "controlPositions": [
+    {
+      "id": "01HCARSY2QVQ25SKQBE5KYPJVR",
+      "name": "Approach Control North",
+      "callsign": "OGG_N_APP",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 120.2
+    },
+    {
+      "id": "01HCARSZT8DGXY83744XWA8AJ2",
+      "name": "Approach Control South",
+      "callsign": "OGG_S_APP",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 119.5
+    },
+    {
+      "id": "01HCARX5YD04W03Y5M3Q6BNC5Y",
+      "name": "Local Control",
+      "callsign": "OGG_TWR",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 118.7
+    },
+    {
+      "id": "01HCARXJFX1BK213HS65HYSKF3",
+      "name": "Ground Control",
+      "callsign": "OGG_GND",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01HCARXY556JDC3C12CC9KXTJN",
+      "name": "Clearance Delivery",
+      "callsign": "OGG_DEL",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 120.6
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1N",
+        "1S",
+        "1T"
+      ],
+      "mapIds": [
+        120,
+        12,
+        11,
+        13,
+        14,
+        3,
+        2,
+        1,
+        4,
+        100,
+        210,
+        null,
+        213,
+        211,
+        214,
+        212,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        120,
+        11,
+        14,
+        12,
+        13,
+        3
+      ],
+      "submenuMapIds": [
+        2,
+        4,
+        210,
+        213,
+        214,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        100,
+        null,
+        211,
+        212,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H5BFS7YTFFKZZKJPGFP0KMBT",
+      "name": "Airports",
+      "shortName": "APRTS",
+      "starsId": 1,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5BFS7YVSNYNJD01AFCAKE3Z",
+      "name": "Airways",
+      "shortName": "ARWYS",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5BFS7YVFX5FN7R19BXC4G5R",
+      "name": "COAST__COASTLINES",
+      "shortName": "Coast",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5BFS7YVKWY62AQN72S8GY7C",
+      "name": "CTR__CENTER SPLITS",
+      "shortName": "SPLITS",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5BFS7YXT40THMZCPF5N4F8H",
+      "name": "OGG MVA__MAUI MINIMUM VEC ALT",
+      "shortName": "OGG MVA",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5BFS7YX8MNEJYZ6H6ZNH4PC",
+      "name": "OGG RVM__MAUI RADAR VEC MAP",
+      "shortName": "OGG RVM",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5BFS7YYWFFPPGQB7MVPNT29",
+      "name": "SPLIT__TRACON SPLITS",
+      "shortName": "Split",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5BFS7YYQ3DPJ41Q7JE2DXJS",
+      "name": "TRACON__TRACON OUTLINES",
+      "shortName": "TRACON",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZ2QVKMFDE6HQ9GYED9GXM5V",
+      "name": "ZHN Airspace Classes",
+      "shortName": "AIRSPC",
+      "starsId": 100,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HBHPJ3TSFKHWMAFETNT17KXS",
+      "name": "OGG TRACON",
+      "shortName": "OGG APP",
+      "starsId": 120,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JFT7KC5SW7D5G45M8ZJ8FX3K",
+      "name": "OGG_FIX_ARR",
+      "shortName": "OGG_ARR",
+      "starsId": 210,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JFT7KC5NBZQNJT7G4B9MKPD4",
+      "name": "OGG_FIX_20",
+      "shortName": "OGG_20",
+      "starsId": 211,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JFT7KC5RKE82SHBZ4Y2SNHBY",
+      "name": "OGG_FIX_23",
+      "shortName": "OGG_23",
+      "starsId": 212,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JFT7KC5S0TPS2Y6QHQJQTXQ2",
+      "name": "OGG_FIX_I2",
+      "shortName": "OGG_I2",
+      "starsId": 213,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JFT7KC5T3KWYCMECVFBD8172",
+      "name": "OGG_FIX_R2",
+      "shortName": "OGG_R2",
+      "starsId": 214,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKMJQTDT1BW3DQKSCB358YRJ",
+      "name": "LNY_centerlines",
+      "shortName": "LNYCTR",
+      "starsId": 401,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKMJQTDTQ3A6VMBFN123KEW7",
+      "name": "LNY_FIX_05",
+      "shortName": "LNYFIX",
+      "starsId": 402,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GZ2QVKMFDE6HQ9GYED9GXM5V",
+      "name": "ZHN Airspace Classes",
+      "shortName": "AIRSPC",
+      "starsId": 100,
+      "brightnessCategory": "B"
+    }
+  ]
+}

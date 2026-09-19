@@ -1,0 +1,290 @@
+{
+  "artcc": "ZDC",
+  "facility": "NHK",
+  "name": "Patuxent ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 37,
+    "lon": -77
+  },
+  "controlPositions": [
+    {
+      "id": "01HAAPSYA75941WECXPRP04PWC",
+      "name": "Clearance",
+      "callsign": "NHK_DEL",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 135.2
+    },
+    {
+      "id": "01HAAPTWNTRZ92KCZD3R43PJYT",
+      "name": "Ground",
+      "callsign": "NHK_GND",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 120.6
+    },
+    {
+      "id": "01HAAPVFSJN2500TDW73141AJM",
+      "name": "Local",
+      "callsign": "NHK_TWR",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 123.7
+    },
+    {
+      "id": "01HAAPW742PHKXW0B6DWH1MEGZ",
+      "name": "West Approach",
+      "callsign": "NHK_W_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 120.05
+    },
+    {
+      "id": "01HAQBDME9FEKYT3KBWKYF3W4N",
+      "name": "East Approach",
+      "callsign": "NHK_E_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 127.95
+    },
+    {
+      "id": "01HAQBES7HJ6QH50CVYXK4R3YM",
+      "name": "Arrival",
+      "callsign": "NHK_F_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 127.95
+    },
+    {
+      "id": "5E",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "5F",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "5W",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "5Z",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "5E",
+        "5F",
+        "5W",
+        "5Z"
+      ],
+      "mapIds": [
+        54,
+        55,
+        3,
+        14,
+        63,
+        65,
+        54,
+        55,
+        3,
+        14,
+        63,
+        65,
+        20,
+        21,
+        64,
+        17,
+        4,
+        53,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        54,
+        3,
+        63,
+        55,
+        14,
+        65
+      ],
+      "submenuMapIds": [
+        54,
+        3,
+        63,
+        20,
+        64,
+        4,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        55,
+        14,
+        65,
+        21,
+        17,
+        53,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HAYMGMQF0PXVV72N4KHVNJR8",
+      "name": "NHK Base",
+      "shortName": "RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GNJ80WAM7CYHFR8P0Q209DEE",
+      "name": "PCT MVA",
+      "shortName": "AMVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNJ80WAS2ZD56KHMK867QWRG",
+      "name": "PCT SFRA",
+      "shortName": "ASFRA",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNJ80WAG8H8NPNNKPWA89C36",
+      "name": "PCT Coastlines",
+      "shortName": "ACOAST",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNJ80WAWBP396T0TZDKYPVVG",
+      "name": "PCT Zones",
+      "shortName": "AZONE",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNJ80WART9N7X84JWCAAECE7",
+      "name": "PCT Roads",
+      "shortName": "AROAD",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNJ80WATK160KDH529WZRSCK",
+      "name": "PCT TAirway",
+      "shortName": "ATRTE",
+      "starsId": 20,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNJ80WAV0D2EW1W0FQR5KKX5",
+      "name": "PCT VAirway",
+      "shortName": "AVRTE",
+      "starsId": 21,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNJ80WAKN1NH2ZEE1J0GC0DH",
+      "name": "PCT MEGA Combined",
+      "shortName": "AMEGA",
+      "starsId": 53,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GNJ80W9FF4B2C5NPP26MZK89",
+      "name": "JRV North",
+      "shortName": "JNORTH",
+      "starsId": 54,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GNJ80W9R0TY648X99C9T1P0Z",
+      "name": "JRV South",
+      "shortName": "JSOUTH",
+      "starsId": 55,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GNJ80W9NMPGPX7M4M7H117BZ",
+      "name": "JRV Sat Approaches",
+      "shortName": "JSATAPP",
+      "starsId": 63,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNJ80W9GBKABHJ2YHZBBH2CY",
+      "name": "JRV RAREA",
+      "shortName": "JRAREA",
+      "starsId": 64,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNJ80W9EC74MCVWZ7F4974SV",
+      "name": "JRV Fixes",
+      "shortName": "JFIXES",
+      "starsId": 65,
+      "brightnessCategory": "A"
+    }
+  ]
+}

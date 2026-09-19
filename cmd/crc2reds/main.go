@@ -16,6 +16,8 @@ func main() {
 		err = runAsdex(os.Args[2:])
 	case "eram":
 		err = runEram(os.Args[2:])
+	case "stars":
+		err = runStars(os.Args[2:])
 	default:
 		printUsageAndExit()
 	}
@@ -32,6 +34,9 @@ func printUsageAndExit() {
   go run ./cmd/crc2reds asdex cursors -in /path/to/cursors-or-cursor.cur.zst -out asdex/assets/cursors.go
   go run ./cmd/crc2reds eram  font    -in /path/to/eram-fonts-or-font.bin.zst -out eram/assets/font.go
   go run ./cmd/crc2reds eram  cursors -in /path/to/CRC/Cursors -out eram/assets/cursors.go
-  go run ./cmd/crc2reds eram  maps    -in /path/to/CRC -artcc ZLA -out resources/videomaps/eram/ZLA.json.zst`)
+  go run ./cmd/crc2reds eram  maps    -in /path/to/CRC -artcc ZLA -out resources/videomaps/eram/ZLA.json.zst
+  go run ./cmd/crc2reds stars config  -in /path/to/CRC -out resources/configs/stars [-artcc ZBW]
+  go run ./cmd/crc2reds stars maps    -in /path/to/CRC -out resources/videomaps/stars [-artcc ZBW]
+  go run ./cmd/crc2reds stars audio   -in /path/to/CRC -out resources/audio/stars`)
 	os.Exit(2)
 }

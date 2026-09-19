@@ -1,0 +1,713 @@
+{
+  "artcc": "ZTL",
+  "facility": "BHM",
+  "name": "Birmingham ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.90558406666667,
+    "lon": -83.96840666666667
+  },
+  "controlPositions": [
+    {
+      "id": "01GW3KPD0FVFKZFH8EB5VWQEW2",
+      "name": "North Radar",
+      "callsign": "BHM_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 127.675
+    },
+    {
+      "id": "01GW3KRMM7YQ2MWZ1A0GCJT0M6",
+      "name": "South Radar",
+      "callsign": "BHM_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 123.8
+    },
+    {
+      "id": "01GW3KT7547TX2XKCJRJKDCRBR",
+      "name": "West Satellite Radar ",
+      "callsign": "BHM_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 120.15
+    },
+    {
+      "id": "01GW3KY1H4AY4H2H8PVK64SA12",
+      "name": "East Satellite Radar",
+      "callsign": "BHM_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 120.05
+    },
+    {
+      "id": "01GW3KZ7AMWFJ9K7CF3BKBDYK3",
+      "name": "Final Radar ",
+      "callsign": "BHM_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 126.15
+    },
+    {
+      "id": "01GW3M4JBH8EV7V9DXR7PRKD2X",
+      "name": "Local Control",
+      "callsign": "BHM_TWR",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 119.9
+    },
+    {
+      "id": "01GW3M5JT48D701SSNDV33NVH7",
+      "name": "Ground Control",
+      "callsign": "BHM_GND",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01GW3M64KFQD6BBJJYC9SHVYZD",
+      "name": "Clearance Delivery",
+      "callsign": "BHM_DEL",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 125.675
+    },
+    {
+      "id": "01JDV1W3A3ZY4636S6FNMTHM4Q",
+      "name": "BHM GUARD",
+      "callsign": "BHM_G_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "01JEJ1RJ5VQXEWZKJ47VQXVAAF",
+      "name": "Local Control 2 (BACKUP)",
+      "callsign": "BHM_TWR",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 118.25
+    },
+    {
+      "id": "01JGA1CPMH9RR7T1GC65EHX6K0",
+      "name": "Birmingham CIC",
+      "callsign": "BHM_TMU",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 119.4
+    },
+    {
+      "id": "01JMQQRX956YY0HMH2CPAFJQ3J",
+      "name": "KBHM_ATIS",
+      "callsign": "BHM_A_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 119.4
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "2T",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1T",
+        "2T"
+      ],
+      "mapIds": [
+        2,
+        10,
+        41,
+        42,
+        null,
+        null,
+        8,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        2,
+        41,
+        null,
+        10,
+        42,
+        null
+      ],
+      "submenuMapIds": [
+        8,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1E",
+        "1F",
+        "1N",
+        "1S",
+        "1U",
+        "1W"
+      ],
+      "mapIds": [
+        50,
+        10,
+        52,
+        14,
+        51,
+        2,
+        8,
+        3,
+        13,
+        48,
+        42,
+        41,
+        6,
+        27,
+        28,
+        44,
+        35,
+        36,
+        36,
+        37,
+        38,
+        39,
+        34,
+        40,
+        26,
+        45,
+        32,
+        30,
+        33,
+        16,
+        1,
+        23,
+        57,
+        21,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        50,
+        52,
+        51,
+        10,
+        14,
+        2
+      ],
+      "submenuMapIds": [
+        8,
+        13,
+        42,
+        6,
+        28,
+        35,
+        36,
+        38,
+        34,
+        26,
+        32,
+        33,
+        1,
+        57,
+        null,
+        3,
+        48,
+        41,
+        27,
+        44,
+        36,
+        37,
+        39,
+        40,
+        45,
+        30,
+        16,
+        23,
+        21,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HA5M052K7M67Z8T5G1F4JTRB",
+      "name": "FREQUENCIES/HANDOFFS",
+      "shortName": "HANDOFF",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M052KM7X80WX8V6XTH4JQ",
+      "name": "BHM CLASS C",
+      "shortName": "CLASS C",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M052KZ0CK2142NWYQEXNK",
+      "name": "BHM EMERGENCY",
+      "shortName": "EMRGCY",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052JB41PQ3CJQ91VYAWP",
+      "name": "BHM RNAV RUNWAY 06/24 APPROACH",
+      "shortName": "RNV0624",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M052J912G3DQZMP1A4EF6",
+      "name": "EKY RNAV APPROACHES",
+      "shortName": "EKY GPS",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052J0SVW2SQ1RH63FVTB",
+      "name": "BHM MAIN",
+      "shortName": "MAIN",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M052HDZGR9NSW9VPK1AR8",
+      "name": "BHM MINIMUM VECTORING ALTITUDE",
+      "shortName": "MVA",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052H0YMYS5KHC27TMGBG",
+      "name": "BHM IFR MILITARY TRAINING ROUTES",
+      "shortName": "IR RTE",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052GZR5B88VB2Q7ME3WG",
+      "name": "BHM EMERGENCY OBSTRUCTION VIDEO MAP",
+      "shortName": "EOVM",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052GZ9MAD88XS65H96JY",
+      "name": "SATELLITE FINAL APPROACH COURSES",
+      "shortName": "SAT FAC",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052G7W419SQ7XAJNDQTP",
+      "name": "INTERNAL BOUNDARIES",
+      "shortName": "INTERNL",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M052GHRPNCWR5Q3JT9301",
+      "name": "BHM INTERSECTIONS",
+      "shortName": "INTXN",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M052FR8CA2PECMZ4FFJEN",
+      "name": "BHM VICTOR/TANGO ROUTES",
+      "shortName": "LOW AWY",
+      "starsId": 21,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052FN7H0363FC8F27FZP",
+      "name": "JET/Q ROUTES",
+      "shortName": "HI AWY",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052FGG25YQBZ8A7DZBZ6",
+      "name": "BHM VORS WITHIN 250NM",
+      "shortName": "VORS",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M0527QF1V9DB8H39SQHM2",
+      "name": "BHM INTERSECTIONS WITH NAMES",
+      "shortName": "INTXNAM",
+      "starsId": 25,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M0527J0M26XW6329KCZXW",
+      "name": "JFX ILS/LOC RUNWAY 27 APPROACH",
+      "shortName": "JFX ILS",
+      "starsId": 26,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052815771T5DB2G4DHXY",
+      "name": "ANB RNAV APPROACHES",
+      "shortName": "ANB GPS",
+      "starsId": 27,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M0528YT3X4Y0HQJ8CKTCK",
+      "name": "SCD RNAV APPROACHES",
+      "shortName": "SCD GPS",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M0528G97EKTWM7TBTQ2HG",
+      "name": "RWY 24/36 FINAL BOUNDARY",
+      "shortName": "2436BDY",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M052861JE50GTYK18DBZW",
+      "name": "BHM SAT BOUNDARY",
+      "shortName": "SAT BDY",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M0529ZT7WJPVP833DCGEJ",
+      "name": "RWY 06/18 BOUNDARY",
+      "shortName": "0618BDY",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M0529SWEYGRQEWDD97R92",
+      "name": "RWY 06/36 FINAL BOUNDARY",
+      "shortName": "0636BDY",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M05296W4CP68Q2QSCQQPX",
+      "name": "RWY 24/18 FINAL BOUNDARY",
+      "shortName": "2418BDY",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M0529RQW57D37ZN0CF877",
+      "name": "ASN RNAV APPROACHES",
+      "shortName": "ASN GPS",
+      "starsId": 34,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052AP06G77D7T6VSS5TJ",
+      "name": "PLR RNAV APPROACHES",
+      "shortName": "PLR GPS",
+      "starsId": 35,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052A2SVTMQG935NVHSJD",
+      "name": "EET RNAV APPROACHES",
+      "shortName": "EET GPS",
+      "starsId": 36,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052A4W2SFBYYQ7X5SP1T",
+      "name": "TCL RNAV APPROACHES",
+      "shortName": "TCL GPS",
+      "starsId": 37,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052A1T14B4V1YZYH8Q10",
+      "name": "GAD RNAV APPROACHES",
+      "shortName": "GAD GPS",
+      "starsId": 38,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052B0AVAGDZF5PZSVY2Q",
+      "name": "8A0 RNAV APPROACHES",
+      "shortName": "8A0 GPS",
+      "starsId": 39,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052B10BTABDE5R127WW1",
+      "name": "PYP/0A8 RNAV APPROACHES",
+      "shortName": "PYP 0A8",
+      "starsId": 40,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052B7QGRCRQ3CMR63HM0",
+      "name": "BHM RNAV (RNP) Z RWY 6 APPROACH",
+      "shortName": "RNP6",
+      "starsId": 41,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M052B78P9R7GTXCHFR6EY",
+      "name": "BHM RNAV (RNP) Z RWY 24 APPROACH",
+      "shortName": "RNP24",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M052CGHS760GTR1BA9N8P",
+      "name": "APPROACH FIXES",
+      "shortName": "APPFIXS",
+      "starsId": 43,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052CR5139KZD12Q5K3NB",
+      "name": "ANB RNAV (GPS) Z RWY 23 APPROACH",
+      "shortName": "ANB R23",
+      "starsId": 44,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052CRZYG8566RR607QJJ",
+      "name": "JFX RNAV APPROACH",
+      "shortName": "JFX GPS",
+      "starsId": 45,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052DTXFJYVF739EJ034C",
+      "name": "BHM RNAV RUNWAY 18/36 APPROACHES",
+      "shortName": "RNV1836",
+      "starsId": 48,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M052DBZXDQTVYB3RMENHT",
+      "name": "BHM DEPARTURE FIX LABELS",
+      "shortName": "DEP FIX",
+      "starsId": 50,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052D3BN3K7Y81SJ3C6MA",
+      "name": "BHM ARRIVAL FIXES",
+      "shortName": "ARR FIX",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M052E1TBN5Q2DXGTKY6XW",
+      "name": "BHM ARRIVAL FIX LABELS",
+      "shortName": "ARR LBL",
+      "starsId": 52,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA5M052FHNZPNZK4D7SPQ9XH",
+      "name": "BHM STADIUMS",
+      "shortName": "STADIUM",
+      "starsId": 57,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JGPNKKRFDDYYTXQ4ZM",
+      "name": "TCL TDM ERAM",
+      "shortName": "TCLTDM",
+      "starsId": 973,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JDZN4EP3XF95KP8E5R",
+      "name": "BHM TDM ERAM",
+      "shortName": "BHMTDM",
+      "starsId": 994,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HA5M052861JE50GTYK18DBZW",
+      "name": "BHM SAT BOUNDARY",
+      "shortName": "SAT BDY",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M052G7W419SQ7XAJNDQTP",
+      "name": "INTERNAL BOUNDARIES",
+      "shortName": "INTERNL",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M0529ZT7WJPVP833DCGEJ",
+      "name": "RWY 06/18 BOUNDARY",
+      "shortName": "0618BDY",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M0529SWEYGRQEWDD97R92",
+      "name": "RWY 06/36 FINAL BOUNDARY",
+      "shortName": "0636BDY",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M05296W4CP68Q2QSCQQPX",
+      "name": "RWY 24/18 FINAL BOUNDARY",
+      "shortName": "2418BDY",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA5M0528G97EKTWM7TBTQ2HG",
+      "name": "RWY 24/36 FINAL BOUNDARY",
+      "shortName": "2436BDY",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    }
+  ]
+}

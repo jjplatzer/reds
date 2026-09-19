@@ -1,0 +1,289 @@
+{
+  "artcc": "ZJX",
+  "facility": "NBC",
+  "name": "Beaufort Marine Corps Air Station (Merritt Field) ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 30.39404875,
+    "lon": -81.98462525
+  },
+  "controlPositions": [
+    {
+      "id": "01HC0GT8SXYVF1ZRN6C2C74ADW",
+      "name": "Ground",
+      "callsign": "NBC_GND",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 128.15
+    },
+    {
+      "id": "01HC0GV5303PYGQH6QHPP4DWKW",
+      "name": "Tower",
+      "callsign": "NBC_TWR",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 119.05
+    },
+    {
+      "id": "01HC0GVM3PJPTTXHCPWGZ600SV",
+      "name": "Beaufort Arrival",
+      "callsign": "NBC_N_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 123.7
+    },
+    {
+      "id": "01K1SVHP41YSGS6R1K336YFAN2",
+      "name": "Beaufort Approach",
+      "callsign": "NBC_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 125.125
+    },
+    {
+      "id": "01K1SVSKXQYWSCFTG7WZVJWN8C",
+      "name": "SFA 1",
+      "callsign": "NBC_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 132.325
+    },
+    {
+      "id": "01K1SVV71VVYZ29F7F7TB1MF68",
+      "name": "SFA 2",
+      "callsign": "NBC_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 132.85
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1N"
+      ],
+      "mapIds": [
+        100,
+        402,
+        2,
+        3,
+        301,
+        404,
+        201,
+        null,
+        202,
+        null,
+        405,
+        null,
+        406,
+        null,
+        408,
+        null,
+        410,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        100,
+        2,
+        301,
+        402,
+        3,
+        404
+      ],
+      "submenuMapIds": [
+        201,
+        202,
+        405,
+        406,
+        408,
+        410,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01K7JHCR3B0DZYNB9JTBCXF7XJ",
+      "name": "NBC RUNWAYS",
+      "shortName": "RWYS",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQHT616SVCPKTH9CKJFACZ31",
+      "name": "NBC CLASS D",
+      "shortName": "CLASS D",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKQDVB9BNJ25Q0V8G55VF9BZ",
+      "name": "NBCTRACONS",
+      "shortName": "MASTER",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKQDVB99VEPV0NP5DV1EBKNK",
+      "name": "NBCRNAV5",
+      "shortName": "NCBR5",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA1KK61KES1MCN5YWAQKM4TF",
+      "name": "NBC TACAN 05",
+      "shortName": "NBC T05",
+      "starsId": 152,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKQDVB933YEY5WMEK78FD26T",
+      "name": "ARWRNAV07",
+      "shortName": "ARW R7",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKQDVB95F8TGMXRFV8SWRYNR",
+      "name": "ARWRNAVS",
+      "shortName": "ARWRNAV",
+      "starsId": 202,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKQDVB96VRR77KBADMABAXA1",
+      "name": "NBC Airports",
+      "shortName": "AIRPORT",
+      "starsId": 301,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKQDVB98KMZ9Q74Z0HYG6SE2",
+      "name": "NBCMOAS",
+      "shortName": "MOAS",
+      "starsId": 401,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQHSN2BMR02TYXHV4PSFY2SW",
+      "name": "NBC RUNWAYS ",
+      "shortName": "RUNWAYS",
+      "starsId": 402,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQHTFDJS7W8H9SWECPB3B598",
+      "name": "NBC AIRSPACE",
+      "shortName": "AIRSPAC",
+      "starsId": 403,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQHTT2ZJBBEV1BKRCKCCJMTQ",
+      "name": "NBC HXD ",
+      "shortName": "HXD",
+      "starsId": 404,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQHVWQ4TK7XT6TZ6R84A6RQ3",
+      "name": "NBC TACANS",
+      "shortName": "TCN",
+      "starsId": 405,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQHW5JD2XCZANM6G3K1VEPRF",
+      "name": "NBC RNAVS",
+      "shortName": "GPS",
+      "starsId": 406,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQJ00R70MXK6A4FXPB7ZCS6V",
+      "name": "NBC FIXES",
+      "shortName": "FIXES",
+      "starsId": 408,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQMPRJTMDRV7F5KW3431TDQT",
+      "name": "NBC ILS",
+      "shortName": "ILS 23",
+      "starsId": 410,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01KQHTFDJS7W8H9SWECPB3B598",
+      "name": "NBC AIRSPACE",
+      "shortName": "AIRSPAC",
+      "starsId": 403,
+      "brightnessCategory": "A"
+    }
+  ]
+}

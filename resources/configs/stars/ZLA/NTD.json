@@ -1,0 +1,296 @@
+{
+  "artcc": "ZLA",
+  "facility": "NTD",
+  "name": "Point Mugu ",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 34.9691453,
+    "lon": -116.63582625
+  },
+  "controlPositions": [
+    {
+      "id": "01KJZJRVF4A2443VY8Z7P7T7DD",
+      "name": "Radar Final Control",
+      "callsign": "NTD_F_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 133.25
+    },
+    {
+      "id": "01KJZJSEXQ2G0744746P596GBZ",
+      "name": "Ventura",
+      "callsign": "NTD_H_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 128.65
+    },
+    {
+      "id": "01KJZJTNV7J87E96VPWM7KJ93Q",
+      "name": "Laguna",
+      "callsign": "NTD_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 124.7
+    },
+    {
+      "id": "01KJZJVKWBQRCDND0Z65EJXDD1",
+      "name": "Local",
+      "callsign": "NTD_TWR",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 124.85
+    },
+    {
+      "id": "01KJZJZRPFJG6S6P77H0B8WF13",
+      "name": "Ground",
+      "callsign": "NTD_GND",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 121.6
+    },
+    {
+      "id": "01KJZK0AP1W3MZFSS4A67WEKXY",
+      "name": "Clearance Delivery",
+      "callsign": "NTD_DEL",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 120.75
+    },
+    {
+      "id": "01KJZPVJXYKHNKMQPTA4FEZ3P6",
+      "name": "VFR",
+      "callsign": "NTD_V_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 123.75
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1O",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1X",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1F",
+        "1H",
+        "1L",
+        "1O",
+        "1T",
+        "1X",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        2,
+        null,
+        7,
+        9,
+        8,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        null,
+        9,
+        2,
+        7,
+        8
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HBKH54X37XTZ16ZTYDKR8J5B",
+      "name": "RVMFUSION3",
+      "shortName": "FUSION3",
+      "starsId": 1,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HBKHA2W463KS6EEQ1PP0M3H6",
+      "name": "002 Base Map NTD",
+      "shortName": "NTDRVM",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H4KHD4RJ0XVC2F14ESF1VS54",
+      "name": "000 RVM NTD",
+      "shortName": "RVM",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H4KHD4RG31G87F2VH0M16XXV",
+      "name": "000 MIA NTD",
+      "shortName": "MIA",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H4KHD4RFZFQGEA2H2SR18TG3",
+      "name": "000 GEO NTD",
+      "shortName": "GEO",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H4KHD4RKMJSXA6AWEHXNXPTR",
+      "name": "000 RWY NTD",
+      "shortName": "RWY",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H4KHD4REAMCCYX1X8073EG7T",
+      "name": "000 CD A-S NTD",
+      "shortName": "CD A-S",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H4KHD4RKE7P79CQK45B3WYRX",
+      "name": "000 SCT LE NTD",
+      "shortName": "SCT LE",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H4KHD4RMA4SZ174FPAC10KK0",
+      "name": "000 SCT LW NTD",
+      "shortName": "SCT LW",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H4KGSBGB3GXZ5S9BXFWM87XZ",
+      "name": "999 GNDMAP SCT",
+      "shortName": "GNDMAP",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

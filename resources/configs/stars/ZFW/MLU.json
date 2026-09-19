@@ -1,0 +1,247 @@
+{
+  "artcc": "ZFW",
+  "facility": "MLU",
+  "name": "Monroe ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.55328401,
+    "lon": -97.43688567000001
+  },
+  "controlPositions": [
+    {
+      "id": "01H89RH2BR4CKY599QJ2N40QTY",
+      "name": "High Radar",
+      "callsign": "MLU_H_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 126.9
+    },
+    {
+      "id": "01H89RJYSEGTE4YAW2VJ6VPDHA",
+      "name": "Low Radar",
+      "callsign": "MLU_L_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 118.15
+    },
+    {
+      "id": "01H89RKVT7WDSRA953YR8E1AJ8",
+      "name": "Local",
+      "callsign": "MLU_TWR",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 118.9
+    },
+    {
+      "id": "01H89RN0GPA7NTSSJP6KBVV6Z5",
+      "name": "Ground",
+      "callsign": "MLU_GND",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01H89RNP7ZVSPFCAB3DJ3EGR7A",
+      "name": "Clearance",
+      "callsign": "MLU_DEL",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.65
+    },
+    {
+      "id": "01J9YHWG054RC8EK48544B6ZA6",
+      "name": "Guard",
+      "callsign": "MLU_EM_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1H",
+        "1L",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        901,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        901,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H8G5ZAF11SAZBVWCRD5Y3WCR",
+      "name": "North Flow__MML001 North Flow",
+      "shortName": "NORTH",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G604531FQANQ7818HSTP1A",
+      "name": "South Flow__MML002 South Flow",
+      "shortName": "SOUTH",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8G60DVGNNYZVWA0MVCQ6YE1",
+      "name": "MVA__MVA MLU",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8G60WPTXVX655ZX47TY0HAY",
+      "name": "DELTA__DELTA MLU",
+      "shortName": "DELTA",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8G61NAJN6BGVW3M3YP61YS3",
+      "name": "TRSA__TRSA MLU",
+      "shortName": "TRSA",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8G629W9BD411Q8GASVQ5PAH",
+      "name": "VFR__MML005 VFR",
+      "shortName": "VFR",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8G62Z2HJ4W50HXY6Y9KWWAD",
+      "name": "Map4__MLU004 Map 4",
+      "shortName": "MAP4",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GKZZ67A9BXG6P1CB9ZMYESCR",
+      "name": "ZFW__ZFW",
+      "shortName": "ZFW",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZXKZRR6Z69P56ZJX3KDNR0",
+      "name": "GEO__GEO",
+      "shortName": "GEO",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    }
+  ]
+}

@@ -1,0 +1,298 @@
+{
+  "artcc": "ZFW",
+  "facility": "GGG",
+  "name": "Longview ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.55328401,
+    "lon": -97.43688567000001
+  },
+  "controlPositions": [
+    {
+      "id": "01GAJBRSGHAD6QA91ZWCWWFMN4",
+      "name": "East Radar",
+      "callsign": "GGG_E_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 127.325
+    },
+    {
+      "id": "01GAJBX3JSKCXCD2K68TYYVCNN",
+      "name": "West Radar",
+      "callsign": "GGG_W_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 128.75
+    },
+    {
+      "id": "01GAJBYDFQZ1FXR05XGSFNXY8R",
+      "name": "Local",
+      "callsign": "GGG_TWR",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 119.2
+    },
+    {
+      "id": "01GAJBZV9R40KXHXQNK7Y2XTM4",
+      "name": "Ground",
+      "callsign": "GGG_GND",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.6
+    },
+    {
+      "id": "01H7E0X8H79F8M1EZ369KK3YE1",
+      "name": "Low Radar",
+      "callsign": "GGG_L_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 124.275
+    },
+    {
+      "id": "01J9YHSQ7H35BMWWWBT5Y5FMRQ",
+      "name": "Guard",
+      "callsign": "GGG_EM_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1L",
+        "1P",
+        "1T",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        7,
+        6,
+        9,
+        10,
+        11,
+        12,
+        13,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        8
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        13,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        6,
+        10,
+        12,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H5NVVSQ2YCXVW5W45N68SX6V",
+      "name": "3 Mile__3NM BASE",
+      "shortName": "BASE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5NVVSQ9F2SAHP74ZZ5QEKKV",
+      "name": "TRSA__GGG TRSA",
+      "shortName": "TRSA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5NVVSQ7W83K3ZKTKX15VY1C",
+      "name": "RNAV GT__RNAV PRIMARY",
+      "shortName": "RNAVGT",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5NVVSQ63DD6REW09P5JGW70",
+      "name": "NON-PRE__Non Rnav Primary",
+      "shortName": "NON PRE",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5NVVSQ84XGTTH3GWZPNMCE2",
+      "name": "RNAVSAT__RNAV Non Primary",
+      "shortName": "RNVSAT",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5NVVSQ7E1Z68DAXHEPH7KDW",
+      "name": "NONSAT__Non Primary Non Rnav",
+      "shortName": "NONSAT",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5NVVSQ37V0MAZRA1YHZSMZC",
+      "name": "CENRAP__5NM Base",
+      "shortName": "CENRAP",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5NVVSQ4537PK33M36PFAT7M",
+      "name": "MVA__GGG MVA altitudes",
+      "shortName": "MVA",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5NVVSQ9HQPEZ11BGZ381NTQ",
+      "name": "VFR__VFR with IR-127, IR-129",
+      "shortName": "VFR",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5NVVSQ878E0N7KAB6SER4XB",
+      "name": "ROADS__Various prominent Federal and State Highways.",
+      "shortName": "ROADS",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5NVVSQ4TTE2HZHTPKM07DTP",
+      "name": "GGG011S__GGG CDSA",
+      "shortName": "CDSA",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5NVVSQ3VGJJZR95769PFAF0",
+      "name": "AIRMED__Area Hospitals and Helli App.",
+      "shortName": "AIRMED",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5NVVSQ7WAP0R18FTGA32MBV",
+      "name": "PVT APT__Private Airports",
+      "shortName": "PVTAPT",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZXKZRR6Z69P56ZJX3KDNR0",
+      "name": "GEO__GEO",
+      "shortName": "GEO",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    }
+  ]
+}

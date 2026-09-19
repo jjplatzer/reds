@@ -1,0 +1,359 @@
+{
+  "artcc": "ZHU",
+  "facility": "MOB",
+  "name": "Mobile Regional ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 28.71396075,
+    "lon": -90.5088095
+  },
+  "controlPositions": [
+    {
+      "id": "01GB5ZJ47NY51C7C2A6HZK5Y48",
+      "name": "East Approach",
+      "callsign": "MOB_E_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 118.5
+    },
+    {
+      "id": "01GB5ZJX88ABVAT7CDMGY72MZF",
+      "name": "West Approach",
+      "callsign": "MOB_W_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 121
+    },
+    {
+      "id": "01GB5ZMS9554G0THJ66QBW3BVH",
+      "name": "Local",
+      "callsign": "MOB_TWR",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01GB5ZN64MVVP6TAH0BBFH21WC",
+      "name": "Ground",
+      "callsign": "MOB_GND",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GB5ZNNQ4NPXF4SQFGDG7MHRW",
+      "name": "Clearance Delivery",
+      "callsign": "MOB_DEL",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 119.85
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1B",
+        "1E",
+        "1L",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        21,
+        23,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GZEWM8R1EC5VT01V8GJGRCKV",
+      "name": "EMERGENCY",
+      "shortName": "EMER",
+      "starsId": 1,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEWM8R54NQHNSP03GMWCFAC",
+      "name": "MOB 3NM MVA",
+      "shortName": "3NM MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEWM8R3XTSQMV0V490JHHDW",
+      "name": "MOB 15",
+      "shortName": "MOB 15",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZEWM8R4XKZTR4NFCGCX5RFT",
+      "name": "MOB 33",
+      "shortName": "MOB 33",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZEWM8RC37MS81G06NAP8Z4H",
+      "name": "BFM FINAL APPROACHES NORTH",
+      "shortName": "BFM FN",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZEWM8RD4P3EGHC00Q5MNPES",
+      "name": "BFM FINAL APPROACHES SOUTH",
+      "shortName": "BFM FS",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZEWM8RA7RTT2RJY03BFAH20",
+      "name": "CLASS DELTAS",
+      "shortName": "CLASS D",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEWM8RADZ9HW6T043N5CPX1",
+      "name": "SATELLITE AIRPORTS",
+      "shortName": "SAT APT",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZEWM8RFQC7NFD8JJ3AJAF8M",
+      "name": "IRF/CQF/2R5 APPROACHES",
+      "shortName": "SAT APP",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZEWM8R3J3YE3150KSYD6RMR",
+      "name": "GPS APPROCHES",
+      "shortName": "GPS APP",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEWM8R57MSAHXH31T249X0Z",
+      "name": "ASR SATELLITE APT",
+      "shortName": "ASR SAT",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZEWM8R8KPPF0VE888DH03GP",
+      "name": "MOB 5NM MVA",
+      "shortName": "5NM MVA",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEWM8R80Q29FQNHYPBG1XV5",
+      "name": "MOB VICTOR AIRWAY",
+      "shortName": "V AWY",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEWM8RBQ0P6F82776M5T335",
+      "name": "J ROUTES",
+      "shortName": "J RTE",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEWM8RCY3AVAK25W22349GQ",
+      "name": "MOB STADIUMS",
+      "shortName": "STADIUM",
+      "starsId": 15,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEWM8R79E29629WH1R5XEK0",
+      "name": "DESOTA MOA",
+      "shortName": "DES MOA",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZEWM8R6ETVWH6VGA0QMJW06",
+      "name": "DESOTA SOUTH MOA",
+      "shortName": "DES S",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZEWM8RDJ9A8E8C175P3V5D1",
+      "name": "P31 MOA",
+      "shortName": "P31 MOA",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZEWM8REZ4V0SNTZBTA62MFV",
+      "name": "MOBILE AIRSPACE DELEGATIONS",
+      "shortName": "MOB ASP",
+      "starsId": 19,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEWM8REQ3M79WMSNXFA7Q1P",
+      "name": "MOB AIRSPACE LABELS",
+      "shortName": "ASP LBL",
+      "starsId": 20,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEWM8R9BBD9HGSTSAAEWXWP",
+      "name": "IR ROUTES",
+      "shortName": "IR RTE",
+      "starsId": 21,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEWM8R9H9XBTZAEJBNVGXZG",
+      "name": "VR ROUTES",
+      "shortName": "VR RTE",
+      "starsId": 22,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEYEB5M26R7WSBRN99R3HZD",
+      "name": "MOB ALERT AREA 292",
+      "shortName": "MOB AA",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GZEWM8REQ3M79WMSNXFA7Q1P",
+      "name": "MOB AIRSPACE LABELS",
+      "shortName": "ASP LBL",
+      "starsId": 20,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZEWM8REZ4V0SNTZBTA62MFV",
+      "name": "MOBILE AIRSPACE DELEGATIONS",
+      "shortName": "MOB ASP",
+      "starsId": 19,
+      "brightnessCategory": "B"
+    }
+  ]
+}

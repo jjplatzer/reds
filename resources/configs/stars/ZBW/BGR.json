@@ -1,0 +1,295 @@
+{
+  "artcc": "ZBW",
+  "facility": "BGR",
+  "name": "Bangor ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 42.93753,
+    "lon": -70.70471
+  },
+  "controlPositions": [
+    {
+      "id": "01G9BQ6VCK88979NEM8N7XD34X",
+      "name": "Clearance Delivery",
+      "callsign": "BGR_DEL",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 135.9
+    },
+    {
+      "id": "01G9BQ8NRH3P99PMYHZGXSCBFJ",
+      "name": "Ground Control",
+      "callsign": "BGR_GND",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G9BQ91Q6Q2D3XTHQM9PA8QGM",
+      "name": "Local Control",
+      "callsign": "BGR_TWR",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 120.7
+    },
+    {
+      "id": "01G9BQ9FFYW3N7C1046S84YEXV",
+      "name": "Bangor Radar",
+      "callsign": "BGR_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 118.925
+    },
+    {
+      "id": "01G9BQCB8NPEFC2NHJEHCQ1858",
+      "name": "Bar Harbor Radar",
+      "callsign": "BGR_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 133.6
+    },
+    {
+      "id": "01G9BQDCM34T683XDS45ATV6T2",
+      "name": "Final Radar",
+      "callsign": "BGR_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 124.5
+    },
+    {
+      "id": "01KAMCQEJPHG8G5W5P8MXJG76Q",
+      "name": "BGR Guard",
+      "callsign": "BGR_EM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1B",
+        "1H",
+        "1S",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        901,
+        905,
+        5,
+        6,
+        902,
+        903,
+        904,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        901,
+        2,
+        4,
+        905
+      ],
+      "submenuMapIds": [
+        5,
+        902,
+        904,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        6,
+        903,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GPHBC72BDAF3ACW820FJJ06H",
+      "name": "BGR MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBC72BJVXJ9DZZ17085CJ5",
+      "name": "BGR MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHBC729ZKZTF0NSMX83NFPA",
+      "name": "BGR EOVM",
+      "shortName": "EOVM",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHBC72C5JP9H5826PP6Y37Z",
+      "name": "BGR VFR",
+      "shortName": "VFR",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHBC72912Y0N9DQY5TW7TRC",
+      "name": "EVENT 15",
+      "shortName": "EVT15",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBC72ACKKD2S5VVZ6M0J76",
+      "name": "EVENT 33",
+      "shortName": "EVT33",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF1046VTX8SGKVPN1JMMB",
+      "name": "GROUND DIAGRAMS",
+      "shortName": "APT",
+      "starsId": 900,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10DY0KQ88H2D88NBTYS",
+      "name": "ZBW SPLIT 1",
+      "shortName": "ZBW 1",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10ETN5HPA10PFAM5SGC",
+      "name": "ZBW SPLIT 2",
+      "shortName": "ZBW 2",
+      "starsId": 903,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10E7QVGYCE97HH069A5",
+      "name": "ZBW SPLIT 3",
+      "shortName": "ZBW 3",
+      "starsId": 904,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HVM90MVHBBCM6ES6KX9WKN3D",
+      "name": "TWY LABELS",
+      "shortName": "TWY LBL",
+      "starsId": 905,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    }
+  ]
+}

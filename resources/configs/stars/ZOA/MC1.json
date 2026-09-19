@@ -1,0 +1,375 @@
+{
+  "artcc": "ZOA",
+  "facility": "MC1",
+  "name": "Sacramento TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 37.9016125,
+    "lon": -120.687685
+  },
+  "controlPositions": [
+    {
+      "id": "01K89SSNXEHEZNYJ4KCSJBEXSZ",
+      "name": "Elkhorn",
+      "callsign": "SAC_E_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 125.4
+    },
+    {
+      "id": "01K89THK3JGE0ZRC8YJSP26QDG",
+      "name": "Paradise",
+      "callsign": "SAC_P_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 123.7
+    },
+    {
+      "id": "01K89TKY7JZK4E3ECTXS523NCV",
+      "name": "Expo",
+      "callsign": "SAC_X_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 127.4
+    },
+    {
+      "id": "01K8A7T3GGKAJCXYZGBRPW0YN7",
+      "name": "Delta",
+      "callsign": "SAC_D_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 125.25
+    },
+    {
+      "id": "01K8A7VV51H2H8K1XZ0GYAMZMY",
+      "name": "Buttes",
+      "callsign": "SAC_B_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.45
+    },
+    {
+      "id": "01K8AEP8T4Q9PCJRG498J1CD8R",
+      "name": "SMF LC",
+      "callsign": "SMF_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 125.7
+    },
+    {
+      "id": "01K8AEQT2KP7VMH14WZNQFKG5P",
+      "name": "SMF GC",
+      "callsign": "SMF_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01K8AETMZRA8FQCFG5YXWAQK0S",
+      "name": "SMF CD",
+      "callsign": "SMF_DEL",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.1
+    },
+    {
+      "id": "01K8AEVV2B6322BGT2T4WC27RJ",
+      "name": "MHR GC",
+      "callsign": "MHR_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.85
+    },
+    {
+      "id": "01K8AEXZPPPV07DHX2HGF3AM0Y",
+      "name": "mhr lc",
+      "callsign": "MHR_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.65
+    },
+    {
+      "id": "01K8AEYVXRTH6P6BR45J6W1NS2",
+      "name": "SAC LC",
+      "callsign": "SAC_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 119.5
+    },
+    {
+      "id": "01K8AF1WT8ZZFFJQ0E04CKJY5V",
+      "name": "SAC GC",
+      "callsign": "SAC_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 125
+    },
+    {
+      "id": "01K8AF31G1Z6EKZEJFPJNWFTBQ",
+      "name": "BAB LC",
+      "callsign": "BAB_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 119.4
+    },
+    {
+      "id": "01K8AF4HMNVXF8Y7R79Z10AKA1",
+      "name": "BAB GC",
+      "callsign": "BAB_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.6
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1X",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1B",
+        "1D",
+        "1E",
+        "1M",
+        "1P",
+        "1T",
+        "1V",
+        "1X",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        8,
+        9,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        6,
+        2,
+        5,
+        7
+      ],
+      "submenuMapIds": [
+        8,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        9,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01K89R8RK7DWGNKERWB0R31XJY",
+      "name": "01 MCC_S",
+      "shortName": "MCCS",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K89RGY5Q98E8JPBHXSDJJ4ZN",
+      "name": "02 MCC_MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K89RJNAA08F0X9912W4G9V1F",
+      "name": "03 MCC_N",
+      "shortName": "MCCN",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K89RQRS0JMR919F15YJ9MNDB",
+      "name": "05 MCC_GEOG",
+      "shortName": "GEOG",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K89RSRM1NC1YT7SS07SPNN98",
+      "name": "06 MCC_EOVM",
+      "shortName": "EOVM",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K89RXFNDWZTV2BSBRW238EK3",
+      "name": "07 MCC_GPS",
+      "shortName": "GPS",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K89RYK8HPZRY7NRJZJNRJX53",
+      "name": "08 MCC 16_B33",
+      "shortName": "16_B33",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K89S09MC5EWRA32ZQ2BG3X71",
+      "name": "09 MCC 34_B15",
+      "shortName": "34_B15",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA7QZJ0G6TG3Y03JYAQ6RSF9",
+      "name": "TDM MAP",
+      "shortName": "TDM",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

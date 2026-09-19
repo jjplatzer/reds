@@ -1,0 +1,629 @@
+{
+  "artcc": "ZMP",
+  "facility": "MIB",
+  "name": "Minot ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 45.084575,
+    "lon": -93.9971125
+  },
+  "controlPositions": [
+    {
+      "id": "01GFEXZ3ZP2VZ0AEBP51VHJ528",
+      "name": "Approach Control",
+      "callsign": "MIB_APP",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 119.6
+    },
+    {
+      "id": "01GFEY0Z579KGQA701ER6FMVCE",
+      "name": "Local Control",
+      "callsign": "MIB_TWR",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 120.65
+    },
+    {
+      "id": "01GFEY46G4RE4J0R42ED6XGTSZ",
+      "name": "Ground Control",
+      "callsign": "MIB_GND",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 134
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "2M",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1B"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        10,
+        11,
+        5,
+        6,
+        20,
+        21,
+        24,
+        25,
+        28,
+        29,
+        30,
+        31,
+        40,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        70,
+        71,
+        72,
+        73,
+        83,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        10,
+        2,
+        4,
+        11
+      ],
+      "submenuMapIds": [
+        5,
+        20,
+        24,
+        28,
+        30,
+        40,
+        47,
+        49,
+        51,
+        53,
+        55,
+        57,
+        70,
+        72,
+        83,
+        6,
+        21,
+        25,
+        29,
+        31,
+        46,
+        48,
+        50,
+        52,
+        54,
+        56,
+        58,
+        71,
+        73,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1M",
+        "2M"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        10,
+        11,
+        20,
+        21,
+        24,
+        25,
+        28,
+        29,
+        30,
+        31,
+        83,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        1,
+        3,
+        5,
+        10,
+        20,
+        24,
+        28,
+        30,
+        83,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        2,
+        4,
+        6,
+        11,
+        21,
+        25,
+        29,
+        31,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HC1ATR5MC4EQQ2EPY8ZVFTMJ",
+      "name": "MIB001 MIB-AP",
+      "shortName": "MIB-AP",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5NZ3PYRVCT4BCRFD9K",
+      "name": "MIB002 AR",
+      "shortName": "AR",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5PTRKNCYBJ030QA8XZ",
+      "name": "MIB003 MIB-RWY",
+      "shortName": "MIB-RWY",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5P7FD295JW6QCHA8XG",
+      "name": "MIB004 MOT-RWY",
+      "shortName": "MOT-RWY",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5PY9YQKDBVRKPT3W41",
+      "name": "MIB005 CLASS-D",
+      "shortName": "CLASS-D",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5QA8CHDV0QHARYF1S8",
+      "name": "MIB006 MVA-MIB",
+      "shortName": "MVA-MIB",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR5Q7CRN5G2JVDTWTRJ6",
+      "name": "MIB007 MOT-D",
+      "shortName": "MOT-D",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5RGJ7QX9MPQ5QWMYYA",
+      "name": "MIB008 AIRWAY",
+      "shortName": "AIRWAY",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR5RFF7Z1YKTM0CKZABK",
+      "name": "MIB009 JET-RTE",
+      "shortName": "JET-RTE",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR5RFM3VSGBQEF5X2DHB",
+      "name": "MIB010 ARPT",
+      "shortName": "ARPT",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5S93RNZNBA80GQ5PPT",
+      "name": "MIB011 ID-ARPT",
+      "shortName": "ID-ARPT",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5SEEDMX96D29DK5QV6",
+      "name": "MIB012 FIXES",
+      "shortName": "FIXES",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR5T988P4NGWRDJX1WC1",
+      "name": "MIB013 ID-FIX",
+      "shortName": "ID-FIX",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR5TG8XNARMMAK3315FN",
+      "name": "MIB014 EXTDWND",
+      "shortName": "EXTDWND",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5T21B8MFAZ25H6554K",
+      "name": "MIB015 STRIKER",
+      "shortName": "STRIKER",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5VE0Z556A650CPZ3TB",
+      "name": "MIB016 HIGHWAY",
+      "shortName": "HIGHWAY",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5VSG69Q55K44JG8RN8",
+      "name": "MIB017 COUNTY",
+      "shortName": "COUNTY",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR5V0QHPBQNQ9F942F1E",
+      "name": "MIB019 HTA",
+      "shortName": "HTA",
+      "starsId": 19,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR5WMJ88JT7D1CRAMF2H",
+      "name": "MIB020 ILS12",
+      "shortName": "ILS12",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5WHEY6Y0EZK1Z6B98C",
+      "name": "MIB021 ILS30",
+      "shortName": "ILS30",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5WA80Q67QXDJRJPWKE",
+      "name": "MIB022 H-ILS12",
+      "shortName": "H-ILS12",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5WEK8VZZGB3RDWC78Q",
+      "name": "MIB023 H-ILS30",
+      "shortName": "H-ILS30",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5XZ3TC7QRE61K19H0X",
+      "name": "MIB024 TA12",
+      "shortName": "TA12",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5X1FZ35H30R744F07C",
+      "name": "MIB025 TA30",
+      "shortName": "TA30",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5X3BP47YMZME9GXFP7",
+      "name": "MIB026 H-TA12",
+      "shortName": "H-TA12",
+      "starsId": 26,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5YHAWTCQF0KBFY56GD",
+      "name": "MIB027 H-TA30",
+      "shortName": "H-TA30",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5YMG8S2K6F1MGSWVWH",
+      "name": "MIB028 TA-125",
+      "shortName": "TA-125",
+      "starsId": 28,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5YSMBN8Z1GK97J20CY",
+      "name": "MIB029 TA-292",
+      "shortName": "TA-292",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5Z67PPCBKBVZKW51MF",
+      "name": "MIB030 COPTR12",
+      "shortName": "COPTR12",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR5Z5HDSH809Q524QGT9",
+      "name": "MIB031 COPTR30",
+      "shortName": "COPTR30",
+      "starsId": 31,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR5ZTC2Z8CHXHVT0KVS2",
+      "name": "MIB040 ILS31",
+      "shortName": "ILS31",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR5ZTM8AH3FRZ92AGY2P",
+      "name": "MIB041 LOCBC13",
+      "shortName": "LOCBC13",
+      "starsId": 41,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR60MNNY4PYPPA6RG66D",
+      "name": "MIB042 VOR08",
+      "shortName": "VOR08",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR60KEE854ZVYEQ8R0BB",
+      "name": "MIB043 VOR13",
+      "shortName": "VOR13",
+      "starsId": 43,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR61T4QK5B10XM2BAPJK",
+      "name": "MIB044 VOR26",
+      "shortName": "VOR26",
+      "starsId": 44,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR61653GFRH4RJ60T80X",
+      "name": "MIB045 VOR31",
+      "shortName": "VOR31",
+      "starsId": 45,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR61NBKK7MDQ78B9NJD8",
+      "name": "MIB046 GPS08",
+      "shortName": "GPS08",
+      "starsId": 46,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR61F9TSK948Z317J25A",
+      "name": "MIB047 GPS13",
+      "shortName": "GPS13",
+      "starsId": 47,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR62QHK761H1J0PBNPGB",
+      "name": "MIB048 GPS26",
+      "shortName": "GPS26",
+      "starsId": 48,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR62W7D4649QFDJWXY1Y",
+      "name": "MIB049 GPS31",
+      "shortName": "GPS31",
+      "starsId": 49,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR62FGSXBS0K9PD2A0C0",
+      "name": "MIB050 HBC-G31",
+      "shortName": "HBC-G31",
+      "starsId": 50,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR637J7M00JN97ZEMSZC",
+      "name": "MIB051 HBC-VOR",
+      "shortName": "HBC-VOR",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR63AKJBHFJW0ECAJYXK",
+      "name": "MIB052 RUG-G12",
+      "shortName": "RUG-G12",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR63YJYKT1AEPPBSXH3J",
+      "name": "MIB053 RUG-G30",
+      "shortName": "RUG-G30",
+      "starsId": 53,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR63Y0QM5NY94W0XC5VJ",
+      "name": "MIB054 D05-G13",
+      "shortName": "D05-G13",
+      "starsId": 54,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR64TB4981CYVAP46XTW",
+      "name": "MIB055 D05-G31",
+      "shortName": "D05-G31",
+      "starsId": 55,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR64XW7Z25V57W69DBCC",
+      "name": "MIB056 08D-G28",
+      "shortName": "08D-G28",
+      "starsId": 56,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR64WGHAH17WZ78DAFGK",
+      "name": "MIB057 7K5-G26",
+      "shortName": "7K5-G26",
+      "starsId": 57,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR656WDRD0DAHE4R4FWT",
+      "name": "MIB058 D09-G31",
+      "shortName": "D09-G31",
+      "starsId": 58,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR65X8C588TB6NRJXWPG",
+      "name": "MIB070 DEV-MOA",
+      "shortName": "DEV-MOA",
+      "starsId": 70,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR65NFEABD4EDPB47RQS",
+      "name": "MIB071 TIG-MOA",
+      "shortName": "TIG-MOA",
+      "starsId": 71,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR65CT0BMQKCCQTFFB32",
+      "name": "MIB072 ATCAA",
+      "shortName": "ATCAA",
+      "starsId": 72,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR66CS0MNDD97WNBX0KT",
+      "name": "MIB073 AR-629",
+      "shortName": "AR-629",
+      "starsId": 73,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1ATR66GDBCZEZYJC3HXB7W",
+      "name": "MIB082 FREQ",
+      "shortName": "FREQ",
+      "starsId": 82,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1ATR66SYJME5D071QC0A6R",
+      "name": "MIB083 ANTENNA",
+      "shortName": "ANTENNA",
+      "starsId": 83,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H9W7WWWWW1ANMG0TBF4KK3DM",
+      "name": "MIB TDM",
+      "shortName": "TDM",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

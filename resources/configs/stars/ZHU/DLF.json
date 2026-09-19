@@ -1,0 +1,368 @@
+{
+  "artcc": "ZHU",
+  "facility": "DLF",
+  "name": "Laughlin ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 28.71396075,
+    "lon": -90.5088095
+  },
+  "controlPositions": [
+    {
+      "id": "01GSJ4DF8C1KMQ0EG11V8E4ETJ",
+      "name": "Clearance Delivery",
+      "callsign": "DLF_DEL",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 120.5
+    },
+    {
+      "id": "01GSJ4NZWPEJFF7AGYK87ER4YA",
+      "name": "East Approach",
+      "callsign": "DLF_E_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 119.6
+    },
+    {
+      "id": "01GSJ4Y3PVACSKAEXKY18H4FGR",
+      "name": "Local",
+      "callsign": "DLF_TWR",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 125.2
+    },
+    {
+      "id": "01H6QJTXAF7PM4V0QG28J8KMDQ",
+      "name": "Ground",
+      "callsign": "DLF_GND",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01HAWT835P66W846MAR9FFTPJ5",
+      "name": "West Approach",
+      "callsign": "DLF_W_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 118
+    },
+    {
+      "id": "01HAWT9PXR1RENPG9X8RR0EQ7S",
+      "name": "South Approach",
+      "callsign": "DLF_S_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 127.75
+    },
+    {
+      "id": "01JQ59ZAFVCD2561SRT12EHPK4",
+      "name": "Arrival Radar",
+      "callsign": "DLF_A_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 123.1
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1D",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        9,
+        7,
+        8,
+        6,
+        10,
+        11,
+        12,
+        13,
+        16,
+        14,
+        15,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        9
+      ],
+      "submenuMapIds": [
+        7,
+        6,
+        11,
+        13,
+        14,
+        17,
+        19,
+        21,
+        23,
+        25,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        10,
+        12,
+        16,
+        15,
+        18,
+        20,
+        22,
+        24,
+        26,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GYS821SH5PPFTF2G01ZWDDSX",
+      "name": "DLF BASE",
+      "shortName": "BASE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GYTJ032KWXMYQCGF6DRZNANF",
+      "name": "DLF 3NM MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GYS82JM6754YBSE8QE4JZBGQ",
+      "name": "DLF Class C",
+      "shortName": "CLASS C",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GYS8ARE30JYS1K63DM15N7SE",
+      "name": "DLF Class C Practice Areas",
+      "shortName": "DLF C PA",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GYS88ZWPEZP328Y8P4DATEK1",
+      "name": "DLF MOA Practice Areas",
+      "shortName": "MOA PA",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GYS9CVFEX210N7CP1GAK1B4H",
+      "name": "DLF Crystal North MOA",
+      "shortName": "CN MOA",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GYTJ032GTRYFB0TPWB8YV8MJ",
+      "name": "DLF IRS",
+      "shortName": "IR RTE",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GYTJ032M5AE4YK2E1HTBP88T",
+      "name": "DLF VRS",
+      "shortName": "VR RTE",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1DE9JRP8PRQAKV7P1DYEBAH",
+      "name": "DLF RANCH Shelf",
+      "shortName": "RANCH",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GYTJ032HEF5HXRGZ7D0QPJK8",
+      "name": "DLF Laughlin 1 MOA",
+      "shortName": "DLF 1",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GYTJ032JPNACV54NPDRVY69D",
+      "name": "DLF Laughlin 2 MOA",
+      "shortName": "DLF 2",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GYTJ032J6J7XER998NQ5YP65",
+      "name": "DLF Laughlin 3 MOA",
+      "shortName": "DLF 3",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GYS8C3ATVPA4XYCZX3SZ7VDA",
+      "name": "DLF Randolph 2 MOA",
+      "shortName": "RND 2 MOA",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0DGX6M4GKRY3FFJ0JP0V664",
+      "name": "DLF GPS 13C",
+      "shortName": "GPS 13C",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0DGX6M54732473MRWVHH1KK",
+      "name": "DLF GPS 31C",
+      "shortName": "GPS 31C",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0DGX6M6D71JC1VDMR49DF8G",
+      "name": "DLF GPS B",
+      "shortName": "GPS B",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0DGX6M6BFGDWKTJ09YHYZ74",
+      "name": "DLF HILS 13C",
+      "shortName": "HILS13C",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0DGX6M7F94XP9FXRCPXCQWH",
+      "name": "DLF HILS 31C",
+      "shortName": "HILS31C",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0DGX6M7SFX9BTMST9790JQC",
+      "name": "DLF VOR 13C",
+      "shortName": "VOR 13C",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0DGX6M8FCHN4E9QW6RXZZQ0",
+      "name": "DLF VOR 31C",
+      "shortName": "VOR 31C",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0DGX6M8KYRX7RXVN45BNC9G",
+      "name": "DRT GPS 13",
+      "shortName": "DRT G13",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0DGX6M9AG0PHVKBKTR7E6BE",
+      "name": "DRT VOR A",
+      "shortName": "DRT VOR",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0DGX6M2BAHJM143R548EA0K",
+      "name": "5T9 GPS 13",
+      "shortName": "5T9 G13",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0DGX6M3NXMFMYZJNWCQ35ZH",
+      "name": "5T9 GPS 31",
+      "shortName": "5T9 G31",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0DGX6MA7FBRS5NAB046P71R",
+      "name": "ECU GPS 14",
+      "shortName": "ECU G14",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0DGX6MBZ3FER3M4Y3ZZMGC3",
+      "name": "ECU VOR 14",
+      "shortName": "ECU V14",
+      "starsId": 26,
+      "brightnessCategory": "A"
+    }
+  ]
+}

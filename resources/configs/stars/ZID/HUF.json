@@ -1,0 +1,604 @@
+{
+  "artcc": "ZID",
+  "facility": "HUF",
+  "name": "Hulman ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 38.6494889,
+    "lon": -84.3106305555556
+  },
+  "controlPositions": [
+    {
+      "id": "01GXRN7MNSW1YWE2PKMPDAG7RR",
+      "name": "Ground Control",
+      "callsign": "HUF_GND",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 121.6
+    },
+    {
+      "id": "01GXRNA1G4EKZJHWHC83MP2VVR",
+      "name": "Local Control",
+      "callsign": "HUF_TWR",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 134.725
+    },
+    {
+      "id": "01GXRNB87EPBWPAWTJZX8E7NW0",
+      "name": "Arrival Radar",
+      "callsign": "HUF_H_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 125.45
+    },
+    {
+      "id": "01GXRNCEA630D07CK5K9TAZRRK",
+      "name": "Satellite 2 Radar",
+      "callsign": "HUF_G_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 119.8
+    },
+    {
+      "id": "01GXRNDCW24A8JXA0C483N6A9P",
+      "name": "Satellite 1 Radar",
+      "callsign": "HUF_Q_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 128.025
+    },
+    {
+      "id": "01JA39RG7MPRAJ0330DA940ZJJ",
+      "name": "HUF GUARD",
+      "callsign": "HUF_EM_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1Q",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1G",
+        "1H",
+        "1Q",
+        "1T"
+      ],
+      "mapIds": [
+        101,
+        111,
+        112,
+        106,
+        104,
+        105,
+        118,
+        204,
+        102,
+        103,
+        107,
+        108,
+        133,
+        134,
+        131,
+        132,
+        114,
+        113,
+        116,
+        120,
+        121,
+        122,
+        106,
+        115,
+        146,
+        147,
+        110,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        101,
+        112,
+        104,
+        111,
+        106,
+        105
+      ],
+      "submenuMapIds": [
+        118,
+        102,
+        107,
+        133,
+        131,
+        114,
+        116,
+        121,
+        106,
+        146,
+        110,
+        null,
+        null,
+        null,
+        null,
+        204,
+        103,
+        108,
+        134,
+        132,
+        113,
+        120,
+        122,
+        115,
+        147,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01K1V9JQ2M0KDM0HF5MZRS4BM2",
+      "name": "HUF BASE",
+      "shortName": "BASE",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K1V9JQ33ER1QDF4ZVQ61Z46N",
+      "name": "HUF RNAV 1",
+      "shortName": "RNAV 1",
+      "starsId": 102,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ33HASB2BWZ8XXAGS8D",
+      "name": "HUF RNAV 2",
+      "shortName": "RNAV 2",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2ZXSV09YQH3S6W2H5F",
+      "name": "HUF MVA 3NM",
+      "shortName": "MVA",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ38XQE8447K9N01QJZ0",
+      "name": "HUF TOPO",
+      "shortName": "TOPO",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ32H65TZA2JVZDMXBGN",
+      "name": "HUF RED HILLS",
+      "shortName": "REDHILL",
+      "starsId": 106,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ39EBWH1YM68NHJ4PF2",
+      "name": "HUF V12 SPLIT",
+      "shortName": "V12SPLT",
+      "starsId": 107,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2FSPN72X33789916VX",
+      "name": "HUF 20 MILE SPLIT",
+      "shortName": "20MSPLT",
+      "starsId": 108,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2KQYAEDKK63VP4C16S",
+      "name": "HUF ASR",
+      "shortName": "ASR",
+      "starsId": 109,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BK8SJ9BDFAG7T1M9VRYNQR",
+      "name": "HUF COUNTIES",
+      "shortName": "COUNTY",
+      "starsId": 110,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ301M73HTZFTZG4EDDQ",
+      "name": "HUF MVA 5NM",
+      "shortName": "MVA 5NM",
+      "starsId": 111,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2KDK1JRFAJGMBYXYS6",
+      "name": "HUF BASE MAP 2",
+      "shortName": "BASE 2",
+      "starsId": 112,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K1V9JQ368Z9FA4W15KHGVR8D",
+      "name": "HUF RY 32 CENTERLINE",
+      "shortName": "RY32CL",
+      "starsId": 113,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ36GJCPKR69JY52DFJE",
+      "name": "HUF RY 14 CENTERLINE",
+      "shortName": "RY14CL",
+      "starsId": 114,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2X55XP3GMC1JVNR07D",
+      "name": "HUF INDY RY 5 OPPERATION",
+      "shortName": "IND RY5",
+      "starsId": 115,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2HDPTRWZH2DFG2WZN6",
+      "name": "HUF AIRWAY BOUNDARY",
+      "shortName": "ARWYBDY",
+      "starsId": 116,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2VBEHPDFCEKEWGDTZ8",
+      "name": "HUF EMERGENCY LANDING STRIPS",
+      "shortName": "EMER ",
+      "starsId": 118,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2XWJ1K5GX0HCA6REJ3",
+      "name": "HUF IR618 VR619",
+      "shortName": "IR-VR",
+      "starsId": 120,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ32KPD0K40FYTJGFQTD",
+      "name": "HUF RACER MOA",
+      "shortName": "RACER",
+      "starsId": 121,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2PQHTSCJ206CFAYVNS",
+      "name": "HUF BLUE SKY",
+      "shortName": "BLUESKY",
+      "starsId": 122,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ31JS5RQDRF5T9PDRE3",
+      "name": "HUF R3405",
+      "shortName": "R3405",
+      "starsId": 123,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ34X347K2GMEPZXH5MY",
+      "name": "HUF RNAV GPS 23",
+      "shortName": "HUF G23",
+      "starsId": 131,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ35B27RKBSNASPY850K",
+      "name": "HUF RNAV GPS 32",
+      "shortName": "HUF G32",
+      "starsId": 132,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ34A3FSFA132ZJJ1F9J",
+      "name": "HUF RNAV GPS 05",
+      "shortName": "HUF G05",
+      "starsId": 133,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ34KYPTW7MMPJPVDBWS",
+      "name": "HUF RNAV GPS 14",
+      "shortName": "HUF G14",
+      "starsId": 134,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ39FK4ZHZSTVRHV8P1T",
+      "name": "HUF VOR RY 05",
+      "shortName": "HUF V05",
+      "starsId": 135,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ38QPMK5YDG06GAAXD9",
+      "name": "HUF UNION HOSP RNAV-GPS",
+      "shortName": "60II RN",
+      "starsId": 136,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2QJ10RNC6741PZ6T4M",
+      "name": "HUF BMG CLASS D",
+      "shortName": "BMG D",
+      "starsId": 140,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2QMED78N5MGX39RQWK",
+      "name": "HUF BMG RNAV 06-24",
+      "shortName": "BMG G6",
+      "starsId": 141,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2RTYDVR8CK70YJD06M",
+      "name": "HUF BMG RNAV 17",
+      "shortName": "BMG G17",
+      "starsId": 142,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2SP9BCR1GCP8N6D6PX",
+      "name": "HUF BMG RNAV 35",
+      "shortName": "BMG G35",
+      "starsId": 144,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2SWX10QJFQSTD6J48C",
+      "name": "HUF BMG VOR DME 6 AND 17",
+      "shortName": "BMG VOR",
+      "starsId": 145,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BK9X194MDHNEYAR09B5WT9",
+      "name": "HUF 06IN COPTER RNAV",
+      "shortName": "06IN RN",
+      "starsId": 146,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BKAKZYN9QWX23VPJM9JXYG",
+      "name": "HUF 57IN APCH",
+      "shortName": "57IN",
+      "starsId": 147,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2TJ60RESY5W8HFWB9Z",
+      "name": "HUF CFJ-RSV-SIV NDB APPCHS",
+      "shortName": "NDB APP",
+      "starsId": 150,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ3121B5PQ6BDAM9DFTG",
+      "name": "HUF PRG-BFR VOR APPCHS",
+      "shortName": "VOR APP",
+      "starsId": 151,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2FETG0DX5CS4E5XNKX",
+      "name": "HUF 3I3 VOR GPS-A",
+      "shortName": "3I3 VOR",
+      "starsId": 160,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2DCJ41DKZDFTNAJ6W0",
+      "name": "HUF 3I3 RNAV GPS-A",
+      "shortName": "3I3 GPS",
+      "starsId": 161,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2S5S92VGMY67MVTEN6",
+      "name": "HUF BRAZIL 0I2 APPCHS",
+      "shortName": "0I2 APP",
+      "starsId": 163,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2VR8ETJBDXSN4QN4X9",
+      "name": "HUF DCY RNAV GPS 18",
+      "shortName": "DCY G18",
+      "starsId": 166,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2NASTGW11ZD5XKQVFY",
+      "name": "HUF BFR RNAV GPS 13",
+      "shortName": "BFR G13",
+      "starsId": 168,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ30J04NQX08X2AD6KMG",
+      "name": "HUF PRG RNAV GPS 9-27",
+      "shortName": "PRG GEW",
+      "starsId": 171,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K1V9JQ3188ASDQ6R804CW3CR",
+      "name": "HUF PRG RNAV GPS 18-36",
+      "shortName": "PRG GNS",
+      "starsId": 172,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2XPHA0YE4M6E4X8SKX",
+      "name": "HUF IH8 RNAV GPS 4-22",
+      "shortName": "1H8 GPS",
+      "starsId": 177,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ35ST0JTWZ47ZWZ03WN",
+      "name": "HUF RSV RNAV GPS 9-27",
+      "shortName": "RSV GEW",
+      "starsId": 180,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ362ATJ25ZAMS5GN3TW",
+      "name": "HUF RSV RNAV GPS 17",
+      "shortName": "RSV G17",
+      "starsId": 181,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2Y8JV1E983FPKJ9PHG",
+      "name": "HUF LWV RNAV GPS 9-27",
+      "shortName": "LWV GEW",
+      "starsId": 185,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2YM6YCQ40HEEBRQCX9",
+      "name": "HUF LWV RNAV GPS 18",
+      "shortName": "LWV G18",
+      "starsId": 186,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2T36CX7GK90M4NW87C",
+      "name": "HUF CFJ RNAV GPS 4",
+      "shortName": "CFJ G04",
+      "starsId": 189,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ37ZNZZM38HJVTXCDFZ",
+      "name": "HUF SIV RNAV GPS 18-36",
+      "shortName": "SIV GNS",
+      "starsId": 192,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2WEY93J3R49FG3F5N8",
+      "name": "HUF GPC RNAV GPS APPCHS",
+      "shortName": "GPC GPS",
+      "starsId": 197,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2ZBNKVP7PQGBBVCR4Y",
+      "name": "HUF MTO RNAV GPS 29",
+      "shortName": "MTO G29",
+      "starsId": 200,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2JZP3508HJ5X7V0ATY",
+      "name": "HUF AJG RNAV GPS 22",
+      "shortName": "AJG G22",
+      "starsId": 203,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ37APM8YTGRF4HEBBXN",
+      "name": "HUF STADIUMS",
+      "shortName": "STADIUM",
+      "starsId": 204,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2W81JHPTPKGZ21QWJH",
+      "name": "HUF FLCHK-BMG ILS OR LOC-DME 35",
+      "shortName": "FLC I35",
+      "starsId": 500,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K1V9JQ2WH6YG6Y9SKSZT9KGS",
+      "name": "HUF FLCHK-HUF ILS OR LOC 5",
+      "shortName": "FLC I05",
+      "starsId": 501,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J4HM862C3PBQ9VSCJV3F0C67",
+      "name": "Airports TDM",
+      "shortName": "TDM",
+      "starsId": 900,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JES4K489M5VASYV63CT66C57",
+      "name": "TAXIWAY LABELS",
+      "shortName": "TWY LBL",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01K1V9JQ2HDPTRWZH2DFG2WZN6",
+      "name": "HUF AIRWAY BOUNDARY",
+      "shortName": "ARWYBDY",
+      "starsId": 116,
+      "brightnessCategory": "B"
+    }
+  ]
+}

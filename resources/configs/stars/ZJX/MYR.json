@@ -1,0 +1,510 @@
+{
+  "artcc": "ZJX",
+  "facility": "MYR",
+  "name": "Myrtle Beach ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 30.39404875,
+    "lon": -81.98462525
+  },
+  "controlPositions": [
+    {
+      "id": "01GA5V1PBBJDJ5B8FRGK42NQYB",
+      "name": "West Approach",
+      "callsign": "MYR_W_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 127.4
+    },
+    {
+      "id": "01GA5V3E06WYZEMGNWHV8NRT1N",
+      "name": "East Approach",
+      "callsign": "MYR_E_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 119.2
+    },
+    {
+      "id": "01GA5V4XPSFFX13MTSPD6CZKJJ",
+      "name": "Ground Control",
+      "callsign": "MYR_GND",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 120.3
+    },
+    {
+      "id": "01GA5V6KCRAJ3HSQVWX51MQFC0",
+      "name": "Local Control",
+      "callsign": "MYR_TWR",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 128.45
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1W"
+      ],
+      "mapIds": [
+        102,
+        111,
+        10,
+        134,
+        132,
+        104,
+        122,
+        123,
+        136,
+        8,
+        139,
+        120,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        133,
+        109,
+        103,
+        12,
+        105,
+        114,
+        116,
+        141,
+        142,
+        143,
+        149,
+        150,
+        160,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        102,
+        10,
+        132,
+        111,
+        134,
+        104
+      ],
+      "submenuMapIds": [
+        122,
+        136,
+        139,
+        124,
+        126,
+        128,
+        130,
+        133,
+        103,
+        105,
+        116,
+        142,
+        149,
+        160,
+        null,
+        123,
+        8,
+        120,
+        125,
+        127,
+        129,
+        131,
+        109,
+        12,
+        114,
+        141,
+        143,
+        150,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1D",
+        "1T"
+      ],
+      "mapIds": [
+        500,
+        120,
+        10,
+        123,
+        111,
+        122,
+        160,
+        136,
+        134,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        500,
+        10,
+        111,
+        120,
+        123,
+        122
+      ],
+      "submenuMapIds": [
+        160,
+        134,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        136,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HAKT08K8PAMZ81MRJNKEHWF3",
+      "name": "MYR EMERGENCY",
+      "shortName": "EMERG",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPHNZJR5F9CESJH4A8X",
+      "name": "MYR CLASS C D AIRSPACE",
+      "shortName": "CLASS C",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAKT08K7BYQ92K9RTZAEWKVR",
+      "name": "GAMECOCK MOA B",
+      "shortName": "GAME_B",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GP9HC7YH4SNN4EEDVXC",
+      "name": "BASE MAP",
+      "shortName": "MAP",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPARTZG1S5TGX5Q51CR",
+      "name": "GAMECOCK MOA A",
+      "shortName": "GAME_A",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPA57B6FBTWXG97AM4N",
+      "name": "GPS APPROACH FIXES",
+      "shortName": "GPS_FIX",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPB1EG4151V6TPKJC38",
+      "name": "GAMECOCK MOA C",
+      "shortName": "GAME_C",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPBGA070E98YKF15EGE",
+      "name": "IR-035",
+      "shortName": "IR-035",
+      "starsId": 109,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPC3N18GYPXG4P2SZSR",
+      "name": "MVA ",
+      "shortName": "MVA",
+      "starsId": 111,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPC8GESY8S00TQFKRKN",
+      "name": "GAMECOCK MOA D",
+      "shortName": "GAME_D",
+      "starsId": 114,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPCXJQ0NGG83Q4ZAAMV",
+      "name": "RBROY MOA",
+      "shortName": "RBROY",
+      "starsId": 116,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPDDWDNRAFGW70MKQ11",
+      "name": "BASE MAP CLEAN",
+      "shortName": "CLEANMP",
+      "starsId": 120,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPD2QTBHPABN1P4NT79",
+      "name": "MYR RNAV 36",
+      "shortName": "MYR_R36",
+      "starsId": 122,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPDMD7YFBMEVKKQDCDF",
+      "name": "MYR RNAV 18",
+      "shortName": "MYR_R18",
+      "starsId": 123,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPEF6K0MV25QKX0RMSD",
+      "name": "GGE APPROACHES",
+      "shortName": "GGE_APP",
+      "starsId": 124,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPEHPW4AEY0PHEBGT5C",
+      "name": "CKI APPROACHES",
+      "shortName": "CKI_APP",
+      "starsId": 125,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPEP09VDB9CRD6EVQCE",
+      "name": "CPC APPROACHES",
+      "shortName": "CPC_APP",
+      "starsId": 126,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPEKMNSE8Q3NY2HF2WY",
+      "name": "HYW APPROACHES",
+      "shortName": "HYW_APP",
+      "starsId": 127,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPE2MTR354ZM8RCWV2C",
+      "name": "5J9 APPROACHES",
+      "shortName": "5J9_APP",
+      "starsId": 128,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPF4PP5CEH983XN0YVR",
+      "name": "CRE RNAV 05",
+      "shortName": "CRE_R05",
+      "starsId": 129,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPFCX16F0RE31NZJJ1G",
+      "name": "CRE RNAV 23",
+      "shortName": "CRE_R23",
+      "starsId": 130,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPFZS8RQTRYY7RVWAZ5",
+      "name": "CRE R05/23",
+      "shortName": "CRERNAV",
+      "starsId": 131,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPFWZZQ3Y0EBT4N9XY6",
+      "name": "VOR APPROACHES",
+      "shortName": "VOR_APP",
+      "starsId": 132,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPF5WE9JG1NJEZD424V",
+      "name": "NDB APPROACHES",
+      "shortName": "NDB_APP",
+      "starsId": 133,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPGTZ12JPCT6ZK0TEFB",
+      "name": "MYR GPS APPROACHES",
+      "shortName": "GPS_APP",
+      "starsId": 134,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPGR65QM321KADX4CGQ",
+      "name": "AIRPORT IDS",
+      "shortName": "AIRPORT",
+      "starsId": 136,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPG39TT2ADD0GCDTR5B",
+      "name": "INTERSECTIONS",
+      "shortName": "INTSEC",
+      "starsId": 139,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPG5X5EA157GAQ14CAC",
+      "name": "DOUBLESHOT",
+      "shortName": "DBLSHOT",
+      "starsId": 141,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPH61NA9R1F76XNKBNJ",
+      "name": "AR 7-12-25",
+      "shortName": "ARS",
+      "starsId": 142,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPH8ET6VZAQQC79HKHM",
+      "name": "IR/VR ROUTES",
+      "shortName": "IR_VR",
+      "starsId": 143,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAT70GPHBY1260KNJJE0C0VP",
+      "name": "NC78 COPTER RNAV 29",
+      "shortName": "NC78R29",
+      "starsId": 149,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAT70GPH70Q2AQ1RASTVBXG1",
+      "name": "NC78 HUSIN1 DEP",
+      "shortName": "NC78DEP",
+      "starsId": 150,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAWN8P0FKJVXKFCD5490K5ZX",
+      "name": "MYR AIRPORT DIAGRAMS",
+      "shortName": "GROUND",
+      "starsId": 160,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HWTTMN0V7R5CKDH4NTDQ92N6",
+      "name": "MYRTWRAIRSPACESTARS",
+      "shortName": "MYRTWR",
+      "starsId": 500,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HAT70GPHNZJR5F9CESJH4A8X",
+      "name": "MYR CLASS C D AIRSPACE",
+      "shortName": "CLASS C",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HWTTMN0V7R5CKDH4NTDQ92N6",
+      "name": "MYRTWRAIRSPACESTARS",
+      "shortName": "MYRTWR",
+      "starsId": 500,
+      "brightnessCategory": "A"
+    }
+  ]
+}

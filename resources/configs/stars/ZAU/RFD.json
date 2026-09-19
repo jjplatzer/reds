@@ -1,0 +1,262 @@
+{
+  "artcc": "ZAU",
+  "facility": "RFD",
+  "name": "Rockford ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.879166749999996,
+    "lon": -88.975
+  },
+  "controlPositions": [
+    {
+      "id": "01H5EECTYWRDCFBJBCQM7W1JSD",
+      "name": "East Approach",
+      "callsign": "RFD_E_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121
+    },
+    {
+      "id": "01H5EEG468Z2F349E07TX8D5GJ",
+      "name": "Local",
+      "callsign": "RFD_TWR",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 118.1
+    },
+    {
+      "id": "01H5EEGTRHNA5MFNGGTHWE2NXF",
+      "name": "Ground",
+      "callsign": "RFD_GND",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01H5EEHC1RE1NMB4MQBD082VN5",
+      "name": "Clearance Delivery",
+      "callsign": "RFD_DEL",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 119.25
+    },
+    {
+      "id": "01H5FXCF665RTBRTCRDG6TZP24",
+      "name": "West Approach",
+      "callsign": "RFD_W_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 126
+    },
+    {
+      "id": "01HGE85FFP8TF6HJRGDRDK4YMY",
+      "name": "VatVenture VFR",
+      "callsign": "RFD_N_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 124.9
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1R",
+        "1T",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6,
+        7,
+        23,
+        8,
+        24,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        8,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        23,
+        24,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GFM25Y9XN0NNGNXJ273082AE",
+      "name": "RFD MAIN EAST FLOW",
+      "shortName": "EAST",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM25Y9Z1D0CDZNCKR2E87A0",
+      "name": "RFD MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM25YA4BHY54S8G6P2AJHHS",
+      "name": "RFD VFR",
+      "shortName": "VFR",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM25YA60G839M793K3MVTEV",
+      "name": "RFD MAIN WEST FLOW",
+      "shortName": "WEST",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM25YA13E08N6FCP1GDW57Z",
+      "name": "RFD SATELLITE APPROACHES A",
+      "shortName": "SAT A",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM25YA3Q6QR1S7BF67R2KCJ",
+      "name": "RFD SATELLITE APPROACHES B",
+      "shortName": "SAT B",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JFD6236HMATZ2BMBPYBXRV99",
+      "name": "RFD AIRPORT DIAGRAMS",
+      "shortName": "AP DIAG",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8RVPHFWF54ZYEP273CGDSAG",
+      "name": "RFD VICTOR AIRWAYS",
+      "shortName": "VT RTES",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KDNJREG6N3TT1A5QHWPNSMR7",
+      "name": "RFD SIDS",
+      "shortName": "SIDS",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KCYDXGX0EC99T607H8N4323T",
+      "name": "RFD STARS",
+      "shortName": "STARS",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    }
+  ]
+}

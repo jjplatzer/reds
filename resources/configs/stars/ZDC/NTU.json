@@ -1,0 +1,58 @@
+{
+  "artcc": "ZDC",
+  "facility": "NTU",
+  "name": "Oceana ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 37,
+    "lon": -77
+  },
+  "controlPositions": [
+    {
+      "id": "01HAD2A4YAQ1RB41SEGRWH359Y",
+      "name": "Ground",
+      "callsign": "NTU_GND",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 119.6
+    },
+    {
+      "id": "01HAD2FA6QV1VTG5K488GXXSKJ",
+      "name": "Local",
+      "callsign": "NTU_TWR",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 127.075
+    },
+    {
+      "id": "01HAD2G2S7WDXSMGYKP8R8E40M",
+      "name": "Approach",
+      "callsign": "NTU_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 123.9
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GXEFWNVRTM4PFPHZ7CRMYY4W",
+      "name": "ORF SW RVM",
+      "shortName": "SW RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GXEFVVG0PK5B96HRA2PTZBW3",
+      "name": "ORF NE RVM",
+      "shortName": "NE RVM",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    }
+  ]
+}

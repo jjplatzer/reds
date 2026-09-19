@@ -1,0 +1,678 @@
+{
+  "artcc": "ZKC",
+  "facility": "ICT",
+  "name": "Wichita ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 37.593354149999996,
+    "lon": -95.43247947500001
+  },
+  "controlPositions": [
+    {
+      "id": "01G9HX484J96QTHYAC3CJBENAC",
+      "name": "Radar West",
+      "callsign": "ICT_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 126.7
+    },
+    {
+      "id": "01G9HX4TFH09SSBMABETY0Y2JC",
+      "name": "Radar East",
+      "callsign": "ICT_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 134.85
+    },
+    {
+      "id": "01G9HX62P076DJZW2TG2G65KAB",
+      "name": "Radar Satellite East",
+      "callsign": "ICT_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 134.8
+    },
+    {
+      "id": "01G9HX6YCMEGMK3EK5CZRR8F7B",
+      "name": "Radar Satellite West",
+      "callsign": "ICT_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 125.5
+    },
+    {
+      "id": "01G9HX8ZKADN2AB8EPHV8TMT4E",
+      "name": "Radar Final",
+      "callsign": "ICT_APP",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 127.675
+    },
+    {
+      "id": "01G9HXBFGM0Z9GFJACYZC00GXS",
+      "name": "Local",
+      "callsign": "ICT_TWR",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 118.2
+    },
+    {
+      "id": "01G9HXCNTTVX7HJ4BWVARJNXJR",
+      "name": "Ground",
+      "callsign": "ICT_GND",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G9HXD5ECCCYRYDMC3W2J341R",
+      "name": "Clearance",
+      "callsign": "ICT_DEL",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      },
+      "freq": 125.7
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1I",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 37.593354149999996,
+        "lon": -95.43247947500001
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1F",
+        "1H",
+        "1L",
+        "1S",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        41,
+        42,
+        45,
+        44,
+        45,
+        46,
+        47,
+        24,
+        25,
+        26,
+        27,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        31,
+        33,
+        35,
+        37,
+        39,
+        42,
+        44,
+        46,
+        24,
+        26,
+        null,
+        null,
+        null,
+        null,
+        30,
+        32,
+        34,
+        36,
+        38,
+        41,
+        45,
+        45,
+        47,
+        25,
+        27,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1I"
+      ],
+      "mapIds": [
+        60,
+        62,
+        61,
+        5,
+        4,
+        13,
+        24,
+        25,
+        26,
+        27,
+        37,
+        36,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        60,
+        61,
+        4,
+        62,
+        5,
+        13
+      ],
+      "submenuMapIds": [
+        24,
+        26,
+        37,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        25,
+        27,
+        36,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1U"
+      ],
+      "mapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GVH83XCY3T2R4A3SWH3T49B7",
+      "name": "ICT NORTH FLOW",
+      "shortName": "N_FLOW",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XD7V9FXKDE9BT5JEN72",
+      "name": "ICT SOUTH FLOW",
+      "shortName": "S_FLOW",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCFQJ1TMGHGRHSEMC4B",
+      "name": "ICT EUREKA MOA MAP",
+      "shortName": "EUREKA",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XBTMTWDSKGZS1YNW77N",
+      "name": "ICT GEOGRAPHY MAP",
+      "shortName": "MVA_ICT",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GVH83XCVAV8W68FZB6R5JQSC",
+      "name": "ICT MCCONNELL CLASS D",
+      "shortName": "IAB_D",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XC2C2JNH35KQT2Z2CP7",
+      "name": "ICT APCH MAP INDEX",
+      "shortName": "MAP_IDX",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XC4R5F1R3Y3F9YXAE1K",
+      "name": "ICT APD",
+      "shortName": "ICT_APD",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XC6K9027HJX0QF67AR3",
+      "name": "ICT ATCT SOUTH FLOW",
+      "shortName": "TWR_SF",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XC50WD99G9CASYGN1N5",
+      "name": "ICT ATCT NORTH FLOW",
+      "shortName": "TWR_NF",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCAZW9D40A4YR7HR70N",
+      "name": "ICT BEECH CLASS D",
+      "shortName": "BEC_D",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCKJ8M5A0SAMDF6AYSD",
+      "name": "ICT IAB GPS 01R",
+      "shortName": "RIAB01R",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCJZ7S47XJ98S2KXY9N",
+      "name": "ICT IAB GPS 01L",
+      "shortName": "RIAB01L",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCMVSWR1NSZF79A6DZX",
+      "name": "ICT IAB GPS 19L",
+      "shortName": "RIAB19L",
+      "starsId": 26,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCNH53E4EFFZX1KVPRD",
+      "name": "ICT IAB GPS 19R",
+      "shortName": "RIAB19R",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XD2ZDYESAVF2WSPZDGN",
+      "name": "ICT RNAV (GPS) RWY 01R",
+      "shortName": "GPS_1R",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XD3DTN83X1P6K8A8A3W",
+      "name": "ICT RNAV (GPS) RWY 14",
+      "shortName": "GPS_14",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XD4VC7H4HZT2E958JJS",
+      "name": "ICT RNAV (GPS) RWY 32",
+      "shortName": "GPS_32",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XD6G8F2A9YARSDA4DB7",
+      "name": "ICT RNAV (GPS) RWY19R",
+      "shortName": "GPS_19R",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XD1MJQGTX9W5KM8QF4X",
+      "name": "ICT RNAV (GPS) RWY 01L",
+      "shortName": "GPS_1L",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XD5ZMG7KTDZ9RVEGH5X",
+      "name": "ICT RNAV (GPS) RWY19L",
+      "shortName": "GPS_19L",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XBY7A9QEW43Q5HNC631",
+      "name": "ICT AAO GPS 18-36",
+      "shortName": "AAO_GPS",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XC8AZSVDX8F90C8JZXQ",
+      "name": "ICT BEC GPS 01-19",
+      "shortName": "BECAPCH",
+      "starsId": 37,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCA336459EVFSF3DD07",
+      "name": "ICT CEA GPS D",
+      "shortName": "CEAAPCH",
+      "starsId": 38,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XBQ4VJQS6BVR8KR71SD",
+      "name": "ICT 3AU APPROACHES",
+      "shortName": "3AUAPCH",
+      "starsId": 39,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XBPW71S0TD4WXR15JPT",
+      "name": "ICT 1K1 GPS 17",
+      "shortName": "1K1_GPS",
+      "starsId": 41,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCDZ9BM23QV9CDQR386",
+      "name": "ICT EGT GPS 17-35",
+      "shortName": "EGT_GPS",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XBXZ5NP3CMZPPYXJY30",
+      "name": "ICT 47K GPS 17-35",
+      "shortName": "47K_GPS",
+      "starsId": 44,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCERV8HDT0QKM67ABMK",
+      "name": "ICT EQA GPS 4-15-22-33",
+      "shortName": "EQA_GPS",
+      "starsId": 45,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XBWKCX54JWSJ3XHA2TP",
+      "name": "ICT 9K8 GPS 18-36",
+      "shortName": "9K8_GPS",
+      "starsId": 46,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCW06A8XDZHWRCY2W23",
+      "name": "ICT MPR GPS 18-36",
+      "shortName": "MPRAPCH",
+      "starsId": 47,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XC4XPKSKYE102JRP0TH",
+      "name": "ICT ARGONIA ROCKET LAUNCH",
+      "shortName": "ARGONIA",
+      "starsId": 48,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XDDXJWVC832PXAJFEWR",
+      "name": "ICT WLD GPS 17-35",
+      "shortName": "WLD_GPS",
+      "starsId": 49,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XC18SKK5Z29Q1EKNRQS",
+      "name": "ICT ANY GPS 18-36 VOR-A",
+      "shortName": "ANYAPCH",
+      "starsId": 56,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XDA9QG5TTY7G56GY63S",
+      "name": "ICT VANCE APPROACH BNDY",
+      "shortName": "ENDAPCH",
+      "starsId": 57,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XDCF15QZAHB9ZCDK58T",
+      "name": "ICT VANCE MOA BNDY",
+      "shortName": "ENDMOA",
+      "starsId": 58,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCRF87P8VE4F50Q7TBP",
+      "name": "ICT IAB MAP1",
+      "shortName": "IABMAP1",
+      "starsId": 60,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCQ286KFBJ5D04TNFNQ",
+      "name": "ICT IAB MAP1 AND 2",
+      "shortName": "IABCOM",
+      "starsId": 61,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVH83XCSFHA9RT8BQ24B8KN7",
+      "name": "ICT IAB MAP2",
+      "shortName": "IABMAP2",
+      "starsId": 62,
+      "brightnessCategory": "A"
+    }
+  ]
+}

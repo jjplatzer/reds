@@ -1,0 +1,295 @@
+{
+  "artcc": "ZBW",
+  "facility": "BTV",
+  "name": "Burlington ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 42.93753,
+    "lon": -70.70471
+  },
+  "controlPositions": [
+    {
+      "id": "01G9BQWM59DRD71Q0C2RPQWQYQ",
+      "name": "Clearance Delivery",
+      "callsign": "BTV_DEL",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 119.15
+    },
+    {
+      "id": "01G9BQXJ8VVVN1P5QH33T4N7NW",
+      "name": "Local Control",
+      "callsign": "BTV_TWR",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01G9BQY8DQ5VJX8JVXM9V4DHEF",
+      "name": "East Radar",
+      "callsign": "BTV_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.1
+    },
+    {
+      "id": "01G9BQZ8K3WYBYXJR2AEC6JV01",
+      "name": "West Radar",
+      "callsign": "BTV_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 124.55
+    },
+    {
+      "id": "01G9BR04PMHM294CSYEKHQ6DRC",
+      "name": "Ground Control",
+      "callsign": "BTV_GND",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 126.3
+    },
+    {
+      "id": "01HBXRQEFC0G9PMPD9NQ07Y7X1",
+      "name": "Final",
+      "callsign": "BTV_F_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 120.35
+    },
+    {
+      "id": "01KAMCRVA1YV7EVZG2TEMJW805",
+      "name": "BTV Guard",
+      "callsign": "BTV_EM_APP",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 42.93753,
+        "lon": -70.70471
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1F",
+        "1T",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        2,
+        901,
+        3,
+        905,
+        4,
+        5,
+        6,
+        902,
+        903,
+        904,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        901,
+        905,
+        2,
+        3,
+        4
+      ],
+      "submenuMapIds": [
+        5,
+        902,
+        904,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        6,
+        903,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GPHBFBA2M5E0C9PKHKSNP9RZ",
+      "name": "BTV MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBFBA2SM49B4G0M1H7VWS0",
+      "name": "BTV MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHBFBA48DB2297YZCFBPHJN",
+      "name": "BTV VFR",
+      "shortName": "VFR",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPHBFBA3SDW1CS1PDA5VRVYE",
+      "name": "BTV SATS",
+      "shortName": "SATS",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBFBA00GVMPVT25T34WWD2",
+      "name": "EVENT 15 SPLIT",
+      "shortName": "EVT15",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPHBFBA1DHSX1Q3PMSRKM9MX",
+      "name": "EVENT 33 SPLIT",
+      "shortName": "EVT33",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GP4CF1046VTX8SGKVPN1JMMB",
+      "name": "GROUND DIAGRAMS",
+      "shortName": "APT",
+      "starsId": 900,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10DY0KQ88H2D88NBTYS",
+      "name": "ZBW SPLIT 1",
+      "shortName": "ZBW 1",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10ETN5HPA10PFAM5SGC",
+      "name": "ZBW SPLIT 2",
+      "shortName": "ZBW 2",
+      "starsId": 903,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GP4CF10E7QVGYCE97HH069A5",
+      "name": "ZBW SPLIT 3",
+      "shortName": "ZBW 3",
+      "starsId": 904,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HVM90MVHBBCM6ES6KX9WKN3D",
+      "name": "TWY LABELS",
+      "shortName": "TWY LBL",
+      "starsId": 905,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GP4CF104BKDW1F737HYW9Z43",
+      "name": "B, C, D, AIRSPACE",
+      "shortName": "ASPC",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    }
+  ]
+}

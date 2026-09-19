@@ -1,0 +1,235 @@
+{
+  "artcc": "ZLC",
+  "facility": "MSO",
+  "name": "Missoula ATCT | Spokane TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 44.1394906,
+    "lon": -111.3092792325
+  },
+  "controlPositions": [
+    {
+      "id": "01HNH9QE6PBQAK5V3ZCZSVT84N",
+      "name": "Spokane Approach",
+      "callsign": "MSO_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 124.9
+    },
+    {
+      "id": "01HNHAQZ6HB3YA5ST65ENHV6JQ",
+      "name": "Local",
+      "callsign": "MSO_TWR",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 118.4
+    },
+    {
+      "id": "01HNHAT3YZ52DE64THF76KZ8XJ",
+      "name": "Ground",
+      "callsign": "MSO_GND",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1M"
+      ],
+      "mapIds": [
+        100,
+        104,
+        101,
+        105,
+        102,
+        106,
+        110,
+        111,
+        109,
+        122,
+        108,
+        107,
+        103,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        112
+      ],
+      "mainMapIds": [
+        100,
+        101,
+        102,
+        104,
+        105,
+        106
+      ],
+      "submenuMapIds": [
+        110,
+        109,
+        108,
+        103,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        111,
+        122,
+        107,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01J6A5XBAR9V84NCGDVJJDP77R",
+      "name": "ERAM_FILTER 25_MSO RVM STD",
+      "shortName": "E-FLOW",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J6A5XBAT5J0RJ9RQMD30EFB3",
+      "name": "ERAM_FILTER 35_MSO RVM ALT",
+      "shortName": "W-FLOW",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J6A5XBAVDQ1Q32QJPSMC8T25",
+      "name": "ERAM_FILTER 38_MSO MVA",
+      "shortName": "MVA",
+      "starsId": 102,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KGFH5RD65M8W6453A5S9H5GE",
+      "name": "MSO_GPS12",
+      "shortName": "GPS",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JPX6TQVA02FY1TRWZ4TH7MT9",
+      "name": "MSO_MZULA",
+      "shortName": "MZULA",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JPX7ERX2EXBHFWVQGJJCWRVN",
+      "name": "MSO_DIDLY",
+      "shortName": "DIDLY",
+      "starsId": 105,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JPX7GAZRYKS4551M33FFJ58A",
+      "name": "MSO_VICTO_RNAV",
+      "shortName": "VICTO",
+      "starsId": 106,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KGFGF87PF87P0K1SHNDP6D3P",
+      "name": "MSO_RNPZ12",
+      "shortName": "RNP",
+      "starsId": 107,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KG8JZG4CFW02Y77M03H47PFV",
+      "name": "MSO_ILS12",
+      "shortName": "ILS",
+      "starsId": 108,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K16Q5JVN77NFDZXCBA7KN3V0",
+      "name": "MSO-32S-RNAV-A",
+      "shortName": "32SAPP",
+      "starsId": 109,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K16JE819505RMTDBMPHZ5H5X",
+      "name": "MSO_RNAV30",
+      "shortName": "R30",
+      "starsId": 110,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K16MWNTM5DMKJXDBKBFNKMPP",
+      "name": "MSO_VOR-B",
+      "shortName": "VOR-B",
+      "starsId": 111,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KGFJXWSN0H0VPMV33N6BCHMQ",
+      "name": "MSO/GPI_MVA",
+      "shortName": "MVAGPI",
+      "starsId": 112,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KEYSYA8KF2A8EPB46VH7NSKP",
+      "name": "MSO_CLASS_D",
+      "shortName": "CLD",
+      "starsId": 122,
+      "brightnessCategory": "A"
+    }
+  ]
+}

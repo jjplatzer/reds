@@ -1,0 +1,361 @@
+{
+  "artcc": "ZDC",
+  "facility": "ACY",
+  "name": "Atlantic City ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 37,
+    "lon": -77
+  },
+  "controlPositions": [
+    {
+      "id": "01GXEJKMTXYEEWMRA2WSTVE3RN",
+      "name": "Clearance",
+      "callsign": "ACY_DEL",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 127.85
+    },
+    {
+      "id": "01GXEJNKS6CR1SPEAWZTZPFNP4",
+      "name": "Ground",
+      "callsign": "ACY_GND",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GXEJP4MEC072EEQ7HTSM4H0V",
+      "name": "Local",
+      "callsign": "ACY_TWR",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 120.3
+    },
+    {
+      "id": "01GXEJR892027N5PYNFM2BF2N2",
+      "name": "South Radar",
+      "callsign": "ACY_S_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 124.6
+    },
+    {
+      "id": "01GXEJRX1ZG0YY79RH417HT5ME",
+      "name": "North Radar",
+      "callsign": "ACY_N_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 134.25
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1S"
+      ],
+      "mapIds": [
+        1,
+        2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        null,
+        null,
+        2,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GXEFPCX3YY41EYNSWTAPF1SV",
+      "name": "ACY RVM",
+      "shortName": "RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKBRGXM02CY8W2PVZDHCYC5Q",
+      "name": "ACY MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV6319S6VQEJ8F53PXX",
+      "name": "IAP ACY I31",
+      "shortName": "I31",
+      "starsId": 101,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV53MMXSXBPHKTV20A9",
+      "name": "IAP ACY I13Z",
+      "shortName": "I13Z",
+      "starsId": 102,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV74HTYZWMM002WF7XC",
+      "name": "IAP ACY L31",
+      "shortName": "L31",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV61PWQEWXNNCVTSV0S",
+      "name": "IAP ACY L13Z",
+      "shortName": "L13Z",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV5ZN06G4747R7835X7",
+      "name": "IAP ACY H31Z",
+      "shortName": "H31Z",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV4XQZTNH0TG7FCW3EN",
+      "name": "IAP ACY H13Z",
+      "shortName": "H13Z",
+      "starsId": 106,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV975JJ0V67H6KSRBTC",
+      "name": "IAP ACY R31Y",
+      "shortName": "R31Y",
+      "starsId": 107,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV83J0P4YB3K4RJJ986",
+      "name": "IAP ACY R13Y",
+      "shortName": "R13Y",
+      "starsId": 108,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV88REYT6BQH3CZZ6J4",
+      "name": "IAP ACY R04",
+      "shortName": "R04",
+      "starsId": 109,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV9DTPSZFJDCQ6SCZPN",
+      "name": "IAP ACY R22",
+      "shortName": "R22",
+      "starsId": 110,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVA5VDQSG70KBJ3EZTT",
+      "name": "IAP ACY S31",
+      "shortName": "S31",
+      "starsId": 111,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVASTA3Y7YQK9RTQ78Q",
+      "name": "IAP ACY S04",
+      "shortName": "S04",
+      "starsId": 112,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVA13XEP6CSZES7D0GK",
+      "name": "IAP MIV I10",
+      "shortName": "I10",
+      "starsId": 501,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVBT8R88C901GEK58MK",
+      "name": "IAP MIV L10",
+      "shortName": "L10",
+      "starsId": 502,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVBFFQNF4KTXK048KBP",
+      "name": "IAP MIV R10",
+      "shortName": "R10",
+      "starsId": 503,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVBR01G3NMSN49E0HRH",
+      "name": "IAP MIV R14",
+      "shortName": "R14",
+      "starsId": 504,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVCWAN71GBT3E1VJDMX",
+      "name": "IAP MIV R28",
+      "shortName": "R28",
+      "starsId": 505,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVCMVN29WQXYEK6KEF2",
+      "name": "IAP MIV R32",
+      "shortName": "R32",
+      "starsId": 506,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVCRRSQCK083Z85CME2",
+      "name": "IAP MIV VORA",
+      "shortName": "VORA",
+      "starsId": 507,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVDE50XC6SAS1BVWRSF",
+      "name": "IAP OBI R01",
+      "shortName": "R01",
+      "starsId": 511,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVDBTK1KQ637B4WR6PS",
+      "name": "IAP OBI R19",
+      "shortName": "R19",
+      "starsId": 512,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVD2K2656G3N1P7V9YS",
+      "name": "IAP WWD L19",
+      "shortName": "L19",
+      "starsId": 521,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV2NFJXD2BEPG2FYG67",
+      "name": "IAP 26N P06",
+      "shortName": "P06",
+      "starsId": 531,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV343DQZ9ZARHWJS89K",
+      "name": "IAP 31E RNVA",
+      "shortName": "RNVA",
+      "starsId": 541,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNV4X5EF72F5V59HR0QA",
+      "name": "IAP 31E RNVB",
+      "shortName": "RNVB",
+      "starsId": 542,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVGX54J6C8NVPNR36DJ",
+      "name": "IAP N81 R03",
+      "shortName": "R03",
+      "starsId": 551,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYHXTNVG6P2MGAQWPZEXTX3E",
+      "name": "IAP N81 VORB",
+      "shortName": "VORB",
+      "starsId": 552,
+      "brightnessCategory": "B"
+    }
+  ]
+}

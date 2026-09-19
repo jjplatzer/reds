@@ -1,0 +1,758 @@
+{
+  "artcc": "ZOA",
+  "facility": "NFL",
+  "name": "NAS Fallon RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 37.9016125,
+    "lon": -120.687685
+  },
+  "controlPositions": [
+    {
+      "id": "01GFG8Y383R720VTM3VGWNBSHZ",
+      "name": "Approach 1",
+      "callsign": "NFL_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.85
+    },
+    {
+      "id": "01GFG8Z9B2RE4EABCG38ZS4FKE",
+      "name": "LC",
+      "callsign": "NFL_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 119.25
+    },
+    {
+      "id": "01HN95NNMT4S6M67AGV8EEJPJF",
+      "name": "Approach 2",
+      "callsign": "NFL_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.85
+    },
+    {
+      "id": "01HN95PH6XJKWN663EFSKXEQ25",
+      "name": "Desert 1",
+      "callsign": "NFL_D_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.85
+    },
+    {
+      "id": "01HN95QWJWBET0K1MG848TVMVD",
+      "name": "Desert 2",
+      "callsign": "NFL_D_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.85
+    },
+    {
+      "id": "01HN964M26H2AC7ACCBMZYRA2G",
+      "name": "ASR-1",
+      "callsign": "NFL_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.85
+    },
+    {
+      "id": "01HN965KGPYD9RZWNY67E6T1RH",
+      "name": "ASR-2",
+      "callsign": "NFL_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.85
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1B",
+        "1D",
+        "1E",
+        "1F",
+        "1G"
+      ],
+      "mapIds": [
+        35,
+        1,
+        46,
+        3,
+        7,
+        77,
+        78,
+        79,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        20,
+        null,
+        null,
+        null,
+        null,
+        null,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        35,
+        46,
+        7,
+        1,
+        3,
+        77
+      ],
+      "submenuMapIds": [
+        78,
+        8,
+        10,
+        12,
+        14,
+        16,
+        18,
+        null,
+        null,
+        null,
+        26,
+        28,
+        30,
+        32,
+        34,
+        79,
+        9,
+        11,
+        13,
+        15,
+        17,
+        20,
+        null,
+        null,
+        25,
+        27,
+        29,
+        31,
+        33,
+        35
+      ]
+    },
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        6,
+        1,
+        3,
+        4,
+        null,
+        7,
+        9,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        40,
+        41,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        6,
+        3,
+        null,
+        9,
+        12,
+        14,
+        16,
+        18,
+        41,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        4,
+        7,
+        11,
+        13,
+        15,
+        17,
+        40,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HN93PKEM2JZNCJGJ4DFM68JB",
+      "name": "RVMNFL-ASP",
+      "shortName": "NFL-ASP",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93PKEHBA4A0BYYHWWD1V66",
+      "name": "RVMFRTC",
+      "shortName": "FRTC",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93PKECQJK5FPBFG60J9GGY",
+      "name": "RVMCENTERLINES",
+      "shortName": "NFL-RWY",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93PKEFH2V4P7SZK7475B57",
+      "name": "RVMFIXES",
+      "shortName": "FIXES",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93PKEK7JCN338H68TRJBXA",
+      "name": "RVMLABEL",
+      "shortName": "ID",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEXMTBYBD8MRE2N0Q5D",
+      "name": "RVMTWR-ASP",
+      "shortName": "CLASS-D",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93XVZZK87VGVPC1R3WV7JM",
+      "name": "RVMNFLAIRWAYS",
+      "shortName": "AIRWAYS",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKET246MD1F2B55VXFSX",
+      "name": "RVMRNAV (GPS) RWY 13R",
+      "shortName": "GPS-13R",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKE6EZFVK9X2JZP2V306",
+      "name": "RNAV (GPS) RWY 31L",
+      "shortName": "GPS-31L",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEJ68VXCMD63K1T2Y4X",
+      "name": "RVMHI-TACAN RWY 13R",
+      "shortName": "HITA13R",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEJKEPMEP4CV539YXVB",
+      "name": "RVMHI-TACAN Y RWY 31 L/R",
+      "shortName": "HITA31",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEW1RYCFSQXQFGN2T4J",
+      "name": "RVMTACAN RWY 13R",
+      "shortName": "TA13R",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEWFQTDNE5WECKC397V",
+      "name": "RVMTA Y RWY 31L-R",
+      "shortName": "TA31L-R",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEY2F6X623E20PYCEVW",
+      "name": "RVMVOR-FLX",
+      "shortName": "VOR-FLX",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEH6XTY4YDYQDZY7YVT",
+      "name": "RVMGPS-FLX",
+      "shortName": "GPS-FLX",
+      "starsId": 15,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKE9JFTHCHFYRVZ95EEY",
+      "name": "RVMASR13L",
+      "shortName": "ASR13L",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93PKEAGR3KDW0TNJ91YJF7",
+      "name": "RVMASR13R",
+      "shortName": "ASR13R",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93PKE9TVJVT3WCMGSSWMQX",
+      "name": "RVMASR7-25",
+      "shortName": "ASR7-25",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93PKEW0P8PF623ECW96QZ5",
+      "name": "RVMTRANOFF",
+      "shortName": "TRANOFF",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93PKEH19RXBE5SGFH7RKCG",
+      "name": "RVMGPS-SPZ",
+      "shortName": "GPS-SPZ",
+      "starsId": 20,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEN07XMZSYA99PFNAQN",
+      "name": "RVMPIGSHED",
+      "shortName": "PIGSHED",
+      "starsId": 21,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEPM05AFXRFV58NZKM2",
+      "name": "RVMR4803",
+      "shortName": "R4803",
+      "starsId": 25,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEP8N8Y2QDXN2D4JBSE",
+      "name": "RVMR4804A",
+      "shortName": "R4804A",
+      "starsId": 26,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEPFCHA0Z53CRBNA3JQ",
+      "name": "RVMR4810",
+      "shortName": "R4810",
+      "starsId": 27,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEQ6W797B5RADTB5TAF",
+      "name": "RVMR4812",
+      "shortName": "R4812",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEQRQ1PAREFKGEQR7SB",
+      "name": "RVMR4813",
+      "shortName": "R4813",
+      "starsId": 29,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEQMFHHBD08MABDJYKW",
+      "name": "RVMR4816N",
+      "shortName": "R4816N",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKERVWANRP1K4CBGARPQ",
+      "name": "RVMR4816S",
+      "shortName": "R4816S",
+      "starsId": 31,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEE9R8MVGPDC5Q95FK1",
+      "name": "RVMCRHIL-H",
+      "shortName": "CHILL-H",
+      "starsId": 32,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEECV6081R6WSJFFFTZ",
+      "name": "RVMCRHIL-L",
+      "shortName": "CHILL-L",
+      "starsId": 33,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKER9PM8PSER81QDTXXB",
+      "name": "RVMRANCH",
+      "shortName": "RANCH",
+      "starsId": 34,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKES82HN64WE4MCQQWSW",
+      "name": "RVMRANCH-H",
+      "shortName": "RANCH-H",
+      "starsId": 35,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEJ3NAQ5H1W0B1PR1AT",
+      "name": "RVMHIGHWAY",
+      "shortName": "HIGHWAY",
+      "starsId": 36,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEKQR016KT02EE3E60S",
+      "name": "RVMLAKES",
+      "shortName": "LAKES",
+      "starsId": 37,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEDGN6WDA9QTFDVMFXP",
+      "name": "RVMCOUNTY",
+      "shortName": "COUNTY",
+      "starsId": 38,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93PKEYBKJB4AWXXDXD5WJ9",
+      "name": "RVMVFR-COR",
+      "shortName": "VFR-COR",
+      "starsId": 39,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93PKEAEASX8R2N8AXADP6F",
+      "name": "RVMASR-ALT",
+      "shortName": "ASR-ALT",
+      "starsId": 40,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKE8QAPTS4QC464JBT6C",
+      "name": "RVMALT7-25",
+      "shortName": "ALT7-25",
+      "starsId": 41,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEVQ8XBGE31JH480BJA",
+      "name": "RVMSIM-MAP",
+      "shortName": "SIM-MAP",
+      "starsId": 42,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKE9V4J1P9ZRE3SDQ8SH",
+      "name": "RVMARTCC",
+      "shortName": "ARTCC",
+      "starsId": 45,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKETDKP4VMBT84AWH1PJ",
+      "name": "RVMRNO-SEC",
+      "shortName": "RNO-SEC",
+      "starsId": 46,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEJHNR0MQ9JH24BZ4WA",
+      "name": "RVMIR-RTE",
+      "shortName": "IR-RTE",
+      "starsId": 47,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEYEMXW782RESCWCW37",
+      "name": "RVMVR-RTE",
+      "shortName": "VR-RTE",
+      "starsId": 48,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEN0ME0DTPJXRY4KPK6",
+      "name": "RVMNFL-FTM",
+      "shortName": "FTM",
+      "starsId": 49,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKE7QFG2A0B3EFNXCST1",
+      "name": "RVMADM-RVY",
+      "shortName": "ADM-RVY",
+      "starsId": 50,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKE80A8J466YPRD1SAWJ",
+      "name": "RVMAR-214",
+      "shortName": "AR-214",
+      "starsId": 51,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEB20TZTYQ89DFHRD7Y",
+      "name": "RVMATCAA",
+      "shortName": "ATCAA",
+      "starsId": 56,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEB2TBSPMEWZMR9P8CG",
+      "name": "RVMATCAA-L",
+      "shortName": "IDATCAA",
+      "starsId": 57,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKECAZTAZZ0WT4B6GKVV",
+      "name": "RVMCOM-RVY",
+      "shortName": "COM-RVY",
+      "starsId": 60,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKET9HWDC89H75Y6VWS1",
+      "name": "RVMRENO",
+      "shortName": "RENO",
+      "starsId": 71,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEVK1P398GBTEG4QC5D",
+      "name": "RVMSUPERSO",
+      "shortName": "S-SONIC",
+      "starsId": 74,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEV3VD8AD2DWR1CS8T8",
+      "name": "RVMSUA_LAB",
+      "shortName": "SUA-LAB",
+      "starsId": 75,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEFEYK6F0C3QGACXBS0",
+      "name": "RVMDESERT",
+      "shortName": "DESERT",
+      "starsId": 77,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93PKEGW3RNVX5G2ENN1Y4Z",
+      "name": "RVMFIXES2",
+      "shortName": "FIXES-2",
+      "starsId": 78,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN93PKEKNSY8KCJSC4FM6YN5",
+      "name": "RVMLABEL-2",
+      "shortName": "LABEL-2",
+      "starsId": 79,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEZYY253FTD6CYCEHWH",
+      "name": "RVMZIRCON",
+      "shortName": "ZIR",
+      "starsId": 80,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKE6P0ARXZ3D0JYVPC23",
+      "name": "NFL-MVA",
+      "shortName": "NFL-MVA",
+      "starsId": 99,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEF7J1SJVYS8STB6BD4",
+      "name": "RVMCTV",
+      "shortName": "CTV",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HN94E7J39Q1S5JY79FPS7G3V",
+      "name": "MVA",
+      "shortName": "MVA",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKECG9BRJ2SD6Z13TXVQ",
+      "name": "RVMBAM-40",
+      "shortName": "BAM-40",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEG6VXM2TV95TSGYP6D",
+      "name": "RVMFLX-40",
+      "shortName": "FLX-40",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEKQ1CJGPZNVWA4A33G",
+      "name": "RVMNFL-60",
+      "shortName": "NFL-60",
+      "starsId": 106,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN93PKEWHC738T14815K0DGK",
+      "name": "RVMTPH-40",
+      "shortName": "TPH-40",
+      "starsId": 107,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA7QZJ0G6TG3Y03JYAQ6RSF9",
+      "name": "TDM MAP",
+      "shortName": "TDM",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

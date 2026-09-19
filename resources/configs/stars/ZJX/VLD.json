@@ -1,0 +1,201 @@
+{
+  "artcc": "ZJX",
+  "facility": "VLD",
+  "name": "Valdosta Regional ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 30.39404875,
+    "lon": -81.98462525
+  },
+  "controlPositions": [
+    {
+      "id": "01HAWAATHBKM279V8BP5FW8N13",
+      "name": "Ground",
+      "callsign": "VLD_GND",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01HAWABACQ0502HHHEPZSW5FDH",
+      "name": "Tower",
+      "callsign": "VLD_TWR",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 128.35
+    },
+    {
+      "id": "01HAWABT668NPANDFS1YNFG771",
+      "name": "Approach",
+      "callsign": "VAD_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 126.6
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1V"
+      ],
+      "mapIds": [
+        100,
+        null,
+        1,
+        null,
+        null,
+        null,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        100,
+        1,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        201,
+        203,
+        205,
+        207,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        202,
+        204,
+        206,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01JGW8G35EFXTG71ZQ22JHAR7B",
+      "name": "VAD Test",
+      "shortName": "TEST",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKX8A9DJEGGDJ6F3NFGNM5VJ",
+      "name": "VADTRACOn",
+      "shortName": "MASTER",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKX8A9DEWJVRB32J9S60GG17",
+      "name": "15JRNAV",
+      "shortName": "15J",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKX8A9DCA8QJMC7YJE862ZJP",
+      "name": "4J2RNAV",
+      "shortName": "4J2",
+      "starsId": 202,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKX8A9DD3RZSJYM43D4SQC74",
+      "name": "4J5RNAV",
+      "shortName": "4J5",
+      "starsId": 203,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKX8A9DFCGHV3NSEATV2DF9N",
+      "name": "HOERNAV",
+      "shortName": "HOE",
+      "starsId": 204,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKX8A9DFPP4FTR39AERA13D6",
+      "name": "MGRRNAV",
+      "shortName": "MGR",
+      "starsId": 205,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKX8A9DGYBQ6SW0Z9DH5X4TP",
+      "name": "TMAAPP",
+      "shortName": "TMA",
+      "starsId": 206,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKX8A9DHKFBA5HRD8A5XXSSB",
+      "name": "TVIRNAV",
+      "shortName": "TVI",
+      "starsId": 207,
+      "brightnessCategory": "A"
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "artcc": "ZAB",
+  "facility": "CVS",
+  "name": "Cannon ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 34.19564814666666,
+    "lon": -107.50666666666666
+  },
+  "controlPositions": [
+    {
+      "id": "01G98NYRZ3XY9V8MM1AMPT7V51",
+      "name": "Approach",
+      "callsign": "CVS_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 118.425
+    },
+    {
+      "id": "01G98P014G0ZSVH7E3322157KB",
+      "name": "Local Control",
+      "callsign": "CVS_TWR",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 120.4
+    },
+    {
+      "id": "01G9EEWCMFFSZVXZ5SB521G2T9",
+      "name": "Ground",
+      "callsign": "CVS_GND",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G9EEWRW4RMV312B5ZR3JSQ7N",
+      "name": "Clearance Delivery",
+      "callsign": "CVS_DEL",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 120.2
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        null,
+        null,
+        null,
+        null,
+        1,
+        2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        null,
+        null,
+        2,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HAZWZ9QP3R81JB2RBER853KP",
+      "name": "C01 CVS BASE MAP",
+      "shortName": "BASE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB0134F72RFZJ1JEN84BJ841",
+      "name": "C02 CVS SUA",
+      "shortName": "SUA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    }
+  ]
+}

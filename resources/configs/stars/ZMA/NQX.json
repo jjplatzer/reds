@@ -1,0 +1,814 @@
+{
+  "artcc": "ZMA",
+  "facility": "NQX",
+  "name": "NAS Key West RATCF",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 25.98185666666667,
+    "lon": -76.699767
+  },
+  "controlPositions": [
+    {
+      "id": "01GFERN6959D6G9QMPX6BR6VSW",
+      "name": "Approach Control",
+      "callsign": "NQX_B_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 124.025
+    },
+    {
+      "id": "01HBRCAEBR1A10CTHT4SW5KVD3",
+      "name": "Clearance Delivery",
+      "callsign": "NQX_DEL",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 121.2
+    },
+    {
+      "id": "01HBRCC4Z0V1MCEK1XEHHN9YH9",
+      "name": "Ground Control",
+      "callsign": "NQX_GND",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01HBRCCVPDYCMT4VVZN7BEX5XJ",
+      "name": "Local Control",
+      "callsign": "NQX_TWR",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 118.575
+    },
+    {
+      "id": "01JAET5S6SP98G7JMRB4Z5AE97",
+      "name": "ZMA Guard",
+      "callsign": "NQX_RMP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "01K9BKXZFSZ6YGXMQR1KEE39Y3",
+      "name": "VFR Advisories",
+      "callsign": "NQX_A_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 126.575
+    },
+    {
+      "id": "01KQFH48YHFBHBA9V5MH7P8SBX",
+      "name": "TARPON 1",
+      "callsign": "NQX_T_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 127.565
+    },
+    {
+      "id": "01KQFHHSQPXDCHRJ0YRHTJ821N",
+      "name": "TARPON 2",
+      "callsign": "NQX_P_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 130.235
+    },
+    {
+      "id": "01KQFHNV5H2AE8YDM1AVBNRRMA",
+      "name": "TARPON 3",
+      "callsign": "NQX_O_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 131.89
+    },
+    {
+      "id": "01KQFHPR359TA7XETSPXNJB5BB",
+      "name": "TARPON 4",
+      "callsign": "NQX_N_APP",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      },
+      "freq": 125.085
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1O",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1Y",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 25.98185666666667,
+        "lon": -76.699767
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1B",
+        "1R",
+        "1S",
+        "1Y",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        2,
+        210,
+        26,
+        19,
+        20,
+        39,
+        8,
+        10,
+        11,
+        9,
+        12,
+        13,
+        3,
+        4,
+        5,
+        6,
+        7,
+        42,
+        25,
+        50,
+        49,
+        100,
+        24,
+        30,
+        55,
+        83,
+        86,
+        80,
+        null,
+        27,
+        59,
+        446,
+        58,
+        447,
+        553,
+        48,
+        15
+      ],
+      "mainMapIds": [
+        1,
+        210,
+        19,
+        2,
+        26,
+        20
+      ],
+      "submenuMapIds": [
+        39,
+        10,
+        9,
+        13,
+        4,
+        6,
+        42,
+        50,
+        100,
+        30,
+        83,
+        80,
+        27,
+        446,
+        447,
+        8,
+        11,
+        12,
+        3,
+        5,
+        7,
+        25,
+        49,
+        24,
+        55,
+        86,
+        null,
+        59,
+        58,
+        553
+      ]
+    },
+    {
+      "tcps": [
+        "1N",
+        "1O",
+        "1P",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        27,
+        31,
+        null,
+        null,
+        null,
+        27,
+        24,
+        43,
+        48,
+        49,
+        50,
+        100,
+        30,
+        31,
+        null,
+        446,
+        58,
+        447,
+        553,
+        59,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        31,
+        null,
+        27,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        27,
+        43,
+        49,
+        100,
+        31,
+        446,
+        447,
+        59,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        24,
+        48,
+        50,
+        30,
+        null,
+        58,
+        553,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01KQN55PE3D0ACJ8Y7FEV4GVZ4",
+      "name": "NQX-001S AIRSPACE",
+      "shortName": "AIRSPCE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE76EDFTR81V2GMYYX7",
+      "name": "NQX-002S EYW/NQX CLASS D",
+      "shortName": "CLASS-D",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN5747S1PN1C4J7JMR5GSSV",
+      "name": "NQX-003S NQX RNAV 04",
+      "shortName": "GPS-04",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN5747SV349TPNX9X41HENR",
+      "name": "NQX-004S NQX RNAV 08",
+      "shortName": "GPS-08",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN5747S9Z418EX4R826Y79M",
+      "name": "NQX-005S NQX RNAV 14",
+      "shortName": "GPS-14",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN5747SNNPA2H0QZM6613R0",
+      "name": "NQX-006S NQX RNAV 26",
+      "shortName": "GPS-26",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN5747S78PDD28057H6CP6N",
+      "name": "NQX-007S NQX RNAV 32",
+      "shortName": "GPS-32",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN5747SZSHBQSFEE5M987NT",
+      "name": "NQX-008S NQX TACAN Y  04",
+      "shortName": "TA-04",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN5747SHPP4W7ENDE65WFB4",
+      "name": "NQX-009S NQX HI-TACAN X 08",
+      "shortName": "HITAX08",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN5747STWQDSB4B6T5V18GQ",
+      "name": "NQX-010S NQX TACAN 26",
+      "shortName": "TA-26",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN5747T908KE6SHWBQXJAST",
+      "name": "NQX-011S NQX TACAN Y 32",
+      "shortName": "TA-32",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN5747TAX85EQ6W03RV6WZC",
+      "name": "NQX-012S NQX HI-TACAN W 08",
+      "shortName": "HITAW08",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE3EBHJSRP5K08DFKZW",
+      "name": "NQX-013S RUNWAY CENTERLINES",
+      "shortName": "RWY_CTR",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE863YRSJDKRZRHPV46",
+      "name": "NQX-015S GIRON CORRIDOR",
+      "shortName": "GIRON",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE3M62KYSA2XHVV7S7R",
+      "name": "NQX-019S EYW RNAV 9",
+      "shortName": "RY-09",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE69FJBD8DVQSB1MX74",
+      "name": "NQX-020S EYW RNAV 27",
+      "shortName": "RY-27",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE40HKWPMP1ERY447JV",
+      "name": "NQX-024S R-2916",
+      "shortName": "R2916",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE68EW76T9EFA07W9K0",
+      "name": "NQX-025S LABELS",
+      "shortName": "LABELS",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN5747TDQ1EHTABKNAXACPV",
+      "name": "NQX-026S NQX TACAN Y 08",
+      "shortName": "TAY-08",
+      "starsId": 26,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE322WQ538T1TM7CFCZ",
+      "name": "NQX-027S W174/W465",
+      "shortName": "174-465",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE46TG6SG2PNRXRS15H",
+      "name": "NQX-028S CUBA ADZ",
+      "shortName": "CUBAADZ",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN55PE83V81KKKZP75P34N4",
+      "name": "NQX-030S V AIRWAYS",
+      "shortName": "V_ROUTE",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN55PE83Y59QMMET6JV6B50",
+      "name": "NQX-031S W168",
+      "shortName": "W168",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN5747TJBTVJ4R4D3M5P4QV",
+      "name": "NQX-032S NQX COPER TACAN W 04",
+      "shortName": "CPTRW04",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN5747TAGEFFJD9XZ5S4XGY",
+      "name": "NQX-033S NQX HI-TACAN Z 04",
+      "shortName": "HITAZ04",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN5747T977VVC7G428RQDGE",
+      "name": "NQX-039S TACAN Z 08",
+      "shortName": "TAZ-08",
+      "starsId": 39,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN5747T57XBD367W7FTQ8QH",
+      "name": "NQX-042S OVERHEAD MANEUVERS",
+      "shortName": "OVHD",
+      "starsId": 42,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN55PE4RGGYX8DSM1HHMCDX",
+      "name": "NQX-043S TORTUGA MOA",
+      "shortName": "TORTUGA",
+      "starsId": 43,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE4HSQ7SB9ZBYSNGZPT",
+      "name": "NQX-048S IR-053",
+      "shortName": "IR-053",
+      "starsId": 48,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN55PE3GD033MRCTX94N5KA",
+      "name": "NQX-049S ATAS",
+      "shortName": "ARRTRAN",
+      "starsId": 49,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN55PE4FY0H8JFKKAFWPEB5",
+      "name": "NQX-050S DTAS",
+      "shortName": "DEPTRAN",
+      "starsId": 50,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN55PE8TTB3J3ZT8Z2DFHKB",
+      "name": "NQX-051S SHORELINE",
+      "shortName": "SHORE",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE3PS2ZSAJQQBN4DK8S",
+      "name": "NQX-055S EYW FIXES",
+      "shortName": "EYW-FIX",
+      "starsId": 55,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN55PE7N30X5N616R6D72D9",
+      "name": "NQX-058S HORNET WORKING AREA",
+      "shortName": "HORNET",
+      "starsId": 58,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE6SDFHPGCEDHTG3ME1",
+      "name": "NQX-059S SPECIAL USE AREA LABELS",
+      "shortName": "SU-LABL",
+      "starsId": 59,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN5747TCZJRVFFQW4AMFN4S",
+      "name": "NQX-064S NQX HI-TACAN Z 32",
+      "shortName": "HITAZ32",
+      "starsId": 64,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN5747VJH7EENRWSDMQVPQQ",
+      "name": "NQX-065S NQX VOR 26",
+      "shortName": "VOR-26",
+      "starsId": 65,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE6V51E5PHGXV2V818K",
+      "name": "NQX-080S BUFTT SID",
+      "shortName": "BUFTT",
+      "starsId": 80,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE624NN3K0DQPNDV0T0",
+      "name": "NQX-081S BUFTT SID LABELS",
+      "shortName": "BUFLBL",
+      "starsId": 81,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE57VMCQN6804TD4HRP",
+      "name": "NQX-082S BUFTT SID LINES",
+      "shortName": "BUFLNS",
+      "starsId": 82,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE6RYEF4CHCQETY5Y20",
+      "name": "NQX-083S KRAKN STAR",
+      "shortName": "KRAKN",
+      "starsId": 83,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE600KM7HK2JVMD91RY",
+      "name": "NQX-084S KRAKN STAR LABELS",
+      "shortName": "KRNLBL",
+      "starsId": 84,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE6YWK6VKK2WK5DRYQH",
+      "name": "NQX-085S KRAKN STAR LINES",
+      "shortName": "KRNLNS",
+      "starsId": 85,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE6YE13BWRSBA0Q1J65",
+      "name": "NQX-086S FNTSY STAR",
+      "shortName": "FNTSY",
+      "starsId": 86,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE6JF7MTTTHW77QWAK3",
+      "name": "NQX-087S FNTSY STAR LABELS",
+      "shortName": "FNYLBL",
+      "starsId": 87,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE70EKQK1BDY6P5CDQ2",
+      "name": "NQX-088S FNTSY STAR LINES",
+      "shortName": "FNYLNS",
+      "starsId": 88,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE86PV750NB210Z2398",
+      "name": "NQX-100S KEYS",
+      "shortName": "KEYS",
+      "starsId": 100,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KQN55PE30NMB8CPJJMMPVRRM",
+      "name": "NQX-210S MVA 3NM",
+      "shortName": "MVA3NMU",
+      "starsId": 210,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE5V48JKV3VTPFWB3TX",
+      "name": "NQX-332S W174A",
+      "shortName": "W174A",
+      "starsId": 332,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE5QN3F0NQPF9XDQ2QD",
+      "name": "NQX-333S W174B",
+      "shortName": "W174B",
+      "starsId": 333,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE589WHWY0X6SRVFF3S",
+      "name": "NQX-334S W174C",
+      "shortName": "W174C",
+      "starsId": 334,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE54PYF0D80K5NA6KEN",
+      "name": "NQX-335S W174E",
+      "shortName": "W174E",
+      "starsId": 335,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE53VXKCWY51BRBYRFH",
+      "name": "NQX-336S W174F",
+      "shortName": "W174F",
+      "starsId": 336,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE4746YB1DW8YWQV2PV",
+      "name": "NQX-337S W174G",
+      "shortName": "W174G",
+      "starsId": 337,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE5K58NZVP1RW9ZWS4S",
+      "name": "NQX-338S W174D",
+      "shortName": "W174D",
+      "starsId": 338,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE56M4QRD6N0RPT234R",
+      "name": "NQX-440S W465A",
+      "shortName": "W465A",
+      "starsId": 440,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE5C280VY0K48JEQ6SW",
+      "name": "NQX-441S W465B",
+      "shortName": "W465B",
+      "starsId": 441,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE5RQZSSJEHG978EJGH",
+      "name": "NQX-444S W465C",
+      "shortName": "W465C",
+      "starsId": 444,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE77DTQD775DQ023J0T",
+      "name": "NQX-446S RHINO WORKING AREA",
+      "shortName": "RHINO",
+      "starsId": 446,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE7TWJS9GPAV5DNJWM0",
+      "name": "NQX-447S TIGER WORKING AREA",
+      "shortName": "TIGER",
+      "starsId": 447,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE74DX93ZYV19BHY67X",
+      "name": "NQX-553S SUNDOWNER WORKING AREA",
+      "shortName": "SUNDWN",
+      "starsId": 553,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KQN55PE8N671XME4YRS43QWK",
+      "name": "NQX-668S W465D",
+      "shortName": "W465D",
+      "starsId": 668,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HASJWQ1WQ1KKE4NPNH8X1HBA",
+      "name": "TDM MAP",
+      "shortName": "TDM MAP",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01KQN55PE3D0ACJ8Y7FEV4GVZ4",
+      "name": "NQX-001S AIRSPACE",
+      "shortName": "AIRSPCE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    }
+  ]
+}

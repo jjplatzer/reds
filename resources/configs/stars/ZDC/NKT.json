@@ -1,0 +1,288 @@
+{
+  "artcc": "ZDC",
+  "facility": "NKT",
+  "name": "Cherry Point ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 37,
+    "lon": -77
+  },
+  "controlPositions": [
+    {
+      "id": "01HAAMZQXEWJB5EQE5CGMCHM6X",
+      "name": "Clearance",
+      "callsign": "NKT_DEL",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 125.95
+    },
+    {
+      "id": "01HAAN0W1KMTXVPY6T7XG95BTW",
+      "name": "Ground",
+      "callsign": "NKT_GND",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 128.625
+    },
+    {
+      "id": "01HAAN1D8XW13WK2CG9KXHCTDK",
+      "name": "Local",
+      "callsign": "NKT_TWR",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 121.3
+    },
+    {
+      "id": "01HAAN25KVABBFPNKKP2ZXAEF5",
+      "name": "West Approach",
+      "callsign": "NKT_W_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 119.35
+    },
+    {
+      "id": "01HAAN32XQ5HAK3Q200K8X366H",
+      "name": "North Approach",
+      "callsign": "NKT_H_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 124.1
+    },
+    {
+      "id": "01HAQBMHEN12251RMVBDA0SF0W",
+      "name": "East Approach",
+      "callsign": "NKT_E_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 119.75
+    },
+    {
+      "id": "01HAQBNCMTJ743WS3YPZ2WENA8",
+      "name": "Final",
+      "callsign": "NKT_F_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 132.575
+    },
+    {
+      "id": "01KTCJR3E5CXK0EEGVBN3AJG5D",
+      "name": "New River",
+      "callsign": "NCA_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 124.85
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1N"
+      ],
+      "mapIds": [
+        2,
+        3,
+        7,
+        5,
+        10,
+        null,
+        8,
+        9,
+        6,
+        4,
+        15,
+        16,
+        17,
+        18,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        2,
+        7,
+        10,
+        3,
+        5,
+        null
+      ],
+      "submenuMapIds": [
+        8,
+        6,
+        15,
+        17,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        9,
+        4,
+        16,
+        18,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HSFTPBT9MDRTWKWRYKE1NSCX",
+      "name": "NKT RVM",
+      "shortName": "NKT RVM",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HADZG0TGBCC1YZWH2A633HC6",
+      "name": "NKT Approaches",
+      "shortName": "APP",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HSFXRZ8P8KSGGGWN3NKGYPQM",
+      "name": "NC_County",
+      "shortName": "COUNTY",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSGN2RGJSXZSDCZ08D2HAWKW",
+      "name": "NKT Shore",
+      "shortName": "SHORE",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSGNG7QTWGNZFQXW41AVGDRG",
+      "name": "NKT MTR",
+      "shortName": "MTR",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSGSJ7DDJY0SCXPMTA9GBT6X",
+      "name": "NKT MVA",
+      "shortName": "MVA",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSGV23BXR89BEVKMYMCH5QMZ",
+      "name": "NKT Low Airway",
+      "shortName": "LOWAWY",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSGVQ5RDF19GQ6P4XC0Y1KDZ",
+      "name": "NKT High Airway",
+      "shortName": "HIAWY",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSH47K7HJ73S8675TRMP18ZM",
+      "name": "ZDC Airspace",
+      "shortName": "AIRSPCE",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HSHRH3SEZ9PNS3AW1D5JRYAY",
+      "name": "ZDC MOA",
+      "shortName": "MOA",
+      "starsId": 15,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSHRKKVETXFH5X2WW3J96D0D",
+      "name": "ZDC Restricted Areas",
+      "shortName": "RESTRIC",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSHRP04DE8B677YH09Y2Y708",
+      "name": "ZDC Alert Area",
+      "shortName": "ALERT",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HSHRN29AQRF95X6385Y8A6G5",
+      "name": "ZDC Warning Areas",
+      "shortName": "WARN",
+      "starsId": 18,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HSH47K7HJ73S8675TRMP18ZM",
+      "name": "ZDC Airspace",
+      "shortName": "AIRSPCE",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    }
+  ]
+}

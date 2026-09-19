@@ -1,0 +1,230 @@
+{
+  "artcc": "ZAU",
+  "facility": "MSN",
+  "name": "Madison ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.879166749999996,
+    "lon": -88.975
+  },
+  "controlPositions": [
+    {
+      "id": "01H5FX49KP6P9CG7WCRTKDKV4C",
+      "name": "East Approach",
+      "callsign": "MSN_E_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 120.1
+    },
+    {
+      "id": "01H5FX4WWHBQQ88YM17QQN1MQN",
+      "name": "West Approach",
+      "callsign": "MSN_W_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 135.45
+    },
+    {
+      "id": "01H5FX5WFQV976DXQDPP6JEZ8C",
+      "name": "Local",
+      "callsign": "MSN_TWR",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 119.3
+    },
+    {
+      "id": "01H5FX6K4JV85PD285TSZEX4VQ",
+      "name": "Ground",
+      "callsign": "MSN_GND",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01H5FX7147QVC29C5XFR8ZP13B",
+      "name": "Clearance Delivery",
+      "callsign": "MSN_DEL",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.625
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1L",
+        "1M",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6,
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GFM25KAAZRDRM16KXMG8N3VS",
+      "name": "MSN MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM25KAC73YK7RSM03BZ8N5X",
+      "name": "MSN MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM25KAMGEZF6TR5EC6S19AH",
+      "name": "MSN VFR",
+      "shortName": "VFR",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KMDRREJDTW2WYRSPTDBVAZ7F",
+      "name": "MSN SATELLITE APPROACHES A",
+      "shortName": "SAT A",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KMDRSCT838CZ4VNEXBGHGFK2",
+      "name": "MSN SATELLITE APPROACHES B",
+      "shortName": "SAT B",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM25KAGKAWK643VWV364VY6",
+      "name": "MSN VICTOR AIRWAYS",
+      "shortName": "VT RTES",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM25KA7E35XEPJMQB9R98FC",
+      "name": "MSN AIRPORT DIAGRAMS",
+      "shortName": "AP DIAG",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    }
+  ]
+}

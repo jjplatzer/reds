@@ -1,0 +1,486 @@
+{
+  "artcc": "ZMP",
+  "facility": "APN",
+  "name": "Alpena ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 45.084575,
+    "lon": -93.9971125
+  },
+  "controlPositions": [
+    {
+      "id": "01GFEWK8QVHG34D76WBQTR61HC",
+      "name": "AR/DR",
+      "callsign": "APN_APP",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 128.425
+    },
+    {
+      "id": "01GFEWKYVVQ1AM9NB97G0AHQTF",
+      "name": "LC",
+      "callsign": "APN_TWR",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 121.35
+    },
+    {
+      "id": "01GFEWMZYGS5PQN2WBHE7KM411",
+      "name": "GC",
+      "callsign": "APN_GND",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01H6BKCNAQ7YBT62P0D7N16BZS",
+      "name": "GCA",
+      "callsign": "APN_F_APP",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 118.5
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "2Z",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1Z",
+        "2Z"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        36,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        20,
+        22,
+        24,
+        26,
+        28,
+        30,
+        null,
+        null,
+        null,
+        8,
+        10,
+        12,
+        14,
+        16,
+        18,
+        21,
+        23,
+        25,
+        27,
+        29,
+        36,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1F"
+      ],
+      "mapIds": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        28,
+        29,
+        30,
+        36,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        2,
+        4,
+        6,
+        3,
+        5,
+        7
+      ],
+      "submenuMapIds": [
+        8,
+        10,
+        12,
+        14,
+        16,
+        18,
+        21,
+        23,
+        25,
+        28,
+        30,
+        null,
+        null,
+        null,
+        null,
+        9,
+        11,
+        13,
+        15,
+        17,
+        20,
+        22,
+        24,
+        26,
+        29,
+        36,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HC1DS3M5SRBMSYDCGY7J4N31",
+      "name": "APN001 RUNWAYS",
+      "shortName": "RUNWAYS",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3M6SN2YJEGJ7TMB9HGE",
+      "name": "APN002 APN_MVA",
+      "shortName": "APN_MVA",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3M6XBZ9F0VVF8TKJJWE",
+      "name": "APN003 PIKE_W_",
+      "shortName": "PIKE_W_",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1DS3M702P6ZYPZG5JYBC81",
+      "name": "APN004 PIKE_E_",
+      "shortName": "PIKE_E_",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1DS3M70W85PVCGHQNW9XVJ",
+      "name": "APN005 STEEL_M",
+      "shortName": "STEEL_M",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1DS3M7DA2NF7W673WNV5F8",
+      "name": "APN006 PZQ",
+      "shortName": "PZQ",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3M8EHXK8AT0N6VPWHSB",
+      "name": "APN007 RNAV_01",
+      "shortName": "RNAV_01",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3M8QMMKZ0GGVTT6N9R3",
+      "name": "APN008 RNAV_19",
+      "shortName": "RNAV_19",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MBAA8W1Z0JECH9TQA1",
+      "name": "APN009 ILS_1",
+      "shortName": "ILS_1",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1DS3MBA42GXBM6XZHFSQHD",
+      "name": "APN010 HI_ILS1",
+      "shortName": "HI_ILS1",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MBYG9QNTK7YTX788XW",
+      "name": "APN011 GARLAND",
+      "shortName": "GARLAND",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MCDNTG0QRXRQBAKRDQ",
+      "name": "APN012 _VOR-19",
+      "shortName": "_VOR-19",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MC0THC049KFRRPZE1A",
+      "name": "APN013 HI_TA01",
+      "shortName": "HI_TA01",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MCMFZC72SEMCR5N5DK",
+      "name": "APN014 HI_TA19",
+      "shortName": "HI_TA19",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MD4FNQ1JQKJN0CBBX4",
+      "name": "APN015 _LUMB_A",
+      "shortName": "_LUMB_A",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MDQ1AVYCGK554K31QS",
+      "name": "APN016 _FIRE_A",
+      "shortName": "_FIRE_A",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MDJJPD0AB9CJT1NSHE",
+      "name": "APN017 STEEL_A",
+      "shortName": "STEEL_A",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3ME8MT9KQWFWZZZ7R1N",
+      "name": "APN018 _MOLSON",
+      "shortName": "_MOLSON",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3ME7HMD5B0GNQZRFSEC",
+      "name": "APN019 R-4201_",
+      "shortName": "R-4201_",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MEB2V1H3S1Q351FN1Q",
+      "name": "APN020 R-4207_",
+      "shortName": "R-4207_",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MF0A2B7C2GH33YSNAZ",
+      "name": "APN022 GOV_MOA",
+      "shortName": "GOV_MOA",
+      "starsId": 22,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1DS3MFAQJVHGKYDJ2PB166",
+      "name": "APN023 VR",
+      "shortName": "VR",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MFH9V61XW8QRWATR48",
+      "name": "APN024 SR",
+      "shortName": "SR",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MGC7E65BDJV6B5X07A",
+      "name": "APN025 _SHORE_",
+      "shortName": "_SHORE_",
+      "starsId": 25,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1DS3MGM7ZXHJNRM74YYGCR",
+      "name": "APN026 N_SHORE",
+      "shortName": "N_SHORE",
+      "starsId": 26,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HC1DS3MGKB8E1BVHR6D5GDPM",
+      "name": "APN027 AIRSPAC",
+      "shortName": "AIRSPAC",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MHWQVEMEZPQ18EXFHM",
+      "name": "APN028 AIRWAYS",
+      "shortName": "AIRWAYS",
+      "starsId": 28,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MH3KE1VT2AH977V9V1",
+      "name": "APN029 SAT_APT",
+      "shortName": "SAT_APT",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MHSYEF288SHJ0PZDDC",
+      "name": "APN030 LABELS",
+      "shortName": "LABELS",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MK5P83V4B35627KMW2",
+      "name": "APN034 HOSP",
+      "shortName": "HOSP",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MK7AHHW82SXN7B4ANZ",
+      "name": "APN035 _TOWER_",
+      "shortName": "_TOWER_",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HC1DS3MM09711EGJPV4P100S",
+      "name": "APN036 HERSEY",
+      "shortName": "HERSEY",
+      "starsId": 36,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H9W8SHWJ14RKWM3EKD6AP504",
+      "name": "APN KAPN_gnd",
+      "shortName": "GND",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

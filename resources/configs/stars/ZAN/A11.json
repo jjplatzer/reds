@@ -1,0 +1,427 @@
+{
+  "artcc": "ZAN",
+  "facility": "A11",
+  "name": "Anchorage TRACON",
+  "type": "Tracon",
+  "defaultCenter": {
+    "lat": 61.879,
+    "lon": -154.693625
+  },
+  "controlPositions": [
+    {
+      "id": "01GESG6YR9005EAYJ83FVPMMGM",
+      "name": "North Radar",
+      "callsign": "ANC_N_APP",
+      "visualCenter": {
+        "lat": 61.879,
+        "lon": -154.693625
+      },
+      "freq": 118.6
+    },
+    {
+      "id": "01GESG92JX7F5HWS7YFNC5CB4J",
+      "name": "South Radar",
+      "callsign": "ANC_S_APP",
+      "visualCenter": {
+        "lat": 61.879,
+        "lon": -154.693625
+      },
+      "freq": 126.4
+    },
+    {
+      "id": "01GESG9HP2A8DF7AN636AXFTWM",
+      "name": "Final Radar",
+      "callsign": "ANC_F_APP",
+      "visualCenter": {
+        "lat": 61.879,
+        "lon": -154.693625
+      },
+      "freq": 135.15
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 61.879,
+        "lon": -154.693625
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 61.879,
+        "lon": -154.693625
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 61.879,
+        "lon": -154.693625
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 61.879,
+        "lon": -154.693625
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1F",
+        "1N",
+        "1S"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        12,
+        13,
+        10,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        12,
+        10,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        2,
+        4,
+        6,
+        8,
+        11,
+        13,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        3,
+        7,
+        4,
+        5,
+        14,
+        10,
+        1,
+        13,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        3,
+        4,
+        14,
+        7,
+        5,
+        10
+      ],
+      "submenuMapIds": [
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        13,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": null,
+      "mapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H3DEE83ZEP1VMNTCZMGG62B3",
+      "name": "A11 RVM",
+      "shortName": "RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3DEE83ZQDNAXTZMT8NVXYDN",
+      "name": "A11 15 FEED",
+      "shortName": "15 FEED",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3DEE83ZGCPZZ3F0NQX64K4E",
+      "name": "A11 15 FIN",
+      "shortName": "15 FINAL",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3DEE83ZZD7G9RZBJ1QQPMX9",
+      "name": "A11 25 STRAIGHT",
+      "shortName": "25 STRGHT",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3DEE83ZWT4KA6KESN2E2CCG",
+      "name": "A11 33 STRAIGHT",
+      "shortName": "33 STRGHT",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3DEE83X5EHC3NQGH9QA57WE",
+      "name": "A11 7 FEED",
+      "shortName": "7 FEED",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3DEE83YAXS19K63NK9KJM88",
+      "name": "A11 7 FINAL",
+      "shortName": "7 FINAL",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3DEE841T2BRHWGRAJ1JK0F7",
+      "name": "A11 ANC MVA",
+      "shortName": "MVA",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3DEE841JCZ6H8EES0GAG1Q7",
+      "name": "A11 ZAN SPLIT",
+      "shortName": "ZAN SPLIT",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H3DEE840V6G6WEPGJ7NYDBPV",
+      "name": "A11 ARSP",
+      "shortName": "ARSP",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3DEE840X57T59ECS3ASAP9M",
+      "name": "A11 GPS",
+      "shortName": "GPS",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3DEE84054083TQNZVGNESRQ",
+      "name": "A11 EVOM",
+      "shortName": "EVOM",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3DEE840D4NMGX4MTTWF9SAG",
+      "name": "A11 GEO",
+      "shortName": "GEO",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3DEE840EXH57XWCVJZEQVWM",
+      "name": "A11 ARPT DIAG",
+      "shortName": "ARPT DGRM",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    }
+  ]
+}

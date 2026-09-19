@@ -1,0 +1,491 @@
+{
+  "artcc": "ZMP",
+  "facility": "DLH",
+  "name": "Duluth ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 45.084575,
+    "lon": -93.9971125
+  },
+  "controlPositions": [
+    {
+      "id": "01GFES3EDV7YWQN2M9Q5J15JYK",
+      "name": "AR/DR S",
+      "callsign": "DLH_S_APP",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 125.45
+    },
+    {
+      "id": "01GFES44Y8HAS5HNT9AZ2Q25TA",
+      "name": "AR/DR N",
+      "callsign": "DLH_N_APP",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 119.5
+    },
+    {
+      "id": "01GFES4NBGR61YCG3RW4TJZ0PD",
+      "name": "LC",
+      "callsign": "DLH_TWR",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01H69KJ7TNGR78TQ0ZFNKM44D1",
+      "name": "AR/DR TRACAB",
+      "callsign": "DLH_APP",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 125.45
+    },
+    {
+      "id": "01H69KPV6MSE9XJ3QHB186FCK4",
+      "name": "GC",
+      "callsign": "DLH_GND",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    },
+    {
+      "id": "2T",
+      "visualCenter": {
+        "lat": 45.084575,
+        "lon": -93.9971125
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1L",
+        "1N",
+        "1S",
+        "1T",
+        "2T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        21,
+        23,
+        25,
+        27,
+        29,
+        null,
+        null,
+        null,
+        8,
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        24,
+        26,
+        28,
+        30,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H7S54TP78GFCEX3TPJK5924E",
+      "name": "DLH 001 3 21VOR",
+      "shortName": "3 21VOR",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP7J16S3T7RBNDQVQRR",
+      "name": "DLH 002 VROUTES",
+      "shortName": "VROUTES",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP0G0900HDE6NSDNMJ2",
+      "name": "DLH 003 TOPO",
+      "shortName": "TOPO",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7S54TP3GXVTCWK9Z8ZGKPV6",
+      "name": "DLH 004 DLHRNAV",
+      "shortName": "DLHRNAV",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP2B1A1JQDEAJ85F3FG",
+      "name": "DLH 005 3NM MVA",
+      "shortName": "3NM MVA",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7S54TP35FP4WAFK4F8EAV1G",
+      "name": "DLH 006 SNO MOA",
+      "shortName": "SNO MOA",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP3KR03CE5DRX1JWHFQ",
+      "name": "DLH 007 SNOOPY",
+      "shortName": "SNOOPY",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP36ANA7RRVFERGK3SK",
+      "name": "DLH 008 PTS MOA",
+      "shortName": "PTS MOA",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP1DM6TVWN49TY5GKPP",
+      "name": "DLH 009 MOA",
+      "shortName": "MOA",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7S54TP0R8GJPVCZKEBP90HK",
+      "name": "DLH 010 MAIN",
+      "shortName": "MAIN",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP1Y182ERNQ6N8HX66K",
+      "name": "DLH 011 RNAV AP",
+      "shortName": "RNAV AP",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7S54TP1NHWR9496ZSNYD8Z2",
+      "name": "DLH 012 RNAVFIX",
+      "shortName": "RNAVFIX",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7S54TNYK33AG5SD8ZPB6GF6",
+      "name": "DLH 013 ASR",
+      "shortName": "ASR",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TNZ22JTCP6KHRES2MAB",
+      "name": "DLH 014 MN33",
+      "shortName": "MN33",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7S54TP2AXTW1QEX6KXTNNE0",
+      "name": "DLH 015 5NM MVA",
+      "shortName": "5NM MVA",
+      "starsId": 15,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7S54TP2K3A1ST2QJ64556EX",
+      "name": "DLH 016 TWR MAP",
+      "shortName": "TWR MAP",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP86YD61MAWFY8WR13Q",
+      "name": "DLH 017 JROUTES",
+      "shortName": "JROUTES",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP3VX2SM2A9Q7CCPA4X",
+      "name": "DLH 018 DLHBASE",
+      "shortName": "DLHBASE",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP59ZA4E6TQRHQVDBPQ",
+      "name": "DLH 019 9 CORR",
+      "shortName": "9 CORR",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP64670PWG4FCZS0W7E",
+      "name": "DLH 020 27 CORR",
+      "shortName": "27 CORR",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP6ZANVXKG49C627G5R",
+      "name": "DLH 021 3 CORR",
+      "shortName": "3 CORR",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP75XB5EYFAVA87SHAG",
+      "name": "DLH 022 21 CORR",
+      "shortName": "21 CORR",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP4WYQ151AT64YFW40J",
+      "name": "DLH 023 HIBRNAV",
+      "shortName": "HIBRNAV",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP4DRA396Y2HACY15FP",
+      "name": "DLH 024 EVMRNAV",
+      "shortName": "EVMRNAV",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP4RB52QDAEYP78FSBR",
+      "name": "DLH 025 COQRNAV",
+      "shortName": "COQRNAV",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP48XYHY9G5FJRDMX6N",
+      "name": "DLH 026 SUWRNAV",
+      "shortName": "SUWRNAV",
+      "starsId": 26,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP5CD7GZWQ653QR1S04",
+      "name": "DLH 027 TWMRNAV",
+      "shortName": "TWMRNAV",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP5E6DSEH1QHXH2621J",
+      "name": "DLH 028 MZHRNAV",
+      "shortName": "MZHRNAV",
+      "starsId": 28,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP5HTDX672QKAC5KRGM",
+      "name": "DLH 029 OLGRNAV",
+      "shortName": "OLGRNAV",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP87VNM3RAFH34DX2JN",
+      "name": "DLH 030 ARC FIX",
+      "shortName": "ARC FIX",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP7RAECHBS5EVZEA07N",
+      "name": "DLH 031 9 TACAN",
+      "shortName": "9 TACAN",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP8KBA0CVTPSP29B3NC",
+      "name": "DLH 032 DLH133S",
+      "shortName": "DLH133S",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP8D8TV7R74AMGGKH5Z",
+      "name": "DLH 033 DLH134S",
+      "shortName": "DLH134S",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP9PNR3Q4RKMACVTZDK",
+      "name": "DLH 034 DLH135S",
+      "shortName": "DLH135S",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP9TQA133WN45V4YGSP",
+      "name": "DLH 035 DLH136S",
+      "shortName": "DLH136S",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP00GRA4FPJ77KX04JQ",
+      "name": "DLH 036 SAT AP",
+      "shortName": "SAT AP",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TPA2JCHZMMKHJS70HRF",
+      "name": "DLH 050 I09 FLC",
+      "shortName": "I09 FLC",
+      "starsId": 50,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7S54TPABVA7KR97ESFGC2MH",
+      "name": "DLH 051 I27 FLC",
+      "shortName": "I27 FLC",
+      "starsId": 51,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7S54TPAZEXGPWAQWET2F791",
+      "name": "DLH 052 I13 FLC",
+      "shortName": "I13 FLC",
+      "starsId": 52,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7S54TPA26Q7XX62ZG6QRGXP",
+      "name": "DLH 053 I31 FLC",
+      "shortName": "I31 FLC",
+      "starsId": 53,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H7S54TP97NYEQFT7RB3YW0J7",
+      "name": "DLH 140 ADS40NM",
+      "shortName": "ADS40NM",
+      "starsId": 140,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H7S54TP9DRAP86FQM7XPCQBK",
+      "name": "DLH 160 ADS60NM",
+      "shortName": "ADS60NM",
+      "starsId": 160,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GQ318VFVCBWG5J3J7RRH6TC0",
+      "name": "DLH GND__GROUND MAP",
+      "shortName": "GND",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

@@ -1,0 +1,545 @@
+{
+  "artcc": "ZHN",
+  "facility": "HNL",
+  "name": "Honolulu ATCT",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 20.9750275,
+    "lon": -157.17449499999998
+  },
+  "controlPositions": [
+    {
+      "id": "01GF264YG50JAF61FDZ8FECBP9",
+      "name": "Clearance Delivery",
+      "callsign": "HNL_DEL",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 121.4
+    },
+    {
+      "id": "01GF26784N73TSPVHFMB04C4YH",
+      "name": "Ground Control",
+      "callsign": "HNL_GND",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GF267Z9BVJ1C1D2W0PRQEB12",
+      "name": "Local Control North",
+      "callsign": "HNL_N_TWR",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 118.1
+    },
+    {
+      "id": "01GF26EGAR7ZN272FNK9QFTN58",
+      "name": "Local Control South",
+      "callsign": "HNL_S_TWR",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 123.9
+    },
+    {
+      "id": "01GF26G5X19713Q047CNE3THDB",
+      "name": "L Departure",
+      "callsign": "HNL_L_APP",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 124.8
+    },
+    {
+      "id": "01GF26WDC7EBMZS99TK8NG8KEV",
+      "name": "H Arrival",
+      "callsign": "HNL_H_APP",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01HJTSTT32P702SDYWA7W52WNM",
+      "name": "Hickam Ramp (Event Only)",
+      "callsign": "HIK_RMP",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 133.6
+    },
+    {
+      "id": "01HJTSVPXTS5Z128V2FX9ACXW7",
+      "name": "Honolulu Ramp (Event Only)",
+      "callsign": "HNL_RMP",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01K2VSRD77M1AYXDZGTX75H4K1",
+      "name": "V Arrival",
+      "callsign": "HNL_V_APP",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      },
+      "freq": 119.1
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 20.9750275,
+        "lon": -157.17449499999998
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1H",
+        "1L",
+        "1V"
+      ],
+      "mapIds": [
+        5,
+        101,
+        3,
+        4,
+        1,
+        2,
+        15,
+        17,
+        16,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        201,
+        200,
+        205,
+        207,
+        206,
+        208,
+        203,
+        209,
+        204,
+        14,
+        202,
+        100,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        5,
+        3,
+        1,
+        101,
+        4,
+        2
+      ],
+      "submenuMapIds": [
+        15,
+        16,
+        103,
+        105,
+        107,
+        200,
+        207,
+        208,
+        209,
+        14,
+        100,
+        null,
+        null,
+        null,
+        null,
+        17,
+        102,
+        104,
+        106,
+        201,
+        205,
+        206,
+        203,
+        204,
+        202,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1N",
+        "1S"
+      ],
+      "mapIds": [
+        3,
+        102,
+        1,
+        105,
+        15,
+        104,
+        16,
+        17,
+        5,
+        100,
+        101,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        3,
+        1,
+        15,
+        102,
+        105,
+        104
+      ],
+      "submenuMapIds": [
+        16,
+        5,
+        101,
+        201,
+        203,
+        205,
+        207,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        17,
+        100,
+        200,
+        202,
+        204,
+        206,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H5BFS7YTFFKZZKJPGFP0KMBT",
+      "name": "Airports",
+      "shortName": "APRTS",
+      "starsId": 1,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5BFS7YVSNYNJD01AFCAKE3Z",
+      "name": "Airways",
+      "shortName": "ARWYS",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5BFS7YVFX5FN7R19BXC4G5R",
+      "name": "COAST__COASTLINES",
+      "shortName": "Coast",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5BFS7YVKWY62AQN72S8GY7C",
+      "name": "CTR__CENTER SPLITS",
+      "shortName": "SPLITS",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5BFS7YWXMJF6H28A1B1YXXN",
+      "name": "HNL MVA__HONOLULU MINIMUM VEC ALT",
+      "shortName": "HNL MVA",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5BFS7YYWFFPPGQB7MVPNT29",
+      "name": "SPLIT__TRACON SPLITS",
+      "shortName": "Split",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5BFS7YYQ3DPJ41Q7JE2DXJS",
+      "name": "TRACON__TRACON OUTLINES",
+      "shortName": "TRACON",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBHP8M221MAZ9BHFC2DFJ5CZ",
+      "name": "Honolulu TRACON Airspace",
+      "shortName": "HNLTRA",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBKHJZ6G7NRZX18TS3D9DR42",
+      "name": "HNL TRACON E SPLIT",
+      "shortName": "HNLTRAE",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K3EHXAY9J3HCH8XD22GMY47N",
+      "name": "HNL TRACON W SPLIT",
+      "shortName": "HNLTRAW",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZ2QVKMFDE6HQ9GYED9GXM5V",
+      "name": "ZHN Airspace Classes",
+      "shortName": "AIRSPC",
+      "starsId": 100,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HQQPYH2VBQJCX1TM6ZYNG23D",
+      "name": "HNL RVM BASE",
+      "shortName": "HNL_RVM",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQQPYH2T8RZTTQ99BCFEPN4W",
+      "name": "HNL_8L",
+      "shortName": "HNL_8L",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQQPYH2VFF3ETB2WYC2DYCTT",
+      "name": "HNL_8R",
+      "shortName": "HNL_8R",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQQPYH2TZK42HZ2S1V99XJ2Q",
+      "name": "HNL 4R RVM",
+      "shortName": "HNL_4R",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQQPYH2VBXH43K3B3BJ7TY2D",
+      "name": "HNL_26L",
+      "shortName": "HNL_26L",
+      "starsId": 105,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQQPYH2TGV30HHRBSE6N88W7",
+      "name": "HHI_RNAV",
+      "shortName": "HHIRNAV",
+      "starsId": 106,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQQPYH2W27KPFA2Y0H1CWH6C",
+      "name": "JRF_4R",
+      "shortName": "JRF_4R",
+      "starsId": 107,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K3EGYTSN53PD85FY362GNN2Z",
+      "name": "HCF FIX DEP",
+      "shortName": "HFIXDEP",
+      "starsId": 200,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HQQPYH2S80DXW507WJK5K9QH",
+      "name": "HCF_FIX_ARR",
+      "shortName": "HFIXARR",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HZ49SBMRQ2TSHA7TZNZNG170",
+      "name": "HNL_FIX_26L",
+      "shortName": "HFIX26L",
+      "starsId": 202,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HZ49SBMQWB8R803BESN9TH03",
+      "name": "HNL_FIX_4L",
+      "shortName": "HFIX4L",
+      "starsId": 203,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HZ49SBMQZBVNCN9AXK1K6XJT",
+      "name": "HNL_FIX_4R",
+      "shortName": "HFIX4R",
+      "starsId": 204,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HZ49SBMRX7PTFPVXR143AXQ6",
+      "name": "HNL FIX 8L",
+      "shortName": "HFIX8L",
+      "starsId": 205,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HZ49SBMRQT7ZA4DVGQJZZX5Y",
+      "name": "HNL_FIX_8R",
+      "shortName": "HFIX8R",
+      "starsId": 206,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HZ49SBMS5H2VH90TR68DDM4G",
+      "name": "HNL_FIX_VOR",
+      "shortName": "HFIXVOR",
+      "starsId": 207,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HZ4A3HSQEE5XSZWJQFGX8BEF",
+      "name": "HHI_FIX",
+      "shortName": "HHIFIX",
+      "starsId": 208,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HZ4A463MYFANJGAFB65ZTNWF",
+      "name": "JRF_FIX_4R",
+      "shortName": "JRFFIX",
+      "starsId": 209,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKMGTD22N02RCM3RJNNAKS4T",
+      "name": "LIH_centerlines",
+      "shortName": "LIHCTR",
+      "starsId": 400,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKMGTD22NV6J01XRDAN21E4T",
+      "name": "LIH_FIX_35",
+      "shortName": "LIHI35",
+      "starsId": 402,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KKMJ0GZYGQBZJ1EM59DH55GD",
+      "name": "LIH_FIX_21",
+      "shortName": "LIHR21",
+      "starsId": 403,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HBHP8M221MAZ9BHFC2DFJ5CZ",
+      "name": "Honolulu TRACON Airspace",
+      "shortName": "HNLTRA",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZ2QVKMFDE6HQ9GYED9GXM5V",
+      "name": "ZHN Airspace Classes",
+      "shortName": "AIRSPC",
+      "starsId": 100,
+      "brightnessCategory": "B"
+    }
+  ]
+}

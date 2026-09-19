@@ -1,0 +1,294 @@
+{
+  "artcc": "ZLC",
+  "facility": "GTF",
+  "name": "Great Falls ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 44.1394906,
+    "lon": -111.3092792325
+  },
+  "controlPositions": [
+    {
+      "id": "01G9BPB6V1YCNXB48WDGKT6D21",
+      "name": "Approach",
+      "callsign": "GTF_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 128.6
+    },
+    {
+      "id": "01G9BPDC3K2RAFE6Y45VW1YW7A",
+      "name": "Local Control",
+      "callsign": "GTF_TWR",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 118.7
+    },
+    {
+      "id": "01HXT4XAFW78K251R8YJP1NGHJ",
+      "name": "Ground Control",
+      "callsign": "GTF_GND",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A"
+      ],
+      "mapIds": [
+        299,
+        105,
+        2,
+        5,
+        null,
+        null,
+        107,
+        108,
+        109,
+        110,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        299,
+        2,
+        null,
+        105,
+        5,
+        null
+      ],
+      "submenuMapIds": [
+        107,
+        109,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        108,
+        110,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1G",
+        "1T"
+      ],
+      "mapIds": [
+        299,
+        null,
+        2,
+        5,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        299,
+        2,
+        null,
+        null,
+        5,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GPSMTT0S5BQQ8EHGTZZ5JX4C",
+      "name": "STARS-GTF_N-RVM__North RVM",
+      "shortName": "N-RVM",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMTT0TT022HP9AH5AF64JC",
+      "name": "STARS-GTF_S-RVM__South RVM",
+      "shortName": "S-RVM",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6BM869MJ0J5NYE3YDGZTQ58",
+      "name": "STARS-GTF_TRSA_MAP",
+      "shortName": "TRSA",
+      "starsId": 105,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6E6C72J5E1WZF1X5GJ2BFAJ",
+      "name": "STARS_GTF_RNAV_Y_03",
+      "shortName": "Y03",
+      "starsId": 107,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6GRCCKKK221AFNKMX1B9CZQ",
+      "name": "STARS_GTF_RNAV_Y_21",
+      "shortName": "Y21",
+      "starsId": 108,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6K4VZW7JSDBNNAC5SF1GAK1",
+      "name": "GTF_RNAV_17",
+      "shortName": "R17",
+      "starsId": 109,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K6KA7B1SPSHS78BFETCEJ5RR",
+      "name": "GTF_RNAV_35",
+      "shortName": "R35",
+      "starsId": 110,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JQ4BW5PPMHZT9QNZDG05REYV",
+      "name": "STARS-GTF_2024_MVA",
+      "shortName": "MVA2",
+      "starsId": 299,
+      "brightnessCategory": "B"
+    }
+  ]
+}

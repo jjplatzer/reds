@@ -1,0 +1,368 @@
+{
+  "artcc": "ZDC",
+  "facility": "FAY",
+  "name": "Fayetteville ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 37,
+    "lon": -77
+  },
+  "controlPositions": [
+    {
+      "id": "01GXEHD63YS37SF1PGYN405DZW",
+      "name": "Ground",
+      "callsign": "FAY_GND",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01GXEHE38KWZ4NJTWG3W6KZ5QJ",
+      "name": "Local",
+      "callsign": "FAY_TWR",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01GXEHEQ12DDADCZMVQZXGRBVG",
+      "name": "North Radar",
+      "callsign": "FAY_N_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 125.175
+    },
+    {
+      "id": "01GXEHH3NNBGP9KQV691KFVQCK",
+      "name": "East Radar",
+      "callsign": "FAY_E_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 133
+    },
+    {
+      "id": "01GXEHJ82WNVYWXXP172MRGB9E",
+      "name": "West Radar",
+      "callsign": "FAY_W_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 127.8
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1N"
+      ],
+      "mapIds": [
+        1,
+        2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        null,
+        null,
+        2,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GXEFRKWAJFMMS19G1PJ6C0Z3",
+      "name": "FAY RVM",
+      "shortName": "RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKBRN12PM08QA0TBTPQSTRD0",
+      "name": "FAY MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0RF0YKN9AW52ZGH1NX",
+      "name": "IAP FAY I04",
+      "shortName": "I04",
+      "starsId": 301,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0SPWZF5FQTQTPS1G7A",
+      "name": "IAP FAY L04",
+      "shortName": "L04",
+      "starsId": 302,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0S9TZNNCJMX6GXNA4J",
+      "name": "IAP FAY R04",
+      "shortName": "R04",
+      "starsId": 303,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0TE741818ZC70Z5FRZ",
+      "name": "IAP FAY R22",
+      "shortName": "R22",
+      "starsId": 304,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0TYB39W6VJ112Y9TZ7",
+      "name": "IAP FAY R10",
+      "shortName": "R10",
+      "starsId": 305,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0TZT7WAGYJSRQFRRJ4",
+      "name": "IAP FAY R28",
+      "shortName": "R28",
+      "starsId": 306,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0RCN725A2B52PJNT0W",
+      "name": "IAP FAY B22",
+      "shortName": "B22",
+      "starsId": 307,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0MSAEFH3WT0Q50J01Z",
+      "name": "IAP CTZ R06",
+      "shortName": "R06",
+      "starsId": 501,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0N9PS11576481PB33Y",
+      "name": "IAP CTZ R24Y",
+      "shortName": "R24Y",
+      "starsId": 502,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0NY3556G49SFP7Q6QC",
+      "name": "IAP CTZ R24Z",
+      "shortName": "R24Z",
+      "starsId": 503,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0P584WGJXZ505YW8DX",
+      "name": "IAP CTZ VDMA",
+      "shortName": "VDMA",
+      "starsId": 504,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0QC1936BZWG1W3QSY9",
+      "name": "IAP EYF D15",
+      "shortName": "D15",
+      "starsId": 511,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0QYSH2N2VHYE6D0ZVD",
+      "name": "IAP EYF R15",
+      "shortName": "R15",
+      "starsId": 512,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0R43J7XD481KBQA060",
+      "name": "IAP EYF R33",
+      "shortName": "R33",
+      "starsId": 513,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0VK5S9A3B62PEEJNX3",
+      "name": "IAP HRJ N23",
+      "shortName": "N23",
+      "starsId": 522,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0XWF6Z2VBNGQY98PTK",
+      "name": "IAP LBT I05",
+      "shortName": "I05",
+      "starsId": 531,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0Y38EMJ3WXK99QC9GQ",
+      "name": "IAP LBT L05",
+      "shortName": "L05",
+      "starsId": 532,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0Z9E2D9M5MWKFVQF7J",
+      "name": "IAP LBT R13",
+      "shortName": "R13",
+      "starsId": 534,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J12HF1Z1M5FCA00TM0A",
+      "name": "IAP SOP I05Y",
+      "shortName": "I05Y",
+      "starsId": 561,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J12T3W6EH0J7X1N7B95",
+      "name": "IAP SOP I05Z",
+      "shortName": "I05Z",
+      "starsId": 562,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J12K8TBDP0V7T10428M",
+      "name": "IAP SOP L05Y",
+      "shortName": "L05Y",
+      "starsId": 563,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J13MNB1041MWX0HR0YF",
+      "name": "IAP SOP L05Z",
+      "shortName": "L05Z",
+      "starsId": 564,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J13B3WABEPCW042EGWG",
+      "name": "IAP SOP R05",
+      "shortName": "R05",
+      "starsId": 565,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J130H0KE24176WNJY5M",
+      "name": "IAP SOP R23",
+      "shortName": "R23",
+      "starsId": 566,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0JFWAHETXET1ETCFTM",
+      "name": "IAP 5W4 RNVA",
+      "shortName": "RNVA",
+      "starsId": 571,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0KNDC27TJXAFCQQT3N",
+      "name": "IAP 5W4 VORA",
+      "shortName": "VORA",
+      "starsId": 572,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC4J0KTQ6ERW53QY4ZGJMJ",
+      "name": "IAP 43A R03",
+      "shortName": "R03",
+      "starsId": 581,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYJC9091Y3B101HBQM174VCQ",
+      "name": "IAP 43A R21",
+      "shortName": "R21",
+      "starsId": 582,
+      "brightnessCategory": "B"
+    }
+  ]
+}

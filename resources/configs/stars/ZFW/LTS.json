@@ -1,0 +1,236 @@
+{
+  "artcc": "ZFW",
+  "facility": "LTS",
+  "name": "Altus ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 33.55328401,
+    "lon": -97.43688567000001
+  },
+  "controlPositions": [
+    {
+      "id": "01H89WERRK4X6VKMEH1659ZVP2",
+      "name": "Radar",
+      "callsign": "LTS_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 125.1
+    },
+    {
+      "id": "01H89WFJ8VPD6W1C4NZEAVGXZ2",
+      "name": "Local",
+      "callsign": "LTS_TWR",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 119.65
+    },
+    {
+      "id": "01H89WGCBSVPS11Y49NNBQJ8H2",
+      "name": "Ground",
+      "callsign": "LTS_GND",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.85
+    },
+    {
+      "id": "01H89WGSF6P0XBMYQKC4ASXKVT",
+      "name": "Clearance",
+      "callsign": "LTS_DEL",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 120.65
+    },
+    {
+      "id": "01J9YJ21MMKV5TW60ENKBMN031",
+      "name": "Guard",
+      "callsign": "LTS_EM_APP",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.55328401,
+        "lon": -97.43688567000001
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1R",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        901,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        901,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        902,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H8FVZCHVYA57HKQ0DH0117S0",
+      "name": "LTS MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8FVZZB1F8G0TCDBP76PS8EH",
+      "name": "LTS MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8FW5R4229RN31QRWYV0N270",
+      "name": "LTS TRSA",
+      "shortName": "TRSA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8FW6AGCTYMQESX3P3E03WH0",
+      "name": "LTS DELTA",
+      "shortName": "DELTA",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8FX5VP107A0NNXT2T8M6G06",
+      "name": "LTS R5061",
+      "shortName": "R5601",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8FX6T7QXBWN13V2TFNJT0YV",
+      "name": "LTS MOA",
+      "shortName": "MOA",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H8FWC5ZGV4J77B53WKMZ1BFW",
+      "name": "SPS BNDY",
+      "shortName": "SPS",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8FWDJS96T61K4VZMG853HX8",
+      "name": "FSI BNDY",
+      "shortName": "FSI",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GKZZ67A9BXG6P1CB9ZMYESCR",
+      "name": "ZFW__ZFW",
+      "shortName": "ZFW",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1ZXKZRR6Z69P56ZJX3KDNR0",
+      "name": "GEO__GEO",
+      "shortName": "GEO",
+      "starsId": 902,
+      "brightnessCategory": "B"
+    }
+  ]
+}

@@ -1,0 +1,345 @@
+{
+  "artcc": "ZME",
+  "facility": "NMM",
+  "name": "Meridian ATCT/RATCF",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 35.0424167,
+    "lon": -89.9766667
+  },
+  "controlPositions": [
+    {
+      "id": "01GQGGR2KSJ98HM1KGZRX141KN",
+      "name": "Local",
+      "callsign": "NMM_TWR",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 126.2
+    },
+    {
+      "id": "01H510NWRW2QD2DYXVJN8F6XCG",
+      "name": "Approach",
+      "callsign": "NMM_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 120.5
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        10,
+        7,
+        8,
+        9,
+        6,
+        11,
+        13,
+        12,
+        14,
+        16,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        10
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        12,
+        16,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        6,
+        13,
+        14,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        15,
+        14,
+        12,
+        11,
+        10,
+        16,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        15,
+        12,
+        10,
+        14,
+        11,
+        16
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H5108G2J8EZYW5H17P0SPS9M",
+      "name": "NMM_Map 1",
+      "shortName": "MAP 1",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5108G2K07PY5K6ZV95QVMTE",
+      "name": "NMM_TACAN 19L",
+      "shortName": "TAC 19L",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5108G2KQM8WZZW6AQ6JNS3P",
+      "name": "NMM_TACAN 1L",
+      "shortName": "TAC 1L",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5108G2D79H2537VB8N416QB",
+      "name": "NMM_AIRWAY",
+      "shortName": "AIRWAY",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5108G2J0C3S6NN06M1DC1DP",
+      "name": "NMM_R4404",
+      "shortName": "R4404",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5108G2FY3DRC05DYC4DZ593",
+      "name": "NMM_ATCAA MEI 1",
+      "shortName": "MEI 1",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5108G2GFW4J6HP348GSRTH4",
+      "name": "NMM_ATCAA MEI 2",
+      "shortName": "MEI 2",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5108G2E51421EDYN57NF0A1",
+      "name": "NMM_ATCAA BHM",
+      "shortName": "BHM",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5108G2HWVAT44MBBF0S7M2G",
+      "name": "NMM_ATCAA PINE HILL",
+      "shortName": "PINE",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQEMSGTTFYKJ0CMZKGJ0E6E",
+      "name": "NMM_MVA",
+      "shortName": "MVA",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAR5ZH0PHTDEPVQ98NVZDF2H",
+      "name": "NMM_SATTELITE GPS",
+      "shortName": "SAT GPS",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAR614A8MCJJVXM8NV0S5H4V",
+      "name": "NMM_MEI VOR A",
+      "shortName": "VOR A",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAR5Q1W8QH8BZFBJV3T715SA",
+      "name": "NMM_HI ILS 19L",
+      "shortName": "ILS X/Z",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPPJYBNB48TDZ5Q7HSQ06C9",
+      "name": "NMM_CLASS D",
+      "shortName": "CLASS D",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPPMFCWQ53D5XGTBE8EPB2H",
+      "name": "MEI_MEI OPS",
+      "shortName": "MEI OPS",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J08S5CP363HBAX1DX9G6WFR2",
+      "name": "NMM_VFR",
+      "shortName": "VFR",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H26RM86EJVH3DYWSYDV8BZ0Y",
+      "name": "ARTCC_GROUND MAPS",
+      "shortName": "GEO",
+      "starsId": 900,
+      "brightnessCategory": "A"
+    }
+  ]
+}

@@ -1,0 +1,1411 @@
+{
+  "artcc": "ZLC",
+  "facility": "S56",
+  "name": "Salt Lake City TRACON",
+  "type": "Tracon",
+  "defaultCenter": {
+    "lat": 44.1394906,
+    "lon": -111.3092792325
+  },
+  "controlPositions": [
+    {
+      "id": "01G9BV9H83ZJBKVMNBRGQAG7YS",
+      "name": "Bear",
+      "callsign": "SLC_B_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 124.9
+    },
+    {
+      "id": "01G9BVH63CH2J1TZQQZ59SQC4A",
+      "name": "Gunnison",
+      "callsign": "SLC_G_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 126.25
+    },
+    {
+      "id": "01G9BVJE54SRVRYA7CZN5JK06K",
+      "name": "Jordan",
+      "callsign": "SLC_J_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 128.6
+    },
+    {
+      "id": "01G9BVKB3E5GAYBP10DRW4DBT7",
+      "name": "Lake",
+      "callsign": "SLC_K_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 135.5
+    },
+    {
+      "id": "01G9BVMAGCZSEVP0D94YD1G5TZ",
+      "name": "Hart",
+      "callsign": "SLC_H_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 121.1
+    },
+    {
+      "id": "01G9BVPDRT2MN0YGGVKE1VDG4V",
+      "name": "Alpine",
+      "callsign": "SLC_A_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 118.85
+    },
+    {
+      "id": "01G9BVQTS8AMDCBDCC0ZAVEWY7",
+      "name": "Valley",
+      "callsign": "SLC_V_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 120.9
+    },
+    {
+      "id": "01G9BVRJMQHN8ZW5D4DT2Y9FZ0",
+      "name": "Stockton",
+      "callsign": "SLC_S_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 128.1
+    },
+    {
+      "id": "01G9BVS5RWQ11G8F0FFQNJACNS",
+      "name": "Final",
+      "callsign": "SLC_F_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 125.7
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1J",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1K",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1X",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1Y",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "2L",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "3G",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "3L",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "4D",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "4G",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "4L",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1B",
+        "1F",
+        "1G",
+        "1H",
+        "1J",
+        "1K",
+        "1S",
+        "1V"
+      ],
+      "mapIds": [
+        107,
+        109,
+        203,
+        119,
+        137,
+        176,
+        141,
+        142,
+        147,
+        146,
+        162,
+        159,
+        160,
+        157,
+        161,
+        158,
+        151,
+        154,
+        152,
+        155,
+        153,
+        156,
+        120,
+        150,
+        102,
+        182,
+        190,
+        106,
+        123,
+        138,
+        169,
+        170,
+        171,
+        312,
+        199,
+        128,
+        116,
+        130
+      ],
+      "mainMapIds": [
+        107,
+        203,
+        137,
+        109,
+        119,
+        176
+      ],
+      "submenuMapIds": [
+        141,
+        147,
+        162,
+        160,
+        161,
+        151,
+        152,
+        153,
+        120,
+        102,
+        190,
+        123,
+        169,
+        171,
+        199,
+        142,
+        146,
+        159,
+        157,
+        158,
+        154,
+        155,
+        156,
+        150,
+        182,
+        106,
+        138,
+        170,
+        312,
+        128
+      ]
+    },
+    {
+      "tcps": [
+        "1D",
+        "1E",
+        "1L",
+        "1U",
+        "1W",
+        "1X",
+        "1Y"
+      ],
+      "mapIds": [
+        115,
+        114,
+        203,
+        119,
+        137,
+        176,
+        141,
+        142,
+        147,
+        146,
+        178,
+        null,
+        164,
+        163,
+        136,
+        135,
+        172,
+        175,
+        183,
+        116,
+        130,
+        199,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        115,
+        203,
+        137,
+        114,
+        119,
+        176
+      ],
+      "submenuMapIds": [
+        141,
+        147,
+        178,
+        164,
+        136,
+        172,
+        183,
+        130,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        142,
+        146,
+        null,
+        163,
+        135,
+        175,
+        116,
+        199,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "3G",
+        "3L"
+      ],
+      "mapIds": [
+        301,
+        302,
+        203,
+        305,
+        309,
+        304,
+        302,
+        303,
+        306,
+        311,
+        307,
+        308,
+        120,
+        150,
+        123,
+        102,
+        199,
+        176,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        301,
+        203,
+        309,
+        302,
+        305,
+        304
+      ],
+      "submenuMapIds": [
+        302,
+        306,
+        307,
+        120,
+        123,
+        199,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        303,
+        311,
+        308,
+        150,
+        102,
+        176,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "2L"
+      ],
+      "mapIds": [
+        138,
+        129,
+        203,
+        119,
+        190,
+        176,
+        120,
+        150,
+        123,
+        102,
+        116,
+        130,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        138,
+        203,
+        190,
+        129,
+        119,
+        176
+      ],
+      "submenuMapIds": [
+        120,
+        123,
+        116,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        150,
+        102,
+        130,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "4D",
+        "4G",
+        "4L"
+      ],
+      "mapIds": [
+        138,
+        129,
+        203,
+        119,
+        124,
+        176,
+        127,
+        128,
+        120,
+        150,
+        170,
+        171,
+        168,
+        143,
+        123,
+        102,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        138,
+        203,
+        124,
+        129,
+        119,
+        176
+      ],
+      "submenuMapIds": [
+        127,
+        120,
+        170,
+        168,
+        123,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        128,
+        150,
+        171,
+        143,
+        102,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HY67QFHDA31X1EA5KZTD60MH",
+      "name": "S56 102 Satellite Approaches",
+      "shortName": "SAT",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHDJPF71337GJQ6J0VB",
+      "name": "S56 104 ZLC Split Map",
+      "shortName": "ZLC",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHE1VHHNR0DCRBEB9Q0",
+      "name": "S56 105 Dashed Arc",
+      "shortName": "DASH-A",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHETYEVC0W3MWY9ZC7K",
+      "name": "S56 106 Class Bravo Airspace",
+      "shortName": "CLASS B",
+      "starsId": 106,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHEYTG648CKSWNRWQPM",
+      "name": "S56 107 N Flow Base Map",
+      "shortName": "N-FLOW",
+      "starsId": 107,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHFZQ3TK7SRHZJ14ADM",
+      "name": "S56 109 South Flow Base Map",
+      "shortName": "S-FLOW",
+      "starsId": 109,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHFQ0R47GMQ0EFXM4V1",
+      "name": "S56 110 SPANE Map",
+      "shortName": "SPANE",
+      "starsId": 110,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHFCCNYFBFHWKSYGY6Z",
+      "name": "S56 111 Valley Reference",
+      "shortName": "VLY REF",
+      "starsId": 111,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHFBGBK53RCEFYX722G",
+      "name": "S56 112 Traverse Mountain Glider Map",
+      "shortName": "GLDR",
+      "starsId": 112,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHFZ709SHX7YCWZ34S9",
+      "name": "S56 113 Final Monitor",
+      "shortName": "FNL MON",
+      "starsId": 113,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHFW91DC78JZNMP64Q8",
+      "name": "S56 114 Tower South Flow",
+      "shortName": "TWR-S",
+      "starsId": 114,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHG2PY1MCBYGQGN2HDA",
+      "name": "S56 115 Tower North Flow",
+      "shortName": "TWR-N",
+      "starsId": 115,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JS7NCAE5PT1356QBNCB957CY",
+      "name": "S56 116 OGD EMONT SID",
+      "shortName": "EMONT",
+      "starsId": 116,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHGZ0SNMZP53VTCMZXF",
+      "name": "S56 117 ZOOM 1 SUA",
+      "shortName": "ZOOM1",
+      "starsId": 117,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHGEAG7V3P8B1F70MXD",
+      "name": "S56 118 5NM Separation MVA",
+      "shortName": "5NM MVA",
+      "starsId": 118,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHGDDBXP5DPSMFJQYQM",
+      "name": "S56 119 Emergency Obstacle Map",
+      "shortName": "EOVM",
+      "starsId": 119,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHGVKAS1SPZAFXB0DC8",
+      "name": "S56 120 GPS Approach Centerlines",
+      "shortName": "GPS",
+      "starsId": 120,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHG21G4Q08ZKTT6Q6RN",
+      "name": "S56 121 SFO SUA",
+      "shortName": "SFO",
+      "starsId": 121,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHHET9ZRJE8FWRKTHPC",
+      "name": "S56 122 Fix Names and Locations",
+      "shortName": "FIXES",
+      "starsId": 122,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHHMZR7K0SFPZW3NN4P",
+      "name": "S56 123 Minimum Safe Altitude Map",
+      "shortName": "MSA",
+      "starsId": 123,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHHEGW1ZD8QPNJZ9AZE",
+      "name": "S56 124 DEMO SUA",
+      "shortName": "DEMO",
+      "starsId": 124,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHHT695S1C7D0KCR34X",
+      "name": "S56 125 Grid Display",
+      "shortName": "GRID",
+      "starsId": 125,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHH433MSJXDTF8YQ4EQ",
+      "name": "S56 126 Geography Map",
+      "shortName": "GEO",
+      "starsId": 126,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHHMAZ3F98GYDFYZ0PG",
+      "name": "S56 127 R6412 Map",
+      "shortName": "R6412",
+      "starsId": 127,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHJN58ZBJPQGVYNSNJ7",
+      "name": "S56 128 ZOOM2 SUA",
+      "shortName": "ZOOM2",
+      "starsId": 128,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHJ06VSNBH22563NGKZ",
+      "name": "S56 129 Mid Shift Map",
+      "shortName": "MID MAP",
+      "starsId": 129,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JS7QDHK11DHVCE9F2TZ1N2Y3",
+      "name": "S56 130 OGD WLKRR STAR",
+      "shortName": "WLKRR",
+      "starsId": 130,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHJA6Q34YAZ96VTXERM",
+      "name": "S56 132 Law Enforcement Areas",
+      "shortName": "LAW",
+      "starsId": 132,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHKEMC0TFCXRTVPGW67",
+      "name": "S56 134 OGD Para-jump Area Map",
+      "shortName": "PARA",
+      "starsId": 134,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHKJ14XMWRZ9SMZNHSA",
+      "name": "S56 135 Landmark Names",
+      "shortName": "L-NAMES",
+      "starsId": 135,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHK88X215C9T7AJFE4J",
+      "name": "S56 136 Tower Landmarks",
+      "shortName": "TWR-LM",
+      "starsId": 136,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHKX31DH6RJ54Z1XHHS",
+      "name": "S56 137 Tower Airspace",
+      "shortName": "TWR-AIR",
+      "starsId": 137,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHKDERSGDSEW5DBR29N",
+      "name": "S56 138 Class D Airspace",
+      "shortName": "CLASS D",
+      "starsId": 138,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHK9E1F2TN6SFNQY4TK",
+      "name": "S56 139 SLC Tower Base Map",
+      "shortName": "SLC-TWR",
+      "starsId": 139,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHM56176X2QX8MXBZ57",
+      "name": "S56 140 OTP 32 Procedure",
+      "shortName": "OTP32",
+      "starsId": 140,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHMHD4HQ0S357GHZ11S",
+      "name": "S56 141 North Approach Waypoints",
+      "shortName": "N-FINAL",
+      "starsId": 141,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHMGGWS0QF5RE58JK3J",
+      "name": "S56 142 South Approach Waypoints",
+      "shortName": "S-FINAL",
+      "starsId": 142,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHMFECTN9R7CCA319X9",
+      "name": "S56 143 Extended Runway Safety Area",
+      "shortName": "ERSA",
+      "starsId": 143,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHM5G63ERSK2QBWX420",
+      "name": "S56 144 Salt Lake Tower North Flow Splits",
+      "shortName": "N-TWR-A",
+      "starsId": 144,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHM31YRT81X9B4ZKNGF",
+      "name": "S56 146 South Finals Extended",
+      "shortName": "S-FNL-E",
+      "starsId": 146,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHNJY752H25V9ADS45F",
+      "name": "S56 147 North Finals Extended",
+      "shortName": "N-FNL-E",
+      "starsId": 147,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHN3CMHS9NXE86FDYKC",
+      "name": "S56 148 Heber Shelf",
+      "shortName": "HEBER",
+      "starsId": 148,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHNXAVND7F00FN0N4PS",
+      "name": "S56 149 Francis Peak MVA",
+      "shortName": "FPK MVA",
+      "starsId": 149,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHN3G2JJWFWN32N5PQM",
+      "name": "S56 150 GPS Approaches Text",
+      "shortName": "GPSTEXT",
+      "starsId": 150,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHNN42BAMD6FK1RFSJD",
+      "name": "S56 151 North Flow Arrival Waypoints Symbols",
+      "shortName": "N-ARR-W",
+      "starsId": 151,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHN3ESG9RTEKXFW48F9",
+      "name": "S56 152 North Flow Arrival Waypoint Names",
+      "shortName": "N-ARR-N",
+      "starsId": 152,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHN6NYCGFV49CVK4EY9",
+      "name": "S56 153 North Flow Arrival Lines",
+      "shortName": "N-ARR-L",
+      "starsId": 153,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHPYZ6ZFPJEJKQ2F9Y1",
+      "name": "S56 154 South Flow Arrival Waypoint Symbols",
+      "shortName": "S-ARR-W",
+      "starsId": 154,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHPAXEQ6SPV23WZXMZC",
+      "name": "S56 155 South Flow Arrival Waypoint Names",
+      "shortName": "S-ARR-N",
+      "starsId": 155,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHP1SH8SWX0A28WCWQY",
+      "name": "S56 156 South Flow Arrival Lines",
+      "shortName": "S-ARR-L",
+      "starsId": 156,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHPR57XN914VW7A1Y4B",
+      "name": "S56 157 South Flow SID Waypoints Symbols",
+      "shortName": "S-SID-W",
+      "starsId": 157,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHP3P2S69DN12PNKZRF",
+      "name": "S56 158 South Flow SID Waypoint Names",
+      "shortName": "S-SID-N",
+      "starsId": 158,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHP5MJMAET5A2C73BXT",
+      "name": "S56 159 South Flow SID Lines",
+      "shortName": "S-SID-L",
+      "starsId": 159,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHQ6D5NCXFS8ZHNNZBN",
+      "name": "S56 160 North Flow SID Waypoint Symbols",
+      "shortName": "N-SID-W",
+      "starsId": 160,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHQH1P46MGNFHK0W11X",
+      "name": "S56 161 North Flow SID Names",
+      "shortName": "N-SID-N",
+      "starsId": 161,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHQ8RES8A2CMVWWMBFV",
+      "name": "S56 162 North Flow SID Lines",
+      "shortName": "N-SID-L",
+      "starsId": 162,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHRNHP3PPGWBTNVPK4K",
+      "name": "S56 163 South Flow Tower Waypoints and References",
+      "shortName": "TWR-S-R",
+      "starsId": 163,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHRPCEEFE4DVNTRFPQ2",
+      "name": "S56 164 North Flow Tower Waypoints and References",
+      "shortName": "TWR-N-R",
+      "starsId": 164,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHRZFVAB183GC4XPS3Q",
+      "name": "S56 165 GPS Waypoints",
+      "shortName": "GPS-W",
+      "starsId": 165,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHRZA0VQSW2D52S9HYQ",
+      "name": "S56 166  North Flow GPS Waypoints",
+      "shortName": "GPS-N",
+      "starsId": 166,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHRXMN13ENJWS61TYDS",
+      "name": "S56 167 Widely Spaced Simuls Map",
+      "shortName": "WIDESIM",
+      "starsId": 167,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHRSQKRRZMQ2X11XCA7",
+      "name": "S56 168 Military Transition Areas",
+      "shortName": "MTA",
+      "starsId": 168,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHR1HT66MA0DKFV5YJ4",
+      "name": "S56 169 PVU VOR Approach",
+      "shortName": "PVU VOR",
+      "starsId": 169,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHSQCHQ398NMJG218YM",
+      "name": "S56 170 STACO Holding Area",
+      "shortName": "STACO",
+      "starsId": 170,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHS29R8ZCW48HN8ZMZK",
+      "name": "S56 171 Tooele Holding Area",
+      "shortName": "TOOELE",
+      "starsId": 171,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHS8CVXNY11VA1HQRG5",
+      "name": "S56 172 Hospital Locations",
+      "shortName": "HOSP2",
+      "starsId": 172,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHSH00AP0JGAN38RABG",
+      "name": "S56 173 South Flow SID Headings",
+      "shortName": "TWRSIDS",
+      "starsId": 173,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHS32KCANTFTDNJQ42H",
+      "name": "S56 174 North Flow SID Headings",
+      "shortName": "TWRSIDN",
+      "starsId": 174,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHSM5BMP1XM59JKHHRJ",
+      "name": "S56 175 Hospital Names",
+      "shortName": "HOSP-N",
+      "starsId": 175,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHSVN2XBM561VH5X3FS",
+      "name": "S56 176 Roads",
+      "shortName": "ROADS",
+      "starsId": 176,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHTEGT84TD2ZCRYZVKE",
+      "name": "S56 177 RNAV 35 Approach",
+      "shortName": "RNAV 35",
+      "starsId": 177,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHT90SJKV42Y11YW2M4",
+      "name": "S56 178 Extended Downwind Area",
+      "shortName": "EXT-DWN",
+      "starsId": 178,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHTF4AECEAX3F6NE674",
+      "name": "S56 179 Lifeflight",
+      "shortName": "LIFE",
+      "starsId": 179,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHTXGB2NGXKGC5JQ1ZK",
+      "name": "S56 182 Spanish Fork Approaches",
+      "shortName": "SPK-APP",
+      "starsId": 182,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHV1RSAMF9S7SWGWQ0A",
+      "name": "S56 183 Stadiums",
+      "shortName": "STADIUM",
+      "starsId": 183,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHV9JXTAA17DNGJ4A0S",
+      "name": "S56 190 OGD VOR-A Approach",
+      "shortName": "OGD-VOR",
+      "starsId": 190,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JSJ947MP95CT2546VNVMW5Q0",
+      "name": "S56_slc199sgp",
+      "shortName": "PDY",
+      "starsId": 199,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHVYRFSCBNCMNRB6KSK",
+      "name": "S56 200 ADSB 40 NM Rings",
+      "shortName": "ADSB-40",
+      "starsId": 200,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHV02B8BR3PQ2CRCM5Y",
+      "name": "S56 201 ADSB 60 NM Rings",
+      "shortName": "ADSB-60",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHV0K2T2BCJ2JAY574H",
+      "name": "S56 203 3NM Separation MVA",
+      "shortName": "MVA 3NM",
+      "starsId": 203,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHVE9S82WG875GRGT2E",
+      "name": "S56 204 75 NM Ring",
+      "shortName": "75 NM",
+      "starsId": 204,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHVTQ9W6KX2V049Z67F",
+      "name": "S56 208 Mid Shift Map 2",
+      "shortName": "MID",
+      "starsId": 208,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHWPMHXBVMH6CDHGR99",
+      "name": "S56 230 Tower MVA East",
+      "shortName": "TWRMVAE",
+      "starsId": 230,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHWK86VF7QQS1P9Y5KX",
+      "name": "S56 231 Tower MVA West",
+      "shortName": "TWRMVAW",
+      "starsId": 231,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHW0E1KNH924PH2ZZKR",
+      "name": "S56 301 PVU Tower Main",
+      "shortName": "PVU",
+      "starsId": 301,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHXFN5XRVWRDKMZRJBQ",
+      "name": "S56 302 Alpine Boundary South Flow",
+      "shortName": "PVU B A",
+      "starsId": 302,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHX1QKKNS66ZVY0WXES",
+      "name": "S56 303 Alpine Boundary North Flow",
+      "shortName": "PVU B B",
+      "starsId": 303,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHX4GCTF0HEYW9Z8BHC",
+      "name": "S56 304 PVU Tower MVA",
+      "shortName": "PVU MVA",
+      "starsId": 304,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHXBS9VB1696G89KSVQ",
+      "name": "S56 305 PVU Tower Emergency Obstacle Map",
+      "shortName": "PVUEOVM",
+      "starsId": 305,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67QFHXVD6X7VKF6E6PKWBZ",
+      "name": "S56 306 UVU Practice Areas",
+      "shortName": "UVU",
+      "starsId": 306,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHX67GQJ31050ASHHZD",
+      "name": "S56 307 Nephi Approaches",
+      "shortName": "NEPHI",
+      "starsId": 307,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHX59PQS89X9G72TEAT",
+      "name": "S56 308 45 Map",
+      "shortName": "45",
+      "starsId": 308,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHYXTG19EM6XK7E8GH6",
+      "name": "S56 309 PVU VFR Points",
+      "shortName": "PVU VFR",
+      "starsId": 309,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHYAKZ0D3PZPKBG7AB1",
+      "name": "S56 311 UVU Practice Area Labels",
+      "shortName": "LABEL",
+      "starsId": 311,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JFH7Y3FZHMVC9BECW298V9TY",
+      "name": "S56 312 TAYTR",
+      "shortName": "TAYTR",
+      "starsId": 312,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JFJHXC3N8C03RTA57YAWY1QK",
+      "name": "S56 313 DITTI",
+      "shortName": "DITTI",
+      "starsId": 313,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HY67QFHETYEVC0W3MWY9ZC7K",
+      "name": "S56 106 Class Bravo Airspace",
+      "shortName": "CLASS B",
+      "starsId": 106,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHKX31DH6RJ54Z1XHHS",
+      "name": "S56 137 Tower Airspace",
+      "shortName": "TWR-AIR",
+      "starsId": 137,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHKDERSGDSEW5DBR29N",
+      "name": "S56 138 Class D Airspace",
+      "shortName": "CLASS D",
+      "starsId": 138,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHXFN5XRVWRDKMZRJBQ",
+      "name": "S56 302 Alpine Boundary South Flow",
+      "shortName": "PVU B A",
+      "starsId": 302,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67QFHX1QKKNS66ZVY0WXES",
+      "name": "S56 303 Alpine Boundary North Flow",
+      "shortName": "PVU B B",
+      "starsId": 303,
+      "brightnessCategory": "A"
+    }
+  ]
+}

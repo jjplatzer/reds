@@ -1,0 +1,358 @@
+{
+  "artcc": "ZME",
+  "facility": "JAN",
+  "name": "Jackson ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 35.0424167,
+    "lon": -89.9766667
+  },
+  "controlPositions": [
+    {
+      "id": "01GPCFQ39Q6JWZ9C6KZTN9Q9ZB",
+      "name": "Ground",
+      "callsign": "JAN_GND",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01GPCFRSDJ9HB0G2WSYA6P003H",
+      "name": "Local",
+      "callsign": "JAN_TWR",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 120.9
+    },
+    {
+      "id": "01GPCJ19E8ZJ9ZCK19G89YQWC6",
+      "name": "East Radar",
+      "callsign": "JAN_E_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 123.9
+    },
+    {
+      "id": "01GPCJ5X07KN0SX2WSPGSJVDVK",
+      "name": "West Radar",
+      "callsign": "JAN_W_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 125.25
+    },
+    {
+      "id": "01KMF3VNHRK81C24P1TXYSBB3V",
+      "name": "Final Radar",
+      "callsign": "JAN_F_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 119.05
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "2T",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1F",
+        "1T",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        10,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "2T"
+      ],
+      "mapIds": [
+        11,
+        8,
+        4,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        11,
+        4,
+        null,
+        8,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GPCK89EKG2WCRA42W7KZSM9X",
+      "name": "JAN_NORTH",
+      "shortName": "NORTH",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCK89EPZQFC6S1P4X6RW532",
+      "name": "JAN_SOUTH",
+      "shortName": "SOUTH",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCK89EKH26XFNFPPG62248H",
+      "name": "JAN_NORTH_SOUTH GPS",
+      "shortName": "GPS",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCK89EJQG7QTE0M1ZSSHAW0",
+      "name": "JAN_MVA",
+      "shortName": "MVA",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPCK89ENA7FSQCKD54NXXMHA",
+      "name": "JAN_SATELLITE_GPS",
+      "shortName": "SAT GPS",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCK89EFMHPACW6B3MHSAT5M",
+      "name": "JAN_WEST GPS",
+      "shortName": "W GPS",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCK89EHP72KB0ZZVB8SXEDP",
+      "name": "JAN_MBO_87I_GPS",
+      "shortName": "MBO 87I",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCK89EGYTAK04CVYJ8A9F26",
+      "name": "JAN_EMRG_OBSTRUCTION",
+      "shortName": "EOVM",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCK89EQN13HX4PY6FHPH0K4",
+      "name": "JAN_VICTOR_AIRWAYS",
+      "shortName": "VICTOR",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPCK89ERY5VMYGN15R8GJBRP",
+      "name": "JAN_VOR_TACAN",
+      "shortName": "VOR",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GWXHKYNB02VEDFBWBF6EDBQA",
+      "name": "HKS_HKS OPS",
+      "shortName": "HKS OPS",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H26RM86EJVH3DYWSYDV8BZ0Y",
+      "name": "ARTCC_GROUND MAPS",
+      "shortName": "GEO",
+      "starsId": 900,
+      "brightnessCategory": "A"
+    }
+  ]
+}

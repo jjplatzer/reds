@@ -1,0 +1,379 @@
+{
+  "artcc": "ZME",
+  "facility": "CBM",
+  "name": "Columbus ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 35.0424167,
+    "lon": -89.9766667
+  },
+  "controlPositions": [
+    {
+      "id": "01GVHV9ENAJSM4J45NCH9AYTPM",
+      "name": "Southeast Radar",
+      "callsign": "CBM_E_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 132.025
+    },
+    {
+      "id": "01GVKTGT37W9SEYVG88M1VEXR8",
+      "name": "North Radar",
+      "callsign": "CBM_A_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 126.075
+    },
+    {
+      "id": "01GVKTK46X7T2F0471WH6ZT62B",
+      "name": "Southwest Radar",
+      "callsign": "CBM_W_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 135.6
+    },
+    {
+      "id": "01GVKV3V64NPWXMGBVS4MQWD62",
+      "name": "Ground",
+      "callsign": "CBM_GND",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GVKV4SMZK9909KK7HWDFX1JY",
+      "name": "Local",
+      "callsign": "CBM_TWR",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 126.65
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1E",
+        "1W",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        13,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        10,
+        12,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        14,
+        11,
+        12,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        14,
+        12,
+        null,
+        11,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GVHV1D9AVVARZGH96KKA7Y3B",
+      "name": "CBM_CBM RAPCON",
+      "shortName": "CBM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHV2N9B55E3H010FW5S7VYX",
+      "name": "CBM_MEI 1 ATCAA",
+      "shortName": "MEI 1",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVHV2N9AY94GRNV4EHG8VJEW",
+      "name": "CBM_AIRWAYS",
+      "shortName": "AIRWAY",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVKG016KSRQGNHDCDK7FRNK5",
+      "name": "CBM_CBM 1 ATCAA",
+      "shortName": "CBM 1",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVQ1638KZ05F2YNKWHX6RJQX",
+      "name": "CBM_RNAV 13C",
+      "shortName": "RNAV 13C",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVQ13TT37KZB0C94EVNEMJ8X",
+      "name": "CBM_RNAV E",
+      "shortName": "RNAV E",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVQ15DJEKJH9H0WC5VWKA5TF",
+      "name": "CBM_RNAV F",
+      "shortName": "RNAV F",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GVY6R3ZT4Z0VNBZQK8Z84H0B",
+      "name": "CBM_RNAV 13L",
+      "shortName": "RNAV 13L",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GW0JKKWQQ6SFK070V5RHAT3J",
+      "name": "CBM_CBM N/S",
+      "shortName": "N/S",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GW0JJJJ5AZBTT2XPHMRFZ87N",
+      "name": "CBM_CBM UNKN",
+      "shortName": "UNKN",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H1FQV2CZ0Z07366BXX8TQVWH",
+      "name": "CBM_CBM MVA",
+      "shortName": "MVA",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1R4X0HRD1W2K2WTEEGNZ66V",
+      "name": "CBM_CBM EOVM",
+      "shortName": "EOVM",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JV7WCRC8NWK91FV5D3MRNS0N",
+      "name": "CBM_VOR/DME C",
+      "shortName": "VOR-C",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KRJAYYZMMDNFK4AB9NHDF048",
+      "name": "CBM_TUP OPS",
+      "shortName": "TUP",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H26RM86EJVH3DYWSYDV8BZ0Y",
+      "name": "ARTCC_GROUND MAPS",
+      "shortName": "GEO",
+      "starsId": 900,
+      "brightnessCategory": "A"
+    }
+  ]
+}

@@ -1,0 +1,486 @@
+{
+  "artcc": "ZTL",
+  "facility": "AGS",
+  "name": "Augusta ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.90558406666667,
+    "lon": -83.96840666666667
+  },
+  "controlPositions": [
+    {
+      "id": "01H4Q4TE3R13VWFJY415E2DC4H",
+      "name": "Radar East",
+      "callsign": "AGS_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 119.15
+    },
+    {
+      "id": "01H4Q4V4HFQWFYDR73FQB4V3YG",
+      "name": "Radar West",
+      "callsign": "AGS_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 126.8
+    },
+    {
+      "id": "01H4Q4Z4QNKP7XH3T0SP2EXJVK",
+      "name": "Local Control",
+      "callsign": "AGS_TWR",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 118.7
+    },
+    {
+      "id": "01H4Q50136M5GPVQXT4C7TAPYS",
+      "name": "Ground Control",
+      "callsign": "AGS_GND",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01H4Q511VX8TFR8BRED95NWYRZ",
+      "name": "Clearance Delivery",
+      "callsign": "AGS_DEL",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 118.65
+    },
+    {
+      "id": "01JRDWW36WBZ954Y2TSWESV255",
+      "name": "AGS GUARD",
+      "callsign": "AGS_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "01KNNX8XNFX3G0XM8Q0PHQ2253",
+      "name": "Departure",
+      "callsign": "AGS_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 119.725
+    },
+    {
+      "id": "01KNNXDR7QSQRWMR6YX3KK5NYZ",
+      "name": "Final",
+      "callsign": "AGS_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 124.55
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1D",
+        "1E",
+        "1F",
+        "1W"
+      ],
+      "mapIds": [
+        6,
+        3,
+        16,
+        50,
+        51,
+        2,
+        1,
+        17,
+        27,
+        18,
+        28,
+        19,
+        29,
+        20,
+        30,
+        21,
+        26,
+        22,
+        24,
+        23,
+        25,
+        24,
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        6,
+        16,
+        51,
+        3,
+        50,
+        2
+      ],
+      "submenuMapIds": [
+        1,
+        27,
+        28,
+        29,
+        30,
+        26,
+        24,
+        25,
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        6,
+        50,
+        2,
+        16,
+        null,
+        null,
+        12,
+        null,
+        27,
+        null,
+        28,
+        null,
+        30,
+        null,
+        29,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        6,
+        2,
+        null,
+        50,
+        16,
+        null
+      ],
+      "submenuMapIds": [
+        12,
+        27,
+        28,
+        30,
+        29,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HA365GQTPZJKDB6WPH1W87JR",
+      "name": "MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA36Y1AJ4C7J260EVZ58SFZE",
+      "name": "AGS APPROACHES",
+      "shortName": "AGS",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA36WKHM78J1YSJHTV5Y12ZC",
+      "name": "SATELLITE APPROACHES",
+      "shortName": "SATAPCH",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA36V57C9DJ4D3J21P7R3T6Q",
+      "name": "AGS MINIMUM VECTORING ALTITUDE",
+      "shortName": "MVA",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KNNTKNKDD1CR073NKS0AQ4NN",
+      "name": "AGS EVENT TEST",
+      "shortName": "EVENT",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA36T72MFWMHJQ243BD1ZC0V",
+      "name": "TOWER MAP",
+      "shortName": "TOWER",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA36S7KPBRP25GS1FJ1PP7AC",
+      "name": "TOPOGRAPHY",
+      "shortName": "TOPOGFY",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA36RHW2S70B9CY6QND2B0F1",
+      "name": "DNL APPROACHES",
+      "shortName": "DNL",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA36QZBVXDQD9P1EYWMVG4N1",
+      "name": "HQU APPROACHES",
+      "shortName": "HQU",
+      "starsId": 18,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA36Q2XP21SJX70PTDMCR2BK",
+      "name": "AIK APPROACHES",
+      "shortName": "AIK",
+      "starsId": 19,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA36PBGB722ECFW7M93T3NAJ",
+      "name": "BXG APPROACHES",
+      "shortName": "BXG",
+      "starsId": 20,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA36KK2BEGEB9FDHX3XCCN6E",
+      "name": "2J5 APPROACHES",
+      "shortName": "2J5",
+      "starsId": 21,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA36JZJSJK70ADH0FRDJS9Y6",
+      "name": "2J3 APPROACHES",
+      "shortName": "2J3",
+      "starsId": 22,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA36J771TRPEG18GVJVEDBM3",
+      "name": "IIY APPROACHES",
+      "shortName": "IIY",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA36HKNX3QX34V7QCACZ1ES7",
+      "name": "3J7 APPROACHES",
+      "shortName": "3J7",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA36GTX40YX8CSTYCR6E2PV6",
+      "name": "6J4 APPROACHES",
+      "shortName": "6J4",
+      "starsId": 25,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA36FE849BC024JS4WWXS4BM",
+      "name": "BNL APPROACHES",
+      "shortName": "BNL",
+      "starsId": 26,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA36DDBSDCS67PH2DFPJG3EA",
+      "name": "AGS RWY 17 APPROACHES",
+      "shortName": "17 APCH",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA36ASDSK5ZDXW4CWBWPCGHH",
+      "name": "AGS RWY 35 APPROACHES",
+      "shortName": "35 APCH",
+      "starsId": 28,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA369XA0Z5Q7K87CJKNKC7E1",
+      "name": "AGS RWY 8 APPROACHES",
+      "shortName": "8 APCH",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA3681ZXT5B46T4N2JBRKDHM",
+      "name": "AGS RWY 26 APPROACHES",
+      "shortName": "26 APCH",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA363ZTP28H1B4SB0ND9PHDE",
+      "name": "AGS BASE MAP",
+      "shortName": "BASEMAP",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA367EH5BJC1Y290YAFTF0K3",
+      "name": "AGS CLASS D",
+      "shortName": "CLASS D",
+      "starsId": 50,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA365SQJCVX0P3FMXASRENZS",
+      "name": "AIRPORTS/HELIPORTS",
+      "shortName": "ARPT",
+      "starsId": 51,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA1BWYE26RY3REF1TF6DAPDW",
+      "name": "AGS MASTERS WAYPOINTS",
+      "shortName": "MASTERS",
+      "starsId": 203,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JB16945QRQYXF5HMZ1",
+      "name": "AGS TDM",
+      "shortName": "AGSTDM",
+      "starsId": 999,
+      "brightnessCategory": "A"
+    }
+  ]
+}

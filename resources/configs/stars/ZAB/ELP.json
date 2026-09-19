@@ -1,0 +1,292 @@
+{
+  "artcc": "ZAB",
+  "facility": "ELP",
+  "name": "El Paso ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 34.19564814666666,
+    "lon": -107.50666666666666
+  },
+  "controlPositions": [
+    {
+      "id": "01G98MG0KBYSWPE5WKVMXTH918",
+      "name": "North Approach",
+      "callsign": "ELP_N_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 124.25
+    },
+    {
+      "id": "01G98MJ26JSTVX82S654C7PHCX",
+      "name": "South Approach",
+      "callsign": "ELP_S_APP",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 119.15
+    },
+    {
+      "id": "01G98MKHZJPXVKV9D4GDYQ28EW",
+      "name": "Local Control",
+      "callsign": "ELP_TWR",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01G98MMM5BD5FCJXBEQFKBBS1S",
+      "name": "Ground",
+      "callsign": "ELP_GND",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G98MNMM9ANRBDPC1NBDXFV4E",
+      "name": "Clearance Delivery",
+      "callsign": "ELP_DEL",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      },
+      "freq": 125
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    },
+    {
+      "id": "2T",
+      "visualCenter": {
+        "lat": 34.19564814666666,
+        "lon": -107.50666666666666
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1N",
+        "1S",
+        "2T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        19,
+        18,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        19
+      ],
+      "submenuMapIds": [
+        18,
+        9,
+        11,
+        13,
+        15,
+        17,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        10,
+        12,
+        14,
+        16,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GQG7ZRR66VC9Z8R3S3WAYAWN",
+      "name": "E001 ELP APP",
+      "shortName": "ELP APP",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GQG7ZRR7KREPTJ4K48SRT6K8",
+      "name": "E002 SEor SW",
+      "shortName": "SEtoSW",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GQG7ZRR8DRTP6J6CSVD3KXYH",
+      "name": "E003 N to E",
+      "shortName": "N TO E",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GQG7ZRR8WRWSZPY8553FB8BE",
+      "name": "E010 ELP MVA",
+      "shortName": "ELP MVA",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRR9BFK6VVV8SHN2SM42",
+      "name": "E011 Class C",
+      "shortName": "CLASS C",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRRAB86BHADVVMSNW4P5",
+      "name": "E030 BEAHR",
+      "shortName": "BEAHR",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRRB2B4C7CTYH8M1DWEK",
+      "name": "E031 HSKNS",
+      "shortName": "HSKNS",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRRBKWTSYNWYGNQ0WT42",
+      "name": "E032 MOLLY",
+      "shortName": "MOLLY",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRRCDYAFNFER8V1FFX86",
+      "name": "E033 SAMMR",
+      "shortName": "SAMMR",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRRCWXKFV6GNFHXP0SJ2",
+      "name": "E034 WAZKO",
+      "shortName": "WAZKO",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRRC13X622PT4VGBGFVS",
+      "name": "E040 ATKNN",
+      "shortName": "ATKNN",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRRCRQSNXP3N1GCY738F",
+      "name": "E041 JCOXX",
+      "shortName": "JCOXX",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRRD159XGKPX0X5J49CT",
+      "name": "E042 LATVE",
+      "shortName": "LATVE",
+      "starsId": 15,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRRD3JRXTY5N6WZQPQA4",
+      "name": "E043 NEVUE",
+      "shortName": "NEVUE",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRRDW4AZRSY8CGCRPYG9",
+      "name": "E044 TDOWN",
+      "shortName": "TDOWN",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRREHQ3WR4QCQRCJXXG9",
+      "name": "E051 ZRWY22",
+      "shortName": "ZRWY22",
+      "starsId": 18,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GQG7ZRRENJN5F62MVRXSMHH5",
+      "name": "E061 V airwy",
+      "shortName": "V AIRWY",
+      "starsId": 19,
+      "brightnessCategory": "B"
+    }
+  ]
+}

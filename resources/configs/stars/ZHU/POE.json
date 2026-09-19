@@ -1,0 +1,371 @@
+{
+  "artcc": "ZHU",
+  "facility": "POE",
+  "name": "Polk ATCT/ARAC",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 28.71396075,
+    "lon": -90.5088095
+  },
+  "controlPositions": [
+    {
+      "id": "01GB5Z24T81SHWPT3A37V84T2A",
+      "name": "Local",
+      "callsign": "POE_TWR",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 119
+    },
+    {
+      "id": "01GB5Z2H6KJ1XE27QGNY7XDB05",
+      "name": "Ground",
+      "callsign": "POE_GND",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01GB5Z2Z8N2ZF8Z0QDR8KPGT5D",
+      "name": "Approach",
+      "callsign": "POE_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 123.7
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1X",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1P",
+        "1T",
+        "1X"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        6,
+        2,
+        4,
+        7
+      ],
+      "submenuMapIds": [
+        8,
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        24,
+        26,
+        28,
+        30,
+        32,
+        null,
+        null,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        21,
+        23,
+        25,
+        27,
+        29,
+        31,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H09QXZPQN6WW4QTB2F56HKZM",
+      "name": "POE BASE",
+      "shortName": "BASE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPQYZMXESW5VX8RAZ3C",
+      "name": "POE 3NM MVA",
+      "shortName": "3NM MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPK47S2R20WDR21JN95",
+      "name": "AEX CLASS D",
+      "shortName": "AEX D",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPRZ9CSCEQM824C8GB5",
+      "name": "POE CLASS D",
+      "shortName": "POE D",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPJC0V1MJ5F095NQ9V7",
+      "name": "AEX ILS VOR 14",
+      "shortName": "AEX 14",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPKFVS5KB62F2M3GAXE",
+      "name": "AEX GPS 14",
+      "shortName": "AEX G14",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPMNSXY3BW93NZ57E31",
+      "name": "AEX GPS 18",
+      "shortName": "AEX G18",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPMNMW56J3AZXJEM556",
+      "name": "AEX GPS 32",
+      "shortName": "AEX G32",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPNJXDQDPYAJJ7W9P4H",
+      "name": "AEX GPS 36",
+      "shortName": "AEX G36",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPNVEEWEGDR8XN28NH1",
+      "name": "AEX VOR 32",
+      "shortName": "AEX V32",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPV7KZGQHCM6P7QYY46",
+      "name": "POE VOR 16",
+      "shortName": "POE V16",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPS86FSVDYXYYK624Z8",
+      "name": "POE GPS 16",
+      "shortName": "POE G16",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPSGN2V5ZVP0HTYY464",
+      "name": "POE GPS 34",
+      "shortName": "POE G34",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPS5K7SSA31TZ2HAZMN",
+      "name": "POE SAT APPROACHES",
+      "shortName": "SAT APP",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPTQGKYCCFG428QXB6D",
+      "name": "POE SAT GPS APPROACHES",
+      "shortName": "SAT GPS",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPVARQD4WKR49TSNNV6",
+      "name": "POE SAT VOR APPROACHES",
+      "shortName": "SAT VOR",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H09QXZPQMR8V5H568AX3BAM4",
+      "name": "POE AIRWAYS",
+      "shortName": "AIRWAY",
+      "starsId": 18,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09TH3BY23XQPD7MWVE57NNW",
+      "name": "POE MIL ROUTES",
+      "shortName": "MIL RTE",
+      "starsId": 19,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPNF84E93T7RSZK2GPM",
+      "name": "CLAIBORNE AB MOA",
+      "shortName": "CLA MOA",
+      "starsId": 20,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPPQT6WTQTQ2NCTRX8W",
+      "name": "HACKETT MOA",
+      "shortName": "HAC MOA",
+      "starsId": 21,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPPCB8B603VJGTYZY0N",
+      "name": "JENA MOA",
+      "shortName": "JEN MOA",
+      "starsId": 22,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPY09TXNG803S479MDN",
+      "name": "WARRIOR 1 HILO MOA",
+      "shortName": "WAR1MOA",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPYTN2APH2FS9KTS8BS",
+      "name": "WARRIOR 2 HILO  MOA",
+      "shortName": "WAR2MOA",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPZMW387XYQB4ETATD6",
+      "name": "WARRIOR 3 HILO MOA",
+      "shortName": "WAR3MOA",
+      "starsId": 25,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPWD3HN34QR5SHF732S",
+      "name": "R3801ABC",
+      "shortName": "3801ABC",
+      "starsId": 26,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPWNAN52RTEJZGYFATH",
+      "name": "R3803AB",
+      "shortName": "R3803AB",
+      "starsId": 27,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPW5W5ZS4R6TE87CVF0",
+      "name": "R3803CE",
+      "shortName": "R3803CE",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPXERK4B4H3TTB7V4FQ",
+      "name": "R3803D",
+      "shortName": "R3803D",
+      "starsId": 29,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPXP7G5X25J07HJVJ12",
+      "name": "R3804A",
+      "shortName": "R3804A",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPXMS03J7MY3TQ853Z4",
+      "name": "R3804B",
+      "shortName": "R3804B",
+      "starsId": 31,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H09QXZPYMAQ085X4YXZ9P3E0",
+      "name": "R3804C",
+      "shortName": "R3804C",
+      "starsId": 32,
+      "brightnessCategory": "B"
+    }
+  ]
+}

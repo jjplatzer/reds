@@ -1,0 +1,1055 @@
+{
+  "artcc": "ZJX",
+  "facility": "TLH",
+  "name": "Tallahassee ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 30.39404875,
+    "lon": -81.98462525
+  },
+  "controlPositions": [
+    {
+      "id": "01GA7QRDHX78FWH6NE51V2WA20",
+      "name": "Radar East",
+      "callsign": "TLH_E_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 135.8
+    },
+    {
+      "id": "01GA7QSZQFW0V4MZ1S87Y8MXS8",
+      "name": "Radar West",
+      "callsign": "TLH_W_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 128.7
+    },
+    {
+      "id": "01GA7QTY834K7WY7DR7M3AG74C",
+      "name": "Radar Final",
+      "callsign": "TLH_F_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 133.85
+    },
+    {
+      "id": "01GA7R14AY0RR19907GNSTMFNC",
+      "name": "Clearance Delivery ",
+      "callsign": "TLH_DEL",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 126.65
+    },
+    {
+      "id": "01GA7R24HSZYNV42Q0QGHYHKKH",
+      "name": "Ground Control",
+      "callsign": "TLH_GND",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GA7R2SPYEPWQT54MFT02R3RX",
+      "name": "Local Control",
+      "callsign": "TLH_TWR",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 118.7
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1F",
+        "1W"
+      ],
+      "mapIds": [
+        12,
+        13,
+        16,
+        20,
+        200,
+        8,
+        30,
+        31,
+        14,
+        89,
+        22,
+        66,
+        23,
+        67,
+        24,
+        68,
+        25,
+        69,
+        73,
+        78,
+        74,
+        75,
+        76,
+        77,
+        36,
+        46,
+        57,
+        35,
+        44,
+        103,
+        48,
+        49,
+        52,
+        53,
+        54,
+        55,
+        50,
+        51
+      ],
+      "mainMapIds": [
+        12,
+        16,
+        200,
+        13,
+        20,
+        8
+      ],
+      "submenuMapIds": [
+        30,
+        14,
+        22,
+        23,
+        24,
+        25,
+        73,
+        74,
+        76,
+        36,
+        57,
+        44,
+        48,
+        52,
+        54,
+        31,
+        89,
+        66,
+        67,
+        68,
+        69,
+        78,
+        75,
+        77,
+        46,
+        35,
+        103,
+        49,
+        53,
+        55
+      ]
+    },
+    {
+      "tcps": [
+        "1D",
+        "1T"
+      ],
+      "mapIds": [
+        10,
+        200,
+        16,
+        20,
+        13,
+        12,
+        8,
+        14,
+        57,
+        100,
+        102,
+        106,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        10,
+        16,
+        13,
+        200,
+        20,
+        12
+      ],
+      "submenuMapIds": [
+        8,
+        57,
+        102,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        14,
+        100,
+        106,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HJSVDZ5N0FVW0J5BR51WM3S5",
+      "name": "MVA 5NM",
+      "shortName": "MVA-5",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HJSVJ88Z4ZK39YK1557AS24R",
+      "name": "MVA 3NM",
+      "shortName": "MVA-3",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HJVJX3J2VJ48VRQNEE8HDQJV",
+      "name": "BGE GPS APP WPTS",
+      "shortName": "BGE WPT",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB9MW37JY60939KJKC16S4TK",
+      "name": "TLH TOWER",
+      "shortName": "TOWER",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB9MW37GYZS04991546SXR3V",
+      "name": "TLH E/W SPLIT",
+      "shortName": "E-W",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB9MW37JS2B38K38T49PJB9K",
+      "name": "TLH N-S SPLIT MAP",
+      "shortName": "N-S",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJSVSGK5805NDB2PS4W1A7SF",
+      "name": "VFR",
+      "shortName": "VFR",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB9MW37GM9PZMDTRQD01WSSZ",
+      "name": "FINAL MAP",
+      "shortName": "FINAL",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB9MW37F75FYFA5S89FRJPPV",
+      "name": "TLH CLASS C",
+      "shortName": "CLASS C",
+      "starsId": 20,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HJVK28MX0GJ2P025WZ2MDFVC",
+      "name": "TLH NO SECTOR BDYS",
+      "shortName": "SEC BDY",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28KG428442S42NEXEQH7YHW",
+      "name": "70J RNAV GPS",
+      "shortName": "70J GPS",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJVKC7RNAA02BD1Y7CY8G1TV",
+      "name": "TLH RNAV GPS RWY 9 WAYPOINTS",
+      "shortName": "RNAV 9",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJVKCMXJPT6BJ56XAZA817VM",
+      "name": "TLH RNAV GPS RWY 18 WAYPOINTS",
+      "shortName": "RNAV 18",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJVKD1SY7ZN0XKDYT3S4B1HA",
+      "name": "TLH RNAV GPS RWY 27 WAYPOINTS",
+      "shortName": "RNAV 27",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJVKDEPH2JYSKXR2HHGGMQ59",
+      "name": "TLH RNAV GPS RWY 36 WAYPOINTS",
+      "shortName": "RNAV 36",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJVK61PT5PGE08T0Y7VSCPR1",
+      "name": "TLH BASIC AIRSPACE",
+      "shortName": "BASIC",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28KG429DKM1TZ4XBD8VVT5J",
+      "name": "OBSTRUCTIONS",
+      "shortName": "OBSTRC",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J28KG42AKCYKHQNHVMACRVKT",
+      "name": "VICTOR INTERSECTIONS",
+      "shortName": "VIC INT",
+      "starsId": 31,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J28KG42AMW5W2FV8054FVRR6",
+      "name": "HARKE/TEWUN FIXES",
+      "shortName": "HAR/TEW",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3H7G1MWXS2PA4G96RZE",
+      "name": "SANDA FIX",
+      "shortName": "SANDA",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3H8VJG5K8KZY082HCGZ",
+      "name": "GRAIV FIX",
+      "shortName": "GRAIV",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJSVX1JSNH0W7BS2WN3ZB20M",
+      "name": "TLH FIX NAMES",
+      "shortName": "FIX NAM",
+      "starsId": 35,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HJVKA4QV4P3305AFWPGQMJ50",
+      "name": "TLH COASTLINE",
+      "shortName": "SHORE",
+      "starsId": 36,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J28SR3H88ZY7WT1TJ4JVT6ZG",
+      "name": "TLH E/W Sectors",
+      "shortName": "EW SEC",
+      "starsId": 37,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3H9DVPW26Z0NR0QRA5P",
+      "name": "TLH N/S SECTORS",
+      "shortName": "NS SEC",
+      "starsId": 38,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3H91ZTT1Y7SWATZQMRZ",
+      "name": "TLH Final Sector Config 1",
+      "shortName": "FIN 1",
+      "starsId": 39,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HAJYS6RHSANBYC3F87",
+      "name": "TLH Final Sector Config 2",
+      "shortName": "FIN 2",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJVKHA5PRDW0F6PKDABG5JK9",
+      "name": "TLH MEMORIAL HOSP HELI",
+      "shortName": "HOSP",
+      "starsId": 41,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HBGP37HW2A4ZDH7YAY",
+      "name": "FSU DOAK STADIUM",
+      "shortName": "FSU",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HBH0C9BMC467PW6M3N",
+      "name": "FSU DOAK STADIUM  3NM TFR",
+      "shortName": "FSU TFR",
+      "starsId": 43,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28NPV6P6HSV0NDEKCNPJHGX",
+      "name": "ADJACENT AIRSPACE  BDRY",
+      "shortName": "ADJ BDY",
+      "starsId": 44,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28QCWH4ESXGP80R1X0FEQRR",
+      "name": "ADJ APPROACH FAC NAMES/FREQ",
+      "shortName": "ADJ NAM",
+      "starsId": 45,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HCRR8D4522BSEYPANZ",
+      "name": "ZJX SECTORS",
+      "shortName": "ZJX",
+      "starsId": 46,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J28SR3HC8FXKVTPX6HS7RZSQ",
+      "name": "ACMI BOUNDARY",
+      "shortName": "ACMI B",
+      "starsId": 48,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HDVMFC51A2XNNXJHTB",
+      "name": "ACMI LABELS",
+      "shortName": "ACMI L",
+      "starsId": 49,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HDP2ZAEHMSGD2YM9TS",
+      "name": "PAM MOAs C,H,D,E,G",
+      "shortName": "P MOA_D",
+      "starsId": 50,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HEMBHVQ9SVMH79KY5R",
+      "name": "PAM MOAs C,H,D,E,G LABELS",
+      "shortName": "P MOA_L",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HEP83MJDSR6H67HQH2",
+      "name": "COMPASS LAKE",
+      "shortName": "COM LAK",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HER87Y3QCCJAT4CV17",
+      "name": "CARRABELLE",
+      "shortName": "CARRA",
+      "starsId": 53,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HFDSY545NJSAKFBGHW",
+      "name": "MOODY 3 MOA",
+      "shortName": "MOO MOA",
+      "starsId": 54,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HF3Y7J6JDDDTY2AS8Y",
+      "name": "MOODY 3/COMPASS L/CARRABELLE LABELS",
+      "shortName": "MOA LAB",
+      "starsId": 55,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60GKET4CTWG7XQT2VV2Z",
+      "name": "NAVAIDS",
+      "shortName": "VOR",
+      "starsId": 57,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J2CX60GMDB144EYPE9AADPJ9",
+      "name": "TLH RWY 9",
+      "shortName": "TLH 9",
+      "starsId": 58,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60GN91VWAN6BKYDN0HCD",
+      "name": "TLH RWY 18",
+      "shortName": "TLH 18",
+      "starsId": 59,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60GQ80F3JJD6HW5A1RYC",
+      "name": "TLH RWY 27",
+      "shortName": "TLH 27",
+      "starsId": 60,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60GR8JXB98XW54ZFT3ND",
+      "name": "TLH RWY 36",
+      "shortName": "TLH 36",
+      "starsId": 61,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60GS61R4G5BQH6BZ78VE",
+      "name": "TLH ILS 27",
+      "shortName": "ILS 27",
+      "starsId": 62,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60GTDRT53PNQKVVDEFR8",
+      "name": "TLH ILS 36",
+      "shortName": "ILS 36",
+      "starsId": 63,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60GVPJ77C6XZBAWWA8F4",
+      "name": "TLH VOR 18",
+      "shortName": "VOR 18",
+      "starsId": 64,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60GW7PBZC6YC8QYS7PK1",
+      "name": "TLH VOR 36",
+      "shortName": "VOR 36",
+      "starsId": 65,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60GXNQQSWS2DPRY9WBB0",
+      "name": "TLH RNAV 9 LABELS",
+      "shortName": "R09 LAB",
+      "starsId": 66,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60GYNQ6TMYJ6R02VD2D3",
+      "name": "TLH RNAV 18 LABELS",
+      "shortName": "R18 LAB",
+      "starsId": 67,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60GZ9QAKDC3TFM386147",
+      "name": "TLH RNAV 27 LABELS",
+      "shortName": "R27 LAB",
+      "starsId": 68,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60H1XHAWYEHJVQ381RN3",
+      "name": "TLH RNAV 36 LABELS",
+      "shortName": "R36 LAB",
+      "starsId": 69,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60H2N5PP05932SRN67G0",
+      "name": "TLH High VOR/DME TACAN RWY 36",
+      "shortName": "TAC 36",
+      "starsId": 70,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60H3VF26C59KHAK11HNK",
+      "name": "TLH High ILS/LOC RWY 36",
+      "shortName": "H ILS36",
+      "starsId": 71,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JXKCJFEKFM4BRHFHSRY01KHF",
+      "name": "2J9 - RNAV 14_32",
+      "shortName": "2J9 APP",
+      "starsId": 72,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60H51PY0YW1FY5K1S2HZ",
+      "name": "BGE ILS RWY 27",
+      "shortName": "BGE I27",
+      "starsId": 73,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60H6PAKXCMJMNPWX36KT",
+      "name": "BGE RNAV RWY 9",
+      "shortName": "BGE R09",
+      "starsId": 74,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60H70XEQ4KAVTE1BNY60",
+      "name": "BGE RNAV RWY 9 NAMES",
+      "shortName": "BGE 09N",
+      "starsId": 75,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60H8N98YPQ5DP8NR6EDK",
+      "name": "BGE RNAV RWY 27",
+      "shortName": "BGE R27",
+      "starsId": 76,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60H922RXBQBB9Q3WVRJ2",
+      "name": "BGE RNAV RWY 27 NAMES",
+      "shortName": "BGE 27N",
+      "starsId": 77,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HAH140WQ742T5AR8TQ",
+      "name": "BGE VOR A",
+      "shortName": "BGE VOR",
+      "starsId": 78,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HB58AP8JZQ9XVQ84DW",
+      "name": "70J RNAV RWY 13",
+      "shortName": "70J R13",
+      "starsId": 79,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HCSV5YZGYFZY6KDWEJ",
+      "name": "70J RNAV RWY 13 NAMES",
+      "shortName": "70J 13N",
+      "starsId": 80,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HD0YFGYQ3RQ7HG3JBQ",
+      "name": "70J RNAV RWY 31",
+      "shortName": "70J R31",
+      "starsId": 81,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HERRDEQDZ33QE0FY6C",
+      "name": "70J RNAV RWY 31 NAMES",
+      "shortName": "70J 31N",
+      "starsId": 82,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HH8XZTJM1YH5Y58WBG",
+      "name": "MAI RNAV RWY 18",
+      "shortName": "MAI R18",
+      "starsId": 84,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HHFWT4DMRKC0RGDCFC",
+      "name": "FPY RNAV RWY 18",
+      "shortName": "FPY R18",
+      "starsId": 85,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HKWB0NEZNQEAQRKJ45",
+      "name": "FPY RNAV RWY 36",
+      "shortName": "FPY R36",
+      "starsId": 86,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HM0GNB6BX2YCJDCBJ5",
+      "name": "17J RNAV RWY 1",
+      "shortName": "17J R01",
+      "starsId": 87,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HNMYH3F6GZRKRQHAAY",
+      "name": "17J RNAV RWY 19",
+      "shortName": "17J R19",
+      "starsId": 88,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HPMMNDETEMG3E1M4MP",
+      "name": "VICTOR AIRWAYS",
+      "shortName": "LOW AWY",
+      "starsId": 89,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J2CX60HQRJT6FP2469R12FNV",
+      "name": "SATELLITE AIRPORT NAMES  BGE/70J/2J9/2J0",
+      "shortName": "SAT NAM",
+      "starsId": 97,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HQTS4TQFV5X2P72ZF3",
+      "name": "ADJACENT AIRPORT NAMES",
+      "shortName": "ADJ A N",
+      "starsId": 98,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HRNHRZ92CAACTXCBYE",
+      "name": "56FD/4J5/74FL/X13/FA43/F47/AAF/F95",
+      "shortName": "APT",
+      "starsId": 99,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HSF8AECB10M890VHPP",
+      "name": "HIGHWAYS",
+      "shortName": "HWY",
+      "starsId": 100,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J2CX60HTQE5RYKBFGPWPX5M5",
+      "name": "VFR REPORTING POINTS",
+      "shortName": "VFR RP",
+      "starsId": 101,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J2CX60HV1B2KKTZYYTQHA6PP",
+      "name": "LAKES RIVERS",
+      "shortName": "LAKE",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HV5Z805CB19EH6X5BC",
+      "name": "NDBs",
+      "shortName": "NDB",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J2CX60HWCRBD1WESCH3H06EX",
+      "name": "INTERSECTION",
+      "shortName": "INT",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J2CX60HWDDHNY5GMA2SF2REH",
+      "name": "VFR REPORTING NAMES",
+      "shortName": "VFR RN",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J2CX60HXRZV9BPR4QNQVSC42",
+      "name": "LAKE RIVER NAMES",
+      "shortName": "LAKE NA",
+      "starsId": 106,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J2CX60HZNMJQKBWZ6K1XN19J",
+      "name": "SATELLITE AIRPORTS",
+      "shortName": "SAT APT",
+      "starsId": 107,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60HZE2RNC0JAYVDA14FA",
+      "name": "ADJACENT AIRPORTS",
+      "shortName": "ADJ APT",
+      "starsId": 108,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60J07AKBB2P3MCHF69DR",
+      "name": "DISTANT AIRPORTS",
+      "shortName": "DIS APT",
+      "starsId": 109,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60J1XCGAGNPQEMBYRTZ1",
+      "name": "TLH ILS 27 FINAL",
+      "shortName": "I27 FIN",
+      "starsId": 115,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60J1N602NMYR1JMPDVQV",
+      "name": "TLH ILS 36 FINAL",
+      "shortName": "I36 FIN",
+      "starsId": 116,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60J25R7WKR37K5HP7M64",
+      "name": "ILS 27 APP GATE",
+      "shortName": "I27 GAT",
+      "starsId": 117,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60J3439M9FEJXT28VWV2",
+      "name": "ILS 36 APP GATE",
+      "shortName": "I36 GAT",
+      "starsId": 118,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJVK83MHEV0R20Z1B5AN8AVB",
+      "name": "TLH STADIUMS",
+      "shortName": "STADIUM",
+      "starsId": 119,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60J44MF4GSH3CTNP6SZ7",
+      "name": "CXU-TVI GPS",
+      "shortName": "CXUTVI",
+      "starsId": 120,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60J4BSNK5V8GQD02KTS4",
+      "name": "TLH AIRSPACE",
+      "shortName": "TLH AS",
+      "starsId": 121,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60J543P1A0311HBDK3BF",
+      "name": "2J9 RNAV A",
+      "shortName": "2J9 GPS",
+      "starsId": 122,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60J6KRC2RNY7KRSZYSYC",
+      "name": "2J9 RNAV A FIX NAMES",
+      "shortName": "2J9 NAM",
+      "starsId": 123,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRC73M20ZE8KFRTPY3SE45C5",
+      "name": "TLH 09 PTAC",
+      "shortName": "09PTAC",
+      "starsId": 172,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRC6ZW3NPTNBBKWM2JNZ59CM",
+      "name": "TLH 27 PTAC",
+      "shortName": "27PTAC",
+      "starsId": 173,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRC72KRPBX6MG28P5TC8JDRD",
+      "name": "TLH 18 PTAC",
+      "shortName": "18PTAC",
+      "starsId": 174,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRC74NBPPW40BB5BMK2JCY8M",
+      "name": "TLH 36 PTAC",
+      "shortName": "36PTAC",
+      "starsId": 175,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB9MKBPJT7XX2PDQA5YS84KK",
+      "name": "TLH AIRPORT DIAGRAM",
+      "shortName": "GROUND",
+      "starsId": 200,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01J28SR3HC8FXKVTPX6HS7RZSQ",
+      "name": "ACMI BOUNDARY",
+      "shortName": "ACMI B",
+      "starsId": 48,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28NPV6P6HSV0NDEKCNPJHGX",
+      "name": "ADJACENT AIRSPACE  BDRY",
+      "shortName": "ADJ BDY",
+      "starsId": 44,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J2CX60J4BSNK5V8GQD02KTS4",
+      "name": "TLH AIRSPACE",
+      "shortName": "TLH AS",
+      "starsId": 121,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJVK61PT5PGE08T0Y7VSCPR1",
+      "name": "TLH BASIC AIRSPACE",
+      "shortName": "BASIC",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3H88ZY7WT1TJ4JVT6ZG",
+      "name": "TLH E/W Sectors",
+      "shortName": "EW SEC",
+      "starsId": 37,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3H91ZTT1Y7SWATZQMRZ",
+      "name": "TLH Final Sector Config 1",
+      "shortName": "FIN 1",
+      "starsId": 39,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HAJYS6RHSANBYC3F87",
+      "name": "TLH Final Sector Config 2",
+      "shortName": "FIN 2",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3H9DVPW26Z0NR0QRA5P",
+      "name": "TLH N/S SECTORS",
+      "shortName": "NS SEC",
+      "starsId": 38,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJVK28MX0GJ2P025WZ2MDFVC",
+      "name": "TLH NO SECTOR BDYS",
+      "shortName": "SEC BDY",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J28SR3HCRR8D4522BSEYPANZ",
+      "name": "ZJX SECTORS",
+      "shortName": "ZJX",
+      "starsId": 46,
+      "brightnessCategory": "B"
+    }
+  ]
+}

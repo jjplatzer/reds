@@ -1,0 +1,286 @@
+{
+  "artcc": "ZHU",
+  "facility": "LCH",
+  "name": "Lake Charles ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 28.71396075,
+    "lon": -90.5088095
+  },
+  "controlPositions": [
+    {
+      "id": "01GSJ100YNV2E8ZX2GPDSKFRJQ",
+      "name": "East Approach",
+      "callsign": "LCH_E_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 119.8
+    },
+    {
+      "id": "01GSJ1431CD87W0BT6CHHAXZ3S",
+      "name": "West Approach",
+      "callsign": "LCH_W_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 119.35
+    },
+    {
+      "id": "01GSJ16P1BY8YGK50H58WX6SP0",
+      "name": "Clearance Delivery",
+      "callsign": "LCH_DEL",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 126.25
+    },
+    {
+      "id": "01GSJ19CC9YMHTWD1BZA9116EK",
+      "name": "Ground",
+      "callsign": "LCH_GND",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01GSJ1CWPRKMJDWZ5GF48VBQNZ",
+      "name": "Tower",
+      "callsign": "LCH_TWR",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 120.7
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1W",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        11,
+        13,
+        15,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        10,
+        12,
+        14,
+        16,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GZMYH8ZQR1DA47E5FHRFE9RF",
+      "name": "LCH 20NM",
+      "shortName": "20NM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZMYH8ZR8YC3RC3ETZ3VW41F",
+      "name": "LCH VFR",
+      "shortName": "VFR",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZMYH8ZRNCSHFG6XNAVBFD7Q",
+      "name": "LCH BASE 1",
+      "shortName": "BASE",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZMYH8ZRZ513NF0M3F70HVQV",
+      "name": "LCH BASE 2",
+      "shortName": "BASE RNV",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZMYH8ZSR9H09ME4BWEYS616",
+      "name": "LCH GPS APP",
+      "shortName": "RNAV APP",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZMYH8ZTWT8C9EQFPCST29WA",
+      "name": "LCH 3NM MVA",
+      "shortName": "3NM MVA",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZMYH8ZSBWFCADNKXN00GJ8H",
+      "name": "WARRIOR MOA",
+      "shortName": "WAR MOA",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZMYH8ZT4JQG0XBK1W6MYDZJ",
+      "name": "LCH 5NM MVA",
+      "shortName": "5NM MVA",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZMYH8ZVXC3EH808EVJ3ETZG",
+      "name": "3LA4",
+      "shortName": "3LA4",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZMYH8ZVNT2MY59NH71SF0FQ",
+      "name": "UXL",
+      "shortName": "UXL",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZMYH8ZV0AK4RSVX1C7DXWX9",
+      "name": "3R7",
+      "shortName": "3R7",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZMYH8ZW3KECW385DEAZQW62",
+      "name": "6R1",
+      "shortName": "6R1",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZMYH8ZWG9F4FAZA16P5KD2J",
+      "name": "5R8",
+      "shortName": "5R8",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GZMYH8ZWJWK5GC11BKWNEV5Q",
+      "name": "LCH STADIUM",
+      "shortName": "STADIUM",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZMYH8ZXVD323CD2P8QZQPN7",
+      "name": "LCH CLASS D",
+      "shortName": "LCH D",
+      "starsId": 15,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GZMYH8ZX8Q43KFPW8R49YNFT",
+      "name": "CWF CLASS D",
+      "shortName": "CWF D",
+      "starsId": 16,
+      "brightnessCategory": "B"
+    }
+  ]
+}

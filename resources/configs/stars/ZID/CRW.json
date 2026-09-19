@@ -1,0 +1,510 @@
+{
+  "artcc": "ZID",
+  "facility": "CRW",
+  "name": "Charleston ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 38.6494889,
+    "lon": -84.3106305555556
+  },
+  "controlPositions": [
+    {
+      "id": "01GRVGRACKMMMAVA9R0636R9AD",
+      "name": "Clearance Delivery",
+      "callsign": "CRW_DEL",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 118.55
+    },
+    {
+      "id": "01GRVGSV4AQ1458XSRGEQPM743",
+      "name": "Ground Control",
+      "callsign": "CRW_GND",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01GRVGVF50X4DV8EXTPV3ACE3A",
+      "name": "Local Control",
+      "callsign": "CRW_TWR",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 125.7
+    },
+    {
+      "id": "01GRVGYGT4ZBGRR812FJAVQGFF",
+      "name": "North Radar",
+      "callsign": "CRW_N_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 124.1
+    },
+    {
+      "id": "01GRVGZVD97GT65QJ0A0HYH17G",
+      "name": "South Radar",
+      "callsign": "CRW_S_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 119.2
+    },
+    {
+      "id": "01GRVH0XYC70P28S27SQ8D91HK",
+      "name": "Beckley Radar",
+      "callsign": "CRW_B_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 125.4
+    },
+    {
+      "id": "01JA39MXY165PJ6VH019T2BZBS",
+      "name": "CRW GUARD",
+      "callsign": "CRW_EM_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1B",
+        "1N",
+        "1S",
+        "1T"
+      ],
+      "mapIds": [
+        103,
+        132,
+        109,
+        108,
+        117,
+        104,
+        101,
+        134,
+        133,
+        142,
+        139,
+        140,
+        105,
+        107,
+        115,
+        114,
+        118,
+        119,
+        135,
+        136,
+        145,
+        146,
+        137,
+        120,
+        121,
+        122,
+        123,
+        124,
+        141,
+        125,
+        130,
+        131,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        103,
+        109,
+        117,
+        132,
+        108,
+        104
+      ],
+      "submenuMapIds": [
+        101,
+        133,
+        139,
+        105,
+        115,
+        118,
+        135,
+        145,
+        137,
+        121,
+        123,
+        141,
+        130,
+        null,
+        null,
+        134,
+        142,
+        140,
+        107,
+        114,
+        119,
+        136,
+        146,
+        120,
+        122,
+        124,
+        125,
+        131,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01K8BHXFF1GXN819774XAKEQJK",
+      "name": "CRW MAP 1",
+      "shortName": "MAP 1",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8BHXFF2PTW0F5K41SKHFKF6",
+      "name": "CRW MVA 5NM",
+      "shortName": "MVA 5M",
+      "starsId": 102,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF2TTAQFJDV35H7T03K",
+      "name": "CRW MVA 3NM",
+      "shortName": "MVA",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEWXV5FAC9NS0X8VSC9",
+      "name": "CRW EOVM",
+      "shortName": "EOVM",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEZKCHG00JNZTHMW9Z0",
+      "name": "CRW HIGH",
+      "shortName": "HIGH",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF3PB8HWEWEEBE3QJQA",
+      "name": "CRW Q ROUTES",
+      "shortName": "Q RTE",
+      "starsId": 106,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF3GNWGRGRBSCDPX1K4",
+      "name": "CRW RNAV",
+      "shortName": "RNAV",
+      "starsId": 107,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF5Q1CGGXKHHF73JB2P",
+      "name": "CRW RWY 23 DEPARTURE AREA",
+      "shortName": "23 DEP",
+      "starsId": 108,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF48JXBEBH0G8RJC5TS",
+      "name": "CRW RWY 5 DEPARTURE AREA",
+      "shortName": "5 DEP",
+      "starsId": 109,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF6Q15103TE349X589J",
+      "name": "CRW RWY 23 RNP",
+      "shortName": "23 RNP",
+      "starsId": 114,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF5QNW2DC48WRBJHDZW",
+      "name": "CRW RWY 5 RNP",
+      "shortName": "5 RNP",
+      "starsId": 115,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF72QTJXKBK2AJ932ZZ",
+      "name": "CRW VICTOR ROUTES",
+      "shortName": "V RTE",
+      "starsId": 117,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFET9YJKMT6907XSZSCT",
+      "name": "CRW CRW GPS",
+      "shortName": "CRW GPS",
+      "starsId": 118,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEV72HJZRMHBAEXBZBQ",
+      "name": "CRW CRW VOR-A",
+      "shortName": "CRW VOA",
+      "starsId": 119,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF7HV8VT29F10TKZF7Y",
+      "name": "CRW SXL GPS",
+      "shortName": "SXL GPS",
+      "starsId": 120,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEMZV5DK1HMTD3J01M6",
+      "name": "CRW 6L4 GPS",
+      "shortName": "6L4 GPS",
+      "starsId": 121,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF7X8PFGZT719NXAJJR",
+      "name": "CRW USW GPS",
+      "shortName": "USW GPS",
+      "starsId": 122,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFENRGYQG29RRA9CEZZW",
+      "name": "CRW 12V VOR-A",
+      "shortName": "12V VOA",
+      "starsId": 123,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF0KFWMHG6PEPDWQQGD",
+      "name": "CRW I16 GPS",
+      "shortName": "I16 GPS",
+      "starsId": 124,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEV6XWR1ZGFV1VS7R9G",
+      "name": "CRW EBD GPS",
+      "shortName": "EBD GPS",
+      "starsId": 125,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEPD9TXH9WYBS2QSQ84",
+      "name": "CRW ADSB 40NM",
+      "shortName": "ADSB40",
+      "starsId": 127,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEP3KF52B44FXS8A97A",
+      "name": "CRW ADSB 60NM",
+      "shortName": "ADSB60",
+      "starsId": 128,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF62Y0GW53MA1KHGD8G",
+      "name": "CRW STADIUMS",
+      "shortName": "STADIUM",
+      "starsId": 129,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF891RDEXBRQDSDD0E1",
+      "name": "CRW WV56 COPTER RNAV GPS 30",
+      "shortName": "WV56",
+      "starsId": 130,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEW5H8RQ0QXWGEQKCB0",
+      "name": "CRW EVERS MOA",
+      "shortName": "EVERS",
+      "starsId": 131,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF14823XHNW78G3XTQY",
+      "name": "CRW IR ROUTES",
+      "shortName": "IR RTE",
+      "starsId": 132,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFF2HEDS270E9QH7EXSY",
+      "name": "CRW N-S AIRSPACE",
+      "shortName": "NS SPL",
+      "starsId": 133,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8BHXFF4BS94409VAKPKXCRV",
+      "name": "CRW RNL SHELF",
+      "shortName": "RNL SHF",
+      "starsId": 134,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8BHXFERJE060TBKQPYBZXPY",
+      "name": "CRW BKW RNAV 01",
+      "shortName": "BKW R01",
+      "starsId": 135,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFER4K8E89FHG13314JR",
+      "name": "CRW BKW RNAV 10",
+      "shortName": "BKW R10",
+      "starsId": 136,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEQNFB4SC6RAHMSNSZR",
+      "name": "CRW BKW ILS-LOC 19",
+      "shortName": "BKW ILS",
+      "starsId": 137,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFETTFA0PQ8JNNYANFEE",
+      "name": "CRW CRW ILS RWY 05",
+      "shortName": "CRW I05",
+      "starsId": 139,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8BHXFETKDXWHBXHXAZXZHM4",
+      "name": "CRW CRW ILS RWY 23",
+      "shortName": "CRW I23",
+      "starsId": 140,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8BHXFF0ZT3PHFEK2ZC89T5S",
+      "name": "CRW I18 APPROACH",
+      "shortName": "I18 APP",
+      "starsId": 141,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEQ8D0CP6JM09K0N8F0",
+      "name": "CRW BKW AIRSPACE",
+      "shortName": "BKW SPL",
+      "starsId": 142,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8BHXFES39VN2YRPRRWVFG21",
+      "name": "CRW BKW RNAV 19",
+      "shortName": "BKW R19",
+      "starsId": 145,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFESEJ1FVJDQ66X8SRYC",
+      "name": "CRW BKW RNAV 28",
+      "shortName": "BKW R28",
+      "starsId": 146,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEWVCA8JZ79KFY65QF9",
+      "name": "CRW FLCHK-BKW ILS OR LOC 19",
+      "shortName": "FLCK19",
+      "starsId": 500,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEYJX6RTEYRA8QSDAYB",
+      "name": "CRW FLCHK-CRW ILS OR LOC 5",
+      "shortName": "FLCK05",
+      "starsId": 501,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8BHXFEY7AEZNA77K1G5T8NH",
+      "name": "CRW FLCHK-CRW ILS OR LOC 23",
+      "shortName": "FLCHK23",
+      "starsId": 502,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J4HM862C3PBQ9VSCJV3F0C67",
+      "name": "Airports TDM",
+      "shortName": "TDM",
+      "starsId": 900,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JES4K489M5VASYV63CT66C57",
+      "name": "TAXIWAY LABELS",
+      "shortName": "TWY LBL",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01K8BHXFEQ8D0CP6JM09K0N8F0",
+      "name": "CRW BKW AIRSPACE",
+      "shortName": "BKW SPL",
+      "starsId": 142,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K8BHXFF2HEDS270E9QH7EXSY",
+      "name": "CRW N-S AIRSPACE",
+      "shortName": "NS SPL",
+      "starsId": 133,
+      "brightnessCategory": "A"
+    }
+  ]
+}

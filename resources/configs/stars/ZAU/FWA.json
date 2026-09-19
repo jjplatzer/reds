@@ -1,0 +1,223 @@
+{
+  "artcc": "ZAU",
+  "facility": "FWA",
+  "name": "Fort Wayne ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.879166749999996,
+    "lon": -88.975
+  },
+  "controlPositions": [
+    {
+      "id": "01H5FVGW6GAWXDEE5QFYQ1MA4F",
+      "name": "West Approach",
+      "callsign": "FWA_W_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 127.2
+    },
+    {
+      "id": "01H5FVPD838KZT55RTKY06V6N5",
+      "name": "East Approach",
+      "callsign": "FWA_E_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 132.15
+    },
+    {
+      "id": "01H5FVQ54GTDCA829XVRQMD7DA",
+      "name": "Local",
+      "callsign": "FWA_TWR",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 119.1
+    },
+    {
+      "id": "01H5FVRACHAEH8X6D9JBQ46RRN",
+      "name": "Ground",
+      "callsign": "FWA_GND",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01H5FVRS9YY9JC1S4ZP7MH3CAJ",
+      "name": "Clearance Delivery",
+      "callsign": "FWA_DEL",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 124.75
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "2F",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1F",
+        "2F",
+        "1L"
+      ],
+      "mapIds": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6,
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GFM236BNTPFT9T7SG60NY9PZ",
+      "name": "FWA MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K2JS77VP9ES8QHTS01XW4SRB",
+      "name": "FWA MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM236BRYND2D0R8X20B0BWZ",
+      "name": "FWA VFR",
+      "shortName": "VFR",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK7D4DXG9PAD7RK5XFV0MFQ9",
+      "name": "FWA SATELLITE APPROACHES A",
+      "shortName": "SAT A",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KMECA1ZFZ00Y773W3PMDNBP8",
+      "name": "FWA SATELLITE APPROACHES B",
+      "shortName": "SAT B",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM236BSP2BZWJ0P7JX8YFNM",
+      "name": "FWA VICTOR AIRWAYS",
+      "shortName": "VT RTES",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JFD4480X8DYAEQRGAQEFM58D",
+      "name": "FWA AIRPORT DIAGRAMS",
+      "shortName": "AP DIAG",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    }
+  ]
+}

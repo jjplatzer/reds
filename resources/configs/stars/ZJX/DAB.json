@@ -1,0 +1,977 @@
+{
+  "artcc": "ZJX",
+  "facility": "DAB",
+  "name": "Daytona ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 30.39404875,
+    "lon": -81.98462525
+  },
+  "controlPositions": [
+    {
+      "id": "01GA5HVHJ3GP8K47RYAPMCRKM7",
+      "name": "High Arrival",
+      "callsign": "DAB_H_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 125.725
+    },
+    {
+      "id": "01GA5HWW7ARZNJPY2PZPKT7QKN",
+      "name": "MATEO Arrival",
+      "callsign": "DAB_M_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 118.85
+    },
+    {
+      "id": "01GA5JJ5E1M8CXQY7MDN2E9QYX",
+      "name": "LAMMA Arrival",
+      "callsign": "DAB_L_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 127.075
+    },
+    {
+      "id": "01GA5JMK63VNKBSH4M4D8BXH5H",
+      "name": "North Radar",
+      "callsign": "DAB_N_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 125.8
+    },
+    {
+      "id": "01GA5JQKA6BXDX7T60C9BHRZ32",
+      "name": "Clearance Delivery",
+      "callsign": "DAB_DEL",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 119.3
+    },
+    {
+      "id": "01GA5JTKH655H5XG3WPDT2VMNA",
+      "name": "Ground Control North",
+      "callsign": "DAB_N_GND",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GA5JVZN733BS6JT0H4PVNXHC",
+      "name": "Ground Control South",
+      "callsign": "DAB_S_GND",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 124.25
+    },
+    {
+      "id": "01GA5K3SWEXEWF9Q25FQSNEA1D",
+      "name": "Local Control North",
+      "callsign": "DAB_N_TWR",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 120.7
+    },
+    {
+      "id": "01GA5K60HY8B3ZNF197DGJ497M",
+      "name": "Local Control South",
+      "callsign": "DAB_S_TWR",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 118.1
+    },
+    {
+      "id": "01HNGPVM1AGE4G1BFTM2QA5082",
+      "name": "South Radar",
+      "callsign": "DAB_S_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 125.35
+    },
+    {
+      "id": "01HNGPXT2WBCCB26QNRH7QKGAR",
+      "name": "East Radar",
+      "callsign": "DAB_E_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 123.9
+    },
+    {
+      "id": "01HNGPZ2FY1R7H2T5TQW6X454N",
+      "name": "West Radar",
+      "callsign": "DAB_W_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 126.55
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1I",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1P",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "2B",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "2Y",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1I",
+        "1P",
+        "1T",
+        "1Z"
+      ],
+      "mapIds": [
+        40,
+        24,
+        27,
+        28,
+        10,
+        20,
+        59,
+        54,
+        55,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        40,
+        27,
+        10,
+        24,
+        28,
+        20
+      ],
+      "submenuMapIds": [
+        59,
+        55,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        54,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1E",
+        "1H",
+        "1L",
+        "1M",
+        "1N",
+        "1S",
+        "1W"
+      ],
+      "mapIds": [
+        104,
+        105,
+        106,
+        107,
+        59,
+        29,
+        10,
+        24,
+        64,
+        37,
+        39,
+        58,
+        128,
+        55,
+        108,
+        114,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        76,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        103,
+        119,
+        51,
+        null,
+        125,
+        126
+      ],
+      "mainMapIds": [
+        104,
+        106,
+        59,
+        105,
+        107,
+        29
+      ],
+      "submenuMapIds": [
+        10,
+        64,
+        39,
+        128,
+        108,
+        66,
+        68,
+        70,
+        72,
+        78,
+        80,
+        82,
+        84,
+        103,
+        51,
+        24,
+        37,
+        58,
+        55,
+        114,
+        67,
+        69,
+        71,
+        76,
+        79,
+        81,
+        83,
+        85,
+        119,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "2B"
+      ],
+      "mapIds": [
+        119,
+        59,
+        10,
+        199,
+        198,
+        128,
+        70,
+        null,
+        71,
+        null,
+        72,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        119,
+        10,
+        198,
+        59,
+        199,
+        128
+      ],
+      "submenuMapIds": [
+        70,
+        71,
+        72,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "2Y"
+      ],
+      "mapIds": [
+        119,
+        59,
+        24,
+        199,
+        198,
+        128,
+        66,
+        null,
+        67,
+        null,
+        68,
+        null,
+        69,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        119,
+        24,
+        198,
+        59,
+        199,
+        128
+      ],
+      "submenuMapIds": [
+        66,
+        67,
+        68,
+        69,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GYQXPEB5VWSA938SSPM6FYQ0",
+      "name": "DAB ASDEX",
+      "shortName": "DABASDEX",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCWAFQNDHX33Y9AYYEW",
+      "name": "DAB AIRPORT DIAGRAMS",
+      "shortName": "GROUND",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB5KYBCNJ6ARZA9NFZ2GTM7Y",
+      "name": "DAB MLH MAP",
+      "shortName": "DAB_MLH",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCNCH7BV3N8AVETSD2D",
+      "name": "FIN RNAV APPROACHES",
+      "shortName": "FIN_R",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCPDWF1AQGWFW318A43",
+      "name": "DAB MVA",
+      "shortName": "MVA",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB5KYBCPR9ZTMBZ1N3GRQ8D6",
+      "name": "TOWER WEST",
+      "shortName": "TWR_W",
+      "starsId": 27,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCPCNZ61711FP5H641H",
+      "name": "TOWER EAST",
+      "shortName": "TWR_E",
+      "starsId": 28,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCQZN6ZBXSB3BS1Y47V",
+      "name": "DAB CLASS D",
+      "shortName": "CLASS D",
+      "starsId": 29,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB5KYBCQJPN4TGAXQCMMJZR0",
+      "name": "DAB EAST FLOW",
+      "shortName": "DAB_E",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCRNP0W5SGXWC94Y3M5",
+      "name": "DAB WEST FLOW",
+      "shortName": "DAB_W",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCR0V4JDPEGDT0W9737",
+      "name": "SATELLITE APPROACHES",
+      "shortName": "SAT_APP",
+      "starsId": 37,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCRXEBAFCV1YHCGD0DB",
+      "name": "SECTOR BOUNDARY",
+      "shortName": "SEC_BDY",
+      "starsId": 38,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCS519X22BWF0D48Y2S",
+      "name": "DAB EMERGENCY",
+      "shortName": "EMERGE",
+      "starsId": 39,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB5KYBCS0RQTW5KFQ79R68AV",
+      "name": "TOWER MAP",
+      "shortName": "TOWER",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCSRYB32CM49958GWVB",
+      "name": "RNAV",
+      "shortName": "RNAV",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCT09TMK4BDQ9B928B0",
+      "name": "WARNING AREA 497",
+      "shortName": "W-497",
+      "starsId": 43,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB5KYBCT3J9MNSA8R3ANNBJM",
+      "name": "SGJ/COI APPROACHES",
+      "shortName": "SGJ/COI",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCT89CQ83FNS0VHNEAP",
+      "name": "FIN/TIX APPROACHES",
+      "shortName": "FIN/TIX",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCT8J9HA90R5H1THAWM",
+      "name": "OMN/XMR APPROACHES",
+      "shortName": "OMN/XMR",
+      "starsId": 53,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCVCRBA2S0W4V8TZSQB",
+      "name": "DAB RNAV APPROACHES",
+      "shortName": "DAB_R",
+      "starsId": 54,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCVS441V1V9QEXGFYW4",
+      "name": "DAB RNAV 34",
+      "shortName": "DAB_R34",
+      "starsId": 55,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCVH1KS0FXZB2VPK4VQ",
+      "name": "X50/7FL6 APPROACHES",
+      "shortName": "X507FL6",
+      "starsId": 56,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCVJHPEK66HQETM2H2T",
+      "name": "DED APPROACHES",
+      "shortName": "DED_APP",
+      "starsId": 57,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCVCF11PDCXW5KY7SH6",
+      "name": "PALATKA RESTRICTED AREA",
+      "shortName": "PALATK",
+      "starsId": 58,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB5KYBCW4XBE4Z1YYZQAJJN2",
+      "name": "DAB CLASS C",
+      "shortName": "CLASS C",
+      "starsId": 59,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HB5KYBCW3WNYEDJX4SNBSYTE",
+      "name": "DAB LOW AIRWAYS",
+      "shortName": "LOW_AWY",
+      "starsId": 64,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY5BE900JHS601QV998CQ36H",
+      "name": "EVB RNAV 02",
+      "shortName": "EVB02",
+      "starsId": 66,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE901D1XS77K3YTH68VZV",
+      "name": "EVB RNAV 07",
+      "shortName": "EVB07",
+      "starsId": 67,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE9010HB2J6HKS7ZS4HWC",
+      "name": "EVB RNAV 25",
+      "shortName": "EVB25",
+      "starsId": 68,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE901NNZVAAQ7N5KBTV23",
+      "name": "EVB RNAV 29",
+      "shortName": "EVB29",
+      "starsId": 69,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE902JNQ1VACRKHCRRCNS",
+      "name": "OMN RNAV 09",
+      "shortName": "OMN09",
+      "starsId": 70,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE902KD0SGAGGBZEWR19S",
+      "name": "OMN RNAV 17",
+      "shortName": "OMN17",
+      "starsId": 71,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE903TPQWEXD9ERM9JGYT",
+      "name": "OMN RNAV 27",
+      "shortName": "OMN27",
+      "starsId": 72,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE903HRJB3KVF7247T929",
+      "name": "7FL6 RNAV 06",
+      "shortName": "7FL606",
+      "starsId": 76,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE903YPQ9QGPC6GMKRTC8",
+      "name": "FIN RNAV 06",
+      "shortName": "FIN06",
+      "starsId": 78,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE903Q8HXX9T1R7NMAYFD",
+      "name": "FIN RNAV 11",
+      "shortName": "FIN11",
+      "starsId": 79,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE90428XN424SE31P3CGT",
+      "name": "FIN RNAV 24",
+      "shortName": "FIN24",
+      "starsId": 80,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE9046W804BHZKK9SEC28",
+      "name": "FIN RNAV 29",
+      "shortName": "FIN29",
+      "starsId": 81,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE904S82SXTR2MHHYGEAM",
+      "name": "DED RNAV 05",
+      "shortName": "DED05",
+      "starsId": 82,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE905VM2NTE5Q27A1392D",
+      "name": "DED RNAV 12",
+      "shortName": "DED12",
+      "starsId": 83,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE905879CM6GMCHDKBC9N",
+      "name": "DED RNAV 24",
+      "shortName": "DED24",
+      "starsId": 84,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE90573CB4WHX6TT4WW39",
+      "name": "DED RNAV 30",
+      "shortName": "DED30",
+      "starsId": 85,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCWB3NFG82N525ATYK9",
+      "name": "DAB WARNING AREAS",
+      "shortName": "WARN",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HJM0GKSVKRNRSCBQ2EEJ8TZJ",
+      "name": "DAB East Ops High",
+      "shortName": "DABEHI",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJM0HYEKP5RV0FD9T8GWKRFG",
+      "name": "DAB East Ops Low",
+      "shortName": "DABELOW",
+      "starsId": 105,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJM0KPJQZZD7422S31N9CJY7",
+      "name": "DAB West Ops High",
+      "shortName": "DABW HI",
+      "starsId": 106,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJM0MZ7ZTJTD86QHVH1Y9A40",
+      "name": "DAB West Ops Low",
+      "shortName": "DABW LO",
+      "starsId": 107,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE905F8AVEMG3Z1E7GA34",
+      "name": "DAB RNAV 16",
+      "shortName": "DABR16",
+      "starsId": 108,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE906QZSW7A8GKKHPJ58J",
+      "name": "DAB ILS ARC",
+      "shortName": "ILSARC",
+      "starsId": 114,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE906ZRWEWDTD4JJCYNHV",
+      "name": "DAB MULTI SECTOR",
+      "shortName": "MULTI",
+      "starsId": 119,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE906PBJ04WCT5C7JEE2C",
+      "name": "DAB RWY 7L",
+      "shortName": "DAB7L",
+      "starsId": 125,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY5BE9063EBVE6B7N6993ZPV",
+      "name": "DAB RWY 25R",
+      "shortName": "DAB25R",
+      "starsId": 126,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HJKNAN65W7XB0ZK2B910KSAJ",
+      "name": "DAB APPROACH FIXES",
+      "shortName": "APP FIX",
+      "starsId": 128,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KE7RX6HD09TV3KP8YJ2EEH85",
+      "name": "DBCOAST",
+      "shortName": "COAST",
+      "starsId": 198,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KE7RQWMB2B1KB23FN798T118",
+      "name": "DABCLASSD",
+      "shortName": "DELTA",
+      "starsId": 199,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HY5BE906ZRWEWDTD4JJCYNHV",
+      "name": "DAB MULTI SECTOR",
+      "shortName": "MULTI",
+      "starsId": 119,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HB5KYBCRXEBAFCV1YHCGD0DB",
+      "name": "SECTOR BOUNDARY",
+      "shortName": "SEC_BDY",
+      "starsId": 38,
+      "brightnessCategory": "A"
+    }
+  ]
+}

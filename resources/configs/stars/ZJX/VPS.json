@@ -1,0 +1,339 @@
+{
+  "artcc": "ZJX",
+  "facility": "VPS",
+  "name": "Eglin Air Force base/Destin-Fort Walton Beach",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 30.39404875,
+    "lon": -81.98462525
+  },
+  "controlPositions": [
+    {
+      "id": "01HB8SJDDX5ACS3M3Y9904C0BH",
+      "name": "Ground",
+      "callsign": "VPS_GND",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01HB8SJZ8RMEZ3HTDFNA3SJGE4",
+      "name": "Tower",
+      "callsign": "VPS_TWR",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 118.2
+    },
+    {
+      "id": "01HB8SMMBW1DPVASXXNJ59BJ11",
+      "name": "Radar South",
+      "callsign": "VPS_S_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 132.1
+    },
+    {
+      "id": "01HM05DXYNQMZRQQG265GBZ45A",
+      "name": "Radar North",
+      "callsign": "VPS_N_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 125.1
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1N",
+        "1S"
+      ],
+      "mapIds": [
+        1,
+        101,
+        null,
+        null,
+        null,
+        null,
+        201,
+        202,
+        301,
+        302,
+        100,
+        null,
+        400,
+        401,
+        402,
+        404,
+        405,
+        406,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        null,
+        null,
+        101,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        201,
+        301,
+        100,
+        400,
+        402,
+        405,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        202,
+        302,
+        null,
+        401,
+        404,
+        406,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        400,
+        401,
+        402,
+        405,
+        406,
+        1,
+        100,
+        101,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        400,
+        402,
+        406,
+        401,
+        405,
+        1
+      ],
+      "submenuMapIds": [
+        100,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        101,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HM05Q24TWBW37BVB30AQN63D",
+      "name": "EGI TRACON",
+      "shortName": "MASTER",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM054B9TJWMDVJWDJZ51VW3N",
+      "name": "EGI APP",
+      "shortName": "EGI",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM054B9S1AS3D60M293W24JH",
+      "name": "EGIAIRPORTS",
+      "shortName": "AIRPORT",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM054B9Q4SRDVZ3Q303VX6C2",
+      "name": "CEWAPP",
+      "shortName": "CEW",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM054B9RBHWQXFCQD6V6GMFF",
+      "name": "DTSAPP",
+      "shortName": "DTS",
+      "starsId": 202,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM054B9PWHD8P56RK145554G",
+      "name": "54JAPP",
+      "shortName": "54J",
+      "starsId": 301,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM054B9V4DAT2PTEQ71M78VF",
+      "name": "HRTAPP",
+      "shortName": "HRT",
+      "starsId": 302,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM054B9W2T42V5SKXR8RYT4P",
+      "name": "VPSILSW20",
+      "shortName": "ILSW20",
+      "starsId": 400,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM054B9XV98KJ246YKHARF9N",
+      "name": "VPSILSX20",
+      "shortName": "ILSX20",
+      "starsId": 401,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM054B9YN702YF3RYDSB811Z",
+      "name": "VPSILSY30",
+      "shortName": "ILSY30",
+      "starsId": 402,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM054B9ZTX44F6XNPXFC02E4",
+      "name": "VPSILSZ30",
+      "shortName": "ILSZ30",
+      "starsId": 404,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM054BA0XQTDECSQQWDEJSZV",
+      "name": "VPSRNAVZ12",
+      "shortName": "RNZ12",
+      "starsId": 405,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HM054BA0AGEF9PPQS368Q28Q",
+      "name": "VPSRNAVZ2",
+      "shortName": "RNZ2",
+      "starsId": 406,
+      "brightnessCategory": "A"
+    }
+  ]
+}

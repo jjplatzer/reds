@@ -1,0 +1,172 @@
+{
+  "artcc": "ZJX",
+  "facility": "OZR",
+  "name": "Cairns Army Air ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 30.39404875,
+    "lon": -81.98462525
+  },
+  "controlPositions": [
+    {
+      "id": "01HAYVRHZ7RDX4DQ6PF3W447XP",
+      "name": "Clearance Delivery",
+      "callsign": "OZR_DEL",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 118.075
+    },
+    {
+      "id": "01HAYVS6CNAZ1KFR9Z4226QGB4",
+      "name": "Ground",
+      "callsign": "OZR_GND",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01HAYVSZ8MYX8CNCYM86432PJC",
+      "name": "Tower",
+      "callsign": "OZR_TWR",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 135.2
+    },
+    {
+      "id": "01HAYVTCYRF05C4D7TBG5Q0V4N",
+      "name": "Departure",
+      "callsign": "OZR_DEP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 121.1
+    },
+    {
+      "id": "01HAYVVGCZ0WK0725R3P5E3Q5V",
+      "name": "Approach",
+      "callsign": "OZR_APP",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      },
+      "freq": 121.1
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 30.39404875,
+        "lon": -81.98462525
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1Z"
+      ],
+      "mapIds": [
+        100,
+        null,
+        101,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        100,
+        101,
+        null,
+        null,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HKN6VERRZ6RXJ98EDMPADAGY",
+      "name": "OZRTracon",
+      "shortName": "MASTER",
+      "starsId": 100,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HKN6VERQB4S0DRK3M5RM5EQE",
+      "name": "OZRAIRPORTS",
+      "shortName": "AIRPORT",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    }
+  ]
+}

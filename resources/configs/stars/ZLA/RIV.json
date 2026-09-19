@@ -1,0 +1,203 @@
+{
+  "artcc": "ZLA",
+  "facility": "RIV",
+  "name": "March Air Reserve Base",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 34.9691453,
+    "lon": -116.63582625
+  },
+  "controlPositions": [
+    {
+      "id": "01H42X3F2KEH1WSFMBQ3CBQ6KS",
+      "name": "March Approach",
+      "callsign": "RIV_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 133.5
+    },
+    {
+      "id": "01H42X4RC1DZYEBBBGS40QYRX4",
+      "name": "March Tower",
+      "callsign": "RIV_TWR",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 127.65
+    },
+    {
+      "id": "01H42X5BF0JT2Y9VE7Y2G89CSD",
+      "name": "March Ground",
+      "callsign": "RIV_GND",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 121.75
+    },
+    {
+      "id": "01KJZRDFKZGA7F4FYR9EE89S2M",
+      "name": "Arrival 2",
+      "callsign": "RIV_B_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 135
+    },
+    {
+      "id": "01KJZRJV6R6XX575CRC4MNWDCE",
+      "name": "Assist",
+      "callsign": "RIV_D_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 135.5
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1B",
+        "1D",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        701,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        null,
+        null,
+        701,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HBKHT7N4J7M2P9DE0M6BP9P1",
+      "name": "001 RIV ASP21",
+      "shortName": "RIV RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H4H6XTCRR6XM7JM3JC972TX6",
+      "name": "701S FUS 3NM MVA SCT",
+      "shortName": "3NM_MVA",
+      "starsId": 701,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H4KGSBGB3GXZ5S9BXFWM87XZ",
+      "name": "999 GNDMAP SCT",
+      "shortName": "GNDMAP",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

@@ -1,0 +1,373 @@
+{
+  "artcc": "ZDC",
+  "facility": "ROA",
+  "name": "Roanoke ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 37,
+    "lon": -77
+  },
+  "controlPositions": [
+    {
+      "id": "01GS5KB5WQB5MXZSY7NSTFATFG",
+      "name": "East Radar",
+      "callsign": "ROA_E_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 118.15
+    },
+    {
+      "id": "01GS5KCQ64M68DW9ND6X5T3ZVR",
+      "name": "Lynchburg North",
+      "callsign": "ROA_N_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 135
+    },
+    {
+      "id": "01GS5M4A9RY7JTKQV4NKG8VS5M",
+      "name": "Local",
+      "callsign": "ROA_TWR",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 118.3
+    },
+    {
+      "id": "01GS5M5JR69SHWPJJV69A631GM",
+      "name": "Ground",
+      "callsign": "ROA_GND",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GS5M6FXJESR4S3H41GDS8G49",
+      "name": "Clearance",
+      "callsign": "ROA_DEL",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 119.7
+    },
+    {
+      "id": "01JB5DTT5FM7Q36N7R3GJ80K96",
+      "name": "121.5 GUARD",
+      "callsign": "ROA_GG_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "01KEWF4S22GG9RH12ND28PDJE9",
+      "name": "Lynchburg South",
+      "callsign": "ROA_S_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 125.475
+    },
+    {
+      "id": "01KEWFWW2SNY4KB88KSF0T99H9",
+      "name": "West Radar",
+      "callsign": "ROA_W_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 126.9
+    },
+    {
+      "id": "01KEWG2TZXBXSP25EJ4N1Y5PVW",
+      "name": "Satellite Radar",
+      "callsign": "ROA_Y_APP",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      },
+      "freq": 126
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1Y",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 37,
+        "lon": -77
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1N",
+        "1S",
+        "1W",
+        "1Y",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        3,
+        4,
+        2,
+        98,
+        99,
+        5,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        4,
+        98,
+        3,
+        2,
+        99
+      ],
+      "submenuMapIds": [
+        5,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GXEG0FXWZH651XGB4JX0VBGZ",
+      "name": "ROA RVM",
+      "shortName": "RVM",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J0EE4VQQJF3TVQ4WAQXAC61T",
+      "name": "ROA SECTORS",
+      "shortName": "SECT",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HJCRM2FBPE1PYVH3NRQ495K9",
+      "name": "ROA MVA",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HJCSCSD0ANT72S4Q39PWT613",
+      "name": "ROA VFR",
+      "shortName": "VFR",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HJCSE1P0PKBVHMP62KBG0HYM",
+      "name": "ROA CLASS C",
+      "shortName": "CLASS C",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1C2KX0AK7VJQEYS5VWQ9XYV",
+      "name": "ZDC Boundary",
+      "shortName": "ZDCBDRY",
+      "starsId": 98,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3AEF27T0EZN8S1SNBHBVERZ",
+      "name": "ZDC Approach BDRY",
+      "shortName": "APPBDRY",
+      "starsId": 99,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JYEJSQ4732C4QNS90M4W051X",
+      "name": "ROA SID BUFIY",
+      "shortName": "BUFIY",
+      "starsId": 100,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYEJSQ49M70WZXKRECFDS4W6",
+      "name": "ROA SID MONAT",
+      "shortName": "MONAT",
+      "starsId": 101,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYEJSQ48KE28ZXR3QHYZD454",
+      "name": "ROA SID SCUTA",
+      "shortName": "SCUTA",
+      "starsId": 102,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYEJYF5CJ1V19ANQ4E2H57QY",
+      "name": "ROA IAP H06Z",
+      "shortName": "H06Z",
+      "starsId": 300,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYEJYF5D6PT13BM280Y579E0",
+      "name": "ROA IAP H24Z",
+      "shortName": "H24Z",
+      "starsId": 301,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYEJYF5D9QVKAJ0F9BCAXTEM",
+      "name": "ROA IAP H34Z",
+      "shortName": "H34Z",
+      "starsId": 302,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYEJYF5E8YZ8MSCA3RS1BGD7",
+      "name": "ROA IAP R06Y",
+      "shortName": "R06Y",
+      "starsId": 303,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYEJYF5FSM1EWDXNWG6JQAKP",
+      "name": "ROA IAP R24Y",
+      "shortName": "R24Y",
+      "starsId": 304,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYEJYF5FBFXT6YG7BZ6QNMM7",
+      "name": "ROA IAP R34Y",
+      "shortName": "R34Y",
+      "starsId": 305,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JYEJYF5GAYNQ8DZHEG656NZD",
+      "name": "ROA IAP X06Y",
+      "shortName": "X06Y",
+      "starsId": 306,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01J0EE4VQQJF3TVQ4WAQXAC61T",
+      "name": "ROA SECTORS",
+      "shortName": "SECT",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H1C2KX0AK7VJQEYS5VWQ9XYV",
+      "name": "ZDC Boundary",
+      "shortName": "ZDCBDRY",
+      "starsId": 98,
+      "brightnessCategory": "B"
+    }
+  ]
+}

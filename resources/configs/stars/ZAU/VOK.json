@@ -1,0 +1,210 @@
+{
+  "artcc": "ZAU",
+  "facility": "VOK",
+  "name": "Volk ATCT/RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 41.879166749999996,
+    "lon": -88.975
+  },
+  "controlPositions": [
+    {
+      "id": "01HETGY6EF47ZCP01XE8Z0FH38",
+      "name": "Approach",
+      "callsign": "VOK_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 135.25
+    },
+    {
+      "id": "01HETJ1AEBAFSR82GC037NWS5H",
+      "name": "Local",
+      "callsign": "VOK_TWR",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 127.5
+    },
+    {
+      "id": "01HETJ2NNGJSDYRE9KE6PCFDKK",
+      "name": "Ground",
+      "callsign": "VOK_GND",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1S"
+      ],
+      "mapIds": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6,
+        7,
+        23,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        23,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HHSRT2170YR0Y5K9QRJ2Y8VV",
+      "name": "VOK MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01K2JYNRJ9RRY1XE07XA94F2QX",
+      "name": "VOK MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01K8RVVYC1NJJJP9AEG2R6879V",
+      "name": "VOK VICTOR AIRWAYS",
+      "shortName": "VT RTES",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HHSS6NX88SW0TTB77PYF53JC",
+      "name": "VOK SATELLITE APPROACHES A",
+      "shortName": "SAT A",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KME839RNAARPMTM8A60010V6",
+      "name": "VOK SATELLITE APPROACHES B",
+      "shortName": "SAT B",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HHSS8V8HFHQR3RB6ED6MZKF2",
+      "name": "VOK ARTCC LOW BOUNDARIES",
+      "shortName": "ZMP",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JFD6T7ERZAMPHNDJP2CYKY4K",
+      "name": "VOK AIRPORT DIAGRAMS",
+      "shortName": "AP DIAG",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KME8ZEYR9SGN8W58D7CA11WN",
+      "name": "VOK SPECIAL USE AIRSPACE",
+      "shortName": "SUA",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HHSS8V8HFHQR3RB6ED6MZKF2",
+      "name": "VOK ARTCC LOW BOUNDARIES",
+      "shortName": "ZMP",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KME8ZEYR9SGN8W58D7CA11WN",
+      "name": "VOK SPECIAL USE AIRSPACE",
+      "shortName": "SUA",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    }
+  ]
+}

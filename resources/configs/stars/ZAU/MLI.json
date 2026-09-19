@@ -1,0 +1,224 @@
+{
+  "artcc": "ZAU",
+  "facility": "MLI",
+  "name": "Quad Cities ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.879166749999996,
+    "lon": -88.975
+  },
+  "controlPositions": [
+    {
+      "id": "01H5FWMPJC1WV731VC96JPCC6M",
+      "name": "North Approach",
+      "callsign": "MLI_N_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 125.95
+    },
+    {
+      "id": "01H5FWN78KVYNYQRAY13Q4HCZH",
+      "name": "South Approach",
+      "callsign": "MLI_S_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 133.275
+    },
+    {
+      "id": "01H5FWP4CSPZPFSZDDQKFT9479",
+      "name": "Local",
+      "callsign": "MLI_TWR",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 119.4
+    },
+    {
+      "id": "01H5FWQEMCE2SM2DVJZBZ29VBJ",
+      "name": "Ground",
+      "callsign": "MLI_GND",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01H5FWR390Y1XCD46QJ0DBSZ0C",
+      "name": "Clearance Delivery",
+      "callsign": "MLI_DEL",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 124.05
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1L",
+        "1M",
+        "1N",
+        "1S"
+      ],
+      "mapIds": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        null,
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "submenuMapIds": [
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GFM24VKPBZWNR37XCDAA649K",
+      "name": "MLI MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM24VKMCBFXVHWYSJMZ452K",
+      "name": "MLI MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK7QAQHFGVK94FRF5EHXSHGC",
+      "name": "MLI VFR",
+      "shortName": "VFR",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KKQY2XB1KC57C4SR0JWC8BVV",
+      "name": "MLI SATELLITE APPROACHES A",
+      "shortName": "SAT A",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KKQY7SM8MYDVDKNY2XYTC36V",
+      "name": "MLI SATELLITE APPROACHES B",
+      "shortName": "SAT B",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JFD52V0YW4JJ7Y4TF5ZE575N",
+      "name": "MLI AIRPORT DIAGRAMS",
+      "shortName": "AP DIAG",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    }
+  ]
+}

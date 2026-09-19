@@ -1,0 +1,651 @@
+{
+  "artcc": "ZTL",
+  "facility": "TYS",
+  "name": "Knoxville ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.90558406666667,
+    "lon": -83.96840666666667
+  },
+  "controlPositions": [
+    {
+      "id": "01H2MB77SFYRR8AT6DAD1YYBXT",
+      "name": "Clearance Delivery",
+      "callsign": "TYS_DEL",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.65
+    },
+    {
+      "id": "01H2MBD1D9MKJCH70RN56DZWJE",
+      "name": "Ground Control",
+      "callsign": "TYS_GND",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01H2MBN6FD0REN777J3KZTEPMP",
+      "name": "Local Control",
+      "callsign": "TYS_TWR",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.2
+    },
+    {
+      "id": "01H2MBVRB9WFKC8T8PYDQVNR29",
+      "name": "Radar West",
+      "callsign": "TYS_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 123.9
+    },
+    {
+      "id": "01H2MC93N188BYASGFCJHYW55Q",
+      "name": "Radar East",
+      "callsign": "TYS_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 118
+    },
+    {
+      "id": "01JAS6FCDW5HGE8C1WZZY70GBE",
+      "name": "TYS Guard",
+      "callsign": "TYS_G_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "01JAS6GN3DBCZMWMV6XTMJDBSW",
+      "name": "DKX Clearance",
+      "callsign": "TYS_FD_DEL",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1W"
+      ],
+      "mapIds": [
+        17,
+        23,
+        18,
+        25,
+        19,
+        8,
+        24,
+        28,
+        201,
+        209,
+        211,
+        205,
+        207,
+        217,
+        219,
+        218,
+        222,
+        221,
+        220,
+        223,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        235,
+        234,
+        12,
+        15,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        17,
+        18,
+        19,
+        23,
+        25,
+        8
+      ],
+      "submenuMapIds": [
+        24,
+        201,
+        211,
+        207,
+        219,
+        222,
+        220,
+        224,
+        226,
+        228,
+        230,
+        232,
+        235,
+        12,
+        null,
+        28,
+        209,
+        205,
+        217,
+        218,
+        221,
+        223,
+        225,
+        227,
+        229,
+        231,
+        233,
+        234,
+        15,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        17,
+        18,
+        null,
+        null,
+        null,
+        null,
+        12,
+        15,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        17,
+        null,
+        null,
+        18,
+        null,
+        null
+      ],
+      "submenuMapIds": [
+        12,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        15,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HA38G1JS0B3Y97K6AMRBHHGR",
+      "name": "COPTER GPS APPROACHES",
+      "shortName": "COPTER",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JWCHK7WCA2GKF752N4",
+      "name": "GPS APPROACH WAYPOINTS",
+      "shortName": "GPS",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38PAD0MBMRS45693JQ3H97",
+      "name": "TYS EMERGENCY OBSTRUCTION VIDEO MAP",
+      "shortName": "EOVM",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JR7DG858E55AHRTWG7",
+      "name": "BASE MAP (RUNWAY 5 CONFIGURATION)",
+      "shortName": "RWY5",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JR01G6GKA2CDJF8Q3H",
+      "name": "BASE MAP (RUNWAY 23 CONFIGURATION)",
+      "shortName": "RWY23",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38XPTRA5ABV3DBHMGFPNKW",
+      "name": "TYS MINIMUM VECTORING ALTITUDE",
+      "shortName": "MVA",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1K1ZN2MMZWY7WSSJS1X",
+      "name": "TYS CLASS C AIRSPACE",
+      "shortName": "CLASS C",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JTK43FVSN5MW4A61P0",
+      "name": "DKX CLASS E SURFACE AREA",
+      "shortName": "CLASS E",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1K15RQ42PT28DG66C6M",
+      "name": "TANGO/VICTOR AIRWAYS",
+      "shortName": "LOW AWY",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JWTYCKPF6NSSEP1GYT",
+      "name": "JET ROUTES",
+      "shortName": "JET",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JYY9WSA8F06Z7NW2XV",
+      "name": "Q ROUTES",
+      "shortName": "Q ROUTE",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JSNA09PP54K15BPQEB",
+      "name": "COUNTY/STATE BOUNDARIES",
+      "shortName": "COUNTY",
+      "starsId": 26,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JZ3PKRC63EXJ42KBVA",
+      "name": "RIVERS/LAKES/DAMS",
+      "shortName": "WATER",
+      "starsId": 27,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JRXMH0BYK33FRZ8T2A",
+      "name": "AIRPORTS + AVL-TRI-CHA AIRSPACE",
+      "shortName": "AIRSPAC",
+      "starsId": 28,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1K0QSGX3K85255J84WM",
+      "name": "ROADWAYS",
+      "shortName": "ROADS",
+      "starsId": 29,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1K1M99V2ER7E8GHKF29",
+      "name": "TYS ILS/LOCALIZER RUNWAY 23L APPROACH",
+      "shortName": "ILS 23L",
+      "starsId": 201,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1K26Q961VZ573N55VYE",
+      "name": "TYS RNAV (GPS) RUNWAY 23L APPROACH",
+      "shortName": "RNV 23L",
+      "starsId": 205,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1K29S6H8S12KA1XHHE4",
+      "name": "TYS VOR RUNWAY 23L APPROACH",
+      "shortName": "VOR 23L",
+      "starsId": 207,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1K12GG1RNB33HC09NBV",
+      "name": "TYS RNAV (GPS) RUNWAY 05R APPROACH",
+      "shortName": "RNAV 5R",
+      "starsId": 209,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1K1287G240FGMHGNHNW",
+      "name": "TYS HI-ILS/HI-LOC RUNWAY 23L APPROACH",
+      "shortName": "HI 23L",
+      "starsId": 211,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JV7X7B0BZB0NZ5SRX3",
+      "name": "DKX LOC RUNWAY 26 APPROACH",
+      "shortName": "DKX L26",
+      "starsId": 217,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JVQW09W6V73G77ZS18",
+      "name": "DKX RNAV (GPS) RUNWAY 26 APPROACH",
+      "shortName": "DKX R26",
+      "starsId": 218,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JVFHSPVP7VZ3MBE79X",
+      "name": "DKX VOR-DME-B APPROACH",
+      "shortName": "DKX VOR",
+      "starsId": 219,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JYWAQK92PEVFEGFX44",
+      "name": "MOR SDF RUNWAY 5 APPROACH",
+      "shortName": "MOR SDF",
+      "starsId": 220,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA3BW140A808X7EYQKSX5V9M",
+      "name": "MOR RNAV (GPS) RUNWAY 5 APPROACH",
+      "shortName": "MOR R5",
+      "starsId": 221,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JY5ZZS8Q01KW5F4Y80",
+      "name": "MOR RNAV (GPS) RUNWAY 23 APPROACH",
+      "shortName": "MOR R23",
+      "starsId": 222,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JYFZPWGVHE2Y8CQGKS",
+      "name": "MOR NDB RUNWAY 5 APPROACH",
+      "shortName": "MOR NDB",
+      "starsId": 223,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA3AMMHG1ZJRWAQWCFEGD7SK",
+      "name": "GKT RNAV (GPS) RUNWAY 10 APPROACH",
+      "shortName": "GKT R10",
+      "starsId": 224,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JVVCHW486QAYGBB02N",
+      "name": "GKT VOR/DME RUNWAY 10 APPROACH",
+      "shortName": "GKT VOR",
+      "starsId": 225,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JXM25WZ96MNQ6QE4XV",
+      "name": "MNV RNAV (GPS) RUNWAY 23 APPROACH",
+      "shortName": "MNV R23",
+      "starsId": 226,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JXRJ5MQN88Z7RZ2SAD",
+      "name": "MNV RNAV (GPS) RUNWAY 5 APPROACH",
+      "shortName": "MNV R5",
+      "starsId": 227,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JXRMTZ0EFP9KXF049F",
+      "name": "MMI RNAV (GPS) RUNWAY 02 APPROACH",
+      "shortName": "MMI R2",
+      "starsId": 228,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JXJPKAKHHVNAXZEA9S",
+      "name": "MMI RNAV (GPS) RUNWAY 20 APPROACH",
+      "shortName": "MMI R20",
+      "starsId": 229,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JXKNT3VE8VVPD9G4CZ",
+      "name": "MMI NDB RUNWAY 02 APPROACH",
+      "shortName": "MMI NDB",
+      "starsId": 230,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1K0FXK26A8T3PQCC3X5",
+      "name": "RZR RNAV (GPS) RUNWAY 21 APPROACH",
+      "shortName": "RZR R21",
+      "starsId": 231,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JQZX72H56YD9QV86VA",
+      "name": "2A0 RNAV (GPS) RUNWAY 21 APPROACH",
+      "shortName": "2A0 R21",
+      "starsId": 232,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JZ5GQSW2VJ0YA851KJ",
+      "name": "RKW RNAV (GPS) RUNWAY 4 APPROACH",
+      "shortName": "RKW R4",
+      "starsId": 233,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JZBMGF8J2Y4KM6ZR6S",
+      "name": "RKW RNAV (GPS) RUNWAY 22 APPROACH",
+      "shortName": "RKW R22",
+      "starsId": 234,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JZ9ZVJDC0X1NBWSV53",
+      "name": "RKW VOR/DME RUNWAY 22 APPROACH",
+      "shortName": "RKW VOR",
+      "starsId": 235,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JWYN1YP103R41SESMM",
+      "name": "JAU RNAV (GPS) RUNWAY 23 APPROACH",
+      "shortName": "JAU R23",
+      "starsId": 236,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JQ8Z97PVA909XQBHBB",
+      "name": "3A2 RNAV (GPS) RUNWAY 7 APPROACH",
+      "shortName": "3A2",
+      "starsId": 237,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JPW3AWDKFCTY1NN9DA",
+      "name": "1A3 RNAV (GPS) RUNWAY 02 APPROACH",
+      "shortName": "1A3 R2",
+      "starsId": 238,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JQWVJPCG0E6EP5792B",
+      "name": "1A3 RNAV (GPS) RUNWAY 20 APPROACH",
+      "shortName": "1A3 R20",
+      "starsId": 239,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1JR3N06VZCZCENW0YWX",
+      "name": "ATL ONDRE1 STAR",
+      "shortName": "ONDRE1",
+      "starsId": 242,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JSSNZNKS5FQDH052NG",
+      "name": "CLT FILPZ3 STAR",
+      "shortName": "FILPZ3",
+      "starsId": 243,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JS34KXSHN81X5D38QH",
+      "name": "BNA SWFFT2 STAR",
+      "shortName": "SWFFT2",
+      "starsId": 244,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1K0N2C2TF8AG2APCMM0",
+      "name": "SDF MAUDD6 STAR",
+      "shortName": "MAUDD6",
+      "starsId": 245,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JTMXHRGAKEMANDN5X3",
+      "name": "CVG JAKIE5 STAR",
+      "shortName": "JAKIE5",
+      "starsId": 247,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JYTKZ0V59Z330RNC2F",
+      "name": "PDK/FTY/RYY/LZU/MGE/VPC/PUJ/CTJ/D73/6A2/CVC/FFC/CCO DEHAN3 STAR",
+      "shortName": "DEHAN3",
+      "starsId": 248,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01J7D232JJSWHG2PNJFWN6HHM8",
+      "name": "TYS TDM ERAM",
+      "shortName": "TYSTDM",
+      "starsId": 971,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HA38G1JRXMH0BYK33FRZ8T2A",
+      "name": "AIRPORTS + AVL-TRI-CHA AIRSPACE",
+      "shortName": "AIRSPAC",
+      "starsId": 28,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HA38G1JSNA09PP54K15BPQEB",
+      "name": "COUNTY/STATE BOUNDARIES",
+      "shortName": "COUNTY",
+      "starsId": 26,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA38G1K1ZN2MMZWY7WSSJS1X",
+      "name": "TYS CLASS C AIRSPACE",
+      "shortName": "CLASS C",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    }
+  ]
+}

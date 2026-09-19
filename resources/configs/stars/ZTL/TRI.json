@@ -1,0 +1,698 @@
+{
+  "artcc": "ZTL",
+  "facility": "TRI",
+  "name": "Tri-Cities ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 33.90558406666667,
+    "lon": -83.96840666666667
+  },
+  "controlPositions": [
+    {
+      "id": "01H2RKS7TGTQ6H46H6N5HNHS1N",
+      "name": "Local Control ",
+      "callsign": "TRI_TWR",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 119.5
+    },
+    {
+      "id": "01H2RKSTEDJ4ZWYGTVDPYYBTBA",
+      "name": "Ground Control / Clearance Delivery",
+      "callsign": "TRI_GND",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01H5377TACRVFB7PAXENG8FHEB",
+      "name": "East Radar",
+      "callsign": "TRI_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 134.425
+    },
+    {
+      "id": "01H5377WYP386P27AZRC7P9F3J",
+      "name": "Final Radar",
+      "callsign": "TRI_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 128.05
+    },
+    {
+      "id": "01H5377YEP54PZB6VHE31KM7J4",
+      "name": "West Radar",
+      "callsign": "TRI_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 125.5
+    },
+    {
+      "id": "01KWQ3FTQ4W36AFRTGH4AAZER4",
+      "name": "TRI Guard",
+      "callsign": "TRI_APP",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 33.90558406666667,
+        "lon": -83.96840666666667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1S",
+        "1W"
+      ],
+      "mapIds": [
+        2,
+        7,
+        54,
+        41,
+        10,
+        9,
+        6,
+        30,
+        18,
+        55,
+        19,
+        26,
+        13,
+        29,
+        14,
+        27,
+        15,
+        39,
+        16,
+        40,
+        17,
+        22,
+        20,
+        23,
+        21,
+        24,
+        25,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        2,
+        54,
+        10,
+        7,
+        41,
+        9
+      ],
+      "submenuMapIds": [
+        6,
+        18,
+        19,
+        13,
+        14,
+        15,
+        16,
+        17,
+        20,
+        21,
+        25,
+        null,
+        null,
+        null,
+        null,
+        30,
+        55,
+        26,
+        29,
+        27,
+        39,
+        40,
+        22,
+        23,
+        24,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T"
+      ],
+      "mapIds": [
+        2,
+        49,
+        54,
+        41,
+        5,
+        9,
+        18,
+        null,
+        19,
+        null,
+        14,
+        null,
+        15,
+        null,
+        16,
+        null,
+        17,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        2,
+        54,
+        5,
+        49,
+        41,
+        9
+      ],
+      "submenuMapIds": [
+        18,
+        19,
+        14,
+        15,
+        16,
+        17,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HAQW5PRQYW1QP0GW2DWX38KD",
+      "name": "TRI MINIMUM VECTORING ALTITUDE",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRPXT2EFEF7YGRQNMAA",
+      "name": "TRI ADJACENT SECTORS",
+      "shortName": "SECTORS",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRQEPFFJ4S361JFXKNE",
+      "name": "TRI EMERGENCY OBSTRUCTION VIDEO MAP",
+      "shortName": "EOVM",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRN56WABQXFVM58KG18",
+      "name": "TRI AIRSPACE",
+      "shortName": "AIRSPCE",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PRN04VKSKC4KJ1PBND1",
+      "name": "TRI AIRWAYS",
+      "shortName": "AIRWAYS",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRNE125PH7155901J8V",
+      "name": "TRI FINAL AIRSPACE",
+      "shortName": "FINAL",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PRMV2F24S04TJMJ6PH2",
+      "name": "KTRI GPS APPROACHES",
+      "shortName": "GPS",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PRMVEM3QMBYV2ZX4HYF",
+      "name": "TRI SATELLITE GPS APPROACHES",
+      "shortName": "SAT GPS",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PRM6GP6PD007M5N5FNV",
+      "name": "TRI AIRSPACE/MVA COMBINED",
+      "shortName": "AIRMVA",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PRKGMCPT2WM2TY018B3",
+      "name": "TN91 COPTER RNAV (GPS) 057",
+      "shortName": "TN91COP",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRKP0H41K5MYSNN53YZ",
+      "name": "TRI GPS 23",
+      "shortName": "GPS23",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PRJ7XHGH0XM66DNENC6",
+      "name": "TRI GPS 05",
+      "shortName": "GPS05",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PRJZ3K4SF7A163QR40A",
+      "name": "TRI GPS 27",
+      "shortName": "GPS27",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PRJWMEVMZMPT704DJSF",
+      "name": "TRI GPS 09",
+      "shortName": "GPS09",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRH6WVZN1E266NGRCEF",
+      "name": "TRI RWY 23 FINAL BOX",
+      "shortName": "FINAL23",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PRHKDDZQ9M3NGRNVTYH",
+      "name": "TRI RWY 5 FINAL BOX",
+      "shortName": "FINAL5",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PRGEW856YP6WEFQFXAS",
+      "name": "0A9 GPS 06",
+      "shortName": "0A9G06",
+      "starsId": 20,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRG8NFC29HK8FAEE2MQ",
+      "name": "VJI GPS 24/VJI GPS 06",
+      "shortName": "VJIGPS",
+      "starsId": 21,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRGK51Q25DV6VZM7KHQ",
+      "name": "6A4 GPS 06/6A4 GPS 24",
+      "shortName": "6A4GPS",
+      "starsId": 22,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRFT0G0CJDPRH0MQDA8",
+      "name": "GCY GPS 05",
+      "shortName": "GCYG05",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRF2ASGP2EPBPJS36YX",
+      "name": "MOR GPS 23",
+      "shortName": "MORG23",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRFPQYYY7X1DEJDPXP3",
+      "name": "RVN GPS 07/RVN GPS 25",
+      "shortName": "RVNGPS",
+      "starsId": 25,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRE9BTTC78RJBDMVKAZ",
+      "name": "OVG GPS 25",
+      "shortName": "OVGG25",
+      "starsId": 26,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRERG0X4JC82865MK04",
+      "name": "LNP GPS 06/LNP GPS 24",
+      "shortName": "LNPGPS",
+      "starsId": 27,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRDWK13G51GPHKA9W7A",
+      "name": "JFZ GPS 07",
+      "shortName": "JFZG07",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRDPHH76V8KR4PQ9W0H",
+      "name": "TN91 GPS",
+      "shortName": "TN91GPS",
+      "starsId": 29,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRDGWQYT83FS17X9ZE9",
+      "name": "TRI RADAR EAST/WEST SECTOR LINE",
+      "shortName": "EW LINE",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PQZ3M92JE3PV95P3G9B",
+      "name": "TRI STADIUMS",
+      "shortName": "STADIUM",
+      "starsId": 32,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR0HJNRBQG1VMC8HH92",
+      "name": "VJI GPS 06",
+      "shortName": "VJIG06",
+      "starsId": 33,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR0PYKCRSNFF2NEVZT8",
+      "name": "VJI GPS 24",
+      "shortName": "VJIG24",
+      "starsId": 34,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR1QQDSWCHS9T9GMJJ6",
+      "name": "6A4 GPS 06",
+      "shortName": "6A4G06",
+      "starsId": 35,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR1GMNET9VD4E68GSBX",
+      "name": "6A4 GPS 24",
+      "shortName": "6A4G24",
+      "starsId": 36,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR23WFTA0GGBTH8SVY2",
+      "name": "RVN GPS 07",
+      "shortName": "RVNG07",
+      "starsId": 37,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR2QZ4D26FZA7HF5D4C",
+      "name": "RVN GPS 25",
+      "shortName": "RVNG25",
+      "starsId": 38,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR2RYRH2D5DJGYZ029S",
+      "name": "LNP GPS 06",
+      "shortName": "LNPG06",
+      "starsId": 39,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR3WRKMQGD5V51Y85YJ",
+      "name": "LNP GPS 24",
+      "shortName": "LNPG24",
+      "starsId": 40,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR31YVKBRWS0BVNRHT8",
+      "name": "TRI TRSA",
+      "shortName": "TRSA",
+      "starsId": 41,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PR3GV40G48BB35VNE67",
+      "name": "TRI STATE BOUNDARIES",
+      "shortName": "STATES",
+      "starsId": 42,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR415D2DPM1BF9BM59R",
+      "name": "TRI COUNTY BOUNDARIES",
+      "shortName": "COUNTY",
+      "starsId": 43,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR4QDMH8ZK2CJSHN6A0",
+      "name": "ROADS AND LANDMARKS",
+      "shortName": "ROADS",
+      "starsId": 44,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR5RMJ79BFEDQBJMR6K",
+      "name": "TRI SNOWBIRD MOA",
+      "shortName": "SNOWMOA",
+      "starsId": 45,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR5YFQF7BG66E1E7EBR",
+      "name": "ZTL SECTOR 48 WILKES",
+      "shortName": "ZTL48",
+      "starsId": 46,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PR57JS60071B7SDMR79",
+      "name": "ZID SECTOR 21 LONDON/25 HAZARD",
+      "shortName": "ZID2125",
+      "starsId": 47,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PR6EV9E5E607HTWA2FT",
+      "name": "TRI AIRSPACE TOWER",
+      "shortName": "TOWER",
+      "starsId": 49,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PR7QFYDGE7DFZ2S9JKB",
+      "name": "HENSLEY AIRPARK",
+      "shortName": "AIRPARK",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PR7DTVYV9Z7CMV35DFR",
+      "name": "19VA AIRPORT",
+      "shortName": "19VA",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PR8SQEJTE9AQXC89GPP",
+      "name": "26TN COPTER RNAV",
+      "shortName": "26TNCOP",
+      "starsId": 53,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PQYP3RAH06K96BK2TPX",
+      "name": "TRI CLASS D",
+      "shortName": "CLASS D",
+      "starsId": 54,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PQZXWEGQ125S61PBKNR",
+      "name": "TRI VICTOR/TANGO AIRWAYS",
+      "shortName": "LOW AWY",
+      "starsId": 55,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J7D232JJC5JYHEKPKWB3D3EN",
+      "name": "TRI TDM ERAM",
+      "shortName": "TRITDM",
+      "starsId": 972,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HAQW5PRPXT2EFEF7YGRQNMAA",
+      "name": "TRI ADJACENT SECTORS",
+      "shortName": "SECTORS",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRN56WABQXFVM58KG18",
+      "name": "TRI AIRSPACE",
+      "shortName": "AIRSPCE",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PR6EV9E5E607HTWA2FT",
+      "name": "TRI AIRSPACE TOWER",
+      "shortName": "TOWER",
+      "starsId": 49,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PRM6GP6PD007M5N5FNV",
+      "name": "TRI AIRSPACE/MVA COMBINED",
+      "shortName": "AIRMVA",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PR415D2DPM1BF9BM59R",
+      "name": "TRI COUNTY BOUNDARIES",
+      "shortName": "COUNTY",
+      "starsId": 43,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PRNE125PH7155901J8V",
+      "name": "TRI FINAL AIRSPACE",
+      "shortName": "FINAL",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PRDGWQYT83FS17X9ZE9",
+      "name": "TRI RADAR EAST/WEST SECTOR LINE",
+      "shortName": "EW LINE",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PR3GV40G48BB35VNE67",
+      "name": "TRI STATE BOUNDARIES",
+      "shortName": "STATES",
+      "starsId": 42,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAQW5PR57JS60071B7SDMR79",
+      "name": "ZID SECTOR 21 LONDON/25 HAZARD",
+      "shortName": "ZID2125",
+      "starsId": 47,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAQW5PR5YFQF7BG66E1E7EBR",
+      "name": "ZTL SECTOR 48 WILKES",
+      "shortName": "ZTL48",
+      "starsId": 46,
+      "brightnessCategory": "A"
+    }
+  ]
+}

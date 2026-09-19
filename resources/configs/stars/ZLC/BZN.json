@@ -1,0 +1,534 @@
+{
+  "artcc": "ZLC",
+  "facility": "BZN",
+  "name": "Bozeman ATCT | Big Sky TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 44.1394906,
+    "lon": -111.3092792325
+  },
+  "controlPositions": [
+    {
+      "id": "01GE8WE0KPF3BDW3D7RT0T7VGX",
+      "name": "Bozeman Radar",
+      "callsign": "BZN_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 118.975
+    },
+    {
+      "id": "01GE8WGTYWV82CC6PYT9Z9F5JS",
+      "name": "Tower",
+      "callsign": "BZN_TWR",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 118.2
+    },
+    {
+      "id": "01GE8WJFDHN2RYRNBHZ9QZJC6C",
+      "name": "Ground",
+      "callsign": "BZN_GND",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01JMBDWGEARN1BS53XHK1R7SJG",
+      "name": "Clearance",
+      "callsign": "BZN_DEL",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 124.05
+    },
+    {
+      "id": "01KH9TPBG3308SYZY2PZ3QH4B1",
+      "name": "Bozeman LVM Freq",
+      "callsign": "BZN_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 119.55
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1X",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1B"
+      ],
+      "mapIds": [
+        112,
+        503,
+        502,
+        504,
+        505,
+        510,
+        540,
+        541,
+        507,
+        508,
+        514,
+        4,
+        519,
+        518,
+        506,
+        516,
+        515,
+        522,
+        523,
+        524,
+        525,
+        526,
+        527,
+        528,
+        529,
+        530,
+        531,
+        532,
+        534,
+        533,
+        400,
+        401,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        112,
+        502,
+        505,
+        503,
+        504,
+        510
+      ],
+      "submenuMapIds": [
+        540,
+        507,
+        514,
+        519,
+        506,
+        515,
+        523,
+        525,
+        527,
+        529,
+        531,
+        534,
+        400,
+        null,
+        null,
+        541,
+        508,
+        4,
+        518,
+        516,
+        522,
+        524,
+        526,
+        528,
+        530,
+        532,
+        533,
+        401,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1N",
+        "1T",
+        "1X"
+      ],
+      "mapIds": [
+        null,
+        4,
+        2,
+        null,
+        505,
+        6,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        null,
+        2,
+        505,
+        4,
+        null,
+        6
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GPSMTAG120VZQGWX1G5G6QSA",
+      "name": "STARS-BZN_FL__Bozeman Final",
+      "shortName": "FL",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMTAG0APGS59843Q8B46RP",
+      "name": "STARS-BZN_BNDRY__Bozeman Airspace",
+      "shortName": "BNDRY",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMTAG38FVH2S9B5DP4NKZH",
+      "name": "STARS-BZN_SID__Bozeman SID",
+      "shortName": "SID",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBE7M714X2FVSQAYAYQ",
+      "name": "BZN - BZN APCH AIRSPACE",
+      "shortName": "BZN-APP",
+      "starsId": 112,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBHT7PBWH5ZY82X4WV7",
+      "name": "BZN_400S - BZNODO12",
+      "shortName": "ODO12",
+      "starsId": 400,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBHT0K9TKNMEVM726NR",
+      "name": "BZN_401S - BZNODO30",
+      "shortName": "ODO30",
+      "starsId": 401,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBHW1MTYR4W3DA599QB",
+      "name": "BZN_403S - BZNODO ALL",
+      "shortName": "ODOA",
+      "starsId": 403,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBHG656N5Q8G71PT03Z",
+      "name": "BZN_405S - BZN MVA 5NM",
+      "shortName": "MVA5",
+      "starsId": 405,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67ZVBHE3DJK27QVN2WGGSV",
+      "name": "BZN_502S - BZN Final Approach Courses",
+      "shortName": "FNL",
+      "starsId": 502,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBJ4NY7KNPG9JZSXJYP",
+      "name": "BZN_503S - EOVM",
+      "shortName": "EOVM",
+      "starsId": 503,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67ZVBJNKEP78RVPJ6ACC0C",
+      "name": "BZN_504S - VFR Landmarks",
+      "shortName": "VFR",
+      "starsId": 504,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBJJ2S8CDH0EKQA1Y8R",
+      "name": "BZN_505S - BZN MVA 3NM",
+      "shortName": "MVA-3",
+      "starsId": 505,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HY67ZVBJSDKY4521YGB6DX46",
+      "name": "BZN_506S - BZN RNAV-A",
+      "shortName": "RNAVA",
+      "starsId": 506,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBJ15BMDVGZ340PKSJF",
+      "name": "BZN_507S - BZN RNAV-Z 12",
+      "shortName": "RNP12",
+      "starsId": 507,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBJCTAWS0DZKX24CA9W",
+      "name": "BZN_508S - BZN RNAV-Z 30",
+      "shortName": "RNP30",
+      "starsId": 508,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBKPESKABXSNF2P328P",
+      "name": "BZN_510S - BZN RNAV DEPT PROCEDURES",
+      "shortName": "DEPTS",
+      "starsId": 510,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBK25DH4R34SEAPHQSK",
+      "name": "BZN_514S - BZN RNAV-Y 12",
+      "shortName": "GPS12",
+      "starsId": 514,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBKN4TENQDJYE2N2V2R",
+      "name": "BZN_515S - Class D",
+      "shortName": "CLASS",
+      "starsId": 515,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBKTZQ7B6VTVQP8ZB0X",
+      "name": "BZN_516S - BZN Airways",
+      "shortName": "AIRWY",
+      "starsId": 516,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBKBCMFRZJPMDA1TH9N",
+      "name": "BZN_518S - BZN DVA30",
+      "shortName": "DVA30",
+      "starsId": 518,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBM76KD4X9JJQYEBZQ2",
+      "name": "BZN_519S - BZN DVA 12",
+      "shortName": "DVA12",
+      "starsId": 519,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBM737QH2MCV65E75WP",
+      "name": "BZN_522S - LVM RNAV RWY 22",
+      "shortName": "LVM22",
+      "starsId": 522,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBM513RG0Z6AW7S2CNK",
+      "name": "BZN_523S EKS RNAV RWY 16",
+      "shortName": "EKS16",
+      "starsId": 523,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBMTFPW3D0S97XV7D2N",
+      "name": "BZN_524S - EKS RNAV RWY 34",
+      "shortName": "EKS34",
+      "starsId": 524,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBNGQ5D5KAQ4YY5S3ST",
+      "name": "BZN_525S - BIG TIMBER RNAV RWY 6 \u0026 24",
+      "shortName": "BIG-T",
+      "starsId": 525,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBN5T63EVWXJHBNQ9SA",
+      "name": "BZN_526S - WEST YELLOWSTONE RNAV RWY 19",
+      "shortName": "WYS19",
+      "starsId": 526,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBNE299BQMJJJAWD1NW",
+      "name": "BZN_527S - BZN PRAC",
+      "shortName": "PRAC",
+      "starsId": 527,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBNXZ6HMYG6H68ZPWSS",
+      "name": "BZN_528S - MULTI_M",
+      "shortName": "MULTI",
+      "starsId": 528,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBNVC7ARYWS7VG8WBFH",
+      "name": "BZN_529S - FREQ",
+      "shortName": "FREQ",
+      "starsId": 529,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HY67ZVBPJGT6TG51WQEJEAFT",
+      "name": "BZN_530S - RNAV-Y 30",
+      "shortName": "RY30",
+      "starsId": 530,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JHRBRFXWJFBV932E91ZFR32Q",
+      "name": "BZN_531S - RNAV STARS 12",
+      "shortName": "ARR12",
+      "starsId": 531,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JHRFCQMPQTWWPVJZ68H6YPTG",
+      "name": "BZN_532S - RNAV STARS 30",
+      "shortName": "ARR30",
+      "starsId": 532,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JHSBDPTTEDP84CD5WWZHQ3XG",
+      "name": "BZN_533S - MEADO",
+      "shortName": "SID30",
+      "starsId": 533,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JHVYG2DS3D5ZY4VJY5KHN174",
+      "name": "BZN_534S - 12 SIDS",
+      "shortName": "SID12",
+      "starsId": 534,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KEA1GG6KXH1P0SQS83ZDS50M",
+      "name": "BZN_540S - ILS Z RWY 12",
+      "shortName": "ILZ",
+      "starsId": 540,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KEA1PE38804J816FX2B2ZKQ6",
+      "name": "BZN_541S - ILS Y RWY 12",
+      "shortName": "ILY",
+      "starsId": 541,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HY67ZVBE7M714X2FVSQAYAYQ",
+      "name": "BZN - BZN APCH AIRSPACE",
+      "shortName": "BZN-APP",
+      "starsId": 112,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMTAG0APGS59843Q8B46RP",
+      "name": "STARS-BZN_BNDRY__Bozeman Airspace",
+      "shortName": "BNDRY",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    }
+  ]
+}

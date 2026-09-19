@@ -1,0 +1,513 @@
+{
+  "artcc": "ZAU",
+  "facility": "MKE",
+  "name": "Milwaukee ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.879166749999996,
+    "lon": -88.975
+  },
+  "controlPositions": [
+    {
+      "id": "01GFQD1G8PJA3ZYYT08CTKA5Y5",
+      "name": "East Feeder (Combined)",
+      "callsign": "MKE_E_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 118
+    },
+    {
+      "id": "01GFQDCVFSNKMXWRSHTXM7H64C",
+      "name": "East Feeder",
+      "callsign": "MKE_E_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 118
+    },
+    {
+      "id": "01GFQDDGN4JBDWH08MEVAQRKYZ",
+      "name": "West Feeder",
+      "callsign": "MKE_W_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 126.5
+    },
+    {
+      "id": "01GFQDE9QP1HKXQT1MRBHGEWX9",
+      "name": "Final",
+      "callsign": "MKE_F_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 118.475
+    },
+    {
+      "id": "01GFQDEW5ZXM6HPG9FSRBAGQHN",
+      "name": "Ripon West",
+      "callsign": "MKE_L_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 127
+    },
+    {
+      "id": "01GFQDFHN0J07D4KD81MFSFNF0",
+      "name": "Ripon East",
+      "callsign": "MKE_H_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 127.375
+    },
+    {
+      "id": "01GFQDGCDBB892SNGVECYXPX6G",
+      "name": "East Departure",
+      "callsign": "MKE_M_DEP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 135.875
+    },
+    {
+      "id": "01GFQDH6D5VFKTVD42JMX7WQSM",
+      "name": "West Departure",
+      "callsign": "MKE_B_DEP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 125.35
+    },
+    {
+      "id": "01GFQDJ2YFYKKSJTK7E4YW14ZW",
+      "name": "Fisk Approach",
+      "callsign": "OSH_V_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 120.7
+    },
+    {
+      "id": "01GFQDK0NRGQCACKW1GTXJ5XTE",
+      "name": "Local",
+      "callsign": "MKE_TWR",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 124.575
+    },
+    {
+      "id": "01GFQDKVHDK8KZGW3SG561BYRG",
+      "name": "Ground",
+      "callsign": "MKE_GND",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01GFQDM8EV03N891FPMCBRP5RB",
+      "name": "Clearance Delivery",
+      "callsign": "MKE_DEL",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 120.8
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1J",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1K",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1M",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1U",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1V",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1Y",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1B",
+        "1E",
+        "1F",
+        "1H",
+        "1J",
+        "1K",
+        "1L",
+        "1M",
+        "1T",
+        "1U",
+        "1V",
+        "1W",
+        "1Y"
+      ],
+      "mapIds": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6,
+        7,
+        23,
+        8,
+        24,
+        9,
+        25,
+        10,
+        26,
+        11,
+        27,
+        12,
+        28,
+        13,
+        29,
+        14,
+        30,
+        15,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GFM24JFSP7M3FT9YDGDKYC5P",
+      "name": "MKE MAIN RWY 1L",
+      "shortName": "MKE 1L",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM24JFTQX0TQ34RMY38Y51K",
+      "name": "MKE MAIN RWY 7R",
+      "shortName": "MKE 7R",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM24JG40WGYEYYXTBWXSWFD",
+      "name": "MKE VFR",
+      "shortName": "VFR",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM24JFVSBNXGHCDJ17Q9JBY",
+      "name": "MKE MAIN RWY 19R",
+      "shortName": "MKE 19R",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM24JFXXE9CXTXJ2WEBZRFF",
+      "name": "MKE MAIN RWY 25L",
+      "shortName": "MKE 25L",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GFM24JFYAAFD45JR60YARMA0",
+      "name": "MKE MVA",
+      "shortName": "MVA",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK7J7BYZTKJGQBDWKSKX0E48",
+      "name": "MKE BOUNDARY RWY 1L",
+      "shortName": "BND 1L",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK7KXJ73QWF2KJCC11WJ562K",
+      "name": "MKE BOUNDARY RWY 7R",
+      "shortName": "BND 7R",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J638WFN7Q4JPC7382JNEC12B",
+      "name": "MKE RNAV Y RWY 7R",
+      "shortName": "RNY 7R",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KDNK46QQAXV3BKA55077R0M5",
+      "name": "MKE SIDS",
+      "shortName": "SIDS",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KCYF763K1AA8YHZ4GTGVXGQT",
+      "name": "MKE ERNNY STAR",
+      "shortName": "ERNNY",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KMDMBMXEQQ3GGEVJH08JMJ7W",
+      "name": "MKE SATELLITE APPROACHES A",
+      "shortName": "SAT A",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM24JFYDHJVT5T0QRM5JGD0",
+      "name": "MKE PROCEDURAL INFO",
+      "shortName": "MKEINFO",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM24JG0PGYM2JQSWAKDDQXR",
+      "name": "MKE RIPON PROCEDURAL INFO",
+      "shortName": "RIPINFO",
+      "starsId": 14,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM24JFJ9RCCEG58BDK1XBH4",
+      "name": "MKE AIRPORT DIAGRAMS",
+      "shortName": "AP DIAG",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01KK7KYWWFP5YNRP7TSPKFWZ9H",
+      "name": "MKE BOUNDARY RWY 19R",
+      "shortName": "BND 19R",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK7M4PT37094NYFKENYQ2J5N",
+      "name": "MKE BOUNDARY RWY 25L",
+      "shortName": "BND 25L",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J38WDXZ26A7XVT27CRMGSQQ5",
+      "name": "MKE RNAV Y RWY 25L",
+      "shortName": "RNY 25L",
+      "starsId": 25,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KCYF8JRB8F6430G04182PKXN",
+      "name": "MKE STARS",
+      "shortName": "STARS",
+      "starsId": 26,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KCYF3Z35QDPTFKC102PW1QZP",
+      "name": "MKE MADII STAR",
+      "shortName": "MADII",
+      "starsId": 27,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KMDMFVNH0TCNCBB3NMXXW221",
+      "name": "MKE SATELLITE APPROACHES B",
+      "shortName": "SAT B",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM24JG39QS0V7RRREPF029Y",
+      "name": "MKE V AND T ROUTES",
+      "shortName": "VT RTES",
+      "starsId": 29,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM24JFMYVCTHN9A8BTN83CE",
+      "name": "MKE EAA",
+      "shortName": "EAA",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01KK7KYWWFP5YNRP7TSPKFWZ9H",
+      "name": "MKE BOUNDARY RWY 19R",
+      "shortName": "BND 19R",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK7J7BYZTKJGQBDWKSKX0E48",
+      "name": "MKE BOUNDARY RWY 1L",
+      "shortName": "BND 1L",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK7M4PT37094NYFKENYQ2J5N",
+      "name": "MKE BOUNDARY RWY 25L",
+      "shortName": "BND 25L",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KK7KXJ73QWF2KJCC11WJ562K",
+      "name": "MKE BOUNDARY RWY 7R",
+      "shortName": "BND 7R",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    }
+  ]
+}

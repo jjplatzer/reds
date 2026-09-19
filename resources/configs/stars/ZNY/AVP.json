@@ -1,0 +1,226 @@
+{
+  "artcc": "ZNY",
+  "facility": "AVP",
+  "name": "Wilkes-Barre ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 35.914982499999994,
+    "lon": -73.0446825
+  },
+  "controlPositions": [
+    {
+      "id": "01GAPPHT2EK5Z5JJBX7DERDNJ8",
+      "name": "Ground",
+      "callsign": "AVP_GND",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 121.925
+    },
+    {
+      "id": "01GAPPJKTBN922QQTK18387CA6",
+      "name": "Local",
+      "callsign": "AVP_TWR",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 120.1
+    },
+    {
+      "id": "01H2BDNCNVNTGBJP4C1V1BTJ0Y",
+      "name": "South Approach",
+      "callsign": "AVP_S_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 126.3
+    },
+    {
+      "id": "01H2BDPV944P241MYY1Y9DMJWD",
+      "name": "North Approach",
+      "callsign": "AVP_N_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 120.95
+    },
+    {
+      "id": "1B",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1B",
+        "1E"
+      ],
+      "mapIds": [
+        103,
+        102,
+        101,
+        106,
+        104,
+        107,
+        105,
+        108,
+        109,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        103,
+        101,
+        104,
+        102,
+        106,
+        107
+      ],
+      "submenuMapIds": [
+        105,
+        109,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        108,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H5RCHB8V7W2X9YSHD38FAZ0S",
+      "name": "AVP-101 (COUNTY BDRYS)",
+      "shortName": "COUNTY",
+      "starsId": 101,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5REDPAZYZKW5SB082G2HP4R",
+      "name": "AVP-102",
+      "shortName": "TWR",
+      "starsId": 102,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5RCHB8TQRM51TFF99BRTJQR",
+      "name": "AVP-103 (VFR)",
+      "shortName": "VFR",
+      "starsId": 103,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5RCHB8SG98QK5P6KW88MT7M",
+      "name": "AVP-104 (IFR/CL)",
+      "shortName": "IFR CL",
+      "starsId": 104,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01G66F75871CE22G7EXFTNAQHB",
+      "name": "AVP-105 (IFR)",
+      "shortName": "BASE",
+      "starsId": 105,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5RCHB8RHXHY5VQ3J21M8FSH",
+      "name": "AVP-106 (EOVM)",
+      "shortName": "EOVM",
+      "starsId": 106,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01G66F9NY4JF1WT1WS8TVAY6FB",
+      "name": "AVP-107 (MVA)",
+      "shortName": "MVA",
+      "starsId": 107,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5RCHB8R15T5RCFMS9CEAZEJ",
+      "name": "AVP-108 (CONTINGENCY PLAN)",
+      "shortName": "AIRWAY",
+      "starsId": 108,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5RCHB8QFDMZM8TYKAY9G4XF",
+      "name": "AVP-109 (RNAV GPS APCHS)",
+      "shortName": "RNAV",
+      "starsId": 109,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H2RPKPDMCJ2784549S21KA53",
+      "name": "AVP TRACON APD",
+      "shortName": "APD",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

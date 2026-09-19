@@ -1,0 +1,511 @@
+{
+  "artcc": "ZID",
+  "facility": "LEX",
+  "name": "Lexington ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 38.6494889,
+    "lon": -84.3106305555556
+  },
+  "controlPositions": [
+    {
+      "id": "01GRVHPTXET8N1HGMJQQD012ND",
+      "name": "Clearance Delivery",
+      "callsign": "LEX_DEL",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 132.35
+    },
+    {
+      "id": "01GRVHREPSSXDBMA90JZY8SQWX",
+      "name": "Ground Control",
+      "callsign": "LEX_GND",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GRVHS2MYY06V7F3XB5HBSB08",
+      "name": "Local Control",
+      "callsign": "LEX_TWR",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 119.1
+    },
+    {
+      "id": "01GRVHT229661VM1FDJVEEZNK1",
+      "name": "Radar East",
+      "callsign": "LEX_E_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 120.15
+    },
+    {
+      "id": "01GRVHW00RYZ83HKNVBMXN7HZF",
+      "name": "Radar West",
+      "callsign": "LEX_W_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 120.75
+    },
+    {
+      "id": "01GRVHX0H296Y70QYF8JX1KESZ",
+      "name": "Radar Final",
+      "callsign": "LEX_F_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 133.4
+    },
+    {
+      "id": "01JA39TDC7AYA29ZVMVQPWZFWD",
+      "name": "LEX GUARD",
+      "callsign": "LEX_EM_APP",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      },
+      "freq": 121.5
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1G",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 38.6494889,
+        "lon": -84.3106305555556
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1F",
+        "1G",
+        "1T",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        2,
+        103,
+        118,
+        128,
+        109,
+        143,
+        4,
+        103,
+        3,
+        9,
+        8,
+        114,
+        113,
+        119,
+        117,
+        125,
+        124,
+        123,
+        126,
+        108,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        103,
+        128,
+        2,
+        118,
+        109
+      ],
+      "submenuMapIds": [
+        143,
+        103,
+        9,
+        114,
+        119,
+        125,
+        123,
+        108,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        4,
+        3,
+        8,
+        113,
+        117,
+        124,
+        126,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01JRKBEXWNGCE31T239HT9CA1W",
+      "name": "LEX MVA 3NM",
+      "shortName": "MVA 3NM",
+      "starsId": 1,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWDA2F89FWG9RP18W6X",
+      "name": "LEX 27K",
+      "shortName": "27K",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWQZEBWSWMGPJX2FPAH",
+      "name": "LEX R22",
+      "shortName": "R22",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRKBEXWQXXWYQK77QJY4W586",
+      "name": "LEX R04",
+      "shortName": "R04",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRKBEXWT6E6BSNJEDQTE0YM8",
+      "name": "LEX RWY 22 FINAL",
+      "shortName": "22FIN",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRKBEXWTW4JMYZZQ3PCB214P",
+      "name": "LEX RWY 4 FINAL",
+      "shortName": "4FIN",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRKBEXWS3H4BB9NE5JMVCYH6",
+      "name": "LEX RNAV RWY 9-27",
+      "shortName": "RNAV927",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRKBEXWCP5AFXKY63FMFPB9C",
+      "name": "LEX 27K APPROACHES",
+      "shortName": "27K APP",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWVV20MZGKRZ32P1CVH",
+      "name": "LEX SPECIAL APPROACHES",
+      "shortName": "SPE APP",
+      "starsId": 108,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWWVVTERAYGD6RSQPZ3",
+      "name": "LEX VFR EMERGENCY",
+      "shortName": "EMER",
+      "starsId": 109,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWP9HWDYY94S0QV0QKR",
+      "name": "LEX MVA 5NM",
+      "shortName": "MVA 5NM",
+      "starsId": 111,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWVCB2DYWN3G994AZE7",
+      "name": "LEX STADIUMS",
+      "shortName": "STAD",
+      "starsId": 113,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWN3P07VHN5A2W1VXBK",
+      "name": "LEX JET INTERSECTIONS",
+      "shortName": "JET INT",
+      "starsId": 114,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWDT9GMA25CBEGMN9RS",
+      "name": "LEX ADSB-40",
+      "shortName": "ADSB40",
+      "starsId": 115,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWEZWC047Y34G6KVKN7",
+      "name": "LEX ADSB-60",
+      "shortName": "ADSB60",
+      "starsId": 116,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWJQZW0KZHDSBKVERYC",
+      "name": "LEX FIX",
+      "shortName": "FIX",
+      "starsId": 117,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWXSH6J1JVAJBMW3JEN",
+      "name": "LEX VOR",
+      "shortName": "VOR ",
+      "starsId": 118,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWVA041J6Q9XE47NT7F",
+      "name": "LEX SJ RNAV",
+      "shortName": "SJ RNV",
+      "starsId": 119,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWF3Y9476PG1SV2WGKW",
+      "name": "LEX CLASS C",
+      "shortName": "CLASS C",
+      "starsId": 123,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWEYTX299JA9H0FVG4J",
+      "name": "LEX BOUNDARY",
+      "shortName": "BNDRY",
+      "starsId": 124,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWW7J3YJVHS8FQAAN1S",
+      "name": "LEX VOR A",
+      "shortName": "VOR A",
+      "starsId": 125,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWF2BR5QFZMXJHP7MVW",
+      "name": "LEX COUNTY",
+      "shortName": "COUNTY",
+      "starsId": 126,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWCZR4MCDJ4CAMKMA0V",
+      "name": "LEX 5 MILE RING",
+      "shortName": "5MILE",
+      "starsId": 127,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWKN9GJ95FT4YEM9JQK",
+      "name": "LEX IFR MAP",
+      "shortName": "IFR MAP",
+      "starsId": 128,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRKBEXWRN7QFAYW8W87RJTER",
+      "name": "LEX RGA RWY 18 RNAV",
+      "shortName": "RGA R18",
+      "starsId": 130,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWRF7F3YET6V749S30J",
+      "name": "LEX RGA RWY 36 RNAV",
+      "shortName": "RGA R36",
+      "starsId": 131,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWJBSBSYW11MYPQX6X2",
+      "name": "LEX FFT RWY 25 RNAV",
+      "shortName": "FFT R25",
+      "starsId": 132,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWHGG092S2G0A7X0P6T",
+      "name": "LEX FFT RWY 07 RNAV",
+      "shortName": "FFT R07",
+      "starsId": 133,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWHYZEQ4F3VNM102FPJ",
+      "name": "LEX FFT NON RNAV",
+      "shortName": "FFT NRN",
+      "starsId": 134,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWHW8BDDG28PB9KSY77",
+      "name": "LEX DVK RWY 31 RNAV",
+      "shortName": "DVK R31",
+      "starsId": 135,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWG2H8EVWWKX0KR3V3V",
+      "name": "LEX DVK NON RNAV",
+      "shortName": "DVK NRN",
+      "starsId": 136,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWGQBRFMXT2JSBEWV8M",
+      "name": "LEX DVK RWY 13 RNAV",
+      "shortName": "DVK R13",
+      "starsId": 137,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWRWE791ZANK2M3H4GV",
+      "name": "LEX RGA VOR RWY 18",
+      "shortName": "RGA V18",
+      "starsId": 138,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWMBGP3BX7MF5PD1NA1",
+      "name": "LEX IOB RWY 3 RNAV",
+      "shortName": "IOB R03",
+      "starsId": 139,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWMT5WD712RC4SCCEJM",
+      "name": "LEX IOB RWY 21 RNAV",
+      "shortName": "IOB R21",
+      "starsId": 140,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWBKV2HXKGSW7PY2EW7",
+      "name": "LEX 0I8 RWY 29 RNAV",
+      "shortName": "0I8 R29",
+      "starsId": 141,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWBRMCRPPEYB45S67JT",
+      "name": "LEX 0I8 RWY 11 RNAV",
+      "shortName": "0I8 R11",
+      "starsId": 142,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWPGR96XMVZSEQQQBSP",
+      "name": "LEX NEW BASE",
+      "shortName": "BASE",
+      "starsId": 143,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JRKBEXWKHNY5C964783R82VQ",
+      "name": "LEX FLCHK-LEX ILS OR LOC 4",
+      "shortName": "FLC04",
+      "starsId": 500,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JRKBEXWKYZQBB753FRGTQ9PP",
+      "name": "LEX FLCHK-LEX ILS OR LOC 22",
+      "shortName": "FLC22",
+      "starsId": 501,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01J4HM862C3PBQ9VSCJV3F0C67",
+      "name": "Airports TDM",
+      "shortName": "TDM",
+      "starsId": 900,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JES4K489M5VASYV63CT66C57",
+      "name": "TAXIWAY LABELS",
+      "shortName": "TWY LBL",
+      "starsId": 901,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01JRKBEXWEYTX299JA9H0FVG4J",
+      "name": "LEX BOUNDARY",
+      "shortName": "BNDRY",
+      "starsId": 124,
+      "brightnessCategory": "B"
+    }
+  ]
+}

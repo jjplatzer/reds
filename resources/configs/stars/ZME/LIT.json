@@ -1,0 +1,474 @@
+{
+  "artcc": "ZME",
+  "facility": "LIT",
+  "name": "Little Rock ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 35.0424167,
+    "lon": -89.9766667
+  },
+  "controlPositions": [
+    {
+      "id": "01GKFNA2W7G8RKMWW9R98JW8SF",
+      "name": "Clearance",
+      "callsign": "LIT_DEL",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 118.95
+    },
+    {
+      "id": "01GKFNBQMREPZX8CQZY8JYYRFH",
+      "name": "Ground",
+      "callsign": "LIT_GND",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GKFNCBXNPM3Q81X9FDVQYGBF",
+      "name": "Local",
+      "callsign": "LIT_TWR",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 118.7
+    },
+    {
+      "id": "01GKFNCT0F8ZTZA8TWEFJJC294",
+      "name": "Radar West",
+      "callsign": "LIT_W_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 119.5
+    },
+    {
+      "id": "01GKFNEKXD31NKMFCRG4E70RHF",
+      "name": "Radar East",
+      "callsign": "LIT_E_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 135.4
+    },
+    {
+      "id": "01GKFNFCFDBNYFDZKK1D8NF1GJ",
+      "name": "Radar North",
+      "callsign": "LIT_N_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 119.75
+    },
+    {
+      "id": "01GKFNHTCHVQYYBNE01MRYGK0Q",
+      "name": "Arrival Radar",
+      "callsign": "LIT_F_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 135.35
+    },
+    {
+      "id": "01GKFNJXXJFW1RM7QDW0AS6HTV",
+      "name": "Radar Hunt",
+      "callsign": "LIT_H_APP",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      },
+      "freq": 119.85
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1F",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1H",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 35.0424167,
+        "lon": -89.9766667
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1F",
+        "1H",
+        "1N",
+        "1T",
+        "1W"
+      ],
+      "mapIds": [
+        11,
+        18,
+        16,
+        15,
+        10,
+        20,
+        7,
+        8,
+        2,
+        9,
+        12,
+        13,
+        14,
+        17,
+        19,
+        21,
+        5,
+        6,
+        3,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        11,
+        16,
+        10,
+        18,
+        15,
+        20
+      ],
+      "submenuMapIds": [
+        7,
+        2,
+        12,
+        14,
+        19,
+        5,
+        3,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        9,
+        13,
+        17,
+        21,
+        6,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1Z"
+      ],
+      "mapIds": [
+        22,
+        20,
+        10,
+        6,
+        2,
+        12,
+        13,
+        900,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        22,
+        10,
+        2,
+        20,
+        6,
+        12
+      ],
+      "submenuMapIds": [
+        13,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        900,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GH54M1BK5K2PGAYWA5EPACEH",
+      "name": "LIT_AR AIRPORTS",
+      "shortName": "APT",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1BP8C6NH4NF85ND4QKS",
+      "name": "LIT_CENTERLINES ",
+      "shortName": "FAC",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1BTYHXRS4XY0PP6FH8B",
+      "name": "LIT_SATELLITE FINALS",
+      "shortName": "SATFAC",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1C1XASHHWFAQ641V8PE",
+      "name": "LIT_JET ROUTES",
+      "shortName": "JET",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1C311QGWAJ2M0RMY6W9",
+      "name": "LIT_LAKES",
+      "shortName": "LAKE",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1C9FPET7M16S1ZTAAD1",
+      "name": "LIT_LRF 7 FNL",
+      "shortName": "RWY 7",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1CCPE7F36991XEEHZJN",
+      "name": "LIT_LRF 25 FNL",
+      "shortName": "RWY 25",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1CF9SEPHBRR785MJN5J",
+      "name": "LIT_MOVs",
+      "shortName": "MOA",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1CJQJPFHP4YCRFK5H2X",
+      "name": "LIT_MVA",
+      "shortName": "MVA",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GH54M1CNND3HNGZJ2NSEBTQG",
+      "name": "LIT_NORTH FLOW DC",
+      "shortName": "NORTH",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1CRQ6SER80JEXQ8XJ13",
+      "name": "LIT_R-2403A",
+      "shortName": "2403A",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1CVFTER5K1R1092HSED",
+      "name": "LIT_R-2403B",
+      "shortName": "2403B",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1D1QFW5PGR0TY3YNDG5",
+      "name": "LIT_RH SPLIT",
+      "shortName": "HUNT",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1D5ZVVDA3F664TVPBD6",
+      "name": "LIT_RNAV FNL",
+      "shortName": "RNAV",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1D98847TX54BCD3KXBT",
+      "name": "LIT_SAT FINAL",
+      "shortName": "SAT",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1DCTJY5K4N11ZRT11H7",
+      "name": "LIT_SAT RNAV",
+      "shortName": "SAT GPS",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1DFYQ3JJ4HY9DEN1TET",
+      "name": "LIT_SOUTH FLOW DC",
+      "shortName": "SOUTH",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1DKHPW59JWE3GC3ZCKN",
+      "name": "LIT_TACAN FINAL",
+      "shortName": "TACAN",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GH54M1DQGJ4G8FZZBG1QZF7M",
+      "name": "LIT_VFR",
+      "shortName": "VFR",
+      "starsId": 20,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GH54M1DTSYTYEFGGVV2D60JZ",
+      "name": "LIT_VICTOR AIRWAYS",
+      "shortName": "VICTOR",
+      "starsId": 21,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H3FHHFSDR066PT9H7MQAM9FD",
+      "name": "LRF_LRF OPS",
+      "shortName": "LRF OPS",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H26RM86EJVH3DYWSYDV8BZ0Y",
+      "name": "ARTCC_GROUND MAPS",
+      "shortName": "GEO",
+      "starsId": 900,
+      "brightnessCategory": "A"
+    }
+  ]
+}

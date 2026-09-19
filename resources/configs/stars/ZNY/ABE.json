@@ -1,0 +1,244 @@
+{
+  "artcc": "ZNY",
+  "facility": "ABE",
+  "name": "Allentown ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 35.914982499999994,
+    "lon": -73.0446825
+  },
+  "controlPositions": [
+    {
+      "id": "01GAPPDKXMRGS3E4AJ8P4Z1T1G",
+      "name": "Clearance Delivery",
+      "callsign": "ABE_DEL",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 124.05
+    },
+    {
+      "id": "01GAPPFKM7T36G95JN5TCEGY8G",
+      "name": "Ground",
+      "callsign": "ABE_GND",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GAPPG3HTHKP0HZ1YGNNWJG6A",
+      "name": "Local",
+      "callsign": "ABE_TWR",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 120.5
+    },
+    {
+      "id": "01GKYQJCTR0T1GR5XM6E54KCZJ",
+      "name": "Departure Radar",
+      "callsign": "ABE_DEP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 124.45
+    },
+    {
+      "id": "01GZ9JD64P9TK72432M39VW6NK",
+      "name": "Arrival Radar",
+      "callsign": "ABE_APP",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      },
+      "freq": 119.65
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1D",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 35.914982499999994,
+        "lon": -73.0446825
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1D",
+        "1T"
+      ],
+      "mapIds": [
+        103,
+        102,
+        105,
+        106,
+        101,
+        112,
+        113,
+        114,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        103,
+        105,
+        101,
+        102,
+        106,
+        112
+      ],
+      "submenuMapIds": [
+        113,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        114,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01G66D4SM3JNM1JZRFSJFFC96P",
+      "name": "ABE-101 (MAP 5)",
+      "shortName": "BASE",
+      "starsId": 101,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01G66ETNBBVPD0812MB31HJCBZ",
+      "name": "ABE-102 (MVA)",
+      "shortName": "MVA",
+      "starsId": 102,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5S15YJ13REJ0YYEB43GNC0H",
+      "name": "ABE-103 (MAP 1)",
+      "shortName": "TWR",
+      "starsId": 103,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5S15YHZX369B3CFB5P0NCTJ",
+      "name": "ABE-105 (VFR)",
+      "shortName": "VFR",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5S15YJ1VE4FHXNDYHT9ATQ5",
+      "name": "ABE-106 (EOVM)",
+      "shortName": "EOVM",
+      "starsId": 106,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5S2AAG52RVGYMQGVQSQ1MAB",
+      "name": "ABE-110 (RINGS)",
+      "shortName": "RINGS",
+      "starsId": 110,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H5S15YJ1K8PE0QXQ3VX3FAZZ",
+      "name": "ABE-112 (SAT)",
+      "shortName": "SAT",
+      "starsId": 112,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5S15YJ0YJQQ1G5EATDCPQRS",
+      "name": "ABE-113 (RNAV)",
+      "shortName": "RNAV",
+      "starsId": 113,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H5S15YJ0PHATZ4QVJHWFP6NT",
+      "name": "ABE-114 (WAYPT NAMES)",
+      "shortName": "WAYPT",
+      "starsId": 114,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H2RPKPD8G022PRWW1E8RPWQ0",
+      "name": "ABE TRACON APD",
+      "shortName": "APD",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ]
+}

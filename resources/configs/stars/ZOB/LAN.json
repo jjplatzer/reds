@@ -1,0 +1,338 @@
+{
+  "artcc": "ZOB",
+  "facility": "LAN",
+  "name": "Great Lakes ATCT/TRACON East Wall",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.65805,
+    "lon": -81.181585
+  },
+  "controlPositions": [
+    {
+      "id": "01G910QBJ1JXHZ16RSPVH5BP92",
+      "name": "Buick",
+      "callsign": "LAN_B_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 118.8
+    },
+    {
+      "id": "01G910W0Q175S9F5W7GKEYJ3AD",
+      "name": "Olds",
+      "callsign": "LAN_O_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 128.55
+    },
+    {
+      "id": "01G910XKF8117DYPJ3SXXK1CF9",
+      "name": "Reynolds",
+      "callsign": "LAN_Y_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 127.3
+    },
+    {
+      "id": "01G910Z525SRPQ5WDTXQJ5W7KK",
+      "name": "Capital",
+      "callsign": "LAN_L_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 118.65
+    },
+    {
+      "id": "01G9111TMTGTHKWYD9VR0VD9D1",
+      "name": "Bay",
+      "callsign": "LAN_A_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 120.95
+    },
+    {
+      "id": "01G911DFW919DKD0WDTSGHKRC8",
+      "name": "Chippewa",
+      "callsign": "LAN_H_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 126.45
+    },
+    {
+      "id": "01G911H2MAK31KZK69R921W0RM",
+      "name": "Clearance Delivery",
+      "callsign": "LAN_DEL",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 123.675
+    },
+    {
+      "id": "01G911K4N80ZE5QBGH9DZVPNRP",
+      "name": "Ground",
+      "callsign": "LAN_GND",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G911KYSWXMD1CBHC98KD49V6",
+      "name": "Local Control",
+      "callsign": "LAN_TWR",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 119.9
+    },
+    {
+      "id": "01HDWY0TPY5QBM4BV65WTN3MJK",
+      "name": "TMU/OTHER",
+      "callsign": "LAN_T_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 123.45
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1Y",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2B",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2L",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "2O",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "3A",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "3H",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "3L",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1L",
+        "1T",
+        "1Y",
+        "1Z",
+        "2B",
+        "2L",
+        "2O",
+        "3A",
+        "3H",
+        "3L"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        7,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GNMH9D32N8MTBWYJGZZY25E1",
+      "name": "(LAN) RVM",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GNMH9D32XTB5WP2TSEDXMDZH",
+      "name": "(LAN) MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNMH9D330RGSSEARP0JC2HVR",
+      "name": "(LAN) VFR",
+      "shortName": "VFR",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNMH9D31CXV0TN8FQSAV112K",
+      "name": "(LAN) Airspace",
+      "shortName": "ARSPC",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GNMH9D34J4Z7GY34MQAH10ZZ",
+      "name": "(LAN) ZOBZAU",
+      "shortName": "ZOBZAU",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GNMH9D32CANMYRC2AA9V0P0C",
+      "name": "(LAN) Low Airways",
+      "shortName": "LOW",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNMH9D339PBB3QDZAT4F73NV",
+      "name": "(LAN) TDM",
+      "shortName": "TDM",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01GNMH9D31CXV0TN8FQSAV112K",
+      "name": "(LAN) Airspace",
+      "shortName": "ARSPC",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    }
+  ]
+}

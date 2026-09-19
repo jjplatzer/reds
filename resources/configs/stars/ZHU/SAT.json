@@ -1,0 +1,727 @@
+{
+  "artcc": "ZHU",
+  "facility": "SAT",
+  "name": "San Antonio ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 28.71396075,
+    "lon": -90.5088095
+  },
+  "controlPositions": [
+    {
+      "id": "01GSJ3E86640S7C32S2H70KCRJ",
+      "name": "Clearance Delivery",
+      "callsign": "SAT_DEL",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 126.7
+    },
+    {
+      "id": "01GSJ3F8BX8PWT4ERW8E3K5P01",
+      "name": "Ground",
+      "callsign": "SAT_GND",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GSJ3GFW5T42XWA8QMBSDT9EE",
+      "name": "Local",
+      "callsign": "SAT_TWR",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 119.8
+    },
+    {
+      "id": "01GSJ3KH0817WJ7MKE3EDWAMT5",
+      "name": "North Approach",
+      "callsign": "SAT_N_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 127.1
+    },
+    {
+      "id": "01GSJ3T19TXEEY1804TRKQRZF4",
+      "name": "South Approach",
+      "callsign": "SAT_S_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 125.7
+    },
+    {
+      "id": "01GSJ3VTJ1623HZQWRJYKMV888",
+      "name": "West Approach",
+      "callsign": "SAT_W_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 125.1
+    },
+    {
+      "id": "01H5TQFDKQM5P2FJM26XQMKN8Z",
+      "name": "Kelley Approach",
+      "callsign": "SAT_K_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 118.05
+    },
+    {
+      "id": "01H5TQHYZ94PR5KKT4Q0HGNY01",
+      "name": "Randolph Approach",
+      "callsign": "SAT_R_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 128.05
+    },
+    {
+      "id": "01H5TQMP97NKFH8JSXBXTN3239",
+      "name": "Low Approach",
+      "callsign": "SAT_L_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 120.55
+    },
+    {
+      "id": "01H5TQNP22J5MQCHN719RVKP97",
+      "name": "Final Approach",
+      "callsign": "SAT_Q_APP",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      },
+      "freq": 124.45
+    },
+    {
+      "id": "1K",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1Q",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 28.71396075,
+        "lon": -90.5088095
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1K",
+        "1L",
+        "1N",
+        "1Q",
+        "1R",
+        "1S",
+        "1T",
+        "1W"
+      ],
+      "mapIds": [
+        1,
+        6,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9,
+        10,
+        140,
+        141,
+        142,
+        143,
+        31,
+        13,
+        19,
+        20,
+        22,
+        51,
+        112,
+        28,
+        11,
+        26,
+        52,
+        44,
+        21,
+        47,
+        14,
+        15,
+        16,
+        17,
+        18,
+        23,
+        24,
+        29,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        4,
+        6,
+        3,
+        5
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        140,
+        142,
+        31,
+        19,
+        22,
+        112,
+        11,
+        52,
+        21,
+        14,
+        16,
+        18,
+        24,
+        8,
+        10,
+        141,
+        143,
+        13,
+        20,
+        51,
+        28,
+        26,
+        44,
+        47,
+        15,
+        17,
+        23,
+        29
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01H0E2QCVDMBQFP5XHSDV8P2G4",
+      "name": "SAT BASE",
+      "shortName": "BASE",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JWQ6E068SQTMH0R0AWYDQEHZ",
+      "name": "SAT 13 SPLIT",
+      "shortName": "13 SPLT",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JWQ6F5M02SKH1PDKQ72N6NCN",
+      "name": "SAT 31 SPLIT",
+      "shortName": "31 SPLT",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JWQ6G3TR5A99JQYTF00SM79H",
+      "name": "SAT 4 SPLIT",
+      "shortName": "4 SPLT",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JWQ6GRWMW22NPH7QJEBHZB2V",
+      "name": "SAT 22 SPLIT",
+      "shortName": "22 SPLT",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVA64K1FV8AWTPVRVTH",
+      "name": "SAT 3NM MVA",
+      "shortName": "3NM MVA",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVBQAK6AHAM4ZDJFPCW",
+      "name": "SAT VFR",
+      "shortName": "VFR",
+      "starsId": 7,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVGVY94AHWQ577BV5DM",
+      "name": "SAT CLASS AIRSPACES",
+      "shortName": "SAT C-D",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVGN8N7DNDAYKQZSY03",
+      "name": "NORTH FINALS",
+      "shortName": "N FINAL",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVG97WNXF6T6HFBRGNA",
+      "name": "SOUTH FINALS",
+      "shortName": "S FINAL",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVCABTH1QGGS2XA66DQ",
+      "name": "PRIVATE AIRPORTS",
+      "shortName": "PVT ARP",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVK60WB2MAXTBHEAW82",
+      "name": "SAT OTHER SATELLITE GPS WAYPOITNS",
+      "shortName": "WAY OTH",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVH70YV6KJ59R0RN0AD",
+      "name": "KSAT RNAV/GPS",
+      "shortName": "WAY SAT",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVJ1Q4P0FGC3XG273CJ",
+      "name": "5C1 RNAV/GPS",
+      "shortName": "WAY 5C1",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVJW6119RTSYDYEHYEV",
+      "name": "BAZ RNAV/GPS",
+      "shortName": "WAY BAZ",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVRBMMWNASZ1DG4M77R",
+      "name": "ERV RNAV/GPS",
+      "shortName": "WAY ERV",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVR8KRD64NVE2AR3HKQ",
+      "name": "HYI RNAV/GPS",
+      "shortName": "WAY HYI",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVJ5S4W032WFZMXHK0B",
+      "name": "PEZ RNAV/GPS",
+      "shortName": "WAY PEZ",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVHCQC7HKGARDW36TEN",
+      "name": "RND RNAV/GPS",
+      "shortName": "WAY RND",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVFFV6PDSCJFR13R25P",
+      "name": "SKF RNAV/GPS",
+      "shortName": "WAY SKF",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVRVZZSVT2X3087T6BG",
+      "name": "SKF HI TACAN",
+      "shortName": "SKFHIAP",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVDBXMYPVSMXPFW81BC",
+      "name": "SSF RNAV/GPS",
+      "shortName": "WAY SSF",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVQ1GV7AR720XNB1WZT",
+      "name": "T82 RNAV/GPS",
+      "shortName": "WAY T82",
+      "starsId": 23,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVC60K6JCM3BXC5S6SN",
+      "name": "T89 RNAV/GPS",
+      "shortName": "WAY T89",
+      "starsId": 24,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVK7W53SCHMT9S072FS",
+      "name": "SAT SID/STAR FIXES",
+      "shortName": "PROCFIX",
+      "starsId": 25,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVQPMHT7S39FZWM3J2E",
+      "name": "SAT COUNTIES",
+      "shortName": "COUNTY",
+      "starsId": 26,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVVS9SMRMQNH7T1JF6F",
+      "name": "SAT STADIUMS",
+      "shortName": "STADIUM",
+      "starsId": 27,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVS1N65AZHCB3VRB24J",
+      "name": "DXEEE STAR",
+      "shortName": "DXEEE",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E3A0T5CCG4C9S1AT22174R",
+      "name": "AIRWAYS AND INTERSECTIONS",
+      "shortName": "AIRWAYS",
+      "starsId": 29,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVRVNVQJRH8ZQX38Q7X",
+      "name": "SAT MIL ROUTES",
+      "shortName": "MIL RTE",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVHWF2VTJNXP02CKPH4",
+      "name": "SAT ZHU SECTORS",
+      "shortName": "ZHU SEC",
+      "starsId": 31,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVMWJ7BDD00W9TEW8QF",
+      "name": "RNP RWY04 Course",
+      "shortName": "RNP04CS",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVMC0709PF1KC2ECSH9",
+      "name": "RNP RWY13 Course",
+      "shortName": "RNP13CS",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVMKJQZKY2JXNXMX28S",
+      "name": "RNP RWY22 Course",
+      "shortName": "RNP22CS",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVN4TS1YH0A1GFCBK34",
+      "name": "RNP RWY31 Course",
+      "shortName": "RNP31CS",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVNPM1VAYRWQV5XVX4M",
+      "name": "RNP RWY04 Waypoints",
+      "shortName": "RNP04WP",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVNRDE3ANH446HTPSFZ",
+      "name": "RNP RWY13 Waypoints",
+      "shortName": "RNP13WP",
+      "starsId": 37,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVPHG7NG01X2Q36YB69",
+      "name": "RNP RWY22 Waypoints",
+      "shortName": "RNP22WP",
+      "starsId": 38,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVPCVEK19V2YNEJ9RW9",
+      "name": "RNP RWY31 Waypoints",
+      "shortName": "RNP31WP",
+      "starsId": 39,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVSYG9EDDXB724GFGFZ",
+      "name": "Non Radar 13 FINAL",
+      "shortName": "NR13",
+      "starsId": 40,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVSKYV2MDWY9R044Y7W",
+      "name": "Non Radar 31 FINAL",
+      "shortName": "NR31",
+      "starsId": 41,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVTT2JVRJETDCCCE9PQ",
+      "name": "Non Radar 04 FINAL",
+      "shortName": "NR4",
+      "starsId": 42,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVTRH10K170SH2HZAFV",
+      "name": "Non Radar 22 FINAL",
+      "shortName": "NR22",
+      "starsId": 43,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVTXSTBTPKP0VYD1BV8",
+      "name": "SKF HIGH",
+      "shortName": "SKFHIGH",
+      "starsId": 44,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVFZZ9N57QV9J65SATX",
+      "name": "SAT MOA PRACTICE AREAS",
+      "shortName": "MOA PAS",
+      "starsId": 45,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVVB09XED38JY3TY5FY",
+      "name": "RAN 2B MOA",
+      "shortName": "RAN 2B",
+      "starsId": 46,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVWDR903XRYH8TYZSG1",
+      "name": "SKF BREAKOUT BOX",
+      "shortName": "SKF BOX",
+      "starsId": 47,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H0E2QCVV3GA4KAQENE2N93J8",
+      "name": "CVB PAJA AREA",
+      "shortName": "CVBPAJA",
+      "starsId": 48,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVP8W99N3161VKGPEG8",
+      "name": "SAT 5NM MVA",
+      "shortName": "5NM MVA",
+      "starsId": 49,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E0E3F5PM2QWAZ02HXDYQJF",
+      "name": "REYNOLDS PIPELINE",
+      "shortName": "R PL",
+      "starsId": 50,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H832CTWHPA83WA4CAFPAVSFA",
+      "name": "SAT HELO RNAV/GPS",
+      "shortName": "WAY COP",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H8D1BP9MA9ECW2K747242ZPR",
+      "name": "ALAMO DOME TFR",
+      "shortName": "AD TFR",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H82E6NPEEH28ZZ2RA85BK6CE",
+      "name": "KSAT SIDS",
+      "shortName": "SIDS",
+      "starsId": 112,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H82E6NNZ3VMM8AVRHBNGJAQG",
+      "name": "5C1 NONRADAR HOLDING",
+      "shortName": "5C1 NR",
+      "starsId": 132,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H82E6NNZCBCBAHPFP4MXC1FC",
+      "name": "BAZ NONRADAR HOLDING",
+      "shortName": "BAZ NR",
+      "starsId": 133,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H82E6NP1B3NBW5BH51THG2NT",
+      "name": "RND NONRADAR HOLDING",
+      "shortName": "RND NR",
+      "starsId": 134,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H82E6NNYC94PVWA83AJGBR87",
+      "name": "SAT NONRADAR HOLDING",
+      "shortName": "SAT NR",
+      "starsId": 135,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H82E6NNYC1BNXXEM1CF3TRC5",
+      "name": "SKF NONRADAR HOLDING",
+      "shortName": "SKF NR",
+      "starsId": 136,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H82E6NP02FH20EY3B207RR5R",
+      "name": "SSF NONRADAR HOLDING",
+      "shortName": "SSF NR",
+      "starsId": 137,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JWQ6898CZ7FP7D4SGRBFV682",
+      "name": "SAT 13 STARS",
+      "shortName": "13 STAR",
+      "starsId": 140,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JWQ6BAXR5ASTB83TKD7AXN6G",
+      "name": "SAT 31 STARS",
+      "shortName": "31 STAR",
+      "starsId": 141,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JWQ65N38HNQDVBQM9K249QT9",
+      "name": "SAT 4 STARS",
+      "shortName": "4 STAR",
+      "starsId": 142,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JWQ6APC60V6VXVF02JXDT65J",
+      "name": "SAT 22 STARS",
+      "shortName": "22 STAR",
+      "starsId": 143,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0HCYQ1A0CBCF6DDXDYAVA4Q",
+      "name": "CRP VLY NON RADAR HOLDS",
+      "shortName": "NR HOLD",
+      "starsId": 916,
+      "brightnessCategory": "A"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01H0E2QCVGVY94AHWQ577BV5DM",
+      "name": "SAT CLASS AIRSPACES",
+      "shortName": "SAT C-D",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01H0E2QCVHWF2VTJNXP02CKPH4",
+      "name": "SAT ZHU SECTORS",
+      "shortName": "ZHU SEC",
+      "starsId": 31,
+      "brightnessCategory": "B"
+    }
+  ]
+}

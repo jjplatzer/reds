@@ -1,0 +1,330 @@
+{
+  "artcc": "ZAU",
+  "facility": "CID",
+  "name": "Cedar Rapids ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.879166749999996,
+    "lon": -88.975
+  },
+  "controlPositions": [
+    {
+      "id": "01H5FSG839JKC43MG930WGZTT9",
+      "name": "North Approach",
+      "callsign": "CID_N_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 134.05
+    },
+    {
+      "id": "01H5FSK8FBZDQCB9XA6W1A2ZJ9",
+      "name": "South Approach",
+      "callsign": "CID_S_APP",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 119.7
+    },
+    {
+      "id": "01H5FSNES4Q9Y6X2B2PCZ18K0G",
+      "name": "Local",
+      "callsign": "CID_TWR",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 118.7
+    },
+    {
+      "id": "01H5FSPAMFB2ZVAXPSE9AJ3NCM",
+      "name": "Ground",
+      "callsign": "CID_GND",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 121.6
+    },
+    {
+      "id": "01H5FSQ8AEZDNRWB1S8E4M3W21",
+      "name": "Clearance Delivery",
+      "callsign": "CID_DEL",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      },
+      "freq": 125.45
+    },
+    {
+      "id": "1C",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1Q",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 41.879166749999996,
+        "lon": -88.975
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1C",
+        "1L",
+        "1N",
+        "1S"
+      ],
+      "mapIds": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1Q"
+      ],
+      "mapIds": [
+        7,
+        null,
+        null,
+        null,
+        null,
+        8,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        7,
+        null,
+        null,
+        null,
+        null,
+        8
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GFM1XZEY0VDAVC2JFV9ST5KF",
+      "name": "CID MAIN",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HGEEEAED2356RAR11MQ9XPND",
+      "name": "CID MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM1XZEY7XC9C76BQ3VKAECJ",
+      "name": "CID VFR",
+      "shortName": "VFR",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01KJZKNC9PQRW6JVK53B7R40XQ",
+      "name": "CID SATELLITE APPROACHES A",
+      "shortName": "SAT A",
+      "starsId": 4,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GFM1XZEZ8T28FYHS9R02S35S",
+      "name": "CID VICTOR AIRWAYS",
+      "shortName": "VT RTES",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01JFD339NJMGVKH83YBN9YBXWX",
+      "name": "CID AIRPORT DIAGRAMS",
+      "shortName": "AP DIAG",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JJ538X1SWDEACXJFMD5D98VW",
+      "name": "DBQ MAIN",
+      "shortName": "DBQ RVM",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01JJ88M9834M5PQCKMVQ833YSY",
+      "name": "DBQ AIRPORT DIAGRAM",
+      "shortName": "DBQ AD",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    }
+  ]
+}

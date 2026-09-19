@@ -1,0 +1,638 @@
+{
+  "artcc": "ZOA",
+  "facility": "SUU",
+  "name": "Travis AFB RAPCON",
+  "type": "AtctRapcon",
+  "defaultCenter": {
+    "lat": 37.9016125,
+    "lon": -120.687685
+  },
+  "controlPositions": [
+    {
+      "id": "01GFG95GP2JKMKA30F1QGKB9N3",
+      "name": "Arrival",
+      "callsign": "SUU_A_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 128.4
+    },
+    {
+      "id": "01GFG967MKMXBKHTS2137PTK1M",
+      "name": "North",
+      "callsign": "SUU_N_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 126.6
+    },
+    {
+      "id": "01GFG971M23MC6B8P1QCMADXNW",
+      "name": "South",
+      "callsign": "SUU_S_APP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 119.9
+    },
+    {
+      "id": "01GFG97RWAGD51RJDXDGD8WRED",
+      "name": "LC",
+      "callsign": "SUU_TWR",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 120.75
+    },
+    {
+      "id": "01GFG98BSKBE982VBZVKK084QC",
+      "name": "GC",
+      "callsign": "SUU_GND",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 121.8
+    },
+    {
+      "id": "01GFG98X0K0FBJH6WXVS30PRA0",
+      "name": "CD",
+      "callsign": "SUU_DEL",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 127.55
+    },
+    {
+      "id": "01K8VYS1VYN334NK2SWRHX4PB9",
+      "name": "ATIS",
+      "callsign": "SUU_RMP",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      },
+      "freq": 135.55
+    },
+    {
+      "id": "1A",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 37.9016125,
+        "lon": -120.687685
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1A",
+        "1N",
+        "1S"
+      ],
+      "mapIds": [
+        1,
+        15,
+        3,
+        29,
+        12,
+        6,
+        50,
+        53,
+        51,
+        54,
+        52,
+        55,
+        null,
+        56,
+        14,
+        57,
+        58,
+        59,
+        22,
+        23,
+        24,
+        25,
+        9,
+        27,
+        28,
+        17,
+        40,
+        null,
+        32,
+        33,
+        34,
+        35,
+        2,
+        18,
+        11,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        12,
+        15,
+        29,
+        6
+      ],
+      "submenuMapIds": [
+        50,
+        51,
+        52,
+        null,
+        14,
+        58,
+        22,
+        24,
+        9,
+        28,
+        40,
+        32,
+        34,
+        2,
+        11,
+        53,
+        54,
+        55,
+        56,
+        57,
+        59,
+        23,
+        25,
+        27,
+        17,
+        null,
+        33,
+        35,
+        18,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1Z"
+      ],
+      "mapIds": [
+        7,
+        1,
+        3,
+        18,
+        50,
+        53,
+        7,
+        1,
+        3,
+        18,
+        50,
+        53,
+        51,
+        54,
+        52,
+        55,
+        17,
+        56,
+        104,
+        57,
+        null,
+        8,
+        12,
+        6,
+        9,
+        24,
+        58,
+        25,
+        59,
+        22,
+        28,
+        null,
+        23,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        7,
+        3,
+        50,
+        1,
+        18,
+        53
+      ],
+      "submenuMapIds": [
+        7,
+        3,
+        50,
+        51,
+        52,
+        17,
+        104,
+        null,
+        12,
+        9,
+        58,
+        59,
+        28,
+        23,
+        null,
+        1,
+        18,
+        53,
+        54,
+        55,
+        56,
+        57,
+        8,
+        6,
+        24,
+        25,
+        22,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HAWN7KFRVNHY13XS2F4MQ9JZ",
+      "name": "RVMAIRSPACE",
+      "shortName": "AIRSPAC",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCNGZ78CGK6P07ZNKRAQ",
+      "name": "RVMAIRWAYS",
+      "shortName": "AIRWAYS",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCNHPJ7CCDWJMF66JF5R",
+      "name": "RVMSUU_EXT",
+      "shortName": "SUU_EXT",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCNKCYQWWNG97TT8MRK5",
+      "name": "RVMDELTA_AIRSPACE",
+      "shortName": "DELTA_A",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCNMQF4NED6CKEZ30GRQ",
+      "name": "RVMLABELS",
+      "shortName": "LABELS",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN61K3XGS78DJ4WV5Z87KV8T",
+      "name": "RVMSYS_MVA",
+      "shortName": "SYS_MVA",
+      "starsId": 6,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCNNKWJPJYVE6DXQKHAZ",
+      "name": "RVMTWR",
+      "shortName": "TWR",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCNPWYSBAAS52G61XJR3",
+      "name": "RVMSHORELN",
+      "shortName": "SHORELN",
+      "starsId": 8,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCNQZS9C50QSRSQ383PC",
+      "name": "RVMSUU_DVA",
+      "shortName": "SUU_DVA",
+      "starsId": 9,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCNQPC0HHGY9WRHW31WN",
+      "name": "RVMWINDMIL",
+      "shortName": "WINDMIL",
+      "starsId": 10,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAWNA22TTX2V5EK1QPSB1KQT",
+      "name": "RVMSFO_CLASS_BRAVO",
+      "shortName": "SFOBRAV",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAWNEMAHNRMSF4NNABVRYDT3",
+      "name": "RVMSUU_MVA",
+      "shortName": "SUU_MVA",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCNS2WH2PSK0H5Y3CXT3",
+      "name": "RVMMT_DIABLO_DVA",
+      "shortName": "MT_DIAB",
+      "starsId": 13,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCNSAY5B3354FTS2G9EM",
+      "name": "RVMNAPASH",
+      "shortName": "NAPASH",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCNV8Z93CS2W45G0CQ60",
+      "name": "RVMSMF_17",
+      "shortName": "SMF_17",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCNVFJQS3GB0JDZY3T7E",
+      "name": "RVMSUU_WRA",
+      "shortName": "SUU_WRA",
+      "starsId": 17,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCNWT6K7B09B8J285W88",
+      "name": "RVMAPTNAME",
+      "shortName": "APTNAME",
+      "starsId": 18,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCNWX38HYC80YEP89R5M",
+      "name": "RVMCCR_VOR",
+      "shortName": "CCR_VOR",
+      "starsId": 22,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCNXBHT19WM4017001K0",
+      "name": "RVMDWA_GPS",
+      "shortName": "DWA_GPS",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCNY8BEQ0DXPJH7WNXAZ",
+      "name": "RVMEDU_GPS",
+      "shortName": "EDU_GPS",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCNYM7S25F51DDQQ2DZF",
+      "name": "RVMO41_GPS",
+      "shortName": "O41_GPS",
+      "starsId": 25,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCNZXGF6ESS8B4D6217Y",
+      "name": "RVMVCB_GPS",
+      "shortName": "VCB_GPS",
+      "starsId": 27,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCNZ09K851KA69NKA7NX",
+      "name": "RVMVCB_VOR",
+      "shortName": "VCB_VOR",
+      "starsId": 28,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCP0CCVJPF9NPMFSK1TS",
+      "name": "RVMSMF_35",
+      "shortName": "SMF_35",
+      "starsId": 29,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCP1TFZTBCT26XT3GRT9",
+      "name": "RVMDWA16_DVA",
+      "shortName": "DWA16DV",
+      "starsId": 30,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCP14HXM0TKAHE82BJTY",
+      "name": "RVMDWA34_DVA",
+      "shortName": "DWA34DV",
+      "starsId": 31,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN63ZZ0BK26XGZBCS5TZ1JV4",
+      "name": "RVMWEBGO_1",
+      "shortName": "WEBGO_1",
+      "starsId": 32,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCP2HDWE5SVGSA05BSRR",
+      "name": "RVMSUTHU_1",
+      "shortName": "SUTHU_1",
+      "starsId": 33,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HN63ZZ0A4H6C0QBPT277WSYN",
+      "name": "RVMPEBLL_1",
+      "shortName": "PEBLL_1",
+      "starsId": 34,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCP3EPWX312B8ETE5G2Z",
+      "name": "RVMOSVEE_1",
+      "shortName": "OSVEE_1",
+      "starsId": 35,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCP3SMVV4YSDTRMGFQKZ",
+      "name": "RVMVCB_DVA",
+      "shortName": "VCB_DVA",
+      "starsId": 38,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCP43GC9TZ8FRG64BZGX",
+      "name": "RVMEDU_DVA",
+      "shortName": "EDU_DVA",
+      "starsId": 39,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCP48VZ4FKYDH5JPKD6W",
+      "name": "RVMFREQ",
+      "shortName": "FREQ",
+      "starsId": 40,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCP5MAMA05NTMNNEGSC8",
+      "name": "RVMTAD_PIE",
+      "shortName": "TAD_PIE",
+      "starsId": 42,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HAWNHZ3M1633PANMQ5780V88",
+      "name": "RVMTAD_FIX",
+      "shortName": "TAD_FIX",
+      "starsId": 43,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAWKY61AA29116TT7TKHR6SW",
+      "name": "RVM21L_ILS",
+      "shortName": "21L_ILS",
+      "starsId": 50,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAWN1X0BHPHSE72YYN8Z3FHP",
+      "name": "RVM21L_TAC",
+      "shortName": "21L_TAC",
+      "starsId": 51,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCP6NX93ZTGVYGKTVHXK",
+      "name": "RVM21L_GPS",
+      "shortName": "21L_GPS",
+      "starsId": 52,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAWKEZZMN0201T8FYVVH5QEQ",
+      "name": "RVM03L_ILS",
+      "shortName": "03L_ILS",
+      "starsId": 53,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAWKQYFTY2WA21QN2QFBDFG9",
+      "name": "RVM03L_TAC",
+      "shortName": "03L_TAC",
+      "starsId": 54,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNDXEFVC7319PSGWHC2YY14",
+      "name": "RVM03L_GPS",
+      "shortName": "03L_GPS",
+      "starsId": 55,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HAWN570ZN55FG3VT5M92YWWC",
+      "name": "RVM21R_TAC",
+      "shortName": "21R_TAC",
+      "starsId": 56,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCP7ZGXXQBNSGMBPS3M0",
+      "name": "RVM21R_GPS",
+      "shortName": "21R_GPS",
+      "starsId": 57,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCP809GR5RHP22Q48VW5",
+      "name": "RVMCC_GPS",
+      "shortName": "CC_GPS",
+      "starsId": 58,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCP8Q5P1KA11X5SV28R4",
+      "name": "RVMCCR_LDA",
+      "shortName": "CCR_LDA",
+      "starsId": 59,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HCNFSCPAEHW6ZVD2YXYSVS4M",
+      "name": "RVMCCRE__",
+      "shortName": "CCRE__",
+      "starsId": 61,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCPB02Q0M4XTXADNG75G",
+      "name": "RVMCOUNTYL",
+      "shortName": "COUNTYL",
+      "starsId": 104,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HA7QZJ0G6TG3Y03JYAQ6RSF9",
+      "name": "TDM MAP",
+      "shortName": "TDM",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HAWN7KFRVNHY13XS2F4MQ9JZ",
+      "name": "RVMAIRSPACE",
+      "shortName": "AIRSPAC",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HCNFSCNKCYQWWNG97TT8MRK5",
+      "name": "RVMDELTA_AIRSPACE",
+      "shortName": "DELTA_A",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    }
+  ]
+}

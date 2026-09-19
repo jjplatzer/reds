@@ -1,0 +1,234 @@
+{
+  "artcc": "ZOB",
+  "facility": "TOL",
+  "name": "Toledo ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 41.65805,
+    "lon": -81.181585
+  },
+  "controlPositions": [
+    {
+      "id": "01G92VDTGNK3SMDCY14J7HA2QK",
+      "name": "East",
+      "callsign": "TOL_E_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 126.1
+    },
+    {
+      "id": "01G92VERT1B2Q44N8SYN4P8ZKQ",
+      "name": "West",
+      "callsign": "TOL_W_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 134.35
+    },
+    {
+      "id": "01G92VFH2D0HYN0W058H4YVTPT",
+      "name": "Clearance Delivery",
+      "callsign": "TOL_DEL",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 121.75
+    },
+    {
+      "id": "01G92VGJ8XW3NSNYAB8HVBQRKM",
+      "name": "Ground",
+      "callsign": "TOL_GND",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01G92VHJMT5XHMPQNW8WXYJKZF",
+      "name": "Local Control",
+      "callsign": "TOL_TWR",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 118.1
+    },
+    {
+      "id": "01HDWY5GX4ZZBM9DM402NBMWCD",
+      "name": "TMU/OTHER",
+      "callsign": "TOL_T_APP",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      },
+      "freq": 123.45
+    },
+    {
+      "id": "1E",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1W",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    },
+    {
+      "id": "1Z",
+      "visualCenter": {
+        "lat": 41.65805,
+        "lon": -81.181585
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1E",
+        "1L",
+        "1W",
+        "1Z"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GNMGBWDHW8MFPQGRN2K6RSRZ",
+      "name": "(TOL) RVM",
+      "shortName": "MAIN",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GNMGBWDG0EYFRNZ8Z0RMG9EJ",
+      "name": "(TOL) MVA",
+      "shortName": "MVA",
+      "starsId": 2,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNMGBWDJDFEM2VZ0YJVVAPRX",
+      "name": "(TOL) ZOB Low",
+      "shortName": "ZOB",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNMGBWDF01WAVC6TJMMBDWRR",
+      "name": "(TOL) Coastline",
+      "shortName": "COAST",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GNMGBWDHND6QWPW7QFX9XYG4",
+      "name": "(TOL) TDM",
+      "shortName": "TDM",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GNMGBWDGYC7HMG96W63KBWSA",
+      "name": "(TOL) Nuclear TFR",
+      "shortName": "TFR",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    }
+  ]
+}

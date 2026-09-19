@@ -1,0 +1,410 @@
+{
+  "artcc": "ZLC",
+  "facility": "BIL",
+  "name": "Billings ATCT/TRACON",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 44.1394906,
+    "lon": -111.3092792325
+  },
+  "controlPositions": [
+    {
+      "id": "01G9BNV0PEDWQEQ2G2A77JASGJ",
+      "name": "RADAR North",
+      "callsign": "BIL_N_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 119.2
+    },
+    {
+      "id": "01G9BNYFKR154BG1AAY2JFWGJW",
+      "name": "Local Control",
+      "callsign": "BIL_TWR",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 127.2
+    },
+    {
+      "id": "01G9BNZZ0924YGXAJV5KE6R6XJ",
+      "name": "Ground Control",
+      "callsign": "BIL_GND",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 121.9
+    },
+    {
+      "id": "01GE8TAGZKEJK70FVC2V0MAEM2",
+      "name": "RADAR South",
+      "callsign": "BIL_S_APP",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      },
+      "freq": 120.5
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    },
+    {
+      "id": "1X",
+      "visualCenter": {
+        "lat": 44.1394906,
+        "lon": -111.3092792325
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1N",
+        "1S"
+      ],
+      "mapIds": [
+        1,
+        null,
+        2,
+        5,
+        3,
+        null,
+        7,
+        8,
+        9,
+        null,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        null,
+        23,
+        24,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        null,
+        5,
+        null
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        23,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        null,
+        11,
+        13,
+        15,
+        17,
+        19,
+        21,
+        null,
+        24,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tcps": [
+        "1T",
+        "1X"
+      ],
+      "mapIds": [
+        1,
+        null,
+        2,
+        5,
+        3,
+        null,
+        7,
+        8,
+        9,
+        null,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        null,
+        23,
+        24,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        2,
+        3,
+        null,
+        5,
+        null
+      ],
+      "submenuMapIds": [
+        7,
+        9,
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        23,
+        null,
+        null,
+        null,
+        null,
+        null,
+        8,
+        null,
+        11,
+        13,
+        15,
+        17,
+        19,
+        21,
+        null,
+        24,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01GPSMRKY8DJ0PB2E2TMKA1KVE",
+      "name": "STARS-BIL_ARPTS__SURROUNDING AIRPORTS",
+      "shortName": "ARPTS",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYNNGS806ZXBKAHJ4K5",
+      "name": "STARS-BIL_W-FLOW__West Flow Map",
+      "shortName": "W-FLOW",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYJEW2436K2Y3726FRQ",
+      "name": "STARS-BIL_MVA__Minimum Vectoring Altitudes",
+      "shortName": "MVA",
+      "starsId": 3,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPSMRKYDFF00B7828BZD2GMP",
+      "name": "STARS-BIL_E-FLOW__East Flow Map",
+      "shortName": "E-FLOW",
+      "starsId": 5,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYM3689VV0ZFTX934QJ",
+      "name": "STARS-BIL_W-APP__West Flow Approaches",
+      "shortName": "W-APP",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYD1J37H2A75D7KRBSW",
+      "name": "STARS-BIL_E-APP__East Flow Approaches",
+      "shortName": "E-APP",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYMY2KQP7WNRJVVX128",
+      "name": "STARS-BIL_SAT__Sattelite Airport Approaches",
+      "shortName": "SAT",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKY9K24EXDX2CD54R8RA",
+      "name": "STARS-BIL_BGHRN__BGHRN STAR W-NAMES",
+      "shortName": "BGHRN",
+      "starsId": 10,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYAN2QFPR3Y8H8Y66P1",
+      "name": "STARS-BIL_BGHRN-N__BGHRN STAR",
+      "shortName": "BGHRN-N",
+      "starsId": 11,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYBAJ97P134C2GRDPHR",
+      "name": "STARS-BIL_CRAZI__CRAZI STAR W-NAMES",
+      "shortName": "CRAZI",
+      "starsId": 12,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYCZ954MFQMYA3MW3C1",
+      "name": "STARS-BIL_CRAZI-N__CRAZI STAR",
+      "shortName": "CRAZI-N",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYFSJRP5BWQJBHBA05Q",
+      "name": "STARS-BIL_KUSTR__KUSTR STAR W-NAMES",
+      "shortName": "KUSTR",
+      "starsId": 14,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYGRNXK6451TPARZZP1",
+      "name": "STARS-BIL_KUSTR-N__KUSTR STAR",
+      "shortName": "KUSTR-N",
+      "starsId": 15,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYPYAN1VSK7D9A7ZY3F",
+      "name": "STARS-BIL_YLSTN__YLSTN STAR W-NAMES",
+      "shortName": "YLSTN",
+      "starsId": 16,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYP2X7Y5XECVK4MNMG7",
+      "name": "STARS-BIL_YLSTN-N__YLSTN STAR",
+      "shortName": "YLSTN-N",
+      "starsId": 17,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYKYY5DH1GJ0HK5BXA3",
+      "name": "STARS-BIL_R28Z__RNAV Z RWY28R APP W-NAMES",
+      "shortName": "R28Z",
+      "starsId": 18,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYK5RX1W343Z98YKDSN",
+      "name": "STARS-BIL_R28Z-N__RNAV Z RWY28R APP",
+      "shortName": "R28Z-N",
+      "starsId": 19,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYHJ5CFQTJ6QE4JEFME",
+      "name": "STARS-BIL_MOA 1A__POWDER RIVER 1A MOA",
+      "shortName": "MOA 1A",
+      "starsId": 20,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYHKVNPZM510394S495",
+      "name": "STARS-BIL_MOA 1C__POWDER RIVER 1C MOA",
+      "shortName": "MOA 1C",
+      "starsId": 21,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYJSEXQMBACMKHCNFHB",
+      "name": "STARS-BIL_MTR__Military Training Route IR-473",
+      "shortName": "MTR",
+      "starsId": 22,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01GPSMRKYCEZD699C4X96CKK31",
+      "name": "STARS-BIL_CTR__ZLC 15-39 CTR SPLIT",
+      "shortName": "CTR",
+      "starsId": 23,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01GPSMRKYFQ1QYHXBSKD7T3HCQ",
+      "name": "STARS-BIL_EOVM__Emerg. Obstruction Video Map",
+      "shortName": "EOVM",
+      "starsId": 24,
+      "brightnessCategory": "B"
+    }
+  ]
+}

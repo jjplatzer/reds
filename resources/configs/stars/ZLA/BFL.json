@@ -1,0 +1,430 @@
+{
+  "artcc": "ZLA",
+  "facility": "BFL",
+  "name": "Bakersfield",
+  "type": "AtctTracon",
+  "defaultCenter": {
+    "lat": 34.9691453,
+    "lon": -116.63582625
+  },
+  "controlPositions": [
+    {
+      "id": "01GFH3YK3A9HG84SGTW7KACSGT",
+      "name": "Ground",
+      "callsign": "BFL_GND",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 121.7
+    },
+    {
+      "id": "01GFH3ZYKS9MN15B92ZQZG2K0W",
+      "name": "Local",
+      "callsign": "BFL_TWR",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 118.1
+    },
+    {
+      "id": "01GFH40CWA24Q6JW8FWWYNM7AS",
+      "name": "South Approach",
+      "callsign": "BFL_S_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 118.8
+    },
+    {
+      "id": "01H8WJ8EA3FYGSAM34NZW1NP3A",
+      "name": "North Approach",
+      "callsign": "BFL_N_APP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 118.9
+    },
+    {
+      "id": "01H8WJCQAZXXHQFMSKDGKD6VZX",
+      "name": "Departure",
+      "callsign": "BFL_DEP",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      },
+      "freq": 126.45
+    },
+    {
+      "id": "1L",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1N",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1R",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1S",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    },
+    {
+      "id": "1T",
+      "visualCenter": {
+        "lat": 34.9691453,
+        "lon": -116.63582625
+      }
+    }
+  ],
+  "mapGroups": [
+    {
+      "tcps": [
+        "1L",
+        "1N",
+        "1R",
+        "1S",
+        "1T"
+      ],
+      "mapIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        11,
+        12,
+        13,
+        15,
+        140,
+        105,
+        145,
+        200,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "mainMapIds": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ],
+      "submenuMapIds": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        31,
+        33,
+        35,
+        37,
+        11,
+        13,
+        140,
+        145,
+        null,
+        null,
+        2,
+        4,
+        6,
+        8,
+        30,
+        32,
+        34,
+        36,
+        38,
+        12,
+        15,
+        105,
+        200,
+        null,
+        null
+      ]
+    }
+  ],
+  "videoMaps": [
+    {
+      "id": "01HBPB6R393J27PN0Q6QEK0980",
+      "name": "001S BFL 30R ILS APCH BFL",
+      "shortName": "30R",
+      "starsId": 1,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R39H7Y10FHADBATXXG1",
+      "name": "002S BFL 30L RNAV (GPS) APCH BFL",
+      "shortName": "30L",
+      "starsId": 2,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3AA0CTC261JWQE39ZN",
+      "name": "003S BFL 12L RNAV (GPS) APCH BFL",
+      "shortName": "12L",
+      "starsId": 3,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3AQ3ZBXVKH9MRXA8D6",
+      "name": "004S BFL 12R RNAV (GPS) APCH BFL",
+      "shortName": "12R",
+      "starsId": 4,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3B6QW8Q00HAZ0J2N9H",
+      "name": "005S MVA 3NM BFL",
+      "shortName": "MVA3",
+      "starsId": 5,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HBPB6R3BQP680STVR47F4FW9",
+      "name": "006S EOVM BFL",
+      "shortName": "EOVM",
+      "starsId": 6,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3CQ4JX55MYTCHP69M0",
+      "name": "007S AIRSPACE BFL",
+      "shortName": "AIRSPCE",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3C0598S8BG049H4PH2",
+      "name": "008S BFL TRACON ARRIVAL SECTOR AIRSPACE BFL",
+      "shortName": "AR",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3D545B97WQA9SVYCT6",
+      "name": "009S BFL TRACON NORTH-SOUTH SECTOR LINE BFL",
+      "shortName": "N_S",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3DCYZD1XV73V61AEA3",
+      "name": "011S V AIR BFL",
+      "shortName": "VROU",
+      "starsId": 11,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HBPB6R3EQMWTR08H6E5DKA4B",
+      "name": "012S T-ROU BFL",
+      "shortName": "TROU",
+      "starsId": 12,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HBPB6R3E7VG2NMQB2C14W4CT",
+      "name": "013S J ROU BFL",
+      "shortName": "JROU",
+      "starsId": 13,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3FXT10PQB6HGTDV5WZ",
+      "name": "015S CAU BFL",
+      "shortName": "CAU",
+      "starsId": 15,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HBPB6R3F5PR2KK0PF73JZMC4",
+      "name": "030S BFLV BFL",
+      "shortName": "BFLV",
+      "starsId": 30,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3GY4P1N6VZGQ6RZ896",
+      "name": "031S L45G BFL",
+      "shortName": "L45G",
+      "starsId": 31,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3G3WFHQ5AGD23QN71E",
+      "name": "032S L45V BFL",
+      "shortName": "L45V",
+      "starsId": 32,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3G80ESNHE8FWRPJEB6",
+      "name": "033S DLOV BFL",
+      "shortName": "DLOV",
+      "starsId": 33,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3H9G89DR3WJ7Y4XVNX",
+      "name": "034S DLOG BFL",
+      "shortName": "DLOG",
+      "starsId": 34,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3HK8JRW8071JKZDNSN",
+      "name": "035S PTVV BFL",
+      "shortName": "PTVV",
+      "starsId": 35,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3HCA0EC16ZAV8RWMFP",
+      "name": "036S PTVG BFL",
+      "shortName": "PTVG",
+      "starsId": 36,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3JXVGN7QZJNCM91CCK",
+      "name": "037S MITV BFL",
+      "shortName": "MITV",
+      "starsId": 37,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3JN88750VJCW0X2PND",
+      "name": "038S MITG BFL",
+      "shortName": "MITG",
+      "starsId": 38,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3KPJQ4S33S0ZWNAFJD",
+      "name": "105S MVA 5NM BFL",
+      "shortName": "MVA5",
+      "starsId": 105,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HBPB6R3K9HZ5Z0HWRATD31VZ",
+      "name": "140S ROADS AND HIWAYS BFL",
+      "shortName": "HIGHWAY",
+      "starsId": 140,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HBPB6R3KWDQVZDWQJRMD39Q1",
+      "name": "141S PTV GPS RWY 12 BFL",
+      "shortName": "PTVG12",
+      "starsId": 141,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3M7C57VD2SPW2XRQJ0",
+      "name": "145S BFL CLASS DELTA BFL",
+      "shortName": "BFL_D",
+      "starsId": 145,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H4KHDQYGDQ8S4DJ5GW109JQB",
+      "name": "200 ZLA BFL",
+      "shortName": "ZLA",
+      "starsId": 200,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HBPB6R3MGB69PV547H9C7JR9",
+      "name": "500S FLCHK - BFL ILS OR LOC 30R BFL",
+      "shortName": "BFLALGN",
+      "starsId": 500,
+      "brightnessCategory": "B"
+    },
+    {
+      "id": "01HBPB6R3N1HKFCESEES6KYKA9",
+      "name": "999S ILS AND GPS APPROACHES BFL",
+      "shortName": "ILSGPSA",
+      "starsId": 997,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3NBSA0MWQVWKBQ6C2A",
+      "name": "998S VOR AND MORE GPS APPROACHES BFL",
+      "shortName": "VORGPSA",
+      "starsId": 998,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01H4KHDQYCD64YQ1SRHFA99Z1S",
+      "name": "999 GROUND MAPS BFL",
+      "shortName": "GNDMAP",
+      "starsId": 999,
+      "brightnessCategory": "B"
+    }
+  ],
+  "boundaryMapCandidates": [
+    {
+      "id": "01HBPB6R3CQ4JX55MYTCHP69M0",
+      "name": "007S AIRSPACE BFL",
+      "shortName": "AIRSPCE",
+      "starsId": 7,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3C0598S8BG049H4PH2",
+      "name": "008S BFL TRACON ARRIVAL SECTOR AIRSPACE BFL",
+      "shortName": "AR",
+      "starsId": 8,
+      "brightnessCategory": "A"
+    },
+    {
+      "id": "01HBPB6R3D545B97WQA9SVYCT6",
+      "name": "009S BFL TRACON NORTH-SOUTH SECTOR LINE BFL",
+      "shortName": "N_S",
+      "starsId": 9,
+      "brightnessCategory": "A"
+    }
+  ]
+}
