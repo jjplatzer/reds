@@ -1,6 +1,37 @@
 package stars
 
-import "github.com/juliusplatzer/reds/renderer"
+import (
+	"github.com/juliusplatzer/reds/panes"
+	"github.com/juliusplatzer/reds/renderer"
+)
+
+const zBackground renderer.Z = -1000
+
+// STARSPane is the STARS TCW/TDW display surface. The initial implementation
+// intentionally renders only the official STARS monitor background; maps, DCB,
+// lists, targets, cursors, and other display elements are added separately.
+type STARSPane struct {
+	colors MonitorColors
+}
+
+// NewPane creates the initial STARS TCW pane using the official TCW default
+// palette from TI 6191.409 Rev. 30, Appendix B.
+func NewPane() *STARSPane {
+	return &STARSPane{colors: defaultTCWColors}
+}
+
+func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil {
+		return
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	backgroundCB := zcb.At(zBackground)
+	backgroundCB.Viewport(x, y, width, height)
+	backgroundCB.Scissor(x, y, width, height)
+	backgroundCB.ClearRGB(p.colors.Background)
+	backgroundCB.DisableScissor()
+}
 
 // MonitorColors contains the STARS TCW/TDW display colors.
 //
