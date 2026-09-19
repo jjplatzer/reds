@@ -13,6 +13,14 @@ const dcbButtonSize = 72
 
 const zDCBBackground renderer.Z = -900
 
+func (p *STARSPane) mouseOverDCB(ctx *panes.Context) bool {
+	if p == nil || ctx == nil || ctx.Mouse == nil {
+		return false
+	}
+	pos := ctx.Mouse.Pos
+	return pos.X >= 0 && pos.X < ctx.PaneRect.Width() && pos.Y >= 0 && pos.Y < dcbButtonSize
+}
+
 // drawDCBBackground draws only the DCB backing strip. Buttons, bevels, text,
 // input handling, and the other DCB presentation details are intentionally not
 // part of this first step.

@@ -9,9 +9,10 @@ const zBackground renderer.Z = -1000
 
 // STARSPane is the STARS TCW/TDW display surface. The initial implementation
 // intentionally renders only the official STARS monitor background; maps, DCB,
-// lists, targets, cursors, and other display elements are added separately.
+// lists, targets, and other display elements are added separately.
 type STARSPane struct {
-	colors MonitorColors
+	colors        MonitorColors
+	cursorTexture renderer.TextureID
 }
 
 // NewPane creates the initial STARS TCW pane using the official TCW default
@@ -33,6 +34,8 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	backgroundCB.DisableScissor()
 
 	p.drawDCBBackground(ctx, zcb)
+	p.applyCursor(ctx)
+	p.renderCursor(ctx, zcb)
 }
 
 // MonitorColors contains the STARS TCW/TDW display colors.
