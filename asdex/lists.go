@@ -264,7 +264,7 @@ func NewCoastList() CoastList {
 			MinBrightness: 20,
 			LineSpacing:   5,
 
-			BaseTextColor: renderer.RGB8(0, 248, 0),
+			BaseTextColor: monitorColors.ListText,
 		}),
 	}
 }
@@ -390,7 +390,7 @@ func (l *CoastList) buildFullBlock(
 		entry := ordered[start+index]
 		color := renderer.RGB{}
 		if entry.Selected {
-			color = renderer.RGB8(255, 255, 255)
+			color = monitorColors.ListSelectedText
 		}
 		block.Fragments = append(block.Fragments, TextFragment{
 			Text:       l.entryLine(entry),
@@ -793,7 +793,7 @@ func NewPreviewArea() PreviewArea {
 			MinBrightness: 20,
 			LineSpacing:   3,
 
-			BaseTextColor: renderer.RGB8(0, 248, 0),
+			BaseTextColor: monitorColors.ListText,
 		}),
 		state: DefaultPreviewAreaState(),
 	}

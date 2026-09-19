@@ -180,18 +180,6 @@ const (
 	dcbTextLineSpacing = 4
 )
 
-var (
-	dcbBackgroundRGB  = renderer.RGB8(56, 56, 56)
-	dcbMenuSlabRGB    = renderer.RGB8(100, 100, 100)
-	dcbButtonRGB      = renderer.RGB8(56, 56, 56)
-	dcbMenuButtonRGB  = renderer.RGB8(80, 80, 80)
-	dcbDepressedRGB   = renderer.RGB8(45, 45, 45)
-	dcbErrorButtonRGB = renderer.RGB8(255, 0, 0)
-	dcbTextRGB        = renderer.RGB8(255, 255, 255)
-	dcbTextHoverRGB   = renderer.RGB8(0, 255, 0)
-	dcbHighlightRGB   = renderer.RGB8(255, 220, 40)
-)
-
 type Dcb struct {
 	visible    bool
 	position   DcbPosition
@@ -923,19 +911,19 @@ func offDcbMenuSize(button redsmath.Vec2) redsmath.Vec2 {
 
 func (d *Dcb) buttonColor(spec DcbButtonSpec) renderer.RGB {
 	if d == nil {
-		return dcbButtonRGB
+		return monitorColors.DCBButton
 	}
 	if spec.Depressed {
-		return applyBrightness(dcbDepressedRGB, d.brightness, dcbMinBrightness)
+		return applyBrightness(monitorColors.DCBDepressed, d.brightness, dcbMinBrightness)
 	}
 
 	switch spec.Type {
 	case DcbButtonMenu:
-		return applyBrightness(dcbMenuButtonRGB, d.brightness, dcbMinBrightness)
+		return applyBrightness(monitorColors.DCBMenuButton, d.brightness, dcbMinBrightness)
 	case DcbButtonError:
-		return applyBrightness(dcbErrorButtonRGB, d.brightness, dcbMinBrightness)
+		return applyBrightness(monitorColors.DCBErrorButton, d.brightness, dcbMinBrightness)
 	default:
-		return applyBrightness(dcbButtonRGB, d.brightness, dcbMinBrightness)
+		return applyBrightness(monitorColors.DCBButton, d.brightness, dcbMinBrightness)
 	}
 }
 
@@ -2225,14 +2213,14 @@ func (d *Dcb) DrawBackground(cb *renderer.CmdBuffer, layout DcbLayout) {
 	builder := renderer.GetColoredTrianglesBuilder()
 	defer renderer.ReturnColoredTrianglesBuilder(builder)
 
-	menuSlab := applyBrightness(dcbMenuSlabRGB, d.brightness, dcbMinBrightness)
+	menuSlab := applyBrightness(monitorColors.DCBMenuSlab, d.brightness, dcbMinBrightness)
 	if layout.Collapsed {
 		addDcbRect(builder, layout.Bounds, menuSlab)
 		builder.GenerateCommands(cb)
 		return
 	}
 
-	background := applyBrightness(dcbBackgroundRGB, d.brightness, dcbMinBrightness)
+	background := applyBrightness(monitorColors.DCBBackground, d.brightness, dcbMinBrightness)
 	addDcbRect(builder, layout.Bounds, background)
 	if !layout.MenuBounds.Empty() {
 		addDcbRect(builder, layout.MenuBounds, menuSlab)
@@ -2635,32 +2623,32 @@ func (d *Dcb) toggleFragments(spec DcbButtonSpec) []string {
 
 func (d *Dcb) primaryTextColor(spec DcbButtonSpec, hovering bool) renderer.RGB {
 	if d == nil {
-		return dcbTextRGB
+		return monitorColors.DCBText
 	}
 	if spec.Type == DcbButtonError {
-		return applyBrightness(dcbTextRGB, d.brightness, dcbMinBrightness)
+		return applyBrightness(monitorColors.DCBText, d.brightness, dcbMinBrightness)
 	}
 	if spec.Active {
 		return d.highlightTextColor()
 	}
 	if hovering && !spec.Depressed {
-		return applyBrightness(dcbTextHoverRGB, d.brightness, dcbMinBrightness)
+		return applyBrightness(monitorColors.DCBTextHover, d.brightness, dcbMinBrightness)
 	}
 	return d.normalTextColor()
 }
 
 func (d *Dcb) highlightTextColor() renderer.RGB {
 	if d == nil {
-		return dcbHighlightRGB
+		return monitorColors.DCBHighlight
 	}
-	return applyBrightness(dcbHighlightRGB, d.brightness, dcbMinBrightness)
+	return applyBrightness(monitorColors.DCBHighlight, d.brightness, dcbMinBrightness)
 }
 
 func (d *Dcb) normalTextColor() renderer.RGB {
 	if d == nil {
-		return dcbTextRGB
+		return monitorColors.DCBText
 	}
-	return applyBrightness(dcbTextRGB, d.brightness, dcbMinBrightness)
+	return applyBrightness(monitorColors.DCBText, d.brightness, dcbMinBrightness)
 }
 
 func addDcbRect(builder *renderer.ColoredTrianglesBuilder, rect redsmath.Rect, color renderer.RGB) {

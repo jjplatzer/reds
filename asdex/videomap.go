@@ -351,24 +351,24 @@ func videoMapColor(polygonType PolygonType, mode Mode, brightness int) renderer.
 	var base renderer.RGB
 	switch polygonType {
 	case PolygonRunway:
-		base = renderer.RGB8(0, 0, 0)
+		base = monitorColors.VideoMapRunway
 	case PolygonTaxiway:
 		if day {
-			base = renderer.RGB8(47, 47, 47)
+			base = monitorColors.VideoMapTaxiwayDay
 		} else {
-			base = renderer.RGB8(17, 39, 80)
+			base = monitorColors.VideoMapTaxiwayNight
 		}
 	case PolygonApron:
 		if day {
-			base = renderer.RGB8(73, 73, 73)
+			base = monitorColors.VideoMapApronDay
 		} else {
-			base = renderer.RGB8(18, 55, 97)
+			base = monitorColors.VideoMapApronNight
 		}
 	case PolygonStructure:
 		if day {
-			base = renderer.RGB8(100, 100, 100)
+			base = monitorColors.VideoMapStructureDay
 		} else {
-			base = renderer.RGB8(34, 63, 103)
+			base = monitorColors.VideoMapStructureNight
 		}
 	}
 	return applyBrightness(base, brightness, brightnessFloorDefault)

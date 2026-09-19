@@ -73,12 +73,6 @@ const (
 	DataBlockAreaEditModifyTrait
 )
 
-var (
-	dbAreaOffRGB   = renderer.RGB8(255, 0, 0)
-	dbAreaTraitRGB = renderer.RGB8(0, 255, 0)
-	dbAreaDrawRGB  = renderer.RGB8(255, 255, 255)
-)
-
 func dbAreaEditModeForMenu(menu DcbMenu) DataBlockAreaEditMode {
 	if menu == DcbMenuModifyTraitArea {
 		return DataBlockAreaEditModifyTrait
@@ -641,9 +635,9 @@ func (p *ASDEXPane) drawDataBlockAreas(cb *renderer.CmdBuffer, windowID ScopeWin
 		}
 		builder.AddLineStrip(points)
 
-		rgb := dbAreaOffRGB
+		rgb := monitorColors.DBAreaOff
 		if area.Type == DataBlockAreaTrait {
-			rgb = dbAreaTraitRGB
+			rgb = monitorColors.DBAreaTrait
 		}
 		cb.SetRGB(applyBrightness(rgb, brightnessDefault, brightnessFloorDefault))
 		cb.LineWidth(1)
@@ -673,7 +667,7 @@ func (p *ASDEXPane) drawDataBlockAreaDraft(cb *renderer.CmdBuffer, windowID Scop
 	defer renderer.ReturnLinesBuilder(builder)
 
 	builder.AddLineStrip(points)
-	cb.SetRGB(applyBrightness(dbAreaDrawRGB, brightnessDefault, brightnessFloorDefault))
+	cb.SetRGB(applyBrightness(monitorColors.DBAreaDraw, brightnessDefault, brightnessFloorDefault))
 	cb.LineWidth(1)
 	builder.GenerateCommands(cb)
 }

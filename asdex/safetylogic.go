@@ -1291,7 +1291,7 @@ func (sl *SafetyLogic) DrawHoldBars(
 	}
 
 	cb.SetRGB(applyBrightness(
-		renderer.RGB8(0, 255, 0),
+		monitorColors.HoldBarActive,
 		brightness,
 		brightnessFloorDefault,
 	))
