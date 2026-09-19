@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -166,6 +167,20 @@ type redsSTARSFacilityConfig struct {
 	BoundaryMapCandidates []redsSTARSVideoMap `json:"boundaryMapCandidates,omitempty"`
 }
 
+type redsSTARSMapPackage struct {
+	ARTCC     string                   `json:"artcc"`
+	VideoMaps []redsSTARSVideoMapAsset `json:"videoMaps"`
+}
+
+type redsSTARSVideoMapAsset struct {
+	ID                 string          `json:"id"`
+	Name               string          `json:"name"`
+	ShortName          string          `json:"shortName,omitempty"`
+	STARSID            int             `json:"starsId,omitempty"`
+	BrightnessCategory string          `json:"brightnessCategory,omitempty"`
+	GeoJSON            json.RawMessage `json:"geojson"`
+}
+
 func runStars(args []string) error {
 	if len(args) < 1 {
 		return fmt.Errorf("usage: crc2reds stars <config> ...")
@@ -174,8 +189,10 @@ func runStars(args []string) error {
 	switch args[0] {
 	case "config":
 		return runStarsConfig(args[1:])
+	case "maps":
+		return runStarsMaps(args[1:])
 	default:
-		return fmt.Errorf("unknown STARS conversion %q; expected config", args[0])
+		return fmt.Errorf("unknown STARS conversion %q; expected config or maps", args[0])
 	}
 }
 
@@ -215,6 +232,201 @@ func runStarsConfig(args []string) error {
 
 	fmt.Printf("wrote %d STARS facility configs under %s\n", total, *outDir)
 	return nil
+}
+
+func runStarsMaps(args []string) error {
+	fs := flag.NewFlagSet("stars maps", flag.ContinueOnError)
+
+	inPath := fs.String("in", "", "CRC data root containing ARTCCs/ and VideoMaps/")
+	outDir := fs.String("out", "", "output directory; writes <ARTCC>.json.zst")
+	artcc := fs.String(
+		"artcc",
+		"",
+		"optional ARTCC id(s), comma-separated; blank processes every installed ARTCC",
+	)
+
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *inPath == "" || *outDir == "" {
+		return fmt.Errorf(
+			"usage: crc2reds stars maps -in /path/to/CRC -out resources/videomaps/stars [-artcc ZBW]",
+		)
+	}
+
+	artccs, err := starsARTCCs(*inPath, *artcc)
+	if err != nil {
+		return err
+	}
+	if len(artccs) == 0 {
+		return fmt.Errorf("no ARTCC JSON files found under %s", filepath.Join(*inPath, "ARTCCs"))
+	}
+
+	if err := os.MkdirAll(*outDir, 0o755); err != nil {
+		return err
+	}
+
+	written := 0
+	totalMaps := 0
+	for _, id := range artccs {
+		outPath := filepath.Join(*outDir, id+".json.zst")
+		n, err := convertSTARSMaps(*inPath, id, outPath)
+		if err != nil {
+			return err
+		}
+		if n == 0 {
+			fmt.Printf("skipped %s: no STARS videomaps referenced\n", id)
+			continue
+		}
+		written++
+		totalMaps += n
+	}
+
+	fmt.Printf(
+		"wrote %d STARS ARTCC map bundles (%d videomaps) under %s\n",
+		written,
+		totalMaps,
+		*outDir,
+	)
+	return nil
+}
+
+func convertSTARSMaps(root, artcc, outPath string) (int, error) {
+	if artcc == "" {
+		return 0, fmt.Errorf("empty ARTCC")
+	}
+
+	artccPath := filepath.Join(root, "ARTCCs", artcc+".json")
+	raw, err := os.ReadFile(artccPath)
+	if err != nil {
+		return 0, fmt.Errorf("read %s: %w", artccPath, err)
+	}
+
+	var src crcSTARSARTCC
+	if err := json.Unmarshal(raw, &src); err != nil {
+		return 0, fmt.Errorf("decode %s: %w", artccPath, err)
+	}
+
+	dst, err := buildRedsSTARSMapPackage(root, artcc, src)
+	if err != nil {
+		return 0, err
+	}
+	if len(dst.VideoMaps) == 0 {
+		return 0, nil
+	}
+
+	encoded, err := json.Marshal(dst)
+	if err != nil {
+		return 0, fmt.Errorf("encode STARS maps: %w", err)
+	}
+
+	if err := writeZstd(outPath, encoded); err != nil {
+		return 0, err
+	}
+
+	fmt.Printf(
+		"wrote %s: %d STARS videomaps\n",
+		outPath,
+		len(dst.VideoMaps),
+	)
+
+	return len(dst.VideoMaps), nil
+}
+
+func buildRedsSTARSMapPackage(
+	root string,
+	artcc string,
+	src crcSTARSARTCC,
+) (redsSTARSMapPackage, error) {
+	dst := redsSTARSMapPackage{
+		ARTCC: artcc,
+	}
+
+	videoByID := make(map[string]crcSTARSVideoMap, len(src.VideoMaps))
+	for _, vm := range src.VideoMaps {
+		if vm.ID != "" {
+			videoByID[vm.ID] = vm
+		}
+	}
+
+	// One ARTCC bundle contains the union of maps referenced by every
+	// STARS-equipped child facility. Per-facility membership and mapGroups
+	// remain in resources/configs/stars/<ARTCC>/<facility>.json.
+	referenced := make(map[string]struct{})
+	var facilities []*crcSTARSFacility
+	starsCollectFacilities(&src.Facility, &facilities)
+
+	for _, facility := range facilities {
+		if facility.STARSConfiguration == nil {
+			continue
+		}
+		for _, id := range facility.STARSConfiguration.VideoMapIDs {
+			id = strings.TrimSpace(id)
+			if id == "" {
+				return redsSTARSMapPackage{}, fmt.Errorf(
+					"STARS facility %q references an empty video map id",
+					facility.ID,
+				)
+			}
+			referenced[id] = struct{}{}
+		}
+	}
+
+	ids := make([]string, 0, len(referenced))
+	for id := range referenced {
+		ids = append(ids, id)
+	}
+	sort.Strings(ids)
+
+	for _, id := range ids {
+		meta, ok := videoByID[id]
+		if !ok {
+			return redsSTARSMapPackage{}, fmt.Errorf(
+				"STARS configuration references unknown video map %q",
+				id,
+			)
+		}
+
+		geoJSONPath := filepath.Join(
+			root,
+			"VideoMaps",
+			artcc,
+			id+".geojson",
+		)
+		geoJSON, err := os.ReadFile(geoJSONPath)
+		if err != nil {
+			return redsSTARSMapPackage{}, fmt.Errorf(
+				"read STARS videomap %s: %w",
+				id,
+				err,
+			)
+		}
+
+		geoJSON = bytes.TrimPrefix(
+			geoJSON,
+			[]byte{0xEF, 0xBB, 0xBF},
+		)
+		if !json.Valid(geoJSON) {
+			return redsSTARSMapPackage{}, fmt.Errorf(
+				"invalid GeoJSON in %s",
+				geoJSONPath,
+			)
+		}
+
+		dst.VideoMaps = append(
+			dst.VideoMaps,
+			redsSTARSVideoMapAsset{
+				ID:                 id,
+				Name:               meta.Name,
+				ShortName:          meta.ShortName,
+				STARSID:            meta.STARSID,
+				BrightnessCategory: meta.STARSBrightnessCategory,
+				GeoJSON:            json.RawMessage(geoJSON),
+			},
+		)
+	}
+
+	return dst, nil
 }
 
 func starsARTCCs(root, selected string) ([]string, error) {
