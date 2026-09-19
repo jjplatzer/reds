@@ -31,6 +31,8 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	backgroundCB.Scissor(x, y, width, height)
 	backgroundCB.ClearRGB(p.colors.Background)
 	backgroundCB.DisableScissor()
+
+	p.drawDCBBackground(ctx, zcb)
 }
 
 // MonitorColors contains the STARS TCW/TDW display colors.
