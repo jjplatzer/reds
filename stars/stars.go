@@ -11,14 +11,19 @@ const zBackground renderer.Z = -1000
 // intentionally renders only the official STARS monitor background; maps, DCB,
 // lists, targets, and other display elements are added separately.
 type STARSPane struct {
-	colors        MonitorColors
-	cursorTexture renderer.TextureID
+	colors             MonitorColors
+	cursorTexture      renderer.TextureID
+	systemFont         *renderer.BitmapFont
+	systemFontTextures map[int]renderer.TextureID
 }
 
 // NewPane creates the initial STARS TCW pane using the official TCW default
 // palette from TI 6191.409 Rev. 30, Appendix B.
 func NewPane() *STARSPane {
-	return &STARSPane{colors: defaultTCWColors}
+	return &STARSPane{
+		colors:     defaultTCWColors,
+		systemFont: newDefaultSystemFont(),
+	}
 }
 
 func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {

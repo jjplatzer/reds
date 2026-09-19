@@ -1,6 +1,9 @@
 package stars
 
 import (
+	"time"
+
+	redsmath "github.com/juliusplatzer/reds/math"
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/renderer"
 )
@@ -23,8 +26,8 @@ const (
 )
 
 // drawSSA draws the System Status Area. For now this intentionally contains
-// only the mandatory Red Check symbol from TI 6191.409 Rev. 30, Table 2-15;
-// the remaining SSA fields are added separately.
+// only the mandatory Red Check symbol and UTC time from TI 6191.409 Rev. 30,
+// Table 2-15; the remaining SSA fields are added separately.
 func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if p == nil || ctx == nil || zcb == nil {
 		return
@@ -77,6 +80,25 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	)
 	triangle.GenerateCommands(cb)
 	renderer.ReturnColoredTrianglesBuilder(triangle)
+
+	// TI 6191.409 Rev. 30, Table 2-15 field E displays UTC as HHMM/SS.
+	// VICE places the first SSA text line 10 display units below the Red Check
+	// anchor, with its left edge aligned to the check box's left edge.
+	texture := p.systemFontTexture(ctx.Renderer, defaultListFontSize)
+	if texture != 0 && p.systemFont != nil {
+		td := renderer.GetTextDrawBuilder()
+		td.SetFont(p.systemFont)
+		td.AddText(
+			time.Now().UTC().Format("1504/05"),
+			redsmath.Vec2{X: ssaDefaultX * w, Y: centerY + 10},
+			renderer.TextStyle{
+				Size:  defaultListFontSize,
+				Color: p.colors.List.ToRGBA(),
+			},
+		)
+		td.GenerateCommands(cb, texture)
+		renderer.ReturnTextDrawBuilder(td)
+	}
 
 	cb.DisableScissor()
 }
