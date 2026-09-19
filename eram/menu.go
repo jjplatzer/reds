@@ -161,9 +161,9 @@ func (p *ERAMPane) drawPopup(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 	cb.DisableBlend()
 
-	body := applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness)
-	border := applyERAMBrightness(toolbarWhite, p.borderBrightness, p.systemBrightness)
-	text := applyERAMBrightness(toolbarWhite, p.textBrightness, p.systemBrightness)
+	body := applyERAMBrightness(monitorColors.Gray, p.buttonBrightness, p.systemBrightness)
+	border := applyERAMBrightness(monitorColors.White, p.borderBrightness, p.systemBrightness)
+	text := applyERAMBrightness(monitorColors.White, p.textBrightness, p.systemBrightness)
 	drawSolidRect(cb, bounds, body)
 	drawBorderOnly(cb, bounds, border, eramPopupBorder)
 
@@ -175,7 +175,7 @@ func (p *ERAMPane) drawPopup(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	renderer.ReturnTextDrawBuilder(td)
 
 	if ctx.Mouse != nil && bounds.Contains(ctx.Mouse.Pos) {
-		emphasis := applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness)
+		emphasis := applyERAMBrightness(monitorColors.White, p.pairedTargetBrightness, p.systemBrightness)
 		drawBorderOnly(cb, bounds, emphasis, 1)
 	}
 	cb.DisableScissor()
@@ -941,12 +941,12 @@ func (p *ERAMPane) drawViewSettingsMenu(ctx *panes.Context, zcb *renderer.ZCmdBu
 		mousePos = ctx.Mouse.Pos
 	}
 
-	gray := applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness)
-	black := toolbarBlack
-	green := applyERAMBrightness(toolbarIncDecGreen, p.buttonBrightness, p.systemBrightness)
-	border := applyERAMBrightness(toolbarWhite, p.borderBrightness, p.systemBrightness)
-	hoverBorder := applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness)
-	textColor := applyERAMBrightness(toolbarWhite, p.textBrightness, p.systemBrightness).ToRGBA()
+	gray := applyERAMBrightness(monitorColors.Gray, p.buttonBrightness, p.systemBrightness)
+	black := monitorColors.Black
+	green := applyERAMBrightness(monitorColors.IncDecGreen, p.buttonBrightness, p.systemBrightness)
+	border := applyERAMBrightness(monitorColors.White, p.borderBrightness, p.systemBrightness)
+	hoverBorder := applyERAMBrightness(monitorColors.White, p.pairedTargetBrightness, p.systemBrightness)
+	textColor := applyERAMBrightness(monitorColors.White, p.textBrightness, p.systemBrightness).ToRGBA()
 
 	// CRC overlaps adjacent MenuPickArea borders by one pixel. Draw all normal
 	// faces first, then draw the hovered outline last. Otherwise the next row's

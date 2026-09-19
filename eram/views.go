@@ -59,11 +59,6 @@ const (
 	clockBorderWidth       = 1
 )
 
-var (
-	clockWhite    = renderer.RGB8(243, 243, 243) // EramColor.White
-	clockDarkBlue = renderer.RGB8(0, 0, 212)     // EramColor.DarkBlue
-)
-
 type eramClockState struct {
 	location   eramAnchoredLocation
 	brightness int
@@ -89,8 +84,6 @@ const (
 	eramMCAFeedbackMinLines      = 4
 	eramResponseAreaMinimumLines = 4
 )
-
-var eramAreaBlack = renderer.RGB8(0, 0, 0) // EramColor.Black
 
 type eramMCAState struct {
 	location      eramAnchoredLocation
@@ -423,7 +416,7 @@ func (p *ERAMPane) drawClock(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if p.clock.isOpaque {
 		cb.DisableBlend()
 		drawSolidRect(cb, bounds, applyERAMBrightness(
-			clockDarkBlue,
+			monitorColors.Background,
 			p.backgroundBrightness,
 			p.systemBrightness,
 		))
@@ -432,7 +425,7 @@ func (p *ERAMPane) drawClock(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 	if p.clock.showBorder {
 		drawBorderOnly(cb, bounds, applyERAMBrightness(
-			clockWhite,
+			monitorColors.White,
 			p.borderBrightness,
 			p.systemBrightness,
 		), clockBorderWidth)
@@ -443,14 +436,14 @@ func (p *ERAMPane) drawClock(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	td.SetFont(font)
 	background := renderer.RGBA{}
 	if p.clock.isOpaque {
-		background = applyERAMBrightness(clockDarkBlue, p.backgroundBrightness, p.systemBrightness).ToRGBA()
+		background = applyERAMBrightness(monitorColors.Background, p.backgroundBrightness, p.systemBrightness).ToRGBA()
 	}
 	td.AddText(text, redsmath.Vec2{
 		X: bounds.Min.X + clockBorderWidth + float32(padX),
 		Y: bounds.Min.Y + clockBorderWidth + float32(padY),
 	}, renderer.TextStyle{
 		Size:       fontSize,
-		Color:      applyERAMBrightness(clockWhite, p.clock.brightness, p.systemBrightness).ToRGBA(),
+		Color:      applyERAMBrightness(monitorColors.White, p.clock.brightness, p.systemBrightness).ToRGBA(),
 		Background: background,
 	})
 	// Transparent font backgrounds only work when blending is active. Keeping
@@ -769,8 +762,8 @@ func (p *ERAMPane) drawMCA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.Scissor(x, y, width, height)
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 	cb.DisableBlend()
-	drawSolidRect(cb, bounds, eramAreaBlack)
-	borderColor := applyERAMBrightness(clockWhite, p.borderBrightness, p.systemBrightness)
+	drawSolidRect(cb, bounds, monitorColors.Black)
+	borderColor := applyERAMBrightness(monitorColors.White, p.borderBrightness, p.systemBrightness)
 	drawBorderOnly(cb, bounds, borderColor, eramAreaBorderWidth)
 
 	previewLines, _, separatorVisible := p.mcaSectionLines()
@@ -785,9 +778,9 @@ func (p *ERAMPane) drawMCA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		), borderColor)
 	}
 
-	textColor := applyERAMBrightness(clockWhite, p.mca.brightness, p.systemBrightness).ToRGBA()
-	cursorColor := applyERAMBrightness(clockWhite, p.pairedTargetBrightness, p.systemBrightness).ToRGBA()
-	black := eramAreaBlack.ToRGBA()
+	textColor := applyERAMBrightness(monitorColors.White, p.mca.brightness, p.systemBrightness).ToRGBA()
+	cursorColor := applyERAMBrightness(monitorColors.White, p.pairedTargetBrightness, p.systemBrightness).ToRGBA()
+	black := monitorColors.Black.ToRGBA()
 	contentOrigin := redsmath.Vec2{
 		X: bounds.Min.X + eramAreaBorderWidth + eramAreaPaddingX,
 		Y: bounds.Min.Y + eramAreaBorderWidth + eramAreaPaddingY,
@@ -836,10 +829,10 @@ func (p *ERAMPane) drawMCA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if len(p.mca.feedback) != 0 {
 		feedbackY := bounds.Min.Y + eramAreaBorderWidth + float32(previewHeight) + 1 + eramAreaPaddingY
 		marker := string(rune(132)) // EramChar.CheckMark
-		markerColor := applyERAMBrightness(renderer.RGB8(0, 243, 0), p.mca.brightness, p.systemBrightness).ToRGBA()
+		markerColor := applyERAMBrightness(monitorColors.Green, p.mca.brightness, p.systemBrightness).ToRGBA()
 		if p.mca.feedbackError {
 			marker = string(rune(133)) // EramChar.XMark
-			markerColor = applyERAMBrightness(renderer.RGB8(243, 0, 0), p.mca.brightness, p.systemBrightness).ToRGBA()
+			markerColor = applyERAMBrightness(monitorColors.Red, p.mca.brightness, p.systemBrightness).ToRGBA()
 		}
 		td.AddText(marker+" ", redsmath.Vec2{X: contentOrigin.X, Y: feedbackY}, renderer.TextStyle{
 			Size: p.mca.fontSize, Color: markerColor, Background: black,
@@ -878,8 +871,8 @@ func (p *ERAMPane) drawResponseArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer
 	cb.Scissor(x, y, width, height)
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 	cb.DisableBlend()
-	drawSolidRect(cb, bounds, eramAreaBlack)
-	drawBorderOnly(cb, bounds, applyERAMBrightness(clockWhite, p.borderBrightness, p.systemBrightness), eramAreaBorderWidth)
+	drawSolidRect(cb, bounds, monitorColors.Black)
+	drawBorderOnly(cb, bounds, applyERAMBrightness(monitorColors.White, p.borderBrightness, p.systemBrightness), eramAreaBorderWidth)
 	cb.Blend()
 	cb.DisableScissor()
 }
@@ -896,7 +889,7 @@ func (p *ERAMPane) drawViewMoveFrame(ctx *panes.Context, zcb *renderer.ZCmdBuffe
 	cb.Scissor(x, y, width, height)
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 	cb.DisableBlend()
-	drawBorderOnly(cb, bounds, applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness), 1)
+	drawBorderOnly(cb, bounds, applyERAMBrightness(monitorColors.White, p.pairedTargetBrightness, p.systemBrightness), 1)
 	cb.Blend()
 	cb.DisableScissor()
 }
@@ -1241,12 +1234,12 @@ func (p *ERAMPane) drawAltimSet(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 	cb.DisableBlend()
 
-	border := applyERAMBrightness(toolbarWhite, p.borderBrightness, p.systemBrightness)
-	textColor := applyERAMBrightness(toolbarWhite, p.altim.prefs.brightness, p.systemBrightness)
-	black := toolbarBlack
+	border := applyERAMBrightness(monitorColors.White, p.borderBrightness, p.systemBrightness)
+	textColor := applyERAMBrightness(monitorColors.White, p.altim.prefs.brightness, p.systemBrightness)
+	black := monitorColors.Black
 	headerBackground := black
 	if p.altim.prefs.isOpaque {
-		headerBackground = applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness)
+		headerBackground = applyERAMBrightness(monitorColors.Gray, p.buttonBrightness, p.systemBrightness)
 	}
 
 	if !layout.Body.Empty() {
@@ -1276,13 +1269,13 @@ func (p *ERAMPane) drawAltimSet(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	if p.altim.prefs.showTearoffs {
 		for _, entry := range layout.Entries {
-			drawSolidRect(cb, entry.Tearoff, applyERAMBrightness(wxReportGold, p.altim.prefs.brightness, p.systemBrightness))
+			drawSolidRect(cb, entry.Tearoff, applyERAMBrightness(monitorColors.Gold, p.altim.prefs.brightness, p.systemBrightness))
 			drawBorderOnly(cb, entry.Tearoff, border, 1)
 		}
 	}
 
 	if layout.ScrollVisible {
-		deemphasized := applyERAMBrightness(checklistGray, p.altim.prefs.brightness, p.systemBrightness)
+		deemphasized := applyERAMBrightness(monitorColors.Gray, p.altim.prefs.brightness, p.systemBrightness)
 		upColor := deemphasized
 		if p.altim.top > 0 {
 			upColor = textColor
@@ -1371,7 +1364,7 @@ func (p *ERAMPane) drawAltimSet(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 
 	if ctx.Mouse != nil {
-		emphasis := applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness)
+		emphasis := applyERAMBrightness(monitorColors.White, p.pairedTargetBrightness, p.systemBrightness)
 		for _, entry := range layout.Entries {
 			if entry.Text.Contains(ctx.Mouse.Pos) {
 				drawBorderOnly(cb, entry.Text, emphasis, 1)
@@ -1399,8 +1392,6 @@ const (
 	wxReportLineSpacing          = 6
 	wxReportEntryGap             = 1 // one blank text line between station entries
 )
-
-var wxReportGold = renderer.RGB8(207, 212, 12) // EramColor.Gold
 
 type wxReportVisibleLine struct {
 	StationIndex int
@@ -1777,12 +1768,12 @@ func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 	cb.DisableBlend()
 
-	border := applyERAMBrightness(toolbarWhite, p.borderBrightness, p.systemBrightness)
-	textColor := applyERAMBrightness(toolbarWhite, p.wxReport.prefs.brightness, p.systemBrightness)
-	black := toolbarBlack
+	border := applyERAMBrightness(monitorColors.White, p.borderBrightness, p.systemBrightness)
+	textColor := applyERAMBrightness(monitorColors.White, p.wxReport.prefs.brightness, p.systemBrightness)
+	black := monitorColors.Black
 	headerBackground := black
 	if p.wxReport.prefs.isOpaque {
-		headerBackground = applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness)
+		headerBackground = applyERAMBrightness(monitorColors.Gray, p.buttonBrightness, p.systemBrightness)
 	}
 
 	if !layout.Body.Empty() {
@@ -1805,7 +1796,7 @@ func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if p.popup.Kind == eramPopupDeleteWXReport {
 		selectedICAO = p.popup.Payload
 	}
-	selectionFill := applyERAMBrightness(toolbarWhite, p.wxReport.prefs.brightness, p.systemBrightness)
+	selectionFill := applyERAMBrightness(monitorColors.White, p.wxReport.prefs.brightness, p.systemBrightness)
 	for _, stationText := range layout.StationText {
 		if stationText.StationIndex < 0 || stationText.StationIndex >= len(p.wxReport.stations) || p.wxReport.stations[stationText.StationIndex].ICAO != selectedICAO {
 			continue
@@ -1828,14 +1819,14 @@ func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				layout.ContentOrigin.X+tearoffTotalWidth,
 				y+tearoffTotalHeight,
 			)
-			drawSolidRect(cb, tearoff, applyERAMBrightness(wxReportGold, p.wxReport.prefs.brightness, p.systemBrightness))
+			drawSolidRect(cb, tearoff, applyERAMBrightness(monitorColors.Gold, p.wxReport.prefs.brightness, p.systemBrightness))
 			drawBorderOnly(cb, tearoff, border, 1)
 		}
 	}
 
 	if layout.ScrollVisible {
 		emphasized := textColor
-		deemphasized := applyERAMBrightness(checklistGray, p.wxReport.prefs.brightness, p.systemBrightness)
+		deemphasized := applyERAMBrightness(monitorColors.Gray, p.wxReport.prefs.brightness, p.systemBrightness)
 		upColor := deemphasized
 		if p.wxReport.topLine > 0 {
 			upColor = emphasized
@@ -1860,7 +1851,7 @@ func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	headerTD := renderer.GetTextDrawBuilder()
 	defer renderer.ReturnTextDrawBuilder(headerTD)
 	headerTD.SetFont(font)
-	headerColor := applyERAMBrightness(toolbarWhite, p.wxReport.prefs.brightness, p.systemBrightness).ToRGBA()
+	headerColor := applyERAMBrightness(monitorColors.White, p.wxReport.prefs.brightness, p.systemBrightness).ToRGBA()
 	addCenteredMenuText(headerTD, font, "M", layout.Menu, 2, headerColor, headerBackground.ToRGBA())
 	addCenteredMenuText(headerTD, font, "WX", layout.Title, 2, headerColor, headerBackground.ToRGBA())
 	addCenteredMenuText(headerTD, font, "-", layout.Suppress, 2, headerColor, headerBackground.ToRGBA())
@@ -1885,7 +1876,7 @@ func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			lineColor := textColor.ToRGBA()
 			lineBackground := black.ToRGBA()
 			if line.StationIndex >= 0 && line.StationIndex < len(p.wxReport.stations) && p.wxReport.stations[line.StationIndex].ICAO == selectedICAO {
-				lineColor = toolbarBlack.ToRGBA()
+				lineColor = monitorColors.Black.ToRGBA()
 				lineBackground = selectionFill.ToRGBA()
 			}
 			td.AddText(line.Line, redsmath.Vec2{X: x, Y: y}, renderer.TextStyle{
@@ -1900,7 +1891,7 @@ func (p *ERAMPane) drawWXReport(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	// Text node cursor emphasis is a 1 px White/PairedTarget circumscription.
 	// Draw it after opaque glyph backgrounds so the bottom edge remains solid.
 	if ctx.Mouse != nil {
-		emphasis := applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness)
+		emphasis := applyERAMBrightness(monitorColors.White, p.pairedTargetBrightness, p.systemBrightness)
 		for _, stationText := range layout.StationText {
 			if stationText.Bounds.Contains(ctx.Mouse.Pos) {
 				drawBorderOnly(cb, stationText.Bounds, emphasis, 1)
@@ -1918,8 +1909,6 @@ const (
 	checklistEntryGap     = 1
 	checklistTextYPadding = 3
 )
-
-var checklistGray = renderer.RGB8(199, 199, 199) // EramColor.Gray
 
 func (p *ERAMPane) checklistEntries() []string {
 	if p == nil {
@@ -2238,12 +2227,12 @@ func (p *ERAMPane) drawChecklist(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 	cb.DisableBlend()
 
-	border := applyERAMBrightness(toolbarWhite, p.borderBrightness, p.systemBrightness)
-	text := applyERAMBrightness(toolbarWhite, p.checklist.prefs.brightness, p.systemBrightness)
-	black := toolbarBlack
+	border := applyERAMBrightness(monitorColors.White, p.borderBrightness, p.systemBrightness)
+	text := applyERAMBrightness(monitorColors.White, p.checklist.prefs.brightness, p.systemBrightness)
+	black := monitorColors.Black
 	headerBackground := black
 	if p.checklist.prefs.isOpaque {
-		headerBackground = applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness)
+		headerBackground = applyERAMBrightness(monitorColors.Gray, p.buttonBrightness, p.systemBrightness)
 	}
 
 	// ViewListBase always gives its contents a black body. ShowBorder only
@@ -2273,7 +2262,7 @@ func (p *ERAMPane) drawChecklist(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			continue
 		}
 		entry := layout.EntryText[i]
-		fill := applyERAMBrightness(checklistGray, p.checklist.prefs.highlightBrightness, p.systemBrightness)
+		fill := applyERAMBrightness(monitorColors.Gray, p.checklist.prefs.highlightBrightness, p.systemBrightness)
 		// Selection circumscription extends 2 px around measured text.
 		drawSolidRect(cb, entry, fill)
 	}
@@ -2285,7 +2274,7 @@ func (p *ERAMPane) drawChecklist(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if layout.ScrollVisible {
 		upEnabled := p.checklist.topLine > 0
 		downEnabled := p.checklist.topLine+p.checklist.prefs.lines < len(p.checklistEntries())
-		dim := applyERAMBrightness(checklistGray, p.checklist.prefs.brightness, p.systemBrightness)
+		dim := applyERAMBrightness(monitorColors.Gray, p.checklist.prefs.brightness, p.systemBrightness)
 		upColor := dim
 		downColor := dim
 		if upEnabled {
@@ -2322,7 +2311,7 @@ func (p *ERAMPane) drawChecklist(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		entry := raw + strings.Repeat(" ", maxInt(0, layout.LongestChars-len([]rune(raw))))
 		background := black.ToRGBA()
 		if p.checklist.selected[layout.EntryIndices[i]] {
-			background = applyERAMBrightness(checklistGray, p.checklist.prefs.highlightBrightness, p.systemBrightness).ToRGBA()
+			background = applyERAMBrightness(monitorColors.Gray, p.checklist.prefs.highlightBrightness, p.systemBrightness).ToRGBA()
 		}
 		td.AddText(entry, redsmath.Vec2{
 			X: layout.ContentOrigin.X,
@@ -2343,7 +2332,7 @@ func (p *ERAMPane) drawChecklist(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	// and entry text have been submitted.
 	if ctx.Mouse != nil {
 		hover := ctx.Mouse.Pos
-		emphasis := applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness)
+		emphasis := applyERAMBrightness(monitorColors.White, p.pairedTargetBrightness, p.systemBrightness)
 		switch {
 		case layout.Menu.Contains(hover):
 			drawBorderOnly(cb, layout.Menu, emphasis, 1)

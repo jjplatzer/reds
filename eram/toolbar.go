@@ -55,21 +55,6 @@ const (
 	zButtonMoveFrame renderer.Z = 900
 )
 
-// CRC ERAM color names and raw values used by the toolbar.
-var (
-	toolbarWhite       = renderer.RGB8(243, 243, 243) // EramColor.White
-	toolbarLightGray   = renderer.RGB8(210, 210, 210) // EramColor.LightGray
-	toolbarBlue        = renderer.RGB8(0, 0, 212)     // EramColor.Blue
-	toolbarBurntCoral  = renderer.RGB8(220, 160, 155) // EramColor.BurntCoral
-	toolbarTeal        = renderer.RGB8(0, 201, 212)   // EramColor.Teal
-	toolbarIncDecGreen = renderer.RGB8(0, 205, 0)     // EramColor.IncDecGreen
-	toolbarBrightGold  = renderer.RGB8(255, 255, 161) // EramColor.BrightGold
-	// BrightCoral's palette value (255,140,0) is one of CRC's gamma-corrected
-	// colors; EramColor.GetColor therefore supplies (255,194,0) to the style.
-	toolbarBrightCoral = renderer.RGB8(255, 194, 0) // EramColor.BrightCoral
-	toolbarBlack       = renderer.RGB8(0, 0, 0)     // EramColor.Black
-)
-
 type toolbarButtonKind uint8
 
 const (
@@ -1203,10 +1188,10 @@ func (p *ERAMPane) drawToolbar(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			masterCB := zcb.At(toolbarZ(depth))
 			prepareToolbarCB(masterCB, ctx, x, y, width, fbHeight)
 			if depth == 0 {
-				drawSolidRect(masterCB, redsmath.NewRect(0, 0, paneWidth, metrics.toolbarHeight), applyERAMBrightness(toolbarGray, p.toolbarBrightness, p.systemBrightness))
+				drawSolidRect(masterCB, redsmath.NewRect(0, 0, paneWidth, metrics.toolbarHeight), applyERAMBrightness(monitorColors.Gray, p.toolbarBrightness, p.systemBrightness))
 
 				// CRC's visible lower half of the master-toolbar move-down control.
-				p.drawToolbarBorderedRect(masterCB, moveRect, toolbarGray, p.buttonBrightness, false, toolbarWhite, p.borderBrightness, 1)
+				p.drawToolbarBorderedRect(masterCB, moveRect, monitorColors.Gray, p.buttonBrightness, false, monitorColors.White, p.borderBrightness, 1)
 			}
 
 			for _, expansion := range expansions {
@@ -1219,7 +1204,7 @@ func (p *ERAMPane) drawToolbar(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 			if depth == 0 {
 				// The one-pixel interior line is part of CRC's 73-pixel footprint.
-				drawSolidRect(masterCB, redsmath.NewRect(0, metrics.toolbarHeight-1, paneWidth, metrics.toolbarHeight), applyERAMBrightness(toolbarWhite, p.toolbarBorderBrightness, p.systemBrightness))
+				drawSolidRect(masterCB, redsmath.NewRect(0, metrics.toolbarHeight-1, paneWidth, metrics.toolbarHeight), applyERAMBrightness(monitorColors.White, p.toolbarBorderBrightness, p.systemBrightness))
 				p.drawToolbarArrow(ctx, masterCB, moveRect, metrics)
 			}
 			masterCB.Blend()
@@ -1256,7 +1241,7 @@ func (p *ERAMPane) drawToolbar(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			p.toolbar.moving.Position.X+p.toolbar.moving.Size.X,
 			p.toolbar.moving.Position.Y+p.toolbar.moving.Size.Y,
 		)
-		drawBorderOnly(cb, bounds, applyERAMBrightness(toolbarWhite, p.pairedTargetBrightness, p.systemBrightness), 1)
+		drawBorderOnly(cb, bounds, applyERAMBrightness(monitorColors.White, p.pairedTargetBrightness, p.systemBrightness), 1)
 		cb.Blend()
 		cb.DisableScissor()
 	}
@@ -1270,7 +1255,7 @@ func (p *ERAMPane) drawTearoffDeletionX(cb *renderer.CmdBuffer, buttons []toolba
 		if layout.Owner != owner || layout.Depth != 0 {
 			continue
 		}
-		color := applyERAMBrightness(toolbarWhite, p.borderBrightness, p.systemBrightness)
+		color := applyERAMBrightness(monitorColors.White, p.borderBrightness, p.systemBrightness)
 		cb.SetRGB(color)
 		cb.LineWidth(1)
 		cb.DrawLines(
@@ -1314,16 +1299,16 @@ func prepareToolbarCB(cb *renderer.CmdBuffer, ctx *panes.Context, x, y, width, h
 
 func (p *ERAMPane) drawToolbarExpansion(cb *renderer.CmdBuffer, bounds redsmath.Rect, suppressBorder bool) {
 	if suppressBorder {
-		drawSolidRect(cb, bounds, applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness))
+		drawSolidRect(cb, bounds, applyERAMBrightness(monitorColors.Gray, p.buttonBrightness, p.systemBrightness))
 		return
 	}
 	p.drawToolbarBorderedRect(
 		cb,
 		bounds,
-		toolbarGray,
+		monitorColors.Gray,
 		p.buttonBrightness,
 		false,
-		toolbarBrightCoral,
+		monitorColors.BrightCoral,
 		p.borderBrightness,
 		toolbarExpansionBorder,
 	)
@@ -1346,48 +1331,48 @@ func (p *ERAMPane) drawToolbarButtons(
 		hoverPick := p.toolbar.moving == nil && ctx.Mouse != nil && !layout.Spec.Disabled && layout.Pick.Contains(ctx.Mouse.Pos)
 
 		if !layout.Spec.NoControl {
-			controlColor := toolbarBrightGold
+			controlColor := monitorColors.BrightGold
 			// A button that already has a floating copy loses its tear-off action.
 			// The exception is the depth-0 root of that floating copy: its control
 			// remains active because it is the handle used to reposition it.
 			if p.hasToolbarTearoff(layout.Spec.ID) &&
 				!(owner.Kind == toolbarOwnerTearoff && layout.Depth == 0) {
-				controlColor = toolbarGray
+				controlColor = monitorColors.Gray
 			}
-			p.drawToolbarBorderedRect(cb, layout.Control, controlColor, p.buttonBrightness, hoverControl, toolbarWhite, p.borderBrightness, 1)
+			p.drawToolbarBorderedRect(cb, layout.Control, controlColor, p.buttonBrightness, hoverControl, monitorColors.White, p.borderBrightness, 1)
 		}
 
-		background := toolbarBlack
+		background := monitorColors.Black
 		borderBrightness := p.borderBrightness
 		switch layout.Spec.Kind {
 		case toolbarMenuButton:
-			background = toolbarBlue
+			background = monitorColors.Blue
 			if p.toolbarLayoutExpanded(layout) {
-				background = toolbarBurntCoral
+				background = monitorColors.BurntCoral
 			}
 		case toolbarCommandButton:
-			background = toolbarTeal
+			background = monitorColors.Teal
 			if layout.Spec.Active {
 				// CRC CommandButtonActiveOutline uses PairedTarget BCG and the
 				// active command face changes from Teal to BurntCoral.
-				background = toolbarBurntCoral
+				background = monitorColors.BurntCoral
 				borderBrightness = p.pairedTargetBrightness
 			}
 		case toolbarIncDecButton:
-			background = toolbarIncDecGreen
+			background = monitorColors.IncDecGreen
 		case toolbarPressHoldButton:
-			background = toolbarBlack
+			background = monitorColors.Black
 		default:
 			if layout.Spec.Active || p.toolbarLayoutExpanded(layout) {
-				background = toolbarGray
+				background = monitorColors.Gray
 			}
 		}
-		p.drawToolbarBorderedRect(cb, layout.Pick, background, p.buttonBrightness, hoverPick, toolbarWhite, borderBrightness, 1)
+		p.drawToolbarBorderedRect(cb, layout.Pick, background, p.buttonBrightness, hoverPick, monitorColors.White, borderBrightness, 1)
 
 		if layout.Spec.Kind == toolbarPressHoldButton {
 			// CRC's inactive press/hold buttons have a 10x10 gray cut corner.
 			x1, y0 := layout.Pick.Max.X-1, layout.Pick.Min.Y+1
-			cb.SetRGB(applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness))
+			cb.SetRGB(applyERAMBrightness(monitorColors.Gray, p.buttonBrightness, p.systemBrightness))
 			cb.DrawTriangles(
 				[]renderer.PointVertex{{X: x1 - 10, Y: y0}, {X: x1, Y: y0}, {X: x1, Y: y0 + 10}},
 				[]uint32{0, 1, 2}, renderer.DrawSolid, 0,
@@ -1416,9 +1401,9 @@ func (p *ERAMPane) drawToolbarText(
 			continue
 		}
 		lines := p.toolbarButtonLines(layout.Spec)
-		textColor := toolbarWhite
+		textColor := monitorColors.White
 		if layout.Spec.Disabled {
-			textColor = toolbarLightGray
+			textColor = monitorColors.LightGray
 		}
 		background := p.toolbarButtonBackground(layout)
 		for lineIndex, line := range lines {
@@ -1454,8 +1439,8 @@ func (p *ERAMPane) drawToolbarArrow(ctx *panes.Context, cb *renderer.CmdBuffer, 
 	td.SetFont(p.toolbar.font)
 	td.AddText(arrow, redsmath.Vec2{X: float32(int(x)), Y: float32(int(y))}, renderer.TextStyle{
 		Size:       metrics.fontSize,
-		Color:      applyERAMBrightness(toolbarWhite, p.textBrightness, p.systemBrightness).ToRGBA(),
-		Background: applyERAMBrightness(toolbarGray, p.buttonBrightness, p.systemBrightness).ToRGBA(),
+		Color:      applyERAMBrightness(monitorColors.White, p.textBrightness, p.systemBrightness).ToRGBA(),
+		Background: applyERAMBrightness(monitorColors.Gray, p.buttonBrightness, p.systemBrightness).ToRGBA(),
 	})
 	td.GenerateCommands(cb, texture)
 }
@@ -1464,23 +1449,23 @@ func (p *ERAMPane) toolbarButtonBackground(layout toolbarButtonLayout) renderer.
 	switch layout.Spec.Kind {
 	case toolbarMenuButton:
 		if p.toolbarLayoutExpanded(layout) {
-			return toolbarBurntCoral
+			return monitorColors.BurntCoral
 		}
-		return toolbarBlue
+		return monitorColors.Blue
 	case toolbarCommandButton:
 		if layout.Spec.Active {
-			return toolbarBurntCoral
+			return monitorColors.BurntCoral
 		}
-		return toolbarTeal
+		return monitorColors.Teal
 	case toolbarIncDecButton:
-		return toolbarIncDecGreen
+		return monitorColors.IncDecGreen
 	case toolbarPressHoldButton:
-		return toolbarBlack
+		return monitorColors.Black
 	default:
 		if layout.Spec.Active || p.toolbarLayoutExpanded(layout) {
-			return toolbarGray
+			return monitorColors.Gray
 		}
-		return toolbarBlack
+		return monitorColors.Black
 	}
 }
 
