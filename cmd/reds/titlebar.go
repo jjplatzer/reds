@@ -265,10 +265,17 @@ func drawTitleBarMenuPopup(
 			)
 		}
 
-		drawTitleBarMenuItemText(
+		textPadX := float32(titleBarMenuTextPadX)
+		if menuOptions.ShowStarsFontSetB {
+			// Reserve the same check gutter as the STARS font row so both
+			// labels start on the same vertical axis.
+			textPadX = titleBarMenuCheckedTextPadX
+		}
+		drawTitleBarMenuItemTextWithPad(
 			rowMin,
 			titleBarMenuItemHeight,
 			popupWidth,
+			textPadX,
 			"Switch Facility...",
 			titleBarSwitchFacilityShortcutParts(),
 		)
@@ -312,7 +319,6 @@ func drawTitleBarMenuPopup(
 
 			if fontClicked {
 				action = titleBarActionToggleStarsFontSetB
-				imgui.CloseCurrentPopup()
 			}
 		}
 
