@@ -116,9 +116,9 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		// This field is omitted until STARS weather-receipt/display state exists.
 
 		// Field E - UTC Time, System Altimeter Setting.
-		// The UTC portion is HHMM/SS in 24-hour GMT/UTC format. The System
-		// Altimeter Setting is appended later when facility weather state exists.
-		addLine(time.Now().UTC().Format("1504/05"), p.colors.List)
+		// Hours and minutes / seconds are followed by the system altimeter
+		// setting used for altitude correction in this Terminal control area.
+		addLine(p.ssaFieldEText(time.Now()), p.colors.List)
 
 		// Fields E1 through N are omitted until their corresponding facility,
 		// surveillance, flow-management, or controller preference state exists.

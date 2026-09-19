@@ -1,6 +1,10 @@
 package stars
 
 import (
+	"log/slog"
+	"time"
+
+	redslog "github.com/juliusplatzer/reds/log"
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/renderer"
 )
@@ -11,22 +15,35 @@ const zBackground renderer.Z = -1000
 // intentionally renders only the official STARS monitor background; maps, DCB,
 // lists, targets, and other display elements are added separately.
 type STARSPane struct {
+	logger             *redslog.Logger
 	colors             MonitorColors
 	cursorTexture      renderer.TextureID
 	useFontSetB        bool
 	systemFont         *renderer.BitmapFont
 	systemFontTextures map[int]renderer.TextureID
+	systemAltimeter    systemAltimeterState
 }
 
-// NewPane creates the initial STARS TCW pane using the official TCW default
-// palette from TI 6191.409 Rev. 30, Appendix B.
-func NewPane() *STARSPane {
+// NewPane creates a STARS TCW pane for the selected controller position.
+func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPane, error) {
+	if logger == nil {
+		logger = &redslog.Logger{Logger: slog.Default(), Start: time.Now()}
+	}
+
+	altimeterAirport, err := adaptedSystemAltimeterAirport(artcc, tracon, positionID)
+	if err != nil {
+		return nil, err
+	}
+
 	const useFontSetB = true
-	return &STARSPane{
+	pane := &STARSPane{
+		logger:      logger,
 		colors:      defaultTCWColors,
 		useFontSetB: useFontSetB,
 		systemFont:  newSystemFont(useFontSetB),
 	}
+	pane.initializeSystemAltimeter(altimeterAirport)
+	return pane, nil
 }
 
 func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
@@ -40,6 +57,9 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	backgroundCB.Scissor(x, y, width, height)
 	backgroundCB.ClearRGB(p.colors.Background)
 	backgroundCB.DisableScissor()
+
+	p.consumeSystemAltimeterUpdates()
+	p.refreshSystemAltimeter()
 
 	p.drawDCBBackground(ctx, zcb)
 	p.drawSSA(ctx, zcb)
