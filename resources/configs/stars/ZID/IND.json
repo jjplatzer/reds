@@ -4,226 +4,342 @@
   "name": "Indianapolis ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 38.6494889,
-    "lon": -84.3106305555556
+    "lat": 39.7132042,
+    "lon": -86.3022338
   },
+  "areas": [
+    {
+      "id": "01GY0F0G4DYHTNVXDAPJ383E87",
+      "name": "Indianapolis TRACON",
+      "visibilityCenter": {
+        "lat": 39.717778,
+        "lon": -86.3
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "2R2",
+        "5I4",
+        "81II",
+        "8A4",
+        "AID",
+        "BAK",
+        "CFJ",
+        "EYE",
+        "GEZ",
+        "GPC",
+        "HBE",
+        "HFY",
+        "I34",
+        "I99",
+        "IN35",
+        "IN74",
+        "IN84",
+        "IND",
+        "MIE",
+        "MQJ",
+        "OVO",
+        "TYQ",
+        "UMP",
+        "UWL"
+      ],
+      "ssaAirports": [
+        "IND",
+        "BAK",
+        "MIE"
+      ]
+    },
+    {
+      "id": "01GZM744RT0FV47ARJ4JCMC91J",
+      "name": "Indianapolis Tower",
+      "visibilityCenter": {
+        "lat": 39.7086304,
+        "lon": -86.3044676
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "IND"
+      ],
+      "ssaAirports": [
+        "IND"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CN2ZBR3R4QFG7VMP1CM",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1CN2P2VRET1D3YNHRV30",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1CN278ZPP0W3DWS5MTQ3",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1CN2P2VRET1D3YNHRV30",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1CN2P2VRET1D3YNHRV30",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1CN2JBKRBEEMYERG5K3J",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1CN2P2VRET1D3YNHRV30",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1CN272ZTKKH4RBEE4RKQ",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1CN2P2VRET1D3YNHRV30",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1CN2WJXW1WGVGPG22KFY",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1CN2H7HSMV4J75QJTFM0",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1CN2H7HSMV4J75QJTFM0",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1CN2P2VRET1D3YNHRV30",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1CN2H9SN213PVB923XHC",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1CN2RYBBV4NHZSQQW25H",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1CN2P2VRET1D3YNHRV30",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1CN2BFR3AD3EF9KJN5D3",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1CN2MAAC0JAWSAZWW0FK",
+      "parentTcp": "1Y"
+    },
+    {
+      "id": "01K2NF1CN2MAAC0JAWSAZWW0FK",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GRSYYA86Y5QJPD3NVTEAH43H",
-      "name": "Clearance Delivery",
-      "callsign": "IND_DEL",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 128.75
-    },
-    {
-      "id": "01GRSYZPTF16VKS2NB995ZD58T",
-      "name": "Ground Control",
-      "callsign": "IND_GND",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GRSZ3YZXD7M0GA25MWSV4NS9",
-      "name": "Local Control West",
-      "callsign": "IND_W_TWR",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 127.825
-    },
-    {
       "id": "01GRSZ5VVEM0Z2456P94G5TTK5",
+      "physicalFacility": "IND",
       "name": "Feeder Radar West",
+      "radioName": "Indianapolis Approach",
       "callsign": "IND_B_APP",
+      "areaId": "01GY0F0G4DYHTNVXDAPJ383E87",
+      "tcpId": "01K2NF1CN2ZBR3R4QFG7VMP1CM",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.717778,
+        "lon": -86.3
       },
+      "range": 150,
       "freq": 121.1
     },
     {
       "id": "01GRSZ6Y19GTP9ZRZHYPZ8KWKV",
+      "physicalFacility": "IND",
       "name": "Feeder Radar East",
+      "radioName": "Indianapolis Approach",
       "callsign": "IND_D_APP",
+      "areaId": "01GY0F0G4DYHTNVXDAPJ383E87",
+      "tcpId": "01K2NF1CN278ZPP0W3DWS5MTQ3",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.717778,
+        "lon": -86.3
       },
+      "range": 150,
       "freq": 128.175
     },
     {
-      "id": "01GRSZ8DSWGK72GF0FBXKGX8R8",
-      "name": "Final Radar East",
-      "callsign": "IND_F_APP",
+      "id": "01GRSZBNT0S5WXNZ5DAB7AT59N",
+      "physicalFacility": "IND",
+      "name": "Departure Radar East",
+      "radioName": "Indianapolis Approach",
+      "callsign": "IND_E_APP",
+      "areaId": "01GY0F0G4DYHTNVXDAPJ383E87",
+      "tcpId": "01K2NF1CN2P2VRET1D3YNHRV30",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.717778,
+        "lon": -86.3
       },
+      "range": 150,
+      "freq": 124.95
+    },
+    {
+      "id": "01GRSZ8DSWGK72GF0FBXKGX8R8",
+      "physicalFacility": "IND",
+      "name": "Final Radar East",
+      "radioName": "Indianapolis Approach",
+      "callsign": "IND_F_APP",
+      "areaId": "01GY0F0G4DYHTNVXDAPJ383E87",
+      "tcpId": "01K2NF1CN2JBKRBEEMYERG5K3J",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 39.717778,
+        "lon": -86.3
+      },
+      "range": 150,
       "freq": 123.95
     },
     {
       "id": "01GRSZ9KBHQPGTGGB7XYNHGJMR",
+      "physicalFacility": "IND",
       "name": "Final Radar West",
+      "radioName": "Indianapolis Approach",
       "callsign": "IND_I_APP",
+      "areaId": "01GY0F0G4DYHTNVXDAPJ383E87",
+      "tcpId": "01K2NF1CN272ZTKKH4RBEE4RKQ",
+      "tcp": "1I",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.717778,
+        "lon": -86.3
       },
+      "range": 150,
       "freq": 120.525
     },
     {
-      "id": "01GRSZBNT0S5WXNZ5DAB7AT59N",
-      "name": "Departure Radar East",
-      "callsign": "IND_E_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 124.95
-    },
-    {
-      "id": "01GRSZCY8E49TP6QPDP3SG8GR1",
-      "name": "Departure Radar West",
-      "callsign": "IND_W_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 119.05
-    },
-    {
-      "id": "01GZCRX8N4JV2AD8DH22X6BJ1Z",
-      "name": "Local Control East",
-      "callsign": "IND_E_TWR",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 120.9
-    },
-    {
-      "id": "01HM28PQ7AQ2BY1WSDQQWCGA1Y",
-      "name": "Satellite Radar South",
-      "callsign": "IND_S_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 127.15
-    },
-    {
       "id": "01HM28QH8PJ470JRE698HBF167",
+      "physicalFacility": "IND",
       "name": "Satellite Radar North",
+      "radioName": "Indianapolis Approach ",
       "callsign": "IND_N_APP",
+      "areaId": "01GY0F0G4DYHTNVXDAPJ383E87",
+      "tcpId": "01K2NF1CN2WJXW1WGVGPG22KFY",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.717778,
+        "lon": -86.3
       },
+      "range": 150,
       "freq": 124.65
     },
     {
-      "id": "01JA39SBJNZ33RN5P5CS5ZKGRB",
-      "name": "IND GUARD",
-      "callsign": "IND_EM_APP",
+      "id": "01HM28PQ7AQ2BY1WSDQQWCGA1Y",
+      "physicalFacility": "IND",
+      "name": "Satellite Radar South",
+      "radioName": "Indianapolis Approach",
+      "callsign": "IND_S_APP",
+      "areaId": "01GY0F0G4DYHTNVXDAPJ383E87",
+      "tcpId": "01K2NF1CN2H7HSMV4J75QJTFM0",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.717778,
+        "lon": -86.3
       },
-      "freq": 121.5
+      "range": 150,
+      "freq": 127.15
     },
     {
-      "id": "01KESGKZP1H74GZK2PPVWX3H3D",
-      "name": "FedEx Ramp Control",
-      "callsign": "IND_FX_RMP",
+      "id": "01GRSYYA86Y5QJPD3NVTEAH43H",
+      "physicalFacility": "IND",
+      "name": "Clearance Delivery",
+      "radioName": "Indianapolis Clearance",
+      "callsign": "IND_DEL",
+      "areaId": "01GZM744RT0FV47ARJ4JCMC91J",
+      "tcpId": "01K2NF1CN2H9SN213PVB923XHC",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.7086304,
+        "lon": -86.3044676
       },
-      "freq": 130.8
+      "range": 50,
+      "freq": 128.75
     },
     {
-      "id": "1B",
+      "id": "01GRSYZPTF16VKS2NB995ZD58T",
+      "physicalFacility": "IND",
+      "name": "Ground Control",
+      "radioName": "Indianapolis Ground",
+      "callsign": "IND_GND",
+      "areaId": "01GZM744RT0FV47ARJ4JCMC91J",
+      "tcpId": "01K2NF1CN2H9SN213PVB923XHC",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
+        "lat": 39.7086304,
+        "lon": -86.3044676
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1D",
+      "id": "01GRSZCY8E49TP6QPDP3SG8GR1",
+      "physicalFacility": "IND",
+      "name": "Departure Radar West",
+      "radioName": "Indianapolis Approach",
+      "callsign": "IND_W_APP",
+      "areaId": "01GY0F0G4DYHTNVXDAPJ383E87",
+      "tcpId": "01K2NF1CN2RYBBV4NHZSQQW25H",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
+        "lat": 39.717778,
+        "lon": -86.3
+      },
+      "range": 150,
+      "freq": 119.05
     },
     {
-      "id": "1E",
+      "id": "01GRSZ3YZXD7M0GA25MWSV4NS9",
+      "physicalFacility": "IND",
+      "name": "Local Control West",
+      "radioName": "Indianapolis Tower",
+      "callsign": "IND_W_TWR",
+      "areaId": "01GZM744RT0FV47ARJ4JCMC91J",
+      "tcpId": "01K2NF1CN2BFR3AD3EF9KJN5D3",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
+        "lat": 39.7086304,
+        "lon": -86.3044676
+      },
+      "range": 50,
+      "freq": 127.825
     },
     {
-      "id": "1F",
+      "id": "01GZCRX8N4JV2AD8DH22X6BJ1Z",
+      "physicalFacility": "IND",
+      "name": "Local Control East",
+      "radioName": "Indianapolis Tower",
+      "callsign": "IND_E_TWR",
+      "areaId": "01GZM744RT0FV47ARJ4JCMC91J",
+      "tcpId": "01K2NF1CN2MAAC0JAWSAZWW0FK",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1I",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
+        "lat": 39.7086304,
+        "lon": -86.3044676
+      },
+      "range": 50,
+      "freq": 120.9
     }
   ],
   "mapGroups": [

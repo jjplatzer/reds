@@ -4,183 +4,524 @@
   "name": "Memphis TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 35.0424167,
-    "lon": -89.9766667
+    "lat": 35.021192799999994,
+    "lon": -89.91340243333333
   },
+  "areas": [
+    {
+      "id": "01GAPNX5CHC6ZVMYJ1S3QNP5QF",
+      "name": "M03 TRACON",
+      "visibilityCenter": {
+        "lat": 35.042417,
+        "lon": -89.976667
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "01TN",
+        "05TN",
+        "08MS",
+        "0AR2",
+        "14TN",
+        "15AR",
+        "19MS",
+        "21MS",
+        "27TN",
+        "28TN",
+        "2M8",
+        "2TN0",
+        "2TN4",
+        "30M",
+        "34AR",
+        "3MS1",
+        "3MS2",
+        "3TN1",
+        "3TN6",
+        "4MS1",
+        "4MS3",
+        "4MS8",
+        "4TN3",
+        "4TN4",
+        "54M",
+        "54MS",
+        "5AR2",
+        "63AR",
+        "65MS",
+        "6M8",
+        "6TN7",
+        "7M4",
+        "7MS3",
+        "7TN4",
+        "7TN5",
+        "88MS",
+        "8TN0",
+        "8TN1",
+        "8TN8",
+        "8TN9",
+        "9TN6",
+        "9TN7",
+        "AR67",
+        "AR72",
+        "AWM",
+        "FCY",
+        "FYE",
+        "H75",
+        "M01",
+        "M04",
+        "M41",
+        "MEM",
+        "MS55",
+        "MS64",
+        "MS65",
+        "MS9",
+        "NQA",
+        "OLV",
+        "TN01",
+        "TN18",
+        "TN25",
+        "TN28",
+        "TN29",
+        "TN43",
+        "TN58",
+        "TN59",
+        "TN61",
+        "TN69",
+        "TN70",
+        "TN99",
+        "UTA"
+      ],
+      "ssaAirports": [
+        "MEM",
+        "NQA",
+        "OLV"
+      ]
+    },
+    {
+      "id": "01GHWMGV9GAFCHS7M5F0FFD62A",
+      "name": "OLV TOWER",
+      "visibilityCenter": {
+        "lat": 34.97875,
+        "lon": -89.7868611
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "OLV"
+      ],
+      "ssaAirports": [
+        "OLV"
+      ]
+    },
+    {
+      "id": "01H3DEQHRQGB5J7T3BNCY6NEPQ",
+      "name": "MEM TOWER",
+      "visibilityCenter": {
+        "lat": 35.0424114,
+        "lon": -89.9766792
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "MEM"
+      ],
+      "ssaAirports": [
+        "MEM"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D180XTBRSVYAX6R6263",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1D182PDDVQHV47G5YMH0",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D18C2FQFN1N7DJ2WMZJ",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D1800080HR2RVDPWM8F",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D188CBHH4HMP1H4MWVX",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D18TYG34XS9DPAMVWWY",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D188MKGEETJPPXCA2KM",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1D1800080HR2RVDPWM8F",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D18BEFW4XD846VNJTPS",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D18H1EW9ENFV0E042JM",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D18N1GQ4XRKFCA031Y0",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1D1800080HR2RVDPWM8F",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D182PDDVQHV47G5YMH0",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1D1800080HR2RVDPWM8F",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D180QD6JAV78D27NAXN",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D18MVK7R28T2D9Q0DKK",
+      "code": "3L",
+      "subset": 3,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D184YW74VB07HERYFYN",
+      "code": "3T",
+      "subset": 3,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D1833ZT391D2ZZRTR94",
+      "code": "5O",
+      "subset": 5,
+      "sectorId": "O",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GAPP4B6EX9ERZ1A089BQQTYV",
-      "name": "Arrival Radar East",
-      "callsign": "MEM_E_APP",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 125.8
-    },
-    {
-      "id": "01GAPP7P1VYSF3KHKC4ATGANDG",
-      "name": "Arrival Radar West",
-      "callsign": "MEM_W_APP",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 119.1
-    },
-    {
-      "id": "01GAPP9ACCBVVWY3HW7SVRP6BV",
-      "name": "Departure Radar East",
-      "callsign": "MEM_V_DEP",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 124.15
-    },
-    {
       "id": "01GAPPEQ1HK9ZQJCE1DT82XZ6A",
+      "physicalFacility": "M03",
       "name": "Departure Radar West",
+      "radioName": "Memphis Departure",
       "callsign": "MEM_A_DEP",
+      "areaId": "01GAPNX5CHC6ZVMYJ1S3QNP5QF",
+      "tcpId": "01K2NF1D180XTBRSVYAX6R6263",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 35.042417,
+        "lon": -89.976667
       },
+      "range": 150,
       "freq": 124.65
     },
     {
-      "id": "01GAPPG0BY3MADEFTGFK0SH1ER",
-      "name": "Final West",
-      "callsign": "MEM_F_APP",
+      "id": "01GV9DRTPPEHA50YADG0P44QXD",
+      "physicalFacility": "MEM",
+      "name": "Clearance",
+      "radioName": "Memphis Clearance",
+      "callsign": "MEM_DEL",
+      "areaId": "01H3DEQHRQGB5J7T3BNCY6NEPQ",
+      "tcpId": "01K2NF1D18C2FQFN1N7DJ2WMZJ",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 35.0424114,
+        "lon": -89.9766792
       },
+      "range": 50,
+      "freq": 125.2
+    },
+    {
+      "id": "01GAPP4B6EX9ERZ1A089BQQTYV",
+      "physicalFacility": "M03",
+      "name": "Arrival Radar East",
+      "radioName": "Memphis Approach",
+      "callsign": "MEM_E_APP",
+      "areaId": "01GAPNX5CHC6ZVMYJ1S3QNP5QF",
+      "tcpId": "01K2NF1D1800080HR2RVDPWM8F",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 35.042417,
+        "lon": -89.976667
+      },
+      "range": 150,
+      "freq": 125.8
+    },
+    {
+      "id": "01GAPPG0BY3MADEFTGFK0SH1ER",
+      "physicalFacility": "M03",
+      "name": "Final West",
+      "radioName": "Memphis Approach",
+      "callsign": "MEM_F_APP",
+      "areaId": "01GAPNX5CHC6ZVMYJ1S3QNP5QF",
+      "tcpId": "01K2NF1D188CBHH4HMP1H4MWVX",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 35.042417,
+        "lon": -89.976667
+      },
+      "range": 150,
       "freq": 126.7
     },
     {
       "id": "01GAPPRJNVC2VYFQC28Z9MHQHJ",
+      "physicalFacility": "M03",
       "name": "Final East",
+      "radioName": "Memphis Approach",
       "callsign": "MEM_M_APP",
+      "areaId": "01GAPNX5CHC6ZVMYJ1S3QNP5QF",
+      "tcpId": "01K2NF1D18TYG34XS9DPAMVWWY",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 35.042417,
+        "lon": -89.976667
       },
+      "range": 150,
       "freq": 120.925
     },
     {
       "id": "01GAPQ0TYCM5A227M2GXHD3VZ9",
+      "physicalFacility": "M03",
       "name": "Final Runway 9/27",
+      "radioName": "Memphis Approach",
       "callsign": "MEM_N_APP",
+      "areaId": "01GAPNX5CHC6ZVMYJ1S3QNP5QF",
+      "tcpId": "01K2NF1D188MKGEETJPPXCA2KM",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 35.042417,
+        "lon": -89.976667
       },
+      "range": 150,
       "freq": 126.05
     },
     {
-      "id": "01J0FNRES6QRPK71DHJPFW8QTJ",
-      "name": "TMC",
-      "callsign": "M03_U_APP",
+      "id": "01GV9DSYFW7JMZBNK18F5Q50N2",
+      "physicalFacility": "MEM",
+      "name": "Ground 1",
+      "radioName": "Memphis Ground",
+      "callsign": "MEM_1_GND",
+      "areaId": "01H3DEQHRQGB5J7T3BNCY6NEPQ",
+      "tcpId": "01K2NF1D18BEFW4XD846VNJTPS",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 35.0424114,
+        "lon": -89.9766792
       },
+      "range": 50,
+      "freq": 121.65
+    },
+    {
+      "id": "01GV9DVYRRNX0V5B3WNPQ2GM6W",
+      "physicalFacility": "MEM",
+      "name": "Local 1",
+      "radioName": "Memphis Tower",
+      "callsign": "MEM_1_TWR",
+      "areaId": "01H3DEQHRQGB5J7T3BNCY6NEPQ",
+      "tcpId": "01K2NF1D18BEFW4XD846VNJTPS",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 35.0424114,
+        "lon": -89.9766792
+      },
+      "range": 50,
+      "freq": 128.425
+    },
+    {
+      "id": "01J0FNRES6QRPK71DHJPFW8QTJ",
+      "physicalFacility": "M03",
+      "name": "TMC",
+      "radioName": "TRACON TMU",
+      "callsign": "M03_U_APP",
+      "areaId": "01GAPNX5CHC6ZVMYJ1S3QNP5QF",
+      "tcpId": "01K2NF1D18H1EW9ENFV0E042JM",
+      "tcp": "1U",
+      "visualCenter": {
+        "lat": 35.042417,
+        "lon": -89.976667
+      },
+      "range": 150,
       "freq": 123.45
     },
     {
-      "id": "01JAHFQ2W4XHY5MJW3P0CDXEGZ",
-      "name": "Supervisor",
-      "callsign": "MEM_SI_APP",
+      "id": "01GAPP9ACCBVVWY3HW7SVRP6BV",
+      "physicalFacility": "M03",
+      "name": "Departure Radar East",
+      "radioName": "Memphis Departure",
+      "callsign": "MEM_V_DEP",
+      "areaId": "01GAPNX5CHC6ZVMYJ1S3QNP5QF",
+      "tcpId": "01K2NF1D18N1GQ4XRKFCA031Y0",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 35.042417,
+        "lon": -89.976667
       },
+      "range": 150,
+      "freq": 124.15
+    },
+    {
+      "id": "01GAPP7P1VYSF3KHKC4ATGANDG",
+      "physicalFacility": "M03",
+      "name": "Arrival Radar West",
+      "radioName": "Memphis Approach",
+      "callsign": "MEM_W_APP",
+      "areaId": "01GAPNX5CHC6ZVMYJ1S3QNP5QF",
+      "tcpId": "01K2NF1D182PDDVQHV47G5YMH0",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 35.042417,
+        "lon": -89.976667
+      },
+      "range": 150,
+      "freq": 119.1
+    },
+    {
+      "id": "01GV9DSCBXR775FMYNMDBCEXJN",
+      "physicalFacility": "MEM",
+      "name": "Ground 2",
+      "radioName": "Memphis Ground",
+      "callsign": "MEM_2_GND",
+      "areaId": "01H3DEQHRQGB5J7T3BNCY6NEPQ",
+      "tcpId": "01K2NF1D180QD6JAV78D27NAXN",
+      "tcp": "2T",
+      "visualCenter": {
+        "lat": 35.0424114,
+        "lon": -89.9766792
+      },
+      "range": 50,
+      "freq": 121.9
+    },
+    {
+      "id": "01GV9DVAWRWBRGBHT9Z6A7VEWP",
+      "physicalFacility": "MEM",
+      "name": "Local 2",
+      "radioName": "Memphis Tower",
+      "callsign": "MEM_2_TWR",
+      "areaId": "01H3DEQHRQGB5J7T3BNCY6NEPQ",
+      "tcpId": "01K2NF1D180QD6JAV78D27NAXN",
+      "tcp": "2T",
+      "visualCenter": {
+        "lat": 35.0424114,
+        "lon": -89.9766792
+      },
+      "range": 50,
+      "freq": 119.7
+    },
+    {
+      "id": "01JAHFQ2W4XHY5MJW3P0CDXEGZ",
+      "physicalFacility": "M03",
+      "name": "Supervisor",
+      "radioName": "TRACON Supervisor",
+      "callsign": "MEM_SI_APP",
+      "areaId": "01GAPNX5CHC6ZVMYJ1S3QNP5QF",
+      "tcpId": "01K2NF1D18MVK7R28T2D9Q0DKK",
+      "tcp": "3L",
+      "visualCenter": {
+        "lat": 35.042417,
+        "lon": -89.976667
+      },
+      "range": 150,
       "freq": 121.5
     },
     {
-      "id": "1A",
+      "id": "01HYNQAPE2XAY345H2H9PTQA3A",
+      "physicalFacility": "MEM",
+      "name": "Ground 3",
+      "radioName": "Memphis Ground",
+      "callsign": "MEM_3_GND",
+      "areaId": "01H3DEQHRQGB5J7T3BNCY6NEPQ",
+      "tcpId": "01K2NF1D184YW74VB07HERYFYN",
+      "tcp": "3T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 35.0424114,
+        "lon": -89.9766792
+      },
+      "range": 50,
+      "freq": 121
     },
     {
-      "id": "1E",
+      "id": "01GV9DWQP817EC30AGSWZ74EJY",
+      "physicalFacility": "MEM",
+      "name": "Local 3",
+      "radioName": "Memphis Tower",
+      "callsign": "MEM_3_TWR",
+      "areaId": "01H3DEQHRQGB5J7T3BNCY6NEPQ",
+      "tcpId": "01K2NF1D184YW74VB07HERYFYN",
+      "tcp": "3T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 35.0424114,
+        "lon": -89.9766792
+      },
+      "range": 50,
+      "freq": 118.3
     },
     {
-      "id": "1F",
+      "id": "01GHWKMWJWV7YJ3DZZHN1YAQKW",
+      "physicalFacility": "OLV",
+      "name": "Ground",
+      "radioName": "Olive Branch Ground",
+      "callsign": "OLV_GND",
+      "areaId": "01GHWMGV9GAFCHS7M5F0FFD62A",
+      "tcpId": "01K2NF1D1833ZT391D2ZZRTR94",
+      "tcp": "5O",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.97875,
+        "lon": -89.7868611
+      },
+      "range": 150,
+      "freq": 121.2
     },
     {
-      "id": "1M",
+      "id": "01GHWKS2H3ZYEZQ1RPKMPM4BPY",
+      "physicalFacility": "OLV",
+      "name": "Local",
+      "radioName": "Olive Branch Tower",
+      "callsign": "OLV_TWR",
+      "areaId": "01GHWMGV9GAFCHS7M5F0FFD62A",
+      "tcpId": "01K2NF1D1833ZT391D2ZZRTR94",
+      "tcp": "5O",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "3T",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "5O",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.97875,
+        "lon": -89.7868611
+      },
+      "range": 150,
+      "freq": 125.275
     }
   ],
   "mapGroups": [

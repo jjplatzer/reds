@@ -4,121 +4,210 @@
   "name": "Albany ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 42.93753,
-    "lon": -70.70471
+    "lat": 42.74152,
+    "lon": -73.82029
   },
+  "areas": [
+    {
+      "id": "01G9BNX65QYZNMTFERA496VDR4",
+      "name": "ALB",
+      "visibilityCenter": {
+        "lat": 42.74152,
+        "lon": -73.82029
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "1A1",
+        "1B1",
+        "1B8",
+        "1C3",
+        "1F2",
+        "1H4",
+        "1I5",
+        "4B0",
+        "4B1",
+        "5B2",
+        "5B7",
+        "83K",
+        "ALB",
+        "AQW",
+        "B04",
+        "DDH",
+        "GBR",
+        "GFL",
+        "K30",
+        "N25",
+        "NY0",
+        "PSF",
+        "SCH",
+        "W57"
+      ],
+      "ssaAirports": [
+        "ALB",
+        "SCH"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CGPCHXG0BAJX0AE2QA1",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPAR7R8DEJAN31B182",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPZY9WK0XZZ33S3Q2Q",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPFBC8HHDQ8C1Q7EJX",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1CGPCHXG0BAJX0AE2QA1",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP10NNYT9E3AR96TQ1",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1CGPCHXG0BAJX0AE2QA1",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPQH5QCJ9Q4ND0932G",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G9BPDQRFK4QB3WEJ5QHHWHFN",
+      "physicalFacility": "ALB",
       "name": "East Radar",
+      "radioName": "Albany Approach",
       "callsign": "ALB_APP",
+      "areaId": "01G9BNX65QYZNMTFERA496VDR4",
+      "tcpId": "01K2NF1CGPCHXG0BAJX0AE2QA1",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.74152,
+        "lon": -73.82029
       },
+      "range": 150,
       "freq": 132.825
     },
     {
-      "id": "01G9BPFVWEY0V6Y759EDWBK82Y",
-      "name": "West Radar",
-      "callsign": "ALB_APP",
+      "id": "01G9GT9E3HZD4QY7B1A24QNWG4",
+      "physicalFacility": "SCH",
+      "name": "Local Control",
+      "radioName": "Schenectady Tower",
+      "callsign": "SCH_TWR",
+      "areaId": "01G9BNX65QYZNMTFERA496VDR4",
+      "tcpId": "01K2NF1CGPAR7R8DEJAN31B182",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.74152,
+        "lon": -73.82029
       },
-      "freq": 118.05
-    },
-    {
-      "id": "01G9BPGFWEJHXW4H38E7QPWZ1R",
-      "name": "Arrival Radar",
-      "callsign": "ALB_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 127.15
+      "range": 150,
+      "freq": 121.3
     },
     {
       "id": "01G9BPQZF8QZWDDVC52ZYEEPY8",
+      "physicalFacility": "ALB",
       "name": "Local Control",
+      "radioName": "Albany Tower",
       "callsign": "ALB_TWR",
+      "areaId": "01G9BNX65QYZNMTFERA496VDR4",
+      "tcpId": "01K2NF1CGPZY9WK0XZZ33S3Q2Q",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.74152,
+        "lon": -73.82029
       },
+      "range": 150,
       "freq": 119.5
     },
     {
-      "id": "01G9BPZES91SHBET38Z14YXM1W",
-      "name": "Ground Control",
-      "callsign": "ALB_GND",
+      "id": "01G9BPGFWEJHXW4H38E7QPWZ1R",
+      "physicalFacility": "ALB",
+      "name": "Arrival Radar",
+      "radioName": "Albany Approach",
+      "callsign": "ALB_APP",
+      "areaId": "01G9BNX65QYZNMTFERA496VDR4",
+      "tcpId": "01K2NF1CGPFBC8HHDQ8C1Q7EJX",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.74152,
+        "lon": -73.82029
       },
-      "freq": 121.7
+      "range": 150,
+      "freq": 127.15
+    },
+    {
+      "id": "01G9BPFVWEY0V6Y759EDWBK82Y",
+      "physicalFacility": "ALB",
+      "name": "West Radar",
+      "radioName": "Albany Approach",
+      "callsign": "ALB_APP",
+      "areaId": "01G9BNX65QYZNMTFERA496VDR4",
+      "tcpId": "01K2NF1CGP10NNYT9E3AR96TQ1",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 42.74152,
+        "lon": -73.82029
+      },
+      "range": 150,
+      "freq": 118.05
     },
     {
       "id": "01G9BQ071RRD8PD3Y2HRHWMCZW",
+      "physicalFacility": "ALB",
       "name": "Clearance Delivery",
+      "radioName": "Albany Clearance",
       "callsign": "ALB_DEL",
+      "areaId": "01G9BNX65QYZNMTFERA496VDR4",
+      "tcpId": "01K2NF1CGPQH5QCJ9Q4ND0932G",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.74152,
+        "lon": -73.82029
       },
+      "range": 150,
       "freq": 127.5
     },
     {
-      "id": "01KAMCGA65Q2PFH4Y0K9M2CH33",
-      "name": "ALB Guard",
-      "callsign": "ALB_EM_APP",
+      "id": "01G9BPZES91SHBET38Z14YXM1W",
+      "physicalFacility": "ALB",
+      "name": "Ground Control",
+      "radioName": "Albany Ground",
+      "callsign": "ALB_GND",
+      "areaId": "01G9BNX65QYZNMTFERA496VDR4",
+      "tcpId": "01K2NF1CGPQH5QCJ9Q4ND0932G",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.74152,
+        "lon": -73.82029
       },
-      "freq": 121.5
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
+      "range": 150,
+      "freq": 121.7
     }
   ],
   "mapGroups": [

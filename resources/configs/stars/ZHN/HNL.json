@@ -4,134 +4,235 @@
   "name": "Honolulu ATCT",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 20.9750275,
-    "lon": -157.17449499999998
+    "lat": 21.31783,
+    "lon": -157.92026
   },
+  "areas": [
+    {
+      "id": "01GF25QFN1T2X5PKAAA9Q6VH77",
+      "name": "HCF TRACON",
+      "visibilityCenter": {
+        "lat": 21.31783,
+        "lon": -157.92026
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "HHI",
+        "HNL",
+        "JRF"
+      ]
+    },
+    {
+      "id": "01KXNQ0FHD30Y44C3PYMS0HTXD",
+      "name": "Honolulu Cab",
+      "visibilityCenter": {
+        "lat": 21.31783,
+        "lon": -157.92026
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "HNL"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1ED8NV9ERBY3HYAGG3CX",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H"
+    },
+    {
+      "id": "01K2NF1ED8WC3HH8AMVNKH746C",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1ED8NV9ERBY3HYAGG3CX",
+      "parentTcp": "1H"
+    },
+    {
+      "id": "01K2NF1ED82ACSMQJHAR9XNPDD",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1ED8JDP827GP8983JNEB",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1ED82ACSMQJHAR9XNPDD",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2W2D3B7FEW02YCKN6XJS3BB",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1ED8NV9ERBY3HYAGG3CX",
+      "parentTcp": "1H"
+    },
+    {
+      "id": "01K2NF1ED81TQHM70YHGG5CPF9",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1ED8NV9ERBY3HYAGG3CX",
+      "parentTcp": "1H"
+    },
+    {
+      "id": "01KZ1S950K19ASEXAK6K1EP5D8",
+      "code": "3T",
+      "subset": 3,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1ED8NV9ERBY3HYAGG3CX",
+      "parentTcp": "1H"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GF264YG50JAF61FDZ8FECBP9",
-      "name": "Clearance Delivery",
-      "callsign": "HNL_DEL",
+      "id": "01GF26WDC7EBMZS99TK8NG8KEV",
+      "physicalFacility": "HNL",
+      "name": "H Arrival",
+      "radioName": "HCF Approach",
+      "callsign": "HNL_H_APP",
+      "areaId": "01GF25QFN1T2X5PKAAA9Q6VH77",
+      "tcpId": "01K2NF1ED8NV9ERBY3HYAGG3CX",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
+        "lat": 21.31783,
+        "lon": -157.92026
       },
+      "range": 150,
+      "freq": 118.3
+    },
+    {
+      "id": "01GF26G5X19713Q047CNE3THDB",
+      "physicalFacility": "HNL",
+      "name": "L Departure",
+      "radioName": "HCF Approach",
+      "callsign": "HNL_L_APP",
+      "areaId": "01GF25QFN1T2X5PKAAA9Q6VH77",
+      "tcpId": "01K2NF1ED8WC3HH8AMVNKH746C",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 21.31783,
+        "lon": -157.92026
+      },
+      "range": 150,
+      "freq": 124.8
+    },
+    {
+      "id": "01GF264YG50JAF61FDZ8FECBP9",
+      "physicalFacility": "HNL",
+      "name": "Clearance Delivery",
+      "radioName": "Honolulu Clearance",
+      "callsign": "HNL_DEL",
+      "areaId": "01KXNQ0FHD30Y44C3PYMS0HTXD",
+      "tcpId": "01K2NF1ED82ACSMQJHAR9XNPDD",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 21.31783,
+        "lon": -157.92026
+      },
+      "range": 150,
       "freq": 121.4
     },
     {
       "id": "01GF26784N73TSPVHFMB04C4YH",
+      "physicalFacility": "HNL",
       "name": "Ground Control",
+      "radioName": "Honolulu Ground",
       "callsign": "HNL_GND",
+      "areaId": "01KXNQ0FHD30Y44C3PYMS0HTXD",
+      "tcpId": "01K2NF1ED82ACSMQJHAR9XNPDD",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
+        "lat": 21.31783,
+        "lon": -157.92026
       },
+      "range": 150,
       "freq": 121.9
     },
     {
       "id": "01GF267Z9BVJ1C1D2W0PRQEB12",
+      "physicalFacility": "HNL",
       "name": "Local Control North",
+      "radioName": "Honolulu Tower",
       "callsign": "HNL_N_TWR",
+      "areaId": "01KXNQ0FHD30Y44C3PYMS0HTXD",
+      "tcpId": "01K2NF1ED82ACSMQJHAR9XNPDD",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
+        "lat": 21.31783,
+        "lon": -157.92026
       },
+      "range": 150,
       "freq": 118.1
     },
     {
       "id": "01GF26EGAR7ZN272FNK9QFTN58",
+      "physicalFacility": "HNL",
       "name": "Local Control South",
+      "radioName": "Honolulu Tower",
       "callsign": "HNL_S_TWR",
+      "areaId": "01KXNQ0FHD30Y44C3PYMS0HTXD",
+      "tcpId": "01K2NF1ED8JDP827GP8983JNEB",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
+        "lat": 21.31783,
+        "lon": -157.92026
       },
+      "range": 150,
       "freq": 123.9
     },
     {
-      "id": "01GF26G5X19713Q047CNE3THDB",
-      "name": "L Departure",
-      "callsign": "HNL_L_APP",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      },
-      "freq": 124.8
-    },
-    {
-      "id": "01GF26WDC7EBMZS99TK8NG8KEV",
-      "name": "H Arrival",
-      "callsign": "HNL_H_APP",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      },
-      "freq": 118.3
-    },
-    {
-      "id": "01HJTSTT32P702SDYWA7W52WNM",
-      "name": "Hickam Ramp (Event Only)",
-      "callsign": "HIK_RMP",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      },
-      "freq": 133.6
-    },
-    {
-      "id": "01HJTSVPXTS5Z128V2FX9ACXW7",
-      "name": "Honolulu Ramp (Event Only)",
-      "callsign": "HNL_RMP",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      },
-      "freq": 121.8
-    },
-    {
       "id": "01K2VSRD77M1AYXDZGTX75H4K1",
+      "physicalFacility": "HNL",
       "name": "V Arrival",
+      "radioName": "HCF Approach",
       "callsign": "HNL_V_APP",
+      "areaId": "01GF25QFN1T2X5PKAAA9Q6VH77",
+      "tcpId": "01K2W2D3B7FEW02YCKN6XJS3BB",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
+        "lat": 21.31783,
+        "lon": -157.92026
       },
+      "range": 150,
       "freq": 119.1
     },
     {
-      "id": "1H",
+      "id": "01HC99PENE1N3J0A19SD1N7BP2",
+      "physicalFacility": "JRF",
+      "name": "Local Control",
+      "radioName": "Kalaeloa Tower",
+      "callsign": "JRF_TWR",
+      "areaId": "01GF25QFN1T2X5PKAAA9Q6VH77",
+      "tcpId": "01K2NF1ED81TQHM70YHGG5CPF9",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      }
+        "lat": 21.31783,
+        "lon": -157.92026
+      },
+      "range": 150,
+      "freq": 132.6
     },
     {
-      "id": "1L",
+      "id": "01HC99M0BV50ACQAJWEESTY8QK",
+      "physicalFacility": "HHI",
+      "name": "Local Control",
+      "radioName": "Wheeler Tower",
+      "callsign": "HHI_TWR",
+      "areaId": "01GF25QFN1T2X5PKAAA9Q6VH77",
+      "tcpId": "01KZ1S950K19ASEXAK6K1EP5D8",
+      "tcp": "3T",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      }
+        "lat": 21.31783,
+        "lon": -157.92026
+      },
+      "range": 150,
+      "freq": 126.3
     }
   ],
   "mapGroups": [

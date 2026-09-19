@@ -4,53 +4,90 @@
   "name": "Casper ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 40.569587575,
-    "lon": -104.96660805
+    "lat": 42.9058611,
+    "lon": -106.4636389
   },
+  "areas": [
+    {
+      "id": "01H3D4YT6D470YRR1A66038MA5",
+      "name": "CPR",
+      "visibilityCenter": {
+        "lat": 42.9058611,
+        "lon": -106.4636389
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "CPR",
+        "HAD",
+        "45WY"
+      ],
+      "ssaAirports": [
+        "CPR"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CJT5D287M9B2E4J6C74",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJTHDRN3T4VFSVXSKEK",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJT65VMDJBVGKJTNNN9",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJTYEJXV56MGGG8QSRK",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01H3D59PX7AD41HCG1KYZ7T7N9",
+      "physicalFacility": "CPR",
       "name": "Casper Approach",
+      "radioName": "Casper Approach",
       "callsign": "CPR_APP",
+      "areaId": "01H3D4YT6D470YRR1A66038MA5",
+      "tcpId": "01K2NF1CJT5D287M9B2E4J6C74",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 42.9058611,
+        "lon": -106.4636389
       },
+      "range": 75,
       "freq": 120.65
     },
     {
       "id": "01H3D5BEPZ3K7K3FXGZWMAS91Y",
+      "physicalFacility": "CPR",
       "name": "Casper Tower",
+      "radioName": "Casper Tower",
       "callsign": "CPR_TWR",
+      "areaId": "01H3D4YT6D470YRR1A66038MA5",
+      "tcpId": "01K2NF1CJTYEJXV56MGGG8QSRK",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 42.9058611,
+        "lon": -106.4636389
       },
+      "range": 75,
       "freq": 118.3
-    },
-    {
-      "id": "01H3D5CSX6JN8HMRFCS3KJ5M2Z",
-      "name": "Casper Ground",
-      "callsign": "CPR_GND",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
     }
   ],
   "mapGroups": [

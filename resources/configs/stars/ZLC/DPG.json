@@ -4,53 +4,79 @@
   "name": "Clover RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 44.1394906,
-    "lon": -111.3092792325
+    "lat": 40.185972,
+    "lon": -112.924083
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01KNJHQZC768STSX2Z0JM8VBSG",
-      "name": "Clover - South",
-      "callsign": "DPG_S_APP",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+      "id": "01KNJHMZJ8147E2722ZM92H5JW",
+      "name": "CLOVER",
+      "visibilityCenter": {
+        "lat": 40.185972,
+        "lon": -112.924083
       },
-      "freq": 134.1
+      "surveillanceRange": 300,
+      "underlyingAirports": [
+        "02UT",
+        "05U",
+        "DPG",
+        "NV04",
+        "NV14",
+        "UT65"
+      ],
+      "ssaAirports": [
+        "DPG"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01KNJHS8528D3T9QVQJBMX2T0M",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01KNJHSBETGRD8J6YKFMVPTE8W",
+      "parentTcp": "1S"
     },
     {
+      "id": "01KNJHSBETGRD8J6YKFMVPTE8W",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    }
+  ],
+  "controlPositions": [
+    {
       "id": "01KNJHTFBJ2PHFNDBMQ2YKA000",
+      "physicalFacility": "DPG",
       "name": "Clover - North",
+      "radioName": "Clover Approach",
       "callsign": "DPG_N_APP",
+      "areaId": "01KNJHMZJ8147E2722ZM92H5JW",
+      "tcpId": "01KNJHS8528D3T9QVQJBMX2T0M",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 40.185972,
+        "lon": -112.924083
       },
+      "range": 300,
       "freq": 118.45
     },
     {
-      "id": "01KNJJ2BN6BGDH7J061W4F0XQX",
-      "name": "Dugway - Advisory",
-      "callsign": "DPG_A_TWR",
+      "id": "01KNJHQZC768STSX2Z0JM8VBSG",
+      "physicalFacility": "DPG",
+      "name": "Clover - South",
+      "radioName": "Clover Approach",
+      "callsign": "DPG_S_APP",
+      "areaId": "01KNJHMZJ8147E2722ZM92H5JW",
+      "tcpId": "01KNJHSBETGRD8J6YKFMVPTE8W",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 40.185972,
+        "lon": -112.924083
       },
-      "freq": 126.2
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+      "range": 300,
+      "freq": 134.1
     }
   ],
   "mapGroups": [

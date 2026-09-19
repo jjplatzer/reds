@@ -4,124 +4,176 @@
   "name": "Portland ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 42.93753,
-    "lon": -70.70471
+    "lat": 43.828458417776545,
+    "lon": -70.26624472722666
   },
+  "areas": [
+    {
+      "id": "01G9D3E6KQSC9H23KJC1ZF0KZ9",
+      "name": "PWM",
+      "visibilityCenter": {
+        "lat": 43.828458417776545,
+        "lon": -70.26624472722666
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "03M",
+        "0B1",
+        "5ME",
+        "63B",
+        "76B",
+        "81B",
+        "98M",
+        "AUG",
+        "B10",
+        "B19",
+        "BXM",
+        "IWI",
+        "IZG",
+        "LEW",
+        "M00",
+        "ME6",
+        "OWK",
+        "PWM",
+        "RKD",
+        "SFM",
+        "WVL"
+      ],
+      "ssaAirports": [
+        "PWM",
+        "AUG",
+        "IWI",
+        "IZG",
+        "LEW",
+        "RKD",
+        "SFM",
+        "WVL"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CGP75N84TKC9H216488",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1CGPPERCFMJW9NXKPC75",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP2W3N2FYVASQH7G2C",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1CGPPERCFMJW9NXKPC75",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPK8TPC6DSD3FN87J3",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1CGPPERCFMJW9NXKPC75",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPPERCFMJW9NXKPC75",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPKWNYT376RFBN5RFM",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G9D3GE5F18G9YP0ERJCCDYMV",
-      "name": "Ground Control",
-      "callsign": "PWM_GND",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01G9D3H1950X3RA2G2F65G09TY",
-      "name": "Local Control",
-      "callsign": "PWM_TWR",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 120.9
-    },
-    {
-      "id": "01G9D3HMVYBDVQQVQJTE5WJNEF",
-      "name": "CASCO",
-      "callsign": "PWM_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 119.75
-    },
-    {
-      "id": "01G9D3K3AT8SQCNPJ14Y65DBJ4",
-      "name": "Rockland",
-      "callsign": "PWM_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 120.4
-    },
-    {
       "id": "01G9D3KZM3MKB022FBKT0TWABS",
+      "physicalFacility": "PWM",
       "name": "Lewiston",
+      "radioName": "Portland Approach",
       "callsign": "PWM_APP",
+      "areaId": "01G9D3E6KQSC9H23KJC1ZF0KZ9",
+      "tcpId": "01K2NF1CGP75N84TKC9H216488",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 43.828458417776545,
+        "lon": -70.26624472722666
       },
+      "range": 150,
       "freq": 125.5
     },
     {
       "id": "01G9D3MYAWDMZ1B9ZW1QSYMW70",
+      "physicalFacility": "PWM",
       "name": "Augusta",
+      "radioName": "Portland Approach",
       "callsign": "PWM_APP",
+      "areaId": "01G9D3E6KQSC9H23KJC1ZF0KZ9",
+      "tcpId": "01K2NF1CGP2W3N2FYVASQH7G2C",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 43.828458417776545,
+        "lon": -70.26624472722666
       },
+      "range": 150,
       "freq": 128.35
     },
     {
-      "id": "01HGKY7HDC81A92Y2EMWPR259N",
-      "name": "Clearance Delivery",
-      "callsign": "PWM_DEL",
+      "id": "01G9D3K3AT8SQCNPJ14Y65DBJ4",
+      "physicalFacility": "PWM",
+      "name": "Rockland",
+      "radioName": "Portland Approach",
+      "callsign": "PWM_APP",
+      "areaId": "01G9D3E6KQSC9H23KJC1ZF0KZ9",
+      "tcpId": "01K2NF1CGPK8TPC6DSD3FN87J3",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 43.828458417776545,
+        "lon": -70.26624472722666
       },
-      "freq": 123.975
+      "range": 150,
+      "freq": 120.4
     },
     {
-      "id": "01KAMCXT7H9NAFXFPW4FXY65RN",
-      "name": "PWM Guard",
-      "callsign": "PWM_EM_APP",
+      "id": "01G9D3HMVYBDVQQVQJTE5WJNEF",
+      "physicalFacility": "PWM",
+      "name": "CASCO",
+      "radioName": "Portland Approach",
+      "callsign": "PWM_APP",
+      "areaId": "01G9D3E6KQSC9H23KJC1ZF0KZ9",
+      "tcpId": "01K2NF1CGPPERCFMJW9NXKPC75",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 43.828458417776545,
+        "lon": -70.26624472722666
       },
-      "freq": 121.5
+      "range": 150,
+      "freq": 119.75
     },
     {
-      "id": "1L",
+      "id": "01G9D3H1950X3RA2G2F65G09TY",
+      "physicalFacility": "PWM",
+      "name": "Local Control",
+      "radioName": "Portland Tower",
+      "callsign": "PWM_TWR",
+      "areaId": "01G9D3E6KQSC9H23KJC1ZF0KZ9",
+      "tcpId": "01K2NF1CGPKWNYT376RFBN5RFM",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
+        "lat": 43.828458417776545,
+        "lon": -70.26624472722666
+      },
+      "range": 150,
+      "freq": 120.9
     }
   ],
   "mapGroups": [

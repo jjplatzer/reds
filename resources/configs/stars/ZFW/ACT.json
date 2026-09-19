@@ -4,80 +4,120 @@
   "name": "Waco ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 31.61461,
+    "lon": -97.21538
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GKZZJ7F1DDHHE3QX1FFQQ7K3",
-      "name": "Local",
-      "callsign": "ACT_TWR",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+      "id": "01GKZZ9Z15ABDQY0HXHZP9T2FV",
+      "name": "ACT",
+      "visibilityCenter": {
+        "lat": 31.61461,
+        "lon": -97.21538
       },
-      "freq": 119.3
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "68F",
+        "7F7",
+        "ACT",
+        "CNW",
+        "GOP",
+        "HLR",
+        "INJ",
+        "LXY",
+        "PWG",
+        "T15"
+      ],
+      "ssaAirports": [
+        "ACT",
+        "CNW"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8SD9MG9WN2JSYFGW2B",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H"
     },
     {
+      "id": "01K2NF1D8SZGERVY2PVP7R1WA9",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1D8SAANN6843ZTQ7VH05",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
+  "controlPositions": [
+    {
       "id": "01GM005W3RYQ01B9RK25TW7H5W",
+      "physicalFacility": "ACT",
       "name": "High Radar",
+      "radioName": "Waco Approach",
       "callsign": "ACT_H_APP",
+      "areaId": "01GKZZ9Z15ABDQY0HXHZP9T2FV",
+      "tcpId": "01K2NF1D8SD9MG9WN2JSYFGW2B",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 31.61461,
+        "lon": -97.21538
       },
+      "range": 150,
       "freq": 127.65
     },
     {
       "id": "01GM00717GKB33HPQBPQ75RJMP",
+      "physicalFacility": "ACT",
       "name": "Low Radar",
+      "radioName": "Waco Approach",
       "callsign": "ACT_L_APP",
+      "areaId": "01GKZZ9Z15ABDQY0HXHZP9T2FV",
+      "tcpId": "01K2NF1D8SZGERVY2PVP7R1WA9",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 31.61461,
+        "lon": -97.21538
       },
+      "range": 150,
       "freq": 126.125
     },
     {
       "id": "01GM008DHECT484SX5EKTC0JVZ",
+      "physicalFacility": "ACT",
       "name": "Ground",
+      "radioName": "Waco Ground",
       "callsign": "ACT_GND",
+      "areaId": "01GKZZ9Z15ABDQY0HXHZP9T2FV",
+      "tcpId": "01K2NF1D8SAANN6843ZTQ7VH05",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 31.61461,
+        "lon": -97.21538
       },
+      "range": 150,
       "freq": 121.9
     },
     {
-      "id": "01J9YHRWZZFXWJ7Q7CQWZWWYC0",
-      "name": "Guard",
-      "callsign": "ACT_EM_APP",
+      "id": "01GKZZJ7F1DDHHE3QX1FFQQ7K3",
+      "physicalFacility": "ACT",
+      "name": "Local",
+      "radioName": "Waco Tower",
+      "callsign": "ACT_TWR",
+      "areaId": "01GKZZ9Z15ABDQY0HXHZP9T2FV",
+      "tcpId": "01K2NF1D8SAANN6843ZTQ7VH05",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 31.61461,
+        "lon": -97.21538
       },
-      "freq": 121.5
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+      "range": 150,
+      "freq": 119.3
     }
   ],
   "mapGroups": [

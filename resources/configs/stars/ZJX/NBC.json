@@ -4,76 +4,91 @@
   "name": "Beaufort Marine Corps Air Station (Merritt Field) ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 32.4805668,
+    "lon": -80.7192441
   },
+  "areas": [
+    {
+      "id": "01HC0GRD5RVM95TCZ0YX6PT7F6",
+      "name": "General",
+      "visibilityCenter": {
+        "lat": 32.4805668,
+        "lon": -80.7192441
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "NBC"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFE9EZ0C7D92FEYM37G",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1DFES46KTJ35QYCNR9FQ",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01KQG27JRTVG8Z7J5G60EHKX7A",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01HC0GT8SXYVF1ZRN6C2C74ADW",
-      "name": "Ground",
-      "callsign": "NBC_GND",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 128.15
-    },
-    {
-      "id": "01HC0GV5303PYGQH6QHPP4DWKW",
-      "name": "Tower",
-      "callsign": "NBC_TWR",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 119.05
-    },
-    {
       "id": "01HC0GVM3PJPTTXHCPWGZ600SV",
+      "physicalFacility": "NBC",
       "name": "Beaufort Arrival",
+      "radioName": "Beaufort Arrival",
       "callsign": "NBC_N_APP",
+      "areaId": "01HC0GRD5RVM95TCZ0YX6PT7F6",
+      "tcpId": "01K2NF1DFE9EZ0C7D92FEYM37G",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 32.4805668,
+        "lon": -80.7192441
       },
+      "range": 50,
       "freq": 123.7
     },
     {
       "id": "01K1SVHP41YSGS6R1K336YFAN2",
+      "physicalFacility": "NBC",
       "name": "Beaufort Approach",
+      "radioName": "Beaufort Approach",
       "callsign": "NBC_APP",
+      "areaId": "01HC0GRD5RVM95TCZ0YX6PT7F6",
+      "tcpId": "01K2NF1DFES46KTJ35QYCNR9FQ",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 32.4805668,
+        "lon": -80.7192441
       },
+      "range": 50,
       "freq": 125.125
     },
     {
-      "id": "01K1SVSKXQYWSCFTG7WZVJWN8C",
-      "name": "SFA 1",
-      "callsign": "NBC_APP",
+      "id": "01HC0GV5303PYGQH6QHPP4DWKW",
+      "physicalFacility": "NBC",
+      "name": "Tower",
+      "radioName": "Beaufort Tower",
+      "callsign": "NBC_TWR",
+      "areaId": "01HC0GRD5RVM95TCZ0YX6PT7F6",
+      "tcpId": "01KQG27JRTVG8Z7J5G60EHKX7A",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 32.4805668,
+        "lon": -80.7192441
       },
-      "freq": 132.325
-    },
-    {
-      "id": "01K1SVV71VVYZ29F7F7TB1MF68",
-      "name": "SFA 2",
-      "callsign": "NBC_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 132.85
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+      "range": 50,
+      "freq": 119.05
     }
   ],
   "mapGroups": [

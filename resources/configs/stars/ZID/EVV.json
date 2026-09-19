@@ -4,90 +4,156 @@
   "name": "Evansville ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 38.6494889,
-    "lon": -84.3106305555556
+    "lat": 38.039613599999996,
+    "lon": -87.52397395
   },
+  "areas": [
+    {
+      "id": "01GY3YWJAFD71H7YYXB350PEVC",
+      "name": "Evansville TRACON",
+      "visibilityCenter": {
+        "lat": 38.034444,
+        "lon": -87.518611
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "2I0",
+        "AJG",
+        "CUL",
+        "DCY",
+        "EHR",
+        "EVV",
+        "HNB",
+        "JQD",
+        "KY8",
+        "LWV",
+        "OWB",
+        "TEL",
+        "TWT"
+      ],
+      "ssaAirports": [
+        "EVV",
+        "OWB"
+      ]
+    },
+    {
+      "id": "01HADA88AYN9DZ9A5BX40QYDWS",
+      "name": "Evansville Tower",
+      "visibilityCenter": {
+        "lat": 38.0447832,
+        "lon": -87.5293369
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "EVV"
+      ],
+      "ssaAirports": [
+        "EVV"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CN2EDFG1DHT688APNP9",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1CN23P65SKCXDVEW7QQS",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1CN2VC3EW4AX6SXFY7KV",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1CN23P65SKCXDVEW7QQS",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GRVH4E2JTKATZPG8Z50M9WDC",
-      "name": "Clearance Delivery",
-      "callsign": "EVV_DEL",
+      "id": "01GRVH7VGRPZ7R4M9SMW1J1ADB",
+      "physicalFacility": "EVV",
+      "name": "East Radar",
+      "radioName": "Evansville Approach",
+      "callsign": "EVV_E_APP",
+      "areaId": "01GY3YWJAFD71H7YYXB350PEVC",
+      "tcpId": "01K2NF1CN2EDFG1DHT688APNP9",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.034444,
+        "lon": -87.518611
       },
+      "range": 150,
+      "freq": 124.025
+    },
+    {
+      "id": "01GRVH4E2JTKATZPG8Z50M9WDC",
+      "physicalFacility": "EVV",
+      "name": "Clearance Delivery",
+      "radioName": "Evansville Clearance Delivery",
+      "callsign": "EVV_DEL",
+      "areaId": "01HADA88AYN9DZ9A5BX40QYDWS",
+      "tcpId": "01K2NF1CN2VC3EW4AX6SXFY7KV",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 38.0447832,
+        "lon": -87.5293369
+      },
+      "range": 50,
       "freq": 126.6
     },
     {
       "id": "01GRVH5T16M4QVH0C008WCHP4T",
+      "physicalFacility": "EVV",
       "name": "Ground Control",
+      "radioName": "Evansville Ground",
       "callsign": "EVV_GND",
+      "areaId": "01HADA88AYN9DZ9A5BX40QYDWS",
+      "tcpId": "01K2NF1CN2VC3EW4AX6SXFY7KV",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.0447832,
+        "lon": -87.5293369
       },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01GRVH6QV1H8M26T1Q3RS0RNYD",
+      "physicalFacility": "EVV",
       "name": "Local Control",
+      "radioName": "Evansville Tower",
       "callsign": "EVV_TWR",
+      "areaId": "01HADA88AYN9DZ9A5BX40QYDWS",
+      "tcpId": "01K2NF1CN2VC3EW4AX6SXFY7KV",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.0447832,
+        "lon": -87.5293369
       },
+      "range": 50,
       "freq": 118.7
     },
     {
-      "id": "01GRVH7VGRPZ7R4M9SMW1J1ADB",
-      "name": "East Radar",
-      "callsign": "EVV_E_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 124.025
-    },
-    {
       "id": "01GRVH92S3E1PWJH2G4BSG6K72",
+      "physicalFacility": "EVV",
       "name": "West Radar",
+      "radioName": "Evansville Approach",
       "callsign": "EVV_W_APP",
+      "areaId": "01GY3YWJAFD71H7YYXB350PEVC",
+      "tcpId": "01K2NF1CN23P65SKCXDVEW7QQS",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.034444,
+        "lon": -87.518611
       },
+      "range": 150,
       "freq": 127.35
-    },
-    {
-      "id": "01JA39PSNAWTCC21JC45FV5NP8",
-      "name": "EVV GUARD",
-      "callsign": "EVV_EM_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
     }
   ],
   "mapGroups": [

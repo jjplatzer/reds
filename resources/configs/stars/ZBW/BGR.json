@@ -4,107 +4,135 @@
   "name": "Bangor ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 42.93753,
-    "lon": -70.70471
+    "lat": 44.80584,
+    "lon": -68.83887
   },
+  "areas": [
+    {
+      "id": "01G9BQ447JGB4ZTCWK6S3ZGNTD",
+      "name": "BGR",
+      "visibilityCenter": {
+        "lat": 44.80584,
+        "lon": -68.83887
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "0B2",
+        "1B0",
+        "2B7",
+        "57B",
+        "93B",
+        "BGR",
+        "BHB",
+        "BST",
+        "ME5",
+        "OLD",
+        "PG1"
+      ],
+      "ssaAirports": [
+        "BGR",
+        "BHB"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CGPA05C3Q2PD0XGMH41",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP3WG0GAVDDFEB0KMB",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1CGPA05C3Q2PD0XGMH41",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPBX9J3RSE9FCJ6Z1C",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1CGPA05C3Q2PD0XGMH41",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP31EB07X2DWR3G210",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G9BQ6VCK88979NEM8N7XD34X",
-      "name": "Clearance Delivery",
-      "callsign": "BGR_DEL",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 135.9
-    },
-    {
-      "id": "01G9BQ8NRH3P99PMYHZGXSCBFJ",
-      "name": "Ground Control",
-      "callsign": "BGR_GND",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01G9BQ91Q6Q2D3XTHQM9PA8QGM",
-      "name": "Local Control",
-      "callsign": "BGR_TWR",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 120.7
-    },
-    {
       "id": "01G9BQ9FFYW3N7C1046S84YEXV",
+      "physicalFacility": "BGR",
       "name": "Bangor Radar",
+      "radioName": "Bangor Approach",
       "callsign": "BGR_APP",
+      "areaId": "01G9BQ447JGB4ZTCWK6S3ZGNTD",
+      "tcpId": "01K2NF1CGPA05C3Q2PD0XGMH41",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 44.80584,
+        "lon": -68.83887
       },
+      "range": 150,
       "freq": 118.925
     },
     {
       "id": "01G9BQCB8NPEFC2NHJEHCQ1858",
+      "physicalFacility": "BGR",
       "name": "Bar Harbor Radar",
+      "radioName": "Bangor Approach",
       "callsign": "BGR_APP",
+      "areaId": "01G9BQ447JGB4ZTCWK6S3ZGNTD",
+      "tcpId": "01K2NF1CGP3WG0GAVDDFEB0KMB",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 44.80584,
+        "lon": -68.83887
       },
+      "range": 150,
       "freq": 133.6
     },
     {
       "id": "01G9BQDCM34T683XDS45ATV6T2",
+      "physicalFacility": "BGR",
       "name": "Final Radar",
+      "radioName": "Bangor Approach",
       "callsign": "BGR_APP",
+      "areaId": "01G9BQ447JGB4ZTCWK6S3ZGNTD",
+      "tcpId": "01K2NF1CGPBX9J3RSE9FCJ6Z1C",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 44.80584,
+        "lon": -68.83887
       },
+      "range": 150,
       "freq": 124.5
     },
     {
-      "id": "01KAMCQEJPHG8G5W5P8MXJG76Q",
-      "name": "BGR Guard",
-      "callsign": "BGR_EM_APP",
+      "id": "01G9BQ91Q6Q2D3XTHQM9PA8QGM",
+      "physicalFacility": "BGR",
+      "name": "Local Control",
+      "radioName": "Bangor Tower",
+      "callsign": "BGR_TWR",
+      "areaId": "01G9BQ447JGB4ZTCWK6S3ZGNTD",
+      "tcpId": "01K2NF1CGP31EB07X2DWR3G210",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 44.80584,
+        "lon": -68.83887
       },
-      "freq": 121.5
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
+      "range": 150,
+      "freq": 120.7
     }
   ],
   "mapGroups": [

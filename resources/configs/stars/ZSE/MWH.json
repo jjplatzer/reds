@@ -4,80 +4,131 @@
   "name": "Grant County ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 45.116049633333326,
-    "lon": -122.83189593333333
+    "lat": 47.2085833,
+    "lon": -119.3191389
   },
+  "areas": [
+    {
+      "id": "01GEQBAW2YD24EJSKZ6NB0V8P7",
+      "name": "Main",
+      "visibilityCenter": {
+        "lat": 47.2085833,
+        "lon": -119.3191389
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "EPH",
+        "WN56",
+        "2WA8",
+        "WT32",
+        "0S0",
+        "5WA1",
+        "W20",
+        "MWH",
+        "WA51",
+        "WT18",
+        "43D",
+        "9WA2",
+        "24WA",
+        "6WA4",
+        "S70",
+        "WN94",
+        "33S",
+        "4WA0",
+        "8WA6",
+        "04WN",
+        "2S4",
+        "5W1",
+        "2WA2"
+      ],
+      "ssaAirports": [
+        "MWH"
+      ]
+    },
+    {
+      "id": "01J7JEEWHZV87QKRY3YPZV0RKC",
+      "name": "Local",
+      "visibilityCenter": {
+        "lat": 47.2085833,
+        "lon": -119.3191389
+      },
+      "surveillanceRange": 100,
+      "ssaAirports": [
+        "MWH"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DN61D4PVVDEHRT86CM3",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6R2VPPR6JVNGEGZ15",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6R4J67C8DEB6SHXSS",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GEQBCBABJP98FB4XG03FERXG",
+      "physicalFacility": "MWH",
       "name": "Approach",
+      "radioName": "Grant County Approach",
       "callsign": "MWH_APP",
+      "areaId": "01GEQBAW2YD24EJSKZ6NB0V8P7",
+      "tcpId": "01K2NF1DN61D4PVVDEHRT86CM3",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.2085833,
+        "lon": -119.3191389
       },
+      "range": 100,
       "freq": 126.4
     },
     {
       "id": "01GEQBDMY2GYEKE5Z83JGGREK6",
+      "physicalFacility": "MWH",
       "name": "Local Control 1",
+      "radioName": "Grant County Tower",
       "callsign": "MWH_TWR",
+      "areaId": "01J7JEEWHZV87QKRY3YPZV0RKC",
+      "tcpId": "01K2NF1DN6R2VPPR6JVNGEGZ15",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.2085833,
+        "lon": -119.3191389
       },
+      "range": 100,
       "freq": 118.25
     },
     {
       "id": "01GEQBEY6EC8BRGR9ZCDR9NK0M",
+      "physicalFacility": "MWH",
       "name": "Local Control 2",
+      "radioName": "Grant County Tower",
       "callsign": "MWH_E_TWR",
+      "areaId": "01J7JEEWHZV87QKRY3YPZV0RKC",
+      "tcpId": "01K2NF1DN6R4J67C8DEB6SHXSS",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.2085833,
+        "lon": -119.3191389
       },
+      "range": 100,
       "freq": 128
-    },
-    {
-      "id": "01GEQBFFMH5S5QK02FP4RBH6DM",
-      "name": "Ground",
-      "callsign": "MWH_GND",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01JGHWQX3E1AK0RC2XP799V8X4",
-      "name": "MWH Guard",
-      "callsign": "MWH_G_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
     }
   ],
   "mapGroups": [

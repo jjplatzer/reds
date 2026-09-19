@@ -4,244 +4,601 @@
   "name": "Columbus ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 38.6494889,
-    "lon": -84.3106305555556
+    "lat": 39.93592713333334,
+    "lon": -83.4562159
   },
+  "areas": [
+    {
+      "id": "01GQ5M87T4JXCY1R39PXBY8RAQ",
+      "name": "Columbus Tower",
+      "visibilityCenter": {
+        "lat": 39.9980806,
+        "lon": -82.8931932
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "CMH"
+      ],
+      "ssaAirports": [
+        "CMH",
+        "DAY"
+      ]
+    },
+    {
+      "id": "01H5MW49A2KBPNBMT94YADPXK2",
+      "name": "Columbus TRACON",
+      "visibilityCenter": {
+        "lat": 40.00663,
+        "lon": -83.56169
+      },
+      "surveillanceRange": 95,
+      "underlyingAirports": [
+        "0OH8",
+        "11OH",
+        "2I7",
+        "3OH0",
+        "40I",
+        "4I3",
+        "4I9",
+        "7OA7",
+        "9OI9",
+        "AOH",
+        "AXV",
+        "CEV",
+        "CMH",
+        "CQA",
+        "CYO",
+        "DAY",
+        "DLZ",
+        "EDJ",
+        "FFO",
+        "GDK",
+        "I17",
+        "I22",
+        "I23",
+        "I44",
+        "I54",
+        "I66",
+        "I68",
+        "I73",
+        "I74",
+        "I95",
+        "ILN",
+        "IN68",
+        "LCK",
+        "LHQ",
+        "MGY",
+        "MRT",
+        "MWO",
+        "OH01",
+        "OH04",
+        "OH46",
+        "OH71",
+        "OH95",
+        "OSU",
+        "RID",
+        "RZT",
+        "SCA",
+        "SGH",
+        "TZR",
+        "UYF",
+        "VES",
+        "VTA"
+      ],
+      "ssaAirports": [
+        "CMH",
+        "OSU",
+        "LCK",
+        "DAY",
+        "FFO"
+      ]
+    },
+    {
+      "id": "01HAQMFPQMFPD5HB6Z5BNG2VDC",
+      "name": "Dayton Tower",
+      "visibilityCenter": {
+        "lat": 39.9022522,
+        "lon": -84.2194122
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "DAY"
+      ],
+      "ssaAirports": [
+        "DAY"
+      ]
+    },
+    {
+      "id": "01K1V1B4BCCAWPGQ5DQW3PVJTV",
+      "name": "Patterson Tower",
+      "visibilityCenter": {
+        "lat": 39.8137,
+        "lon": -84.0537
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "FFO"
+      ],
+      "ssaAirports": [
+        "FFO",
+        "DAY"
+      ]
+    },
+    {
+      "id": "01K1V1CVCMJ3YR0J345Y2WM1MF",
+      "name": "Rickenbacker Tower",
+      "visibilityCenter": {
+        "lat": 39.8174,
+        "lon": -82.9358
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "LCK"
+      ],
+      "ssaAirports": [
+        "LCK",
+        "CMH"
+      ]
+    },
+    {
+      "id": "01K1V1E2RGVPSEQHG5NVFBYKZY",
+      "name": "State Tower",
+      "visibilityCenter": {
+        "lat": 40.0775,
+        "lon": -83.0735
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "OSU"
+      ],
+      "ssaAirports": [
+        "OSU",
+        "CMH"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CN23VJEQAMWTYF4KHYF",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1CN2GGXZG59RR88QQ98P",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1CN2ND3240D6D7GCEJ2N",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1CN2HKR5FS51GP3SJTAS",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1CN261K0ZPWFW8PZE584",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1CN2M7PKZ7NFPZWN2QVT",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1CN2R29ZKRHY0MS4DPZZ",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1CN2ZYRNHJH43YD9EAXV",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K2NF1CN2ND3240D6D7GCEJ2N",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1CN2DB1N3YWCVTJW9BJR",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O"
+    },
+    {
+      "id": "01K2NF1CN2F0NK60WS1HKMJ1QA",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1CN2ND3240D6D7GCEJ2N",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1CN2ZTB0N465NSB98GJ2",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q"
+    },
+    {
+      "id": "01K2NF1CN2R29ZKRHY0MS4DPZZ",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1CN2ND3240D6D7GCEJ2N",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1CN2PTWRFKAZ9KM8SN9A",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1CN2G394KRP1B228VSTS",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1CN2ZYRNHJH43YD9EAXV",
+      "parentTcp": "1M"
+    },
+    {
+      "id": "01K2NF1CN2NBF6ZANYGRAZA4WG",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1CN23VJEQAMWTYF4KHYF",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1CN245M1VR8BH7QRYHAB",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1CN2ZYRNHJH43YD9EAXV",
+      "parentTcp": "1M"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GQ3Y10AASX8ZBD4YK79QSAR7",
-      "name": "Clearance Delivery",
-      "callsign": "CMH_DEL",
+      "id": "01H0RARXK3YTMVV8BXWB5EFQST",
+      "physicalFacility": "CMH",
+      "name": "Local Control East",
+      "radioName": "Columbus Tower",
+      "callsign": "CMH_E_TWR",
+      "areaId": "01GQ5M87T4JXCY1R39PXBY8RAQ",
+      "tcpId": "01K2NF1CN23VJEQAMWTYF4KHYF",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.9980806,
+        "lon": -82.8931932
       },
+      "range": 50,
+      "freq": 132.7
+    },
+    {
+      "id": "01GQ3YR6FR6RCS0EK3SG7R4YET",
+      "physicalFacility": "CMH",
+      "name": "Final Radar",
+      "radioName": "Columbus Approach",
+      "callsign": "CMH_F_APP",
+      "areaId": "01H5MW49A2KBPNBMT94YADPXK2",
+      "tcpId": "01K2NF1CN2GGXZG59RR88QQ98P",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 40.00663,
+        "lon": -83.56169
+      },
+      "range": 95,
+      "freq": 118.2
+    },
+    {
+      "id": "01GQ3Y10AASX8ZBD4YK79QSAR7",
+      "physicalFacility": "CMH",
+      "name": "Clearance Delivery",
+      "radioName": "Columbus Delivery",
+      "callsign": "CMH_DEL",
+      "areaId": "01GQ5M87T4JXCY1R39PXBY8RAQ",
+      "tcpId": "01K2NF1CN2HKR5FS51GP3SJTAS",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 39.9980806,
+        "lon": -82.8931932
+      },
+      "range": 50,
       "freq": 126.3
     },
     {
       "id": "01GQ3Y1PQ39NQ7DYASJ2VFNWNM",
+      "physicalFacility": "CMH",
       "name": "Ground Control",
+      "radioName": "Columbus Ground",
       "callsign": "CMH_GND",
+      "areaId": "01GQ5M87T4JXCY1R39PXBY8RAQ",
+      "tcpId": "01K2NF1CN2HKR5FS51GP3SJTAS",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.9980806,
+        "lon": -82.8931932
       },
+      "range": 50,
       "freq": 121.9
     },
     {
-      "id": "01GQ3YHT2PBCZZ4R1XJYRZ29D5",
-      "name": "North Radar",
-      "callsign": "CMH_N_APP",
+      "id": "01GRVJS5SHKEKXHKS16VEVPPKB",
+      "physicalFacility": "LCK",
+      "name": "Ground Control",
+      "radioName": "Rickenbacker Ground",
+      "callsign": "LCK_GND",
+      "areaId": "01K1V1CVCMJ3YR0J345Y2WM1MF",
+      "tcpId": "01K2NF1CN261K0ZPWFW8PZE584",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.8174,
+        "lon": -82.9358
       },
-      "freq": 125.95
+      "range": 50,
+      "freq": 125.275
     },
     {
-      "id": "01GQ3YN81AD1NYB95XCQ15QTP2",
-      "name": "South Radar",
-      "callsign": "CMH_S_APP",
+      "id": "01GRVJTP0N8V4RV9FD15YV59ZA",
+      "physicalFacility": "LCK",
+      "name": "Local Control",
+      "radioName": "Rickenbacker Tower",
+      "callsign": "LCK_TWR",
+      "areaId": "01K1V1CVCMJ3YR0J345Y2WM1MF",
+      "tcpId": "01K2NF1CN261K0ZPWFW8PZE584",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.8174,
+        "lon": -82.9358
       },
-      "freq": 134
-    },
-    {
-      "id": "01GQ3YR6FR6RCS0EK3SG7R4YET",
-      "name": "Final Radar",
-      "callsign": "CMH_F_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 118.2
-    },
-    {
-      "id": "01GQ3YTQBR47AEWK6XSWGC8EM5",
-      "name": "Middletown Radar",
-      "callsign": "DAY_M_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 120.925
-    },
-    {
-      "id": "01GQ3YWJMJJSP63Q9DQ21XGG3T",
-      "name": "Urbana Radar",
-      "callsign": "DAY_U_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 134.45
-    },
-    {
-      "id": "01H0RARXK3YTMVV8BXWB5EFQST",
-      "name": "Local Control East",
-      "callsign": "CMH_E_TWR",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 132.7
-    },
-    {
-      "id": "01HM25QP6P05Z4YWNB4WZ3BX45",
-      "name": "North Satellite",
-      "callsign": "CMH_P_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 120.2
+      "range": 50,
+      "freq": 120.05
     },
     {
       "id": "01HM25RJGYKRB6FBS313421W7Y",
+      "physicalFacility": "CMH",
       "name": "South Satellite",
+      "radioName": "Columbus Approach",
       "callsign": "CMH_L_APP",
+      "areaId": "01H5MW49A2KBPNBMT94YADPXK2",
+      "tcpId": "01K2NF1CN2M7PKZ7NFPZWN2QVT",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 40.00663,
+        "lon": -83.56169
       },
+      "range": 95,
       "freq": 132.3
     },
     {
-      "id": "01HM25S9NT6NV050H7WKQDQ8XR",
-      "name": "Xenia Radar",
-      "callsign": "DAY_X_APP",
+      "id": "01GQ3YTQBR47AEWK6XSWGC8EM5",
+      "physicalFacility": "CMH",
+      "name": "Middletown Radar",
+      "radioName": "Columbus Approach",
+      "callsign": "DAY_M_APP",
+      "areaId": "01H5MW49A2KBPNBMT94YADPXK2",
+      "tcpId": "01K2NF1CN2ZYRNHJH43YD9EAXV",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 40.00663,
+        "lon": -83.56169
       },
-      "freq": 118.85
+      "range": 95,
+      "freq": 120.925
+    },
+    {
+      "id": "01GQ3YHT2PBCZZ4R1XJYRZ29D5",
+      "physicalFacility": "CMH",
+      "name": "North Radar",
+      "radioName": "Columbus Approach",
+      "callsign": "CMH_N_APP",
+      "areaId": "01H5MW49A2KBPNBMT94YADPXK2",
+      "tcpId": "01K2NF1CN2ND3240D6D7GCEJ2N",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 40.00663,
+        "lon": -83.56169
+      },
+      "range": 95,
+      "freq": 125.95
+    },
+    {
+      "id": "01GXNWW5B86WHF13PANQSMSP4N",
+      "physicalFacility": "OSU",
+      "name": "Ground Control",
+      "radioName": "State Ground",
+      "callsign": "OSU_GND",
+      "areaId": "01K1V1E2RGVPSEQHG5NVFBYKZY",
+      "tcpId": "01K2NF1CN2DB1N3YWCVTJW9BJR",
+      "tcp": "1O",
+      "visualCenter": {
+        "lat": 40.0775,
+        "lon": -83.0735
+      },
+      "range": 50,
+      "freq": 121.7
+    },
+    {
+      "id": "01GXNWYQ8PAD01BHDRKVFDQBYS",
+      "physicalFacility": "OSU",
+      "name": "Local Control",
+      "radioName": "State Tower",
+      "callsign": "OSU_TWR",
+      "areaId": "01K1V1E2RGVPSEQHG5NVFBYKZY",
+      "tcpId": "01K2NF1CN2DB1N3YWCVTJW9BJR",
+      "tcp": "1O",
+      "visualCenter": {
+        "lat": 40.0775,
+        "lon": -83.0735
+      },
+      "range": 50,
+      "freq": 118.8
+    },
+    {
+      "id": "01HM25QP6P05Z4YWNB4WZ3BX45",
+      "physicalFacility": "CMH",
+      "name": "North Satellite",
+      "radioName": "Columbus Approach",
+      "callsign": "CMH_P_APP",
+      "areaId": "01H5MW49A2KBPNBMT94YADPXK2",
+      "tcpId": "01K2NF1CN2F0NK60WS1HKMJ1QA",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 40.00663,
+        "lon": -83.56169
+      },
+      "range": 95,
+      "freq": 120.2
+    },
+    {
+      "id": "01GXNXR2RM2F34ECCJ4MAM4T1G",
+      "physicalFacility": "FFO",
+      "name": "Ground Control",
+      "radioName": "Patterson Ground",
+      "callsign": "FFO_GND",
+      "areaId": "01K1V1B4BCCAWPGQ5DQW3PVJTV",
+      "tcpId": "01K2NF1CN2ZTB0N465NSB98GJ2",
+      "tcp": "1Q",
+      "visualCenter": {
+        "lat": 39.8137,
+        "lon": -84.0537
+      },
+      "range": 50,
+      "freq": 121.8
+    },
+    {
+      "id": "01GXNXS6WTHV49QG1BVA3HVY60",
+      "physicalFacility": "FFO",
+      "name": "Local Control",
+      "radioName": "Patterson Tower",
+      "callsign": "FFO_TWR",
+      "areaId": "01K1V1B4BCCAWPGQ5DQW3PVJTV",
+      "tcpId": "01K2NF1CN2ZTB0N465NSB98GJ2",
+      "tcp": "1Q",
+      "visualCenter": {
+        "lat": 39.8137,
+        "lon": -84.0537
+      },
+      "range": 50,
+      "freq": 127.8
+    },
+    {
+      "id": "01GQ3YN81AD1NYB95XCQ15QTP2",
+      "physicalFacility": "CMH",
+      "name": "South Radar",
+      "radioName": "Columbus Approach",
+      "callsign": "CMH_S_APP",
+      "areaId": "01H5MW49A2KBPNBMT94YADPXK2",
+      "tcpId": "01K2NF1CN2R29ZKRHY0MS4DPZZ",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 40.00663,
+        "lon": -83.56169
+      },
+      "range": 95,
+      "freq": 134
+    },
+    {
+      "id": "01GRVJ12EC8TXHXPMYWMBWCMK1",
+      "physicalFacility": "DAY",
+      "name": "Clearance Delivery",
+      "radioName": "Dayton Clearance",
+      "callsign": "DAY_DEL",
+      "areaId": "01HAQMFPQMFPD5HB6Z5BNG2VDC",
+      "tcpId": "01K2NF1CN2PTWRFKAZ9KM8SN9A",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 39.9022522,
+        "lon": -84.2194122
+      },
+      "range": 50,
+      "freq": 121.75
+    },
+    {
+      "id": "01GRVJ32AFEHZ376APH40PHWFC",
+      "physicalFacility": "DAY",
+      "name": "Ground Control",
+      "radioName": "Dayton Ground",
+      "callsign": "DAY_GND",
+      "areaId": "01HAQMFPQMFPD5HB6Z5BNG2VDC",
+      "tcpId": "01K2NF1CN2PTWRFKAZ9KM8SN9A",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 39.9022522,
+        "lon": -84.2194122
+      },
+      "range": 50,
+      "freq": 121.9
+    },
+    {
+      "id": "01GRVJ3X9S0EY1Q6DN5XXC09KX",
+      "physicalFacility": "DAY",
+      "name": "Local Control",
+      "radioName": "Dayton Tower",
+      "callsign": "DAY_TWR",
+      "areaId": "01HAQMFPQMFPD5HB6Z5BNG2VDC",
+      "tcpId": "01K2NF1CN2PTWRFKAZ9KM8SN9A",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 39.9022522,
+        "lon": -84.2194122
+      },
+      "range": 50,
+      "freq": 119.9
+    },
+    {
+      "id": "01GQ3YWJMJJSP63Q9DQ21XGG3T",
+      "physicalFacility": "CMH",
+      "name": "Urbana Radar",
+      "radioName": "Columbus Approach",
+      "callsign": "DAY_U_APP",
+      "areaId": "01H5MW49A2KBPNBMT94YADPXK2",
+      "tcpId": "01K2NF1CN2G394KRP1B228VSTS",
+      "tcp": "1U",
+      "visualCenter": {
+        "lat": 40.00663,
+        "lon": -83.56169
+      },
+      "range": 95,
+      "freq": 134.45
     },
     {
       "id": "01HM25T7W62VY7H5WWMWJ2YBXE",
+      "physicalFacility": "CMH",
       "name": "Local Control West",
+      "radioName": "Columbus Tower",
       "callsign": "CMH_W_TWR",
+      "areaId": "01GQ5M87T4JXCY1R39PXBY8RAQ",
+      "tcpId": "01K2NF1CN2NBF6ZANYGRAZA4WG",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.9980806,
+        "lon": -82.8931932
       },
+      "range": 50,
       "freq": 127.525
     },
     {
-      "id": "01JA39JX8NYDENYVRJ19GS4ZNC",
-      "name": "CMH GUARD",
-      "callsign": "CMH_EM_APP",
+      "id": "01HM25S9NT6NV050H7WKQDQ8XR",
+      "physicalFacility": "CMH",
+      "name": "Xenia Radar",
+      "radioName": "Columbus Approach",
+      "callsign": "DAY_X_APP",
+      "areaId": "01H5MW49A2KBPNBMT94YADPXK2",
+      "tcpId": "01K2NF1CN245M1VR8BH7QRYHAB",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 40.00663,
+        "lon": -83.56169
       },
-      "freq": 121.5
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1O",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1Q",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
+      "range": 95,
+      "freq": 118.85
     }
   ],
   "mapGroups": [

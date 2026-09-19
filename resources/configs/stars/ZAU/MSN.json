@@ -4,87 +4,93 @@
   "name": "Madison ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.879166749999996,
-    "lon": -88.975
+    "lat": 43.13635,
+    "lon": -89.345914
   },
+  "areas": [
+    {
+      "id": "01H5FWY0HCZQRJA5VM5547P7KX",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 43.13635,
+        "lon": -89.345914
+      },
+      "surveillanceRange": 120,
+      "ssaAirports": [
+        "MSN"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DXN5XPX4AJ5S7JN6RMB",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DXNH55MWM17AJBKC6SF",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1DXNYENNN2MW9D96C70H",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1DXNH55MWM17AJBKC6SF",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01H5FX49KP6P9CG7WCRTKDKV4C",
+      "physicalFacility": "MSN",
       "name": "East Approach",
+      "radioName": "Madison Approach",
       "callsign": "MSN_E_APP",
+      "areaId": "01H5FWY0HCZQRJA5VM5547P7KX",
+      "tcpId": "01K2NF1DXN5XPX4AJ5S7JN6RMB",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 43.13635,
+        "lon": -89.345914
       },
+      "range": 120,
       "freq": 120.1
     },
     {
-      "id": "01H5FX4WWHBQQ88YM17QQN1MQN",
-      "name": "West Approach",
-      "callsign": "MSN_W_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 135.45
-    },
-    {
       "id": "01H5FX5WFQV976DXQDPP6JEZ8C",
+      "physicalFacility": "MSN",
       "name": "Local",
+      "radioName": "Madison Tower",
       "callsign": "MSN_TWR",
+      "areaId": "01H5FWY0HCZQRJA5VM5547P7KX",
+      "tcpId": "01K2NF1DXNYENNN2MW9D96C70H",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 43.13635,
+        "lon": -89.345914
       },
+      "range": 120,
       "freq": 119.3
     },
     {
-      "id": "01H5FX6K4JV85PD285TSZEX4VQ",
-      "name": "Ground",
-      "callsign": "MSN_GND",
+      "id": "01H5FX4WWHBQQ88YM17QQN1MQN",
+      "physicalFacility": "MSN",
+      "name": "West Approach",
+      "radioName": "Madison Approach",
+      "callsign": "MSN_W_APP",
+      "areaId": "01H5FWY0HCZQRJA5VM5547P7KX",
+      "tcpId": "01K2NF1DXNH55MWM17AJBKC6SF",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 43.13635,
+        "lon": -89.345914
       },
-      "freq": 121.9
-    },
-    {
-      "id": "01H5FX7147QVC29C5XFR8ZP13B",
-      "name": "Clearance Delivery",
-      "callsign": "MSN_DEL",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 121.625
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
+      "range": 120,
+      "freq": 135.45
     }
   ],
   "mapGroups": [

@@ -4,134 +4,274 @@
   "name": "New Orleans ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 29.988875,
+    "lon": -90.267545
   },
+  "areas": [
+    {
+      "id": "01GB3B962G7KYA0QBN253PAFQK",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 29.988875,
+        "lon": -90.267545
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "APS",
+        "ASD",
+        "HDC",
+        "HUM",
+        "MSY",
+        "NBG",
+        "NEW",
+        "PTN"
+      ],
+      "ssaAirports": [
+        "MSY",
+        "NEW",
+        "HUM",
+        "HDC",
+        "NBG"
+      ]
+    },
+    {
+      "id": "01JCPP712TN7E5VHFYHVWFNFCQ",
+      "name": "MSY TOWER",
+      "visibilityCenter": {
+        "lat": 29.988875,
+        "lon": -90.267545
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "MSY"
+      ],
+      "ssaAirports": [
+        "MSY"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDRHKM5PYFPFNXR3AVC",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1CDRP6RRA091PGXQVWM2",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1CDRWJ9X9F2CT1EDE8S3",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1CDRQZFKYGXARZS9CRQT",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H"
+    },
+    {
+      "id": "01K2NF1CDRA6CWK5N3VVQQ0HVD",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1CDR6131Y66038C6QSC2",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1CDRJHRMKQXDRYG5PFF4",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1CDRYKD28WZDXBZ0CJMC",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V"
+    },
+    {
+      "id": "01K2NF1CDRAK5Y87HNV4WBZR17",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1CDRTARQWYEH7HZ4QD1X",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GB3B881KXR9TA6N6WX42DDX8",
-      "name": "West Radar",
-      "callsign": "MSY_W_APP",
+      "id": "01GBTA9961GYRKKMQWJW2EWBYR",
+      "physicalFacility": "NEW",
+      "name": "Local",
+      "radioName": "Lakefront Tower",
+      "callsign": "NEW_TWR",
+      "areaId": "01GB3B962G7KYA0QBN253PAFQK",
+      "tcpId": "01K2NF1CDRHKM5PYFPFNXR3AVC",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.988875,
+        "lon": -90.267545
       },
-      "freq": 125.5
-    },
-    {
-      "id": "01GB3BCSZXTAWNBJJM2TXXX0XH",
-      "name": "North Radar",
-      "callsign": "MSY_N_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 133.15
-    },
-    {
-      "id": "01GB3BERMGE13Y24BC76BXJQS7",
-      "name": "Houma-Patterson Radar",
-      "callsign": "MSY_H_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 124.3
+      "range": 100,
+      "freq": 118.95
     },
     {
       "id": "01GB3BJTKB29ZQY2J0TK8VJQYH",
+      "physicalFacility": "MSY",
       "name": "Local",
+      "radioName": "New Orleans Tower",
       "callsign": "MSY_TWR",
+      "areaId": "01GB3B962G7KYA0QBN253PAFQK",
+      "tcpId": "01K2NF1CDRP6RRA091PGXQVWM2",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.988875,
+        "lon": -90.267545
       },
+      "range": 100,
       "freq": 119.5
     },
     {
-      "id": "01GB3BPGAFPRZNFYNNH2BKY83J",
-      "name": "Ground",
-      "callsign": "MSY_GND",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GB3BPWY5NJ3SFD7Z620B58ZV",
-      "name": "Clearance Delivery",
-      "callsign": "MSY_DEL",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 120.925
-    },
-    {
-      "id": "01H5MXS9QE82XA5NN0P9Y2N6WJ",
-      "name": "South Radar",
-      "callsign": "MSY_S_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 123.85
-    },
-    {
       "id": "01J2SE6N7BY9B81RKE5SR7P26W",
+      "physicalFacility": "MSY",
       "name": "Final Radar",
+      "radioName": "New  Orleans Approach",
       "callsign": "MSY_F_APP",
+      "areaId": "01GB3B962G7KYA0QBN253PAFQK",
+      "tcpId": "01K2NF1CDRWJ9X9F2CT1EDE8S3",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.988875,
+        "lon": -90.267545
       },
+      "range": 100,
       "freq": 120.1
     },
     {
-      "id": "01J2SEAXXJ8SP0X8B7PQC9KHY6",
-      "name": "Lakefront Final Radar",
-      "callsign": "MSY_L_APP",
+      "id": "01GB3BERMGE13Y24BC76BXJQS7",
+      "physicalFacility": "MSY",
+      "name": "Houma-Patterson Radar",
+      "radioName": "New Orleans Approach",
+      "callsign": "MSY_H_APP",
+      "areaId": "01GB3B962G7KYA0QBN253PAFQK",
+      "tcpId": "01K2NF1CDRQZFKYGXARZS9CRQT",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.988875,
+        "lon": -90.267545
       },
+      "range": 100,
+      "freq": 124.3
+    },
+    {
+      "id": "01J2SEAXXJ8SP0X8B7PQC9KHY6",
+      "physicalFacility": "MSY",
+      "name": "Lakefront Final Radar",
+      "radioName": "New Orleans Approach",
+      "callsign": "MSY_L_APP",
+      "areaId": "01GB3B962G7KYA0QBN253PAFQK",
+      "tcpId": "01K2NF1CDRA6CWK5N3VVQQ0HVD",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 29.988875,
+        "lon": -90.267545
+      },
+      "range": 100,
       "freq": 120.85
     },
     {
-      "id": "1B",
+      "id": "01GB3BCSZXTAWNBJJM2TXXX0XH",
+      "physicalFacility": "MSY",
+      "name": "North Radar",
+      "radioName": "New Orleans Approach",
+      "callsign": "MSY_N_APP",
+      "areaId": "01GB3B962G7KYA0QBN253PAFQK",
+      "tcpId": "01K2NF1CDR6131Y66038C6QSC2",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.988875,
+        "lon": -90.267545
+      },
+      "range": 100,
+      "freq": 133.15
     },
     {
-      "id": "1H",
+      "id": "01H5MXS9QE82XA5NN0P9Y2N6WJ",
+      "physicalFacility": "MSY",
+      "name": "South Radar",
+      "radioName": "New Orleans Approach",
+      "callsign": "MSY_S_APP",
+      "areaId": "01GB3B962G7KYA0QBN253PAFQK",
+      "tcpId": "01K2NF1CDRJHRMKQXDRYG5PFF4",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.988875,
+        "lon": -90.267545
+      },
+      "range": 100,
+      "freq": 123.85
     },
     {
-      "id": "1N",
+      "id": "01GBTAD10E40YPYJW2VTPASF78",
+      "physicalFacility": "NBG",
+      "name": "Local",
+      "radioName": "Navy New Orleans Tower",
+      "callsign": "NBG_TWR",
+      "areaId": "01GB3B962G7KYA0QBN253PAFQK",
+      "tcpId": "01K2NF1CDRYKD28WZDXBZ0CJMC",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.988875,
+        "lon": -90.267545
+      },
+      "range": 100,
+      "freq": 123.8
     },
     {
-      "id": "1S",
+      "id": "01GB3B881KXR9TA6N6WX42DDX8",
+      "physicalFacility": "MSY",
+      "name": "West Radar",
+      "radioName": "New Orleans Approach",
+      "callsign": "MSY_W_APP",
+      "areaId": "01GB3B962G7KYA0QBN253PAFQK",
+      "tcpId": "01K2NF1CDRAK5Y87HNV4WBZR17",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.988875,
+        "lon": -90.267545
+      },
+      "range": 100,
+      "freq": 125.5
     },
     {
-      "id": "1W",
+      "id": "01GBTAK67DBF8BDXC0YMK4RCYX",
+      "physicalFacility": "HUM",
+      "name": "Local",
+      "radioName": "Houma Tower",
+      "callsign": "HUM_TWR",
+      "areaId": "01GB3B962G7KYA0QBN253PAFQK",
+      "tcpId": "01K2NF1CDRTARQWYEH7HZ4QD1X",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.988875,
+        "lon": -90.267545
+      },
+      "range": 100,
+      "freq": 125.3
     }
   ],
   "mapGroups": [

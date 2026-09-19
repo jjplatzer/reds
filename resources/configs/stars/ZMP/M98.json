@@ -4,338 +4,917 @@
   "name": "Minneapolis TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 44.958231848333334,
+    "lon": -93.2573926
   },
+  "areas": [
+    {
+      "id": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "name": "M98",
+      "visibilityCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "09Y",
+        "0MN9",
+        "0MY0",
+        "10D",
+        "11MN",
+        "12Y",
+        "14WI",
+        "18Y",
+        "1MN8",
+        "21D",
+        "21WI",
+        "22Y",
+        "25D",
+        "25MY",
+        "3T3",
+        "44MN",
+        "46WI",
+        "48MN",
+        "4MN3",
+        "64MN",
+        "69WI",
+        "6MN9",
+        "6WI2",
+        "76WI",
+        "7MN1",
+        "7Y3",
+        "8WI9",
+        "8Y2",
+        "8Y4",
+        "8Y6",
+        "97MN",
+        "9MN4",
+        "ACQ",
+        "AHH",
+        "BDH",
+        "CBG",
+        "CFE",
+        "FBL",
+        "GYL",
+        "LVN",
+        "MGG",
+        "MN07",
+        "OEO",
+        "RGK",
+        "RNH",
+        "SGS",
+        "SYN",
+        "WI14"
+      ],
+      "ssaAirports": [
+        "MSP",
+        "FCM",
+        "ANE",
+        "STP",
+        "MIC"
+      ]
+    },
+    {
+      "id": "01H24SFN52H7W84NG3PDXT2MZR",
+      "name": "MSP",
+      "visibilityCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "MSP"
+      ],
+      "ssaAirports": [
+        "MSP"
+      ]
+    },
+    {
+      "id": "01H24TFCKJCAS3JJSGMPGK6G9Q",
+      "name": "FCM",
+      "visibilityCenter": {
+        "lat": 44.8275,
+        "lon": -93.45861111
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "FCM"
+      ],
+      "ssaAirports": [
+        "FCM"
+      ]
+    },
+    {
+      "id": "01H24TGXS58J8W4VMH156F9PTJ",
+      "name": "STP",
+      "visibilityCenter": {
+        "lat": 44.9347222,
+        "lon": -93.0602778
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "STP"
+      ],
+      "ssaAirports": [
+        "STP"
+      ]
+    },
+    {
+      "id": "01H24THQ09PVY0G3H4X0T0QZ0B",
+      "name": "ANE",
+      "visibilityCenter": {
+        "lat": 45.145,
+        "lon": -93.2102778
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ANE"
+      ],
+      "ssaAirports": [
+        "ANE"
+      ]
+    },
+    {
+      "id": "01H24TJJ9B0Y1G2R7R7TR73W7R",
+      "name": "MIC",
+      "visibilityCenter": {
+        "lat": 45.06138889,
+        "lon": -93.35388889
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "MIC"
+      ],
+      "ssaAirports": [
+        "MIC"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3KD59HNHBE9CBXRRYZ",
+      "code": "16",
+      "subset": 1,
+      "sectorId": "6",
+      "parentTcpId": "01K2NF1D3KCSY43GJEYK0K3DKH",
+      "parentTcp": "2Y",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3K7S79CYWVF7AW9TSK",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1D3KAAFMJXJCX489XANP",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KSTHPR4PJ0426MHQK",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1D3KRKZ0M13ZNTM4D1B1",
+      "parentTcp": "1R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KZS4JACYNBW0Q1KBX",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1D3KRKZ0M13ZNTM4D1B1",
+      "parentTcp": "1R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KYM3RPXZ1BA3PYQG7",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1D3KZS4JACYNBW0Q1KBX",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KAAFMJXJCX489XANP",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KC3MMSJYEBM4E1CH9",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1D3KAAFMJXJCX489XANP",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KZ8WDGC63T8BX7BND",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "parentTcpId": "01K2NF1D3KAAFMJXJCX489XANP",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KEVRN7XRWTZYP3S07",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "parentTcpId": "01K2NF1D3KYM3RPXZ1BA3PYQG7",
+      "parentTcp": "1G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KFKPXB3E65ZE97192",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1D3KRKZ0M13ZNTM4D1B1",
+      "parentTcp": "1R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KCRKTSBNR5ARRJZJY",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1D3KAAFMJXJCX489XANP",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KA27W6VPMP4DZR7Q4",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q",
+      "parentTcpId": "01K2NF1D3KAAFMJXJCX489XANP",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KRKZ0M13ZNTM4D1B1",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1D3KAAFMJXJCX489XANP",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KHBZSEQSGPGY23ERR",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1D3KCRKTSBNR5ARRJZJY",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KVPDPFDYSM06VHZ61",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1D3KBEPNQRK8T4JSZ4PX",
+      "parentTcp": "1V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KWM2HX10E7722PY70",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1D3KAAFMJXJCX489XANP",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KBEPNQRK8T4JSZ4PX",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3K7H1N5P112FMQAPBZ",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1D3KAAFMJXJCX489XANP",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KN8BMP0BXN6MQKE8P",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1D3KAAFMJXJCX489XANP",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3K35D34YYJ5Q142PJT",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1D3KBEPNQRK8T4JSZ4PX",
+      "parentTcp": "1V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KREAZJNXK04Y3H96Q",
+      "code": "2F",
+      "subset": 2,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3K5JKV88JS38X8XAYR",
+      "code": "2M",
+      "subset": 2,
+      "sectorId": "M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KH0E28DPZ21JRCD0R",
+      "code": "2O",
+      "subset": 2,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3K6T37H0E2NMWRRB9S",
+      "code": "2P",
+      "subset": 2,
+      "sectorId": "P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KCSY43GJEYK0K3DKH",
+      "code": "2Y",
+      "subset": 2,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1D3KBEPNQRK8T4JSZ4PX",
+      "parentTcp": "1V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3K61TMC4ZATYHK6MYQ",
+      "code": "2Z",
+      "subset": 2,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1D3KREAZJNXK04Y3H96Q",
+      "parentTcp": "2F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KKV0SKHXDMAVG0D04",
+      "code": "39",
+      "subset": 3,
+      "sectorId": "9",
+      "parentTcpId": "01K2NF1D3KAAFMJXJCX489XANP",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3K3GP0VCTCN4D2K6G3",
+      "code": "3F",
+      "subset": 3,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1D3KREAZJNXK04Y3H96Q",
+      "parentTcp": "2F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3K2YZGV4JXMMZ62HDT",
+      "code": "3M",
+      "subset": 3,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1D3K5JKV88JS38X8XAYR",
+      "parentTcp": "2M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3KRXF5K8P4EFNZ06E4",
+      "code": "3O",
+      "subset": 3,
+      "sectorId": "O",
+      "parentTcpId": "01K2NF1D3KH0E28DPZ21JRCD0R",
+      "parentTcp": "2O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D3K3S2BPX2MJ0904EMA",
+      "code": "3P",
+      "subset": 3,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1D3K6T37H0E2NMWRRB9S",
+      "parentTcp": "2P",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GF2JYCAVBFRBM68GPY9E3WGD",
-      "name": "North Departure",
-      "callsign": "MSP_D_DEP",
+      "id": "01GF2MJ8BX1KVB5HS3GEYY2PGD",
+      "physicalFacility": "MSP",
+      "name": "Clearance Delivery",
+      "radioName": "Minneapolis Clearance",
+      "callsign": "MSP_DEL",
+      "areaId": "01H24SFN52H7W84NG3PDXT2MZR",
+      "tcpId": "01K2NF1D3KD59HNHBE9CBXRRYZ",
+      "tcp": "16",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 44.89039,
+        "lon": -93.23065
       },
-      "freq": 125.75
-    },
-    {
-      "id": "01GF2JZM5PRG1S7VMPT52V6QZK",
-      "name": "South Departure",
-      "callsign": "MSP_R_DEP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 124.7
-    },
-    {
-      "id": "01GF2K04Y731FS6EB2FM5XBQ5R",
-      "name": "East Departure",
-      "callsign": "MSP_L_DEP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 132.975
-    },
-    {
-      "id": "01GF2K0QZ6DP5X9KANR4RYNY9S",
-      "name": "North Feeder",
-      "callsign": "MSP_I_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 126.35
-    },
-    {
-      "id": "01GF2K1E0SQSYK0KB5S1GW8CZY",
-      "name": "South Feeder",
-      "callsign": "MSP_H_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 135.475
-    },
-    {
-      "id": "01GF2K2317Q22JN67B8P2X12PP",
-      "name": "North Final/Arrival",
-      "callsign": "MSP_N_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 119.3
-    },
-    {
-      "id": "01GF2K2KKHZ3DY9VDDXP2JVHFQ",
-      "name": "South Final/Arrival",
-      "callsign": "MSP_S_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 126.95
-    },
-    {
-      "id": "01GF2K39APMWSD4B9BQDRHCN0C",
-      "name": "17/35 West Final/Arrival",
-      "callsign": "MSP_J_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 118.725
-    },
-    {
-      "id": "01GF2K46RHF50P043G1YAV4646",
-      "name": "Flying Cloud Satellite",
-      "callsign": "MSP_E_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 134.7
-    },
-    {
-      "id": "01GF2K4RAY4BZYQQNHGRXTQP24",
-      "name": "St. Paul Satellite",
-      "callsign": "MSP_G_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 121.2
-    },
-    {
-      "id": "01GF2K58X4JE71KB7CQ5FSQTG7",
-      "name": "Crystal Satellite",
-      "callsign": "MSP_K_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 126.5
-    },
-    {
-      "id": "01H2V82FYPSH4EZNGDDVVVMAAF",
-      "name": "Midnight",
-      "callsign": "MSP_E_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 124.7
+      "range": 60,
+      "freq": 133.2
     },
     {
       "id": "01H69YS717DSZ7GJGK2BNG5T71",
+      "physicalFacility": "M98",
       "name": "Arrival Overhead",
+      "radioName": "Minneapolis Approach",
       "callsign": "MSP_A_APP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3K7S79CYWVF7AW9TSK",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 44.89039,
+        "lon": -93.23065
       },
+      "range": 150,
       "freq": 119.975
     },
     {
-      "id": "01HNKHYC744N8M15YW49Z7JBM1",
-      "name": "TMU",
-      "callsign": "MSP_W_APP",
+      "id": "01GF2JYCAVBFRBM68GPY9E3WGD",
+      "physicalFacility": "M98",
+      "name": "North Departure",
+      "radioName": "Minneapolis Departure",
+      "callsign": "MSP_D_DEP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3KSTHPR4PJ0426MHQK",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 44.89039,
+        "lon": -93.23065
       },
+      "range": 150,
+      "freq": 125.75
+    },
+    {
+      "id": "01GF2K46RHF50P043G1YAV4646",
+      "physicalFacility": "M98",
+      "name": "Flying Cloud Satellite",
+      "radioName": "Minneapolis Approach",
+      "callsign": "MSP_E_APP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3KZS4JACYNBW0Q1KBX",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 150,
+      "freq": 134.7
+    },
+    {
+      "id": "01H2V82FYPSH4EZNGDDVVVMAAF",
+      "physicalFacility": "M98",
+      "name": "Midnight",
+      "radioName": "Minneapolis Approach",
+      "callsign": "MSP_E_APP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3KZS4JACYNBW0Q1KBX",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 150,
+      "freq": 124.7
+    },
+    {
+      "id": "01GF2K4RAY4BZYQQNHGRXTQP24",
+      "physicalFacility": "M98",
+      "name": "St. Paul Satellite",
+      "radioName": "Minneapolis Approach",
+      "callsign": "MSP_G_APP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3KYM3RPXZ1BA3PYQG7",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 150,
+      "freq": 121.2
+    },
+    {
+      "id": "01GF2K1E0SQSYK0KB5S1GW8CZY",
+      "physicalFacility": "M98",
+      "name": "South Feeder",
+      "radioName": "Minneapolis Approach",
+      "callsign": "MSP_H_APP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3KAAFMJXJCX489XANP",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 150,
+      "freq": 135.475
+    },
+    {
+      "id": "01GF2K0QZ6DP5X9KANR4RYNY9S",
+      "physicalFacility": "M98",
+      "name": "North Feeder",
+      "radioName": "Minneapolis Approach",
+      "callsign": "MSP_I_APP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3KC3MMSJYEBM4E1CH9",
+      "tcp": "1I",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 150,
+      "freq": 126.35
+    },
+    {
+      "id": "01GF2K39APMWSD4B9BQDRHCN0C",
+      "physicalFacility": "M98",
+      "name": "17/35 West Final/Arrival",
+      "radioName": "Minneapolis Approach",
+      "callsign": "MSP_J_APP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3KZ8WDGC63T8BX7BND",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 150,
+      "freq": 118.725
+    },
+    {
+      "id": "01GF2K58X4JE71KB7CQ5FSQTG7",
+      "physicalFacility": "M98",
+      "name": "Crystal Satellite",
+      "radioName": "Minneapolis Approach",
+      "callsign": "MSP_K_APP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3KEVRN7XRWTZYP3S07",
+      "tcp": "1K",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 150,
+      "freq": 126.5
+    },
+    {
+      "id": "01GF2K04Y731FS6EB2FM5XBQ5R",
+      "physicalFacility": "M98",
+      "name": "East Departure",
+      "radioName": "Minneapolis Departure",
+      "callsign": "MSP_L_DEP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3KFKPXB3E65ZE97192",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 150,
+      "freq": 132.975
+    },
+    {
+      "id": "01GF2K2317Q22JN67B8P2X12PP",
+      "physicalFacility": "M98",
+      "name": "North Final/Arrival",
+      "radioName": "Minneapolis Approach",
+      "callsign": "MSP_N_APP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3KCRKTSBNR5ARRJZJY",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 150,
+      "freq": 119.3
+    },
+    {
+      "id": "01GF2JZM5PRG1S7VMPT52V6QZK",
+      "physicalFacility": "M98",
+      "name": "South Departure",
+      "radioName": "Minneapolis Departure",
+      "callsign": "MSP_R_DEP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3KRKZ0M13ZNTM4D1B1",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 150,
+      "freq": 124.7
+    },
+    {
+      "id": "01GF2K2KKHZ3DY9VDDXP2JVHFQ",
+      "physicalFacility": "M98",
+      "name": "South Final/Arrival",
+      "radioName": "Minneapolis Approach",
+      "callsign": "MSP_S_APP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3KHBZSEQSGPGY23ERR",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 150,
+      "freq": 126.95
+    },
+    {
+      "id": "01GF2MQ1JGYMJYF0BR52NAFDBC",
+      "physicalFacility": "MSP",
+      "name": "Local Control North",
+      "radioName": "Minneapolis Tower",
+      "callsign": "MSP_N_TWR",
+      "areaId": "01H24SFN52H7W84NG3PDXT2MZR",
+      "tcpId": "01K2NF1D3KVPDPFDYSM06VHZ61",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 60,
+      "freq": 123.95
+    },
+    {
+      "id": "01GF2MR29GHPKNEKEMDMWTWJQS",
+      "physicalFacility": "MSP",
+      "name": "Local Control South",
+      "radioName": "Minneapolis Tower",
+      "callsign": "MSP_S_TWR",
+      "areaId": "01H24SFN52H7W84NG3PDXT2MZR",
+      "tcpId": "01K2NF1D3KBEPNQRK8T4JSZ4PX",
+      "tcp": "1V",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 60,
+      "freq": 126.7
+    },
+    {
+      "id": "01HNKHYC744N8M15YW49Z7JBM1",
+      "physicalFacility": "M98",
+      "name": "TMU",
+      "radioName": "Minneapolis Approach",
+      "callsign": "MSP_W_APP",
+      "areaId": "01GF2JWVC1BMAN9B1X3R4FFBA0",
+      "tcpId": "01K2NF1D3K7H1N5P112FMQAPBZ",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 150,
       "freq": 123.45
     },
     {
-      "id": "16",
+      "id": "01GF2MRSRRMM8WP93DSVYJSMAY",
+      "physicalFacility": "MSP",
+      "name": "Local Control West",
+      "radioName": "Minneapolis Tower",
+      "callsign": "MSP_W_TWR",
+      "areaId": "01H24SFN52H7W84NG3PDXT2MZR",
+      "tcpId": "01K2NF1D3K35D34YYJ5Q142PJT",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 60,
+      "freq": 123.675
     },
     {
-      "id": "1A",
+      "id": "01GFEW1BWYBGYTQGYA6V0R3836",
+      "physicalFacility": "FCM",
+      "name": "Local Control South",
+      "radioName": "Flying Cloud Tower",
+      "callsign": "FCM_S_TWR",
+      "areaId": "01H24TFCKJCAS3JJSGMPGK6G9Q",
+      "tcpId": "01K2NF1D3KREAZJNXK04Y3H96Q",
+      "tcp": "2F",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.8275,
+        "lon": -93.45861111
+      },
+      "range": 60,
+      "freq": 119.15
     },
     {
-      "id": "1D",
+      "id": "01GFEW3ZD3CHWZ740TK6PZ44N9",
+      "physicalFacility": "MIC",
+      "name": "Local Control",
+      "radioName": "Crystal Tower",
+      "callsign": "MIC_TWR",
+      "areaId": "01H24TJJ9B0Y1G2R7R7TR73W7R",
+      "tcpId": "01K2NF1D3K5JKV88JS38X8XAYR",
+      "tcp": "2M",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 45.06138889,
+        "lon": -93.35388889
+      },
+      "range": 50,
+      "freq": 120.7
     },
     {
-      "id": "1E",
+      "id": "01GFEVY9TD67H224XMRR2GMENT",
+      "physicalFacility": "ANE",
+      "name": "Local Control",
+      "radioName": "Anoka Tower",
+      "callsign": "ANE_TWR",
+      "areaId": "01H24THQ09PVY0G3H4X0T0QZ0B",
+      "tcpId": "01K2NF1D3KH0E28DPZ21JRCD0R",
+      "tcp": "2O",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 45.145,
+        "lon": -93.2102778
+      },
+      "range": 50,
+      "freq": 132.4
     },
     {
-      "id": "1G",
+      "id": "01GFEW6T8K199SNHMFK343P872",
+      "physicalFacility": "STP",
+      "name": "Local Control",
+      "radioName": "St. Paul Tower",
+      "callsign": "STP_TWR",
+      "areaId": "01H24TGXS58J8W4VMH156F9PTJ",
+      "tcpId": "01K2NF1D3K6T37H0E2NMWRRB9S",
+      "tcp": "2P",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.9347222,
+        "lon": -93.0602778
+      },
+      "range": 50,
+      "freq": 119.1
     },
     {
-      "id": "1H",
+      "id": "01GF2MMPWYWPN6MKYBFJDH7MV6",
+      "physicalFacility": "MSP",
+      "name": "Ground Metering",
+      "radioName": "MSP_H_GND",
+      "callsign": "MSP_H_GND",
+      "areaId": "01H24SFN52H7W84NG3PDXT2MZR",
+      "tcpId": "01K2NF1D3KCSY43GJEYK0K3DKH",
+      "tcp": "2Y",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 60,
+      "freq": 133.575
     },
     {
-      "id": "1I",
+      "id": "01GF2MN860N0SW76NR9SG4JGQK",
+      "physicalFacility": "MSP",
+      "name": "Ground Control North",
+      "radioName": "Minneapolis Ground",
+      "callsign": "MSP_N_GND",
+      "areaId": "01H24SFN52H7W84NG3PDXT2MZR",
+      "tcpId": "01K2NF1D3KCSY43GJEYK0K3DKH",
+      "tcp": "2Y",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 60,
+      "freq": 121.8
     },
     {
-      "id": "1J",
+      "id": "01GF2MNRWWM6XZ37R438FYHQ6N",
+      "physicalFacility": "MSP",
+      "name": "Ground Control South",
+      "radioName": "Minneapolis Ground",
+      "callsign": "MSP_S_GND",
+      "areaId": "01H24SFN52H7W84NG3PDXT2MZR",
+      "tcpId": "01K2NF1D3KCSY43GJEYK0K3DKH",
+      "tcp": "2Y",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 60,
+      "freq": 121.9
     },
     {
-      "id": "1K",
+      "id": "01GF2MPE5GXZP7N0D0X874M768",
+      "physicalFacility": "MSP",
+      "name": "Ground Control West",
+      "radioName": "Minneapolis Ground",
+      "callsign": "MSP_W_GND",
+      "areaId": "01H24SFN52H7W84NG3PDXT2MZR",
+      "tcpId": "01K2NF1D3KCSY43GJEYK0K3DKH",
+      "tcp": "2Y",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.89039,
+        "lon": -93.23065
+      },
+      "range": 60,
+      "freq": 127.925
     },
     {
-      "id": "1L",
+      "id": "01GFEW1V06RA5EPSRJ45ZTFNW3",
+      "physicalFacility": "FCM",
+      "name": "Local Control North",
+      "radioName": "Flying Cloud Tower",
+      "callsign": "FCM_N_TWR",
+      "areaId": "01H24TFCKJCAS3JJSGMPGK6G9Q",
+      "tcpId": "01K2NF1D3K61TMC4ZATYHK6MYQ",
+      "tcp": "2Z",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.8275,
+        "lon": -93.45861111
+      },
+      "range": 60,
+      "freq": 125.2
     },
     {
-      "id": "1N",
+      "id": "01GFEW0T1YDFG8HFCND026AP4Y",
+      "physicalFacility": "FCM",
+      "name": "Ground Control",
+      "radioName": "Flying Cloud Ground",
+      "callsign": "FCM_GND",
+      "areaId": "01H24TFCKJCAS3JJSGMPGK6G9Q",
+      "tcpId": "01K2NF1D3K3GP0VCTCN4D2K6G3",
+      "tcp": "3F",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.8275,
+        "lon": -93.45861111
+      },
+      "range": 60,
+      "freq": 121.7
     },
     {
-      "id": "1R",
+      "id": "01GFEW4M0KK4D1JSM3P3KC932E",
+      "physicalFacility": "MIC",
+      "name": "Ground Control",
+      "radioName": "Crystal Ground",
+      "callsign": "MIC_GND",
+      "areaId": "01H24TJJ9B0Y1G2R7R7TR73W7R",
+      "tcpId": "01K2NF1D3K2YZGV4JXMMZ62HDT",
+      "tcp": "3M",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 45.06138889,
+        "lon": -93.35388889
+      },
+      "range": 50,
+      "freq": 121.6
     },
     {
-      "id": "1S",
+      "id": "01GFEVZ1B7HC2DXEDRNCZVC2PE",
+      "physicalFacility": "ANE",
+      "name": "Ground Control",
+      "radioName": "Anoka Ground",
+      "callsign": "ANE_GND",
+      "areaId": "01H24THQ09PVY0G3H4X0T0QZ0B",
+      "tcpId": "01K2NF1D3KRXF5K8P4EFNZ06E4",
+      "tcp": "3O",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 45.145,
+        "lon": -93.2102778
+      },
+      "range": 50,
+      "freq": 121.85
     },
     {
-      "id": "1T",
+      "id": "01GFEW6A79PWD9118D55F8EPY8",
+      "physicalFacility": "STP",
+      "name": "Ground Control",
+      "radioName": "St. Paul Ground",
+      "callsign": "STP_GND",
+      "areaId": "01H24TGXS58J8W4VMH156F9PTJ",
+      "tcpId": "01K2NF1D3K3S2BPX2MJ0904EMA",
+      "tcp": "3P",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2F",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2M",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2O",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2P",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2Y",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2Z",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "3F",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "3M",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "3O",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "3P",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.9347222,
+        "lon": -93.0602778
+      },
+      "range": 50,
+      "freq": 121.675
     }
   ],
   "mapGroups": [

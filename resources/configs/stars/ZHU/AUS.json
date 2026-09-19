@@ -4,182 +4,296 @@
   "name": "Austin ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 30.23773254318678,
+    "lon": -97.71108868328459
   },
+  "areas": [
+    {
+      "id": "01GYMKTME5AY40655EQ2HGG4WH",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 30.191421,
+        "lon": -97.651627
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "3R9",
+        "3T5",
+        "50R",
+        "84R",
+        "88R",
+        "AUS",
+        "EDC",
+        "GTU",
+        "GYB",
+        "HYI",
+        "RYW",
+        "T20",
+        "T74",
+        "T91"
+      ],
+      "ssaAirports": [
+        "AUS",
+        "HYI",
+        "GTU",
+        "EDC"
+      ]
+    },
+    {
+      "id": "01H0E7AWC65EGPVF1QKCY626DD",
+      "name": "GTU TOWER MAPS",
+      "visibilityCenter": {
+        "lat": 30.679137172747144,
+        "lon": -97.67572673313832
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "GTU"
+      ],
+      "ssaAirports": [
+        "GTU"
+      ]
+    },
+    {
+      "id": "01H0E7X4RPH2XVNDTWMP63EWEG",
+      "name": "HYI TOWER MAPS",
+      "visibilityCenter": {
+        "lat": 29.888951,
+        "lon": -97.865374
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "HYI"
+      ],
+      "ssaAirports": [
+        "HYI"
+      ]
+    },
+    {
+      "id": "01JCPNXTEJEV9GENCVBH0XDKBF",
+      "name": "AUS TOWER",
+      "visibilityCenter": {
+        "lat": 30.191421,
+        "lon": -97.651627
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "AUS"
+      ],
+      "ssaAirports": [
+        "AUS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDQKK55WM02GW6MGM76",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRC5NCS536V7CX9JP7",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRPQJEN2ZNAGZZWY3T",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRTNK571PFZHZZMZTM",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRGGMQ2G883KT6YVDG",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRHQPHH0K92R99406A",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRBZDAB7RDECMPR7EW",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDR0EPDAPPYV0QN33DK",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRSQ4NM2DDWZMHXJ7T",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GTN552419NBRYC5136YW7XPG",
-      "name": "Local East",
-      "callsign": "AUS_E_TWR",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 121
-    },
-    {
-      "id": "01GWWF3ND3ERDQF4ZFWFKSP8J0",
-      "name": "Ground East",
-      "callsign": "AUS_E_GND",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GWWFBNDW1YF08J5257R83YMH",
-      "name": "Clearance Delivery",
-      "callsign": "AUS_DEL",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 125.5
-    },
-    {
-      "id": "01GWWFCDRXW8SXF612RP7QTT8S",
-      "name": "Ground West",
-      "callsign": "AUS_W_GND",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 121.7
-    },
-    {
-      "id": "01GWWFD8BMFQ9BX1YA9G10TZWS",
-      "name": "Local West",
-      "callsign": "AUS_W_TWR",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 118.225
-    },
-    {
-      "id": "01H0E9CF7P2R14PQX0BJ4MJZB9",
-      "name": "West Radar",
-      "callsign": "AUS_W_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 119
-    },
-    {
       "id": "01H0E9ENZMK1G55DJZ75047BS2",
+      "physicalFacility": "AUS",
       "name": "East Radar",
+      "radioName": "Austin Approach",
       "callsign": "AUS_E_APP",
+      "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
+      "tcpId": "01K2NF1CDQKK55WM02GW6MGM76",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.191421,
+        "lon": -97.651627
       },
+      "range": 100,
       "freq": 127.225
     },
     {
-      "id": "01H0E9G8CA5T6C71VHBNNRJ08T",
-      "name": "Rodeo Sector",
-      "callsign": "AUS_R_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 120.875
-    },
-    {
-      "id": "01H0E9HCA4EKD531BKCYGX2S8M",
-      "name": "Longhorn Sector",
-      "callsign": "AUS_L_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 118.15
-    },
-    {
       "id": "01H0E9JYG4TV56JY11BH12K4NS",
+      "physicalFacility": "AUS",
       "name": "Final Approach",
+      "radioName": "Austin Approach",
       "callsign": "AUS_F_APP",
+      "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
+      "tcpId": "01K2NF1CDRC5NCS536V7CX9JP7",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.191421,
+        "lon": -97.651627
       },
+      "range": 100,
       "freq": 125.325
     },
     {
-      "id": "01JPGNSRHAS7PA05JVPHT3HDJP",
-      "name": "Ramp",
-      "callsign": "AUS_RMP",
+      "id": "01GBTB005486S74CDG4XBMKBEZ",
+      "physicalFacility": "GTU",
+      "name": "Local",
+      "radioName": "Georgetown Tower",
+      "callsign": "GTU_TWR",
+      "areaId": "01H0E7AWC65EGPVF1QKCY626DD",
+      "tcpId": "01K2NF1CDRPQJEN2ZNAGZZWY3T",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.679137172747144,
+        "lon": -97.67572673313832
       },
-      "freq": 126.225
+      "range": 60,
+      "freq": 120.225
     },
     {
-      "id": "1E",
+      "id": "01GBTB4DRC0NN3YWTHC38NZVN8",
+      "physicalFacility": "HYI",
+      "name": "Local",
+      "radioName": "San Marcos Tower",
+      "callsign": "HYI_TWR",
+      "areaId": "01H0E7X4RPH2XVNDTWMP63EWEG",
+      "tcpId": "01K2NF1CDRTNK571PFZHZZMZTM",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.888951,
+        "lon": -97.865374
+      },
+      "range": 60,
+      "freq": 126.825
     },
     {
-      "id": "1F",
+      "id": "01H0E9HCA4EKD531BKCYGX2S8M",
+      "physicalFacility": "AUS",
+      "name": "Longhorn Sector",
+      "radioName": "Austin Approach",
+      "callsign": "AUS_L_APP",
+      "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
+      "tcpId": "01K2NF1CDRGGMQ2G883KT6YVDG",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 30.191421,
+        "lon": -97.651627
+      },
+      "range": 100,
+      "freq": 118.15
     },
     {
-      "id": "1G",
+      "id": "01H0E9G8CA5T6C71VHBNNRJ08T",
+      "physicalFacility": "AUS",
+      "name": "Rodeo Sector",
+      "radioName": "Austin Approach",
+      "callsign": "AUS_R_APP",
+      "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
+      "tcpId": "01K2NF1CDRHQPHH0K92R99406A",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 30.191421,
+        "lon": -97.651627
+      },
+      "range": 100,
+      "freq": 120.875
     },
     {
-      "id": "1H",
+      "id": "01GTN552419NBRYC5136YW7XPG",
+      "physicalFacility": "AUS",
+      "name": "Local East",
+      "radioName": "Austin Tower",
+      "callsign": "AUS_E_TWR",
+      "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
+      "tcpId": "01K2NF1CDRBZDAB7RDECMPR7EW",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 30.191421,
+        "lon": -97.651627
+      },
+      "range": 100,
+      "freq": 121
     },
     {
-      "id": "1P",
+      "id": "01H0E9CF7P2R14PQX0BJ4MJZB9",
+      "physicalFacility": "AUS",
+      "name": "West Radar",
+      "radioName": "Austin Approach",
+      "callsign": "AUS_W_APP",
+      "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
+      "tcpId": "01K2NF1CDR0EPDAPPYV0QN33DK",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 30.191421,
+        "lon": -97.651627
+      },
+      "range": 100,
+      "freq": 119
     },
     {
-      "id": "1S",
+      "id": "01GWWFD8BMFQ9BX1YA9G10TZWS",
+      "physicalFacility": "AUS",
+      "name": "Local West",
+      "radioName": "Austin Tower",
+      "callsign": "AUS_W_TWR",
+      "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
+      "tcpId": "01K2NF1CDRSQ4NM2DDWZMHXJ7T",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 30.191421,
+        "lon": -97.651627
+      },
+      "range": 100,
+      "freq": 118.225
     }
   ],
   "mapGroups": [

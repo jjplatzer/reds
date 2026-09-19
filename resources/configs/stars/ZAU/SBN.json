@@ -4,80 +4,112 @@
   "name": "South Bend ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.879166749999996,
-    "lon": -88.975
+    "lat": 41.701451,
+    "lon": -86.312639
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01H5FXTRVMN5FKCKFYHYMBSVXZ",
-      "name": "North Approach",
-      "callsign": "SBN_N_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+      "id": "01H5FXHYM4VK281VY4JX1TV3Z4",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 41.701451,
+        "lon": -86.312639
       },
-      "freq": 118.55
+      "surveillanceRange": 120,
+      "ssaAirports": [
+        "SBN",
+        "EKM"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DXPF82EDDRQ51Y2P6N8",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
     },
     {
+      "id": "01K2NF1DXPRJHA8HNGHQ4AKM8B",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1DXP5VERPRDGFV6D4FTS",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1DXPB7J3VE4AAM1JC54W",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1DXP5VERPRDGFV6D4FTS",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1DXPXV6Z71JXRW21C1NG",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DXP1GR1FBRNDYS6M48S",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
+  "controlPositions": [
+    {
       "id": "01H5FXZB02HQR84V9GGNNG7K82",
+      "physicalFacility": "SBN",
       "name": "Local",
+      "radioName": "South Bend Tower",
       "callsign": "SBN_TWR",
+      "areaId": "01H5FXHYM4VK281VY4JX1TV3Z4",
+      "tcpId": "01K2NF1DXPRJHA8HNGHQ4AKM8B",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 41.701451,
+        "lon": -86.312639
       },
+      "range": 120,
       "freq": 135.675
     },
     {
-      "id": "01H5FY0GF5MYZ8QNT1E7XH2R80",
-      "name": "Ground",
-      "callsign": "SBN_GND",
+      "id": "01H5FXTRVMN5FKCKFYHYMBSVXZ",
+      "physicalFacility": "SBN",
+      "name": "North Approach",
+      "radioName": "South Bend Approach",
+      "callsign": "SBN_N_APP",
+      "areaId": "01H5FXHYM4VK281VY4JX1TV3Z4",
+      "tcpId": "01K2NF1DXP5VERPRDGFV6D4FTS",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 41.701451,
+        "lon": -86.312639
       },
-      "freq": 121.7
-    },
-    {
-      "id": "01H5FY12GT66SF4Y0D8J586HNY",
-      "name": "Clearance Delivery",
-      "callsign": "SBN_DEL",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 121.9
+      "range": 120,
+      "freq": 118.55
     },
     {
       "id": "01HGDR9X48DWJYPB1SE50Q9GSG",
+      "physicalFacility": "SBN",
       "name": "South Approach",
+      "radioName": "South Bend Approach",
       "callsign": "SBN_S_APP",
+      "areaId": "01H5FXHYM4VK281VY4JX1TV3Z4",
+      "tcpId": "01K2NF1DXPB7J3VE4AAM1JC54W",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 41.701451,
+        "lon": -86.312639
       },
+      "range": 120,
       "freq": 132.05
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
     }
   ],
   "mapGroups": [

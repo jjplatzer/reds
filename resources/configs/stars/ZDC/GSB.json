@@ -4,49 +4,101 @@
   "name": "Seymour Johnson ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 37,
-    "lon": -77
+    "lat": 35.33363,
+    "lon": -77.95635
   },
+  "areas": [
+    {
+      "id": "01HA7RPQRYDXZWS2WR2J1CXDCR",
+      "name": "RAPCON",
+      "visibilityCenter": {
+        "lat": 35.33363,
+        "lon": -77.95635
+      },
+      "surveillanceRange": 80,
+      "underlyingAirports": [
+        "GSB",
+        "DPL",
+        "GWW",
+        "ISO",
+        "W40"
+      ],
+      "ssaAirports": [
+        "GSB"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E0T8MNC2T45W0XAK9WR",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0TRM87SHQKZTGMTW20",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0T01RBH1FB0FDJC5TD",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01HA7RJYBX051YNW8XA97JRB7D",
+      "physicalFacility": "GSB",
       "name": "North Approach",
+      "radioName": "Seymour Johnson Approach",
       "callsign": "GSB_N_APP",
+      "areaId": "01HA7RPQRYDXZWS2WR2J1CXDCR",
+      "tcpId": "01K2NF1E0T8MNC2T45W0XAK9WR",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 35.33363,
+        "lon": -77.95635
       },
+      "range": 80,
       "freq": 123.7
     },
     {
-      "id": "01HAANBCMF1FNH1SX1CV4H99ZY",
-      "name": "Local",
-      "callsign": "GSB_TWR",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 126.25
-    },
-    {
-      "id": "01HAANC5XFVKXRD0R79781AP03",
-      "name": "Ground",
-      "callsign": "GSB_GND",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 128.025
-    },
-    {
       "id": "01HAQBAJBE30H2C196TYK89T9M",
+      "physicalFacility": "GSB",
       "name": "South Approach",
+      "radioName": "Seymour Johnson Approach",
       "callsign": "GSB_S_APP",
+      "areaId": "01HA7RPQRYDXZWS2WR2J1CXDCR",
+      "tcpId": "01K2NF1E0TRM87SHQKZTGMTW20",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 35.33363,
+        "lon": -77.95635
       },
+      "range": 80,
       "freq": 119.7
+    },
+    {
+      "id": "01HAANBCMF1FNH1SX1CV4H99ZY",
+      "physicalFacility": "GSB",
+      "name": "Local",
+      "radioName": "Seymour Johnson Tower",
+      "callsign": "GSB_TWR",
+      "areaId": "01HA7RPQRYDXZWS2WR2J1CXDCR",
+      "tcpId": "01K2NF1E0T01RBH1FB0FDJC5TD",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 35.33363,
+        "lon": -77.95635
+      },
+      "range": 80,
+      "freq": 126.25
     }
   ],
   "videoMaps": [

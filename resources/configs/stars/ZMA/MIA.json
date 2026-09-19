@@ -4,513 +4,1210 @@
   "name": "Miami ATCT",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 25.98185666666667,
-    "lon": -76.699767
+    "lat": 25.940385155555557,
+    "lon": -80.25117322222223
   },
+  "areas": [
+    {
+      "id": "01GP77T4WWP8JPYE2EDM57KTG3",
+      "name": "Fort Lauderdale Sector",
+      "visibilityCenter": {
+        "lat": 25.797778,
+        "lon": -80.293333
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "MIA",
+        "FLL",
+        "OPF",
+        "FXE",
+        "PMP",
+        "HWO"
+      ],
+      "ssaAirports": [
+        "MIA",
+        "FLL",
+        "OPF",
+        "FXE",
+        "TMB",
+        "PMP",
+        "HWO"
+      ]
+    },
+    {
+      "id": "01HAT3CNBW5WXCVYH169M4267R",
+      "name": "Miami Sector",
+      "visibilityCenter": {
+        "lat": 25.797778,
+        "lon": -80.293333
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "MIA",
+        "TMB",
+        "HST"
+      ],
+      "ssaAirports": [
+        "MIA",
+        "FLL",
+        "OPF",
+        "FXE",
+        "TMB",
+        "PMP",
+        "HWO"
+      ]
+    },
+    {
+      "id": "01HBR6CV6DHMDSZ41YDS6XX541",
+      "name": "Miami Executive Tower",
+      "visibilityCenter": {
+        "lat": 25.6475637,
+        "lon": -80.4332246
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "TMB"
+      ]
+    },
+    {
+      "id": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "name": "Miami Tower",
+      "visibilityCenter": {
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "MIA"
+      ],
+      "ssaAirports": [
+        "MIA"
+      ]
+    },
+    {
+      "id": "01HBR6CV6DM2F6CAMMBW8Z9K29",
+      "name": "Fort Lauderdale Tower",
+      "visibilityCenter": {
+        "lat": 26.0716667,
+        "lon": -80.1496944
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "FLL"
+      ],
+      "ssaAirports": [
+        "FLL"
+      ]
+    },
+    {
+      "id": "01HBR6CV6DQCXEDAB13ZBJHXNP",
+      "name": "Opa Locka Tower",
+      "visibilityCenter": {
+        "lat": 25.9074167,
+        "lon": -80.2782222
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "OPF"
+      ]
+    },
+    {
+      "id": "01HBR6CV6DS259NZ5H9MT39E86",
+      "name": "Pompano Beach Tower",
+      "visibilityCenter": {
+        "lat": 26.2474006,
+        "lon": -80.1112075
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "PMP"
+      ]
+    },
+    {
+      "id": "01HBR6CV6DSPZFGXBT552M3TXH",
+      "name": "Executive Tower",
+      "visibilityCenter": {
+        "lat": 26.1972794,
+        "lon": -80.1707063
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "FXE"
+      ]
+    },
+    {
+      "id": "01HBR6CV6DWAEY9BZY346B7HCN",
+      "name": "North Perry Tower",
+      "visibilityCenter": {
+        "lat": 26.0012222,
+        "lon": -80.2407222
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "HWO"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1C5SE0YV48JFGRPDT7JX",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1C5SWA0NNMJEPWW8K66G",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SHYA6CWEC64N8DKYY",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S0WW1NEG3DY40AMGH",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S87C3T6GQGS23M9XY",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SQZ4K82K8RVP8F8TV",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1C5S8ES0NN2BXN68EJDN",
+      "parentTcp": "1R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SQGK01EVRX7GDHJCR",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1C5SEW3EJHS5735G1MTH",
+      "parentTcp": "1L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SKPMTW2GQQW15KVPH",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1C5SX219695BF5MJXJ80",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SG0AAMN8DR0P2EAJE",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SDB9XJC5CT3BPCTPH",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "parentTcpId": "01K2NF1C5S8ES0NN2BXN68EJDN",
+      "parentTcp": "1R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SEW3EJHS5735G1MTH",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1C5S0WW1NEG3DY40AMGH",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S63RC97BF3AXENXNZ",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1C5SMQPFN4Q2N9F1HHEN",
+      "parentTcp": "1T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SFEQZ5RGPWSVYTM0M",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1C5S3W79Z80BZ5FNSHN6",
+      "parentTcp": "1V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S7WM29XCP3CRSY2H0",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S2W8XNQ5A20JQHGME",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SG99MQDCZD0YZGNHB",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q",
+      "parentTcpId": "01K2NF1C5S9QVPA8YF41797SDN",
+      "parentTcp": "1Z",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S8ES0NN2BXN68EJDN",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1C5SEW3EJHS5735G1MTH",
+      "parentTcp": "1L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SWA0NNMJEPWW8K66G",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1C5SX219695BF5MJXJ80",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SMQPFN4Q2N9F1HHEN",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S1MX174F5M895CN4Y",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1C5SHYA6CWEC64N8DKYY",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S3W79Z80BZ5FNSHN6",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1C5SWA0NNMJEPWW8K66G",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SX219695BF5MJXJ80",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1C5S0WW1NEG3DY40AMGH",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SMNRZ824FDKBY4QTJ",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S9QVPA8YF41797SDN",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1C5S0WW1NEG3DY40AMGH",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SNMZ1J6E9DRREZFP0",
+      "code": "3I",
+      "subset": 3,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1C5SG0AAMN8DR0P2EAJE",
+      "parentTcp": "1I",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SAEVNSMXFJNF2NRAW",
+      "code": "3J",
+      "subset": 3,
+      "sectorId": "J",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SC9F5B2XNRAM0MWRX",
+      "code": "3M",
+      "subset": 3,
+      "sectorId": "M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SRMCKH8Z1XVSRVKFP",
+      "code": "3O",
+      "subset": 3,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S4WKZTGNXVCKN78XH",
+      "code": "3S",
+      "subset": 3,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SCES2483G4A9BRSKX",
+      "code": "3T",
+      "subset": 3,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S780Z8AKVMYFC1PZ1",
+      "code": "3X",
+      "subset": 3,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1C5SMNRZ824FDKBY4QTJ",
+      "parentTcp": "1X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SVGKVGCCPEWZYVZ8J",
+      "code": "4O",
+      "subset": 4,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SSTN2H3YEEYVANFVJ",
+      "code": "4S",
+      "subset": 4,
+      "sectorId": "S",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GFEMRA5QX9D8N2HH61ZPJBWS",
-      "name": "Local Control North",
-      "callsign": "MIA_N_TWR",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 118.3
-    },
-    {
-      "id": "01GFEMSNY0QY4NVCV0RN87C7W5",
-      "name": "Ground Control North",
-      "callsign": "MIA_N_GND",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 121.8
-    },
-    {
-      "id": "01GFEMXJDG51HFJN4TX07RDJW8",
-      "name": "Clearance Delivery",
-      "callsign": "MIA_DEL",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 135.35
-    },
-    {
-      "id": "01GFEN1CP71ETJCY5FDPAMGKSF",
-      "name": "Local Control South",
-      "callsign": "MIA_S_TWR",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 123.9
-    },
-    {
-      "id": "01GFEN25ENR6P69DXVRBXXAJVV",
-      "name": "Ground Control South",
-      "callsign": "MIA_S_GND",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 127.5
-    },
-    {
-      "id": "01GFEN51K14Z64FZN3PVGQR7HQ",
-      "name": "Gate Hold",
-      "callsign": "MIA_M_RMP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 133.725
-    },
-    {
-      "id": "01GFEN741Z5W4NKX2VBTCPZRM8",
-      "name": "Ground Control West",
-      "callsign": "MIA_W_GND",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 120.35
-    },
-    {
-      "id": "01GFENJ4X8TZ7YFMZ6JP59Z010",
-      "name": "Miami North Departure",
-      "callsign": "MIA_D_DEP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 126.85
-    },
-    {
-      "id": "01GFENKN6AHXE3HYJENGFSV0X3",
-      "name": "Miami North Final",
-      "callsign": "MIA_V_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 124.85
-    },
-    {
       "id": "01GFENPAS9HYJMKJGTGDEE2G3P",
+      "physicalFacility": "MIA",
       "name": "Miami South Final",
+      "radioName": "Miami Approach",
       "callsign": "MIA_A_APP",
+      "areaId": "01HAT3CNBW5WXCVYH169M4267R",
+      "tcpId": "01K2NF1C5SE0YV48JFGRPDT7JX",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 25.797778,
+        "lon": -80.293333
       },
+      "range": 150,
       "freq": 133.05
     },
     {
-      "id": "01GFENQ7GJ9AMBP30E88WJVGDD",
-      "name": "Miami North Feeder",
-      "callsign": "MIA_N_APP",
+      "id": "01GFEM8SJP8YS672Q3ABN9NWJ4",
+      "physicalFacility": "FLL",
+      "name": "Local Control North",
+      "radioName": "Fort Lauderdale Tower",
+      "callsign": "FLL_N_TWR",
+      "areaId": "01HBR6CV6DM2F6CAMMBW8Z9K29",
+      "tcpId": "01K2NF1C5SHYA6CWEC64N8DKYY",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 26.0716667,
+        "lon": -80.1496944
       },
-      "freq": 125.75
+      "range": 150,
+      "freq": 119.3
     },
     {
-      "id": "01GFENR3J2HBQBRRDDZYDQX8DR",
-      "name": "Miami South Feeder",
-      "callsign": "MIA_S_APP",
+      "id": "01GFENJ4X8TZ7YFMZ6JP59Z010",
+      "physicalFacility": "MIA",
+      "name": "Miami North Departure",
+      "radioName": "Miami Approach",
+      "callsign": "MIA_D_DEP",
+      "areaId": "01GP77T4WWP8JPYE2EDM57KTG3",
+      "tcpId": "01K2NF1C5S0WW1NEG3DY40AMGH",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 25.797778,
+        "lon": -80.293333
       },
-      "freq": 120.5
+      "range": 150,
+      "freq": 126.85
     },
     {
-      "id": "01GFENRT09KYWP734MHQWK14C8",
-      "name": "FLL SW Departure/E Arrival",
-      "callsign": "MIA_Q_APP",
+      "id": "01GFESAJB26WAPG1ZSK82HBXN9",
+      "physicalFacility": "HWO",
+      "name": "Ground Control",
+      "radioName": "North Perry Ground",
+      "callsign": "HWO_GND",
+      "areaId": "01HBR6CV6DWAEY9BZY346B7HCN",
+      "tcpId": "01K2NF1C5S87C3T6GQGS23M9XY",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 26.0012222,
+        "lon": -80.2407222
       },
-      "freq": 132.025
+      "range": 150,
+      "freq": 120.45
     },
     {
-      "id": "01GFENSJJXVNJNF0K7DRNKY783",
-      "name": "TMB Arrival/Departure",
-      "callsign": "MIA_H_APP",
+      "id": "01GFESA44M1RWGTNAAW0TF24KE",
+      "physicalFacility": "HWO",
+      "name": "Local Control",
+      "radioName": "North Perry Tower",
+      "callsign": "HWO_TWR",
+      "areaId": "01HBR6CV6DWAEY9BZY346B7HCN",
+      "tcpId": "01K2NF1C5S87C3T6GQGS23M9XY",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 26.0012222,
+        "lon": -80.2407222
       },
-      "freq": 125.25
-    },
-    {
-      "id": "01GFENT2RZ428DXF3MQ3R84Q5Y",
-      "name": "Miami South Departure",
-      "callsign": "MIA_W_DEP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 125.5
-    },
-    {
-      "id": "01GFENTYPY15CXZYT5DENCVJCH",
-      "name": "FLL North Departure",
-      "callsign": "MIA_L_DEP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 126.05
-    },
-    {
-      "id": "01GFENWNCW4GH9J83036BN54CY",
-      "name": "FLL South Feeder/Final",
-      "callsign": "MIA_J_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 118.65
-    },
-    {
-      "id": "01GR2BS6G010MA48SR8HDGNT1P",
-      "name": "FLL North Feeder",
-      "callsign": "MIA_R_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 133.775
-    },
-    {
-      "id": "01JAESAN8JD9957WV0RXW80QPG",
-      "name": "ZMA Guard",
-      "callsign": "MIA_RMP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "01JE2SP0RVMBACTVKQ7BQNZZNN",
-      "name": "Ramp Control 2",
-      "callsign": "MIA_2_RMP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 130.325
-    },
-    {
-      "id": "01JE2SR70PASZKNS5VFR2ETA1H",
-      "name": "Ramp Control 1",
-      "callsign": "MIA_1_RMP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 128.025
-    },
-    {
-      "id": "01JE2T6BNGPX7TQM621BXT4Q6P",
-      "name": "Ramp Control 3",
-      "callsign": "MIA_3_RMP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 130.5
-    },
-    {
-      "id": "01JE2T6PQ3HPGG9D5KPTK5MTZG",
-      "name": "Ramp Control 4",
-      "callsign": "MIA_4_RMP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 130.95
-    },
-    {
-      "id": "01JE2T6T25DYR6ZM7BYERR8TRE",
-      "name": "Ramp Control 5",
-      "callsign": "MIA_5_RMP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 132.375
-    },
-    {
-      "id": "01JE2T6X5P896G2033NHZKPC39",
-      "name": "Ramp Control 6",
-      "callsign": "MIA_6_RMP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 129.075
-    },
-    {
-      "id": "01JEZ014QQ05E40A5T2SYBA65A",
-      "name": "FLL SE Departure/W Arrival",
-      "callsign": "MIA_Z_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 128.6
+      "range": 150,
+      "freq": 132.1
     },
     {
       "id": "01JEZ0CG2P0VB8WY32BRV8M6K1",
+      "physicalFacility": "MIA",
       "name": "FLL North Final",
+      "radioName": "Miami Approach",
       "callsign": "MIA_F_APP",
+      "areaId": "01GP77T4WWP8JPYE2EDM57KTG3",
+      "tcpId": "01K2NF1C5SQZ4K82K8RVP8F8TV",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 25.797778,
+        "lon": -80.293333
       },
+      "range": 150,
       "freq": 133.725
     },
     {
       "id": "01JEZ0F3CCTCZS7N9DNY9M91E6",
+      "physicalFacility": "MIA",
       "name": "FXE Arrival/Departure",
+      "radioName": "Miami Approach",
       "callsign": "MIA_G_APP",
+      "areaId": "01GP77T4WWP8JPYE2EDM57KTG3",
+      "tcpId": "01K2NF1C5SQGK01EVRX7GDHJCR",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 25.797778,
+        "lon": -80.293333
       },
+      "range": 150,
       "freq": 119.7
     },
     {
-      "id": "1A",
+      "id": "01GFENSJJXVNJNF0K7DRNKY783",
+      "physicalFacility": "MIA",
+      "name": "TMB Arrival/Departure",
+      "radioName": "Miami Approach",
+      "callsign": "MIA_H_APP",
+      "areaId": "01HAT3CNBW5WXCVYH169M4267R",
+      "tcpId": "01K2NF1C5SKPMTW2GQQW15KVPH",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.797778,
+        "lon": -80.293333
+      },
+      "range": 150,
+      "freq": 125.25
     },
     {
-      "id": "1B",
+      "id": "01GFESQ86GWRBDWDG6929SJXXK",
+      "physicalFacility": "TMB",
+      "name": "Local Control South",
+      "radioName": "Miami Executive Tower",
+      "callsign": "TMB_S_TWR",
+      "areaId": "01HBR6CV6DHMDSZ41YDS6XX541",
+      "tcpId": "01K2NF1C5SG0AAMN8DR0P2EAJE",
+      "tcp": "1I",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.6475637,
+        "lon": -80.4332246
+      },
+      "range": 150,
+      "freq": 118.9
     },
     {
-      "id": "1D",
+      "id": "01GFENWNCW4GH9J83036BN54CY",
+      "physicalFacility": "MIA",
+      "name": "FLL South Feeder/Final",
+      "radioName": "Miami Approach",
+      "callsign": "MIA_J_APP",
+      "areaId": "01GP77T4WWP8JPYE2EDM57KTG3",
+      "tcpId": "01K2NF1C5SDB9XJC5CT3BPCTPH",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.797778,
+        "lon": -80.293333
+      },
+      "range": 150,
+      "freq": 118.65
     },
     {
-      "id": "1E",
+      "id": "01GFENTYPY15CXZYT5DENCVJCH",
+      "physicalFacility": "MIA",
+      "name": "FLL North Departure",
+      "radioName": "Miami Approach",
+      "callsign": "MIA_L_DEP",
+      "areaId": "01GP77T4WWP8JPYE2EDM57KTG3",
+      "tcpId": "01K2NF1C5SEW3EJHS5735G1MTH",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.797778,
+        "lon": -80.293333
+      },
+      "range": 150,
+      "freq": 126.05
     },
     {
-      "id": "1F",
+      "id": "01GFEN1CP71ETJCY5FDPAMGKSF",
+      "physicalFacility": "MIA",
+      "name": "Local Control South",
+      "radioName": "Miami Tower",
+      "callsign": "MIA_S_TWR",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5S63RC97BF3AXENXNZ",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 123.9
     },
     {
-      "id": "1G",
+      "id": "01GFENQ7GJ9AMBP30E88WJVGDD",
+      "physicalFacility": "MIA",
+      "name": "Miami North Feeder",
+      "radioName": "Miami Approach",
+      "callsign": "MIA_N_APP",
+      "areaId": "01HAT3CNBW5WXCVYH169M4267R",
+      "tcpId": "01K2NF1C5SFEQZ5RGPWSVYTM0M",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.797778,
+        "lon": -80.293333
+      },
+      "range": 150,
+      "freq": 125.75
     },
     {
-      "id": "1H",
+      "id": "01JE2THDWZX53GWXVKX2R07BWS",
+      "physicalFacility": "FLL",
+      "name": "Local Control Three",
+      "radioName": "Fort Lauderdale Tower",
+      "callsign": "FLL_3_TWR",
+      "areaId": "01HBR6CV6DM2F6CAMMBW8Z9K29",
+      "tcpId": "01K2NF1C5S7WM29XCP3CRSY2H0",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.0716667,
+        "lon": -80.1496944
+      },
+      "range": 150,
+      "freq": 132.9
     },
     {
-      "id": "1I",
+      "id": "01GFEMG4C7GD9CC7119PPAPXBJ",
+      "physicalFacility": "FLL",
+      "name": "Clearance Delivery",
+      "radioName": "Fort Lauderdale Clearance",
+      "callsign": "FLL_DEL",
+      "areaId": "01HBR6CV6DM2F6CAMMBW8Z9K29",
+      "tcpId": "01K2NF1C5S7WM29XCP3CRSY2H0",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.0716667,
+        "lon": -80.1496944
+      },
+      "range": 150,
+      "freq": 128.4
     },
     {
-      "id": "1J",
+      "id": "01GFEMDVWKBC7M0E6Y9P9X3YAE",
+      "physicalFacility": "FLL",
+      "name": "Ground Control North",
+      "radioName": "Fort Lauderdale Ground",
+      "callsign": "FLL_N_GND",
+      "areaId": "01HBR6CV6DM2F6CAMMBW8Z9K29",
+      "tcpId": "01K2NF1C5S7WM29XCP3CRSY2H0",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.0716667,
+        "lon": -80.1496944
+      },
+      "range": 150,
+      "freq": 121.4
     },
     {
-      "id": "1L",
+      "id": "01GFEMEJ030VW3S9XM3WADRMY7",
+      "physicalFacility": "FLL",
+      "name": "Ramp North",
+      "radioName": "Fort Lauderdale Ramp",
+      "callsign": "FLL_RN_GND",
+      "areaId": "01HBR6CV6DM2F6CAMMBW8Z9K29",
+      "tcpId": "01K2NF1C5S7WM29XCP3CRSY2H0",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.0716667,
+        "lon": -80.1496944
+      },
+      "range": 150,
+      "freq": 118.175
     },
     {
-      "id": "1M",
+      "id": "01GFEMPH6J1CBFQ3DTAMEA29RQ",
+      "physicalFacility": "FLL",
+      "name": "Ramp South",
+      "radioName": "Fort Lauderdale Ramp",
+      "callsign": "FLL_RS_GND",
+      "areaId": "01HBR6CV6DM2F6CAMMBW8Z9K29",
+      "tcpId": "01K2NF1C5S7WM29XCP3CRSY2H0",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.0716667,
+        "lon": -80.1496944
+      },
+      "range": 150,
+      "freq": 129.875
     },
     {
-      "id": "1N",
+      "id": "01GFEMNM7DW5NS5FY7CPCY5FBH",
+      "physicalFacility": "FLL",
+      "name": "Ground Control South",
+      "radioName": "Fort Lauderdale Ground",
+      "callsign": "FLL_S_GND",
+      "areaId": "01HBR6CV6DM2F6CAMMBW8Z9K29",
+      "tcpId": "01K2NF1C5S7WM29XCP3CRSY2H0",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.0716667,
+        "lon": -80.1496944
+      },
+      "range": 150,
+      "freq": 121.7
     },
     {
-      "id": "1O",
+      "id": "01GFESKFPXKJDPVVWVX88M1BS7",
+      "physicalFacility": "PMP",
+      "name": "Ground Control",
+      "radioName": "Pompano Beach Ground",
+      "callsign": "PMP_GND",
+      "areaId": "01HBR6CV6DS259NZ5H9MT39E86",
+      "tcpId": "01K2NF1C5S2W8XNQ5A20JQHGME",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.2474006,
+        "lon": -80.1112075
+      },
+      "range": 150,
+      "freq": 121.9
     },
     {
-      "id": "1P",
+      "id": "01GFESK24K68KYQWK4X8RGFJEP",
+      "physicalFacility": "PMP",
+      "name": "Local Control",
+      "radioName": "Pompano Beach Tower",
+      "callsign": "PMP_TWR",
+      "areaId": "01HBR6CV6DS259NZ5H9MT39E86",
+      "tcpId": "01K2NF1C5S2W8XNQ5A20JQHGME",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.2474006,
+        "lon": -80.1112075
+      },
+      "range": 150,
+      "freq": 125.4
     },
     {
-      "id": "1Q",
+      "id": "01GFENRT09KYWP734MHQWK14C8",
+      "physicalFacility": "MIA",
+      "name": "FLL SW Departure/E Arrival",
+      "radioName": "Miami Approach",
+      "callsign": "MIA_Q_APP",
+      "areaId": "01GP77T4WWP8JPYE2EDM57KTG3",
+      "tcpId": "01K2NF1C5SG99MQDCZD0YZGNHB",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.797778,
+        "lon": -80.293333
+      },
+      "range": 150,
+      "freq": 132.025
     },
     {
-      "id": "1R",
+      "id": "01GR2BS6G010MA48SR8HDGNT1P",
+      "physicalFacility": "MIA",
+      "name": "FLL North Feeder",
+      "radioName": "Miami Approach",
+      "callsign": "MIA_R_APP",
+      "areaId": "01GP77T4WWP8JPYE2EDM57KTG3",
+      "tcpId": "01K2NF1C5S8ES0NN2BXN68EJDN",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.797778,
+        "lon": -80.293333
+      },
+      "range": 150,
+      "freq": 133.775
     },
     {
-      "id": "1S",
+      "id": "01GFENR3J2HBQBRRDDZYDQX8DR",
+      "physicalFacility": "MIA",
+      "name": "Miami South Feeder",
+      "radioName": "Miami Approach",
+      "callsign": "MIA_S_APP",
+      "areaId": "01HAT3CNBW5WXCVYH169M4267R",
+      "tcpId": "01K2NF1C5SWA0NNMJEPWW8K66G",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.797778,
+        "lon": -80.293333
+      },
+      "range": 150,
+      "freq": 120.5
     },
     {
-      "id": "1T",
+      "id": "01GFEMRA5QX9D8N2HH61ZPJBWS",
+      "physicalFacility": "MIA",
+      "name": "Local Control North",
+      "radioName": "Miami Tower",
+      "callsign": "MIA_N_TWR",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5SMQPFN4Q2N9F1HHEN",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 118.3
     },
     {
-      "id": "1U",
+      "id": "01GFEMH9BJK9SBFBJNNH78X6CH",
+      "physicalFacility": "FLL",
+      "name": "Local Control South",
+      "radioName": "Fort Lauderdale Tower",
+      "callsign": "FLL_S_TWR",
+      "areaId": "01HBR6CV6DM2F6CAMMBW8Z9K29",
+      "tcpId": "01K2NF1C5S1MX174F5M895CN4Y",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.0716667,
+        "lon": -80.1496944
+      },
+      "range": 150,
+      "freq": 120.2
     },
     {
-      "id": "1V",
+      "id": "01GFENKN6AHXE3HYJENGFSV0X3",
+      "physicalFacility": "MIA",
+      "name": "Miami North Final",
+      "radioName": "Miami Approach",
+      "callsign": "MIA_V_APP",
+      "areaId": "01HAT3CNBW5WXCVYH169M4267R",
+      "tcpId": "01K2NF1C5S3W79Z80BZ5FNSHN6",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.797778,
+        "lon": -80.293333
+      },
+      "range": 150,
+      "freq": 124.85
     },
     {
-      "id": "1W",
+      "id": "01GFENT2RZ428DXF3MQ3R84Q5Y",
+      "physicalFacility": "MIA",
+      "name": "Miami South Departure",
+      "radioName": "Miami Approach",
+      "callsign": "MIA_W_DEP",
+      "areaId": "01HAT3CNBW5WXCVYH169M4267R",
+      "tcpId": "01K2NF1C5SX219695BF5MJXJ80",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.797778,
+        "lon": -80.293333
+      },
+      "range": 150,
+      "freq": 125.5
     },
     {
-      "id": "1X",
+      "id": "01GFES727767CCHZJQFRB86G8R",
+      "physicalFacility": "FXE",
+      "name": "Local Control",
+      "radioName": "Executive Tower",
+      "callsign": "FXE_TWR",
+      "areaId": "01HBR6CV6DSPZFGXBT552M3TXH",
+      "tcpId": "01K2NF1C5SMNRZ824FDKBY4QTJ",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.1972794,
+        "lon": -80.1707063
+      },
+      "range": 150,
+      "freq": 120.9
     },
     {
-      "id": "1Z",
+      "id": "01JEZ014QQ05E40A5T2SYBA65A",
+      "physicalFacility": "MIA",
+      "name": "FLL SE Departure/W Arrival",
+      "radioName": "Miami Approach",
+      "callsign": "MIA_Z_APP",
+      "areaId": "01GP77T4WWP8JPYE2EDM57KTG3",
+      "tcpId": "01K2NF1C5S9QVPA8YF41797SDN",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.797778,
+        "lon": -80.293333
+      },
+      "range": 150,
+      "freq": 128.6
     },
     {
-      "id": "3I",
+      "id": "01GFESQZ82Z2ZFQ20C78506KVN",
+      "physicalFacility": "TMB",
+      "name": "Clearance Delivery",
+      "radioName": "Miami Executive Clearance",
+      "callsign": "TMB_DEL",
+      "areaId": "01HBR6CV6DHMDSZ41YDS6XX541",
+      "tcpId": "01K2NF1C5SNMZ1J6E9DRREZFP0",
+      "tcp": "3I",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.6475637,
+        "lon": -80.4332246
+      },
+      "range": 150,
+      "freq": 133
     },
     {
-      "id": "3J",
+      "id": "01GFESQH555DW9ZR21K0XC7YMX",
+      "physicalFacility": "TMB",
+      "name": "Ground Control",
+      "radioName": "Miami Executive Ground",
+      "callsign": "TMB_GND",
+      "areaId": "01HBR6CV6DHMDSZ41YDS6XX541",
+      "tcpId": "01K2NF1C5SNMZ1J6E9DRREZFP0",
+      "tcp": "3I",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.6475637,
+        "lon": -80.4332246
+      },
+      "range": 150,
+      "freq": 121.7
     },
     {
-      "id": "3M",
+      "id": "01K1MHAAAZV61S7FZ9YDXEP09N",
+      "physicalFacility": "TMB",
+      "name": "Local Control North",
+      "radioName": "Miami Executive Tower",
+      "callsign": "TMB_N_TWR",
+      "areaId": "01HBR6CV6DHMDSZ41YDS6XX541",
+      "tcpId": "01K2NF1C5SNMZ1J6E9DRREZFP0",
+      "tcp": "3I",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.6475637,
+        "lon": -80.4332246
+      },
+      "range": 150,
+      "freq": 124.9
     },
     {
-      "id": "3O",
+      "id": "01JE2SR70PASZKNS5VFR2ETA1H",
+      "physicalFacility": "MIA",
+      "name": "Ramp Control 1",
+      "radioName": "Miami Gates",
+      "callsign": "MIA_1_RMP",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5SC9F5B2XNRAM0MWRX",
+      "tcp": "3M",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 128.025
     },
     {
-      "id": "3S",
+      "id": "01JE2SP0RVMBACTVKQ7BQNZZNN",
+      "physicalFacility": "MIA",
+      "name": "Ramp Control 2",
+      "radioName": "American Apron Control",
+      "callsign": "MIA_2_RMP",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5SC9F5B2XNRAM0MWRX",
+      "tcp": "3M",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 130.325
     },
     {
-      "id": "3T",
+      "id": "01JE2T6BNGPX7TQM621BXT4Q6P",
+      "physicalFacility": "MIA",
+      "name": "Ramp Control 3",
+      "radioName": "Miami Gates",
+      "callsign": "MIA_3_RMP",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5SC9F5B2XNRAM0MWRX",
+      "tcp": "3M",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 130.5
     },
     {
-      "id": "3X",
+      "id": "01JE2T6PQ3HPGG9D5KPTK5MTZG",
+      "physicalFacility": "MIA",
+      "name": "Ramp Control 4",
+      "radioName": "American Apron Control",
+      "callsign": "MIA_4_RMP",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5SC9F5B2XNRAM0MWRX",
+      "tcp": "3M",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 130.95
     },
     {
-      "id": "4O",
+      "id": "01JE2T6T25DYR6ZM7BYERR8TRE",
+      "physicalFacility": "MIA",
+      "name": "Ramp Control 5",
+      "radioName": "Miami Gates",
+      "callsign": "MIA_5_RMP",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5SC9F5B2XNRAM0MWRX",
+      "tcp": "3M",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 132.375
     },
     {
-      "id": "4S",
+      "id": "01JE2T6X5P896G2033NHZKPC39",
+      "physicalFacility": "MIA",
+      "name": "Ramp Control 6",
+      "radioName": "Miami Gates",
+      "callsign": "MIA_6_RMP",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5SC9F5B2XNRAM0MWRX",
+      "tcp": "3M",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 129.075
+    },
+    {
+      "id": "01GFEMXJDG51HFJN4TX07RDJW8",
+      "physicalFacility": "MIA",
+      "name": "Clearance Delivery",
+      "radioName": "Miami Clearance",
+      "callsign": "MIA_DEL",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5SC9F5B2XNRAM0MWRX",
+      "tcp": "3M",
+      "visualCenter": {
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 135.35
+    },
+    {
+      "id": "01GFEN51K14Z64FZN3PVGQR7HQ",
+      "physicalFacility": "MIA",
+      "name": "Gate Hold",
+      "radioName": "Miami Ground",
+      "callsign": "MIA_M_RMP",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5SC9F5B2XNRAM0MWRX",
+      "tcp": "3M",
+      "visualCenter": {
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 133.725
+    },
+    {
+      "id": "01GFEMSNY0QY4NVCV0RN87C7W5",
+      "physicalFacility": "MIA",
+      "name": "Ground Control North",
+      "radioName": "Miami Ground",
+      "callsign": "MIA_N_GND",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5SC9F5B2XNRAM0MWRX",
+      "tcp": "3M",
+      "visualCenter": {
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 121.8
+    },
+    {
+      "id": "01GFEN25ENR6P69DXVRBXXAJVV",
+      "physicalFacility": "MIA",
+      "name": "Ground Control South",
+      "radioName": "Miami Ground",
+      "callsign": "MIA_S_GND",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5SC9F5B2XNRAM0MWRX",
+      "tcp": "3M",
+      "visualCenter": {
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 127.5
+    },
+    {
+      "id": "01GFEN741Z5W4NKX2VBTCPZRM8",
+      "physicalFacility": "MIA",
+      "name": "Ground Control West",
+      "radioName": "Miami Ground",
+      "callsign": "MIA_W_GND",
+      "areaId": "01HBR6CV6DKK3RVCQFA7XSJE7F",
+      "tcpId": "01K2NF1C5SC9F5B2XNRAM0MWRX",
+      "tcp": "3M",
+      "visualCenter": {
+        "lat": 25.7953611,
+        "lon": -80.2901158
+      },
+      "range": 150,
+      "freq": 120.35
+    },
+    {
+      "id": "01GFESET1GW8Z53A19SZ4TSY69",
+      "physicalFacility": "OPF",
+      "name": "Clearance Delivery",
+      "radioName": "Opa Locka Clearance",
+      "callsign": "OPF_DEL",
+      "areaId": "01HBR6CV6DQCXEDAB13ZBJHXNP",
+      "tcpId": "01K2NF1C5SRMCKH8Z1XVSRVKFP",
+      "tcp": "3O",
+      "visualCenter": {
+        "lat": 25.9074167,
+        "lon": -80.2782222
+      },
+      "range": 150,
+      "freq": 119.2
+    },
+    {
+      "id": "01GFESEC7QHRG5ZX2B9P71X026",
+      "physicalFacility": "OPF",
+      "name": "Ground Control",
+      "radioName": "Opa Locka Ground",
+      "callsign": "OPF_GND",
+      "areaId": "01HBR6CV6DQCXEDAB13ZBJHXNP",
+      "tcpId": "01K2NF1C5SRMCKH8Z1XVSRVKFP",
+      "tcp": "3O",
+      "visualCenter": {
+        "lat": 25.9074167,
+        "lon": -80.2782222
+      },
+      "range": 150,
+      "freq": 120.025
+    },
+    {
+      "id": "01K1V61KXRF515K1DBFCE677K1",
+      "physicalFacility": "FXE",
+      "name": "Local Control 2",
+      "radioName": "Executive Tower",
+      "callsign": "FXE_2_TWR",
+      "areaId": "01HBR6CV6DSPZFGXBT552M3TXH",
+      "tcpId": "01K2NF1C5S780Z8AKVMYFC1PZ1",
+      "tcp": "3X",
+      "visualCenter": {
+        "lat": 26.1972794,
+        "lon": -80.1707063
+      },
+      "range": 150,
+      "freq": 124.15
+    },
+    {
+      "id": "01GFES7Q9P6FBDX3ZZZGGT0V99",
+      "physicalFacility": "FXE",
+      "name": "Clearance Delivery",
+      "radioName": "Executive Clearance",
+      "callsign": "FXE_DEL",
+      "areaId": "01HBR6CV6DSPZFGXBT552M3TXH",
+      "tcpId": "01K2NF1C5S780Z8AKVMYFC1PZ1",
+      "tcp": "3X",
+      "visualCenter": {
+        "lat": 26.1972794,
+        "lon": -80.1707063
+      },
+      "range": 150,
+      "freq": 127.95
+    },
+    {
+      "id": "01GFES7DH2RB11GBBA2JSVAFRZ",
+      "physicalFacility": "FXE",
+      "name": "Ground Control",
+      "radioName": "Executive Ground",
+      "callsign": "FXE_GND",
+      "areaId": "01HBR6CV6DSPZFGXBT552M3TXH",
+      "tcpId": "01K2NF1C5S780Z8AKVMYFC1PZ1",
+      "tcp": "3X",
+      "visualCenter": {
+        "lat": 26.1972794,
+        "lon": -80.1707063
+      },
+      "range": 150,
+      "freq": 121.75
+    },
+    {
+      "id": "01GFESE36WDZNKXQHJDE97H20B",
+      "physicalFacility": "OPF",
+      "name": "Local Control",
+      "radioName": "Opa Locka Tower",
+      "callsign": "OPF_TWR",
+      "areaId": "01HBR6CV6DQCXEDAB13ZBJHXNP",
+      "tcpId": "01K2NF1C5SVGKVGCCPEWZYVZ8J",
+      "tcp": "4O",
+      "visualCenter": {
+        "lat": 25.9074167,
+        "lon": -80.2782222
+      },
+      "range": 150,
+      "freq": 134.675
     }
   ],
   "mapGroups": [

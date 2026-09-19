@@ -4,80 +4,143 @@
   "name": "Youngstown ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.65805,
-    "lon": -81.181585
+    "lat": 41.26059,
+    "lon": -80.67901
   },
+  "areas": [
+    {
+      "id": "01G92VYB7TVH8PJJ7ATZ7PC00K",
+      "name": "Youngstown TRACON",
+      "visibilityCenter": {
+        "lat": 41.26059,
+        "lon": -80.67901
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "YNG",
+        "FKL"
+      ],
+      "ssaAirports": [
+        "YNG",
+        "FKL"
+      ]
+    },
+    {
+      "id": "01HE775ZQVG8YDE0X008WCZDWH",
+      "name": "Youngstown ATCT",
+      "visibilityCenter": {
+        "lat": 41.26059,
+        "lon": -80.67901
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "TNG"
+      ],
+      "ssaAirports": [
+        "YNG"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E631YR59PA4J5JTVCY7",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1E63DQKWBW2W2M704T9B",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E631G08ZYNVH2HNTYAC",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G92VZ8AWTJ7TK087Q5YEQE2W",
+      "physicalFacility": "YNG",
       "name": "Approach",
+      "radioName": "Youngstown Approach",
       "callsign": "YNG_APP",
+      "areaId": "01G92VYB7TVH8PJJ7ATZ7PC00K",
+      "tcpId": "01K2NF1E631YR59PA4J5JTVCY7",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.26059,
+        "lon": -80.67901
       },
+      "range": 150,
       "freq": 133.95
     },
     {
       "id": "01G92W0TN49RKZV1F8V6PWG7HJ",
+      "physicalFacility": "YNG",
       "name": "Clearance Delivery",
+      "radioName": "Youngstown Clearance",
       "callsign": "YNG_DEL",
+      "areaId": "01HE775ZQVG8YDE0X008WCZDWH",
+      "tcpId": "01K2NF1E63DQKWBW2W2M704T9B",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.26059,
+        "lon": -80.67901
       },
+      "range": 50,
       "freq": 118.25
     },
     {
       "id": "01G92W28CEHQ7CG62W8SKH79HN",
+      "physicalFacility": "YNG",
       "name": "Ground",
+      "radioName": "Youngstown Ground",
       "callsign": "YNG_GND",
+      "areaId": "01HE775ZQVG8YDE0X008WCZDWH",
+      "tcpId": "01K2NF1E63DQKWBW2W2M704T9B",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.26059,
+        "lon": -80.67901
       },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01G92W2XEG2MECTHYVK3S6YSSZ",
+      "physicalFacility": "YNG",
       "name": "Local Control",
+      "radioName": "Youngstown Tower",
       "callsign": "YNG_TWR",
+      "areaId": "01HE775ZQVG8YDE0X008WCZDWH",
+      "tcpId": "01K2NF1E63DQKWBW2W2M704T9B",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.26059,
+        "lon": -80.67901
       },
+      "range": 50,
       "freq": 119.5
     },
     {
       "id": "01HDWY6CHCCZV7GPRSPFBXY37V",
+      "physicalFacility": "YNG",
       "name": "TMU/OTHER",
+      "radioName": "Youngstown Approach",
       "callsign": "YNG_T_APP",
+      "areaId": "01G92VYB7TVH8PJJ7ATZ7PC00K",
+      "tcpId": "01K2NF1E631G08ZYNVH2HNTYAC",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.26059,
+        "lon": -80.67901
       },
+      "range": 150,
       "freq": 123.45
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
     }
   ],
   "mapGroups": [

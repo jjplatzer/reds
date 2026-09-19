@@ -4,160 +4,269 @@
   "name": "Yuma ",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 34.9691453,
-    "lon": -116.63582625
+    "lat": 32.76905555666667,
+    "lon": -115.3096111
   },
+  "areas": [
+    {
+      "id": "01H1DSTFB7Q18XQ5M573GX1SGJ",
+      "name": "Main",
+      "visibilityCenter": {
+        "lat": 32.65383333,
+        "lon": -114.5916111
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "LGF",
+        "NYL",
+        "NJK"
+      ],
+      "ssaAirports": [
+        "NYL",
+        "NJK"
+      ]
+    },
+    {
+      "id": "01KKN98Y7MV5Y92FYEF9PK2TDH",
+      "name": "El Centro Approach",
+      "visibilityCenter": {
+        "lat": 32.82666667,
+        "lon": -115.6686111
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "NJK"
+      ],
+      "ssaAirports": [
+        "NJK",
+        "NYL"
+      ]
+    },
+    {
+      "id": "01KKN9V0BE1T8T0MFSFEE707VB",
+      "name": "El Centro Tower",
+      "visibilityCenter": {
+        "lat": 32.82666667,
+        "lon": -115.6686111
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "NJK"
+      ],
+      "ssaAirports": [
+        "NJK"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CRSDVPW7JCEQPVA51EY",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRSAXEJRJMB1HFT0EWH",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRS0B5TEFEZRRVFTBBT",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0EDAY7JH5BFWFBMWHDC9MH",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0EDBE7933S76KM4VN2VBA2",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01KK0EDAY7JH5BFWFBMWHDC9MH",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0EDBP7P71GAYGJ46BGAA9C",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01KK0EDAY7JH5BFWFBMWHDC9MH",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0EDW7BSRVQ4TFP4CQT5BNV",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0EDWH96CANDSG6BCFAVN9K",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0EDWSZSXB0WN30HJRD5AB8",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0EED0KQ0BAG5J6H4Q2DXCG",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0EED514ZM3JRF3S7EG7DF8",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0EED9B5XRG9613V66PX852",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0EEDDNRCANX0ZTPA9FGY1N",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01H246SMXNTB2W4VHH6Z09PZSP",
-      "name": "Yuma Local",
-      "callsign": "NYL_TWR",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 119.3
-    },
-    {
-      "id": "01H246TWSMDC5A61BBRXGJVK0C",
-      "name": "Yuma Ground",
-      "callsign": "NYL_GND",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01H246VFJ82X2VRQJSNJWXA7XC",
-      "name": "Yuma Clearance",
-      "callsign": "NYL_DEL",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 118
-    },
-    {
       "id": "01H246WBSYA3M77DYE5D1J0461",
+      "physicalFacility": "NYL",
       "name": "Yuma Approach",
+      "radioName": "Yuma Approach",
       "callsign": "NYL_APP",
+      "areaId": "01H1DSTFB7Q18XQ5M573GX1SGJ",
+      "tcpId": "01KK0EDAY7JH5BFWFBMWHDC9MH",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 32.65383333,
+        "lon": -114.5916111
       },
+      "range": 150,
       "freq": 124.7
     },
     {
       "id": "01H246XBK8VEHNR7M1KKYMYGVP",
+      "physicalFacility": "NYL",
       "name": "Yuma Departure",
+      "radioName": "Yuma Departure",
       "callsign": "NYL_DEP",
+      "areaId": "01H1DSTFB7Q18XQ5M573GX1SGJ",
+      "tcpId": "01KK0EDBE7933S76KM4VN2VBA2",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 32.65383333,
+        "lon": -114.5916111
       },
+      "range": 150,
       "freq": 125.55
     },
     {
       "id": "01KK0ENPFHZPR6608G86B0MK0M",
+      "physicalFacility": "NYL",
       "name": "El Centro Approach",
+      "radioName": "El Centro Approach",
       "callsign": "NJK_APP",
+      "areaId": "01KKN98Y7MV5Y92FYEF9PK2TDH",
+      "tcpId": "01KK0EDBP7P71GAYGJ46BGAA9C",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 32.82666667,
+        "lon": -115.6686111
       },
+      "range": 150,
       "freq": 132.275
     },
     {
-      "id": "1A",
+      "id": "01H246VFJ82X2VRQJSNJWXA7XC",
+      "physicalFacility": "NYL",
+      "name": "Yuma Clearance",
+      "radioName": "Yuma Clearance",
+      "callsign": "NYL_DEL",
+      "areaId": "01H1DSTFB7Q18XQ5M573GX1SGJ",
+      "tcpId": "01KK0EED514ZM3JRF3S7EG7DF8",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 32.65383333,
+        "lon": -114.5916111
+      },
+      "range": 150,
+      "freq": 118
     },
     {
-      "id": "1B",
+      "id": "01H246TWSMDC5A61BBRXGJVK0C",
+      "physicalFacility": "NYL",
+      "name": "Yuma Ground",
+      "radioName": "Yuma Ground",
+      "callsign": "NYL_GND",
+      "areaId": "01H1DSTFB7Q18XQ5M573GX1SGJ",
+      "tcpId": "01KK0EED514ZM3JRF3S7EG7DF8",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 32.65383333,
+        "lon": -114.5916111
+      },
+      "range": 150,
+      "freq": 121.9
     },
     {
-      "id": "1D",
+      "id": "01H246SMXNTB2W4VHH6Z09PZSP",
+      "physicalFacility": "NYL",
+      "name": "Yuma Local",
+      "radioName": "Yuma Tower",
+      "callsign": "NYL_TWR",
+      "areaId": "01H1DSTFB7Q18XQ5M573GX1SGJ",
+      "tcpId": "01KK0EED514ZM3JRF3S7EG7DF8",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 32.65383333,
+        "lon": -114.5916111
+      },
+      "range": 150,
+      "freq": 119.3
     },
     {
-      "id": "1E",
+      "id": "01KK29ZR16JDVZ103NC4KZ2KFV",
+      "physicalFacility": "NJK",
+      "name": "Local",
+      "radioName": "El Centro Tower",
+      "callsign": "NJK_TWR",
+      "areaId": "01KKN9V0BE1T8T0MFSFEE707VB",
+      "tcpId": "01KK0EEDDNRCANX0ZTPA9FGY1N",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1I",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1J",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 32.82666667,
+        "lon": -115.6686111
+      },
+      "range": 50,
+      "freq": 119.1
     }
   ],
   "mapGroups": [

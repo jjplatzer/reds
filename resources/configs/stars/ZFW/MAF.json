@@ -4,97 +4,149 @@
   "name": "Midland ATCT/TRACON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 31.646663500000003,
+    "lon": -101.34695149999999
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01H2017AFCSH5QVQPWMYFDB163",
-      "name": "North Radar",
-      "callsign": "MAF_N_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+      "id": "01H200KYA8J6HZRTRSE6DZ2SB5",
+      "name": "MAF",
+      "visibilityCenter": {
+        "lat": 31.935707,
+        "lon": -102.196823
       },
-      "freq": 124.6
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "E11",
+        "E30",
+        "MAF",
+        "MDD",
+        "ODO",
+        "SJT"
+      ],
+      "ssaAirports": [
+        "MAF"
+      ]
     },
     {
-      "id": "01H201A6JYKXR4FY41A2QXCG8K",
-      "name": "San Angelo Radar",
-      "callsign": "SJT_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+      "id": "01H3DJMMV4JJDKNWZB9ZS33N0G",
+      "name": "SJT",
+      "visibilityCenter": {
+        "lat": 31.35762,
+        "lon": -100.49708
       },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "SJT"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8TE6BYDTFW4C677DZ4",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J"
+    },
+    {
+      "id": "01K2NF1D8TXFFBXBVS0ZQBBRRQ",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1D8TGTKV8D4TC6BCM163",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1D8TGCQB83RBQ2C6XAF1",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01H201A6JYKXR4FY41A2QXCG8K",
+      "physicalFacility": "MAF",
+      "name": "San Angelo Radar",
+      "radioName": "San Angelo Approach",
+      "callsign": "SJT_APP",
+      "areaId": "01H3DJMMV4JJDKNWZB9ZS33N0G",
+      "tcpId": "01K2NF1D8TE6BYDTFW4C677DZ4",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 31.35762,
+        "lon": -100.49708
+      },
+      "range": 150,
       "freq": 125.35
     },
     {
-      "id": "01H201EBHGFY31CM7GPY8AND8H",
-      "name": "Local",
-      "callsign": "MAF_TWR",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 118.7
-    },
-    {
-      "id": "01H201FHYQAT8PGQ3F5V7ECHG6",
+      "id": "01H202Z0QCDCMR34QRGQ9ZNHQ5",
+      "physicalFacility": "SJT",
       "name": "Ground",
-      "callsign": "MAF_GND",
+      "radioName": "Mathis Ground",
+      "callsign": "SJT_GND",
+      "areaId": "01H3DJMMV4JJDKNWZB9ZS33N0G",
+      "tcpId": "01K2NF1D8TXFFBXBVS0ZQBBRRQ",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 31.35762,
+        "lon": -100.49708
       },
+      "range": 150,
       "freq": 121.9
     },
     {
-      "id": "01H89T5SBXRTVP4GTERNE6QM7B",
-      "name": "Clearance",
-      "callsign": "MAF_DEL",
+      "id": "01H202XV8K6BWFWX3PX4H10EF3",
+      "physicalFacility": "SJT",
+      "name": "Local",
+      "radioName": "Mathis Tower",
+      "callsign": "SJT_TWR",
+      "areaId": "01H3DJMMV4JJDKNWZB9ZS33N0G",
+      "tcpId": "01K2NF1D8TXFFBXBVS0ZQBBRRQ",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 31.35762,
+        "lon": -100.49708
       },
-      "freq": 118.05
+      "range": 150,
+      "freq": 118.3
     },
     {
-      "id": "01J9YJ7J6SF7JTSD425NPAFND7",
-      "name": "Guard",
-      "callsign": "MAF_EM_APP",
+      "id": "01H2017AFCSH5QVQPWMYFDB163",
+      "physicalFacility": "MAF",
+      "name": "North Radar",
+      "radioName": "Midland Approach",
+      "callsign": "MAF_N_APP",
+      "areaId": "01H200KYA8J6HZRTRSE6DZ2SB5",
+      "tcpId": "01K2NF1D8TGTKV8D4TC6BCM163",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 31.935707,
+        "lon": -102.196823
       },
-      "freq": 121.5
+      "range": 150,
+      "freq": 124.6
     },
     {
-      "id": "1J",
+      "id": "01H201EBHGFY31CM7GPY8AND8H",
+      "physicalFacility": "MAF",
+      "name": "Local",
+      "radioName": "Midland Tower",
+      "callsign": "MAF_TWR",
+      "areaId": "01H200KYA8J6HZRTRSE6DZ2SB5",
+      "tcpId": "01K2NF1D8TGCQB83RBQ2C6XAF1",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 31.935707,
+        "lon": -102.196823
+      },
+      "range": 150,
+      "freq": 118.7
     }
   ],
   "mapGroups": [

@@ -4,559 +4,1298 @@
   "name": "Atlanta TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 33.90558406666667,
-    "lon": -83.96840666666667
+    "lat": 33.34813084615384,
+    "lon": -84.32721023076923
   },
+  "areas": [
+    {
+      "id": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "name": "Atlanta",
+      "visibilityCenter": {
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "ATL",
+        "AHN",
+        "CSG",
+        "MCN"
+      ]
+    },
+    {
+      "id": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "name": "ATL",
+      "visibilityCenter": {
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "ATL"
+      ]
+    },
+    {
+      "id": "01GP9N83R6CF7X0ECER4YAJXVT",
+      "name": "Macon",
+      "visibilityCenter": {
+        "lat": 32.693167,
+        "lon": -83.649333
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "MCN",
+        "CSG"
+      ]
+    },
+    {
+      "id": "01GP9NB0SGC2N2Y395NEMM8FVH",
+      "name": "Columbus",
+      "visibilityCenter": {
+        "lat": 32.516667,
+        "lon": -84.939167
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "CSG"
+      ]
+    },
+    {
+      "id": "01GP9P018FBRYGDSZMVA77ZF6S",
+      "name": "PDK",
+      "visibilityCenter": {
+        "lat": 33.874833,
+        "lon": -84.302167
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "PDK"
+      ]
+    },
+    {
+      "id": "01GP9P172HZPGPEJAN78EPQ5PC",
+      "name": "FTY",
+      "visibilityCenter": {
+        "lat": 33.779333,
+        "lon": -84.522
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "FTY"
+      ]
+    },
+    {
+      "id": "01GP9P2RJJ19QYP892PMV8YVBZ",
+      "name": "MGE",
+      "visibilityCenter": {
+        "lat": 33.915333,
+        "lon": -84.517333
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "MGE"
+      ]
+    },
+    {
+      "id": "01GP9P3EW7R9G7P33A2V11NTKQ",
+      "name": "RYY",
+      "visibilityCenter": {
+        "lat": 34.013167,
+        "lon": -84.598333
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "RYY"
+      ]
+    },
+    {
+      "id": "01GP9P41XN9F4HY0PCH8KBMJ3S",
+      "name": "LZU",
+      "visibilityCenter": {
+        "lat": 33.977833,
+        "lon": -83.963167
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "LZU"
+      ]
+    },
+    {
+      "id": "01GP9P4QTT8W12D40R29N86CQN",
+      "name": "AHN",
+      "visibilityCenter": {
+        "lat": 33.948667,
+        "lon": -83.326
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "AHN"
+      ]
+    },
+    {
+      "id": "01HAAGMRTEQK6V3NXVMH7C075G",
+      "name": "MCN",
+      "visibilityCenter": {
+        "lat": 32.693167,
+        "lon": -83.649333
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "MCN",
+        "CSG"
+      ]
+    },
+    {
+      "id": "01HADCNHKV0QVRKRDEVJZPMME2",
+      "name": "CSG",
+      "visibilityCenter": {
+        "lat": 32.5173,
+        "lon": -84.9358
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "CSG"
+      ]
+    },
+    {
+      "id": "01HADCNVXP2ZQQG3JV7MYPPRW6",
+      "name": "LSF",
+      "visibilityCenter": {
+        "lat": 32.3379,
+        "lon": -84.9921
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "LSF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E97WBTY1GNREW5E0AV7",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1E9775F1HMVS30Q1NDX3",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1E976WBQ3J5K9DZRACVV",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1E97DT8ZTMSWFK96AGDB",
+      "parentTcp": "1H"
+    },
+    {
+      "id": "01K2NF1E9717DJCSJBNG433W52",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E97RDDSXXENKXRX642M",
+      "parentTcp": "1P"
+    },
+    {
+      "id": "01K2NF1E973J4HYYT4YEV72ACR",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1E97RDDSXXENKXRX642M",
+      "parentTcp": "1P"
+    },
+    {
+      "id": "01K2NF1E97CN45GG6TVSV7RNF7",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1E97RDDSXXENKXRX642M",
+      "parentTcp": "1P"
+    },
+    {
+      "id": "01K2NF1E97DT8ZTMSWFK96AGDB",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1E97GNZNP5SMR1RBQHZJ",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1E97NEKS4JBM2S88DD7G",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1E9767DH1K1SKZ8VQVMW",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1E97TAMB52734J2ZFDFV",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J"
+    },
+    {
+      "id": "01K2NF1E97B916TYB0X4M9YM4E",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1E97H9GXG137BRB4Y3M0",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1E976WBQ3J5K9DZRACVV",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1E97DJD3NRVJD5YHRPSJ",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1E97CN45GG6TVSV7RNF7",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01K2NF1E97GNZNP5SMR1RBQHZJ",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1E970TJHB9HX4XXRR29R",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O"
+    },
+    {
+      "id": "01K2NF1E97RDDSXXENKXRX642M",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1E97GNZNP5SMR1RBQHZJ",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1E970EPHAKCKSYVJSHVQ",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q",
+      "parentTcpId": "01K2NF1E97RDDSXXENKXRX642M",
+      "parentTcp": "1P"
+    },
+    {
+      "id": "01K2NF1E97EVEMBJG2NDMQ1Y4S",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1E986TPEVVAMS8DP5KT6",
+      "parentTcp": "1Z"
+    },
+    {
+      "id": "01K2NF1E9767DH1K1SKZ8VQVMW",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E97GNZNP5SMR1RBQHZJ",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1E97Y8NHPDSTBECS11R8",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E978TN840K9MXZVTA7Y",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K2NF1E97MEVH1YZ06BW21TQB",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V"
+    },
+    {
+      "id": "01K2NF1E97N4YNVY1M0YTZ8NV4",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E97DJD3NRVJD5YHRPSJ",
+      "parentTcp": "1M"
+    },
+    {
+      "id": "01K2NF1E98PSS25DKXJGK57WWA",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1E973J4HYYT4YEV72ACR",
+      "parentTcp": "1F"
+    },
+    {
+      "id": "01K2NF1E98E7T1EJ3V8JVT3932",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1E97DT8ZTMSWFK96AGDB",
+      "parentTcp": "1H"
+    },
+    {
+      "id": "01K2NF1E986TPEVVAMS8DP5KT6",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1E97DJD3NRVJD5YHRPSJ",
+      "parentTcp": "1M"
+    },
+    {
+      "id": "01K2NF1E98C05FT48CJMEBEKCP",
+      "code": "21",
+      "subset": 2,
+      "sectorId": "1"
+    },
+    {
+      "id": "01K2NF1E9819PZXDF46PYTS76Q",
+      "code": "22",
+      "subset": 2,
+      "sectorId": "2",
+      "parentTcpId": "01K2NF1E98C05FT48CJMEBEKCP",
+      "parentTcp": "21"
+    },
+    {
+      "id": "01K2NF1E98VEAYECZAW3MDXC7T",
+      "code": "23",
+      "subset": 2,
+      "sectorId": "3",
+      "parentTcpId": "01K2NF1E98GWWZMT57TP89B7Q5",
+      "parentTcp": "24"
+    },
+    {
+      "id": "01K2NF1E98GWWZMT57TP89B7Q5",
+      "code": "24",
+      "subset": 2,
+      "sectorId": "4",
+      "parentTcpId": "01K2NF1E98C05FT48CJMEBEKCP",
+      "parentTcp": "21"
+    },
+    {
+      "id": "01K2NF1E98E0E65AX7MZ3Z0ZTA",
+      "code": "25",
+      "subset": 2,
+      "sectorId": "5",
+      "parentTcpId": "01K2NF1E98GWWZMT57TP89B7Q5",
+      "parentTcp": "24"
+    },
+    {
+      "id": "01K2NF1E98DWHJBE1MSEYV8G5B",
+      "code": "29",
+      "subset": 2,
+      "sectorId": "9"
+    },
+    {
+      "id": "01K2NF1E98Y0F47GD12KNTFVM4",
+      "code": "2C",
+      "subset": 2,
+      "sectorId": "C"
+    },
+    {
+      "id": "01K2NF1E98ED04ZP21FJ32K2GH",
+      "code": "2D",
+      "subset": 2,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1E9862MTH6QQWXP11WDE",
+      "code": "2K",
+      "subset": 2,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1E98SZ9XBPHSHCNX6W6Z",
+      "code": "2N",
+      "subset": 2,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1E981NDA7SFNE45WPDQJ",
+      "code": "2S",
+      "subset": 2,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1E98Q6VRS9T01N5GFTBT",
+      "code": "2U",
+      "subset": 2,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K2NF1E987KMCEVN5TQAGNEHR",
+      "code": "3E",
+      "subset": 3,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E9717DJCSJBNG433W52",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1E98862173FVA4ZX20X3",
+      "code": "4A",
+      "subset": 4,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1E9824D9G8FFPE951J2Z",
+      "code": "4B",
+      "subset": 4,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1E98DV91RZWK8J9AWYV5",
+      "code": "4K",
+      "subset": 4,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1E98CHKRXPDSAG0HSH5R",
+      "code": "4M",
+      "subset": 4,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K2NF1E9804T1Q4CH63F2CQW9",
+      "code": "4R",
+      "subset": 4,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1E982MR0HH39FV07MV29",
+      "code": "4W",
+      "subset": 4,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1E98X22X0HSX2TPV0GV8",
+      "code": "4Y",
+      "subset": 4,
+      "sectorId": "Y"
+    },
+    {
+      "id": "01K2NF1E98GZG5DNM1F8WD8RCP",
+      "code": "4Z",
+      "subset": 4,
+      "sectorId": "Z"
+    },
+    {
+      "id": "01K2NF1E98534CCNDJZN1K5YYA",
+      "code": "9Z",
+      "subset": 9,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GP6YJ963QFYT39V84QJVDDQX",
-      "name": "Departure Radar N",
+      "id": "01GP9MSSV4R39T81GNT6BFJVB5",
+      "physicalFacility": "A80",
+      "name": "Arrival Radar A",
+      "radioName": "Atlanta Approach",
       "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E97WBTY1GNREW5E0AV7",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
-      "freq": 133.475
+      "range": 150,
+      "freq": 135.375
     },
     {
-      "id": "01GP9ME7WCRZEXCZAZXDQC7C6K",
-      "name": "Departure Radar S",
-      "callsign": "ATL_APP",
+      "id": "01H2H26B9MFFN4SS9GC5R1QK7N",
+      "physicalFacility": "FTY",
+      "name": "Local Control",
+      "radioName": "Fulton County Tower",
+      "callsign": "FTY_TWR",
+      "areaId": "01GP9P172HZPGPEJAN78EPQ5PC",
+      "tcpId": "01K2NF1E9775F1HMVS30Q1NDX3",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.779333,
+        "lon": -84.522
       },
-      "freq": 125.65
+      "range": 50,
+      "freq": 118.45
     },
     {
-      "id": "01GP9MFM3QKKNRPT0K80MYBW3Y",
-      "name": "Departure Radar I",
+      "id": "01GP9MNNSF4CD3V4BQZGBPQE0S",
+      "physicalFacility": "A80",
+      "name": "Terminal Arrival Radar D",
+      "radioName": "Atlanta Approach",
       "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E976WBQ3J5K9DZRACVV",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
-      "freq": 121.225
+      "range": 150,
+      "freq": 128
     },
     {
-      "id": "01GP9MH0435EH5CGR0FV7XRTQH",
-      "name": "Satellite Radar P",
-      "callsign": "ATL_APP",
+      "id": "01GP9N4GD37WVWDJ7C8333VD7J",
+      "physicalFacility": "A80",
+      "name": "Athens Low E",
+      "radioName": "Atlanta Approach",
+      "callsign": "AHN_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E9717DJCSJBNG433W52",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
-      "freq": 126.975
+      "range": 150,
+      "freq": 132.475
     },
     {
       "id": "01GP9MJ27S8VK9J9Y3ARCAMBA1",
+      "physicalFacility": "A80",
       "name": "Satellite Radar F",
+      "radioName": "Atlanta Approach",
       "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E973J4HYYT4YEV72ACR",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
+      "range": 150,
       "freq": 121
     },
     {
-      "id": "01GP9MJTB86GNFDND9BDYBW9KF",
-      "name": "Satellite Radar X",
-      "callsign": "ATL_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 119.8
-    },
-    {
       "id": "01GP9MMDQA7TYHRGQ3D270H159",
+      "physicalFacility": "A80",
       "name": "Satellite Radar G",
+      "radioName": "Atlanta Approach",
       "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E97CN45GG6TVSV7RNF7",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
+      "range": 150,
       "freq": 128.575
     },
     {
       "id": "01GP9MN46H8NZFH8R8T3J0C5GW",
+      "physicalFacility": "A80",
       "name": "Terminal Arrival Radar H",
+      "radioName": "Atlanta Approach",
       "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E97DT8ZTMSWFK96AGDB",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
+      "range": 150,
       "freq": 134.725
     },
     {
-      "id": "01GP9MNNSF4CD3V4BQZGBPQE0S",
-      "name": "Terminal Arrival Radar D",
+      "id": "01GP9MFM3QKKNRPT0K80MYBW3Y",
+      "physicalFacility": "A80",
+      "name": "Departure Radar I",
+      "radioName": "Atlanta Departure",
       "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E97NEKS4JBM2S88DD7G",
+      "tcp": "1I",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
-      "freq": 128
+      "range": 150,
+      "freq": 121.225
+    },
+    {
+      "id": "01HMHP6ESFPFJZQKW0APSZ38KE",
+      "physicalFacility": "ATL",
+      "name": "Ramp 6",
+      "radioName": "Atlanta Ramp",
+      "callsign": "ATL_RMP",
+      "areaId": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "tcpId": "01K2NF1E97TAMB52734J2ZFDFV",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 50,
+      "freq": 131.375
+    },
+    {
+      "id": "01GP9THBBEAA3MQMSE5ZQYCESB",
+      "physicalFacility": "PDK",
+      "name": "Local Control",
+      "radioName": "Peachtree Tower",
+      "callsign": "PDK_TWR",
+      "areaId": "01GP9P018FBRYGDSZMVA77ZF6S",
+      "tcpId": "01K2NF1E97B916TYB0X4M9YM4E",
+      "tcp": "1K",
+      "visualCenter": {
+        "lat": 33.874833,
+        "lon": -84.302167
+      },
+      "range": 50,
+      "freq": 120.9
     },
     {
       "id": "01GP9MPC2GNYFDGE0V3H8SKJVA",
+      "physicalFacility": "A80",
       "name": "Terminal Arrival Radar L",
+      "radioName": "Atlanta Approach",
       "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E97H9GXG137BRB4Y3M0",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
+      "range": 150,
       "freq": 128.525
     },
     {
-      "id": "01GP9MQTT6KW9AG04WMD8MZTXX",
-      "name": "Terminal Arrival Radar Y",
-      "callsign": "ATL_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 124.725
-    },
-    {
-      "id": "01GP9MREEN544SCTP4JFHEPSKW",
-      "name": "Arrival Radar V",
-      "callsign": "ATL_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 127.25
-    },
-    {
-      "id": "01GP9MS77F6TPCP42ZYR5VQ9DC",
-      "name": "Arrival Radar O",
-      "callsign": "ATL_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 124.6
-    },
-    {
-      "id": "01GP9MSSV4R39T81GNT6BFJVB5",
-      "name": "Arrival Radar A",
-      "callsign": "ATL_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 135.375
-    },
-    {
-      "id": "01GP9MTY6SSG712FM760J9C6K9",
-      "name": "Peachtree Final Q",
-      "callsign": "ATL_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 124.3
-    },
-    {
-      "id": "01GP9N4GD37WVWDJ7C8333VD7J",
-      "name": "Athens Low E",
-      "callsign": "AHN_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 132.475
-    },
-    {
-      "id": "01GP9N6MD9482BWZ5AJTSK04CM",
-      "name": "Athens High 3E",
-      "callsign": "AHN_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 119.875
-    },
-    {
-      "id": "01GP9NCJKZKWHH3GAJ38FBSZ7R",
-      "name": "Columbus Low Z",
-      "callsign": "CSG_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 125.5
-    },
-    {
-      "id": "01GP9NDDA61DT8A7913H7S3KNW",
-      "name": "Columbus High R",
-      "callsign": "CSG_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 126.55
-    },
-    {
       "id": "01GP9NEJ2PM0MTTMTJMNJK3MM5",
+      "physicalFacility": "A80",
       "name": "Macon Low M",
+      "radioName": "Atlanta Approach",
       "callsign": "MCN_APP",
+      "areaId": "01GP9N83R6CF7X0ECER4YAJXVT",
+      "tcpId": "01K2NF1E97DJD3NRVJD5YHRPSJ",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 32.693167,
+        "lon": -83.649333
       },
+      "range": 150,
       "freq": 124.2
     },
     {
-      "id": "01GP9NF954X31B2TDHG79DT8SC",
-      "name": "Macon High W",
-      "callsign": "MCN_APP",
+      "id": "01GP6YJ963QFYT39V84QJVDDQX",
+      "physicalFacility": "A80",
+      "name": "Departure Radar N",
+      "radioName": "Atlanta Departure",
+      "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E97GNZNP5SMR1RBQHZJ",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
-      "freq": 119.6
-    },
-    {
-      "id": "01HBA7FVEHJKQBCWY97W5050TT",
-      "name": "TM Arrival Coordinator",
-      "callsign": "ATL_TMU",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 125.55
-    },
-    {
-      "id": "01J1S67P583B9ZK60AWNEBA15D",
-      "name": "Departure Radar N Backup",
-      "callsign": "ATL_B_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
+      "range": 150,
       "freq": 133.475
     },
     {
-      "id": "01J95TT34D0T7XZ34H9AGV94PE",
-      "name": "A80 GUARD Combined",
-      "callsign": "ATL_G_APP",
+      "id": "01J1S67P583B9ZK60AWNEBA15D",
+      "physicalFacility": "A80",
+      "name": "Departure Radar N Backup",
+      "radioName": "Atlanta Approach",
+      "callsign": "ATL_B_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E97GNZNP5SMR1RBQHZJ",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
-      "freq": 121.5
+      "range": 150,
+      "freq": 133.475
     },
     {
-      "id": "01JEPZJ78Q1QTV5D4YWMKT2VHY",
-      "name": "ACJ RCO",
+      "id": "01GP9MS77F6TPCP42ZYR5VQ9DC",
+      "physicalFacility": "A80",
+      "name": "Arrival Radar O",
+      "radioName": "Atlanta Approach",
       "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E970TJHB9HX4XXRR29R",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
-      "freq": 119.95
+      "range": 150,
+      "freq": 124.6
     },
     {
-      "id": "01JEQ15CMK59DKJPFZXZYNZEMB",
-      "name": "LZU RCO",
-      "callsign": "LZU_APP",
+      "id": "01GP9MH0435EH5CGR0FV7XRTQH",
+      "physicalFacility": "A80",
+      "name": "Satellite Radar P",
+      "radioName": "Atlanta Approach",
+      "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E97RDDSXXENKXRX642M",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
-      "freq": 134
+      "range": 150,
+      "freq": 126.975
     },
     {
-      "id": "01JEQ1RK89GY955X3M5QN97XNB",
-      "name": "AUO RCO",
-      "callsign": "AUO_DEL",
+      "id": "01GP9MTY6SSG712FM760J9C6K9",
+      "physicalFacility": "A80",
+      "name": "Peachtree Final Q",
+      "radioName": "Atlanta Approach",
+      "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E970EPHAKCKSYVJSHVQ",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.629167,
+        "lon": -84.4295
       },
+      "range": 150,
+      "freq": 124.3
+    },
+    {
+      "id": "01GP9NDDA61DT8A7913H7S3KNW",
+      "physicalFacility": "A80",
+      "name": "Columbus High R",
+      "radioName": "Atlanta Approach",
+      "callsign": "CSG_APP",
+      "areaId": "01GP9NB0SGC2N2Y395NEMM8FVH",
+      "tcpId": "01K2NF1E97EVEMBJG2NDMQ1Y4S",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 32.516667,
+        "lon": -84.939167
+      },
+      "range": 150,
+      "freq": 126.55
+    },
+    {
+      "id": "01GP9ME7WCRZEXCZAZXDQC7C6K",
+      "physicalFacility": "A80",
+      "name": "Departure Radar S",
+      "radioName": "Atlanta Departure",
+      "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E9767DH1K1SKZ8VQVMW",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 150,
+      "freq": 125.65
+    },
+    {
+      "id": "01HBA97263WQ3EV4FT1FCF1QC6",
+      "physicalFacility": "ATL",
+      "name": "TMU",
+      "radioName": "Atlanta Tower",
+      "callsign": "ATL_TMU",
+      "areaId": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "tcpId": "01K2NF1E97Y8NHPDSTBECS11R8",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 50,
       "freq": 118.7
     },
     {
-      "id": "1A",
+      "id": "01HBA7FVEHJKQBCWY97W5050TT",
+      "physicalFacility": "A80",
+      "name": "TM Arrival Coordinator",
+      "radioName": "Atlanta TMU",
+      "callsign": "ATL_TMU",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E978TN840K9MXZVTA7Y",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 150,
+      "freq": 125.55
     },
     {
-      "id": "1B",
+      "id": "01GP9MREEN544SCTP4JFHEPSKW",
+      "physicalFacility": "A80",
+      "name": "Arrival Radar V",
+      "radioName": "Atlanta Approach",
+      "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E97MEVH1YZ06BW21TQB",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 150,
+      "freq": 127.25
     },
     {
-      "id": "1D",
+      "id": "01GP9NF954X31B2TDHG79DT8SC",
+      "physicalFacility": "A80",
+      "name": "Macon High W",
+      "radioName": "Atlanta Approach",
+      "callsign": "MCN_APP",
+      "areaId": "01GP9N83R6CF7X0ECER4YAJXVT",
+      "tcpId": "01K2NF1E97N4YNVY1M0YTZ8NV4",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 32.693167,
+        "lon": -83.649333
+      },
+      "range": 150,
+      "freq": 119.6
     },
     {
-      "id": "1F",
+      "id": "01GP9MJTB86GNFDND9BDYBW9KF",
+      "physicalFacility": "A80",
+      "name": "Satellite Radar X",
+      "radioName": "Atlanta Approach",
+      "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E98PSS25DKXJGK57WWA",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 150,
+      "freq": 119.8
     },
     {
-      "id": "1G",
+      "id": "01GP9MQTT6KW9AG04WMD8MZTXX",
+      "physicalFacility": "A80",
+      "name": "Terminal Arrival Radar Y",
+      "radioName": "Atlanta Approach",
+      "callsign": "ATL_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E98E7T1EJ3V8JVT3932",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 150,
+      "freq": 124.725
     },
     {
-      "id": "1H",
+      "id": "01GP9NCJKZKWHH3GAJ38FBSZ7R",
+      "physicalFacility": "A80",
+      "name": "Columbus Low Z",
+      "radioName": "Atlanta Approach",
+      "callsign": "CSG_APP",
+      "areaId": "01GP9NB0SGC2N2Y395NEMM8FVH",
+      "tcpId": "01K2NF1E986TPEVVAMS8DP5KT6",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 32.516667,
+        "lon": -84.939167
+      },
+      "range": 150,
+      "freq": 125.5
     },
     {
-      "id": "1I",
+      "id": "01GP98DPJDVMBAZ0NTQ9Q1C3S1",
+      "physicalFacility": "ATL",
+      "name": "Local Control 1",
+      "radioName": "Atlanta Tower",
+      "callsign": "ATL_TWR",
+      "areaId": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "tcpId": "01K2NF1E98C05FT48CJMEBEKCP",
+      "tcp": "21",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 50,
+      "freq": 119.1
     },
     {
-      "id": "1K",
+      "id": "01GP9NHJJZD90B30F1DR2Q0GT8",
+      "physicalFacility": "ATL",
+      "name": "Local Control 2",
+      "radioName": "Atlanta Tower",
+      "callsign": "ATL_TWR",
+      "areaId": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "tcpId": "01K2NF1E9819PZXDF46PYTS76Q",
+      "tcp": "22",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 50,
+      "freq": 125.325
     },
     {
-      "id": "1L",
+      "id": "01GP9NKK9YD3XPEZDBWGQKMYKG",
+      "physicalFacility": "ATL",
+      "name": "Local Control 3",
+      "radioName": "Atlanta Tower",
+      "callsign": "ATL_TWR",
+      "areaId": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "tcpId": "01K2NF1E98VEAYECZAW3MDXC7T",
+      "tcp": "23",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 50,
+      "freq": 123.85
     },
     {
-      "id": "1M",
+      "id": "01GP9NP04ME0B46GHWCM0WPB8Y",
+      "physicalFacility": "ATL",
+      "name": "Local Control 4",
+      "radioName": "Atlanta Tower",
+      "callsign": "ATL_TWR",
+      "areaId": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "tcpId": "01K2NF1E98GWWZMT57TP89B7Q5",
+      "tcp": "24",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 50,
+      "freq": 119.3
     },
     {
-      "id": "1N",
+      "id": "01GP9NPXS9BY215EYER7QM1EXD",
+      "physicalFacility": "ATL",
+      "name": "Local Control 5",
+      "radioName": "Atlanta Tower",
+      "callsign": "ATL_TWR",
+      "areaId": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "tcpId": "01K2NF1E98E0E65AX7MZ3Z0ZTA",
+      "tcp": "25",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 50,
+      "freq": 119.5
     },
     {
-      "id": "1O",
+      "id": "01H2H3R22T6ZJVSYJRASE1PFJ2",
+      "physicalFacility": "MGE",
+      "name": "Local Control",
+      "radioName": "Dobbins Tower",
+      "callsign": "MGE_TWR",
+      "areaId": "01GP9P2RJJ19QYP892PMV8YVBZ",
+      "tcpId": "01K2NF1E98DWHJBE1MSEYV8G5B",
+      "tcp": "29",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.915333,
+        "lon": -84.517333
+      },
+      "range": 50,
+      "freq": 120.75
     },
     {
-      "id": "1P",
+      "id": "01GP9NWPBXNBQF1KY4F5213Q46",
+      "physicalFacility": "ATL",
+      "name": "Ground Control Center",
+      "radioName": "Atlanta Ground",
+      "callsign": "ATL_GND",
+      "areaId": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "tcpId": "01K2NF1E98Y0F47GD12KNTFVM4",
+      "tcp": "2C",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 50,
+      "freq": 121.75
     },
     {
-      "id": "1Q",
+      "id": "01GP9909DET14C7XHQ6PEC8EW1",
+      "physicalFacility": "ATL",
+      "name": "Clearance Delivery 1",
+      "radioName": "Atlanta Clearance Delivery",
+      "callsign": "ATL_DEL",
+      "areaId": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "tcpId": "01K2NF1E98ED04ZP21FJ32K2GH",
+      "tcp": "2D",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 50,
+      "freq": 118.1
     },
     {
-      "id": "1R",
+      "id": "01JEJ249ZB515AESCVVJPV19WY",
+      "physicalFacility": "PDK",
+      "name": "Local Control 2",
+      "radioName": "Peachtree Tower",
+      "callsign": "PDK_TWR",
+      "areaId": "01GP9P018FBRYGDSZMVA77ZF6S",
+      "tcpId": "01K2NF1E9862MTH6QQWXP11WDE",
+      "tcp": "2K",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.874833,
+        "lon": -84.302167
+      },
+      "range": 50,
+      "freq": 127.2
     },
     {
-      "id": "1S",
+      "id": "01GP9NVQJ6F8EBCTQF1GZXECER",
+      "physicalFacility": "ATL",
+      "name": "Ground Control North",
+      "radioName": "Atlanta Ground",
+      "callsign": "ATL_GND",
+      "areaId": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "tcpId": "01K2NF1E98SZ9XBPHSHCNX6W6Z",
+      "tcp": "2N",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1T",
+      "id": "01GP9NXKBP63HKC6KNJPMBTAAH",
+      "physicalFacility": "ATL",
+      "name": "Ground Control South",
+      "radioName": "Atlanta Ground",
+      "callsign": "ATL_GND",
+      "areaId": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "tcpId": "01K2NF1E981NDA7SFNE45WPDQJ",
+      "tcp": "2S",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 50,
+      "freq": 121.65
     },
     {
-      "id": "1V",
+      "id": "01GP9NSR7GM9FE0M3H86G38YH7",
+      "physicalFacility": "ATL",
+      "name": "Clearance Delivery 2",
+      "radioName": "Atlanta Clearance Delivery",
+      "callsign": "ATL_DEL",
+      "areaId": "01GP6XJVARJG74GYJ4ZBY8E611",
+      "tcpId": "01K2NF1E98Q6VRS9T01N5GFTBT",
+      "tcp": "2U",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 50,
+      "freq": 118.7
     },
     {
-      "id": "1W",
+      "id": "01GP9N6MD9482BWZ5AJTSK04CM",
+      "physicalFacility": "A80",
+      "name": "Athens High 3E",
+      "radioName": "Atlanta Approach",
+      "callsign": "AHN_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E987KMCEVN5TQAGNEHR",
+      "tcp": "3E",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 150,
+      "freq": 119.875
     },
     {
-      "id": "1X",
+      "id": "01H4Q3AQTXF75BYPBNW1707830",
+      "physicalFacility": "AHN",
+      "name": "Local Control",
+      "radioName": "Athens Tower",
+      "callsign": "AHN_TWR",
+      "areaId": "01GP9P4QTT8W12D40R29N86CQN",
+      "tcpId": "01K2NF1E98862173FVA4ZX20X3",
+      "tcp": "4A",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.948667,
+        "lon": -83.326
+      },
+      "range": 150,
+      "freq": 126.3
     },
     {
-      "id": "1Y",
+      "id": "01H51K4VX85HRKZMEMW4ZVN2PW",
+      "physicalFacility": "LSF",
+      "name": "Local Control",
+      "radioName": "Lawson Tower",
+      "callsign": "LSF_TWR",
+      "areaId": "01GP9NB0SGC2N2Y395NEMM8FVH",
+      "tcpId": "01K2NF1E9824D9G8FFPE951J2Z",
+      "tcp": "4B",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 32.516667,
+        "lon": -84.939167
+      },
+      "range": 150,
+      "freq": 119.05
     },
     {
-      "id": "1Z",
+      "id": "01H2E5NB9HDBTK2A53K96713CV",
+      "physicalFacility": "CSG",
+      "name": "Local Control",
+      "radioName": "Columbus Tower",
+      "callsign": "CSG_TWR",
+      "areaId": "01GP9NB0SGC2N2Y395NEMM8FVH",
+      "tcpId": "01K2NF1E98DV91RZWK8J9AWYV5",
+      "tcp": "4K",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 32.516667,
+        "lon": -84.939167
+      },
+      "range": 150,
+      "freq": 120.1
     },
     {
-      "id": "21",
+      "id": "01GZAPARDH0H72B1VCEENGMD8Y",
+      "physicalFacility": "RYY",
+      "name": "Local Control",
+      "radioName": "McCollum Tower",
+      "callsign": "RYY_TWR",
+      "areaId": "01GP9P3EW7R9G7P33A2V11NTKQ",
+      "tcpId": "01K2NF1E98CHKRXPDSAG0HSH5R",
+      "tcp": "4M",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 34.013167,
+        "lon": -84.598333
+      },
+      "range": 50,
+      "freq": 125.9
     },
     {
-      "id": "22",
+      "id": "01J95TT34D0T7XZ34H9AGV94PE",
+      "physicalFacility": "A80",
+      "name": "A80 GUARD Combined",
+      "radioName": "Atlanta Guard",
+      "callsign": "ATL_G_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E9804T1Q4CH63F2CQW9",
+      "tcp": "4R",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 150,
+      "freq": 121.5
     },
     {
-      "id": "23",
+      "id": "01H4Q2SZ3QMRNY3A408WHEJC3N",
+      "physicalFacility": "WRB",
+      "name": "Local Control",
+      "radioName": "Robins Tower",
+      "callsign": "WRB_TWR",
+      "areaId": "01GP9N83R6CF7X0ECER4YAJXVT",
+      "tcpId": "01K2NF1E982MR0HH39FV07MV29",
+      "tcp": "4W",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 32.693167,
+        "lon": -83.649333
+      },
+      "range": 150,
+      "freq": 133.225
     },
     {
-      "id": "24",
+      "id": "01H2E4WBC491T5FST6RTRK4A8B",
+      "physicalFacility": "MCN",
+      "name": "Local Control",
+      "radioName": "Macon Tower",
+      "callsign": "MCN_TWR",
+      "areaId": "01HAAGMRTEQK6V3NXVMH7C075G",
+      "tcpId": "01K2NF1E98X22X0HSX2TPV0GV8",
+      "tcp": "4Y",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 32.693167,
+        "lon": -83.649333
+      },
+      "range": 50,
+      "freq": 128.2
     },
     {
-      "id": "25",
+      "id": "01GRHPCCK0HM1ZC4BP99X5EZGK",
+      "physicalFacility": "LZU",
+      "name": "Local Control",
+      "radioName": "Gwinnett Tower",
+      "callsign": "LZU_TWR",
+      "areaId": "01GP9P41XN9F4HY0PCH8KBMJ3S",
+      "tcpId": "01K2NF1E98GZG5DNM1F8WD8RCP",
+      "tcp": "4Z",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.977833,
+        "lon": -83.963167
+      },
+      "range": 50,
+      "freq": 124.1
     },
     {
-      "id": "29",
+      "id": "01JEPZJ78Q1QTV5D4YWMKT2VHY",
+      "physicalFacility": "A80",
+      "name": "ACJ RCO",
+      "radioName": "Atlanta Approach",
+      "callsign": "ATL_APP",
+      "areaId": "01GP9N83R6CF7X0ECER4YAJXVT",
+      "tcpId": "01K2NF1E98534CCNDJZN1K5YYA",
+      "tcp": "9Z",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 32.693167,
+        "lon": -83.649333
+      },
+      "range": 150,
+      "freq": 119.95
     },
     {
-      "id": "2C",
+      "id": "01JEQ1RK89GY955X3M5QN97XNB",
+      "physicalFacility": "A80",
+      "name": "AUO RCO",
+      "radioName": "Atlanta Approach",
+      "callsign": "AUO_DEL",
+      "areaId": "01GP9NB0SGC2N2Y395NEMM8FVH",
+      "tcpId": "01K2NF1E98534CCNDJZN1K5YYA",
+      "tcp": "9Z",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 32.516667,
+        "lon": -84.939167
+      },
+      "range": 150,
+      "freq": 118.7
     },
     {
-      "id": "2D",
+      "id": "01JEQ15CMK59DKJPFZXZYNZEMB",
+      "physicalFacility": "A80",
+      "name": "LZU RCO",
+      "radioName": "Atlanta Approach",
+      "callsign": "LZU_APP",
+      "areaId": "01GP6XHQEYP56DYWR8A5X5KCSA",
+      "tcpId": "01K2NF1E98534CCNDJZN1K5YYA",
+      "tcp": "9Z",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "2N",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "2S",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "2U",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "4A",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "4B",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "4K",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "4M",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "4W",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "4Y",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "4Z",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.629167,
+        "lon": -84.4295
+      },
+      "range": 150,
+      "freq": 134
     }
   ],
   "mapGroups": [

@@ -4,46 +4,54 @@
   "name": "Valdosta Regional ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 30.7813722,
+    "lon": -83.2762194
   },
+  "areas": [
+    {
+      "id": "01HAWAQN7PH85S37PVCQXJ164G",
+      "name": "VLD TRACON",
+      "visibilityCenter": {
+        "lat": 30.7813722,
+        "lon": -83.2762194
+      },
+      "surveillanceRange": 100,
+      "ssaAirports": [
+        "VLD",
+        "VAD",
+        "4J2",
+        "4J5",
+        "HOE",
+        "MGR",
+        "TMA",
+        "TVI"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFEMV9ECBRBN9D43MH1",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01HAWAATHBKM279V8BP5FW8N13",
-      "name": "Ground",
-      "callsign": "VLD_GND",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 121.7
-    },
-    {
-      "id": "01HAWABACQ0502HHHEPZSW5FDH",
-      "name": "Tower",
-      "callsign": "VLD_TWR",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 128.35
-    },
-    {
       "id": "01HAWABT668NPANDFS1YNFG771",
+      "physicalFacility": "VLD",
       "name": "Approach",
+      "radioName": "Valdosta Approach",
       "callsign": "VAD_APP",
+      "areaId": "01HAWAQN7PH85S37PVCQXJ164G",
+      "tcpId": "01K2NF1DFEMV9ECBRBN9D43MH1",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.7813722,
+        "lon": -83.2762194
       },
+      "range": 100,
       "freq": 126.6
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
     }
   ],
   "mapGroups": [

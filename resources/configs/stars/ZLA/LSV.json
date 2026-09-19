@@ -4,254 +4,376 @@
   "name": "Nellis ",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 34.9691453,
-    "lon": -116.63582625
+    "lat": 37.3634339,
+    "lon": -115.1954894
   },
+  "areas": [
+    {
+      "id": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "name": "Nellis",
+      "visibilityCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "INS",
+        "LSV",
+        "TNX",
+        "TPH"
+      ],
+      "ssaAirports": [
+        "LSV"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CRSYHYVFEQE7M0A3T8F",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRSRYW2N7PXZ28ZEDJS",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRSDY1BBE9Y7P9F0JPM",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRS0H92S7D41K36AW2M",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRS55Z9RNTMAAQQA32P",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRSA2K1FHQXNZHV6VAZ",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRSY51ERCBZH3WN9209",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRS1WT9D85XS75V3BSF",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRSCDESA23HY59Q7GQX",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRSPJW4B94Q2151E5B6",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK00B2QR2QC1F1ACX2ECK3JM",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK00B32HHVV7DSANGAVQAN68",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK00CCQ5DRBPDDPSMAWA7QW0",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK00CEH50PD96EYMQ5PZJW5D",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK00CGMGV4KRCBMVKH9CSNAN",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GRQ5KQ82D0VKEQ5058CA64B2",
-      "name": "Nellis Ground",
-      "callsign": "LSV_GND",
+      "id": "01KK00NXC81HVSM5QA4HDX37S0",
+      "physicalFacility": "LSV",
+      "name": "AR Track",
+      "radioName": "Nellis",
+      "callsign": "NTD_AR_APP",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01K2NF1CRSYHYVFEQE7M0A3T8F",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 37.3634339,
+        "lon": -115.1954894
       },
+      "range": 150,
+      "freq": 126.95
+    },
+    {
+      "id": "01JYSBE5HJXWQAVN5CF5E5964G",
+      "physicalFacility": "LSV",
+      "name": "Blackjack",
+      "radioName": "Blackjack",
+      "callsign": "LSV_B_APP",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01K2NF1CRSRYW2N7PXZ28ZEDJS",
+      "tcp": "1B",
+      "visualCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "range": 150,
+      "freq": 123.55
+    },
+    {
+      "id": "01G90X5PSPKJ7WSS7X6WYJCHFG",
+      "physicalFacility": "INS",
+      "name": "Local Control",
+      "radioName": "Creech Tower",
+      "callsign": "INS_TWR",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01K2NF1CRS0H92S7D41K36AW2M",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "range": 150,
+      "freq": 118.3
+    },
+    {
+      "id": "01KK05TPWQ6PGVKMPRCF63M1PQ",
+      "physicalFacility": "LSV",
+      "name": "Lee Radar (F)",
+      "radioName": "Nellis Approach",
+      "callsign": "LSV_F_APP",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01K2NF1CRS55Z9RNTMAAQQA32P",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "range": 150,
+      "freq": 118.125
+    },
+    {
+      "id": "01JYQXAAMQMW1MCXFDEQK3CSNM",
+      "physicalFacility": "LSV",
+      "name": "Dreamland",
+      "radioName": "Dreamland Approach",
+      "callsign": "LSV_G_APP",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01K2NF1CRSA2K1FHQXNZHV6VAZ",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "range": 150,
+      "freq": 126.15
+    },
+    {
+      "id": "01KK0634182CJ7YKZX1D3HNEKC",
+      "physicalFacility": "LSV",
+      "name": "Range Monitor",
+      "radioName": "Nellis Control",
+      "callsign": "LSV_J_APP",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01K2NF1CRSY51ERCBZH3WN9209",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "range": 150,
+      "freq": 121.5
+    },
+    {
+      "id": "01KK06031DDSB95AM1J8KA8VBM",
+      "physicalFacility": "LSV",
+      "name": "Sunrise",
+      "radioName": "Nellis Approach",
+      "callsign": "LSV_K_APP",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01K2NF1CRS1WT9D85XS75V3BSF",
+      "tcp": "1K",
+      "visualCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "range": 150,
+      "freq": 121.5
+    },
+    {
+      "id": "01JYQXB5HHXJVG6XCNQ87N8N7K",
+      "physicalFacility": "LSV",
+      "name": "Lee Radar",
+      "radioName": "Nellis Control",
+      "callsign": "LSV_L_APP",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01K2NF1CRSCDESA23HY59Q7GQX",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "range": 150,
+      "freq": 119.35
+    },
+    {
+      "id": "01GRQ5YZQB2VT9119XVK6G315K",
+      "physicalFacility": "LSV",
+      "name": "Nellis Departure (Thule)",
+      "radioName": "Nellis Departure",
+      "callsign": "LSV_P_DEP",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01KK00B2QR2QC1F1ACX2ECK3JM",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "range": 150,
+      "freq": 135.1
+    },
+    {
+      "id": "01KK0644SQV7SNMKJ4D7XSRCCC",
+      "physicalFacility": "LSV",
+      "name": "Rancho",
+      "radioName": "Nellis Control",
+      "callsign": "LSV_R_APP",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01KK00B32HHVV7DSANGAVQAN68",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "range": 150,
+      "freq": 121.5
+    },
+    {
+      "id": "01JYQX8N2S1PH0WYJJDC53K4D7",
+      "physicalFacility": "LSV",
+      "name": "Sally Radar",
+      "radioName": "Nellis Control",
+      "callsign": "LSV_S_APP",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01KK00CCQ5DRBPDDPSMAWA7QW0",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "range": 150,
+      "freq": 126.65
+    },
+    {
+      "id": "01GRQ5RV62752SG8MG3VBGZDJV",
+      "physicalFacility": "LSV",
+      "name": "Nellis Clearance",
+      "radioName": "Nellis Clearance",
+      "callsign": "LSV_DEL",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01KK00CEH50PD96EYMQ5PZJW5D",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "range": 150,
+      "freq": 120.9
+    },
+    {
+      "id": "01GRQ5KQ82D0VKEQ5058CA64B2",
+      "physicalFacility": "LSV",
+      "name": "Nellis Ground",
+      "radioName": "Nellis Ground",
+      "callsign": "LSV_GND",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01KK00CEH50PD96EYMQ5PZJW5D",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 37.3634339,
+        "lon": -115.1954894
+      },
+      "range": 150,
       "freq": 121.8
     },
     {
       "id": "01GRQ5M2MGAXB82AWCH98R79H9",
+      "physicalFacility": "LSV",
       "name": "Nellis Tower",
+      "radioName": "Nellis Tower",
       "callsign": "LSV_TWR",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01KK00CEH50PD96EYMQ5PZJW5D",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 37.3634339,
+        "lon": -115.1954894
       },
+      "range": 150,
       "freq": 132.55
     },
     {
       "id": "01GRQ5NBJRMDAKZ5S36TRXK8V3",
+      "physicalFacility": "LSV",
       "name": "Nellis Approach",
+      "radioName": "Nellis Approach",
       "callsign": "LSV_APP",
+      "areaId": "01GRQ5G6PYHCV2RRDBNVQEEFBD",
+      "tcpId": "01KK00CGMGV4KRCBMVKH9CSNAN",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 37.3634339,
+        "lon": -115.1954894
       },
+      "range": 150,
       "freq": 124.95
-    },
-    {
-      "id": "01GRQ5RV62752SG8MG3VBGZDJV",
-      "name": "Nellis Clearance",
-      "callsign": "LSV_DEL",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 120.9
-    },
-    {
-      "id": "01GRQ5YZQB2VT9119XVK6G315K",
-      "name": "Nellis Departure (Thule)",
-      "callsign": "LSV_P_DEP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 135.1
-    },
-    {
-      "id": "01JYQX8N2S1PH0WYJJDC53K4D7",
-      "name": "Sally Radar",
-      "callsign": "LSV_S_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 126.65
-    },
-    {
-      "id": "01JYQXAAMQMW1MCXFDEQK3CSNM",
-      "name": "Dreamland",
-      "callsign": "LSV_G_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 126.15
-    },
-    {
-      "id": "01JYQXB5HHXJVG6XCNQ87N8N7K",
-      "name": "Lee Radar",
-      "callsign": "LSV_L_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 119.35
-    },
-    {
-      "id": "01JYSBE5HJXWQAVN5CF5E5964G",
-      "name": "Blackjack",
-      "callsign": "LSV_B_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 123.55
-    },
-    {
-      "id": "01KK00NXC81HVSM5QA4HDX37S0",
-      "name": "AR Track",
-      "callsign": "NTD_AR_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 126.95
-    },
-    {
-      "id": "01KK05TPWQ6PGVKMPRCF63M1PQ",
-      "name": "Lee Radar (F)",
-      "callsign": "LSV_F_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 118.125
-    },
-    {
-      "id": "01KK06031DDSB95AM1J8KA8VBM",
-      "name": "Sunrise",
-      "callsign": "LSV_K_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "01KK0634182CJ7YKZX1D3HNEKC",
-      "name": "Range Monitor",
-      "callsign": "LSV_J_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "01KK0644SQV7SNMKJ4D7XSRCCC",
-      "name": "Rancho",
-      "callsign": "LSV_R_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1J",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1O",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
     }
   ],
   "mapGroups": [

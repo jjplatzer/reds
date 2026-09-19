@@ -4,77 +4,155 @@
   "name": "Billings ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 44.1394906,
-    "lon": -111.3092792325
+    "lat": 45.803754,
+    "lon": -108.539624
   },
+  "areas": [
+    {
+      "id": "01G9BNC1S143H8NCH1ZTCSGRBC",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 45.803754,
+        "lon": -108.539624
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "00U",
+        "03MT",
+        "0MT5",
+        "16MT",
+        "1MT2",
+        "1MT9",
+        "35MT",
+        "3MT3",
+        "44MT",
+        "49MT",
+        "50MT",
+        "5U7",
+        "63MT",
+        "6S1",
+        "6S3",
+        "6S8",
+        "80S",
+        "96MT",
+        "BIL",
+        "MT13",
+        "MT25",
+        "MT40",
+        "MT55",
+        "MT57"
+      ],
+      "ssaAirports": [
+        "BIL"
+      ]
+    },
+    {
+      "id": "01G9BP2PT5BSB7NNQ7401ZXH8Q",
+      "name": "BIL CTRD",
+      "visibilityCenter": {
+        "lat": 45.803754,
+        "lon": -108.539624
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "BIL"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E414EV71WDH46EDT71Z",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1E41TKPNFSMHN3QDEV94",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E414EV71WDH46EDT71Z",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1E41P7Y674KP9TQJJ52N",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E4168YA1T322KPJVS38",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1E41P7Y674KP9TQJJ52N",
+      "parentTcp": "1T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G9BNV0PEDWQEQ2G2A77JASGJ",
+      "physicalFacility": "BIL",
       "name": "RADAR North",
+      "radioName": "Billings Approach",
       "callsign": "BIL_N_APP",
+      "areaId": "01G9BNC1S143H8NCH1ZTCSGRBC",
+      "tcpId": "01K2NF1E414EV71WDH46EDT71Z",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 45.803754,
+        "lon": -108.539624
       },
+      "range": 75,
       "freq": 119.2
     },
     {
-      "id": "01G9BNYFKR154BG1AAY2JFWGJW",
-      "name": "Local Control",
-      "callsign": "BIL_TWR",
+      "id": "01GE8TAGZKEJK70FVC2V0MAEM2",
+      "physicalFacility": "BIL",
+      "name": "RADAR South",
+      "radioName": "Billings Approach",
+      "callsign": "BIL_S_APP",
+      "areaId": "01G9BNC1S143H8NCH1ZTCSGRBC",
+      "tcpId": "01K2NF1E41TKPNFSMHN3QDEV94",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 45.803754,
+        "lon": -108.539624
       },
+      "range": 75,
+      "freq": 120.5
+    },
+    {
+      "id": "01G9BNYFKR154BG1AAY2JFWGJW",
+      "physicalFacility": "BIL",
+      "name": "Local Control",
+      "radioName": "Billings Tower",
+      "callsign": "BIL_TWR",
+      "areaId": "01G9BP2PT5BSB7NNQ7401ZXH8Q",
+      "tcpId": "01K2NF1E41P7Y674KP9TQJJ52N",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 45.803754,
+        "lon": -108.539624
+      },
+      "range": 50,
       "freq": 127.2
     },
     {
       "id": "01G9BNZZ0924YGXAJV5KE6R6XJ",
+      "physicalFacility": "BIL",
       "name": "Ground Control",
+      "radioName": "Billings Ground",
       "callsign": "BIL_GND",
+      "areaId": "01G9BP2PT5BSB7NNQ7401ZXH8Q",
+      "tcpId": "01K2NF1E4168YA1T322KPJVS38",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 45.803754,
+        "lon": -108.539624
       },
+      "range": 50,
       "freq": 121.9
-    },
-    {
-      "id": "01GE8TAGZKEJK70FVC2V0MAEM2",
-      "name": "RADAR South",
-      "callsign": "BIL_S_APP",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      },
-      "freq": 120.5
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
     }
   ],
   "mapGroups": [

@@ -4,67 +4,302 @@
   "name": "Anchorage TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 61.879,
-    "lon": -154.693625
+    "lat": 61.03372895,
+    "lon": -150.27144614
   },
+  "areas": [
+    {
+      "id": "01GESG803A2XFH3XN897QNBM5S",
+      "name": "A11",
+      "visibilityCenter": {
+        "lat": 61.1740847,
+        "lon": -149.99813758
+      },
+      "surveillanceRange": 75,
+      "ssaAirports": [
+        "ANC",
+        "PAQ"
+      ]
+    },
+    {
+      "id": "01GEX57R52BC24JV0ZPWJW8474",
+      "name": "ANC TDW",
+      "visibilityCenter": {
+        "lat": 61.1740847,
+        "lon": -149.99813758
+      },
+      "surveillanceRange": 75,
+      "ssaAirports": [
+        "ANC"
+      ]
+    },
+    {
+      "id": "01HBSWMHAAT19QPRXEVQBGEJP8",
+      "name": "MRI TDW",
+      "visibilityCenter": {
+        "lat": 61.2135464,
+        "lon": -149.8447094
+      },
+      "surveillanceRange": 75,
+      "ssaAirports": [
+        "MRI"
+      ]
+    },
+    {
+      "id": "01HDPKB3M00CD4RXTGPXG8KD7M",
+      "name": "ENA RTDW",
+      "visibilityCenter": {
+        "lat": 60.5732,
+        "lon": -151.2448
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "ENA"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DE83GZW90ZAWZVPVJ82",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1DE8EGT77MGRC9G44E20",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1DE80V9TX1SX837CXAT7",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1DE8GRQZ0KV66V3K72MG",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H"
+    },
+    {
+      "id": "01K2NF1DE85CBYNSGDB907JR99",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K2NF1DE8MFP7VBJ7F07Q48JH",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1DE8PNCB8JPZZ1V9ZEFX",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1DE8QJPGA0124BC0ER4J",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GESG6YR9005EAYJ83FVPMMGM",
-      "name": "North Radar",
-      "callsign": "ANC_N_APP",
+      "id": "01GESHSJTEDQVEK8J3VEWBTEYG",
+      "physicalFacility": "EDF",
+      "name": "Delivery",
+      "radioName": "Elmendorf Clearance",
+      "callsign": "EDF_DEL",
+      "areaId": "01GESG803A2XFH3XN897QNBM5S",
+      "tcpId": "01K2NF1DE83GZW90ZAWZVPVJ82",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
+        "lat": 61.1740847,
+        "lon": -149.99813758
       },
+      "range": 75,
+      "freq": 128.8
+    },
+    {
+      "id": "01GESHS7MJ91XEECJ4FYS16XVN",
+      "physicalFacility": "EDF",
+      "name": "Ground",
+      "radioName": "Elmendorf Ground",
+      "callsign": "EDF_GND",
+      "areaId": "01GESG803A2XFH3XN897QNBM5S",
+      "tcpId": "01K2NF1DE83GZW90ZAWZVPVJ82",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 61.1740847,
+        "lon": -149.99813758
+      },
+      "range": 75,
+      "freq": 121.8
+    },
+    {
+      "id": "01GESHRVV9S75G4EB2069A38XJ",
+      "physicalFacility": "EDF",
+      "name": "Local Control",
+      "radioName": "Elmendorf Tower",
+      "callsign": "EDF_TWR",
+      "areaId": "01GESG803A2XFH3XN897QNBM5S",
+      "tcpId": "01K2NF1DE83GZW90ZAWZVPVJ82",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 61.1740847,
+        "lon": -149.99813758
+      },
+      "range": 75,
+      "freq": 127.2
+    },
+    {
+      "id": "01GESG9HP2A8DF7AN636AXFTWM",
+      "physicalFacility": "A11",
+      "name": "Final Radar",
+      "radioName": "Anchorage Approach",
+      "callsign": "ANC_F_APP",
+      "areaId": "01GESG803A2XFH3XN897QNBM5S",
+      "tcpId": "01K2NF1DE8EGT77MGRC9G44E20",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 61.1740847,
+        "lon": -149.99813758
+      },
+      "range": 75,
+      "freq": 135.15
+    },
+    {
+      "id": "01GEX5C53ZBRFZYHC6VM4P7KEZ",
+      "physicalFacility": "ANC",
+      "name": "Delivery",
+      "radioName": "Anchorage Clearance",
+      "callsign": "ANC_DEL",
+      "areaId": "01GEX57R52BC24JV0ZPWJW8474",
+      "tcpId": "01K2NF1DE80V9TX1SX837CXAT7",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 61.1740847,
+        "lon": -149.99813758
+      },
+      "range": 75,
+      "freq": 119.4
+    },
+    {
+      "id": "01HBF3NFRNM1QV48GVDGG9HJMD",
+      "physicalFacility": "ANC",
+      "name": "Ground",
+      "radioName": "Anchorage Ground",
+      "callsign": "ANC_GND",
+      "areaId": "01GEX57R52BC24JV0ZPWJW8474",
+      "tcpId": "01K2NF1DE80V9TX1SX837CXAT7",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 61.1740847,
+        "lon": -149.99813758
+      },
+      "range": 75,
+      "freq": 121.9
+    },
+    {
+      "id": "01GEX59Q03K22Q6281M5C8ZV2B",
+      "physicalFacility": "ANC",
+      "name": "Lake Hood Local Control",
+      "radioName": "Lake Hood Tower",
+      "callsign": "LHD_TWR",
+      "areaId": "01GEX57R52BC24JV0ZPWJW8474",
+      "tcpId": "01K2NF1DE8GRQZ0KV66V3K72MG",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 61.1740847,
+        "lon": -149.99813758
+      },
+      "range": 75,
+      "freq": 126.8
+    },
+    {
+      "id": "01GESHVDTE2RR8EJ4CW73CD3R9",
+      "physicalFacility": "MRI",
+      "name": "Ground",
+      "radioName": "Merrill Ground",
+      "callsign": "MRI_GND",
+      "areaId": "01HBSWMHAAT19QPRXEVQBGEJP8",
+      "tcpId": "01K2NF1DE85CBYNSGDB907JR99",
+      "tcp": "1M",
+      "visualCenter": {
+        "lat": 61.2135464,
+        "lon": -149.8447094
+      },
+      "range": 75,
+      "freq": 121.7
+    },
+    {
+      "id": "01GESHV3X6MRN0Q2E1D4QTVYS1",
+      "physicalFacility": "MRI",
+      "name": "Local Control ",
+      "radioName": "Merrill Tower",
+      "callsign": "MRI_TWR",
+      "areaId": "01HBSWMHAAT19QPRXEVQBGEJP8",
+      "tcpId": "01K2NF1DE85CBYNSGDB907JR99",
+      "tcp": "1M",
+      "visualCenter": {
+        "lat": 61.2135464,
+        "lon": -149.8447094
+      },
+      "range": 75,
+      "freq": 126
+    },
+    {
+      "id": "01GESG6YR9005EAYJ83FVPMMGM",
+      "physicalFacility": "A11",
+      "name": "North Radar",
+      "radioName": "Anchorage Approach",
+      "callsign": "ANC_N_APP",
+      "areaId": "01GESG803A2XFH3XN897QNBM5S",
+      "tcpId": "01K2NF1DE8MFP7VBJ7F07Q48JH",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 61.1740847,
+        "lon": -149.99813758
+      },
+      "range": 75,
       "freq": 118.6
     },
     {
       "id": "01GESG92JX7F5HWS7YFNC5CB4J",
+      "physicalFacility": "A11",
       "name": "South Radar",
+      "radioName": "Anchorage Approach",
       "callsign": "ANC_S_APP",
+      "areaId": "01GESG803A2XFH3XN897QNBM5S",
+      "tcpId": "01K2NF1DE8PNCB8JPZZ1V9ZEFX",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
+        "lat": 61.1740847,
+        "lon": -149.99813758
       },
+      "range": 75,
       "freq": 126.4
     },
     {
-      "id": "01GESG9HP2A8DF7AN636AXFTWM",
-      "name": "Final Radar",
-      "callsign": "ANC_F_APP",
+      "id": "01GEX5ATCMVC16M2Q6ZQPPCAF3",
+      "physicalFacility": "ANC",
+      "name": "Local Control",
+      "radioName": "Anchorage Tower",
+      "callsign": "ANC_TWR",
+      "areaId": "01GEX57R52BC24JV0ZPWJW8474",
+      "tcpId": "01K2NF1DE8QJPGA0124BC0ER4J",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
+        "lat": 61.1740847,
+        "lon": -149.99813758
       },
-      "freq": 135.15
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
-      }
+      "range": 75,
+      "freq": 118.3
     }
   ],
   "mapGroups": [

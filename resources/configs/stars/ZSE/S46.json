@@ -4,326 +4,949 @@
   "name": "Seattle TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 45.116049633333326,
-    "lon": -122.83189593333333
+    "lat": 47.38568549277428,
+    "lon": -122.45787932138546
   },
+  "areas": [
+    {
+      "id": "01GE87N90A4720Y3N5MGYYBPN3",
+      "name": "SEA Tower",
+      "visibilityCenter": {
+        "lat": 47.45133,
+        "lon": -122.32273
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "SEA"
+      ],
+      "ssaAirports": [
+        "SEA"
+      ]
+    },
+    {
+      "id": "01HBCW0T91MP1P059GQSGYFZR7",
+      "name": "BFI Tower",
+      "visibilityCenter": {
+        "lat": 47.5299722,
+        "lon": -122.3019444
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "BFI"
+      ],
+      "ssaAirports": [
+        "BFI"
+      ]
+    },
+    {
+      "id": "01HBCWFR17BJBKBB2R0HWKQE4E",
+      "name": "PAE Tower",
+      "visibilityCenter": {
+        "lat": 47.90905,
+        "lon": -122.27916
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "PAE"
+      ],
+      "ssaAirports": [
+        "PAE"
+      ]
+    },
+    {
+      "id": "01HBCWH6ZZ8AMB5NHAC2E58XSV",
+      "name": "RNT Tower",
+      "visibilityCenter": {
+        "lat": 47.4931389,
+        "lon": -122.21575
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "RNT"
+      ],
+      "ssaAirports": [
+        "RNT"
+      ]
+    },
+    {
+      "id": "01HHSY8Z8QPD95FKXYXSFM5FGP",
+      "name": "TIW Tower",
+      "visibilityCenter": {
+        "lat": 47.2679444,
+        "lon": -122.5781111
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "TIW"
+      ],
+      "ssaAirports": [
+        "TIW"
+      ]
+    },
+    {
+      "id": "01HNDYJWQWFRFFKGBZG6VKEH0J",
+      "name": "Seattle Area",
+      "visibilityCenter": {
+        "lat": 47.45133,
+        "lon": -122.32273
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "4W0",
+        "S50",
+        "WA06",
+        "WA28",
+        "WA84",
+        "WN76",
+        "WN87",
+        "1WA6",
+        "WA71",
+        "92WA",
+        "8WA8",
+        "8WA3",
+        "01WT",
+        "W36",
+        "RNT",
+        "BFI",
+        "SEA",
+        "9WA6",
+        "WN93",
+        "WA54",
+        "WA53",
+        "69WT",
+        "WN96",
+        "9WA0",
+        "WA77"
+      ],
+      "ssaAirports": [
+        "SEA",
+        "BFI",
+        "RNT",
+        "TIW",
+        "PAE",
+        "OLM"
+      ]
+    },
+    {
+      "id": "01HNDYN9C9KS0VH8M2FHH838Q1",
+      "name": "Paine Area",
+      "visibilityCenter": {
+        "lat": 47.90786,
+        "lon": -122.28366
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "62WA",
+        "6WA9",
+        "AWO",
+        "0WA6",
+        "1WA5",
+        "1WA4",
+        "76WA",
+        "96WA",
+        "0WA9",
+        "WA82",
+        "PAE",
+        "WA25",
+        "WA22",
+        "S60",
+        "W10",
+        "WA11",
+        "WA31",
+        "WN53",
+        "0WA0",
+        "WA43",
+        "W16",
+        "WA56",
+        "WA04",
+        "S43"
+      ],
+      "ssaAirports": [
+        "PAE",
+        "AWO",
+        "RNT",
+        "BFI",
+        "SEA"
+      ]
+    },
+    {
+      "id": "01HNDYS3A5PH7VNX07WDQKNXE8",
+      "name": "Olympia Area",
+      "visibilityCenter": {
+        "lat": 46.97472,
+        "lon": -122.89809
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "WA96",
+        "WA65",
+        "PWT",
+        "WA05",
+        "2W3",
+        "1WA8",
+        "GRF",
+        "WA50",
+        "6WA8",
+        "8WA1",
+        "86WA",
+        "08WA",
+        "W37",
+        "00WA",
+        "4WA2",
+        "44T",
+        "6WA2",
+        "0WN4",
+        "14WA",
+        "WN58",
+        "8WA4",
+        "OLM",
+        "WN13",
+        "4WA9",
+        "7WA8",
+        "23WA",
+        "PLU",
+        "8WA0",
+        "3WA0",
+        "8W9",
+        "3B8",
+        "02WA",
+        "98WT",
+        "8W5",
+        "9WA9",
+        "9WA8",
+        "SHN",
+        "WT77",
+        "06WN",
+        "49WA",
+        "WA99",
+        "65WA",
+        "59WA",
+        "56WA",
+        "TIW",
+        "TCM",
+        "31WA",
+        "WN50",
+        "WA92"
+      ],
+      "ssaAirports": [
+        "TIW",
+        "OLM",
+        "GRF",
+        "TCM"
+      ]
+    },
+    {
+      "id": "01HQ52P5YCGWE20TJ4TNQE6NF4",
+      "name": "OLM Tower",
+      "visibilityCenter": {
+        "lat": 46.97382588110557,
+        "lon": -122.90846412775298
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "OLM"
+      ],
+      "ssaAirports": [
+        "OLM"
+      ]
+    },
+    {
+      "id": "01KF70D0W1JA18PFGG1GQEMCBN",
+      "name": "McChord Tower",
+      "visibilityCenter": {
+        "lat": 47.1376778,
+        "lon": -122.476475
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "TCM"
+      ],
+      "ssaAirports": [
+        "TCM"
+      ]
+    },
+    {
+      "id": "01KF71YB5MZ7P1PA2BY3PGC44S",
+      "name": "GRF Tower",
+      "visibilityCenter": {
+        "lat": 47.080046732185835,
+        "lon": -122.58470722887259
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "GRF"
+      ],
+      "ssaAirports": [
+        "GRF"
+      ]
+    },
+    {
+      "id": "01KJV49SHYRZ3P97E1DEWCHKJV",
+      "name": "NOT CONTROL POSITIONS",
+      "visibilityCenter": {
+        "lat": 47.45133,
+        "lon": -122.32273
+      },
+      "surveillanceRange": 100
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DN6JKVCMGVZH8N76B2R",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1DN6AJ207R763G3FFQ6J",
+      "parentTcp": "1Y",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6K54NQ5F0XT600VTQ",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6RXPR0SVVRQKHWM5F",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1DN6C8EF9EYPR00FP3CE",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6TF1WC83NCY1GATD9",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DN6C8EF9EYPR00FP3CE",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6CYRPCATKB1E6C2QF",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1DN6C8EF9EYPR00FP3CE",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KF722EXK1D86APPNF4J0CW4B",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN659XXV3WRSVQJT43C",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "parentTcpId": "01K2NF1DN6XM7D3D7X3A9MESVY",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KF6ZAR1JFA5AXADGNQB1G4D4",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KF7229V00VVYXCMH8Z39A2F1",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6XM7D3D7X3A9MESVY",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1DN6AJ207R763G3FFQ6J",
+      "parentTcp": "1Y",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K89GYWBDFA2ZEACJTWXX8QSQ",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "parentTcpId": "01K2NF1DN6TF1WC83NCY1GATD9",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6QZ7KFTC2JZ62N2NW",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1DN6TF1WC83NCY1GATD9",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KF6ZAXXJFE75VFK6RK3R8B6B",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KF6ZBF7SZY1CR498WEQKS4CC",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6HR4PJ8G4DTH049G8",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KKWM2JDQ2D498EM3XM1XBF61",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1DN6HR4PJ8G4DTH049G8",
+      "parentTcp": "1T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6C8EF9EYPR00FP3CE",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KF6ZB9E621TYTGPQWNCV9T62",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6AJ207R763G3FFQ6J",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1DN6C8EF9EYPR00FP3CE",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KKZ9YFMTTWGCQ1P0K19HN3TG",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6YCN5NJF9Z3WCP2P0",
+      "code": "2O",
+      "subset": 2,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KF73684KW9SHBK0727CFT35W",
+      "code": "3B",
+      "subset": 3,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1DN6K54NQ5F0XT600VTQ",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KKWKV5T73XRT19QBXYQ59WY3",
+      "code": "3L",
+      "subset": 3,
+      "sectorId": "L",
+      "parentTcpId": "01KF6ZAR1JFA5AXADGNQB1G4D4",
+      "parentTcp": "1L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6SETY6X7JTVRMPFEG",
+      "code": "9G",
+      "subset": 9,
+      "sectorId": "G"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GE87QWGWSQXP27HVD55JHCEJ",
-      "name": "Arrival West",
-      "callsign": "SEA_W_APP",
+      "id": "01HHQSAXRJ2GHKXYQDBH3DFY4Y",
+      "physicalFacility": "S46",
+      "name": "Departure East",
+      "radioName": "Seattle Departure",
+      "callsign": "SEA_A_DEP",
+      "areaId": "01HNDYJWQWFRFFKGBZG6VKEH0J",
+      "tcpId": "01K2NF1DN6JKVCMGVZH8N76B2R",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.45133,
+        "lon": -122.32273
       },
-      "freq": 125.6
+      "range": 150,
+      "freq": 119.2
+    },
+    {
+      "id": "01GGFXKMX5BJ6V4S3TN4GEJ516",
+      "physicalFacility": "BFI",
+      "name": "Local Control West",
+      "radioName": "Boeing Tower",
+      "callsign": "BFI_W_TWR",
+      "areaId": "01HBCW0T91MP1P059GQSGYFZR7",
+      "tcpId": "01K2NF1DN6K54NQ5F0XT600VTQ",
+      "tcp": "1B",
+      "visualCenter": {
+        "lat": 47.5299722,
+        "lon": -122.3019444
+      },
+      "range": 50,
+      "freq": 120.6
+    },
+    {
+      "id": "01HHQRREXC50NX5R5FK6R88X4V",
+      "physicalFacility": "S46",
+      "name": "Boeing Final",
+      "radioName": "Seattle Approach",
+      "callsign": "SEA_D_APP",
+      "areaId": "01HNDYJWQWFRFFKGBZG6VKEH0J",
+      "tcpId": "01K2NF1DN6RXPR0SVVRQKHWM5F",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 47.45133,
+        "lon": -122.32273
+      },
+      "range": 150,
+      "freq": 125.9
     },
     {
       "id": "01GE87TRDSGYWP635RPZ5Z0ACP",
+      "physicalFacility": "S46",
       "name": "Arrival East",
+      "radioName": "Seattle Approach",
       "callsign": "SEA_E_APP",
+      "areaId": "01HNDYJWQWFRFFKGBZG6VKEH0J",
+      "tcpId": "01K2NF1DN6TF1WC83NCY1GATD9",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.45133,
+        "lon": -122.32273
       },
+      "range": 150,
       "freq": 123.9
     },
     {
       "id": "01GE87V6M97D4FAM2G1VD587XW",
+      "physicalFacility": "S46",
       "name": "Seattle Final",
+      "radioName": "Seattle Approach",
       "callsign": "SEA_F_APP",
+      "areaId": "01HNDYJWQWFRFFKGBZG6VKEH0J",
+      "tcpId": "01K2NF1DN6CYRPCATKB1E6C2QF",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.45133,
+        "lon": -122.32273
       },
+      "range": 150,
       "freq": 133.65
     },
     {
-      "id": "01HHQRNMFX74RYWN2DF6QDS8NC",
-      "name": "Satellite Paine",
-      "callsign": "SEA_P_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 128.5
-    },
-    {
-      "id": "01HHQRREXC50NX5R5FK6R88X4V",
-      "name": "Boeing Final",
-      "callsign": "SEA_D_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 125.9
-    },
-    {
       "id": "01HHQRW9WKHERQK79172KQGQ6Q",
+      "physicalFacility": "S46",
       "name": "Satellite Bremerton",
+      "radioName": "Seattle Approach",
       "callsign": "SEA_K_APP",
+      "areaId": "01HNDYS3A5PH7VNX07WDQKNXE8",
+      "tcpId": "01K2NF1DN659XXV3WRSVQJT43C",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 46.97472,
+        "lon": -122.89809
       },
+      "range": 150,
       "freq": 120.1
     },
     {
-      "id": "01HHQS906AQ9GH0DB0NC3SR84X",
-      "name": "Departure West",
-      "callsign": "SEA_Y_DEP",
+      "id": "01H2MM8XQZSQTKW4A8KXZS57PV",
+      "physicalFacility": "PAE",
+      "name": "Paine Tower West",
+      "radioName": "Paine Tower",
+      "callsign": "PAE_W_TWR",
+      "areaId": "01HBCWFR17BJBKBB2R0HWKQE4E",
+      "tcpId": "01KF6ZAR1JFA5AXADGNQB1G4D4",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.90905,
+        "lon": -122.27916
       },
-      "freq": 120.4
+      "range": 50,
+      "freq": 132.95
     },
     {
-      "id": "01HHQSAXRJ2GHKXYQDBH3DFY4Y",
-      "name": "Departure East",
-      "callsign": "SEA_A_DEP",
+      "id": "01HD7J96CQ18A3A0VT6TEQVZGP",
+      "physicalFacility": "OLM",
+      "name": "Local",
+      "radioName": "Olympia Tower",
+      "callsign": "OLM_TWR",
+      "areaId": "01HQ52P5YCGWE20TJ4TNQE6NF4",
+      "tcpId": "01KF7229V00VVYXCMH8Z39A2F1",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 46.97382588110557,
+        "lon": -122.90846412775298
       },
-      "freq": 119.2
+      "range": 50,
+      "freq": 124.4
     },
     {
       "id": "01HM0AED3WPWQYJRPQ483428KN",
+      "physicalFacility": "S46",
       "name": "Satellite McChord",
+      "radioName": "Seattle Approach",
       "callsign": "SEA_N_APP",
+      "areaId": "01HNDYS3A5PH7VNX07WDQKNXE8",
+      "tcpId": "01K2NF1DN6XM7D3D7X3A9MESVY",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 46.97472,
+        "lon": -122.89809
       },
+      "range": 150,
       "freq": 126.5
     },
     {
-      "id": "01J97M9TQ4JGVFB5HG7A44WY80",
-      "name": "S46 Guard",
-      "callsign": "SEA_G_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 121.5
-    },
-    {
       "id": "01K8F73JJ57HCZ10JNJAZAKSRC",
+      "physicalFacility": "S46",
       "name": "Future Sector (DO NOT USE)",
+      "radioName": "Seattle Approach",
       "callsign": "SEA_O_APP",
+      "areaId": "01HNDYJWQWFRFFKGBZG6VKEH0J",
+      "tcpId": "01K89GYWBDFA2ZEACJTWXX8QSQ",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.45133,
+        "lon": -122.32273
       },
+      "range": 150,
       "freq": 125.9
     },
     {
-      "id": "01KJV4D0NWTHBVE0CAKAF84284",
-      "name": "AWO CLNC DEL",
-      "callsign": "SEA_APP",
+      "id": "01HHQRNMFX74RYWN2DF6QDS8NC",
+      "physicalFacility": "S46",
+      "name": "Satellite Paine",
+      "radioName": "Seattle Approach",
+      "callsign": "SEA_P_APP",
+      "areaId": "01HNDYN9C9KS0VH8M2FHH838Q1",
+      "tcpId": "01K2NF1DN6QZ7KFTC2JZ62N2NW",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.90786,
+        "lon": -122.28366
       },
+      "range": 150,
+      "freq": 128.5
+    },
+    {
+      "id": "01GGFZWPNGC7QTG7W7GW0VDHEA",
+      "physicalFacility": "RNT",
+      "name": "Tower",
+      "radioName": "Renton Tower",
+      "callsign": "RNT_TWR",
+      "areaId": "01HBCWH6ZZ8AMB5NHAC2E58XSV",
+      "tcpId": "01KF6ZAXXJFE75VFK6RK3R8B6B",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 47.4931389,
+        "lon": -122.21575
+      },
+      "range": 50,
+      "freq": 124.7
+    },
+    {
+      "id": "01GX6QEYTYY3MWYF9Z6DG8KWEN",
+      "physicalFacility": "TIW",
+      "name": "Tower",
+      "radioName": "Tacoma Tower",
+      "callsign": "TIW_TWR",
+      "areaId": "01HHSY8Z8QPD95FKXYXSFM5FGP",
+      "tcpId": "01KF6ZBF7SZY1CR498WEQKS4CC",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 47.2679444,
+        "lon": -122.5781111
+      },
+      "range": 50,
+      "freq": 118.5
+    },
+    {
+      "id": "01HKVW1JXPD9YBX7NXW3T7WA08",
+      "physicalFacility": "SEA",
+      "name": "Local Assist",
+      "radioName": "Local Assist",
+      "callsign": "SEA_A_TWR",
+      "areaId": "01GE87N90A4720Y3N5MGYYBPN3",
+      "tcpId": "01K2NF1DN6HR4PJ8G4DTH049G8",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 47.45133,
+        "lon": -122.32273
+      },
+      "range": 50,
+      "freq": 119.9
+    },
+    {
+      "id": "01GFXXFTPFK1YEZA2QGFYWYKFE",
+      "physicalFacility": "SEA",
+      "name": "Local East",
+      "radioName": "Seattle Tower",
+      "callsign": "SEA_E_TWR",
+      "areaId": "01GE87N90A4720Y3N5MGYYBPN3",
+      "tcpId": "01K2NF1DN6HR4PJ8G4DTH049G8",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 47.45133,
+        "lon": -122.32273
+      },
+      "range": 50,
+      "freq": 119.9
+    },
+    {
+      "id": "01GFXXN1B32B16H14WJP2JYDCE",
+      "physicalFacility": "SEA",
+      "name": "Local West",
+      "radioName": "Seattle Tower",
+      "callsign": "SEA_W_TWR",
+      "areaId": "01GE87N90A4720Y3N5MGYYBPN3",
+      "tcpId": "01K2NF1DN6HR4PJ8G4DTH049G8",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 47.45133,
+        "lon": -122.32273
+      },
+      "range": 50,
+      "freq": 120.95
+    },
+    {
+      "id": "01GE87QWGWSQXP27HVD55JHCEJ",
+      "physicalFacility": "S46",
+      "name": "Arrival West",
+      "radioName": "Seattle Approach",
+      "callsign": "SEA_W_APP",
+      "areaId": "01HNDYJWQWFRFFKGBZG6VKEH0J",
+      "tcpId": "01K2NF1DN6C8EF9EYPR00FP3CE",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 47.45133,
+        "lon": -122.32273
+      },
+      "range": 150,
+      "freq": 125.6
+    },
+    {
+      "id": "01H37RB3RDN0QM2ZQWBV7YZGHP",
+      "physicalFacility": "TCM",
+      "name": "Tower",
+      "radioName": "McChord Tower",
+      "callsign": "TCM_TWR",
+      "areaId": "01KF70D0W1JA18PFGG1GQEMCBN",
+      "tcpId": "01KF6ZB9E621TYTGPQWNCV9T62",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 47.1376778,
+        "lon": -122.476475
+      },
+      "range": 50,
+      "freq": 124.8
+    },
+    {
+      "id": "01HHQS906AQ9GH0DB0NC3SR84X",
+      "physicalFacility": "S46",
+      "name": "Departure West",
+      "radioName": "Seattle Departure",
+      "callsign": "SEA_Y_DEP",
+      "areaId": "01HNDYJWQWFRFFKGBZG6VKEH0J",
+      "tcpId": "01K2NF1DN6AJ207R763G3FFQ6J",
+      "tcp": "1Y",
+      "visualCenter": {
+        "lat": 47.45133,
+        "lon": -122.32273
+      },
+      "range": 150,
+      "freq": 120.4
+    },
+    {
+      "id": "01H37PFW17XDEZKEY3CB927Z00",
+      "physicalFacility": "GRF",
+      "name": "Tower",
+      "radioName": "Gray Tower",
+      "callsign": "GRF_TWR",
+      "areaId": "01KF71YB5MZ7P1PA2BY3PGC44S",
+      "tcpId": "01KKZ9YFMTTWGCQ1P0K19HN3TG",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 47.080046732185835,
+        "lon": -122.58470722887259
+      },
+      "range": 50,
+      "freq": 119.325
+    },
+    {
+      "id": "01JBE45W0TSSBA0WAXGS4QQ9M0",
+      "physicalFacility": "BFI",
+      "name": "Local Control East",
+      "radioName": "Boeing Tower",
+      "callsign": "BFI_E_TWR",
+      "areaId": "01HBCW0T91MP1P059GQSGYFZR7",
+      "tcpId": "01KF73684KW9SHBK0727CFT35W",
+      "tcp": "3B",
+      "visualCenter": {
+        "lat": 47.5299722,
+        "lon": -122.3019444
+      },
+      "range": 50,
+      "freq": 118.3
+    },
+    {
+      "id": "01K8NA61JAQKW8ZXJR0M6KXGVG",
+      "physicalFacility": "PAE",
+      "name": "Paine Tower East",
+      "radioName": "Paine Tower",
+      "callsign": "PAE_E_TWR",
+      "areaId": "01HBCWFR17BJBKBB2R0HWKQE4E",
+      "tcpId": "01KKWKV5T73XRT19QBXYQ59WY3",
+      "tcp": "3L",
+      "visualCenter": {
+        "lat": 47.90905,
+        "lon": -122.27916
+      },
+      "range": 50,
+      "freq": 120.2
+    },
+    {
+      "id": "01KJV4D0NWTHBVE0CAKAF84284",
+      "physicalFacility": "S46",
+      "name": "AWO CLNC DEL",
+      "radioName": "Seattle Approach",
+      "callsign": "SEA_APP",
+      "areaId": "01KJV49SHYRZ3P97E1DEWCHKJV",
+      "tcpId": "01K2NF1DN6SETY6X7JTVRMPFEG",
+      "tcp": "9G",
+      "visualCenter": {
+        "lat": 47.45133,
+        "lon": -122.32273
+      },
+      "range": 100,
       "freq": 121.725
     },
     {
       "id": "01KJV6YDZP90VJEMGNXB0BN02T",
+      "physicalFacility": "S46",
       "name": "PWT CLNC DEL",
+      "radioName": "Seattle Approach",
       "callsign": "SEA_APP",
+      "areaId": "01KJV49SHYRZ3P97E1DEWCHKJV",
+      "tcpId": "01K2NF1DN6SETY6X7JTVRMPFEG",
+      "tcp": "9G",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.45133,
+        "lon": -122.32273
       },
+      "range": 100,
       "freq": 127.1
     },
     {
       "id": "01KJV75RMHVJPE1HB34NXNJWE7",
+      "physicalFacility": "S46",
       "name": "Seattle Final Secondary",
+      "radioName": "Seattle Final",
       "callsign": "SEA_APP",
+      "areaId": "01KJV49SHYRZ3P97E1DEWCHKJV",
+      "tcpId": "01K2NF1DN6SETY6X7JTVRMPFEG",
+      "tcp": "9G",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.45133,
+        "lon": -122.32273
       },
+      "range": 100,
       "freq": 134.525
     },
     {
       "id": "01KJV808XVXX7HYWVAS4V0B26M",
+      "physicalFacility": "S46",
       "name": "PLU CLNC DEL",
+      "radioName": "Seattle Approach",
       "callsign": "SEA_APP",
+      "areaId": "01KJV49SHYRZ3P97E1DEWCHKJV",
+      "tcpId": "01K2NF1DN6SETY6X7JTVRMPFEG",
+      "tcp": "9G",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.45133,
+        "lon": -122.32273
       },
+      "range": 100,
       "freq": 121.85
     },
     {
       "id": "01KJV82WX8B52NVJK5WCMWV4SV",
+      "physicalFacility": "S46",
       "name": "S50 CLNC DEL",
+      "radioName": "Seattle Approach",
       "callsign": "SEA_APP",
+      "areaId": "01KJV49SHYRZ3P97E1DEWCHKJV",
+      "tcpId": "01K2NF1DN6SETY6X7JTVRMPFEG",
+      "tcp": "9G",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.45133,
+        "lon": -122.32273
       },
+      "range": 100,
       "freq": 123.85
     },
     {
       "id": "01KJV85CSEXJAVAEJT1X1MJA1M",
+      "physicalFacility": "S46",
       "name": "OLM Area Frequency",
+      "radioName": "Seattle Approach",
       "callsign": "SEA_APP",
+      "areaId": "01KJV49SHYRZ3P97E1DEWCHKJV",
+      "tcpId": "01K2NF1DN6SETY6X7JTVRMPFEG",
+      "tcp": "9G",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.45133,
+        "lon": -122.32273
       },
+      "range": 100,
       "freq": 121.1
     },
     {
-      "id": "1A",
+      "id": "01J97M9TQ4JGVFB5HG7A44WY80",
+      "physicalFacility": "S46",
+      "name": "S46 Guard",
+      "radioName": "S46 Guard",
+      "callsign": "SEA_G_APP",
+      "areaId": "01HNDYJWQWFRFFKGBZG6VKEH0J",
+      "tcpId": "01K2NF1DN6SETY6X7JTVRMPFEG",
+      "tcp": "9G",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1O",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "2O",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "3B",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "3L",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
+        "lat": 47.45133,
+        "lon": -122.32273
+      },
+      "range": 150,
+      "freq": 121.5
     }
   ],
   "mapGroups": [

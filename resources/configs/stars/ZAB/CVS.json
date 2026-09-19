@@ -4,63 +4,107 @@
   "name": "Cannon ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 34.19564814666666,
-    "lon": -107.50666666666666
+    "lat": 34.38,
+    "lon": -103.32
   },
+  "areas": [
+    {
+      "id": "01G98NXA6RTVGTBCXMFMW52Y0D",
+      "name": "CVS",
+      "visibilityCenter": {
+        "lat": 34.38,
+        "lon": -103.32
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "CVS",
+        "CVN"
+      ],
+      "ssaAirports": [
+        "CVS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1BHSH2Q7TKK48EB2QKR0",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHS8Q8QSPH8ZV2MK9PK",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G98NYRZ3XY9V8MM1AMPT7V51",
+      "physicalFacility": "CVS",
       "name": "Approach",
+      "radioName": "Cannon Approach",
       "callsign": "CVS_APP",
+      "areaId": "01G98NXA6RTVGTBCXMFMW52Y0D",
+      "tcpId": "01K2NF1BHSH2Q7TKK48EB2QKR0",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 34.38,
+        "lon": -103.32
       },
+      "range": 75,
       "freq": 118.425
     },
     {
-      "id": "01G98P014G0ZSVH7E3322157KB",
-      "name": "Local Control",
-      "callsign": "CVS_TWR",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 120.4
-    },
-    {
-      "id": "01G9EEWCMFFSZVXZ5SB521G2T9",
-      "name": "Ground",
-      "callsign": "CVS_GND",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 121.9
-    },
-    {
       "id": "01G9EEWRW4RMV312B5ZR3JSQ7N",
+      "physicalFacility": "CVS",
       "name": "Clearance Delivery",
+      "radioName": "Cannon Clearance Delivery",
       "callsign": "CVS_DEL",
+      "areaId": "01G98NXA6RTVGTBCXMFMW52Y0D",
+      "tcpId": "01K2NF1BHS8Q8QSPH8ZV2MK9PK",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 34.38,
+        "lon": -103.32
       },
+      "range": 75,
       "freq": 120.2
     },
     {
-      "id": "1A",
+      "id": "01G9EEWCMFFSZVXZ5SB521G2T9",
+      "physicalFacility": "CVS",
+      "name": "Ground",
+      "radioName": "Cannon Ground",
+      "callsign": "CVS_GND",
+      "areaId": "01G98NXA6RTVGTBCXMFMW52Y0D",
+      "tcpId": "01K2NF1BHS8Q8QSPH8ZV2MK9PK",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 34.38,
+        "lon": -103.32
+      },
+      "range": 75,
+      "freq": 121.9
     },
     {
-      "id": "1T",
+      "id": "01G98P014G0ZSVH7E3322157KB",
+      "physicalFacility": "CVS",
+      "name": "Local Control",
+      "radioName": "Cannon Tower",
+      "callsign": "CVS_TWR",
+      "areaId": "01G98NXA6RTVGTBCXMFMW52Y0D",
+      "tcpId": "01K2NF1BHS8Q8QSPH8ZV2MK9PK",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 34.38,
+        "lon": -103.32
+      },
+      "range": 75,
+      "freq": 120.4
     }
   ],
   "mapGroups": [

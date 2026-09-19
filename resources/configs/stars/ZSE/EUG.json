@@ -4,114 +4,313 @@
   "name": "Eugene ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 45.116049633333326,
-    "lon": -122.83189593333333
+    "lat": 43.24578810608151,
+    "lon": -123.04279271072058
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GEFSFF901XCR0TJEJF6W4Q75",
-      "name": "RESERVED FOR RW",
-      "callsign": "EUG_W_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+      "id": "01GEFQKT60HWNR9WD456ZAP17E",
+      "name": "Main",
+      "visibilityCenter": {
+        "lat": 43.249444,
+        "lon": -123.040278
       },
-      "freq": 123.45
+      "surveillanceRange": 148,
+      "underlyingAirports": [
+        "05OG",
+        "0OR8",
+        "17OG",
+        "26OG",
+        "2OG2",
+        "33OR",
+        "36OR",
+        "39OR",
+        "3S8",
+        "40OR",
+        "41OR",
+        "4OR0",
+        "4OR4",
+        "55OR",
+        "61S",
+        "65OR",
+        "68OR",
+        "6OR8",
+        "77S",
+        "88OR",
+        "89OR",
+        "8OR1",
+        "8OR7",
+        "9OR0",
+        "CVO",
+        "EUG",
+        "MFR",
+        "OG01",
+        "OG13",
+        "OG16",
+        "OG25",
+        "OG31",
+        "OG36",
+        "OG41",
+        "OG48",
+        "OG49",
+        "OG58",
+        "OG64",
+        "OR06",
+        "OR19",
+        "OR20",
+        "OR21",
+        "OR22",
+        "OR39",
+        "OR44",
+        "OR45",
+        "OR47",
+        "OR48",
+        "OR52",
+        "OR54",
+        "OR55",
+        "OR57",
+        "OR60",
+        "OR69",
+        "OR78",
+        "OR94",
+        "OR96",
+        "OR99",
+        "S03",
+        "S12",
+        "S30"
+      ],
+      "ssaAirports": [
+        "EUG",
+        "MFR"
+      ]
     },
     {
-      "id": "01GEFSJWBZSW4RVDSGCMH2PH5M",
-      "name": "Radar East",
-      "callsign": "EUG_E_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+      "id": "01K5QNCS5TDZQ0F0AJJ4WQKKNX",
+      "name": "MFR",
+      "visibilityCenter": {
+        "lat": 42.370341318244535,
+        "lon": -122.87538813216173
       },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "2OG2",
+        "OG58",
+        "OR48",
+        "OR19",
+        "3S8",
+        "OG41",
+        "26OG",
+        "89OR",
+        "OR60",
+        "OR99",
+        "OR96",
+        "OR06",
+        "OG31",
+        "OG13",
+        "OR44",
+        "4OR0",
+        "39OR",
+        "0OR8",
+        "40OR",
+        "S03",
+        "65OR",
+        "OG25",
+        "MFR"
+      ],
+      "ssaAirports": [
+        "MFR"
+      ]
+    },
+    {
+      "id": "01K5QNDW2PD598EE7A59W9AFMN",
+      "name": "EUG",
+      "visibilityCenter": {
+        "lat": 44.117579,
+        "lon": -123.212712
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "OR45",
+        "OG48",
+        "OR94",
+        "9OR0",
+        "68OR",
+        "61S",
+        "OR55",
+        "OR54",
+        "8OR7",
+        "OR52",
+        "OG49",
+        "OG01",
+        "4OR4",
+        "OR39",
+        "55OR",
+        "CVO",
+        "OR78",
+        "OG16",
+        "05OG",
+        "17OG",
+        "OR69",
+        "EUG",
+        "33OR",
+        "77S",
+        "OR57",
+        "OG36",
+        "OR47",
+        "6OR8",
+        "88OR",
+        "8OR1",
+        "S30",
+        "OG64",
+        "41OR",
+        "36OR",
+        "OR22",
+        "OR21",
+        "OR20",
+        "S12"
+      ],
+      "ssaAirports": [
+        "EUG"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DN6C7GMKSJS0KYXWP5H",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6N2BGJY9HK993XS41",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1DN6C7GMKSJS0KYXWP5H",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6EYXQF224W91FQZMJ",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6NTSHSE5DA3CCGCRQ",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6RY7B2XWP96S2B566",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DN6C7GMKSJS0KYXWP5H",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GEFSJWBZSW4RVDSGCMH2PH5M",
+      "physicalFacility": "EUG",
+      "name": "Radar East",
+      "radioName": "Cascade Approach",
+      "callsign": "EUG_E_APP",
+      "areaId": "01GEFQKT60HWNR9WD456ZAP17E",
+      "tcpId": "01K2NF1DN6C7GMKSJS0KYXWP5H",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 43.249444,
+        "lon": -123.040278
+      },
+      "range": 148,
       "freq": 119.6
     },
     {
       "id": "01GEFSKNGVNFVAC7W777ZA7B2H",
+      "physicalFacility": "EUG",
       "name": "Radar Medford",
+      "radioName": "Cascade Approach",
       "callsign": "MFR_APP",
+      "areaId": "01GEFQKT60HWNR9WD456ZAP17E",
+      "tcpId": "01K2NF1DN6N2BGJY9HK993XS41",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 43.249444,
+        "lon": -123.040278
       },
+      "range": 148,
       "freq": 124.3
     },
     {
-      "id": "01GEFSPK8X0087S5YYEJ98W94J",
-      "name": "Ground",
-      "callsign": "EUG_GND",
+      "id": "01H37PWGS1XJ8VXFMW13TQ93XF",
+      "physicalFacility": "MFR",
+      "name": "Tower",
+      "radioName": "Medford Tower",
+      "callsign": "MFR_TWR",
+      "areaId": "01GEFQKT60HWNR9WD456ZAP17E",
+      "tcpId": "01K2NF1DN6EYXQF224W91FQZMJ",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 43.249444,
+        "lon": -123.040278
       },
-      "freq": 121.7
-    },
-    {
-      "id": "01GEFSQ2ER7ASK6JVP7X0V77EJ",
-      "name": "Local 1",
-      "callsign": "EUG_W_TWR",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 118.9
+      "range": 148,
+      "freq": 119.4
     },
     {
       "id": "01HR3FQ15DCA19K9KHKZ8V66G5",
+      "physicalFacility": "EUG",
       "name": "Local 2",
+      "radioName": "Eugene Tower",
       "callsign": "EUG_E_TWR",
+      "areaId": "01GEFQKT60HWNR9WD456ZAP17E",
+      "tcpId": "01K2NF1DN6NTSHSE5DA3CCGCRQ",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 43.249444,
+        "lon": -123.040278
       },
+      "range": 148,
       "freq": 124.15
     },
     {
-      "id": "01J97MJZ14QY71DH4EHK8Q05N1",
-      "name": "EUG Guard",
-      "callsign": "EUG_G_APP",
+      "id": "01GEFSQ2ER7ASK6JVP7X0V77EJ",
+      "physicalFacility": "EUG",
+      "name": "Local 1",
+      "radioName": "Eugene Tower",
+      "callsign": "EUG_W_TWR",
+      "areaId": "01GEFQKT60HWNR9WD456ZAP17E",
+      "tcpId": "01K2NF1DN6NTSHSE5DA3CCGCRQ",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 43.249444,
+        "lon": -123.040278
       },
-      "freq": 121.5
+      "range": 148,
+      "freq": 118.9
     },
     {
-      "id": "1E",
+      "id": "01GEFSFF901XCR0TJEJF6W4Q75",
+      "physicalFacility": "EUG",
+      "name": "RESERVED FOR RW",
+      "radioName": "Cascade Approach",
+      "callsign": "EUG_W_APP",
+      "areaId": "01GEFQKT60HWNR9WD456ZAP17E",
+      "tcpId": "01K2NF1DN6RY7B2XWP96S2B566",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
+        "lat": 43.249444,
+        "lon": -123.040278
+      },
+      "range": 148,
+      "freq": 123.45
     }
   ],
   "mapGroups": [

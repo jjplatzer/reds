@@ -4,107 +4,145 @@
   "name": "Travis AFB RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 37.9016125,
-    "lon": -120.687685
+    "lat": 38.2645367,
+    "lon": -121.9241315
   },
+  "areas": [
+    {
+      "id": "01GFG8K9QC3AME4QEQAA8Z5WA5",
+      "name": "SUU",
+      "visibilityCenter": {
+        "lat": 38.2645367,
+        "lon": -121.9241315
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "SUU"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1C9S6SS85HM34PV8ATNZ",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1C9SR6VYNWRP2XBMQ1GW",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1C9SD4RJQPA89036VP4S",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1C9SHNF821P706S5Z5WZ",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GFG95GP2JKMKA30F1QGKB9N3",
+      "physicalFacility": "SUU",
       "name": "Arrival",
+      "radioName": "Travis Approach",
       "callsign": "SUU_A_APP",
+      "areaId": "01GFG8K9QC3AME4QEQAA8Z5WA5",
+      "tcpId": "01K2NF1C9S6SS85HM34PV8ATNZ",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 38.2645367,
+        "lon": -121.9241315
       },
+      "range": 150,
       "freq": 128.4
     },
     {
       "id": "01GFG967MKMXBKHTS2137PTK1M",
+      "physicalFacility": "SUU",
       "name": "North",
+      "radioName": "Travis Approach",
       "callsign": "SUU_N_APP",
+      "areaId": "01GFG8K9QC3AME4QEQAA8Z5WA5",
+      "tcpId": "01K2NF1C9SR6VYNWRP2XBMQ1GW",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 38.2645367,
+        "lon": -121.9241315
       },
+      "range": 150,
       "freq": 126.6
     },
     {
       "id": "01GFG971M23MC6B8P1QCMADXNW",
+      "physicalFacility": "SUU",
       "name": "South",
+      "radioName": "Travis Approach",
       "callsign": "SUU_S_APP",
+      "areaId": "01GFG8K9QC3AME4QEQAA8Z5WA5",
+      "tcpId": "01K2NF1C9SD4RJQPA89036VP4S",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 38.2645367,
+        "lon": -121.9241315
       },
+      "range": 150,
       "freq": 119.9
     },
     {
-      "id": "01GFG97RWAGD51RJDXDGD8WRED",
-      "name": "LC",
-      "callsign": "SUU_TWR",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 120.75
-    },
-    {
-      "id": "01GFG98BSKBE982VBZVKK084QC",
-      "name": "GC",
-      "callsign": "SUU_GND",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 121.8
-    },
-    {
       "id": "01GFG98X0K0FBJH6WXVS30PRA0",
+      "physicalFacility": "SUU",
       "name": "CD",
+      "radioName": "Travis Clearance",
       "callsign": "SUU_DEL",
+      "areaId": "01GFG8K9QC3AME4QEQAA8Z5WA5",
+      "tcpId": "01K2NF1C9SHNF821P706S5Z5WZ",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 38.2645367,
+        "lon": -121.9241315
       },
+      "range": 150,
       "freq": 127.55
     },
     {
-      "id": "01K8VYS1VYN334NK2SWRHX4PB9",
-      "name": "ATIS",
-      "callsign": "SUU_RMP",
+      "id": "01GFG98BSKBE982VBZVKK084QC",
+      "physicalFacility": "SUU",
+      "name": "GC",
+      "radioName": "Travis Ground",
+      "callsign": "SUU_GND",
+      "areaId": "01GFG8K9QC3AME4QEQAA8Z5WA5",
+      "tcpId": "01K2NF1C9SHNF821P706S5Z5WZ",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 38.2645367,
+        "lon": -121.9241315
       },
-      "freq": 135.55
+      "range": 150,
+      "freq": 121.8
     },
     {
-      "id": "1A",
+      "id": "01GFG97RWAGD51RJDXDGD8WRED",
+      "physicalFacility": "SUU",
+      "name": "LC",
+      "radioName": "Travis Tower",
+      "callsign": "SUU_TWR",
+      "areaId": "01GFG8K9QC3AME4QEQAA8Z5WA5",
+      "tcpId": "01K2NF1C9SHNF821P706S5Z5WZ",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 38.2645367,
+        "lon": -121.9241315
+      },
+      "range": 150,
+      "freq": 120.75
     }
   ],
   "mapGroups": [

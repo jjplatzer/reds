@@ -4,73 +4,105 @@
   "name": "Wilmington ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37,
-    "lon": -77
+    "lat": 34.27196155782975,
+    "lon": -77.90244481519612
   },
+  "areas": [
+    {
+      "id": "01HA82TV5MZGS3D17XM6H3EJG9",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 34.27196155782975,
+        "lon": -77.90244481519612
+      },
+      "surveillanceRange": 80,
+      "underlyingAirports": [
+        "ILM",
+        "ACZ",
+        "OAJ",
+        "SUT"
+      ],
+      "ssaAirports": [
+        "ILM",
+        "OAJ"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E0VJSA1JD84DTBQ105W",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0VRPVAZVC714ZG7EMZ",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1E0VJSA1JD84DTBQ105W",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0VP811Z4DVGA1RDZ8F",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E0VJSA1JD84DTBQ105W",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01HA8336CV64F7SHV4KGMMFGHZ",
+      "physicalFacility": "ILM",
       "name": "East Approach",
+      "radioName": "Wilmington Approach",
       "callsign": "ILM_E_APP",
+      "areaId": "01HA82TV5MZGS3D17XM6H3EJG9",
+      "tcpId": "01K2NF1E0VJSA1JD84DTBQ105W",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 34.27196155782975,
+        "lon": -77.90244481519612
       },
+      "range": 80,
       "freq": 135.75
     },
     {
-      "id": "01HA83682H18HC1ZMQ5AE3JYH8",
-      "name": "West Approach",
-      "callsign": "ILM_W_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 118.25
-    },
-    {
-      "id": "01HA8AZK63SNR09TRJ4B9MN5V8",
-      "name": "Ground",
-      "callsign": "ILM_GND",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 121.9
-    },
-    {
       "id": "01HA8B0V7D4ZNBR1A5RW72P2CA",
+      "physicalFacility": "ILM",
       "name": "Local",
+      "radioName": "Wilmington Tower",
       "callsign": "ILM_TWR",
+      "areaId": "01HA82TV5MZGS3D17XM6H3EJG9",
+      "tcpId": "01K2NF1E0VRPVAZVC714ZG7EMZ",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 34.27196155782975,
+        "lon": -77.90244481519612
       },
+      "range": 80,
       "freq": 119.9
     },
     {
-      "id": "01JCHRAR2XVX97E4JVD20K3HFA",
-      "name": "Clearance Delivery",
-      "callsign": "ILM_DEL",
+      "id": "01HA83682H18HC1ZMQ5AE3JYH8",
+      "physicalFacility": "ILM",
+      "name": "West Approach",
+      "radioName": "Wilmington Approach",
+      "callsign": "ILM_W_APP",
+      "areaId": "01HA82TV5MZGS3D17XM6H3EJG9",
+      "tcpId": "01K2NF1E0VP811Z4DVGA1RDZ8F",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 34.27196155782975,
+        "lon": -77.90244481519612
       },
-      "freq": 120.875
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+      "range": 80,
+      "freq": 118.25
     }
   ],
   "mapGroups": [

@@ -4,97 +4,116 @@
   "name": "Rockford ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.879166749999996,
-    "lon": -88.975
+    "lat": 42.19884681385546,
+    "lon": -89.08615988746152
   },
+  "areas": [
+    {
+      "id": "01H5EE4091N4E3CJMN4EBZW7DH",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 42.19884681385546,
+        "lon": -89.08615988746152
+      },
+      "surveillanceRange": 120,
+      "ssaAirports": [
+        "RFD",
+        "JVL"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DXNXD4FASR8TB1KRKZR",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1DXNQE05ANF576F0BS00",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DXN59C0SKJ9HT3WP38X",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V"
+    },
+    {
+      "id": "01K2NF1DXPD2FQVCEFYZQ76ZT9",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DXNXD4FASR8TB1KRKZR",
+      "parentTcp": "1E"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01H5EECTYWRDCFBJBCQM7W1JSD",
+      "physicalFacility": "RFD",
       "name": "East Approach",
+      "radioName": "Rockford Approach",
       "callsign": "RFD_E_APP",
+      "areaId": "01H5EE4091N4E3CJMN4EBZW7DH",
+      "tcpId": "01K2NF1DXNXD4FASR8TB1KRKZR",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.19884681385546,
+        "lon": -89.08615988746152
       },
+      "range": 120,
       "freq": 121
     },
     {
       "id": "01H5EEG468Z2F349E07TX8D5GJ",
+      "physicalFacility": "RFD",
       "name": "Local",
+      "radioName": "Rockford Tower",
       "callsign": "RFD_TWR",
+      "areaId": "01H5EE4091N4E3CJMN4EBZW7DH",
+      "tcpId": "01K2NF1DXNQE05ANF576F0BS00",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.19884681385546,
+        "lon": -89.08615988746152
       },
+      "range": 120,
       "freq": 118.1
     },
     {
-      "id": "01H5EEGTRHNA5MFNGGTHWE2NXF",
-      "name": "Ground",
-      "callsign": "RFD_GND",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01H5EEHC1RE1NMB4MQBD082VN5",
-      "name": "Clearance Delivery",
-      "callsign": "RFD_DEL",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 119.25
-    },
-    {
-      "id": "01H5FXCF665RTBRTCRDG6TZP24",
-      "name": "West Approach",
-      "callsign": "RFD_W_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 126
-    },
-    {
       "id": "01HGE85FFP8TF6HJRGDRDK4YMY",
+      "physicalFacility": "RFD",
       "name": "VatVenture VFR",
+      "radioName": "Rockford Approach",
       "callsign": "RFD_N_APP",
+      "areaId": "01H5EE4091N4E3CJMN4EBZW7DH",
+      "tcpId": "01K2NF1DXN59C0SKJ9HT3WP38X",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.19884681385546,
+        "lon": -89.08615988746152
       },
+      "range": 120,
       "freq": 124.9
     },
     {
-      "id": "1E",
+      "id": "01H5FXCF665RTBRTCRDG6TZP24",
+      "physicalFacility": "RFD",
+      "name": "West Approach",
+      "radioName": "Rockford Approach",
+      "callsign": "RFD_W_APP",
+      "areaId": "01H5EE4091N4E3CJMN4EBZW7DH",
+      "tcpId": "01K2NF1DXPD2FQVCEFYZQ76ZT9",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
+        "lat": 42.19884681385546,
+        "lon": -89.08615988746152
+      },
+      "range": 120,
+      "freq": 126
     }
   ],
   "mapGroups": [

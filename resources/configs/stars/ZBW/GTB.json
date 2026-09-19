@@ -4,80 +4,101 @@
   "name": "Wheeler-Sack ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 42.93753,
-    "lon": -70.70471
+    "lat": 44.0556111,
+    "lon": -75.7198944
   },
+  "areas": [
+    {
+      "id": "01G9BRF13XK6RHDARS97VPC198",
+      "name": "GTB",
+      "visibilityCenter": {
+        "lat": 44.0556111,
+        "lon": -75.7198944
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "ART",
+        "GTB"
+      ],
+      "ssaAirports": [
+        "GTB",
+        "ART"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CGPQFDFH0RG2GYG3TTV",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP8XBVVKQ04Q8A4CDG",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1CGPQFDFH0RG2GYG3TTV",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPYN9J32X5FJ4SV47J",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G9BRDSMK9R3VH7FDHDFJXVQ5",
+      "physicalFacility": "GTB",
       "name": "Wheeler-Sack Radar",
+      "radioName": "Wheeler-Sack Approach",
       "callsign": "GTB_APP",
+      "areaId": "01G9BRF13XK6RHDARS97VPC198",
+      "tcpId": "01K2NF1CGPQFDFH0RG2GYG3TTV",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 44.0556111,
+        "lon": -75.7198944
       },
+      "range": 75,
       "freq": 124.875
     },
     {
-      "id": "01G9GNKNTQ1RCWA60K1T0Z0M8K",
-      "name": "Local Control",
-      "callsign": "GTB_TWR",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 118.75
-    },
-    {
-      "id": "01G9GNMTEBPVS6JSXGDMMSGVRA",
-      "name": "Ground Control",
-      "callsign": "GTB_GND",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 123.65
-    },
-    {
       "id": "01HBXS4910Y2F6E59PRTG1M555",
+      "physicalFacility": "GTB",
       "name": "Wheeler-Sack Final",
+      "radioName": "Wheeler-Sack Approach",
       "callsign": "GTB_F_APP",
+      "areaId": "01G9BRF13XK6RHDARS97VPC198",
+      "tcpId": "01K2NF1CGP8XBVVKQ04Q8A4CDG",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 44.0556111,
+        "lon": -75.7198944
       },
+      "range": 75,
       "freq": 128.25
     },
     {
-      "id": "01KAMD1J56N6HJ13V70KVN7BWM",
-      "name": "GTB Guard",
-      "callsign": "GTB_EM_APP",
+      "id": "01G9GNKNTQ1RCWA60K1T0Z0M8K",
+      "physicalFacility": "GTB",
+      "name": "Local Control",
+      "radioName": "Wheeler-Sack Tower",
+      "callsign": "GTB_TWR",
+      "areaId": "01G9BRF13XK6RHDARS97VPC198",
+      "tcpId": "01K2NF1CGPYN9J32X5FJ4SV47J",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 44.0556111,
+        "lon": -75.7198944
       },
-      "freq": 121.5
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
+      "range": 75,
+      "freq": 118.75
     }
   ],
   "mapGroups": [

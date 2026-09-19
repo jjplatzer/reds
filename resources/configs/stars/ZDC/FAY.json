@@ -4,66 +4,167 @@
   "name": "Fayetteville ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37,
-    "lon": -77
+    "lat": 35.041333,
+    "lon": -79.240195
   },
+  "areas": [
+    {
+      "id": "01GXEHR0DFDHD4E5HSC3TBDRY0",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 35.041333,
+        "lon": -79.240195
+      },
+      "surveillanceRange": 80,
+      "underlyingAirports": [
+        "FAY",
+        "43A",
+        "5W4",
+        "BQ1",
+        "CTZ",
+        "EYF",
+        "FBG",
+        "HFF",
+        "HRJ",
+        "LBT",
+        "MEB",
+        "POB",
+        "RCZ",
+        "SOP"
+      ],
+      "ssaAirports": [
+        "FAY",
+        "FBG",
+        "HFF",
+        "POB"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E0TPNE3CCQD17BYX2HE",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E0T4A9J78TBHVHMKCMF",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0T4A9J78TBHVHMKCMF",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0TQBZTPEGZSG1PTG08",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1E0T4A9J78TBHVHMKCMF",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0T3JQ4SYHM4Q29M18S",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E0T4A9J78TBHVHMKCMF",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0TM9WBDF257XJCR9TS",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1E0T4A9J78TBHVHMKCMF",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GXEHD63YS37SF1PGYN405DZW",
-      "name": "Ground",
-      "callsign": "FAY_GND",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 121.7
-    },
-    {
-      "id": "01GXEHE38KWZ4NJTWG3W6KZ5QJ",
-      "name": "Local",
-      "callsign": "FAY_TWR",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 118.3
-    },
-    {
-      "id": "01GXEHEQ12DDADCZMVQZXGRBVG",
-      "name": "North Radar",
-      "callsign": "FAY_N_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 125.175
-    },
-    {
       "id": "01GXEHH3NNBGP9KQV691KFVQCK",
+      "physicalFacility": "FAY",
       "name": "East Radar",
+      "radioName": "Fayetteville Approach",
       "callsign": "FAY_E_APP",
+      "areaId": "01GXEHR0DFDHD4E5HSC3TBDRY0",
+      "tcpId": "01K2NF1E0TPNE3CCQD17BYX2HE",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 35.041333,
+        "lon": -79.240195
       },
+      "range": 80,
       "freq": 133
     },
     {
-      "id": "01GXEHJ82WNVYWXXP172MRGB9E",
-      "name": "West Radar",
-      "callsign": "FAY_W_APP",
+      "id": "01GXEHEQ12DDADCZMVQZXGRBVG",
+      "physicalFacility": "FAY",
+      "name": "North Radar",
+      "radioName": "Fayetteville Approach",
+      "callsign": "FAY_N_APP",
+      "areaId": "01GXEHR0DFDHD4E5HSC3TBDRY0",
+      "tcpId": "01K2NF1E0T4A9J78TBHVHMKCMF",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 35.041333,
+        "lon": -79.240195
       },
+      "range": 80,
+      "freq": 125.175
+    },
+    {
+      "id": "01HAQ4T08Q60557TH1WF9KZBE2",
+      "physicalFacility": "POB",
+      "name": "Local",
+      "radioName": "Pope Tower",
+      "callsign": "POB_TWR",
+      "areaId": "01GXEHR0DFDHD4E5HSC3TBDRY0",
+      "tcpId": "01K2NF1E0TQBZTPEGZSG1PTG08",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 35.041333,
+        "lon": -79.240195
+      },
+      "range": 80,
+      "freq": 135.025
+    },
+    {
+      "id": "01GXEHJ82WNVYWXXP172MRGB9E",
+      "physicalFacility": "FAY",
+      "name": "West Radar",
+      "radioName": "Fayetteville Approach",
+      "callsign": "FAY_W_APP",
+      "areaId": "01GXEHR0DFDHD4E5HSC3TBDRY0",
+      "tcpId": "01K2NF1E0T3JQ4SYHM4Q29M18S",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 35.041333,
+        "lon": -79.240195
+      },
+      "range": 80,
       "freq": 127.8
     },
     {
-      "id": "1N",
+      "id": "01GXEHE38KWZ4NJTWG3W6KZ5QJ",
+      "physicalFacility": "FAY",
+      "name": "Local",
+      "radioName": "Fayetteville Tower",
+      "callsign": "FAY_TWR",
+      "areaId": "01GXEHR0DFDHD4E5HSC3TBDRY0",
+      "tcpId": "01K2NF1E0TM9WBDF257XJCR9TS",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 35.041333,
+        "lon": -79.240195
+      },
+      "range": 80,
+      "freq": 118.3
     }
   ],
   "mapGroups": [

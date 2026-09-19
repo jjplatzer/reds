@@ -4,107 +4,146 @@
   "name": "Springs ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 40.569587575,
-    "lon": -104.96660805
+    "lat": 38.8058167,
+    "lon": -104.7007764
   },
+  "areas": [
+    {
+      "id": "01GH847YZHGNSBEF7Q3Z6XJARJ",
+      "name": "COS",
+      "visibilityCenter": {
+        "lat": 38.8058167,
+        "lon": -104.7007764
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "COS",
+        "FLY",
+        "FCS",
+        "AFF",
+        "CO4",
+        "CO90",
+        "5V4"
+      ],
+      "ssaAirports": [
+        "COS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CJTWGRCBK4DY7B0HP0D",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJTJ8DQQV4HXX7BFW9Q",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1CJTNEN59N0YM83ZG9DJ",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJT2DH2D2D52WHDNEV9",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1CJTWGRCBK4DY7B0HP0D",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJTNEN59N0YM83ZG9DJ",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GG8SX2YRGNH9WJ8DBH06GWYF",
-      "name": "Combined Local Control",
-      "callsign": "COS_TWR",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 119.9
-    },
-    {
-      "id": "01GG8T0CJT9QZWPXTHTBW6HKAF",
-      "name": "Ground",
-      "callsign": "COS_GND",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 121.7
-    },
-    {
-      "id": "01GH846KWKAPKSKHWRR76DQNTC",
-      "name": "West Local Control",
-      "callsign": "COS_W_TWR",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 119.9
-    },
-    {
-      "id": "01GH84CFESYBF71V4VEAS90N8V",
-      "name": "East Local Control",
-      "callsign": "COS_E_TWR",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 133.15
-    },
-    {
-      "id": "01GH84DY91MN19CD28CAJH84C4",
-      "name": "Springs Clearance Delivery",
-      "callsign": "COS_DEL",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 134.45
-    },
-    {
-      "id": "01GH84EKVJ3CC9TN4D922RP7HQ",
-      "name": "VFR Radar",
-      "callsign": "COS_VR_APP",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 120.6
-    },
-    {
       "id": "01GH84FK5716M8PDR54A2XER05",
+      "physicalFacility": "COS",
       "name": "Departure Radar",
+      "radioName": "Springs Approach",
       "callsign": "COS_APP",
+      "areaId": "01GH847YZHGNSBEF7Q3Z6XJARJ",
+      "tcpId": "01K2NF1CJTWGRCBK4DY7B0HP0D",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 38.8058167,
+        "lon": -104.7007764
       },
+      "range": 100,
       "freq": 124
     },
     {
-      "id": "1A",
+      "id": "01GH84CFESYBF71V4VEAS90N8V",
+      "physicalFacility": "COS",
+      "name": "East Local Control",
+      "radioName": "Springs Tower",
+      "callsign": "COS_E_TWR",
+      "areaId": "01GH847YZHGNSBEF7Q3Z6XJARJ",
+      "tcpId": "01K2NF1CJTJ8DQQV4HXX7BFW9Q",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
+        "lat": 38.8058167,
+        "lon": -104.7007764
+      },
+      "range": 100,
+      "freq": 133.15
     },
     {
-      "id": "1E",
+      "id": "01GH84EKVJ3CC9TN4D922RP7HQ",
+      "physicalFacility": "COS",
+      "name": "VFR Radar",
+      "radioName": "Springs Approach",
+      "callsign": "COS_VR_APP",
+      "areaId": "01GH847YZHGNSBEF7Q3Z6XJARJ",
+      "tcpId": "01K2NF1CJT2DH2D2D52WHDNEV9",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
+        "lat": 38.8058167,
+        "lon": -104.7007764
+      },
+      "range": 100,
+      "freq": 120.6
     },
     {
-      "id": "1V",
+      "id": "01GG8SX2YRGNH9WJ8DBH06GWYF",
+      "physicalFacility": "COS",
+      "name": "Combined Local Control",
+      "radioName": "Springs Tower",
+      "callsign": "COS_TWR",
+      "areaId": "01GH847YZHGNSBEF7Q3Z6XJARJ",
+      "tcpId": "01K2NF1CJTNEN59N0YM83ZG9DJ",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
+        "lat": 38.8058167,
+        "lon": -104.7007764
+      },
+      "range": 100,
+      "freq": 119.9
     },
     {
-      "id": "1W",
+      "id": "01GH846KWKAPKSKHWRR76DQNTC",
+      "physicalFacility": "COS",
+      "name": "West Local Control",
+      "radioName": "Springs Tower",
+      "callsign": "COS_W_TWR",
+      "areaId": "01GH847YZHGNSBEF7Q3Z6XJARJ",
+      "tcpId": "01K2NF1CJTNEN59N0YM83ZG9DJ",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
+        "lat": 38.8058167,
+        "lon": -104.7007764
+      },
+      "range": 100,
+      "freq": 119.9
     }
   ],
   "mapGroups": [

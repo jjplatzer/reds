@@ -4,77 +4,122 @@
   "name": "Bismarck ATCT/TRACAB",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 46.77841,
+    "lon": -100.74108
   },
+  "areas": [
+    {
+      "id": "01GFESBDB6AT759MZ30AXDHTC3",
+      "name": "BIS",
+      "visibilityCenter": {
+        "lat": 46.77841,
+        "lon": -100.74108
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "BIS",
+        "HZE",
+        "Y19"
+      ],
+      "ssaAirports": [
+        "BIS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3K49VX3SECTX9RJJHJ",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1D3KAZ92Q7MGE6KSH74N",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1D3KDSJCF2SA0WQ2GFN5",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1D3KDSJCF2SA0WQ2GFN5",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1D3KYDFT0RN2SWMY5CH1",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1D3K49VX3SECTX9RJJHJ",
+      "parentTcp": "1E"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GFESBTJ77PW4CE8XTCVVWCHP",
+      "physicalFacility": "BIS",
       "name": "RE",
+      "radioName": "Bismarck Approach",
       "callsign": "BIS_E_APP",
+      "areaId": "01GFESBDB6AT759MZ30AXDHTC3",
+      "tcpId": "01K2NF1D3K49VX3SECTX9RJJHJ",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 46.77841,
+        "lon": -100.74108
       },
+      "range": 150,
       "freq": 126.3
     },
     {
-      "id": "01GFESCQ6JV4YWK73M3G7YMT30",
-      "name": "LC",
-      "callsign": "BIS_TWR",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 118.3
-    },
-    {
       "id": "01GFESDCKBE9BA38H14Q3TASRT",
+      "physicalFacility": "BIS",
       "name": "GC",
+      "radioName": "Bismarck Ground",
       "callsign": "BIS_GND",
+      "areaId": "01GFESBDB6AT759MZ30AXDHTC3",
+      "tcpId": "01K2NF1D3KAZ92Q7MGE6KSH74N",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 46.77841,
+        "lon": -100.74108
       },
+      "range": 150,
       "freq": 121.9
     },
     {
-      "id": "01H69KD3PPJ5MYAGS4DAT6ZTAQ",
-      "name": "RW",
-      "callsign": "BIS_W_APP",
+      "id": "01GFESCQ6JV4YWK73M3G7YMT30",
+      "physicalFacility": "BIS",
+      "name": "LC",
+      "radioName": "Bismarck Tower",
+      "callsign": "BIS_TWR",
+      "areaId": "01GFESBDB6AT759MZ30AXDHTC3",
+      "tcpId": "01K2NF1D3KDSJCF2SA0WQ2GFN5",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 46.77841,
+        "lon": -100.74108
       },
+      "range": 150,
+      "freq": 118.3
+    },
+    {
+      "id": "01H69KD3PPJ5MYAGS4DAT6ZTAQ",
+      "physicalFacility": "BIS",
+      "name": "RW",
+      "radioName": "Bismarck Approach",
+      "callsign": "BIS_W_APP",
+      "areaId": "01GFESBDB6AT759MZ30AXDHTC3",
+      "tcpId": "01K2NF1D3KYDFT0RN2SWMY5CH1",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 46.77841,
+        "lon": -100.74108
+      },
+      "range": 150,
       "freq": 124.8
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
     }
   ],
   "mapGroups": [

@@ -4,63 +4,93 @@
   "name": "Kingsley ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 45.116049633333326,
-    "lon": -122.83189593333333
+    "lat": 42.15667,
+    "lon": -121.7333
   },
+  "areas": [
+    {
+      "id": "01GENXXN7MRA6QSTEPS1W1RS58",
+      "name": "Main",
+      "visibilityCenter": {
+        "lat": 42.15667,
+        "lon": -121.7333
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "5OR4",
+        "24S",
+        "0OR3",
+        "4S7",
+        "3OG3",
+        "6OG3",
+        "9OR3",
+        "LMT",
+        "2S7",
+        "OR29",
+        "O81",
+        "6CA1",
+        "A32"
+      ],
+      "ssaAirports": [
+        "LMT"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01KKZ80MX492B2KWEPPB9S7Y4Q",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6WVWY7GMFZ4MG9TFC",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN67A2FD055TWS53W4B",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GENXZAYTGRZPMTPYBQM40AHX",
+      "physicalFacility": "LMT",
       "name": "Radar",
+      "radioName": "Kingsley Approach",
       "callsign": "LMT_APP",
+      "areaId": "01GENXXN7MRA6QSTEPS1W1RS58",
+      "tcpId": "01K2NF1DN6WVWY7GMFZ4MG9TFC",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 42.15667,
+        "lon": -121.7333
       },
+      "range": 150,
       "freq": 123.675
     },
     {
       "id": "01GENXZZY3H4QHDH79V2MP42P0",
+      "physicalFacility": "LMT",
       "name": "Local Control",
+      "radioName": "Kingsley Tower",
       "callsign": "LMT_TWR",
+      "areaId": "01GENXXN7MRA6QSTEPS1W1RS58",
+      "tcpId": "01K2NF1DN67A2FD055TWS53W4B",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 42.15667,
+        "lon": -121.7333
       },
+      "range": 150,
       "freq": 133.975
-    },
-    {
-      "id": "01GENY0MQK5CKKCAST3AHZ95JT",
-      "name": "Ground Control",
-      "callsign": "LMT_GND",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01KH79PRWDF89RHQF8K6NBVP49",
-      "name": "LMT Guard",
-      "callsign": "LMT_G_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
     }
   ],
   "mapGroups": [

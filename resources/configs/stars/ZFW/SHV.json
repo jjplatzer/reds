@@ -4,104 +4,166 @@
   "name": "Shreveport ATCT/RAPCON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 32.44648,
+    "lon": -93.82594
   },
+  "areas": [
+    {
+      "id": "01H7213B9ZJ614P3VFE784WPM6",
+      "name": "SHV",
+      "visibilityCenter": {
+        "lat": 32.44648,
+        "lon": -93.82594
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "3F3",
+        "3F4",
+        "4F2",
+        "ASL",
+        "BAD",
+        "DTN",
+        "MNE",
+        "SHV",
+        "SPH"
+      ],
+      "ssaAirports": [
+        "SHV",
+        "BAD",
+        "DTN"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8S2XGP5GDBYQ32GQ7K",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1D8SV9AGCG4RC3VJPSQE",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1D8S4WFP373DHKVPN02K",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K2NF1D8S6ZYR9SGEH6HXQBVD",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1D8S2XGP5GDBYQ32GQ7K",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1D8SATD8XTPQZRRNZM5N",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01H721ANQDRN9DN1D6BKYN83W8",
-      "name": "Local",
-      "callsign": "SHV_TWR",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.4
-    },
-    {
-      "id": "01H7425R6CEZ8DY4ZFTWY0Q0WA",
-      "name": "Ground",
-      "callsign": "SHV_GND",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.175
-    },
-    {
-      "id": "01H7428PSFHK33CSY05H7S5C0J",
-      "name": "Clearance",
-      "callsign": "SHV_DEL",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 124.65
-    },
-    {
-      "id": "01H7429Y9HRF4QYQGJPGEQJJAT",
-      "name": "West Radar",
-      "callsign": "SHV_W_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 119.9
-    },
-    {
       "id": "01H742CE9YQCNGHMWKW7MW9NDE",
+      "physicalFacility": "SHV",
       "name": "East Radar",
+      "radioName": "Shreveport Approach",
       "callsign": "SHV_E_APP",
+      "areaId": "01H7213B9ZJ614P3VFE784WPM6",
+      "tcpId": "01K2NF1D8S2XGP5GDBYQ32GQ7K",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.44648,
+        "lon": -93.82594
       },
+      "range": 150,
       "freq": 123.75
     },
     {
-      "id": "01J9YHYMD80SR3DKGEXYW0RWH1",
-      "name": "Guard",
-      "callsign": "SHV_EM_APP",
+      "id": "01H721ANQDRN9DN1D6BKYN83W8",
+      "physicalFacility": "SHV",
+      "name": "Local",
+      "radioName": "Shreveport Tower",
+      "callsign": "SHV_TWR",
+      "areaId": "01H7213B9ZJ614P3VFE784WPM6",
+      "tcpId": "01K2NF1D8SV9AGCG4RC3VJPSQE",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.44648,
+        "lon": -93.82594
       },
-      "freq": 121.5
+      "range": 150,
+      "freq": 121.4
     },
     {
-      "id": "1E",
+      "id": "01H745FB8KB5C093YS31867ZMV",
+      "physicalFacility": "BAD",
+      "name": "Local",
+      "radioName": "Barksdale Tower",
+      "callsign": "BAD_TWR",
+      "areaId": "01H7213B9ZJ614P3VFE784WPM6",
+      "tcpId": "01K2NF1D8S4WFP373DHKVPN02K",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 32.44648,
+        "lon": -93.82594
+      },
+      "range": 150,
+      "freq": 128.25
     },
     {
-      "id": "1L",
+      "id": "01H7429Y9HRF4QYQGJPGEQJJAT",
+      "physicalFacility": "SHV",
+      "name": "West Radar",
+      "radioName": "Shreveport Approach",
+      "callsign": "SHV_W_APP",
+      "areaId": "01H7213B9ZJ614P3VFE784WPM6",
+      "tcpId": "01K2NF1D8S6ZYR9SGEH6HXQBVD",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 32.44648,
+        "lon": -93.82594
+      },
+      "range": 150,
+      "freq": 119.9
     },
     {
-      "id": "1U",
+      "id": "01H78GA8NWVPWMXHKH99GB193B",
+      "physicalFacility": "DTN",
+      "name": "Ground",
+      "radioName": "Downtown Ground",
+      "callsign": "DTN_GND",
+      "areaId": "01H7213B9ZJ614P3VFE784WPM6",
+      "tcpId": "01K2NF1D8SATD8XTPQZRRNZM5N",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 32.44648,
+        "lon": -93.82594
+      },
+      "range": 150,
+      "freq": 121.65
     },
     {
-      "id": "1W",
+      "id": "01H78G8YF1EVA9VTSG0ECNJYHX",
+      "physicalFacility": "DTN",
+      "name": "Local",
+      "radioName": "Downtown Tower",
+      "callsign": "DTN_TWR",
+      "areaId": "01H7213B9ZJ614P3VFE784WPM6",
+      "tcpId": "01K2NF1D8SATD8XTPQZRRNZM5N",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 32.44648,
+        "lon": -93.82594
+      },
+      "range": 150,
+      "freq": 120.225
     }
   ],
   "mapGroups": [

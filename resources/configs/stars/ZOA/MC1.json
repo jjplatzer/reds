@@ -4,212 +4,318 @@
   "name": "Sacramento TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37.9016125,
-    "lon": -120.687685
+    "lat": 38.506843,
+    "lon": -121.496608
   },
+  "areas": [
+    {
+      "id": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "name": "MCC",
+      "visibilityCenter": {
+        "lat": 38.506843,
+        "lon": -121.496608
+      },
+      "surveillanceRange": 250,
+      "underlyingAirports": [
+        "SMF",
+        "MCC",
+        "SAC",
+        "MHR",
+        "BAB"
+      ],
+      "ssaAirports": [
+        "SMF",
+        "MCC",
+        "BAB"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K89SW8E0JA82JZSFW81ZFZ8G",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K89SVT2V7B2MS9T9DRJ9WAMQ",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K89SVYJRCBCWD1EZ29HSTSEH",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K89SXP7PAT5TNHKGKVWSRS6H",
+      "parentTcp": "1X"
+    },
+    {
+      "id": "01K89SVT2V7B2MS9T9DRJ9WAMQ",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K89SZC37WQNM6GC9TF8SER27",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K89SW2TNQS5YSDSNA3E20RX8",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P"
+    },
+    {
+      "id": "01K89SXXQ8CYBV91RY6RRS0W8J",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K89SXSQ1S8XRW12EAPPMV8VK",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V"
+    },
+    {
+      "id": "01K89SXP7PAT5TNHKGKVWSRS6H",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K89SW2TNQS5YSDSNA3E20RX8",
+      "parentTcp": "1P"
+    },
+    {
+      "id": "01K8AF0Y17WYQYMBRJVBZ78EDR",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01K89SSNXEHEZNYJ4KCSJBEXSZ",
-      "name": "Elkhorn",
-      "callsign": "SAC_E_APP",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 125.4
-    },
-    {
-      "id": "01K89THK3JGE0ZRC8YJSP26QDG",
-      "name": "Paradise",
-      "callsign": "SAC_P_APP",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 123.7
-    },
-    {
-      "id": "01K89TKY7JZK4E3ECTXS523NCV",
-      "name": "Expo",
-      "callsign": "SAC_X_APP",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 127.4
-    },
-    {
-      "id": "01K8A7T3GGKAJCXYZGBRPW0YN7",
-      "name": "Delta",
-      "callsign": "SAC_D_APP",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 125.25
-    },
-    {
       "id": "01K8A7VV51H2H8K1XZ0GYAMZMY",
+      "physicalFacility": "MC1",
       "name": "Buttes",
+      "radioName": "Sacramento Approach",
       "callsign": "SAC_B_APP",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K89SW8E0JA82JZSFW81ZFZ8G",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 38.506843,
+        "lon": -121.496608
       },
+      "range": 250,
       "freq": 120.45
     },
     {
-      "id": "01K8AEP8T4Q9PCJRG498J1CD8R",
-      "name": "SMF LC",
-      "callsign": "SMF_TWR",
+      "id": "01K8A7T3GGKAJCXYZGBRPW0YN7",
+      "physicalFacility": "MC1",
+      "name": "Delta",
+      "radioName": "Sacramento Approach",
+      "callsign": "SAC_D_APP",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K89SVYJRCBCWD1EZ29HSTSEH",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 38.506843,
+        "lon": -121.496608
       },
-      "freq": 125.7
+      "range": 250,
+      "freq": 125.25
     },
     {
-      "id": "01K8AEQT2KP7VMH14WZNQFKG5P",
-      "name": "SMF GC",
-      "callsign": "SMF_GND",
+      "id": "01K89SSNXEHEZNYJ4KCSJBEXSZ",
+      "physicalFacility": "MC1",
+      "name": "Elkhorn",
+      "radioName": "Sacramento Approach",
+      "callsign": "SAC_E_APP",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K89SVT2V7B2MS9T9DRJ9WAMQ",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 38.506843,
+        "lon": -121.496608
       },
-      "freq": 121.7
-    },
-    {
-      "id": "01K8AETMZRA8FQCFG5YXWAQK0S",
-      "name": "SMF CD",
-      "callsign": "SMF_DEL",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 121.1
+      "range": 250,
+      "freq": 125.4
     },
     {
       "id": "01K8AEVV2B6322BGT2T4WC27RJ",
+      "physicalFacility": "MC1",
       "name": "MHR GC",
+      "radioName": "Mather Ground",
       "callsign": "MHR_GND",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K89SZC37WQNM6GC9TF8SER27",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 38.506843,
+        "lon": -121.496608
       },
+      "range": 250,
       "freq": 121.85
     },
     {
       "id": "01K8AEXZPPPV07DHX2HGF3AM0Y",
+      "physicalFacility": "MC1",
       "name": "mhr lc",
+      "radioName": "Mather Tower",
       "callsign": "MHR_TWR",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K89SZC37WQNM6GC9TF8SER27",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 38.506843,
+        "lon": -121.496608
       },
+      "range": 250,
       "freq": 120.65
     },
     {
-      "id": "01K8AEYVXRTH6P6BR45J6W1NS2",
-      "name": "SAC LC",
-      "callsign": "SAC_TWR",
+      "id": "01K89THK3JGE0ZRC8YJSP26QDG",
+      "physicalFacility": "MC1",
+      "name": "Paradise",
+      "radioName": "Sacramento Approach",
+      "callsign": "SAC_P_APP",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K89SW2TNQS5YSDSNA3E20RX8",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 38.506843,
+        "lon": -121.496608
       },
-      "freq": 119.5
-    },
-    {
-      "id": "01K8AF1WT8ZZFFJQ0E04CKJY5V",
-      "name": "SAC GC",
-      "callsign": "SAC_GND",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 125
-    },
-    {
-      "id": "01K8AF31G1Z6EKZEJFPJNWFTBQ",
-      "name": "BAB LC",
-      "callsign": "BAB_TWR",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 119.4
+      "range": 250,
+      "freq": 123.7
     },
     {
       "id": "01K8AF4HMNVXF8Y7R79Z10AKA1",
+      "physicalFacility": "MC1",
       "name": "BAB GC",
+      "radioName": "Beale Ground",
       "callsign": "BAB_GND",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K89SXXQ8CYBV91RY6RRS0W8J",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 38.506843,
+        "lon": -121.496608
       },
+      "range": 250,
       "freq": 121.6
     },
     {
-      "id": "1B",
+      "id": "01K8AF31G1Z6EKZEJFPJNWFTBQ",
+      "physicalFacility": "MC1",
+      "name": "BAB LC",
+      "radioName": "Beale Tower",
+      "callsign": "BAB_TWR",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K89SXXQ8CYBV91RY6RRS0W8J",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 38.506843,
+        "lon": -121.496608
+      },
+      "range": 250,
+      "freq": 119.4
     },
     {
-      "id": "1D",
+      "id": "01K8AETMZRA8FQCFG5YXWAQK0S",
+      "physicalFacility": "MC1",
+      "name": "SMF CD",
+      "radioName": "Capitol Clearance",
+      "callsign": "SMF_DEL",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K89SXSQ1S8XRW12EAPPMV8VK",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 38.506843,
+        "lon": -121.496608
+      },
+      "range": 250,
+      "freq": 121.1
     },
     {
-      "id": "1E",
+      "id": "01K8AEQT2KP7VMH14WZNQFKG5P",
+      "physicalFacility": "MC1",
+      "name": "SMF GC",
+      "radioName": "Capitol Ground",
+      "callsign": "SMF_GND",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K89SXSQ1S8XRW12EAPPMV8VK",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 38.506843,
+        "lon": -121.496608
+      },
+      "range": 250,
+      "freq": 121.7
     },
     {
-      "id": "1M",
+      "id": "01K8AEP8T4Q9PCJRG498J1CD8R",
+      "physicalFacility": "MC1",
+      "name": "SMF LC",
+      "radioName": "Capitol Tower",
+      "callsign": "SMF_TWR",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K89SXSQ1S8XRW12EAPPMV8VK",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 38.506843,
+        "lon": -121.496608
+      },
+      "range": 250,
+      "freq": 125.7
     },
     {
-      "id": "1P",
+      "id": "01K89TKY7JZK4E3ECTXS523NCV",
+      "physicalFacility": "MC1",
+      "name": "Expo",
+      "radioName": "Sacramento Approach",
+      "callsign": "SAC_X_APP",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K89SXP7PAT5TNHKGKVWSRS6H",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 38.506843,
+        "lon": -121.496608
+      },
+      "range": 250,
+      "freq": 127.4
     },
     {
-      "id": "1T",
+      "id": "01K8AF1WT8ZZFFJQ0E04CKJY5V",
+      "physicalFacility": "MC1",
+      "name": "SAC GC",
+      "radioName": "Executive Ground",
+      "callsign": "SAC_GND",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K8AF0Y17WYQYMBRJVBZ78EDR",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 38.506843,
+        "lon": -121.496608
+      },
+      "range": 250,
+      "freq": 125
     },
     {
-      "id": "1V",
+      "id": "01K8AEYVXRTH6P6BR45J6W1NS2",
+      "physicalFacility": "MC1",
+      "name": "SAC LC",
+      "radioName": "Executive Tower",
+      "callsign": "SAC_TWR",
+      "areaId": "01K89TAWH9M7K4PPYFBG8K6N8F",
+      "tcpId": "01K8AF0Y17WYQYMBRJVBZ78EDR",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 38.506843,
+        "lon": -121.496608
+      },
+      "range": 250,
+      "freq": 119.5
     }
   ],
   "mapGroups": [

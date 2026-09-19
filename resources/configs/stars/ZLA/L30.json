@@ -4,288 +4,693 @@
   "name": "Las Vegas TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 34.9691453,
-    "lon": -116.63582625
+    "lat": 36.050879630400004,
+    "lon": -114.63560184626668
   },
+  "areas": [
+    {
+      "id": "01G90K96HBR726AQPYFA9HNXVF",
+      "name": "L30",
+      "visibilityCenter": {
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "0L7",
+        "BVU",
+        "HND",
+        "LAS",
+        "LSV",
+        "U30",
+        "VGT"
+      ],
+      "ssaAirports": [
+        "LAS",
+        "HND",
+        "VGT"
+      ]
+    },
+    {
+      "id": "01H1DM1CK3Q6ZDKR28K5DMSPQ4",
+      "name": "Las Vegas Tower",
+      "visibilityCenter": {
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "LAS"
+      ],
+      "ssaAirports": [
+        "LAS"
+      ]
+    },
+    {
+      "id": "01H26W28Z4B8G6F007P1CFHPKJ",
+      "name": "North Las Vegas Tower",
+      "visibilityCenter": {
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "VGT"
+      ],
+      "ssaAirports": [
+        "VGT"
+      ]
+    },
+    {
+      "id": "01H26YCQEBFDNQEMRDVWGKN241",
+      "name": "Henderson Tower",
+      "visibilityCenter": {
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "HND"
+      ],
+      "ssaAirports": [
+        "HND"
+      ]
+    },
+    {
+      "id": "01H27B1FSK4714YM5ZSYA5VXCT",
+      "name": "Canyon Tower",
+      "visibilityCenter": {
+        "lat": 35.9525,
+        "lon": -112.1469444444
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "GCN"
+      ],
+      "ssaAirports": [
+        "GCN"
+      ]
+    },
+    {
+      "id": "01H4HCYY71F0GR8M61VT0CWF3S",
+      "name": "TMU",
+      "visibilityCenter": {
+        "lat": 36.07055556,
+        "lon": -115.1333333
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "LAS",
+        "VGT",
+        "HND"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CRRKQVG2PKNP8HEQTH7",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRNGV1SRRTEQVJ1E59",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1CRRXYX8K9F5101P7R2Q",
+      "parentTcp": "1F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRN9C2S45HPB85B2XW",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1CRRXYX8K9F5101P7R2Q",
+      "parentTcp": "1F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRXYX8K9F5101P7R2Q",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRQ5XAMZE997S75D36",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1CRRXYX8K9F5101P7R2Q",
+      "parentTcp": "1F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRFR9JHY435R17W3VN",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRVS9G0K715M0SY4CP",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1CRRXYX8K9F5101P7R2Q",
+      "parentTcp": "1F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRMVQVG4ZZ1C6JGGPP",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRVZT1585DJQHBVQV1",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "parentTcpId": "01K2NF1CRRBK9P5S1MA4YK2Y0Y",
+      "parentTcp": "1M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRRRBKRQWB7CGFPDND",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1CRRXYX8K9F5101P7R2Q",
+      "parentTcp": "1F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRBK9P5S1MA4YK2Y0Y",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1CRRN9C2S45HPB85B2XW",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR11V32ZKGP7YJ3CRT",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR0B0T4NCMQM93JH62",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "parentTcpId": "01K2NF1CRRK1F13XS4CJT4ZY6K",
+      "parentTcp": "1V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRW1DVAFV1HNVTA77M",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1CRRV17CJVQ27005ZR3T",
+      "parentTcp": "1Z",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR8WD5Q3R7JDZK3QQ3",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRS915KMXY0NF4X03C",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRCRA7BZX48BT504KM",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRAWM5DR3ENNBFG87Z",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1CRRXYX8K9F5101P7R2Q",
+      "parentTcp": "1F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR6F25T9DR850A7E6T",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRK1F13XS4CJT4ZY6K",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR5S80VRAF1JWAD46B",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR7TW6TQ36BMJDVFQ2",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1CRRN9C2S45HPB85B2XW",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRV17CJVQ27005ZR3T",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1CRR8WD5Q3R7JDZK3QQ3",
+      "parentTcp": "1Q",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRSKG0Y1GYPXR0N8BF",
+      "code": "3G",
+      "subset": 3,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR1W7WP2VGFZWESAG2",
+      "code": "3X",
+      "subset": 3,
+      "sectorId": "X",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G90Z9943PM673VW8Z471ZB6T",
+      "physicalFacility": "L30",
       "name": "Daggett Departure",
+      "radioName": "Las Vegas Departure",
       "callsign": "LAS_D_DEP",
+      "areaId": "01G90K96HBR726AQPYFA9HNXVF",
+      "tcpId": "01K2NF1CRRN9C2S45HPB85B2XW",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
       },
+      "range": 150,
       "freq": 125.9
     },
     {
-      "id": "01G90ZEEEH9R7A1CE50PN0YPY3",
-      "name": "Mead Departure",
-      "callsign": "LAS_M_DEP",
+      "id": "01G90ZME1W692E11A8CWZPK1DM",
+      "physicalFacility": "L30",
+      "name": "Final",
+      "radioName": "Las Vegas Approach",
+      "callsign": "LAS_F_APP",
+      "areaId": "01G90K96HBR726AQPYFA9HNXVF",
+      "tcpId": "01K2NF1CRRXYX8K9F5101P7R2Q",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
       },
-      "freq": 133.95
-    },
-    {
-      "id": "01G90ZF54S7C9GNXWCAE3EKBS1",
-      "name": "Canyon",
-      "callsign": "LAS_Y_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 125.475
+      "range": 150,
+      "freq": 135
     },
     {
       "id": "01G90ZG26XJMCTFBG75C93F068",
+      "physicalFacility": "L30",
       "name": "Granite",
+      "radioName": "Las Vegas Approach",
       "callsign": "LAS_G_APP",
+      "areaId": "01G90K96HBR726AQPYFA9HNXVF",
+      "tcpId": "01K2NF1CRRQ5XAMZE997S75D36",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
       },
+      "range": 150,
       "freq": 125.025
     },
     {
-      "id": "01G90ZGVVN9BT0JEHWQ1Z9VY60",
-      "name": "Lake",
-      "callsign": "LAS_L_APP",
+      "id": "01G90KP4QS9A7Q8JVFKGA7QFM3",
+      "physicalFacility": "HND",
+      "name": "Delivery",
+      "radioName": "Henderson Clearance",
+      "callsign": "HND_DEL",
+      "areaId": "01H26YCQEBFDNQEMRDVWGKN241",
+      "tcpId": "01K2NF1CRRFR9JHY435R17W3VN",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
       },
-      "freq": 119.775
+      "range": 50,
+      "freq": 135.35
     },
     {
-      "id": "01G90ZME1W692E11A8CWZPK1DM",
-      "name": "Final",
-      "callsign": "LAS_F_APP",
+      "id": "01G90KPRVP7X5CTXHV2CEPAX7E",
+      "physicalFacility": "HND",
+      "name": "Ground",
+      "radioName": "Henderson Ground",
+      "callsign": "HND_GND",
+      "areaId": "01H26YCQEBFDNQEMRDVWGKN241",
+      "tcpId": "01K2NF1CRRFR9JHY435R17W3VN",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
       },
-      "freq": 135
+      "range": 50,
+      "freq": 127.8
     },
     {
-      "id": "01G90ZN2AT7A3CN9XC7VTDGKYY",
-      "name": "Satellite",
-      "callsign": "LAS_T_APP",
+      "id": "01G90KQB8GFTEGYC78D933XWS3",
+      "physicalFacility": "HND",
+      "name": "Local",
+      "radioName": "Henderson Tower",
+      "callsign": "HND_TWR",
+      "areaId": "01H26YCQEBFDNQEMRDVWGKN241",
+      "tcpId": "01K2NF1CRRFR9JHY435R17W3VN",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
       },
-      "freq": 119.4
-    },
-    {
-      "id": "01G90ZNFMZE4E84069GB254RJQ",
-      "name": "Keno",
-      "callsign": "LAS_K_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 120.45
+      "range": 50,
+      "freq": 125.1
     },
     {
       "id": "01H4HD4S8PM8D6D99HT8GK6Z31",
+      "physicalFacility": "L30",
       "name": "TMU",
+      "radioName": "Las Vegas TMU",
       "callsign": "LAS_J_APP",
+      "areaId": "01H4HCYY71F0GR8M61VT0CWF3S",
+      "tcpId": "01K2NF1CRRMVQVG4ZZ1C6JGGPP",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 36.07055556,
+        "lon": -115.1333333
       },
+      "range": 150,
       "freq": 135
     },
     {
-      "id": "1A",
+      "id": "01G90ZNFMZE4E84069GB254RJQ",
+      "physicalFacility": "L30",
+      "name": "Keno",
+      "radioName": "Las Vegas Approach",
+      "callsign": "LAS_K_APP",
+      "areaId": "01G90K96HBR726AQPYFA9HNXVF",
+      "tcpId": "01K2NF1CRRVZT1585DJQHBVQV1",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 150,
+      "freq": 120.45
     },
     {
-      "id": "1B",
+      "id": "01G90ZGVVN9BT0JEHWQ1Z9VY60",
+      "physicalFacility": "L30",
+      "name": "Lake",
+      "radioName": "Las Vegas Approach",
+      "callsign": "LAS_L_APP",
+      "areaId": "01G90K96HBR726AQPYFA9HNXVF",
+      "tcpId": "01K2NF1CRRRRBKRQWB7CGFPDND",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 150,
+      "freq": 119.775
     },
     {
-      "id": "1D",
+      "id": "01G90ZEEEH9R7A1CE50PN0YPY3",
+      "physicalFacility": "L30",
+      "name": "Mead Departure",
+      "radioName": "Las Vegas Departure",
+      "callsign": "LAS_M_DEP",
+      "areaId": "01G90K96HBR726AQPYFA9HNXVF",
+      "tcpId": "01K2NF1CRRBK9P5S1MA4YK2Y0Y",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 150,
+      "freq": 133.95
     },
     {
-      "id": "1F",
+      "id": "01H26T5AGN238G640K87RBVNRX",
+      "physicalFacility": "VGT",
+      "name": "Local Control (12L/30R)",
+      "radioName": "North Las Vegas Tower",
+      "callsign": "VGT_O_TWR",
+      "areaId": "01H26W28Z4B8G6F007P1CFHPKJ",
+      "tcpId": "01K2NF1CRR0B0T4NCMQM93JH62",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 50,
+      "freq": 119.15
     },
     {
-      "id": "1G",
+      "id": "01GRQ558PHN7PGZEDBDQCFK5EV",
+      "physicalFacility": "LAS",
+      "name": "Local Three",
+      "radioName": "Las Vegas Tower",
+      "callsign": "LAS_H_TWR",
+      "areaId": "01H1DM1CK3Q6ZDKR28K5DMSPQ4",
+      "tcpId": "01K2NF1CRRW1DVAFV1HNVTA77M",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 50,
+      "freq": 123.825
     },
     {
-      "id": "1H",
+      "id": "01G90KE1P8BGYM1K95PZSMSJSA",
+      "physicalFacility": "LAS",
+      "name": "Local One",
+      "radioName": "Las Vegas Tower",
+      "callsign": "LAS_E_TWR",
+      "areaId": "01H1DM1CK3Q6ZDKR28K5DMSPQ4",
+      "tcpId": "01K2NF1CRR8WD5Q3R7JDZK3QQ3",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 50,
+      "freq": 119.9
     },
     {
-      "id": "1I",
+      "id": "01G90ZN2AT7A3CN9XC7VTDGKYY",
+      "physicalFacility": "L30",
+      "name": "Satellite",
+      "radioName": "Las Vegas Approach",
+      "callsign": "LAS_T_APP",
+      "areaId": "01G90K96HBR726AQPYFA9HNXVF",
+      "tcpId": "01K2NF1CRRAWM5DR3ENNBFG87Z",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 150,
+      "freq": 119.4
     },
     {
-      "id": "1J",
+      "id": "01G90K24XVWG2V9Q7RQDJ0NSB2",
+      "physicalFacility": "LAS",
+      "name": "Clearance Delivery",
+      "radioName": "Las Vegas Clearance",
+      "callsign": "LAS_DEL",
+      "areaId": "01H1DM1CK3Q6ZDKR28K5DMSPQ4",
+      "tcpId": "01K2NF1CRR6F25T9DR850A7E6T",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 50,
+      "freq": 118
     },
     {
-      "id": "1K",
+      "id": "01G90KBNJ0PBWBW1ENZT91VCH1",
+      "physicalFacility": "LAS",
+      "name": "Ground Control East",
+      "radioName": "Las Vegas Ground",
+      "callsign": "LAS_E_GND",
+      "areaId": "01H1DM1CK3Q6ZDKR28K5DMSPQ4",
+      "tcpId": "01K2NF1CRR6F25T9DR850A7E6T",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 50,
+      "freq": 121.1
     },
     {
-      "id": "1L",
+      "id": "01G90KC2SK1T3BB53C6G2W2VVX",
+      "physicalFacility": "LAS",
+      "name": "Ground Control West",
+      "radioName": "Las Vegas Ground",
+      "callsign": "LAS_W_GND",
+      "areaId": "01H1DM1CK3Q6ZDKR28K5DMSPQ4",
+      "tcpId": "01K2NF1CRR6F25T9DR850A7E6T",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1M",
+      "id": "01G90KHWHM4DTSGXXM10JW9RD1",
+      "physicalFacility": "VGT",
+      "name": "Clearance Delivery",
+      "radioName": "North Las Vegas Clearance",
+      "callsign": "VGT_DEL",
+      "areaId": "01H26W28Z4B8G6F007P1CFHPKJ",
+      "tcpId": "01K2NF1CRRK1F13XS4CJT4ZY6K",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 50,
+      "freq": 124
     },
     {
-      "id": "1N",
+      "id": "01G90KJR51JBHAT81BSX4N3X19",
+      "physicalFacility": "VGT",
+      "name": "Ground Control",
+      "radioName": "North Las Vegas Ground",
+      "callsign": "VGT_GND",
+      "areaId": "01H26W28Z4B8G6F007P1CFHPKJ",
+      "tcpId": "01K2NF1CRRK1F13XS4CJT4ZY6K",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 50,
+      "freq": 121.7
     },
     {
-      "id": "1O",
+      "id": "01G90KK6KTE31GVW6NBGMW3549",
+      "physicalFacility": "VGT",
+      "name": "Local Control",
+      "radioName": "North Las Vegas Tower",
+      "callsign": "VGT_TWR",
+      "areaId": "01H26W28Z4B8G6F007P1CFHPKJ",
+      "tcpId": "01K2NF1CRRK1F13XS4CJT4ZY6K",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 50,
+      "freq": 125.7
     },
     {
-      "id": "1P",
+      "id": "01G90ZF54S7C9GNXWCAE3EKBS1",
+      "physicalFacility": "L30",
+      "name": "Canyon",
+      "radioName": "Las Vegas Approach",
+      "callsign": "LAS_Y_APP",
+      "areaId": "01G90K96HBR726AQPYFA9HNXVF",
+      "tcpId": "01K2NF1CRR7TW6TQ36BMJDVFQ2",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 150,
+      "freq": 125.475
     },
     {
-      "id": "1Q",
+      "id": "01G90KEQ3Y7Z7ZKGS05WHWA66K",
+      "physicalFacility": "LAS",
+      "name": "Local Two",
+      "radioName": "Las Vegas Tower",
+      "callsign": "LAS_W_TWR",
+      "areaId": "01H1DM1CK3Q6ZDKR28K5DMSPQ4",
+      "tcpId": "01K2NF1CRRV17CJVQ27005ZR3T",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 36.0705555556,
+        "lon": -115.1333333333
+      },
+      "range": 50,
+      "freq": 118.75
     },
     {
-      "id": "1R",
+      "id": "01GSVWEY4WZJR0M0WT406ATYD5",
+      "physicalFacility": "GCN",
+      "name": "Ground",
+      "radioName": "Canyon Ground",
+      "callsign": "GCN_GND",
+      "areaId": "01H27B1FSK4714YM5ZSYA5VXCT",
+      "tcpId": "01K2NF1CRRSKG0Y1GYPXR0N8BF",
+      "tcp": "3G",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 35.9525,
+        "lon": -112.1469444444
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1S",
+      "id": "01GSVW9G0ZS0BK6B7BMS3DVMWC",
+      "physicalFacility": "GCN",
+      "name": "Local",
+      "radioName": "Canyon Tower",
+      "callsign": "GCN_TWR",
+      "areaId": "01H27B1FSK4714YM5ZSYA5VXCT",
+      "tcpId": "01K2NF1CRRSKG0Y1GYPXR0N8BF",
+      "tcp": "3G",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "3G",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "3X",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "4E",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "5X",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 35.9525,
+        "lon": -112.1469444444
+      },
+      "range": 50,
+      "freq": 119
     }
   ],
   "mapGroups": [

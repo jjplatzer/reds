@@ -4,323 +4,803 @@
   "name": "Gateway TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 37.593354149999996,
-    "lon": -95.43247947500001
+    "lat": 39.15903393333333,
+    "lon": -90.07386575555556
   },
+  "areas": [
+    {
+      "id": "01G9FKTBZW1V5WAJR02CD1B8R8",
+      "name": "T75 Combined",
+      "visibilityCenter": {
+        "lat": 39.756115,
+        "lon": -89.865686
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "1H0",
+        "3LF",
+        "5K1",
+        "AAA",
+        "ALN",
+        "BLV",
+        "BMI",
+        "C15",
+        "CPS",
+        "FES",
+        "FYG",
+        "I24",
+        "IJX",
+        "M71",
+        "PIA",
+        "SAR",
+        "SET",
+        "SPI",
+        "STL",
+        "SUS",
+        "TAZ"
+      ],
+      "ssaAirports": [
+        "STL",
+        "SUS",
+        "CPS",
+        "BLV",
+        "ALN",
+        "PIA",
+        "SPI",
+        "BMI"
+      ]
+    },
+    {
+      "id": "01G9J6JMD2G5CF2AZNPW49HQA1",
+      "name": "St. Louis ATCT",
+      "visibilityCenter": {
+        "lat": 38.74869,
+        "lon": -90.37003
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "STL"
+      ],
+      "ssaAirports": [
+        "STL"
+      ]
+    },
+    {
+      "id": "01HBST65ED972D79QJ9KV1EHZG",
+      "name": "Spirit ATCT",
+      "visibilityCenter": {
+        "lat": 38.6625335,
+        "lon": -90.6459449
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "SUS"
+      ],
+      "ssaAirports": [
+        "SUS"
+      ]
+    },
+    {
+      "id": "01HBST7FEDH1QED4W8W0KSX8G0",
+      "name": "Downtown ATCT",
+      "visibilityCenter": {
+        "lat": 38.5703611,
+        "lon": -90.1550833
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "CPS"
+      ],
+      "ssaAirports": [
+        "CPS"
+      ]
+    },
+    {
+      "id": "01HBSV1KFJXJYNFRE22BCS67G5",
+      "name": "Alton ATCT",
+      "visibilityCenter": {
+        "lat": 38.8899167,
+        "lon": -90.046
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ALN"
+      ],
+      "ssaAirports": [
+        "ALN"
+      ]
+    },
+    {
+      "id": "01HBSV305W1ZH1CEJFK8EVZND3",
+      "name": "Scott ATCT",
+      "visibilityCenter": {
+        "lat": 38.5451731,
+        "lon": -89.8351856
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "BLV"
+      ],
+      "ssaAirports": [
+        "BLV"
+      ]
+    },
+    {
+      "id": "01HBTKN5PGDAN4F3JPVWGX3HKD",
+      "name": "Springfield (T75)",
+      "visibilityCenter": {
+        "lat": 39.843686,
+        "lon": -89.679566
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "SPI"
+      ],
+      "ssaAirports": [
+        "SPI"
+      ]
+    },
+    {
+      "id": "01HBTKPRRF2X93JYH38Z8CPA23",
+      "name": "Peoria (T75)",
+      "visibilityCenter": {
+        "lat": 40.665203,
+        "lon": -89.696826
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "PIA",
+        "BMI"
+      ],
+      "ssaAirports": [
+        "PIA",
+        "BMI"
+      ]
+    },
+    {
+      "id": "01HBTKSNT02NKBR62G99R05VVA",
+      "name": "St. Louis (T75)",
+      "visibilityCenter": {
+        "lat": 38.749627,
+        "lon": -90.37047
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "STL",
+        "SUS",
+        "BLV",
+        "CPS",
+        "ALN"
+      ],
+      "ssaAirports": [
+        "STL",
+        "SUS",
+        "BLV",
+        "CPS",
+        "ALN"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1EE5QP6S811YQ9Y7SFQ1",
+      "code": "11",
+      "subset": 1,
+      "sectorId": "1"
+    },
+    {
+      "id": "01K2NF1EE5PF87FJN7DXDRT9KH",
+      "code": "12",
+      "subset": 1,
+      "sectorId": "2"
+    },
+    {
+      "id": "01K2NF1EE5HZ849BCPH0Q25V7A",
+      "code": "13",
+      "subset": 1,
+      "sectorId": "3"
+    },
+    {
+      "id": "01K2NF1EE58FQY8SE5RE93GX65",
+      "code": "14",
+      "subset": 1,
+      "sectorId": "4"
+    },
+    {
+      "id": "01K2NF1EE55WP350X4Q2VQNQYM",
+      "code": "16",
+      "subset": 1,
+      "sectorId": "6"
+    },
+    {
+      "id": "01K2NF1EE5QXM299AF7M1DDS94",
+      "code": "17",
+      "subset": 1,
+      "sectorId": "7"
+    },
+    {
+      "id": "01K2NF1EE5QXWPSM2JG848VVT4",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1EE53XXYBQ9EBNVW8AXB",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1EE5E87JK9WRDTRWBCAN",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1EE561B9EDPQ40G1FK07",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1EE557DRX3DQXAA1Y61T",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J"
+    },
+    {
+      "id": "01K2NF1EE55FSDGKWT813EMYSG",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1EE515YQAYZM9QDCHTY9",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1EE52MJW5VY00N8DBPHM",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P"
+    },
+    {
+      "id": "01K2NF1EE58QAQWR1RHD1Z91CQ",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q"
+    },
+    {
+      "id": "01K2NF1EE5A7DYH144TRMAS7ZZ",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1EE5J29KVYEWJ6P9S4RR",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1EE5HTVVCMN5G4TRFCQB",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1EE5PA7SKSYZ5K1VBYA6",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K2NF1EE51JYS34M4H8B383H5",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V"
+    },
+    {
+      "id": "01K2NF1EE5ZJY1TECD9ETZS7W0",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1EE58RZGHY2ZNTX72ATC",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    },
+    {
+      "id": "01K2NF1EE5YRPHVB6P4RYFWKM6",
+      "code": "9Z",
+      "subset": 9,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G9FMACH4WSMY2KQTXYF2HY1N",
-      "name": "Feeder North",
-      "callsign": "STL_J_APP",
+      "id": "01G9J7PBAA02D74JVGJSD0E2DT",
+      "physicalFacility": "SUS",
+      "name": "Local",
+      "radioName": "Spirit Tower",
+      "callsign": "SUS_TWR",
+      "areaId": "01HBST65ED972D79QJ9KV1EHZG",
+      "tcpId": "01K2NF1EE5QP6S811YQ9Y7SFQ1",
+      "tcp": "11",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 38.6625335,
+        "lon": -90.6459449
       },
-      "freq": 132.125
+      "range": 50,
+      "freq": 124.75
     },
     {
-      "id": "01G9FMBNJ2DSBN3RP8NJ3CDDY7",
-      "name": "Feeder South",
-      "callsign": "STL_Q_APP",
+      "id": "01G9JFP67AS1QHWZ48Y1W6K01X",
+      "physicalFacility": "CPS",
+      "name": "Local",
+      "radioName": "Downtown Tower",
+      "callsign": "CPS_TWR",
+      "areaId": "01HBST7FEDH1QED4W8W0KSX8G0",
+      "tcpId": "01K2NF1EE5PF87FJN7DXDRT9KH",
+      "tcp": "12",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 38.5703611,
+        "lon": -90.1550833
       },
-      "freq": 121.025
+      "range": 50,
+      "freq": 119.925
     },
     {
-      "id": "01G9FMCH8JTNNDJYSQF25FJJ8V",
-      "name": "Satellite West",
-      "callsign": "STL_D_APP",
+      "id": "01G9JFJW4421HXRT9GQTKGR0XQ",
+      "physicalFacility": "BLV",
+      "name": "Local",
+      "radioName": "Scott Tower",
+      "callsign": "BLV_TWR",
+      "areaId": "01HBSV305W1ZH1CEJFK8EVZND3",
+      "tcpId": "01K2NF1EE5HZ849BCPH0Q25V7A",
+      "tcp": "13",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 38.5451731,
+        "lon": -89.8351856
       },
-      "freq": 126.5
+      "range": 50,
+      "freq": 128.25
     },
     {
-      "id": "01G9FME4VA2SZV6KCPW5GDYKNW",
-      "name": "Satellite East",
-      "callsign": "STL_K_APP",
+      "id": "01G9JF8BYQPAWGBMMYH77SFMYP",
+      "physicalFacility": "ALN",
+      "name": "Local",
+      "radioName": "Alton Tower",
+      "callsign": "ALN_TWR",
+      "areaId": "01HBSV1KFJXJYNFRE22BCS67G5",
+      "tcpId": "01K2NF1EE58FQY8SE5RE93GX65",
+      "tcp": "14",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 38.8899167,
+        "lon": -90.046
       },
-      "freq": 123.7
+      "range": 50,
+      "freq": 126
+    },
+    {
+      "id": "01H2SHVCX1GF4AJA2H1D9161JF",
+      "physicalFacility": "PIA",
+      "name": "Local",
+      "radioName": "Peoria Tower",
+      "callsign": "PIA_TWR",
+      "areaId": "01HBTKPRRF2X93JYH38Z8CPA23",
+      "tcpId": "01K2NF1EE55WP350X4Q2VQNQYM",
+      "tcp": "16",
+      "visualCenter": {
+        "lat": 40.665203,
+        "lon": -89.696826
+      },
+      "range": 150,
+      "freq": 124
+    },
+    {
+      "id": "01H2SMRMYBRVA62TB06B02PFAB",
+      "physicalFacility": "SPI",
+      "name": "Clearance",
+      "radioName": "Springfield Clearance",
+      "callsign": "SPI_DEL",
+      "areaId": "01HBTKN5PGDAN4F3JPVWGX3HKD",
+      "tcpId": "01K2NF1EE5QXM299AF7M1DDS94",
+      "tcp": "17",
+      "visualCenter": {
+        "lat": 39.843686,
+        "lon": -89.679566
+      },
+      "range": 150,
+      "freq": 121.7
+    },
+    {
+      "id": "01H2SMNFDS5CBT4MMDRXAK8NW9",
+      "physicalFacility": "SPI",
+      "name": "Local",
+      "radioName": "Springfield Tower",
+      "callsign": "SPI_TWR",
+      "areaId": "01HBTKN5PGDAN4F3JPVWGX3HKD",
+      "tcpId": "01K2NF1EE5QXM299AF7M1DDS94",
+      "tcp": "17",
+      "visualCenter": {
+        "lat": 39.843686,
+        "lon": -89.679566
+      },
+      "range": 150,
+      "freq": 121.3
     },
     {
       "id": "01G9FMEY2TMP6CEXMMWKZAR4RF",
+      "physicalFacility": "T75",
       "name": "Satellite North",
+      "radioName": "St. Louis Approach",
       "callsign": "STL_A_APP",
+      "areaId": "01HBTKSNT02NKBR62G99R05VVA",
+      "tcpId": "01K2NF1EE5QXWPSM2JG848VVT4",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 38.749627,
+        "lon": -90.37047
       },
+      "range": 150,
       "freq": 124.2
     },
     {
-      "id": "01G9FMG1828643N782SAHES8DV",
-      "name": "Satellite Scott",
-      "callsign": "STL_Z_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 125.2
-    },
-    {
-      "id": "01G9FMHGVW1RZFCE0ABEHYKFSZ",
-      "name": "Final North",
-      "callsign": "STL_N_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 124.25
-    },
-    {
-      "id": "01G9FMJB42T0Z2BBXHD70VJ0FM",
-      "name": "Final South",
-      "callsign": "STL_R_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 126.55
-    },
-    {
-      "id": "01G9FMMAVJRNVSETTD3Z5Y2B3S",
-      "name": "Departure North",
-      "callsign": "STL_E_DEP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 119.15
-    },
-    {
-      "id": "01GNEBHKJ4HK1S28CRHK7V4N4F",
-      "name": "Peoria",
-      "callsign": "PIA_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 125.8
-    },
-    {
-      "id": "01GNEBZEA620NHNSP0V98M80A2",
-      "name": "Springfield",
-      "callsign": "SPI_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 126.15
-    },
-    {
       "id": "01GNEC01DGJ91GN6ZTYTEGSWRX",
+      "physicalFacility": "T75",
       "name": "Bloomington",
+      "radioName": "St. Louis Approach",
       "callsign": "PIA_B_APP",
+      "areaId": "01HBTKPRRF2X93JYH38Z8CPA23",
+      "tcpId": "01K2NF1EE53XXYBQ9EBNVW8AXB",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 40.665203,
+        "lon": -89.696826
       },
+      "range": 150,
       "freq": 128.725
     },
     {
-      "id": "01GNEC547G7QNYEXTGHNYFFH7Q",
-      "name": "Departure South",
-      "callsign": "STL_W_DEP",
+      "id": "01G9FMCH8JTNNDJYSQF25FJJ8V",
+      "physicalFacility": "T75",
+      "name": "Satellite West",
+      "radioName": "St. Louis Approach",
+      "callsign": "STL_D_APP",
+      "areaId": "01HBTKSNT02NKBR62G99R05VVA",
+      "tcpId": "01K2NF1EE5E87JK9WRDTRWBCAN",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 38.749627,
+        "lon": -90.37047
       },
-      "freq": 128.1
+      "range": 150,
+      "freq": 126.5
     },
     {
-      "id": "01HBTM4GB60TKEE712YTEXRXWQ",
-      "name": "T75 Combined",
-      "callsign": "T75_APP",
+      "id": "01G9FMMAVJRNVSETTD3Z5Y2B3S",
+      "physicalFacility": "T75",
+      "name": "Departure North",
+      "radioName": "St. Louis Departure",
+      "callsign": "STL_E_DEP",
+      "areaId": "01HBTKSNT02NKBR62G99R05VVA",
+      "tcpId": "01K2NF1EE561B9EDPQ40G1FK07",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 38.749627,
+        "lon": -90.37047
       },
-      "freq": 132.125
-    },
-    {
-      "id": "01J9J2N59383S18BK7D3JRD6CN",
-      "name": "T75 Guard",
-      "callsign": "STL_EM_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 121.5
+      "range": 150,
+      "freq": 119.15
     },
     {
       "id": "01KE01C1NF20HXWJRTA70H9R6W",
+      "physicalFacility": "T75",
       "name": "T75 St Louis",
+      "radioName": "St. Louis Approach",
       "callsign": "STL_APP",
+      "areaId": "01HBTKSNT02NKBR62G99R05VVA",
+      "tcpId": "01K2NF1EE557DRX3DQXAA1Y61T",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 38.749627,
+        "lon": -90.37047
       },
+      "range": 150,
       "freq": 132.125
     },
     {
-      "id": "11",
+      "id": "01G9FMACH4WSMY2KQTXYF2HY1N",
+      "physicalFacility": "T75",
+      "name": "Feeder North",
+      "radioName": "St. Louis Approach",
+      "callsign": "STL_J_APP",
+      "areaId": "01HBTKSNT02NKBR62G99R05VVA",
+      "tcpId": "01K2NF1EE557DRX3DQXAA1Y61T",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.749627,
+        "lon": -90.37047
+      },
+      "range": 150,
+      "freq": 132.125
     },
     {
-      "id": "12",
+      "id": "01HBTM4GB60TKEE712YTEXRXWQ",
+      "physicalFacility": "T75",
+      "name": "T75 Combined",
+      "radioName": "St. Louis Approach",
+      "callsign": "T75_APP",
+      "areaId": "01G9FKTBZW1V5WAJR02CD1B8R8",
+      "tcpId": "01K2NF1EE557DRX3DQXAA1Y61T",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 39.756115,
+        "lon": -89.865686
+      },
+      "range": 150,
+      "freq": 132.125
     },
     {
-      "id": "13",
+      "id": "01G9FME4VA2SZV6KCPW5GDYKNW",
+      "physicalFacility": "T75",
+      "name": "Satellite East",
+      "radioName": "St. Louis Approach",
+      "callsign": "STL_K_APP",
+      "areaId": "01HBTKSNT02NKBR62G99R05VVA",
+      "tcpId": "01K2NF1EE55FSDGKWT813EMYSG",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.749627,
+        "lon": -90.37047
+      },
+      "range": 150,
+      "freq": 123.7
     },
     {
-      "id": "14",
+      "id": "01G9FMHGVW1RZFCE0ABEHYKFSZ",
+      "physicalFacility": "T75",
+      "name": "Final North",
+      "radioName": "St. Louis Approach",
+      "callsign": "STL_N_APP",
+      "areaId": "01HBTKSNT02NKBR62G99R05VVA",
+      "tcpId": "01K2NF1EE515YQAYZM9QDCHTY9",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.749627,
+        "lon": -90.37047
+      },
+      "range": 150,
+      "freq": 124.25
     },
     {
-      "id": "16",
+      "id": "01GNEBHKJ4HK1S28CRHK7V4N4F",
+      "physicalFacility": "T75",
+      "name": "Peoria",
+      "radioName": "St. Louis Approach",
+      "callsign": "PIA_APP",
+      "areaId": "01HBTKPRRF2X93JYH38Z8CPA23",
+      "tcpId": "01K2NF1EE52MJW5VY00N8DBPHM",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 40.665203,
+        "lon": -89.696826
+      },
+      "range": 150,
+      "freq": 125.8
     },
     {
-      "id": "17",
+      "id": "01G9FMBNJ2DSBN3RP8NJ3CDDY7",
+      "physicalFacility": "T75",
+      "name": "Feeder South",
+      "radioName": "St. Louis Approach",
+      "callsign": "STL_Q_APP",
+      "areaId": "01HBTKSNT02NKBR62G99R05VVA",
+      "tcpId": "01K2NF1EE58QAQWR1RHD1Z91CQ",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.749627,
+        "lon": -90.37047
+      },
+      "range": 150,
+      "freq": 121.025
     },
     {
-      "id": "1A",
+      "id": "01G9FMJB42T0Z2BBXHD70VJ0FM",
+      "physicalFacility": "T75",
+      "name": "Final South",
+      "radioName": "St. Louis Approach",
+      "callsign": "STL_R_APP",
+      "areaId": "01HBTKSNT02NKBR62G99R05VVA",
+      "tcpId": "01K2NF1EE5A7DYH144TRMAS7ZZ",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.749627,
+        "lon": -90.37047
+      },
+      "range": 150,
+      "freq": 126.55
     },
     {
-      "id": "1B",
+      "id": "01GNEBZEA620NHNSP0V98M80A2",
+      "physicalFacility": "T75",
+      "name": "Springfield",
+      "radioName": "St. Louis Approach",
+      "callsign": "SPI_APP",
+      "areaId": "01HBTKN5PGDAN4F3JPVWGX3HKD",
+      "tcpId": "01K2NF1EE5J29KVYEWJ6P9S4RR",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 39.843686,
+        "lon": -89.679566
+      },
+      "range": 150,
+      "freq": 126.15
     },
     {
-      "id": "1D",
+      "id": "01G9J785ZHFZXWHVN6J8T2GE75",
+      "physicalFacility": "STL",
+      "name": "Local West",
+      "radioName": "St. Louis Tower",
+      "callsign": "STL_TWR",
+      "areaId": "01G9J6JMD2G5CF2AZNPW49HQA1",
+      "tcpId": "01K2NF1EE5HTVVCMN5G4TRFCQB",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.74869,
+        "lon": -90.37003
+      },
+      "range": 50,
+      "freq": 132.475
     },
     {
-      "id": "1E",
+      "id": "01G9J6KFD6ZT60CQHZ4NQTGJCS",
+      "physicalFacility": "STL",
+      "name": "Local North",
+      "radioName": "St. Louis Tower",
+      "callsign": "STL_N_TWR",
+      "areaId": "01G9J6JMD2G5CF2AZNPW49HQA1",
+      "tcpId": "01K2NF1EE5PA7SKSYZ5K1VBYA6",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.74869,
+        "lon": -90.37003
+      },
+      "range": 50,
+      "freq": 120.05
     },
     {
-      "id": "1J",
+      "id": "01G9J8SQG7EWS4VE3C83XFTVE5",
+      "physicalFacility": "STL",
+      "name": "Clearance",
+      "radioName": "St. Louis Clearance",
+      "callsign": "STL_DEL",
+      "areaId": "01G9J6JMD2G5CF2AZNPW49HQA1",
+      "tcpId": "01K2NF1EE51JYS34M4H8B383H5",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.74869,
+        "lon": -90.37003
+      },
+      "range": 50,
+      "freq": 119.5
     },
     {
-      "id": "1K",
+      "id": "01G9J8PT57WTQS4VFAG0QKPFNP",
+      "physicalFacility": "STL",
+      "name": "Ground Inbound",
+      "radioName": "St. Louis Ground",
+      "callsign": "STL_I_GND",
+      "areaId": "01G9J6JMD2G5CF2AZNPW49HQA1",
+      "tcpId": "01K2NF1EE51JYS34M4H8B383H5",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.74869,
+        "lon": -90.37003
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1N",
+      "id": "01JSMS6AM1TYC0CX4ZNX15TAW9",
+      "physicalFacility": "STL",
+      "name": "Ground Metering",
+      "radioName": "St. Louis Ground",
+      "callsign": "STL_ME_GND",
+      "areaId": "01G9J6JMD2G5CF2AZNPW49HQA1",
+      "tcpId": "01K2NF1EE51JYS34M4H8B383H5",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.74869,
+        "lon": -90.37003
+      },
+      "range": 50,
+      "freq": 127.55
     },
     {
-      "id": "1P",
+      "id": "01G9J8S4XPTBWB34W6MJB27RCQ",
+      "physicalFacility": "STL",
+      "name": "Ground Outbound",
+      "radioName": "St. Louis Ground",
+      "callsign": "STL_O_GND",
+      "areaId": "01G9J6JMD2G5CF2AZNPW49HQA1",
+      "tcpId": "01K2NF1EE51JYS34M4H8B383H5",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.74869,
+        "lon": -90.37003
+      },
+      "range": 50,
+      "freq": 121.65
     },
     {
-      "id": "1Q",
+      "id": "01G9J6HDND06T8YP4TYHQ92N2Z",
+      "physicalFacility": "STL",
+      "name": "Local South",
+      "radioName": "St. Louis Tower",
+      "callsign": "STL_S_TWR",
+      "areaId": "01G9J6JMD2G5CF2AZNPW49HQA1",
+      "tcpId": "01K2NF1EE51JYS34M4H8B383H5",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.74869,
+        "lon": -90.37003
+      },
+      "range": 50,
+      "freq": 118.5
     },
     {
-      "id": "1R",
+      "id": "01GNEC547G7QNYEXTGHNYFFH7Q",
+      "physicalFacility": "T75",
+      "name": "Departure South",
+      "radioName": "St. Louis Departure",
+      "callsign": "STL_W_DEP",
+      "areaId": "01HBTKSNT02NKBR62G99R05VVA",
+      "tcpId": "01K2NF1EE5ZJY1TECD9ETZS7W0",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.749627,
+        "lon": -90.37047
+      },
+      "range": 150,
+      "freq": 128.1
     },
     {
-      "id": "1S",
+      "id": "01G9FMG1828643N782SAHES8DV",
+      "physicalFacility": "T75",
+      "name": "Satellite Scott",
+      "radioName": "St. Louis Approach",
+      "callsign": "STL_Z_APP",
+      "areaId": "01HBTKSNT02NKBR62G99R05VVA",
+      "tcpId": "01K2NF1EE58RZGHY2ZNTX72ATC",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.749627,
+        "lon": -90.37047
+      },
+      "range": 150,
+      "freq": 125.2
     },
     {
-      "id": "1T",
+      "id": "01J9J2N59383S18BK7D3JRD6CN",
+      "physicalFacility": "T75",
+      "name": "T75 Guard",
+      "radioName": "St Louis Approach",
+      "callsign": "STL_EM_APP",
+      "areaId": "01G9FKTBZW1V5WAJR02CD1B8R8",
+      "tcpId": "01K2NF1EE5YRPHVB6P4RYFWKM6",
+      "tcp": "9Z",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 39.756115,
+        "lon": -89.865686
+      },
+      "range": 150,
+      "freq": 121.5
     }
   ],
   "mapGroups": [

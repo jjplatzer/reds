@@ -4,97 +4,174 @@
   "name": "Albuquerque ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 34.19564814666666,
-    "lon": -107.50666666666666
+    "lat": 35.0416667,
+    "lon": -106.6
   },
+  "areas": [
+    {
+      "id": "01G93M2W8HZYE4T6SE13C6AVXG",
+      "name": "ABQ",
+      "visibilityCenter": {
+        "lat": 35.0416667,
+        "lon": -106.6
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "ABQ",
+        "AEG",
+        "BRG",
+        "E98"
+      ],
+      "ssaAirports": [
+        "ABQ",
+        "AEG"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1BHS3871Q63MVH374V5K",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1BHSH9PNX3M7P4W72KP1",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHST64Y39H4HEJ6XZDE",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSH9PNX3M7P4W72KP1",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1BHST64Y39H4HEJ6XZDE",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHS1T0RTPJ68MCRN324",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSGCMQEBHQCQ5852K6",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSZN2T01ABN04PNF6E",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G93K24Z6G2NTGG1481TMWRFC",
-      "name": "Approach - North",
-      "callsign": "ABQ_N_APP",
+      "id": "01G93PB11ZF5EAJZJ4C4CV914F",
+      "physicalFacility": "ABQ",
+      "name": "Approach - Final",
+      "radioName": "Albuquerque Approach",
+      "callsign": "ABQ_F_APP",
+      "areaId": "01G93M2W8HZYE4T6SE13C6AVXG",
+      "tcpId": "01K2NF1BHS3871Q63MVH374V5K",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 35.0416667,
+        "lon": -106.6
       },
+      "range": 75,
+      "freq": 126.3
+    },
+    {
+      "id": "01G93K24Z6G2NTGG1481TMWRFC",
+      "physicalFacility": "ABQ",
+      "name": "Approach - North",
+      "radioName": "Albuquerque Approach",
+      "callsign": "ABQ_N_APP",
+      "areaId": "01G93M2W8HZYE4T6SE13C6AVXG",
+      "tcpId": "01K2NF1BHST64Y39H4HEJ6XZDE",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 35.0416667,
+        "lon": -106.6
+      },
+      "range": 75,
       "freq": 127.4
     },
     {
       "id": "01G93P8RCVQZXAH0TJ54YE4JCR",
+      "physicalFacility": "ABQ",
       "name": "Approach - South",
+      "radioName": "Albuquerque Approach",
       "callsign": "ABQ_S_APP",
+      "areaId": "01G93M2W8HZYE4T6SE13C6AVXG",
+      "tcpId": "01K2NF1BHSH9PNX3M7P4W72KP1",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 35.0416667,
+        "lon": -106.6
       },
+      "range": 75,
       "freq": 123.9
     },
     {
-      "id": "01G93PB11ZF5EAJZJ4C4CV914F",
-      "name": "Approach - Final",
-      "callsign": "ABQ_F_APP",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 126.3
-    },
-    {
-      "id": "01G93PF27Y8NWS9S0GJJMS9AER",
-      "name": "Local Control",
-      "callsign": "ABQ_TWR",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 120.3
-    },
-    {
-      "id": "01G9NDW8APMZ8JX4QWHJ44BW9C",
-      "name": "Ground",
-      "callsign": "ABQ_GND",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 121.9
-    },
-    {
       "id": "01G9NDWHJF95QCZCZV5B71KTN5",
+      "physicalFacility": "ABQ",
       "name": "Clearance Delivery",
+      "radioName": "Albuquerque Clearance Delivery",
       "callsign": "ABQ_DEL",
+      "areaId": "01G93M2W8HZYE4T6SE13C6AVXG",
+      "tcpId": "01K2NF1BHSZN2T01ABN04PNF6E",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 35.0416667,
+        "lon": -106.6
       },
+      "range": 75,
       "freq": 119.2
     },
     {
-      "id": "1F",
+      "id": "01G9NDW8APMZ8JX4QWHJ44BW9C",
+      "physicalFacility": "ABQ",
+      "name": "Ground",
+      "radioName": "Albuquerque Ground",
+      "callsign": "ABQ_GND",
+      "areaId": "01G93M2W8HZYE4T6SE13C6AVXG",
+      "tcpId": "01K2NF1BHSZN2T01ABN04PNF6E",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 35.0416667,
+        "lon": -106.6
+      },
+      "range": 75,
+      "freq": 121.9
     },
     {
-      "id": "1N",
+      "id": "01G93PF27Y8NWS9S0GJJMS9AER",
+      "physicalFacility": "ABQ",
+      "name": "Local Control",
+      "radioName": "Albuquerque Tower",
+      "callsign": "ABQ_TWR",
+      "areaId": "01G93M2W8HZYE4T6SE13C6AVXG",
+      "tcpId": "01K2NF1BHSZN2T01ABN04PNF6E",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 35.0416667,
+        "lon": -106.6
+      },
+      "range": 75,
+      "freq": 120.3
     }
   ],
   "mapGroups": [

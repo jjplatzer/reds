@@ -4,80 +4,136 @@
   "name": "Amarillo ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 34.19564814666666,
-    "lon": -107.50666666666666
+    "lat": 35.221111,
+    "lon": -101.71
   },
+  "areas": [
+    {
+      "id": "01G98N1RJJN31CCVPM8C55FEAG",
+      "name": "AMA",
+      "visibilityCenter": {
+        "lat": 35.221111,
+        "lon": -101.71
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "AMA",
+        "HRX",
+        "BGD",
+        "TDW",
+        "H81",
+        "T45"
+      ],
+      "ssaAirports": [
+        "AMA"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1BHSZVDPR74ZWGPR0BDT",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSZ6H9D566KP1MYCZH",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1BHSZVDPR74ZWGPR0BDT",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSZ6CWQ6PZT93A1QHR",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G98N5YTFTRDDN80PAVH38TX0",
+      "physicalFacility": "AMA",
       "name": "Approach",
+      "radioName": "Amarillo Approach",
       "callsign": "AMA_A_APP",
+      "areaId": "01G98N1RJJN31CCVPM8C55FEAG",
+      "tcpId": "01K2NF1BHSZVDPR74ZWGPR0BDT",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 35.221111,
+        "lon": -101.71
       },
+      "range": 75,
       "freq": 119.5
     },
     {
-      "id": "01G98N6Z8EMCGPH2MBHGW139PT",
-      "name": "Local Control",
-      "callsign": "AMA_TWR",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 118.3
-    },
-    {
-      "id": "01G98N82H64T2PPGGTGTXKP924",
-      "name": "Ground",
-      "callsign": "AMA_GND",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01G98N984RA4D68XKF836QA9PZ",
-      "name": "Clearance Delivery",
-      "callsign": "AMA_DEL",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 121.65
-    },
-    {
       "id": "01GBEQJMGZ9RGT1X8A3S58H48Q",
+      "physicalFacility": "AMA",
       "name": "Final Approach",
+      "radioName": "Amarillo Approach",
       "callsign": "AMA_F_APP",
+      "areaId": "01G98N1RJJN31CCVPM8C55FEAG",
+      "tcpId": "01K2NF1BHSZ6H9D566KP1MYCZH",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 35.221111,
+        "lon": -101.71
       },
+      "range": 75,
       "freq": 121.15
     },
     {
-      "id": "1A",
+      "id": "01G98N984RA4D68XKF836QA9PZ",
+      "physicalFacility": "AMA",
+      "name": "Clearance Delivery",
+      "radioName": "Amarillo Clearance Delivery",
+      "callsign": "AMA_DEL",
+      "areaId": "01G98N1RJJN31CCVPM8C55FEAG",
+      "tcpId": "01K2NF1BHSZ6CWQ6PZT93A1QHR",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 35.221111,
+        "lon": -101.71
+      },
+      "range": 75,
+      "freq": 121.65
     },
     {
-      "id": "1F",
+      "id": "01G98N82H64T2PPGGTGTXKP924",
+      "physicalFacility": "AMA",
+      "name": "Ground",
+      "radioName": "Amarillo Ground",
+      "callsign": "AMA_GND",
+      "areaId": "01G98N1RJJN31CCVPM8C55FEAG",
+      "tcpId": "01K2NF1BHSZ6CWQ6PZT93A1QHR",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 35.221111,
+        "lon": -101.71
+      },
+      "range": 75,
+      "freq": 121.9
     },
     {
-      "id": "2T",
+      "id": "01G98N6Z8EMCGPH2MBHGW139PT",
+      "physicalFacility": "AMA",
+      "name": "Local Control",
+      "radioName": "Amarillo Tower",
+      "callsign": "AMA_TWR",
+      "areaId": "01G98N1RJJN31CCVPM8C55FEAG",
+      "tcpId": "01K2NF1BHSZ6CWQ6PZT93A1QHR",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 35.221111,
+        "lon": -101.71
+      },
+      "range": 75,
+      "freq": 118.3
     }
   ],
   "mapGroups": [

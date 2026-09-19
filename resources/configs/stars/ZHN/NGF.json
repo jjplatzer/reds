@@ -4,43 +4,69 @@
   "name": "Kaneohe Bay ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 20.9750275,
-    "lon": -157.17449499999998
+    "lat": 21.4504556,
+    "lon": -157.7679486
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01HC99W5JVGB8WE0TBX7TMFFSA",
-      "name": "Local Control",
-      "callsign": "NGF_TWR",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
+      "id": "01HC99T06H6ESJCY8A5C8AZ7E0",
+      "name": "Main",
+      "visibilityCenter": {
+        "lat": 21.4504556,
+        "lon": -157.7679486
       },
-      "freq": 120.7
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "NGF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1ED84EGKQT57FFV7V7RV",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
     },
     {
+      "id": "01K2NF1ED887E3ZJ3E74KN5Y7H",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
+  "controlPositions": [
+    {
       "id": "01HC99YDF5WEH70P3XR7A2Q4ND",
+      "physicalFacility": "NGF",
       "name": "Radar Control",
+      "radioName": "Kaneohe Approach",
       "callsign": "NGF_APP",
+      "areaId": "01HC99T06H6ESJCY8A5C8AZ7E0",
+      "tcpId": "01K2NF1ED84EGKQT57FFV7V7RV",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
+        "lat": 21.4504556,
+        "lon": -157.7679486
       },
+      "range": 150,
       "freq": 125
     },
     {
-      "id": "1A",
+      "id": "01HC99W5JVGB8WE0TBX7TMFFSA",
+      "physicalFacility": "NGF",
+      "name": "Local Control",
+      "radioName": "Marine Kaneohe Tower",
+      "callsign": "NGF_TWR",
+      "areaId": "01HC99T06H6ESJCY8A5C8AZ7E0",
+      "tcpId": "01K2NF1ED887E3ZJ3E74KN5Y7H",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      }
+        "lat": 21.4504556,
+        "lon": -157.7679486
+      },
+      "range": 150,
+      "freq": 120.7
     }
   ],
   "mapGroups": [

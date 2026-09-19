@@ -4,330 +4,856 @@
   "name": "Detroit TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 41.65805,
-    "lon": -81.181585
+    "lat": 42.21528,
+    "lon": -83.37944
   },
+  "areas": [
+    {
+      "id": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "name": "Detroit TRACON",
+      "visibilityCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "ARB",
+        "DET",
+        "DTW",
+        "PTK",
+        "YIP",
+        "CYQG"
+      ],
+      "ssaAirports": [
+        "ARB",
+        "DET",
+        "DTW",
+        "PTK",
+        "YIP"
+      ]
+    },
+    {
+      "id": "01HE76JNCGJRDK1C1FHZGNNRAC",
+      "name": "Metro ATCT",
+      "visibilityCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "DTW"
+      ],
+      "ssaAirports": [
+        "DTW"
+      ]
+    },
+    {
+      "id": "01HE77BHQBVCW59ETWMAJVZCQQ",
+      "name": "Pontiac ATCT",
+      "visibilityCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "PTK"
+      ],
+      "ssaAirports": [
+        "PTK"
+      ]
+    },
+    {
+      "id": "01HE77J45JHTF3CBH57FFC5J0N",
+      "name": "Ann Arbor ATCT",
+      "visibilityCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ARB"
+      ],
+      "ssaAirports": [
+        "ARB"
+      ]
+    },
+    {
+      "id": "01HE77K7BRC1GMNC6WD2Q2SXSG",
+      "name": "Detroit City ATCT",
+      "visibilityCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "DET"
+      ],
+      "ssaAirports": [
+        "DET"
+      ]
+    },
+    {
+      "id": "01HE77KSC3WYP9J0S388NFKPXV",
+      "name": "Willow Run ATCT",
+      "visibilityCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "YIP"
+      ],
+      "ssaAirports": [
+        "YIP"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E61RJYPPS1P8WPX46T1",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1E614VA4AEV89BYWT7JS",
+      "parentTcp": "1F"
+    },
+    {
+      "id": "01K2NF1E61RD9SN4YMZT22X2C6",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1E61RJYPPS1P8WPX46T1",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1E616M830SBYVSXP5C7X",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1E61EGNFRYYH5RQQM4MN",
+      "parentTcp": "1Y"
+    },
+    {
+      "id": "01K2NF1E619SDV0X2BWAQJRAQC",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E614VA4AEV89BYWT7JS",
+      "parentTcp": "1F"
+    },
+    {
+      "id": "01K2NF1E614VA4AEV89BYWT7JS",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1E6116HHNAK04FZPBYYZ",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1E61S4YJBT5F4A3ER00E",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1E614VA4AEV89BYWT7JS",
+      "parentTcp": "1F"
+    },
+    {
+      "id": "01K2NF1E61B1BJBQNDG5JTK81P",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I"
+    },
+    {
+      "id": "01K2NF1E61RDPRA8V7GGR0WX85",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J"
+    },
+    {
+      "id": "01K2NF1E61EMDEAC2C0YBZWVK9",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1E618KM22WN4RKVCMM71",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1E61W1CV9PBZ5GCHNAYY",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1E6120P05H6VGRJ4ZS61",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1E618WFHJV2H9HGE4YD7",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1E61W1CV9PBZ5GCHNAYY",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1E616Q55TVTKHR6HFF1T",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1E61EGNFRYYH5RQQM4MN",
+      "parentTcp": "1Y"
+    },
+    {
+      "id": "01K2NF1E61QMSMPYN2H13FPWS6",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q"
+    },
+    {
+      "id": "01K2NF1E61CJ8BAFVBG13AY8EZ",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1E614VA4AEV89BYWT7JS",
+      "parentTcp": "1F"
+    },
+    {
+      "id": "01K2NF1E618WFHJV2H9HGE4YD7",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1E61W1CV9PBZ5GCHNAYY",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1E61549YMA8ADE68CRPS",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1E61CJ8BAFVBG13AY8EZ",
+      "parentTcp": "1R"
+    },
+    {
+      "id": "01K2NF1E61GK9RR4B3GSZ85K32",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E619SDV0X2BWAQJRAQC",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1E61CWH6Z0FSH9SB6MT3",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X"
+    },
+    {
+      "id": "01K2NF1E61EGNFRYYH5RQQM4MN",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1E619SDV0X2BWAQJRAQC",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1E61QTSRH9T83HYK76GC",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1E61RJYPPS1P8WPX46T1",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1E6175Q80TNHD1Z58KCG",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E61JMM29SM5G433ZH78",
+      "code": "3T",
+      "subset": 3,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E61BS7JW66NKYKED565",
+      "code": "5T",
+      "subset": 5,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E61N6HH4VMAH5EBXF7Z",
+      "code": "6T",
+      "subset": 6,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G909CYDT7WAKHR2B93KD1QME",
-      "name": "Departure East",
-      "callsign": "DTW_E_DEP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 132.025
-    },
-    {
-      "id": "01G909F7JH4VE5517STF2M4ZY0",
-      "name": "Departure West",
-      "callsign": "DTW_W_DEP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 125.525
-    },
-    {
-      "id": "01G909GJZR51PKPQSE4Y0S5Z6P",
-      "name": "Satellite West",
-      "callsign": "DTW_Y_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 118.95
-    },
-    {
-      "id": "01G909HMH36P8Z56VVFRVJ9CT8",
-      "name": "Satellite East",
-      "callsign": "DTW_D_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 134.3
-    },
-    {
-      "id": "01G909JBRP61Q5V6F7Q749F0J0",
-      "name": "Satellite North",
-      "callsign": "DTW_P_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 132.35
-    },
-    {
-      "id": "01G909K4K6AWV84SHEPX6NM2WZ",
-      "name": "Feeder Northwest",
-      "callsign": "DTW_R_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 126.85
-    },
-    {
-      "id": "01G909KZD5MVXFKV5SE8YNBYZ7",
-      "name": "Feeder Southwest",
-      "callsign": "DTW_V_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 124.975
-    },
-    {
-      "id": "01G909MNJCGC133P1AGFHK3QWS",
-      "name": "Feeder Northeast",
-      "callsign": "DTW_F_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 126.225
-    },
-    {
-      "id": "01G909NWTGPN5CZTFE0H5RGH96",
-      "name": "Feeder Southeast",
-      "callsign": "DTW_H_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 124.25
-    },
-    {
       "id": "01G909PKH9K22NZSTSMHC30SYP",
+      "physicalFacility": "D21",
       "name": "Final West",
+      "radioName": "Detroit Approach",
       "callsign": "DTW_A_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E61RJYPPS1P8WPX46T1",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.21528,
+        "lon": -83.37944
       },
+      "range": 150,
       "freq": 124.05
     },
     {
       "id": "01G909QF6VTXW918SVQTRD1MVD",
+      "physicalFacility": "D21",
       "name": "Final East",
+      "radioName": "Detroit Approach",
       "callsign": "DTW_B_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E61RD9SN4YMZT22X2C6",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.21528,
+        "lon": -83.37944
       },
+      "range": 150,
       "freq": 125.15
     },
     {
-      "id": "01G909RQBPJJ5RWCTXYP5GBMW5",
-      "name": "Final Third",
-      "callsign": "DTW_Z_APP",
+      "id": "01G909HMH36P8Z56VVFRVJ9CT8",
+      "physicalFacility": "D21",
+      "name": "Satellite East",
+      "radioName": "Detroit Approach",
+      "callsign": "DTW_D_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E616M830SBYVSXP5C7X",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.21528,
+        "lon": -83.37944
       },
-      "freq": 123.9
+      "range": 150,
+      "freq": 134.3
     },
     {
-      "id": "01HDV18V30VBS4KED05A84XYA6",
-      "name": "TMU",
-      "callsign": "DTW_T_APP",
+      "id": "01G909CYDT7WAKHR2B93KD1QME",
+      "physicalFacility": "D21",
+      "name": "Departure East",
+      "radioName": "Detroit Departure",
+      "callsign": "DTW_E_DEP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E619SDV0X2BWAQJRAQC",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.21528,
+        "lon": -83.37944
       },
-      "freq": 123.45
+      "range": 150,
+      "freq": 132.025
+    },
+    {
+      "id": "01G909MNJCGC133P1AGFHK3QWS",
+      "physicalFacility": "D21",
+      "name": "Feeder Northeast",
+      "radioName": "Detroit Approach",
+      "callsign": "DTW_F_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E614VA4AEV89BYWT7JS",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 150,
+      "freq": 126.225
+    },
+    {
+      "id": "01G90DMN1RS8279CTTRK1WQAGV",
+      "physicalFacility": "DTW",
+      "name": "Clearance Delivery",
+      "radioName": "Metro Clearance",
+      "callsign": "DTW_DEL",
+      "areaId": "01HE76JNCGJRDK1C1FHZGNNRAC",
+      "tcpId": "01K2NF1E6116HHNAK04FZPBYYZ",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 120.65
+    },
+    {
+      "id": "01KP9NR02HK5PFW55J2RAHENAV",
+      "physicalFacility": "DTW",
+      "name": "Flight Data",
+      "radioName": "Metro Clearance",
+      "callsign": "DTW_FD_GND",
+      "areaId": "01HE76JNCGJRDK1C1FHZGNNRAC",
+      "tcpId": "01K2NF1E6116HHNAK04FZPBYYZ",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 131.25
+    },
+    {
+      "id": "01G90ESQZTKQCA0Q03Q56232A0",
+      "physicalFacility": "DTW",
+      "name": "Ground Northeast",
+      "radioName": "Metro Ground",
+      "callsign": "DTW_NE_GND",
+      "areaId": "01HE76JNCGJRDK1C1FHZGNNRAC",
+      "tcpId": "01K2NF1E6116HHNAK04FZPBYYZ",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 119.45
+    },
+    {
+      "id": "01G90EQBW8WM143K30ZQEWMM60",
+      "physicalFacility": "DTW",
+      "name": "Ground Northwest",
+      "radioName": "Metro Ground",
+      "callsign": "DTW_NW_GND",
+      "areaId": "01HE76JNCGJRDK1C1FHZGNNRAC",
+      "tcpId": "01K2NF1E6116HHNAK04FZPBYYZ",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 121.8
+    },
+    {
+      "id": "01G90EVEQB0EXW2JYA5EDKEN2G",
+      "physicalFacility": "DTW",
+      "name": "Ground Southeast",
+      "radioName": "Metro Ground",
+      "callsign": "DTW_SE_GND",
+      "areaId": "01HE76JNCGJRDK1C1FHZGNNRAC",
+      "tcpId": "01K2NF1E6116HHNAK04FZPBYYZ",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 119.25
+    },
+    {
+      "id": "01G90ETN8NGFR2XNQJ0BT3V5G3",
+      "physicalFacility": "DTW",
+      "name": "Ground Southwest",
+      "radioName": "Metro Ground",
+      "callsign": "DTW_SW_GND",
+      "areaId": "01HE76JNCGJRDK1C1FHZGNNRAC",
+      "tcpId": "01K2NF1E6116HHNAK04FZPBYYZ",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 132.725
+    },
+    {
+      "id": "01G909NWTGPN5CZTFE0H5RGH96",
+      "physicalFacility": "D21",
+      "name": "Feeder Southeast",
+      "radioName": "Detroit Approach",
+      "callsign": "DTW_H_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E61S4YJBT5F4A3ER00E",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 150,
+      "freq": 124.25
     },
     {
       "id": "01HFARP32E78G0D28WQNPMP8AM",
+      "physicalFacility": "D21",
       "name": "Monitor West",
+      "radioName": "Detroit Approach",
       "callsign": "DTW_I_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E61B1BJBQNDG5JTK81P",
+      "tcp": "1I",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.21528,
+        "lon": -83.37944
       },
+      "range": 150,
       "freq": 127.05
     },
     {
-      "id": "01HFARX42DQFJ1KSWZV00RVDNW",
-      "name": "Monitor East",
-      "callsign": "DTW_K_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 128.35
-    },
-    {
       "id": "01HFARYBH1BK3WTH0HMPFV6Q52",
+      "physicalFacility": "D21",
       "name": "Monitor Center",
+      "radioName": "Detroit Approach",
       "callsign": "DTW_J_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E61RDPRA8V7GGR0WX85",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.21528,
+        "lon": -83.37944
       },
+      "range": 150,
       "freq": 135.775
     },
     {
-      "id": "1A",
+      "id": "01HFARX42DQFJ1KSWZV00RVDNW",
+      "physicalFacility": "D21",
+      "name": "Monitor East",
+      "radioName": "Detroit Approach",
+      "callsign": "DTW_K_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E61EMDEAC2C0YBZWVK9",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 150,
+      "freq": 128.35
     },
     {
-      "id": "1B",
+      "id": "01G90EWBA9B0751QT0PAQZ1DM1",
+      "physicalFacility": "DTW",
+      "name": "Local Control Northwest",
+      "radioName": "Metro Tower",
+      "callsign": "DTW_NW_TWR",
+      "areaId": "01HE76JNCGJRDK1C1FHZGNNRAC",
+      "tcpId": "01K2NF1E618KM22WN4RKVCMM71",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 128.125
     },
     {
-      "id": "1E",
+      "id": "01G90EYRZFZBVJDQ5SH8WMEPGZ",
+      "physicalFacility": "DTW",
+      "name": "Local Control Northeast",
+      "radioName": "Metro Tower",
+      "callsign": "DTW_NE_TWR",
+      "areaId": "01HE76JNCGJRDK1C1FHZGNNRAC",
+      "tcpId": "01K2NF1E6120P05H6VGRJ4ZS61",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 128.75
     },
     {
-      "id": "1F",
+      "id": "01G90EZXBBE0MHKENDS8TJ9M10",
+      "physicalFacility": "DTW",
+      "name": "Local Control Southwest",
+      "radioName": "Metro Tower",
+      "callsign": "DTW_SW_TWR",
+      "areaId": "01HE76JNCGJRDK1C1FHZGNNRAC",
+      "tcpId": "01K2NF1E61W1CV9PBZ5GCHNAYY",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 135
     },
     {
-      "id": "1G",
+      "id": "01G909JBRP61Q5V6F7Q749F0J0",
+      "physicalFacility": "D21",
+      "name": "Satellite North",
+      "radioName": "Detroit Approach",
+      "callsign": "DTW_P_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E616Q55TVTKHR6HFF1T",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 150,
+      "freq": 132.35
     },
     {
-      "id": "1H",
+      "id": "01HDV1FDXZDN26CZEP3YQDCXAP",
+      "physicalFacility": "DTW",
+      "name": "CIC",
+      "radioName": "Metro Tower",
+      "callsign": "DTW_T_TWR",
+      "areaId": "01HE76JNCGJRDK1C1FHZGNNRAC",
+      "tcpId": "01K2NF1E61QMSMPYN2H13FPWS6",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 123.45
     },
     {
-      "id": "1L",
+      "id": "01G909K4K6AWV84SHEPX6NM2WZ",
+      "physicalFacility": "D21",
+      "name": "Feeder Northwest",
+      "radioName": "Detroit Approach",
+      "callsign": "DTW_R_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E61CJ8BAFVBG13AY8EZ",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 150,
+      "freq": 126.85
     },
     {
-      "id": "1M",
+      "id": "01G90F1FYZ8SKV55N1QZQX7N56",
+      "physicalFacility": "DTW",
+      "name": "Local Control Southeast",
+      "radioName": "Metro Tower",
+      "callsign": "DTW_SE_TWR",
+      "areaId": "01HE76JNCGJRDK1C1FHZGNNRAC",
+      "tcpId": "01K2NF1E618WFHJV2H9HGE4YD7",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 118.4
     },
     {
-      "id": "1N",
+      "id": "01G909KZD5MVXFKV5SE8YNBYZ7",
+      "physicalFacility": "D21",
+      "name": "Feeder Southwest",
+      "radioName": "Detroit Approach",
+      "callsign": "DTW_V_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E61549YMA8ADE68CRPS",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 150,
+      "freq": 124.975
     },
     {
-      "id": "1Q",
+      "id": "01G909F7JH4VE5517STF2M4ZY0",
+      "physicalFacility": "D21",
+      "name": "Departure West",
+      "radioName": "Detroit Departure",
+      "callsign": "DTW_W_DEP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E61GK9RR4B3GSZ85K32",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 150,
+      "freq": 125.525
     },
     {
-      "id": "1R",
+      "id": "01HDV18V30VBS4KED05A84XYA6",
+      "physicalFacility": "D21",
+      "name": "TMU",
+      "radioName": "Detroit Approach",
+      "callsign": "DTW_T_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E61CWH6Z0FSH9SB6MT3",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 150,
+      "freq": 123.45
     },
     {
-      "id": "1T",
+      "id": "01G909GJZR51PKPQSE4Y0S5Z6P",
+      "physicalFacility": "D21",
+      "name": "Satellite West",
+      "radioName": "Detroit Approach",
+      "callsign": "DTW_Y_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E61EGNFRYYH5RQQM4MN",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 150,
+      "freq": 118.95
     },
     {
-      "id": "1V",
+      "id": "01G909RQBPJJ5RWCTXYP5GBMW5",
+      "physicalFacility": "D21",
+      "name": "Final Third",
+      "radioName": "Detroit Approach",
+      "callsign": "DTW_Z_APP",
+      "areaId": "01G907N2ACZGQSEW6DXM3P7J1H",
+      "tcpId": "01K2NF1E61QTSRH9T83HYK76GC",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 150,
+      "freq": 123.9
     },
     {
-      "id": "1W",
+      "id": "01G90FCF6DQCAZ9GXQZJC8QYZN",
+      "physicalFacility": "YIP",
+      "name": "Local Control",
+      "radioName": "Willow Run Tower",
+      "callsign": "YIP_TWR",
+      "areaId": "01HE77KSC3WYP9J0S388NFKPXV",
+      "tcpId": "01K2NF1E6175Q80TNHD1Z58KCG",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 125.275
     },
     {
-      "id": "1X",
+      "id": "01G90FMBT93REMRTYGVSNR5M5X",
+      "physicalFacility": "DET",
+      "name": "Ground",
+      "radioName": "Detroit City Ground",
+      "callsign": "DET_GND",
+      "areaId": "01HE77K7BRC1GMNC6WD2Q2SXSG",
+      "tcpId": "01K2NF1E61JMM29SM5G433ZH78",
+      "tcp": "3T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 121.85
     },
     {
-      "id": "1Z",
+      "id": "01G90FN2PP939CVF5FPRFPQM8R",
+      "physicalFacility": "DET",
+      "name": "Local Control",
+      "radioName": "Detroit City Tower",
+      "callsign": "DET_TWR",
+      "areaId": "01HE77K7BRC1GMNC6WD2Q2SXSG",
+      "tcpId": "01K2NF1E61JMM29SM5G433ZH78",
+      "tcp": "3T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 121.3
     },
     {
-      "id": "2D",
+      "id": "01G90FGH2A8Q02JDTWMXAJ4QD5",
+      "physicalFacility": "ARB",
+      "name": "Ground",
+      "radioName": "Ann Arbor Ground",
+      "callsign": "ARB_GND",
+      "areaId": "01HE77J45JHTF3CBH57FFC5J0N",
+      "tcpId": "01K2NF1E61BS7JW66NKYKED565",
+      "tcp": "5T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 121.6
     },
     {
-      "id": "2L",
+      "id": "01G90FH27HXKSEBTEH4XJS1ZCH",
+      "physicalFacility": "ARB",
+      "name": "Local Control",
+      "radioName": "Ann Arbor Tower",
+      "callsign": "ARB_TWR",
+      "areaId": "01HE77J45JHTF3CBH57FFC5J0N",
+      "tcpId": "01K2NF1E61BS7JW66NKYKED565",
+      "tcp": "5T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 120.3
     },
     {
-      "id": "2M",
+      "id": "01G90FRBV795YC0X76N81H1H82",
+      "physicalFacility": "PTK",
+      "name": "Clearance Delivery",
+      "radioName": "Pontiac Clearance",
+      "callsign": "PTK_DEL",
+      "areaId": "01HE77BHQBVCW59ETWMAJVZCQQ",
+      "tcpId": "01K2NF1E61N6HH4VMAH5EBXF7Z",
+      "tcp": "6T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 118.25
     },
     {
-      "id": "2N",
+      "id": "01G90FRVZ9PJ3BRBPP8BQGBHHH",
+      "physicalFacility": "PTK",
+      "name": "Ground",
+      "radioName": "Pontiac Ground",
+      "callsign": "PTK_GND",
+      "areaId": "01HE77BHQBVCW59ETWMAJVZCQQ",
+      "tcpId": "01K2NF1E61N6HH4VMAH5EBXF7Z",
+      "tcp": "6T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "2P",
+      "id": "01G90FSGJ0TKJSZ1GK3FQZVP5X",
+      "physicalFacility": "PTK",
+      "name": "Local Control",
+      "radioName": "Pontiac Tower",
+      "callsign": "PTK_TWR",
+      "areaId": "01HE77BHQBVCW59ETWMAJVZCQQ",
+      "tcpId": "01K2NF1E61N6HH4VMAH5EBXF7Z",
+      "tcp": "6T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "2Y",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.21528,
+        "lon": -83.37944
+      },
+      "range": 50,
+      "freq": 120.5
     }
   ],
   "mapGroups": [

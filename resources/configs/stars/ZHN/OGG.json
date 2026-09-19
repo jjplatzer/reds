@@ -4,80 +4,93 @@
   "name": "Kahului ATCT",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 20.9750275,
-    "lon": -157.17449499999998
+    "lat": 20.89865,
+    "lon": -156.43045
   },
+  "areas": [
+    {
+      "id": "01HAHTS2F00TFQX1FBE5D66E5Q",
+      "name": "APP",
+      "visibilityCenter": {
+        "lat": 20.89865,
+        "lon": -156.43045
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "OGG"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1ED8G3SSJZQ1BTQHSAYS",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1ED800EWXZM26EVMS08X",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1ED800EWXZM26EVMS08X",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1ED80BKV3794NKY17DVS",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01HCARSY2QVQ25SKQBE5KYPJVR",
+      "physicalFacility": "OGG",
       "name": "Approach Control North",
+      "radioName": "HCF Approach",
       "callsign": "OGG_N_APP",
+      "areaId": "01HAHTS2F00TFQX1FBE5D66E5Q",
+      "tcpId": "01K2NF1ED8G3SSJZQ1BTQHSAYS",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
+        "lat": 20.89865,
+        "lon": -156.43045
       },
+      "range": 150,
       "freq": 120.2
     },
     {
       "id": "01HCARSZT8DGXY83744XWA8AJ2",
+      "physicalFacility": "OGG",
       "name": "Approach Control South",
+      "radioName": "HCF Approach",
       "callsign": "OGG_S_APP",
+      "areaId": "01HAHTS2F00TFQX1FBE5D66E5Q",
+      "tcpId": "01K2NF1ED800EWXZM26EVMS08X",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
+        "lat": 20.89865,
+        "lon": -156.43045
       },
+      "range": 150,
       "freq": 119.5
     },
     {
       "id": "01HCARX5YD04W03Y5M3Q6BNC5Y",
+      "physicalFacility": "OGG",
       "name": "Local Control",
+      "radioName": "Maui Tower",
       "callsign": "OGG_TWR",
+      "areaId": "01HAHTS2F00TFQX1FBE5D66E5Q",
+      "tcpId": "01K2NF1ED80BKV3794NKY17DVS",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
+        "lat": 20.89865,
+        "lon": -156.43045
       },
+      "range": 150,
       "freq": 118.7
-    },
-    {
-      "id": "01HCARXJFX1BK213HS65HYSKF3",
-      "name": "Ground Control",
-      "callsign": "OGG_GND",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01HCARXY556JDC3C12CC9KXTJN",
-      "name": "Clearance Delivery",
-      "callsign": "OGG_DEL",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      },
-      "freq": 120.6
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      }
     }
   ],
   "mapGroups": [

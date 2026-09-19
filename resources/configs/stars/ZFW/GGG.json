@@ -4,104 +4,162 @@
   "name": "Longview ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 32.3876,
+    "lon": -94.7191
   },
+  "areas": [
+    {
+      "id": "01GAJBVH844VM2AJT50W6X0K03",
+      "name": "GGG",
+      "visibilityCenter": {
+        "lat": 32.3876,
+        "lon": -94.7191
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "07F",
+        "F51",
+        "GGG",
+        "JDD",
+        "JSO",
+        "JXI",
+        "RFI",
+        "TYR"
+      ],
+      "ssaAirports": [
+        "GGG",
+        "TYR"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8SAY084V8MRTJG8CS3",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1D8STJYZZPHW82K0V3EC",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1D8SNP6G0HZ9A58FWXDD",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P"
+    },
+    {
+      "id": "01K2NF1D8SCDH4NHX3FA91WRYQ",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1D8SFF189SBZDC5M8JR9",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GAJBRSGHAD6QA91ZWCWWFMN4",
+      "physicalFacility": "GGG",
       "name": "East Radar",
+      "radioName": "Longview Approach",
       "callsign": "GGG_E_APP",
+      "areaId": "01GAJBVH844VM2AJT50W6X0K03",
+      "tcpId": "01K2NF1D8SAY084V8MRTJG8CS3",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.3876,
+        "lon": -94.7191
       },
+      "range": 150,
       "freq": 127.325
     },
     {
-      "id": "01GAJBX3JSKCXCD2K68TYYVCNN",
-      "name": "West Radar",
-      "callsign": "GGG_W_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 128.75
-    },
-    {
-      "id": "01GAJBYDFQZ1FXR05XGSFNXY8R",
-      "name": "Local",
-      "callsign": "GGG_TWR",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 119.2
-    },
-    {
-      "id": "01GAJBZV9R40KXHXQNK7Y2XTM4",
-      "name": "Ground",
-      "callsign": "GGG_GND",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.6
-    },
-    {
       "id": "01H7E0X8H79F8M1EZ369KK3YE1",
+      "physicalFacility": "GGG",
       "name": "Low Radar",
+      "radioName": "Longview Approach",
       "callsign": "GGG_L_APP",
+      "areaId": "01GAJBVH844VM2AJT50W6X0K03",
+      "tcpId": "01K2NF1D8STJYZZPHW82K0V3EC",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.3876,
+        "lon": -94.7191
       },
+      "range": 150,
       "freq": 124.275
     },
     {
-      "id": "01J9YHSQ7H35BMWWWBT5Y5FMRQ",
-      "name": "Guard",
-      "callsign": "GGG_EM_APP",
+      "id": "01H7E10YV3KNBTMAKNYPAQW4JX",
+      "physicalFacility": "TYR",
+      "name": "Ground",
+      "radioName": "Pounds Ground",
+      "callsign": "TYR_GND",
+      "areaId": "01GAJBVH844VM2AJT50W6X0K03",
+      "tcpId": "01K2NF1D8SNP6G0HZ9A58FWXDD",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.3876,
+        "lon": -94.7191
       },
-      "freq": 121.5
+      "range": 150,
+      "freq": 121.9
     },
     {
-      "id": "1E",
+      "id": "01H7E0ZNJRFTSXGWV8A6WDM4QS",
+      "physicalFacility": "TYR",
+      "name": "Local",
+      "radioName": "Pounds Tower",
+      "callsign": "TYR_TWR",
+      "areaId": "01GAJBVH844VM2AJT50W6X0K03",
+      "tcpId": "01K2NF1D8SNP6G0HZ9A58FWXDD",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 32.3876,
+        "lon": -94.7191
+      },
+      "range": 150,
+      "freq": 120.1
     },
     {
-      "id": "1L",
+      "id": "01GAJBYDFQZ1FXR05XGSFNXY8R",
+      "physicalFacility": "GGG",
+      "name": "Local",
+      "radioName": "Eastex Tower",
+      "callsign": "GGG_TWR",
+      "areaId": "01GAJBVH844VM2AJT50W6X0K03",
+      "tcpId": "01K2NF1D8SCDH4NHX3FA91WRYQ",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 32.3876,
+        "lon": -94.7191
+      },
+      "range": 150,
+      "freq": 119.2
     },
     {
-      "id": "1P",
+      "id": "01GAJBX3JSKCXCD2K68TYYVCNN",
+      "physicalFacility": "GGG",
+      "name": "West Radar",
+      "radioName": "Longview Approach",
+      "callsign": "GGG_W_APP",
+      "areaId": "01GAJBVH844VM2AJT50W6X0K03",
+      "tcpId": "01K2NF1D8SFF189SBZDC5M8JR9",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 32.3876,
+        "lon": -94.7191
+      },
+      "range": 150,
+      "freq": 128.75
     }
   ],
   "mapGroups": [

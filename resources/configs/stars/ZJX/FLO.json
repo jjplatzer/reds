@@ -4,53 +4,87 @@
   "name": "Florence ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 34.21438,
+    "lon": -79.7263
   },
+  "areas": [
+    {
+      "id": "01HKV15Q41G9ES15GAX209M9KK",
+      "name": "General",
+      "visibilityCenter": {
+        "lat": 34.21438,
+        "lon": -79.7263
+      },
+      "surveillanceRange": 100,
+      "ssaAirports": [
+        "51J",
+        "BBP",
+        "CQW",
+        "DLC",
+        "FLO",
+        "MAO",
+        "UDG"
+      ]
+    },
+    {
+      "id": "01HMJ9AKA2P5W7RR8XMAWY26HN",
+      "name": "Tower",
+      "visibilityCenter": {
+        "lat": 34.21438,
+        "lon": -79.7263
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "FLO"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFEBVD285BZCW34P4NG",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1DFEWZYY0ZC0ASPXNH0C",
+      "code": "2F",
+      "subset": 2,
+      "sectorId": "F"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GWDGGWHVPXEQSSPNR8A6WJBH",
-      "name": "Ground",
-      "callsign": "FLO_GND",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GWDGHNCHK4H1WDATNC1RY3GM",
-      "name": "Tower",
-      "callsign": "FLO_TWR",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 125.1
-    },
-    {
       "id": "01GWDGJ93ZNC448Y180FBNGNBT",
+      "physicalFacility": "FLO",
       "name": "Radar",
+      "radioName": "Florence Approach",
       "callsign": "FLO_APP",
+      "areaId": "01HKV15Q41G9ES15GAX209M9KK",
+      "tcpId": "01K2NF1DFEBVD285BZCW34P4NG",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 34.21438,
+        "lon": -79.7263
       },
+      "range": 100,
       "freq": 118.6
     },
     {
-      "id": "1F",
+      "id": "01GWDGHNCHK4H1WDATNC1RY3GM",
+      "physicalFacility": "FLO",
+      "name": "Tower",
+      "radioName": "Florence Tower",
+      "callsign": "FLO_TWR",
+      "areaId": "01HMJ9AKA2P5W7RR8XMAWY26HN",
+      "tcpId": "01K2NF1DFEWZYY0ZC0ASPXNH0C",
+      "tcp": "2F",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "2F",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 34.21438,
+        "lon": -79.7263
+      },
+      "range": 50,
+      "freq": 125.1
     }
   ],
   "mapGroups": [

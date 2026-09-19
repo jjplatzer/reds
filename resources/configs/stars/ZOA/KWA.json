@@ -4,57 +4,72 @@
   "name": "Bucholz ATCT",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 37.9016125,
-    "lon": -120.687685
+    "lat": 8.727778,
+    "lon": 167.739167
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01HSHKJWQFDA6X2WMA9M5TH9J0",
-      "name": "GC",
-      "callsign": "KWA_GND",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+      "id": "01HSHQEEMHH11Z3T661M0AHHEK",
+      "name": "KWA",
+      "visibilityCenter": {
+        "lat": 8.727778,
+        "lon": 167.739167
       },
-      "freq": 121.9
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "PKWA"
+      ],
+      "ssaAirports": [
+        "PKWA"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1C9SG3040HXKSYKWF6VM",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
     },
     {
+      "id": "01K2NF1C9S6FQRH03HJCBHAXCB",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
+  "controlPositions": [
+    {
       "id": "01HSHPJ3JBMWWS57GRVCR9C0J0",
+      "physicalFacility": "KWA",
       "name": "LC",
+      "radioName": "Kwajalein Tower",
       "callsign": "KWA_TWR",
+      "areaId": "01HSHQEEMHH11Z3T661M0AHHEK",
+      "tcpId": "01K2NF1C9SG3040HXKSYKWF6VM",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 8.727778,
+        "lon": 167.739167
       },
+      "range": 60,
       "freq": 126.2
     },
     {
-      "id": "1E",
+      "id": "01HSHKJWQFDA6X2WMA9M5TH9J0",
+      "physicalFacility": "KWA",
+      "name": "GC",
+      "radioName": "Kwajalein Ground",
+      "callsign": "KWA_GND",
+      "areaId": "01HSHQEEMHH11Z3T661M0AHHEK",
+      "tcpId": "01K2NF1C9S6FQRH03HJCBHAXCB",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 8.727778,
+        "lon": 167.739167
+      },
+      "range": 60,
+      "freq": 121.9
     }
   ],
   "mapGroups": [

@@ -4,315 +4,724 @@
   "name": "Philadelphia ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 35.914982499999994,
-    "lon": -73.0446825
+    "lat": 39.951135279999995,
+    "lon": -75.192837
   },
+  "areas": [
+    {
+      "id": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "17N",
+        "19N",
+        "40N",
+        "58M",
+        "7N7",
+        "9N2",
+        "CKZ",
+        "DYL",
+        "EVY",
+        "ILG",
+        "LOM",
+        "MQS",
+        "N10",
+        "N14",
+        "N47",
+        "N57",
+        "N73",
+        "NJ74",
+        "NXX",
+        "OQN",
+        "PHL",
+        "PNE",
+        "PTW",
+        "TTN",
+        "UKT",
+        "VAY"
+      ],
+      "ssaAirports": [
+        "ILG",
+        "PHL",
+        "PNE",
+        "TTN"
+      ]
+    },
+    {
+      "id": "01H2V6M19WKNJAA3JPZKC0CAB7",
+      "name": "Philly Cab",
+      "visibilityCenter": {
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "PHL"
+      ],
+      "ssaAirports": [
+        "PHL"
+      ]
+    },
+    {
+      "id": "01H9VAZW3HWH1J2V0XPBP7P1JW",
+      "name": "Northeast Philly Cab",
+      "visibilityCenter": {
+        "lat": 40.0819383,
+        "lon": -75.0105778
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "PNE"
+      ],
+      "ssaAirports": [
+        "PNE"
+      ]
+    },
+    {
+      "id": "01H9VB2SYJR5SNA02BWX6WR82D",
+      "name": "Trenton Cab",
+      "visibilityCenter": {
+        "lat": 40.2766944,
+        "lon": -74.8134722
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "TTN"
+      ],
+      "ssaAirports": [
+        "TTN"
+      ]
+    },
+    {
+      "id": "01H9VB3Y847S8RZ7A9KFNY9YXN",
+      "name": "Wilmington Cab",
+      "visibilityCenter": {
+        "lat": 39.6787097,
+        "lon": -75.606635
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ILG"
+      ],
+      "ssaAirports": [
+        "ILG"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DSFSZP8MPN2EEDGNCWQ",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSF0NCAG8WWJ0V07726",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1DSFVWVF7YT4JH20998F",
+      "parentTcp": "1Q",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFAERXYHDJY62VCM24",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1DSFA1C6HJS5PD2KDVVF",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSF1BHFKQBZ2AAN1Z3J",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DSFBSAE65NCW7014QG7",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFX7MYE903M2Y8VP35",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1DSFBSAE65NCW7014QG7",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFSJFZ1ZJNG08V99K4",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1DSF1BHFKQBZ2AAN1Z3J",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFPF9KDGF899P2C964",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "parentTcpId": "01K2NF1DSFCNY451DTK58MKFQQ",
+      "parentTcp": "1V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSF3CF95QWGPYWWE9FR",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1DSF779SXV1DJ03QZ15Y",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSF37MTPFZ3D8QWGNNK",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFBSAE65NCW7014QG7",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFT2TBWBXYDS80NYX9",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSF8RJCANHE44J8PSBY",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1DSFBSAE65NCW7014QG7",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFVWVF7YT4JH20998F",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFY8F42MFDMBWB5BVS",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSF779SXV1DJ03QZ15Y",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1DSFBSAE65NCW7014QG7",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSF9Z73PNP9HNEK6PMY",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFKVX48R2CHJ6186SY",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFCNY451DTK58MKFQQ",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1DSF1BHFKQBZ2AAN1Z3J",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFA1C6HJS5PD2KDVVF",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DSF779SXV1DJ03QZ15Y",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFAYFMVYTWAW9Q4VC4",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1DSF8RJCANHE44J8PSBY",
+      "parentTcp": "1P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFCF6NV8BY03ZD2ZZM",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFVAC212THQKGH369J",
+      "code": "2E",
+      "subset": 2,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSF5N8WXZ14G56T6VK9",
+      "code": "2O",
+      "subset": 2,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSFGCV3GMYPSSNK69QP",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G90MMFJ3S68Z22RCSYVVPTK6",
+      "id": "01GAPQW42A6CXB1XKV1QNY01A4",
+      "physicalFacility": "PNE",
       "name": "Clearance Delivery",
-      "callsign": "PHL_DEL",
+      "radioName": "Northeast Philadelphia Clearance Delivery ",
+      "callsign": "PNE_DEL",
+      "areaId": "01H9VAZW3HWH1J2V0XPBP7P1JW",
+      "tcpId": "01K2NF1DSFSZP8MPN2EEDGNCWQ",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 40.0819383,
+        "lon": -75.0105778
       },
+      "range": 50,
+      "freq": 127.25
+    },
+    {
+      "id": "01GAPQXA9F9JBKSY0HQ0FZE4WA",
+      "physicalFacility": "PNE",
+      "name": "Ground",
+      "radioName": "Northeast Philadelphia Ground",
+      "callsign": "PNE_GND",
+      "areaId": "01H9VAZW3HWH1J2V0XPBP7P1JW",
+      "tcpId": "01K2NF1DSFSZP8MPN2EEDGNCWQ",
+      "tcp": "1A",
+      "visualCenter": {
+        "lat": 40.0819383,
+        "lon": -75.0105778
+      },
+      "range": 50,
+      "freq": 121.7
+    },
+    {
+      "id": "01GAPQY01J7QMNSGF34DC551HR",
+      "physicalFacility": "PNE",
+      "name": "Local",
+      "radioName": "Northeast Philadelphia Tower",
+      "callsign": "PNE_TWR",
+      "areaId": "01H9VAZW3HWH1J2V0XPBP7P1JW",
+      "tcpId": "01K2NF1DSFSZP8MPN2EEDGNCWQ",
+      "tcp": "1A",
+      "visualCenter": {
+        "lat": 40.0819383,
+        "lon": -75.0105778
+      },
+      "range": 50,
+      "freq": 126.9
+    },
+    {
+      "id": "01G90N1HSZHVH2H4NPBZ8YYFES",
+      "physicalFacility": "PHL",
+      "name": "Local West",
+      "radioName": "Philadelphia Tower",
+      "callsign": "PHL_W_TWR",
+      "areaId": "01H2V6M19WKNJAA3JPZKC0CAB7",
+      "tcpId": "01K2NF1DSF0NCAG8WWJ0V07726",
+      "tcp": "1B",
+      "visualCenter": {
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 50,
+      "freq": 135.1
+    },
+    {
+      "id": "01G90PNDS9NZP8P69088RYGKNV",
+      "physicalFacility": "PHL",
+      "name": "Dupont",
+      "radioName": "Philadelphia Approach",
+      "callsign": "PHL_DU_APP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSFAERXYHDJY62VCM24",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 150,
+      "freq": 118.35
+    },
+    {
+      "id": "01G90P14023PKT3WQT9NBBC0K3",
+      "physicalFacility": "PHL",
+      "name": "North Departure",
+      "radioName": "Philadelphia Departure",
+      "callsign": "PHL_ND_DEP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSF1BHFKQBZ2AAN1Z3J",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 150,
+      "freq": 124.35
+    },
+    {
+      "id": "01G90PCERRTP3952MDRDM4W60E",
+      "physicalFacility": "PHL",
+      "name": "Final Vector 1",
+      "radioName": "Philadelphia Approach",
+      "callsign": "PHL_F1_APP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSFX7MYE903M2Y8VP35",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 150,
+      "freq": 125.4
+    },
+    {
+      "id": "01G90P2CES6SAE6CYVHFBVSH6G",
+      "physicalFacility": "PHL",
+      "name": "North Departure High",
+      "radioName": "Philadelphia Departure",
+      "callsign": "PHL_NH_DEP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSFSJFZ1ZJNG08V99K4",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 150,
+      "freq": 126.075
+    },
+    {
+      "id": "01G90P6R516XGB776QQDXNJ84P",
+      "physicalFacility": "PHL",
+      "name": "South Departure High",
+      "radioName": "Philadelphia Departure",
+      "callsign": "PHL_SH_DEP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSFPF9KDGF899P2C964",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 150,
+      "freq": 126.6
+    },
+    {
+      "id": "01G90PDHVKD2FEBBQS8MJQZ1QA",
+      "physicalFacility": "PHL",
+      "name": "Final Vector 2",
+      "radioName": "Philadelphia Approach",
+      "callsign": "PHL_F2_APP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSF3CF95QWGPYWWE9FR",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 150,
+      "freq": 132.675
+    },
+    {
+      "id": "01G90PADSWVAJ9M6HC0DVRNT89",
+      "physicalFacility": "PHL",
+      "name": "North Arrival",
+      "radioName": "Philadelphia Approach",
+      "callsign": "PHL_NA_APP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSFBSAE65NCW7014QG7",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 150,
+      "freq": 128.4
+    },
+    {
+      "id": "01G90PP995VXTS3J1D1R9FPJKK",
+      "physicalFacility": "PHL",
+      "name": "Pottstown",
+      "radioName": "Philadelphia Approach",
+      "callsign": "PHL_PT_APP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSF8RJCANHE44J8PSBY",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 150,
+      "freq": 126.85
+    },
+    {
+      "id": "01G90MMFJ3S68Z22RCSYVVPTK6",
+      "physicalFacility": "PHL",
+      "name": "Clearance Delivery",
+      "radioName": "Philadelphia Clearance Delivery",
+      "callsign": "PHL_DEL",
+      "areaId": "01H2V6M19WKNJAA3JPZKC0CAB7",
+      "tcpId": "01K2NF1DSFVWVF7YT4JH20998F",
+      "tcp": "1Q",
+      "visualCenter": {
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 50,
       "freq": 118.85
     },
     {
       "id": "01G90MY85454KB6Z7KJVE221W3",
+      "physicalFacility": "PHL",
       "name": "Ground",
+      "radioName": "Philadelphia Ground",
       "callsign": "PHL_GND",
+      "areaId": "01H2V6M19WKNJAA3JPZKC0CAB7",
+      "tcpId": "01K2NF1DSFVWVF7YT4JH20998F",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 39.859167,
+        "lon": -75.26675
       },
+      "range": 50,
       "freq": 121.9
     },
     {
-      "id": "01G90MZ4KHSMN1MZA8WRREXH0M",
-      "name": "Ground (Secondary)",
-      "callsign": "PHL_W_GND",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 121.65
-    },
-    {
       "id": "01G90N0PBQ4FRX6YBV2B66XFQW",
+      "physicalFacility": "PHL",
       "name": "Local East",
+      "radioName": "Philadelphia Tower",
       "callsign": "PHL_TWR",
+      "areaId": "01H2V6M19WKNJAA3JPZKC0CAB7",
+      "tcpId": "01K2NF1DSFVWVF7YT4JH20998F",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 39.859167,
+        "lon": -75.26675
       },
+      "range": 50,
       "freq": 118.5
     },
     {
-      "id": "01G90N1HSZHVH2H4NPBZ8YYFES",
-      "name": "Local West",
-      "callsign": "PHL_W_TWR",
+      "id": "01G90MZ4KHSMN1MZA8WRREXH0M",
+      "physicalFacility": "PHL",
+      "name": "Ground (Secondary)",
+      "radioName": "Philadelphia Ground",
+      "callsign": "PHL_W_GND",
+      "areaId": "01H2V6M19WKNJAA3JPZKC0CAB7",
+      "tcpId": "01K2NF1DSFVWVF7YT4JH20998F",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 39.859167,
+        "lon": -75.26675
       },
-      "freq": 135.1
-    },
-    {
-      "id": "01G90P14023PKT3WQT9NBBC0K3",
-      "name": "North Departure",
-      "callsign": "PHL_ND_DEP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 124.35
-    },
-    {
-      "id": "01G90P2CES6SAE6CYVHFBVSH6G",
-      "name": "North Departure High",
-      "callsign": "PHL_NH_DEP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 126.075
-    },
-    {
-      "id": "01G90P5VYM5E3PG8DXBFKE3M1R",
-      "name": "South Departure",
-      "callsign": "PHL_SD_DEP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 119.75
-    },
-    {
-      "id": "01G90P6R516XGB776QQDXNJ84P",
-      "name": "South Departure High",
-      "callsign": "PHL_SH_DEP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 126.6
-    },
-    {
-      "id": "01G90PADSWVAJ9M6HC0DVRNT89",
-      "name": "North Arrival",
-      "callsign": "PHL_NA_APP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 128.4
+      "range": 50,
+      "freq": 121.65
     },
     {
       "id": "01G90PB7FJEXK741B0NHFE8T02",
+      "physicalFacility": "PHL",
       "name": "South Arrival",
+      "radioName": "Philadelphia Approach",
       "callsign": "PHL_SA_APP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSF779SXV1DJ03QZ15Y",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 39.859167,
+        "lon": -75.26675
       },
+      "range": 150,
       "freq": 133.875
     },
     {
-      "id": "01G90PCERRTP3952MDRDM4W60E",
-      "name": "Final Vector 1",
-      "callsign": "PHL_F1_APP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 125.4
-    },
-    {
-      "id": "01G90PDHVKD2FEBBQS8MJQZ1QA",
-      "name": "Final Vector 2",
-      "callsign": "PHL_F2_APP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 132.675
-    },
-    {
-      "id": "01G90PM4HHY8A8GW6Z24990BFT",
-      "name": "Woodstown",
-      "callsign": "PHL_WD_APP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 127.35
-    },
-    {
-      "id": "01G90PNDS9NZP8P69088RYGKNV",
-      "name": "Dupont",
-      "callsign": "PHL_DU_APP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 118.35
-    },
-    {
-      "id": "01G90PP995VXTS3J1D1R9FPJKK",
-      "name": "Pottstown",
-      "callsign": "PHL_PT_APP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 126.85
-    },
-    {
-      "id": "01G90PPZ680XN7NNMCKA05PJ3Y",
-      "name": "Yardley",
-      "callsign": "PHL_YD_APP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 123.8
-    },
-    {
       "id": "01HM475885VSYBESE97CT8VF3X",
+      "physicalFacility": "PHL",
       "name": "TMU",
+      "radioName": "PHL TMU",
       "callsign": "PHL_T_APP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSF9Z73PNP9HNEK6PMY",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 39.859167,
+        "lon": -75.26675
       },
+      "range": 150,
       "freq": 136.5
     },
     {
-      "id": "1A",
+      "id": "01GAPQF925BFXVRWMNA562JESN",
+      "physicalFacility": "ILG",
+      "name": "Clearance Delivery",
+      "radioName": "Wilmington Clearance Delivery",
+      "callsign": "ILG_DEL",
+      "areaId": "01H9VB3Y847S8RZ7A9KFNY9YXN",
+      "tcpId": "01K2NF1DSFKVX48R2CHJ6186SY",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 39.6787097,
+        "lon": -75.606635
+      },
+      "range": 50,
+      "freq": 119.95
     },
     {
-      "id": "1B",
+      "id": "01GAPQGSC5PMCG40FE9KMXK6EN",
+      "physicalFacility": "ILG",
+      "name": "Ground",
+      "radioName": "Wilmington Ground",
+      "callsign": "ILG_GND",
+      "areaId": "01H9VB3Y847S8RZ7A9KFNY9YXN",
+      "tcpId": "01K2NF1DSFKVX48R2CHJ6186SY",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 39.6787097,
+        "lon": -75.606635
+      },
+      "range": 50,
+      "freq": 121.7
     },
     {
-      "id": "1D",
+      "id": "01GAPQHBKJAVGCEGEPS0859J3B",
+      "physicalFacility": "ILG",
+      "name": "Local",
+      "radioName": "Wilmington Tower",
+      "callsign": "ILG_TWR",
+      "areaId": "01H9VB3Y847S8RZ7A9KFNY9YXN",
+      "tcpId": "01K2NF1DSFKVX48R2CHJ6186SY",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 39.6787097,
+        "lon": -75.606635
+      },
+      "range": 50,
+      "freq": 126
     },
     {
-      "id": "1E",
+      "id": "01G90P5VYM5E3PG8DXBFKE3M1R",
+      "physicalFacility": "PHL",
+      "name": "South Departure",
+      "radioName": "Philadelphia Departure",
+      "callsign": "PHL_SD_DEP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSFCNY451DTK58MKFQQ",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 150,
+      "freq": 119.75
     },
     {
-      "id": "1F",
+      "id": "01G90PM4HHY8A8GW6Z24990BFT",
+      "physicalFacility": "PHL",
+      "name": "Woodstown",
+      "radioName": "Philadelphia Approach",
+      "callsign": "PHL_WD_APP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSFA1C6HJS5PD2KDVVF",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 150,
+      "freq": 127.35
     },
     {
-      "id": "1H",
+      "id": "01G90PPZ680XN7NNMCKA05PJ3Y",
+      "physicalFacility": "PHL",
+      "name": "Yardley",
+      "radioName": "Philadelphia Approach",
+      "callsign": "PHL_YD_APP",
+      "areaId": "01G90MJASN47WFA1BJVQZSVHMZ",
+      "tcpId": "01K2NF1DSFAYFMVYTWAW9Q4VC4",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 39.859167,
+        "lon": -75.26675
+      },
+      "range": 150,
+      "freq": 123.8
     },
     {
-      "id": "1J",
+      "id": "01GAPR0YQGB9M5809TDSKF9B6S",
+      "physicalFacility": "TTN",
+      "name": "Ground",
+      "radioName": "Trenton Ground",
+      "callsign": "TTN_GND",
+      "areaId": "01H9VB2SYJR5SNA02BWX6WR82D",
+      "tcpId": "01K2NF1DSFCF6NV8BY03ZD2ZZM",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 40.2766944,
+        "lon": -74.8134722
+      },
+      "range": 50,
+      "freq": 121.925
     },
     {
-      "id": "1L",
+      "id": "01GAPR1CW6S4JDDH0KENZQX9W6",
+      "physicalFacility": "TTN",
+      "name": "Local",
+      "radioName": "Trenton Tower",
+      "callsign": "TTN_TWR",
+      "areaId": "01H9VB2SYJR5SNA02BWX6WR82D",
+      "tcpId": "01K2NF1DSFCF6NV8BY03ZD2ZZM",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1Q",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 40.2766944,
+        "lon": -74.8134722
+      },
+      "range": 50,
+      "freq": 120.7
     }
   ],
   "mapGroups": [

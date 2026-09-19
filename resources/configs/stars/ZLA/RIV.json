@@ -4,87 +4,154 @@
   "name": "March Air Reserve Base",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 34.9691453,
-    "lon": -116.63582625
+    "lat": 33.8819433,
+    "lon": -117.2590169
   },
+  "areas": [
+    {
+      "id": "01H42X49YYJVME7F0VVRJC86GQ",
+      "name": "RIV",
+      "visibilityCenter": {
+        "lat": 33.8819433,
+        "lon": -117.2590169
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "RIV"
+      ],
+      "ssaAirports": [
+        "RIV"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CRSY6CM38Y5202ZAW9B",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1CRSR04K9ZARAJWE98KJ",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRSR04K9ZARAJWE98KJ",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KJZRBRDWK8QX79WP34H4FVMJ",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1CRSR04K9ZARAJWE98KJ",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KJZRBVVCJG5GSB0J4K4R3E96",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KJZRBZTPHHBE2RM2W4F2BY7Y",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KJZRC39MVE5078YV7WW4HCZG",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01H42X3F2KEH1WSFMBQ3CBQ6KS",
-      "name": "March Approach",
-      "callsign": "RIV_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 133.5
-    },
-    {
-      "id": "01H42X4RC1DZYEBBBGS40QYRX4",
-      "name": "March Tower",
-      "callsign": "RIV_TWR",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 127.65
-    },
-    {
-      "id": "01H42X5BF0JT2Y9VE7Y2G89CSD",
-      "name": "March Ground",
-      "callsign": "RIV_GND",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 121.75
-    },
-    {
       "id": "01KJZRDFKZGA7F4FYR9EE89S2M",
+      "physicalFacility": "RIV",
       "name": "Arrival 2",
+      "radioName": "March Approach",
       "callsign": "RIV_B_APP",
+      "areaId": "01H42X49YYJVME7F0VVRJC86GQ",
+      "tcpId": "01K2NF1CRSY6CM38Y5202ZAW9B",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 33.8819433,
+        "lon": -117.2590169
       },
+      "range": 50,
       "freq": 135
     },
     {
-      "id": "01KJZRJV6R6XX575CRC4MNWDCE",
-      "name": "Assist",
-      "callsign": "RIV_D_APP",
+      "id": "01H42X3F2KEH1WSFMBQ3CBQ6KS",
+      "physicalFacility": "RIV",
+      "name": "March Approach",
+      "radioName": "March Approach",
+      "callsign": "RIV_APP",
+      "areaId": "01H42X49YYJVME7F0VVRJC86GQ",
+      "tcpId": "01K2NF1CRSR04K9ZARAJWE98KJ",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 33.8819433,
+        "lon": -117.2590169
       },
+      "range": 50,
+      "freq": 133.5
+    },
+    {
+      "id": "01KJZRJV6R6XX575CRC4MNWDCE",
+      "physicalFacility": "RIV",
+      "name": "Assist",
+      "radioName": "March APproach",
+      "callsign": "RIV_D_APP",
+      "areaId": "01H42X49YYJVME7F0VVRJC86GQ",
+      "tcpId": "01KJZRBRDWK8QX79WP34H4FVMJ",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 33.8819433,
+        "lon": -117.2590169
+      },
+      "range": 50,
       "freq": 135.5
     },
     {
-      "id": "1A",
+      "id": "01H42X5BF0JT2Y9VE7Y2G89CSD",
+      "physicalFacility": "RIV",
+      "name": "March Ground",
+      "radioName": "March Ground",
+      "callsign": "RIV_GND",
+      "areaId": "01H42X49YYJVME7F0VVRJC86GQ",
+      "tcpId": "01KJZRC39MVE5078YV7WW4HCZG",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 33.8819433,
+        "lon": -117.2590169
+      },
+      "range": 50,
+      "freq": 121.75
     },
     {
-      "id": "1B",
+      "id": "01H42X4RC1DZYEBBBGS40QYRX4",
+      "physicalFacility": "RIV",
+      "name": "March Tower",
+      "radioName": "March Tower",
+      "callsign": "RIV_TWR",
+      "areaId": "01H42X49YYJVME7F0VVRJC86GQ",
+      "tcpId": "01KJZRC39MVE5078YV7WW4HCZG",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 33.8819433,
+        "lon": -117.2590169
+      },
+      "range": 50,
+      "freq": 127.65
     }
   ],
   "mapGroups": [

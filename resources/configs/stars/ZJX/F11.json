@@ -4,425 +4,1003 @@
   "name": "Central Florida TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 28.41693933333333,
+    "lon": -81.10955694444445
   },
+  "areas": [
+    {
+      "id": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "name": "F11",
+      "visibilityCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "MCO",
+        "ORL",
+        "SFB",
+        "MLB",
+        "ISM",
+        "LEE",
+        "COF",
+        "TIX"
+      ]
+    },
+    {
+      "id": "01GA0PDTHGW37MQKZT4QZYK0G6",
+      "name": "Orlando International Tower",
+      "visibilityCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "MCO"
+      ]
+    },
+    {
+      "id": "01HVRGMKDF0M7RDP4CJ311VQNJ",
+      "name": "Sanford Cab",
+      "visibilityCenter": {
+        "lat": 28.7771781,
+        "lon": -81.2349139
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "SFB"
+      ],
+      "ssaAirports": [
+        "SFB"
+      ]
+    },
+    {
+      "id": "01J97YQFF0DHY6MSWWJNDCY3WC",
+      "name": "Orlando Executive Cab",
+      "visibilityCenter": {
+        "lat": 28.5454617,
+        "lon": -81.33293
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "ORL"
+      ]
+    },
+    {
+      "id": "01JFPESMFX415RBMESZDWGH4SE",
+      "name": "Orlando International Delivery/Ground",
+      "visibilityCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "KMCO"
+      ],
+      "ssaAirports": [
+        "MCO"
+      ]
+    },
+    {
+      "id": "01JFTAXRPXESFF168MQ1A4ZVN0",
+      "name": "Melbourne Cab",
+      "visibilityCenter": {
+        "lat": 28.103,
+        "lon": -80.645
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "MLB"
+      ],
+      "ssaAirports": [
+        "MLB"
+      ]
+    },
+    {
+      "id": "01JFTCHTEX25D1PFND7RD87X2J",
+      "name": "Titusville Cab",
+      "visibilityCenter": {
+        "lat": 28.5148056,
+        "lon": -80.7992222
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "TIX"
+      ],
+      "ssaAirports": [
+        "TIX"
+      ]
+    },
+    {
+      "id": "01JFV0TYFQ158EFD61FKPR5J1D",
+      "name": "Kissimmee Gateway Cab",
+      "visibilityCenter": {
+        "lat": 28.29,
+        "lon": -81.437
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ISM"
+      ],
+      "ssaAirports": [
+        "ISM"
+      ]
+    },
+    {
+      "id": "01JG07GSCRN2HDGT3P9EJBRPAP",
+      "name": "Patrick Tower ",
+      "visibilityCenter": {
+        "lat": 28.2350086,
+        "lon": -80.6099764
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "COF"
+      ],
+      "ssaAirports": [
+        "COF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFDT7G1AYPQE2SPS5VM",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1DFD0PF4QE776H6TCWCS",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDNQ2T94BK89M5PF50",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1DFD0M088KH8C16DFSQR",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFD0PF4QE776H6TCWCS",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1DFDXWPG5D0C5QRVD65Y",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFD0M088KH8C16DFSQR",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFD085MFMJR005SS93F",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1DFDKV55SY06W5RXSH68",
+      "parentTcp": "1M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFD7ZMG8QYEMCTCXCB7",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "parentTcpId": "01K2NF1DFDT7G1AYPQE2SPS5VM",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDXAPMD4NY1Q427ASV",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1DFDNQ2T94BK89M5PF50",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDKV55SY06W5RXSH68",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1DFDNQ2T94BK89M5PF50",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFD6ZNRZVRXEV3DPKEN",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1DFD0PF4QE776H6TCWCS",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFD3DEZ6V3E3JQ2WCNZ",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1DFD6ZNRZVRXEV3DPKEN",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDF6WQQK9ZXP9P879X",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1DFD0M088KH8C16DFSQR",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFD8CEDT2MPF79CDBT8",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1DFD6ZNRZVRXEV3DPKEN",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDXWPG5D0C5QRVD65Y",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DFD0M088KH8C16DFSQR",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDB0F43D307XXSKENF",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1DFD6ZNRZVRXEV3DPKEN",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDHC4YTC6R0ZD18TGN",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFD9TK0WWN85RXV2J5R",
+      "code": "2Z",
+      "subset": 2,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDPGYWFFMFNJ8DY5DK",
+      "code": "3A",
+      "subset": 3,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFD55TNKBGJ7T7WBXPA",
+      "code": "3B",
+      "subset": 3,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFD30G0W2R6TZQ190TQ",
+      "code": "3C",
+      "subset": 3,
+      "sectorId": "C",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDS26QRQMEFP0MAANQ",
+      "code": "3E",
+      "subset": 3,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DFD2ANC7V1WHQBGAPD3",
+      "parentTcp": "3W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDSGREFS59DHR57KHE",
+      "code": "3F",
+      "subset": 3,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDNJXDN8C6GZF6C6X8",
+      "code": "3G",
+      "subset": 3,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDZGKH1THZ3SA5QE2R",
+      "code": "3H",
+      "subset": 3,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1DFDS26QRQMEFP0MAANQ",
+      "parentTcp": "3E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDC43KM4WDPD0CYVAF",
+      "code": "3J",
+      "subset": 3,
+      "sectorId": "J",
+      "parentTcpId": "01K2NF1DFDSGREFS59DHR57KHE",
+      "parentTcp": "3F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDFM6E8VNBHY6ES8G2",
+      "code": "3K",
+      "subset": 3,
+      "sectorId": "K",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDX89DKYYB4W3A22XD",
+      "code": "3N",
+      "subset": 3,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDA86C1380AEK3JKTF",
+      "code": "3O",
+      "subset": 3,
+      "sectorId": "O",
+      "parentTcpId": "01K2NF1DFD2ANC7V1WHQBGAPD3",
+      "parentTcp": "3W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDYV7AR499VCQRTEXV",
+      "code": "3S",
+      "subset": 3,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFD9WBHEXNVG7WTVX2H",
+      "code": "3T",
+      "subset": 3,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFDN5YQTRAVXWTS67TG",
+      "code": "3U",
+      "subset": 3,
+      "sectorId": "U",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DFD2ANC7V1WHQBGAPD3",
+      "code": "3W",
+      "subset": 3,
+      "sectorId": "W",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GA09CE528WPRPEAZYKFEPH3M",
-      "name": "Departure Radar East",
-      "callsign": "MCO_E_DEP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 124.8
-    },
-    {
-      "id": "01GA09PSHVMTQHNAP047VK2JHX",
-      "name": "Departure Radar West",
-      "callsign": "MCO_W_DEP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 120.15
-    },
-    {
-      "id": "01HNRVDH0CHSKW4X63YVSKGHQX",
-      "name": "Arrival Radar East",
-      "callsign": "MCO_E_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 124.8
-    },
-    {
-      "id": "01HNRVF52F63805HEB96H16WKT",
-      "name": "Arrival Radar West",
-      "callsign": "MCO_W_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 120.15
-    },
-    {
-      "id": "01HNRVG2QZBYAM9TXZWRDMSNS7",
-      "name": "Arrival Radar Bitho",
-      "callsign": "MCO_B_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 128.375
-    },
-    {
-      "id": "01HNRVGY8RWC4XPQYRVP4TM45A",
-      "name": "Arrival Radar Leese",
-      "callsign": "MCO_L_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 134.05
-    },
-    {
-      "id": "01HNRVHNE1RSV35YR60GGTGJNK",
-      "name": "Satellite Radar Disney",
-      "callsign": "MCO_D_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 119.4
-    },
-    {
-      "id": "01HNRVJQEH75P0QG0GVZS7TGFY",
-      "name": "Satellite Radar Seminole",
-      "callsign": "MCO_N_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 135.3
-    },
-    {
-      "id": "01HNRVM9SA3HEX92YRAQ63YHF6",
-      "name": "Satellite Radar Valor",
-      "callsign": "MCO_V_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 119.775
-    },
-    {
-      "id": "01HNRVMVTFETQ5ZH1VTZHXK1SA",
-      "name": "Satellite Radar Kape",
-      "callsign": "MCO_K_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 134.95
-    },
-    {
       "id": "01HNRVP6469XNSAMRDT8AH89NG",
+      "physicalFacility": "F11",
       "name": "Satellite Radar Palm",
+      "radioName": "Orlando Approach",
       "callsign": "MCO_A_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFDT7G1AYPQE2SPS5VM",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 28.429,
+        "lon": -81.30899
       },
+      "range": 150,
       "freq": 126.025
     },
     {
-      "id": "01HNRVPTK6D3A9GS4K4NHJGAM2",
-      "name": "Arrival Radar M",
-      "callsign": "MCO_M_APP",
+      "id": "01HNRVG2QZBYAM9TXZWRDMSNS7",
+      "physicalFacility": "F11",
+      "name": "Arrival Radar Bitho",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_B_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFDNQ2T94BK89M5PF50",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 28.429,
+        "lon": -81.30899
       },
-      "freq": 127.75
+      "range": 150,
+      "freq": 128.375
     },
     {
-      "id": "01HNRVQSV8MZPZD34CMK5V3A46",
-      "name": "Arrival Radar G",
-      "callsign": "MCO_G_APP",
+      "id": "01HNRVHNE1RSV35YR60GGTGJNK",
+      "physicalFacility": "F11",
+      "name": "Satellite Radar Disney",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_D_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFD0PF4QE776H6TCWCS",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 28.429,
+        "lon": -81.30899
       },
-      "freq": 123.85
+      "range": 150,
+      "freq": 119.4
     },
     {
-      "id": "01JFF3TFTW5KAZY9VM558XJ8QT",
-      "name": "Arrival Radar Rocket",
-      "callsign": "MCO_R_APP",
+      "id": "01HNRVDH0CHSKW4X63YVSKGHQX",
+      "physicalFacility": "F11",
+      "name": "Arrival Radar East",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_E_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFD0M088KH8C16DFSQR",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 28.429,
+        "lon": -81.30899
       },
-      "freq": 127.325
+      "range": 150,
+      "freq": 124.8
     },
     {
-      "id": "01JFF6MCF5ZXQY6PPSDYPP8K8V",
-      "name": "Satellite Radar X-Ray",
-      "callsign": "MCO_X_APP",
+      "id": "01GA09CE528WPRPEAZYKFEPH3M",
+      "physicalFacility": "F11",
+      "name": "Departure Radar East",
+      "radioName": "Orlando Departure",
+      "callsign": "MCO_E_DEP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFD0M088KH8C16DFSQR",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 28.429,
+        "lon": -81.30899
       },
-      "freq": 120.225
-    },
-    {
-      "id": "01JFF6V7770M856EWAZ4SKN1V7",
-      "name": "Satellite Radar Paola",
-      "callsign": "MCO_P_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 128.45
-    },
-    {
-      "id": "01JFPJ4M9Y0KEN2M80KVG63NGN",
-      "name": "Final Monitor M",
-      "callsign": "MCO_FM_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 118.45
+      "range": 150,
+      "freq": 124.8
     },
     {
       "id": "01JFPJ9FADJTA482W7ZDZPQ1V7",
+      "physicalFacility": "F11",
       "name": "Final Monitor G",
+      "radioName": "Orlando Approach",
       "callsign": "MCO_FG_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFD085MFMJR005SS93F",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 28.429,
+        "lon": -81.30899
       },
+      "range": 150,
       "freq": 124.3
     },
     {
-      "id": "01K2J9PFXWQZTBA5GWDFSMRQ59",
-      "name": "F11 TMU/CIC",
-      "callsign": "MCO_T_APP",
+      "id": "01HNRVQSV8MZPZD34CMK5V3A46",
+      "physicalFacility": "F11",
+      "name": "Arrival Radar G",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_G_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFD085MFMJR005SS93F",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 28.429,
+        "lon": -81.30899
       },
+      "range": 150,
+      "freq": 123.85
+    },
+    {
+      "id": "01HNRVMVTFETQ5ZH1VTZHXK1SA",
+      "physicalFacility": "F11",
+      "name": "Satellite Radar Kape",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_K_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFD7ZMG8QYEMCTCXCB7",
+      "tcp": "1K",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
+      "freq": 134.95
+    },
+    {
+      "id": "01HNRVGY8RWC4XPQYRVP4TM45A",
+      "physicalFacility": "F11",
+      "name": "Arrival Radar Leese",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_L_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFDXAPMD4NY1Q427ASV",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
+      "freq": 134.05
+    },
+    {
+      "id": "01JFPJ4M9Y0KEN2M80KVG63NGN",
+      "physicalFacility": "F11",
+      "name": "Final Monitor M",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_FM_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFDKV55SY06W5RXSH68",
+      "tcp": "1M",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
+      "freq": 118.45
+    },
+    {
+      "id": "01HNRVPTK6D3A9GS4K4NHJGAM2",
+      "physicalFacility": "F11",
+      "name": "Arrival Radar M",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_M_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFDKV55SY06W5RXSH68",
+      "tcp": "1M",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
+      "freq": 127.75
+    },
+    {
+      "id": "01HNRVJQEH75P0QG0GVZS7TGFY",
+      "physicalFacility": "F11",
+      "name": "Satellite Radar Seminole",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_N_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFD6ZNRZVRXEV3DPKEN",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
+      "freq": 135.3
+    },
+    {
+      "id": "01JFF6V7770M856EWAZ4SKN1V7",
+      "physicalFacility": "F11",
+      "name": "Satellite Radar Paola",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_P_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFD3DEZ6V3E3JQ2WCNZ",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
+      "freq": 128.45
+    },
+    {
+      "id": "01JFF3TFTW5KAZY9VM558XJ8QT",
+      "physicalFacility": "F11",
+      "name": "Arrival Radar Rocket",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_R_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFDF6WQQK9ZXP9P879X",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
+      "freq": 127.325
+    },
+    {
+      "id": "01HNRVM9SA3HEX92YRAQ63YHF6",
+      "physicalFacility": "F11",
+      "name": "Satellite Radar Valor",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_V_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFD8CEDT2MPF79CDBT8",
+      "tcp": "1V",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
+      "freq": 119.775
+    },
+    {
+      "id": "01HNRVF52F63805HEB96H16WKT",
+      "physicalFacility": "F11",
+      "name": "Arrival Radar West",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_W_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFDXWPG5D0C5QRVD65Y",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
+      "freq": 120.15
+    },
+    {
+      "id": "01GA09PSHVMTQHNAP047VK2JHX",
+      "physicalFacility": "F11",
+      "name": "Departure Radar West",
+      "radioName": "Orlando Departure",
+      "callsign": "MCO_W_DEP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFDXWPG5D0C5QRVD65Y",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
+      "freq": 120.15
+    },
+    {
+      "id": "01JFF6MCF5ZXQY6PPSDYPP8K8V",
+      "physicalFacility": "F11",
+      "name": "Satellite Radar X-Ray",
+      "radioName": "Orlando Approach",
+      "callsign": "MCO_X_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFDB0F43D307XXSKENF",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
+      "freq": 120.225
+    },
+    {
+      "id": "01K2J9PFXWQZTBA5GWDFSMRQ59",
+      "physicalFacility": "F11",
+      "name": "F11 TMU/CIC",
+      "radioName": "F11 TMU/CIC",
+      "callsign": "MCO_T_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFDHC4YTC6R0ZD18TGN",
+      "tcp": "2T",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
       "freq": 136.9
     },
     {
       "id": "01K2J9STKWDKD5QZ0WJ42MSKNA",
+      "physicalFacility": "F11",
       "name": "ZJX TMU",
+      "radioName": "ZJX TMU",
       "callsign": "MCO_ZT_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFDHC4YTC6R0ZD18TGN",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 28.429,
+        "lon": -81.30899
       },
+      "range": 150,
       "freq": 136.775
     },
     {
       "id": "01K2JA8FK6BD529CCG4J5FKDSM",
+      "physicalFacility": "F11",
       "name": "ZJX LANDLINE",
+      "radioName": "ZJX LANDLINE",
       "callsign": "MCO_Z_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "tcpId": "01K2NF1DFD9TK0WWN85RXV2J5R",
+      "tcp": "2Z",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 28.429,
+        "lon": -81.30899
       },
+      "range": 150,
       "freq": 132.65
     },
     {
-      "id": "01KD1NMJ03NDA7EF3958757C30",
-      "name": "Guard",
-      "callsign": "MCO_APP",
+      "id": "01GA802SMWR0GZE4VBF63AT5Q0",
+      "physicalFacility": "MLB",
+      "name": "Local Control",
+      "radioName": "Melbourne Tower",
+      "callsign": "MLB_TWR",
+      "areaId": "01JFTAXRPXESFF168MQ1A4ZVN0",
+      "tcpId": "01K2NF1DFD55TNKBGJ7T7WBXPA",
+      "tcp": "3B",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 28.103,
+        "lon": -80.645
       },
+      "range": 50,
+      "freq": 118.2
+    },
+    {
+      "id": "01JG0TBC27GSCYZSN772BCK0CC",
+      "physicalFacility": "COF",
+      "name": "Patrick Tower",
+      "radioName": "Patrick Tower",
+      "callsign": "COF_TWR",
+      "areaId": "01JG07GSCRN2HDGT3P9EJBRPAP",
+      "tcpId": "01K2NF1DFD30G0W2R6TZQ190TQ",
+      "tcp": "3C",
+      "visualCenter": {
+        "lat": 28.2350086,
+        "lon": -80.6099764
+      },
+      "range": 50,
+      "freq": 133.75
+    },
+    {
+      "id": "01GA7RKBZGZQMFX4V5VCHBVPWE",
+      "physicalFacility": "MCO",
+      "name": "Local Control East",
+      "radioName": "Orlando Tower",
+      "callsign": "MCO_E_TWR",
+      "areaId": "01GA0PDTHGW37MQKZT4QZYK0G6",
+      "tcpId": "01K2NF1DFDS26QRQMEFP0MAANQ",
+      "tcp": "3E",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 50,
+      "freq": 118.45
+    },
+    {
+      "id": "01GA7ZSG4ZF8W5P834WNSGP5JW",
+      "physicalFacility": "SFB",
+      "name": "Local Control North",
+      "radioName": "Sanford Tower",
+      "callsign": "SFB_N_TWR",
+      "areaId": "01HVRGMKDF0M7RDP4CJ311VQNJ",
+      "tcpId": "01K2NF1DFDSGREFS59DHR57KHE",
+      "tcp": "3F",
+      "visualCenter": {
+        "lat": 28.7771781,
+        "lon": -81.2349139
+      },
+      "range": 50,
+      "freq": 120.3
+    },
+    {
+      "id": "01GA7RFNWRP245GSY79MDBPMZJ",
+      "physicalFacility": "MCO",
+      "name": "Ground Control East",
+      "radioName": "Orlando Ground",
+      "callsign": "MCO_E_GND",
+      "areaId": "01GA0PDTHGW37MQKZT4QZYK0G6",
+      "tcpId": "01K2NF1DFDZGKH1THZ3SA5QE2R",
+      "tcp": "3H",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 50,
+      "freq": 126.4
+    },
+    {
+      "id": "01GA7ZQC9JE968145050RR1GNZ",
+      "physicalFacility": "SFB",
+      "name": "Clearance Delivery",
+      "radioName": "Sanford Clearance Delivery",
+      "callsign": "SFB_DEL",
+      "areaId": "01HVRGMKDF0M7RDP4CJ311VQNJ",
+      "tcpId": "01K2NF1DFDC43KM4WDPD0CYVAF",
+      "tcp": "3J",
+      "visualCenter": {
+        "lat": 28.7771781,
+        "lon": -81.2349139
+      },
+      "range": 50,
+      "freq": 123.975
+    },
+    {
+      "id": "01GA7ZRMJ6SPQ9KGVHS9BW4REY",
+      "physicalFacility": "SFB",
+      "name": "Ground Control",
+      "radioName": "Sanford Ground",
+      "callsign": "SFB_GND",
+      "areaId": "01HVRGMKDF0M7RDP4CJ311VQNJ",
+      "tcpId": "01K2NF1DFDC43KM4WDPD0CYVAF",
+      "tcp": "3J",
+      "visualCenter": {
+        "lat": 28.7771781,
+        "lon": -81.2349139
+      },
+      "range": 50,
+      "freq": 121.35
+    },
+    {
+      "id": "01GA7ZVHHNG5A6M70X5FBJH6QM",
+      "physicalFacility": "SFB",
+      "name": "Local Control South",
+      "radioName": "Sanford Tower",
+      "callsign": "SFB_S_TWR",
+      "areaId": "01HVRGMKDF0M7RDP4CJ311VQNJ",
+      "tcpId": "01K2NF1DFDC43KM4WDPD0CYVAF",
+      "tcp": "3J",
+      "visualCenter": {
+        "lat": 28.7771781,
+        "lon": -81.2349139
+      },
+      "range": 50,
+      "freq": 135.25
+    },
+    {
+      "id": "01HAPQTSA1X6HZKHJRTE12FZHF",
+      "physicalFacility": "ISM",
+      "name": "Tower",
+      "radioName": "Kissimmee Tower",
+      "callsign": "ISM_TWR",
+      "areaId": "01JFV0TYFQ158EFD61FKPR5J1D",
+      "tcpId": "01K2NF1DFDFM6E8VNBHY6ES8G2",
+      "tcp": "3K",
+      "visualCenter": {
+        "lat": 28.29,
+        "lon": -81.437
+      },
+      "range": 50,
+      "freq": 124.45
+    },
+    {
+      "id": "01GA7R5XPSKFKRGV4ZEWBMEB9T",
+      "physicalFacility": "MCO",
+      "name": "Clearance Delivery",
+      "radioName": "Orlando Clearance Delivery",
+      "callsign": "MCO_DEL",
+      "areaId": "01GA0PDTHGW37MQKZT4QZYK0G6",
+      "tcpId": "01K2NF1DFDA86C1380AEK3JKTF",
+      "tcp": "3O",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 50,
+      "freq": 134.7
+    },
+    {
+      "id": "01GA7R6TGF49YNCR80GQVGZRVK",
+      "physicalFacility": "MCO",
+      "name": "Ground Control West",
+      "radioName": "Orlando Ground",
+      "callsign": "MCO_W_GND",
+      "areaId": "01GA0PDTHGW37MQKZT4QZYK0G6",
+      "tcpId": "01K2NF1DFDA86C1380AEK3JKTF",
+      "tcp": "3O",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 50,
+      "freq": 121.8
+    },
+    {
+      "id": "01HB9GNRG3BRZY2ZZNHT1MB0QT",
+      "physicalFacility": "TIX",
+      "name": "Tower",
+      "radioName": "Space Coast Tower",
+      "callsign": "TIX_TWR",
+      "areaId": "01JFTCHTEX25D1PFND7RD87X2J",
+      "tcpId": "01K2NF1DFDYV7AR499VCQRTEXV",
+      "tcp": "3S",
+      "visualCenter": {
+        "lat": 28.5148056,
+        "lon": -80.7992222
+      },
+      "range": 50,
+      "freq": 118.9
+    },
+    {
+      "id": "01GA7WR4DBHXJ41RAPFCSMM4CQ",
+      "physicalFacility": "ORL",
+      "name": "Ground Control",
+      "radioName": "Executive Ground",
+      "callsign": "ORL_GND",
+      "areaId": "01J97YQFF0DHY6MSWWJNDCY3WC",
+      "tcpId": "01K2NF1DFD9WBHEXNVG7WTVX2H",
+      "tcp": "3T",
+      "visualCenter": {
+        "lat": 28.5454617,
+        "lon": -81.33293
+      },
+      "range": 50,
+      "freq": 121.4
+    },
+    {
+      "id": "01GA7WRYVV7QH15TM9HB1XJJ86",
+      "physicalFacility": "ORL",
+      "name": "Local Control",
+      "radioName": "Executive Tower",
+      "callsign": "ORL_TWR",
+      "areaId": "01J97YQFF0DHY6MSWWJNDCY3WC",
+      "tcpId": "01K2NF1DFD9WBHEXNVG7WTVX2H",
+      "tcp": "3T",
+      "visualCenter": {
+        "lat": 28.5454617,
+        "lon": -81.33293
+      },
+      "range": 50,
+      "freq": 118.7
+    },
+    {
+      "id": "01KAQDW4TAZ5A8CXH8610RN2X4",
+      "physicalFacility": "MCO",
+      "name": "MCO CIC",
+      "radioName": "Orlando CIC",
+      "callsign": "MCO_C_TWR",
+      "areaId": "01GA0PDTHGW37MQKZT4QZYK0G6",
+      "tcpId": "01K2NF1DFD2ANC7V1WHQBGAPD3",
+      "tcp": "3W",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 50,
+      "freq": 124.3
+    },
+    {
+      "id": "01GA7RGN52X1RAMWCN4740WAAR",
+      "physicalFacility": "MCO",
+      "name": "Local Control West",
+      "radioName": "Orlando Tower",
+      "callsign": "MCO_W_TWR",
+      "areaId": "01GA0PDTHGW37MQKZT4QZYK0G6",
+      "tcpId": "01K2NF1DFD2ANC7V1WHQBGAPD3",
+      "tcp": "3W",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 50,
+      "freq": 124.3
+    },
+    {
+      "id": "01KD1NMJ03NDA7EF3958757C30",
+      "physicalFacility": "F11",
+      "name": "Guard",
+      "radioName": "F11 GUARD",
+      "callsign": "MCO_APP",
+      "areaId": "01GA0910QYT9R3XTT1B0HPAF3N",
+      "visualCenter": {
+        "lat": 28.429,
+        "lon": -81.30899
+      },
+      "range": 150,
       "freq": 121.5
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3A",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3B",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3C",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3E",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3F",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3H",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3J",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3K",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3O",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3S",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3W",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "4F",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "4O",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
     }
   ],
   "mapGroups": [

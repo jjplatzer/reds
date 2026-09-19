@@ -4,73 +4,114 @@
   "name": "Lubbock ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 33.66805556,
+    "lon": -101.854722
   },
+  "areas": [
+    {
+      "id": "01H3AAZV1MEK99DDQ1JANP8PQV",
+      "name": "LBB",
+      "visibilityCenter": {
+        "lat": 33.66805556,
+        "lon": -101.854722
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "2F4",
+        "41F",
+        "5F1",
+        "8F3",
+        "BFE",
+        "F49",
+        "F83",
+        "LBB",
+        "LIU",
+        "LLN",
+        "PVW"
+      ],
+      "ssaAirports": [
+        "LBB"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8TWER06Q33G8DF6QNG",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1D8T5PXKP2C386J902SB",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01H3AARHAWHBAM896YNP9GJYZC",
+      "physicalFacility": "LBB",
       "name": "East Radar",
+      "radioName": "Lubbock Approach",
       "callsign": "LBB_APP",
+      "areaId": "01H3AAZV1MEK99DDQ1JANP8PQV",
+      "tcpId": "01K2NF1D8TWER06Q33G8DF6QNG",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 33.66805556,
+        "lon": -101.854722
       },
+      "range": 150,
       "freq": 119.2
     },
     {
-      "id": "01H3AB1J9J96ZYPWBH8AE1SZG0",
-      "name": "Local",
-      "callsign": "LBB_TWR",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 120.5
-    },
-    {
-      "id": "01H3AB2RVMZRT0MJTQ6HZJF0W5",
-      "name": "Ground",
-      "callsign": "LBB_GND",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.9
-    },
-    {
       "id": "01H3AB4BDGVTR228JSYS7SDBC3",
+      "physicalFacility": "LBB",
       "name": "Clearance",
+      "radioName": "Lubbock Clearance",
       "callsign": "LBB_DEL",
+      "areaId": "01H3AAZV1MEK99DDQ1JANP8PQV",
+      "tcpId": "01K2NF1D8T5PXKP2C386J902SB",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 33.66805556,
+        "lon": -101.854722
       },
+      "range": 150,
       "freq": 125.8
     },
     {
-      "id": "01J9YHV33JGKBTC709RWX5WA9B",
-      "name": "Guard",
-      "callsign": "LBB_EM_APP",
+      "id": "01H3AB2RVMZRT0MJTQ6HZJF0W5",
+      "physicalFacility": "LBB",
+      "name": "Ground",
+      "radioName": "Lubbock Ground",
+      "callsign": "LBB_GND",
+      "areaId": "01H3AAZV1MEK99DDQ1JANP8PQV",
+      "tcpId": "01K2NF1D8T5PXKP2C386J902SB",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 33.66805556,
+        "lon": -101.854722
       },
-      "freq": 121.5
+      "range": 150,
+      "freq": 121.9
     },
     {
-      "id": "1E",
+      "id": "01H3AB1J9J96ZYPWBH8AE1SZG0",
+      "physicalFacility": "LBB",
+      "name": "Local",
+      "radioName": "Lubbock Tower",
+      "callsign": "LBB_TWR",
+      "areaId": "01H3AAZV1MEK99DDQ1JANP8PQV",
+      "tcpId": "01K2NF1D8T5PXKP2C386J902SB",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 33.66805556,
+        "lon": -101.854722
+      },
+      "range": 150,
+      "freq": 120.5
     }
   ],
   "mapGroups": [

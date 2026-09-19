@@ -4,392 +4,547 @@
   "name": "Charlotte ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.90558406666667,
-    "lon": -83.96840666666667
+    "lat": 35.27115224467227,
+    "lon": -80.86678780529449
   },
+  "areas": [
+    {
+      "id": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "CLT"
+      ]
+    },
+    {
+      "id": "01GWG966SAZS3NT8JKQAFNQH31",
+      "name": "Cab",
+      "visibilityCenter": {
+        "lat": 35.21389,
+        "lon": -80.94301
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "CLT"
+      ]
+    },
+    {
+      "id": "01H2H407R9AJPRJXV3TKESTV2A",
+      "name": "JQF ",
+      "visibilityCenter": {
+        "lat": 35.385333,
+        "lon": -80.709667
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "JQF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E98TMPKCKFV828XYYQZ",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1E98VNWDCAAX624DT5JR",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1E98S05KY9AFERAC7VJF",
+      "parentTcp": "1U"
+    },
+    {
+      "id": "01K2NF1E986YK6JXTF9S1ANZQV",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E98C9AD02N1916Y2F6H",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1E98H0WZCMZ13P5ATVJG",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1E98M868RGD08CRX9072",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1E98C9AD02N1916Y2F6H",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1E98SX3HY5FNE8XF267Z",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1E98AAJX866KNH91VP6Z",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K2NF1E98DQENH0KZ8X2W02PM",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1E98S00VMS90ZDHYQZ79",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1E981ZRV8AWF8EE8G0AG",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "parentTcpId": "01K2NF1E98WRRGE794WXHE39PP",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1E98SKY83JBX5ZV98B16",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q",
+      "parentTcpId": "01K2NF1E98DQENH0KZ8X2W02PM",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1E98GQ2RDQPQ3BPHY5RF",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1E98S00VMS90ZDHYQZ79",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E98C9AD02N1916Y2F6H",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1E98WRRGE794WXHE39PP",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1E98SX3HY5FNE8XF267Z",
+      "parentTcp": "1K"
+    },
+    {
+      "id": "01K2NF1E98S05KY9AFERAC7VJF",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1E98M868RGD08CRX9072",
+      "parentTcp": "1H"
+    },
+    {
+      "id": "01K2NF1E98C9AD02N1916Y2F6H",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1E98W5R62J6CWRZ4KSQT",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    },
+    {
+      "id": "01K2NF1E98VM66RXFQH2KYNE2A",
+      "code": "2B",
+      "subset": 2,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1E98HNJNSR4A2YFD94VN",
+      "code": "2E",
+      "subset": 2,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E98C9AD02N1916Y2F6H",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1E987ESTSJY2QD8Z38XF",
+      "code": "2J",
+      "subset": 2,
+      "sectorId": "J"
+    },
+    {
+      "id": "01K2NF1E984978V2E1XSE4PY2C",
+      "code": "2R",
+      "subset": 2,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1E98N96YDTMSA13PF8A2",
+      "code": "2W",
+      "subset": 2,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GWG8TNFGRT9B3F1RBR6NG75Q",
-      "name": "Local Control East",
-      "callsign": "CLT_TWR",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 118.1
-    },
-    {
-      "id": "01GWG8ZF18602RB8J00F5S5QFM",
-      "name": "Local Control Center",
-      "callsign": "CLT_TWR",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 126.4
-    },
-    {
-      "id": "01GWG903A7RM8G2993JF7PTMA8",
-      "name": "Local Control West",
-      "callsign": "CLT_TWR",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 133.35
-    },
-    {
-      "id": "01GWG90PE9Z3PNVQ6SQZNGT4DX",
-      "name": "Ground Control West",
-      "callsign": "CLT_GND",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.8
-    },
-    {
-      "id": "01GWG91R2KCMZW38TE74JRM90C",
-      "name": "Ground Control East",
-      "callsign": "CLT_GND",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GWG93613CT1SZF5MY61P4Z6V",
-      "name": "Clearance Delivery",
-      "callsign": "CLT_DEL",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 127.15
-    },
-    {
-      "id": "01GWG9ANV212TX2VKSY9CSHQ54",
-      "name": "Arrival Radar East",
-      "callsign": "CLT_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 126.15
-    },
-    {
-      "id": "01GWG9EQW67XZ57DAC4F334VT0",
-      "name": "Arrival Radar NW",
-      "callsign": "CLT_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 125.35
-    },
-    {
-      "id": "01GWG9FKXJW2W5B7G8040JJTWA",
-      "name": "Arrival Radar SW",
-      "callsign": "CLT_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 135.6
-    },
-    {
       "id": "01GWG9W7GQKZZ4403A8CE6HK31",
+      "physicalFacility": "CLT",
       "name": "Final East",
+      "radioName": "Charlotte Approach",
       "callsign": "CLT_APP",
+      "areaId": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "tcpId": "01K2NF1E98TMPKCKFV828XYYQZ",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
       },
+      "range": 150,
       "freq": 127.7
     },
     {
-      "id": "01GWG9XH4Q42HNCN9DWEV9MRDF",
-      "name": "Final Center",
+      "id": "01GWG9FKXJW2W5B7G8040JJTWA",
+      "physicalFacility": "CLT",
+      "name": "Arrival Radar SW",
+      "radioName": "Charlotte Approach",
       "callsign": "CLT_APP",
+      "areaId": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "tcpId": "01K2NF1E98VNWDCAAX624DT5JR",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
       },
-      "freq": 119
-    },
-    {
-      "id": "01GWGA32BJCMDAVA49APG6FVB8",
-      "name": "Departure Radar West",
-      "callsign": "CLT_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 120.5
+      "range": 150,
+      "freq": 135.6
     },
     {
       "id": "01GWGA4CD6VWD30CCZ762Q1RGB",
+      "physicalFacility": "CLT",
       "name": "Departure Radar East",
+      "radioName": "Charlotte Departure",
       "callsign": "CLT_DEP",
+      "areaId": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "tcpId": "01K2NF1E986YK6JXTF9S1ANZQV",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
       },
+      "range": 150,
       "freq": 124
     },
     {
-      "id": "01GWGA5495FSZWZ5XHJ8B086QP",
-      "name": "Satellite Radar North ",
-      "callsign": "CLT_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 134.75
-    },
-    {
-      "id": "01GWGA8B2ER1GVWV1W06S36XW0",
-      "name": "Satellite Radar South",
-      "callsign": "CLT_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 120.05
-    },
-    {
-      "id": "01GWGAA0MQ71FZJ8GBXRF5YA7C",
-      "name": "Satellite Radar Concord",
-      "callsign": "CLT_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 128.325
-    },
-    {
-      "id": "01HC65BG369S8SGN7MJT4NN0ZN",
-      "name": "TRACON CIC",
-      "callsign": "CLT_TMU",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 127.26
-    },
-    {
       "id": "01HC67KZKJ3J4FGMRQ8J49A5MJ",
+      "physicalFacility": "CLT",
       "name": "Final West",
+      "radioName": "Charlotte Approach",
       "callsign": "CLT_APP",
+      "areaId": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "tcpId": "01K2NF1E98H0WZCMZ13P5ATVJG",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
       },
+      "range": 150,
       "freq": 132.7
     },
     {
-      "id": "01HMHPDKG8RHMQ3AS3EBHHEFQP",
-      "name": "Ramp North",
-      "callsign": "CLT_RMP",
+      "id": "01GWG9ANV212TX2VKSY9CSHQ54",
+      "physicalFacility": "CLT",
+      "name": "Arrival Radar East",
+      "radioName": "Charlotte Approach",
+      "callsign": "CLT_APP",
+      "areaId": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "tcpId": "01K2NF1E98M868RGD08CRX9072",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
       },
+      "range": 150,
+      "freq": 126.15
+    },
+    {
+      "id": "01GWG8TNFGRT9B3F1RBR6NG75Q",
+      "physicalFacility": "CLT",
+      "name": "Local Control East",
+      "radioName": "Charlotte Tower",
+      "callsign": "CLT_TWR",
+      "areaId": "01GWG966SAZS3NT8JKQAFNQH31",
+      "tcpId": "01K2NF1E98SX3HY5FNE8XF267Z",
+      "tcp": "1K",
+      "visualCenter": {
+        "lat": 35.21389,
+        "lon": -80.94301
+      },
+      "range": 50,
+      "freq": 118.1
+    },
+    {
+      "id": "01GWG9XH4Q42HNCN9DWEV9MRDF",
+      "physicalFacility": "CLT",
+      "name": "Final Center",
+      "radioName": "Charlotte Approach",
+      "callsign": "CLT_APP",
+      "areaId": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "tcpId": "01K2NF1E98AAJX866KNH91VP6Z",
+      "tcp": "1M",
+      "visualCenter": {
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
+      },
+      "range": 150,
+      "freq": 119
+    },
+    {
+      "id": "01GWGA5495FSZWZ5XHJ8B086QP",
+      "physicalFacility": "CLT",
+      "name": "Satellite Radar North ",
+      "radioName": "Charlotte Approach",
+      "callsign": "CLT_APP",
+      "areaId": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "tcpId": "01K2NF1E98DQENH0KZ8X2W02PM",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
+      },
+      "range": 150,
+      "freq": 134.75
+    },
+    {
+      "id": "01GWG903A7RM8G2993JF7PTMA8",
+      "physicalFacility": "CLT",
+      "name": "Local Control West",
+      "radioName": "Charlotte Tower",
+      "callsign": "CLT_TWR",
+      "areaId": "01GWG966SAZS3NT8JKQAFNQH31",
+      "tcpId": "01K2NF1E981ZRV8AWF8EE8G0AG",
+      "tcp": "1O",
+      "visualCenter": {
+        "lat": 35.21389,
+        "lon": -80.94301
+      },
+      "range": 50,
+      "freq": 133.35
+    },
+    {
+      "id": "01GWGAA0MQ71FZJ8GBXRF5YA7C",
+      "physicalFacility": "CLT",
+      "name": "Satellite Radar Concord",
+      "radioName": "Charlotte Approach",
+      "callsign": "CLT_APP",
+      "areaId": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "tcpId": "01K2NF1E98SKY83JBX5ZV98B16",
+      "tcp": "1Q",
+      "visualCenter": {
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
+      },
+      "range": 150,
+      "freq": 128.325
+    },
+    {
+      "id": "01HMHPDKG8RHMQ3AS3EBHHEFQP",
+      "physicalFacility": "CLT",
+      "name": "Ramp North",
+      "radioName": "Charlotte Ramp",
+      "callsign": "CLT_RMP",
+      "areaId": "01GWG966SAZS3NT8JKQAFNQH31",
+      "tcpId": "01K2NF1E98GQ2RDQPQ3BPHY5RF",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 35.21389,
+        "lon": -80.94301
+      },
+      "range": 50,
       "freq": 130.075
     },
     {
-      "id": "01HMHPE4QY2GKSJ61G1QGYHDQD",
-      "name": "Ramp South",
-      "callsign": "CLT_RMP",
+      "id": "01GWGA8B2ER1GVWV1W06S36XW0",
+      "physicalFacility": "CLT",
+      "name": "Satellite Radar South",
+      "radioName": "Charlotte Approach",
+      "callsign": "CLT_APP",
+      "areaId": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "tcpId": "01K2NF1E98S00VMS90ZDHYQZ79",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
       },
-      "freq": 131.6
+      "range": 150,
+      "freq": 120.05
     },
     {
-      "id": "01HMHPEGVNEKQA5NHG51MYHMC6",
-      "name": "Ramp East",
-      "callsign": "CLT_RMP",
+      "id": "01GWG8ZF18602RB8J00F5S5QFM",
+      "physicalFacility": "CLT",
+      "name": "Local Control Center",
+      "radioName": "Charlotte Tower",
+      "callsign": "CLT_TWR",
+      "areaId": "01GWG966SAZS3NT8JKQAFNQH31",
+      "tcpId": "01K2NF1E98WRRGE794WXHE39PP",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.21389,
+        "lon": -80.94301
       },
-      "freq": 129.225
+      "range": 50,
+      "freq": 126.4
     },
     {
-      "id": "01HMHPEYRSA0WKNRFX4TPJA0W8",
-      "name": "Ramp West",
-      "callsign": "CLT_RMP",
+      "id": "01GWG9EQW67XZ57DAC4F334VT0",
+      "physicalFacility": "CLT",
+      "name": "Arrival Radar NW",
+      "radioName": "Charlotte Approach",
+      "callsign": "CLT_APP",
+      "areaId": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "tcpId": "01K2NF1E98S05KY9AFERAC7VJF",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
       },
-      "freq": 129.8
+      "range": 150,
+      "freq": 125.35
     },
     {
-      "id": "01J1S621KV016F9G8JVJ5J2PDC",
-      "name": "Ground Control East Backup",
-      "callsign": "CLT_B_GND",
+      "id": "01GWGA32BJCMDAVA49APG6FVB8",
+      "physicalFacility": "CLT",
+      "name": "Departure Radar West",
+      "radioName": "Charlotte Departure",
+      "callsign": "CLT_APP",
+      "areaId": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "tcpId": "01K2NF1E98C9AD02N1916Y2F6H",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
       },
-      "freq": 121.9
+      "range": 150,
+      "freq": 120.5
+    },
+    {
+      "id": "01HC65BG369S8SGN7MJT4NN0ZN",
+      "physicalFacility": "CLT",
+      "name": "TRACON CIC",
+      "radioName": "Charlotte TMU",
+      "callsign": "CLT_TMU",
+      "areaId": "01GWG95N3JZT0HGGVQ2KKWGV8Q",
+      "tcpId": "01K2NF1E98W5R62J6CWRZ4KSQT",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 35.21423373401681,
+        "lon": -80.94768641588351
+      },
+      "range": 150,
+      "freq": 127.26
+    },
+    {
+      "id": "01GWG93613CT1SZF5MY61P4Z6V",
+      "physicalFacility": "CLT",
+      "name": "Clearance Delivery",
+      "radioName": "Charlotte Clearance Delivery",
+      "callsign": "CLT_DEL",
+      "areaId": "01GWG966SAZS3NT8JKQAFNQH31",
+      "tcpId": "01K2NF1E98VM66RXFQH2KYNE2A",
+      "tcp": "2B",
+      "visualCenter": {
+        "lat": 35.21389,
+        "lon": -80.94301
+      },
+      "range": 50,
+      "freq": 127.15
     },
     {
       "id": "01J88R6F4BPYW0JB2F9V6W3707",
+      "physicalFacility": "CLT",
       "name": "Tower CIC",
+      "radioName": "Charlotte TMU",
       "callsign": "CLT_TMU",
+      "areaId": "01GWG966SAZS3NT8JKQAFNQH31",
+      "tcpId": "01K2NF1E98VM66RXFQH2KYNE2A",
+      "tcp": "2B",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.21389,
+        "lon": -80.94301
       },
+      "range": 50,
       "freq": 132.1
     },
     {
-      "id": "01J95V25AT09A9YM36C6SHK7DP",
-      "name": "CLT GUARD Combined",
-      "callsign": "CLT_G_APP",
+      "id": "01GWG91R2KCMZW38TE74JRM90C",
+      "physicalFacility": "CLT",
+      "name": "Ground Control East",
+      "radioName": "Charlotte Ground",
+      "callsign": "CLT_GND",
+      "areaId": "01GWG966SAZS3NT8JKQAFNQH31",
+      "tcpId": "01K2NF1E98HNJNSR4A2YFD94VN",
+      "tcp": "2E",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.21389,
+        "lon": -80.94301
       },
-      "freq": 121.5
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1A",
+      "id": "01GWNJK2TK4H4EVZNFNZ6JY4RA",
+      "physicalFacility": "JQF",
+      "name": "Local Control",
+      "radioName": "Concord Tower",
+      "callsign": "JQF_TWR",
+      "areaId": "01H2H407R9AJPRJXV3TKESTV2A",
+      "tcpId": "01K2NF1E987ESTSJY2QD8Z38XF",
+      "tcp": "2J",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 35.385333,
+        "lon": -80.709667
+      },
+      "range": 50,
+      "freq": 134.65
     },
     {
-      "id": "1E",
+      "id": "01HMHPE4QY2GKSJ61G1QGYHDQD",
+      "physicalFacility": "CLT",
+      "name": "Ramp South",
+      "radioName": "Charlotte Ramp",
+      "callsign": "CLT_RMP",
+      "areaId": "01GWG966SAZS3NT8JKQAFNQH31",
+      "tcpId": "01K2NF1E984978V2E1XSE4PY2C",
+      "tcp": "2R",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 35.21389,
+        "lon": -80.94301
+      },
+      "range": 50,
+      "freq": 131.6
     },
     {
-      "id": "1F",
+      "id": "01GWG90PE9Z3PNVQ6SQZNGT4DX",
+      "physicalFacility": "CLT",
+      "name": "Ground Control West",
+      "radioName": "Charlotte Ground",
+      "callsign": "CLT_GND",
+      "areaId": "01GWG966SAZS3NT8JKQAFNQH31",
+      "tcpId": "01K2NF1E98N96YDTMSA13PF8A2",
+      "tcp": "2W",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1O",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1Q",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "2B",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "2E",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "2J",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "2R",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "2W",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 35.21389,
+        "lon": -80.94301
+      },
+      "range": 50,
+      "freq": 121.8
     }
   ],
   "mapGroups": [

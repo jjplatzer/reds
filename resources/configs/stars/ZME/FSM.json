@@ -4,176 +4,523 @@
   "name": "Fort Smith ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 35.0424167,
-    "lon": -89.9766667
+    "lat": 35.97003055714286,
+    "lon": -94.24952825714284
   },
+  "areas": [
+    {
+      "id": "01GFP6RE4R5B3GRS0WFYFK6VHB",
+      "name": "FSM TRACON - FSM",
+      "visibilityCenter": {
+        "lat": 35.3365833,
+        "lon": -94.3674444
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "54AR",
+        "4M2",
+        "AZU",
+        "FSM",
+        "AR21",
+        "AR40",
+        "7M5",
+        "2AR1",
+        "AR87",
+        "M27",
+        "OK06",
+        "83OK",
+        "RKR",
+        "OK59",
+        "OL38",
+        "OK27",
+        "89OK",
+        "OK52",
+        "JSV",
+        "OK34",
+        "OL42",
+        "1PP"
+      ],
+      "ssaAirports": [
+        "FSM"
+      ]
+    },
+    {
+      "id": "01GFP6T6K5QXABGK2XF6R6BEH8",
+      "name": "FSM TRACON - FYV",
+      "visibilityCenter": {
+        "lat": 36.2815792,
+        "lon": -94.3077656
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "58AR",
+        "VBT",
+        "27AR",
+        "4M1",
+        "AR41",
+        "AR51",
+        "17A",
+        "62AR",
+        "6AR1",
+        "2AR5",
+        "5M5",
+        "0AR9",
+        "AR08",
+        "55AR",
+        "7AR0",
+        "18AR",
+        "FYV",
+        "XNA",
+        "67AR",
+        "4AR8",
+        "40AR",
+        "1AR5",
+        "71AR",
+        "0AR4",
+        "AR09",
+        "2AR9",
+        "H34",
+        "22AR",
+        "05AR",
+        "68AR",
+        "AR91",
+        "3AR7",
+        "1AR4",
+        "51AR",
+        "ROG",
+        "AR36",
+        "AR11",
+        "53AR",
+        "99AR",
+        "SLG",
+        "AR69",
+        "38AR",
+        "66AR",
+        "ASG",
+        "0AR0",
+        "14AR",
+        "AR27",
+        "MO32",
+        "MU98",
+        "95MO",
+        "58MU",
+        "7MO3",
+        "46AR",
+        "OL17"
+      ],
+      "ssaAirports": [
+        "XNA",
+        "ROG",
+        "ASG",
+        "FYV"
+      ]
+    },
+    {
+      "id": "01H3DXD5DC7SS0PST78F2D6EYH",
+      "name": "ROG TOWER",
+      "visibilityCenter": {
+        "lat": 36.3724167,
+        "lon": -94.1069722
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ROG"
+      ],
+      "ssaAirports": [
+        "ROG"
+      ]
+    },
+    {
+      "id": "01H3DXHX9EG9E80THZ6VFP2T5J",
+      "name": "XNA TOWER",
+      "visibilityCenter": {
+        "lat": 36.2815792,
+        "lon": -94.3077656
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "XNA"
+      ],
+      "ssaAirports": [
+        "XNA"
+      ]
+    },
+    {
+      "id": "01H3DXM026KNGWWPHFYHXJH6YZ",
+      "name": "ASG TOWER",
+      "visibilityCenter": {
+        "lat": 36.1763889,
+        "lon": -94.11925
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ASG"
+      ],
+      "ssaAirports": [
+        "ASG"
+      ]
+    },
+    {
+      "id": "01H3DXQT4FX73AC7ABFG9YH4N4",
+      "name": "FYV TOWER",
+      "visibilityCenter": {
+        "lat": 36.0050833,
+        "lon": -94.1700556
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "FYV"
+      ],
+      "ssaAirports": [
+        "FYV"
+      ]
+    },
+    {
+      "id": "01JCYCQQPMRAK7BK4GDD2KM3P3",
+      "name": "FSM TOWER",
+      "visibilityCenter": {
+        "lat": 35.3365833,
+        "lon": -94.3674444
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "FSM"
+      ],
+      "ssaAirports": [
+        "FSM"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D19M5KZMKQFSM646W6B",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19JEEFKHDVF8M8Q047",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19A2JNCECA7PQDF44G",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19WPANC9X45VA7SGNM",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19J3BSZVNEZA0FVV8Y",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19SX6SNZP3654DQ03V",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19REPPAKDBFDP89HB3",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1D19A2JNCECA7PQDF44G",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D193BWJ19TK1RRSNKH2",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D193ZCV95FCCP972R4K",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19WCBH02ACRADGCFE7",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GM1SSR55KN76NY9WVRP9VBF8",
-      "name": "Clearance",
-      "callsign": "FSM_DEL",
+      "id": "01GM1V9TJYZERC15C3AWY55VWV",
+      "physicalFacility": "FSM",
+      "name": "FSM Arrival Radar",
+      "radioName": "Razorback Approach",
+      "callsign": "FSM_A_APP",
+      "areaId": "01GFP6RE4R5B3GRS0WFYFK6VHB",
+      "tcpId": "01K2NF1D19M5KZMKQFSM646W6B",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 35.3365833,
+        "lon": -94.3674444
       },
+      "range": 150,
+      "freq": 128.15
+    },
+    {
+      "id": "01GNK737RNK7F2VR5DRDA4J4SS",
+      "physicalFacility": "ASG",
+      "name": "Ground",
+      "radioName": "Springdale Ground",
+      "callsign": "ASG_GND",
+      "areaId": "01H3DXM026KNGWWPHFYHXJH6YZ",
+      "tcpId": "01K2NF1D19JEEFKHDVF8M8Q047",
+      "tcp": "1B",
+      "visualCenter": {
+        "lat": 36.1763889,
+        "lon": -94.11925
+      },
+      "range": 50,
+      "freq": 121.6
+    },
+    {
+      "id": "01GNK73Z4NHQR7AM3D5EDFFSA0",
+      "physicalFacility": "ASG",
+      "name": "Local",
+      "radioName": "Springdale Tower",
+      "callsign": "ASG_TWR",
+      "areaId": "01H3DXM026KNGWWPHFYHXJH6YZ",
+      "tcpId": "01K2NF1D19JEEFKHDVF8M8Q047",
+      "tcp": "1B",
+      "visualCenter": {
+        "lat": 36.1763889,
+        "lon": -94.11925
+      },
+      "range": 50,
+      "freq": 118.2
+    },
+    {
+      "id": "01GM1T36YMZPBVM5YDGNMMNAVJ",
+      "physicalFacility": "FSM",
+      "name": "East Radar",
+      "radioName": "Razorback Approach",
+      "callsign": "FYV_E_APP",
+      "areaId": "01GFP6T6K5QXABGK2XF6R6BEH8",
+      "tcpId": "01K2NF1D19A2JNCECA7PQDF44G",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 36.2815792,
+        "lon": -94.3077656
+      },
+      "range": 150,
+      "freq": 126.6
+    },
+    {
+      "id": "01GQXF7WRCJTGTMDYEMXTQNW3E",
+      "physicalFacility": "ROG",
+      "name": "Ground",
+      "radioName": "Rogers Ground",
+      "callsign": "ROG_GND",
+      "areaId": "01H3DXD5DC7SS0PST78F2D6EYH",
+      "tcpId": "01K2NF1D19WPANC9X45VA7SGNM",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 36.3724167,
+        "lon": -94.1069722
+      },
+      "range": 50,
+      "freq": 118
+    },
+    {
+      "id": "01GQXF8EGE64N6MX97A0R3GVVD",
+      "physicalFacility": "ROG",
+      "name": "Local",
+      "radioName": "Rogers Tower",
+      "callsign": "ROG_TWR",
+      "areaId": "01H3DXD5DC7SS0PST78F2D6EYH",
+      "tcpId": "01K2NF1D19WPANC9X45VA7SGNM",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 36.3724167,
+        "lon": -94.1069722
+      },
+      "range": 50,
+      "freq": 119.375
+    },
+    {
+      "id": "01GM1T4HJWAM6X9S22XK2NASPD",
+      "physicalFacility": "FSM",
+      "name": "South Radar",
+      "radioName": "Razorback Approach",
+      "callsign": "FSM_S_APP",
+      "areaId": "01GFP6RE4R5B3GRS0WFYFK6VHB",
+      "tcpId": "01K2NF1D19J3BSZVNEZA0FVV8Y",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 35.3365833,
+        "lon": -94.3674444
+      },
+      "range": 150,
+      "freq": 120.9
+    },
+    {
+      "id": "01GM1SSR55KN76NY9WVRP9VBF8",
+      "physicalFacility": "FSM",
+      "name": "Clearance",
+      "radioName": "Forth Smith Clearance",
+      "callsign": "FSM_DEL",
+      "areaId": "01JCYCQQPMRAK7BK4GDD2KM3P3",
+      "tcpId": "01K2NF1D19SX6SNZP3654DQ03V",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 35.3365833,
+        "lon": -94.3674444
+      },
+      "range": 50,
       "freq": 133.85
     },
     {
       "id": "01GM1SVB4AMQDS227N787YPZC1",
+      "physicalFacility": "FSM",
       "name": "Ground",
+      "radioName": "Fort Smith Ground",
       "callsign": "FSM_GND",
+      "areaId": "01JCYCQQPMRAK7BK4GDD2KM3P3",
+      "tcpId": "01K2NF1D19SX6SNZP3654DQ03V",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 35.3365833,
+        "lon": -94.3674444
       },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01GM1SVSX6Y6MFHFE3JR14W3F8",
+      "physicalFacility": "FSM",
       "name": "Local",
+      "radioName": "Forth Smith Tower",
       "callsign": "FSM_TWR",
+      "areaId": "01JCYCQQPMRAK7BK4GDD2KM3P3",
+      "tcpId": "01K2NF1D19SX6SNZP3654DQ03V",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 35.3365833,
+        "lon": -94.3674444
       },
+      "range": 50,
       "freq": 118.3
     },
     {
       "id": "01GM1SX3A11B7R9WQMC468EX1G",
+      "physicalFacility": "FSM",
       "name": "West Radar",
+      "radioName": "Razorback Approach",
       "callsign": "FYV_W_APP",
+      "areaId": "01GFP6T6K5QXABGK2XF6R6BEH8",
+      "tcpId": "01K2NF1D19REPPAKDBFDP89HB3",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 36.2815792,
+        "lon": -94.3077656
       },
+      "range": 150,
       "freq": 121
     },
     {
-      "id": "01GM1T36YMZPBVM5YDGNMMNAVJ",
-      "name": "East Radar",
-      "callsign": "FYV_E_APP",
+      "id": "01GM1S5T7SPGCS46Z7G8YFMGZY",
+      "physicalFacility": "XNA",
+      "name": "Ground",
+      "radioName": "Northwest Arkansas Ground",
+      "callsign": "XNA_GND",
+      "areaId": "01H3DXHX9EG9E80THZ6VFP2T5J",
+      "tcpId": "01K2NF1D193BWJ19TK1RRSNKH2",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 36.2815792,
+        "lon": -94.3077656
       },
-      "freq": 126.6
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "01GM1T4HJWAM6X9S22XK2NASPD",
-      "name": "South Radar",
-      "callsign": "FSM_S_APP",
+      "id": "01GM1S8NH7PQP3QMSZAA68CHFK",
+      "physicalFacility": "XNA",
+      "name": "Local",
+      "radioName": "Northwest Arkansas Tower",
+      "callsign": "XNA_TWR",
+      "areaId": "01H3DXHX9EG9E80THZ6VFP2T5J",
+      "tcpId": "01K2NF1D193BWJ19TK1RRSNKH2",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 36.2815792,
+        "lon": -94.3077656
       },
-      "freq": 120.9
+      "range": 50,
+      "freq": 127.1
     },
     {
-      "id": "01GM1V9TJYZERC15C3AWY55VWV",
-      "name": "FSM Arrival Radar",
-      "callsign": "FSM_A_APP",
+      "id": "01GNGV4M851KHC0ASG6G8HCQNK",
+      "physicalFacility": "FYV",
+      "name": "Ground",
+      "radioName": "Drake Ground",
+      "callsign": "FYV_GND",
+      "areaId": "01H3DXQT4FX73AC7ABFG9YH4N4",
+      "tcpId": "01K2NF1D193ZCV95FCCP972R4K",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 36.0050833,
+        "lon": -94.1700556
       },
-      "freq": 128.15
+      "range": 50,
+      "freq": 121.8
+    },
+    {
+      "id": "01GNGV7Y1AB16W8W9ZM8PV95FG",
+      "physicalFacility": "FYV",
+      "name": "Local",
+      "radioName": "Drake Tower",
+      "callsign": "FYV_TWR",
+      "areaId": "01H3DXQT4FX73AC7ABFG9YH4N4",
+      "tcpId": "01K2NF1D193ZCV95FCCP972R4K",
+      "tcp": "1Y",
+      "visualCenter": {
+        "lat": 36.0050833,
+        "lon": -94.1700556
+      },
+      "range": 50,
+      "freq": 128
     },
     {
       "id": "01GM1VBB8055X0A243Q8NPZ3XP",
+      "physicalFacility": "FSM",
       "name": "FYV Arrival Radar",
+      "radioName": "Razorback Approach",
       "callsign": "FYV_B_APP",
+      "areaId": "01GFP6T6K5QXABGK2XF6R6BEH8",
+      "tcpId": "01K2NF1D19WCBH02ACRADGCFE7",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 36.2815792,
+        "lon": -94.3077656
       },
+      "range": 150,
       "freq": 134.525
-    },
-    {
-      "id": "01JARB51BZWK8EG6MEKN3QCWFM",
-      "name": "Supervisor",
-      "callsign": "FSM_SI_APP",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
     }
   ],
   "mapGroups": [

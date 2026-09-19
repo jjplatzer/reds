@@ -4,77 +4,135 @@
   "name": "Rochester ATCT/TRACAB",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 43.909444,
+    "lon": -92.501667
   },
+  "areas": [
+    {
+      "id": "01GFERHCY2JHAHV4JDBGR2RWGF",
+      "name": "RST",
+      "visibilityCenter": {
+        "lat": 43.909444,
+        "lon": -92.501667
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "AEL",
+        "AUM",
+        "FKA",
+        "OWA",
+        "RST"
+      ],
+      "ssaAirports": [
+        "RST",
+        "AUM",
+        "AEL",
+        "OWA"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3KWY21RWAR5APTD477",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1D3KCF7XSF0HSPTHZFP5",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1D3K23EKN9WAJK8Z1K20",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1D3K6MTP5N0TF5JKSM24",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1D3KWY21RWAR5APTD477",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1D3K23EKN9WAJK8Z1K20",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1D3KMZB6BT1R336MMZ3N",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1D3KWY21RWAR5APTD477",
+      "parentTcp": "1A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GFERP6AQF3H5KQ1JMXQT5N4N",
+      "physicalFacility": "RST",
       "name": "AR-RA",
+      "radioName": "Rochester Approach",
       "callsign": "RST_A_APP",
+      "areaId": "01GFERHCY2JHAHV4JDBGR2RWGF",
+      "tcpId": "01K2NF1D3KWY21RWAR5APTD477",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 43.909444,
+        "lon": -92.501667
       },
+      "range": 150,
       "freq": 119.8
     },
     {
-      "id": "01GFERRJW555AGR26C7Y9TS07Q",
-      "name": "AR-RW",
-      "callsign": "RST_W_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 119.2
-    },
-    {
-      "id": "01GFERSFMH8AY01M2YHECT6PCN",
-      "name": "Local Control",
-      "callsign": "RST_TWR",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 118.3
-    },
-    {
       "id": "01GFERT87TW22GSA19221D7H32",
+      "physicalFacility": "RST",
       "name": "Ground Control",
+      "radioName": "Rochester Ground",
       "callsign": "RST_GND",
+      "areaId": "01GFERHCY2JHAHV4JDBGR2RWGF",
+      "tcpId": "01K2NF1D3KCF7XSF0HSPTHZFP5",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 43.909444,
+        "lon": -92.501667
       },
+      "range": 150,
       "freq": 121.9
     },
     {
-      "id": "1A",
+      "id": "01GFERSFMH8AY01M2YHECT6PCN",
+      "physicalFacility": "RST",
+      "name": "Local Control",
+      "radioName": "Rochester Tower",
+      "callsign": "RST_TWR",
+      "areaId": "01GFERHCY2JHAHV4JDBGR2RWGF",
+      "tcpId": "01K2NF1D3K23EKN9WAJK8Z1K20",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 43.909444,
+        "lon": -92.501667
+      },
+      "range": 150,
+      "freq": 118.3
     },
     {
-      "id": "1F",
+      "id": "01GFERRJW555AGR26C7Y9TS07Q",
+      "physicalFacility": "RST",
+      "name": "AR-RW",
+      "radioName": "Rochester Approach",
+      "callsign": "RST_W_APP",
+      "areaId": "01GFERHCY2JHAHV4JDBGR2RWGF",
+      "tcpId": "01K2NF1D3KMZB6BT1R336MMZ3N",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 43.909444,
+        "lon": -92.501667
+      },
+      "range": 150,
+      "freq": 119.2
     }
   ],
   "mapGroups": [

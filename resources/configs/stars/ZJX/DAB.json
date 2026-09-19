@@ -4,220 +4,392 @@
   "name": "Daytona ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 29.17890558949725,
+    "lon": -81.04425714304116
   },
+  "areas": [
+    {
+      "id": "01GA5HHB65HSB1PERGQCZ8KZD0",
+      "name": "DAB",
+      "visibilityCenter": {
+        "lat": 29.17992,
+        "lon": -81.05806
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "DAB",
+        "OMN",
+        "EVB",
+        "FIN",
+        "DED"
+      ],
+      "ssaAirports": [
+        "DAB",
+        "FIN",
+        "OMN",
+        "EVB"
+      ]
+    },
+    {
+      "id": "01HC2263C1B4GHFNN6VGCFGWPC",
+      "name": "Daytona Beach Tower",
+      "visibilityCenter": {
+        "lat": 29.17992,
+        "lon": -81.05806
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "DAB"
+      ],
+      "ssaAirports": [
+        "DAB"
+      ]
+    },
+    {
+      "id": "01J945QVFAS6AN962B3X17CKWT",
+      "name": "Ormond Beach Tower",
+      "visibilityCenter": {
+        "lat": 29.301099955351294,
+        "lon": -81.11310640017733
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "OMN"
+      ],
+      "ssaAirports": [
+        "OMN"
+      ]
+    },
+    {
+      "id": "01J94D248R8G9AQ0VMZM5RGYRM",
+      "name": "New Smyrna Beach Tower",
+      "visibilityCenter": {
+        "lat": 29.054682402637713,
+        "lon": -80.94780217198733
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "EVB"
+      ],
+      "ssaAirports": [
+        "EVB"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFEBW2RMHATMGJ686TV",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DFEC2NPV71TCKEXSXX4",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1DFES8YECJ3MMTVAV25Q",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1DFE59WXR5NC5XPQ7DGD",
+      "parentTcp": "1M"
+    },
+    {
+      "id": "01K2NF1DFEZC9RR9A7YM966TW0",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1DFE1WD029QB0YMDBRS8",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1DFEFP4YDTNMSDM4HEBN",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1DFE59WXR5NC5XPQ7DGD",
+      "parentTcp": "1M"
+    },
+    {
+      "id": "01K2NF1DFE59WXR5NC5XPQ7DGD",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1DFEC2NPV71TCKEXSXX4",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1DFEC2NPV71TCKEXSXX4",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1DFEQ089WB2NW8HN2PV4",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1DFE1WD029QB0YMDBRS8",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1DFE5W1AA1GZ8ES8A6N2",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1DFEC2NPV71TCKEXSXX4",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1DFE1WD029QB0YMDBRS8",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DFEJ8DBQNBZQCRE70PB",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DFEC2NPV71TCKEXSXX4",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1DFERM1FBBVQ8EFY6ZX5",
+      "code": "2B",
+      "subset": 2,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1DFEQX133HKAZMY93KVH",
+      "code": "2Y",
+      "subset": 2,
+      "sectorId": "Y"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GA5HVHJ3GP8K47RYAPMCRKM7",
-      "name": "High Arrival",
-      "callsign": "DAB_H_APP",
+      "id": "01HNGPXT2WBCCB26QNRH7QKGAR",
+      "physicalFacility": "DAB",
+      "name": "East Radar",
+      "radioName": "Daytona Beach Approach",
+      "callsign": "DAB_E_APP",
+      "areaId": "01GA5HHB65HSB1PERGQCZ8KZD0",
+      "tcpId": "01K2NF1DFEBW2RMHATMGJ686TV",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 29.17992,
+        "lon": -81.05806
       },
+      "range": 150,
+      "freq": 123.9
+    },
+    {
+      "id": "01GA5HVHJ3GP8K47RYAPMCRKM7",
+      "physicalFacility": "DAB",
+      "name": "High Arrival",
+      "radioName": "Daytona Beach Approach",
+      "callsign": "DAB_H_APP",
+      "areaId": "01GA5HHB65HSB1PERGQCZ8KZD0",
+      "tcpId": "01K2NF1DFES8YECJ3MMTVAV25Q",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 29.17992,
+        "lon": -81.05806
+      },
+      "range": 150,
       "freq": 125.725
     },
     {
-      "id": "01GA5HWW7ARZNJPY2PZPKT7QKN",
-      "name": "MATEO Arrival",
-      "callsign": "DAB_M_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 118.85
-    },
-    {
-      "id": "01GA5JJ5E1M8CXQY7MDN2E9QYX",
-      "name": "LAMMA Arrival",
-      "callsign": "DAB_L_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 127.075
-    },
-    {
-      "id": "01GA5JMK63VNKBSH4M4D8BXH5H",
-      "name": "North Radar",
-      "callsign": "DAB_N_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 125.8
-    },
-    {
       "id": "01GA5JQKA6BXDX7T60C9BHRZ32",
+      "physicalFacility": "DAB",
       "name": "Clearance Delivery",
+      "radioName": "Daytona Beach Clearance Delivery",
       "callsign": "DAB_DEL",
+      "areaId": "01HC2263C1B4GHFNN6VGCFGWPC",
+      "tcpId": "01K2NF1DFEZC9RR9A7YM966TW0",
+      "tcp": "1I",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 29.17992,
+        "lon": -81.05806
       },
+      "range": 50,
       "freq": 119.3
     },
     {
-      "id": "01GA5JTKH655H5XG3WPDT2VMNA",
-      "name": "Ground Control North",
-      "callsign": "DAB_N_GND",
+      "id": "01GA5JJ5E1M8CXQY7MDN2E9QYX",
+      "physicalFacility": "DAB",
+      "name": "LAMMA Arrival",
+      "radioName": "Daytona Beach Approach",
+      "callsign": "DAB_L_APP",
+      "areaId": "01GA5HHB65HSB1PERGQCZ8KZD0",
+      "tcpId": "01K2NF1DFEFP4YDTNMSDM4HEBN",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 29.17992,
+        "lon": -81.05806
       },
-      "freq": 121.9
+      "range": 150,
+      "freq": 127.075
+    },
+    {
+      "id": "01GA5HWW7ARZNJPY2PZPKT7QKN",
+      "physicalFacility": "DAB",
+      "name": "MATEO Arrival",
+      "radioName": "Daytona Beach Approach",
+      "callsign": "DAB_M_APP",
+      "areaId": "01GA5HHB65HSB1PERGQCZ8KZD0",
+      "tcpId": "01K2NF1DFE59WXR5NC5XPQ7DGD",
+      "tcp": "1M",
+      "visualCenter": {
+        "lat": 29.17992,
+        "lon": -81.05806
+      },
+      "range": 150,
+      "freq": 118.85
+    },
+    {
+      "id": "01GA5JMK63VNKBSH4M4D8BXH5H",
+      "physicalFacility": "DAB",
+      "name": "North Radar",
+      "radioName": "Daytona Beach Approach",
+      "callsign": "DAB_N_APP",
+      "areaId": "01GA5HHB65HSB1PERGQCZ8KZD0",
+      "tcpId": "01K2NF1DFEC2NPV71TCKEXSXX4",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 29.17992,
+        "lon": -81.05806
+      },
+      "range": 150,
+      "freq": 125.8
     },
     {
       "id": "01GA5JVZN733BS6JT0H4PVNXHC",
+      "physicalFacility": "DAB",
       "name": "Ground Control South",
+      "radioName": "Daytona Beach Ground",
       "callsign": "DAB_S_GND",
+      "areaId": "01HC2263C1B4GHFNN6VGCFGWPC",
+      "tcpId": "01K2NF1DFEQ089WB2NW8HN2PV4",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 29.17992,
+        "lon": -81.05806
       },
+      "range": 50,
       "freq": 124.25
     },
     {
-      "id": "01GA5K3SWEXEWF9Q25FQSNEA1D",
-      "name": "Local Control North",
-      "callsign": "DAB_N_TWR",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 120.7
-    },
-    {
       "id": "01GA5K60HY8B3ZNF197DGJ497M",
+      "physicalFacility": "DAB",
       "name": "Local Control South",
+      "radioName": "Daytona Beach Tower",
       "callsign": "DAB_S_TWR",
+      "areaId": "01HC2263C1B4GHFNN6VGCFGWPC",
+      "tcpId": "01K2NF1DFEQ089WB2NW8HN2PV4",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 29.17992,
+        "lon": -81.05806
       },
+      "range": 50,
       "freq": 118.1
     },
     {
       "id": "01HNGPVM1AGE4G1BFTM2QA5082",
+      "physicalFacility": "DAB",
       "name": "South Radar",
+      "radioName": "Daytona Beach Approach",
       "callsign": "DAB_S_APP",
+      "areaId": "01GA5HHB65HSB1PERGQCZ8KZD0",
+      "tcpId": "01K2NF1DFE5W1AA1GZ8ES8A6N2",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 29.17992,
+        "lon": -81.05806
       },
+      "range": 150,
       "freq": 125.35
     },
     {
-      "id": "01HNGPXT2WBCCB26QNRH7QKGAR",
-      "name": "East Radar",
-      "callsign": "DAB_E_APP",
+      "id": "01GA5JTKH655H5XG3WPDT2VMNA",
+      "physicalFacility": "DAB",
+      "name": "Ground Control North",
+      "radioName": "Daytona Beach Ground",
+      "callsign": "DAB_N_GND",
+      "areaId": "01HC2263C1B4GHFNN6VGCFGWPC",
+      "tcpId": "01K2NF1DFE1WD029QB0YMDBRS8",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 29.17992,
+        "lon": -81.05806
       },
-      "freq": 123.9
+      "range": 50,
+      "freq": 121.9
+    },
+    {
+      "id": "01GA5K3SWEXEWF9Q25FQSNEA1D",
+      "physicalFacility": "DAB",
+      "name": "Local Control North",
+      "radioName": "Daytona Beach Tower",
+      "callsign": "DAB_N_TWR",
+      "areaId": "01HC2263C1B4GHFNN6VGCFGWPC",
+      "tcpId": "01K2NF1DFE1WD029QB0YMDBRS8",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 29.17992,
+        "lon": -81.05806
+      },
+      "range": 50,
+      "freq": 120.7
     },
     {
       "id": "01HNGPZ2FY1R7H2T5TQW6X454N",
+      "physicalFacility": "DAB",
       "name": "West Radar",
+      "radioName": "Daytona Beach Approach",
       "callsign": "DAB_W_APP",
+      "areaId": "01GA5HHB65HSB1PERGQCZ8KZD0",
+      "tcpId": "01K2NF1DFEJ8DBQNBZQCRE70PB",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 29.17992,
+        "lon": -81.05806
       },
+      "range": 150,
       "freq": 126.55
     },
     {
-      "id": "1E",
+      "id": "01HB4T6ZRGRWK9CYFSAXCV0QP5",
+      "physicalFacility": "OMN",
+      "name": "Tower",
+      "radioName": "Ormond Beach Tower",
+      "callsign": "OMN_TWR",
+      "areaId": "01J945QVFAS6AN962B3X17CKWT",
+      "tcpId": "01K2NF1DFERM1FBBVQ8EFY6ZX5",
+      "tcp": "2B",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 29.301099955351294,
+        "lon": -81.11310640017733
+      },
+      "range": 30,
+      "freq": 119.075
     },
     {
-      "id": "1H",
+      "id": "01HB8R1264KDCX2PC5PVAMVY0X",
+      "physicalFacility": "EVB",
+      "name": "Tower",
+      "radioName": "New Smyrna Beach Tower",
+      "callsign": "EVB_TWR",
+      "areaId": "01J94D248R8G9AQ0VMZM5RGYRM",
+      "tcpId": "01K2NF1DFEQX133HKAZMY93KVH",
+      "tcp": "2Y",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1I",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "2B",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "2Y",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 29.054682402637713,
+        "lon": -80.94780217198733
+      },
+      "range": 30,
+      "freq": 119.675
     }
   ],
   "mapGroups": [

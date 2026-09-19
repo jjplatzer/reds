@@ -4,114 +4,177 @@
   "name": "Lexington ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 38.6494889,
-    "lon": -84.3106305555556
+    "lat": 38.03571125,
+    "lon": -84.59917605
   },
+  "areas": [
+    {
+      "id": "01GXS9HFYB6WEW6F6H5CXWSVZ7",
+      "name": "Lexington TRACON",
+      "visibilityCenter": {
+        "lat": 38.03389,
+        "lon": -84.60139
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "LEX",
+        "27K",
+        "0I8",
+        "FFT",
+        "IOB",
+        "RGA",
+        "DVK",
+        "6I2",
+        "I50"
+      ],
+      "ssaAirports": [
+        "LEX",
+        "FFT",
+        "RGA"
+      ]
+    },
+    {
+      "id": "01HAQKPFQMQ7DCW3XDYFWS6P3H",
+      "name": "Lexington Tower",
+      "visibilityCenter": {
+        "lat": 38.0375325,
+        "lon": -84.5969621
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "LEX"
+      ],
+      "ssaAirports": [
+        "LEX"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CN2JJAVPZS6AW1NR84W",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1CN2XAQ8E3DTX812PCD8",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1CN2JJAVPZS6AW1NR84W",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1CN2C08F1NXG1M8AKSYE",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1CN2CZ19ZPEKT9A27D0B",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1CN2JJAVPZS6AW1NR84W",
+      "parentTcp": "1E"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GRVHPTXET8N1HGMJQQD012ND",
-      "name": "Clearance Delivery",
-      "callsign": "LEX_DEL",
+      "id": "01GRVHT229661VM1FDJVEEZNK1",
+      "physicalFacility": "LEX",
+      "name": "Radar East",
+      "radioName": "Lexington Approach",
+      "callsign": "LEX_E_APP",
+      "areaId": "01GXS9HFYB6WEW6F6H5CXWSVZ7",
+      "tcpId": "01K2NF1CN2JJAVPZS6AW1NR84W",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.03389,
+        "lon": -84.60139
       },
+      "range": 150,
+      "freq": 120.15
+    },
+    {
+      "id": "01GRVHX0H296Y70QYF8JX1KESZ",
+      "physicalFacility": "LEX",
+      "name": "Radar Final",
+      "radioName": "Lexington Approach",
+      "callsign": "LEX_F_APP",
+      "areaId": "01GXS9HFYB6WEW6F6H5CXWSVZ7",
+      "tcpId": "01K2NF1CN2XAQ8E3DTX812PCD8",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 38.03389,
+        "lon": -84.60139
+      },
+      "range": 150,
+      "freq": 133.4
+    },
+    {
+      "id": "01GRVHPTXET8N1HGMJQQD012ND",
+      "physicalFacility": "LEX",
+      "name": "Clearance Delivery",
+      "radioName": "Lexington Clearance",
+      "callsign": "LEX_DEL",
+      "areaId": "01HAQKPFQMQ7DCW3XDYFWS6P3H",
+      "tcpId": "01K2NF1CN2C08F1NXG1M8AKSYE",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 38.0375325,
+        "lon": -84.5969621
+      },
+      "range": 50,
       "freq": 132.35
     },
     {
       "id": "01GRVHREPSSXDBMA90JZY8SQWX",
+      "physicalFacility": "LEX",
       "name": "Ground Control",
+      "radioName": "Lexington Ground",
       "callsign": "LEX_GND",
+      "areaId": "01HAQKPFQMQ7DCW3XDYFWS6P3H",
+      "tcpId": "01K2NF1CN2C08F1NXG1M8AKSYE",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.0375325,
+        "lon": -84.5969621
       },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01GRVHS2MYY06V7F3XB5HBSB08",
+      "physicalFacility": "LEX",
       "name": "Local Control",
+      "radioName": "Lexington Tower",
       "callsign": "LEX_TWR",
+      "areaId": "01HAQKPFQMQ7DCW3XDYFWS6P3H",
+      "tcpId": "01K2NF1CN2C08F1NXG1M8AKSYE",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.0375325,
+        "lon": -84.5969621
       },
+      "range": 50,
       "freq": 119.1
     },
     {
-      "id": "01GRVHT229661VM1FDJVEEZNK1",
-      "name": "Radar East",
-      "callsign": "LEX_E_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 120.15
-    },
-    {
       "id": "01GRVHW00RYZ83HKNVBMXN7HZF",
+      "physicalFacility": "LEX",
       "name": "Radar West",
+      "radioName": "Lexington Approach",
       "callsign": "LEX_W_APP",
+      "areaId": "01GXS9HFYB6WEW6F6H5CXWSVZ7",
+      "tcpId": "01K2NF1CN2CZ19ZPEKT9A27D0B",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.03389,
+        "lon": -84.60139
       },
+      "range": 150,
       "freq": 120.75
-    },
-    {
-      "id": "01GRVHX0H296Y70QYF8JX1KESZ",
-      "name": "Radar Final",
-      "callsign": "LEX_F_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 133.4
-    },
-    {
-      "id": "01JA39TDC7AYA29ZVMVQPWZFWD",
-      "name": "LEX GUARD",
-      "callsign": "LEX_EM_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
     }
   ],
   "mapGroups": [

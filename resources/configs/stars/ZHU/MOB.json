@@ -4,87 +4,137 @@
   "name": "Mobile Regional ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 30.683557,
+    "lon": -88.260952
   },
+  "areas": [
+    {
+      "id": "01GB5ZHKT32CQ5J0EPZXKDSWNK",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 30.683557,
+        "lon": -88.260952
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "1R8",
+        "BFM",
+        "CQF",
+        "JKA",
+        "MOB",
+        "PQL"
+      ],
+      "ssaAirports": [
+        "BFM",
+        "MOB"
+      ]
+    },
+    {
+      "id": "01JCPP6JFJS062J0V2ZAHCC8GM",
+      "name": "MOB TOWER",
+      "visibilityCenter": {
+        "lat": 30.683557,
+        "lon": -88.260952
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "MOB"
+      ],
+      "ssaAirports": [
+        "MOB"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDR2Z4FCR9DS1S6735N",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1CDR7FADZ18EMGPVNQNH",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1CDRDB69DH5JE7XH9QG8",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1CDRT7KXDD5JYBQJPV4M",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GB5ZJ47NY51C7C2A6HZK5Y48",
-      "name": "East Approach",
-      "callsign": "MOB_E_APP",
+      "id": "01GB5ZR1QKS3DT3CEMXXVNKWVA",
+      "physicalFacility": "BFM",
+      "name": "Local",
+      "radioName": "Downtown Tower",
+      "callsign": "BFM_TWR",
+      "areaId": "01GB5ZHKT32CQ5J0EPZXKDSWNK",
+      "tcpId": "01K2NF1CDR2Z4FCR9DS1S6735N",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.683557,
+        "lon": -88.260952
       },
+      "range": 100,
+      "freq": 118.8
+    },
+    {
+      "id": "01GB5ZJ47NY51C7C2A6HZK5Y48",
+      "physicalFacility": "MOB",
+      "name": "East Approach",
+      "radioName": "Mobile Approach",
+      "callsign": "MOB_E_APP",
+      "areaId": "01GB5ZHKT32CQ5J0EPZXKDSWNK",
+      "tcpId": "01K2NF1CDR7FADZ18EMGPVNQNH",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 30.683557,
+        "lon": -88.260952
+      },
+      "range": 100,
       "freq": 118.5
     },
     {
-      "id": "01GB5ZJX88ABVAT7CDMGY72MZF",
-      "name": "West Approach",
-      "callsign": "MOB_W_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 121
-    },
-    {
       "id": "01GB5ZMS9554G0THJ66QBW3BVH",
+      "physicalFacility": "MOB",
       "name": "Local",
+      "radioName": "Mobile Tower",
       "callsign": "MOB_TWR",
+      "areaId": "01GB5ZHKT32CQ5J0EPZXKDSWNK",
+      "tcpId": "01K2NF1CDRDB69DH5JE7XH9QG8",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.683557,
+        "lon": -88.260952
       },
+      "range": 100,
       "freq": 118.3
     },
     {
-      "id": "01GB5ZN64MVVP6TAH0BBFH21WC",
-      "name": "Ground",
-      "callsign": "MOB_GND",
+      "id": "01GB5ZJX88ABVAT7CDMGY72MZF",
+      "physicalFacility": "MOB",
+      "name": "West Approach",
+      "radioName": "Mobile Approach",
+      "callsign": "MOB_W_APP",
+      "areaId": "01GB5ZHKT32CQ5J0EPZXKDSWNK",
+      "tcpId": "01K2NF1CDRT7KXDD5JYBQJPV4M",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.683557,
+        "lon": -88.260952
       },
-      "freq": 121.9
-    },
-    {
-      "id": "01GB5ZNNQ4NPXF4SQFGDG7MHRW",
-      "name": "Clearance Delivery",
-      "callsign": "MOB_DEL",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 119.85
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+      "range": 100,
+      "freq": 121
     }
   ],
   "mapGroups": [

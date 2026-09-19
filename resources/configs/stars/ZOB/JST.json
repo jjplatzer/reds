@@ -4,56 +4,153 @@
   "name": "Johnstown ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 41.65805,
-    "lon": -81.181585
+    "lat": 40.30466088552077,
+    "lon": -79.02543147584076
   },
+  "areas": [
+    {
+      "id": "01JPQA96YNJV0C7FADSX8GMMH7",
+      "name": "Johnstown RAPCON",
+      "visibilityCenter": {
+        "lat": 40.3196415477623,
+        "lon": -78.83575018099101
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "2G9",
+        "6P7",
+        "9G8",
+        "AOO",
+        "CBE",
+        "HMZ",
+        "IDI",
+        "JST",
+        "LBE"
+      ],
+      "ssaAirports": [
+        "AOO",
+        "CBE",
+        "HMZ",
+        "IDI",
+        "JST",
+        "LBE"
+      ]
+    },
+    {
+      "id": "01JPQB5YS1439ZDJY5CQ9WHHQJ",
+      "name": "Johnstown ATCT",
+      "visibilityCenter": {
+        "lat": 40.3196415477623,
+        "lon": -78.83575018099101
+      },
+      "surveillanceRange": 25,
+      "underlyingAirports": [
+        "JST"
+      ],
+      "ssaAirports": [
+        "JST"
+      ]
+    },
+    {
+      "id": "01K0537A854EEM44R681RC5NMJ",
+      "name": "Arnold Palmer ATCT",
+      "visibilityCenter": {
+        "lat": 40.274699561037686,
+        "lon": -79.40479406554026
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "LBE"
+      ],
+      "ssaAirports": [
+        "LBE"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E63HN4WNYCQR0E582F3",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1E638JMM2DQBMYX8K0NF",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E63S8QEYV3BC8XY6R8P",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01JPQB0TGJN77M77EK90FQA3ZS",
+      "physicalFacility": "JST",
       "name": "Approach",
+      "radioName": "Johnstown Approach",
       "callsign": "JST_APP",
+      "areaId": "01JPQA96YNJV0C7FADSX8GMMH7",
+      "tcpId": "01K2NF1E63HN4WNYCQR0E582F3",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 40.3196415477623,
+        "lon": -78.83575018099101
       },
+      "range": 50,
       "freq": 121.2
     },
     {
       "id": "01JPQB382ZAKXZH5YFC0K99JXG",
+      "physicalFacility": "JST",
       "name": "Tower",
+      "radioName": "Johnstown Tower",
       "callsign": "JST_TWR",
+      "areaId": "01JPQB5YS1439ZDJY5CQ9WHHQJ",
+      "tcpId": "01K2NF1E638JMM2DQBMYX8K0NF",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 40.3196415477623,
+        "lon": -78.83575018099101
       },
+      "range": 25,
       "freq": 125.75
     },
     {
-      "id": "01JPQB8BTEWEGHVEKXMPZF6GAM",
+      "id": "01K054H1W26PTY8EFH1210E7W2",
+      "physicalFacility": "LBE",
       "name": "Ground",
-      "callsign": "JST_GND",
+      "radioName": "Palmer Ground",
+      "callsign": "LBE_GND",
+      "areaId": "01K0537A854EEM44R681RC5NMJ",
+      "tcpId": "01K2NF1E63S8QEYV3BC8XY6R8P",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 40.274699561037686,
+        "lon": -79.40479406554026
       },
-      "freq": 121.6
+      "range": 50,
+      "freq": 121.8
     },
     {
-      "id": "01JPQBA1MGYXFVK66X2G551FF6",
-      "name": "Clearance Delivery",
-      "callsign": "JST_DEL",
+      "id": "01K054DB2963SJ4T1YCYPAV7TS",
+      "physicalFacility": "LBE",
+      "name": "Local",
+      "radioName": "Palmer Tower",
+      "callsign": "LBE_TWR",
+      "areaId": "01K0537A854EEM44R681RC5NMJ",
+      "tcpId": "01K2NF1E63S8QEYV3BC8XY6R8P",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 40.274699561037686,
+        "lon": -79.40479406554026
       },
-      "freq": 126.85
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+      "range": 50,
+      "freq": 125
     }
   ],
   "mapGroups": [

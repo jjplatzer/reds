@@ -4,66 +4,105 @@
   "name": "Atlantic City ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37,
-    "lon": -77
+    "lat": 39.452745,
+    "lon": -74.591952
   },
+  "areas": [
+    {
+      "id": "01GXEJHB6M8E68ARAPPV33Z8VW",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 39.452745,
+        "lon": -74.591952
+      },
+      "surveillanceRange": 80,
+      "underlyingAirports": [
+        "ACY",
+        "26N",
+        "31E",
+        "MIV",
+        "N81",
+        "OBI",
+        "WWD"
+      ],
+      "ssaAirports": [
+        "ACY"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E0T1CDM88YA9664KMT9",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1E0TGKP574Z4TW97V95K",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0TGKP574Z4TW97V95K",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0T9VPAQBRAR79Y7V5M",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GXEJKMTXYEEWMRA2WSTVE3RN",
-      "name": "Clearance",
-      "callsign": "ACY_DEL",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 127.85
-    },
-    {
-      "id": "01GXEJNKS6CR1SPEAWZTZPFNP4",
-      "name": "Ground",
-      "callsign": "ACY_GND",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GXEJP4MEC072EEQ7HTSM4H0V",
-      "name": "Local",
-      "callsign": "ACY_TWR",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 120.3
-    },
-    {
-      "id": "01GXEJR892027N5PYNFM2BF2N2",
-      "name": "South Radar",
-      "callsign": "ACY_S_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 124.6
-    },
-    {
       "id": "01GXEJRX1ZG0YY79RH417HT5ME",
+      "physicalFacility": "ACY",
       "name": "North Radar",
+      "radioName": "Atlantic City Approach",
       "callsign": "ACY_N_APP",
+      "areaId": "01GXEJHB6M8E68ARAPPV33Z8VW",
+      "tcpId": "01K2NF1E0T1CDM88YA9664KMT9",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 39.452745,
+        "lon": -74.591952
       },
+      "range": 80,
       "freq": 134.25
     },
     {
-      "id": "1S",
+      "id": "01GXEJR892027N5PYNFM2BF2N2",
+      "physicalFacility": "ACY",
+      "name": "South Radar",
+      "radioName": "Atlantic City Approach",
+      "callsign": "ACY_S_APP",
+      "areaId": "01GXEJHB6M8E68ARAPPV33Z8VW",
+      "tcpId": "01K2NF1E0TGKP574Z4TW97V95K",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 39.452745,
+        "lon": -74.591952
+      },
+      "range": 80,
+      "freq": 124.6
+    },
+    {
+      "id": "01GXEJP4MEC072EEQ7HTSM4H0V",
+      "physicalFacility": "ACY",
+      "name": "Local",
+      "radioName": "Atlantic City Tower",
+      "callsign": "ACY_TWR",
+      "areaId": "01GXEJHB6M8E68ARAPPV33Z8VW",
+      "tcpId": "01K2NF1E0T9VPAQBRAR79Y7V5M",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 39.452745,
+        "lon": -74.591952
+      },
+      "range": 80,
+      "freq": 120.3
     }
   ],
   "mapGroups": [

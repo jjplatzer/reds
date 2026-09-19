@@ -4,124 +4,185 @@
   "name": "Greensboro ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.90558406666667,
-    "lon": -83.96840666666667
+    "lat": 36.113444666666666,
+    "lon": -80.03366666666666
   },
+  "areas": [
+    {
+      "id": "01GWNGV2X7K984C9TT9GRK32EE",
+      "name": "Tower",
+      "visibilityCenter": {
+        "lat": 36.103167,
+        "lon": -79.9395
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "GSO"
+      ]
+    },
+    {
+      "id": "01GWNGVA6EBJ7664JMCNTK4KS4",
+      "name": "Approach",
+      "visibilityCenter": {
+        "lat": 36.103167,
+        "lon": -79.9395
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "GSO"
+      ]
+    },
+    {
+      "id": "01H4Q4EZEAN631FK5ZRM83KZCH",
+      "name": "INT",
+      "visibilityCenter": {
+        "lat": 36.134,
+        "lon": -80.222
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "INT"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E98NAQHE87R0TYZBWGZ",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1E98G9FWT8ZXCEJ5R0CV",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1E98VRGKJB9TSR4BHV10",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1E985XSNVA8R798KFAYA",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I"
+    },
+    {
+      "id": "01K2NF1E98VRGKJB9TSR4BHV10",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E98YS66TPQ1AJ136ZH3",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1E98W4KGNZ4NWWYMGS0V",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E98YS66TPQ1AJ136ZH3",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GWNJAZMPGDCSNME3H4J7GTT5",
-      "name": "Local Control",
-      "callsign": "GSO_TWR",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 119.1
-    },
-    {
-      "id": "01GWNJF7WND3BXVY939YVV6A47",
-      "name": "Ground Control",
-      "callsign": "GSO_GND",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GWNJFSE729E12DKGXXSYHGVP",
-      "name": "Clearance Delivery",
-      "callsign": "GSO_DEL",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.75
-    },
-    {
-      "id": "01H2MET2DBJ73ZKPYC3XBPX5C2",
-      "name": "GSO West Radar",
-      "callsign": "GSO_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 124.35
-    },
-    {
-      "id": "01H2MF1CC4QV2AEKESTKA60DGH",
-      "name": "South Radar",
-      "callsign": "GSO_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 126.6
-    },
-    {
-      "id": "01H2MF479DAHFSPR8XCGMBCWW5",
-      "name": "East Radar",
-      "callsign": "GSO_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 120.9
-    },
-    {
       "id": "01H2MFB85SNC86G4CVQDGBT7A2",
+      "physicalFacility": "GSO",
       "name": "Final Radar",
+      "radioName": "Greensboro Approach",
       "callsign": "GSO_APP",
+      "areaId": "01GWNGVA6EBJ7664JMCNTK4KS4",
+      "tcpId": "01K2NF1E98NAQHE87R0TYZBWGZ",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 36.103167,
+        "lon": -79.9395
       },
+      "range": 150,
       "freq": 125.6
     },
     {
-      "id": "01JCPETFH7Q37AND8GVZBMFFV9",
-      "name": "GSO GUARD",
-      "callsign": "GSO_G_APP",
+      "id": "01H2MF479DAHFSPR8XCGMBCWW5",
+      "physicalFacility": "GSO",
+      "name": "East Radar",
+      "radioName": "Greensboro Approach",
+      "callsign": "GSO_APP",
+      "areaId": "01GWNGVA6EBJ7664JMCNTK4KS4",
+      "tcpId": "01K2NF1E98G9FWT8ZXCEJ5R0CV",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 36.103167,
+        "lon": -79.9395
       },
-      "freq": 121.5
+      "range": 150,
+      "freq": 120.9
     },
     {
-      "id": "1H",
+      "id": "01H4Q4BJYQWQGCAAV1NRMV97BR",
+      "physicalFacility": "INT",
+      "name": "Local Control",
+      "radioName": "Winston-Salem Tower",
+      "callsign": "INT_TWR",
+      "areaId": "01H4Q4EZEAN631FK5ZRM83KZCH",
+      "tcpId": "01K2NF1E985XSNVA8R798KFAYA",
+      "tcp": "1I",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 36.134,
+        "lon": -80.222
+      },
+      "range": 50,
+      "freq": 123.75
     },
     {
-      "id": "1I",
+      "id": "01H2MF1CC4QV2AEKESTKA60DGH",
+      "physicalFacility": "GSO",
+      "name": "South Radar",
+      "radioName": "Greensboro Approach",
+      "callsign": "GSO_APP",
+      "areaId": "01GWNGVA6EBJ7664JMCNTK4KS4",
+      "tcpId": "01K2NF1E98VRGKJB9TSR4BHV10",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 36.103167,
+        "lon": -79.9395
+      },
+      "range": 150,
+      "freq": 126.6
     },
     {
-      "id": "1S",
+      "id": "01GWNJAZMPGDCSNME3H4J7GTT5",
+      "physicalFacility": "GSO",
+      "name": "Local Control",
+      "radioName": "Greensboro Tower",
+      "callsign": "GSO_TWR",
+      "areaId": "01GWNGV2X7K984C9TT9GRK32EE",
+      "tcpId": "01K2NF1E98W4KGNZ4NWWYMGS0V",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 36.103167,
+        "lon": -79.9395
+      },
+      "range": 50,
+      "freq": 119.1
     },
     {
-      "id": "1T",
+      "id": "01H2MET2DBJ73ZKPYC3XBPX5C2",
+      "physicalFacility": "GSO",
+      "name": "GSO West Radar",
+      "radioName": "Greensboro Approach",
+      "callsign": "GSO_APP",
+      "areaId": "01GWNGVA6EBJ7664JMCNTK4KS4",
+      "tcpId": "01K2NF1E98YS66TPQ1AJ136ZH3",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 36.103167,
+        "lon": -79.9395
+      },
+      "range": 150,
+      "freq": 124.35
     }
   ],
   "mapGroups": [

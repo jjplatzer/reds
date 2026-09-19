@@ -4,187 +4,426 @@
   "name": "Pensacola TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 30.544231619999998,
+    "lon": -87.14590056
   },
+  "areas": [
+    {
+      "id": "01GA1022QH5FDS393DQGZCVRQ3",
+      "name": "P31",
+      "visibilityCenter": {
+        "lat": 30.47342,
+        "lon": -87.18661
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "PNS",
+        "NPA",
+        "NSE",
+        "NDZ",
+        "JKA"
+      ]
+    },
+    {
+      "id": "01GA7S0GDKDXSN0ZXP08V6JH1J",
+      "name": "Pensacola Tower",
+      "visibilityCenter": {
+        "lat": 30.47342,
+        "lon": -87.18661
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "PNS"
+      ]
+    },
+    {
+      "id": "01JFZBTNC9ZPYPGKB5ZYSTSR0R",
+      "name": "NPA Tower",
+      "visibilityCenter": {
+        "lat": 30.3532728,
+        "lon": -87.3179711
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "NPA"
+      ],
+      "ssaAirports": [
+        "NPA"
+      ]
+    },
+    {
+      "id": "01JFZE9BCHKJMX262R16MWE9CD",
+      "name": "NSE Tower",
+      "visibilityCenter": {
+        "lat": 30.7224722,
+        "lon": -87.0239031
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "NSE"
+      ],
+      "ssaAirports": [
+        "NSE"
+      ]
+    },
+    {
+      "id": "01JFZF5DG6CE9Q18QEQE1GSHB8",
+      "name": "NDZ Tower",
+      "visibilityCenter": {
+        "lat": 30.6985731,
+        "lon": -87.0144086
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "NDZ"
+      ],
+      "ssaAirports": [
+        "NDZ"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFEBG6GT8410A0ESG7B",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1DFEH6K7H6RD0SSNVEGP",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1DFE3RQ8WWMAE4C9GREJ",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1DFE2HPAEJ9Q1HHYKYWC",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1DFE3RQ8WWMAE4C9GREJ",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1DFEX99KJFP52K33FFAA",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1DFE3RQ8WWMAE4C9GREJ",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1DFEN07WBA7PEWJ36KG2",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1DFEDD3H50ZFRY4ZRVWK",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1DFE42DTB7VH2SW8V0W7",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1DFE3RQ8WWMAE4C9GREJ",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1DFE0C98NGX12F9N2NBN",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1DFEDD3H50ZFRY4ZRVWK",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1DFEH6K7H6RD0SSNVEGP",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DFEDD3H50ZFRY4ZRVWK",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DFE3RQ8WWMAE4C9GREJ",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1DFE2WEXS2KQ8HGHCJB5",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1DFE3RQ8WWMAE4C9GREJ",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1DFENRYNQ8RZYX44ZJ8G",
+      "code": "2D",
+      "subset": 2,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1DFEVHMSZ93ARD4Y45AY",
+      "code": "2N",
+      "subset": 2,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1DFEDBVMQFQ9HRS1Q39K",
+      "code": "2S",
+      "subset": 2,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1DFEGT06EHJSHZC2AQT8",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GA10W11V0EWT4FA1C1WPJS8R",
-      "name": "Arrival Radar East",
-      "callsign": "PNS_E_APP",
+      "id": "01GA7RXSM74QQE02YGXA0BHQ5P",
+      "physicalFacility": "PNS",
+      "name": "Clearance Delivery",
+      "radioName": "Pensacola Clearance Delivery",
+      "callsign": "PNS_DEL",
+      "areaId": "01GA7S0GDKDXSN0ZXP08V6JH1J",
+      "tcpId": "01K2NF1DFEBG6GT8410A0ESG7B",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.47342,
+        "lon": -87.18661
       },
+      "range": 150,
+      "freq": 123.725
+    },
+    {
+      "id": "01GA7RYZRM45JG1NJGH5RT7QCD",
+      "physicalFacility": "PNS",
+      "name": "Ground Control",
+      "radioName": "Pensacola Ground",
+      "callsign": "PNS_GND",
+      "areaId": "01GA7S0GDKDXSN0ZXP08V6JH1J",
+      "tcpId": "01K2NF1DFEBG6GT8410A0ESG7B",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 30.47342,
+        "lon": -87.18661
+      },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
+      "id": "01GA10W11V0EWT4FA1C1WPJS8R",
+      "physicalFacility": "P31",
+      "name": "Arrival Radar East",
+      "radioName": "Pensacola Approach",
+      "callsign": "PNS_E_APP",
+      "areaId": "01GA1022QH5FDS393DQGZCVRQ3",
+      "tcpId": "01K2NF1DFE3RQ8WWMAE4C9GREJ",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 30.47342,
+        "lon": -87.18661
+      },
+      "range": 150,
       "freq": 119
     },
     {
-      "id": "01GA10Z5CFFCY5KXCGBY9K9WCE",
-      "name": " Arrival Radar West",
-      "callsign": "PNS_W_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 118.6
-    },
-    {
       "id": "01GA112KMJKTCX7AQZ8KM34C19",
+      "physicalFacility": "P31",
       "name": "Arrival Radar Final",
+      "radioName": "Pensacola Approach",
       "callsign": "PNS_F_APP",
+      "areaId": "01GA1022QH5FDS393DQGZCVRQ3",
+      "tcpId": "01K2NF1DFE2HPAEJ9Q1HHYKYWC",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.47342,
+        "lon": -87.18661
       },
+      "range": 150,
       "freq": 118
     },
     {
-      "id": "01JFRR3D72V8W5FPQ1V1BVZQ17",
-      "name": "Arrival Radar Texan",
-      "callsign": "PNS_X_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 126.85
-    },
-    {
-      "id": "01JFRSH2542ZZK49JTBER0QR9W",
-      "name": "Arrival Radar Navy",
-      "callsign": "PNS_N_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 125.35
-    },
-    {
       "id": "01JFRVYEEDX55X40XFZ2NR1FZW",
+      "physicalFacility": "P31",
       "name": "Arrival Radar Helo",
+      "radioName": "Pensacola Approach",
       "callsign": "PNS_H_APP",
+      "areaId": "01GA1022QH5FDS393DQGZCVRQ3",
+      "tcpId": "01K2NF1DFEX99KJFP52K33FFAA",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.47342,
+        "lon": -87.18661
       },
+      "range": 150,
       "freq": 124.85
     },
     {
       "id": "01JFRW1HAF9JKVDZRX8ENGANRA",
+      "physicalFacility": "P31",
       "name": "Arrival Radar MOA",
+      "radioName": "Pensacola Approach",
       "callsign": "PNS_M_APP",
+      "areaId": "01GA1022QH5FDS393DQGZCVRQ3",
+      "tcpId": "01K2NF1DFEN07WBA7PEWJ36KG2",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.47342,
+        "lon": -87.18661
       },
+      "range": 150,
       "freq": 120.05
     },
     {
-      "id": "01JFRXHPKKFY1TTBCNYRJ6FMTV",
-      "name": "Arrival Radar South",
-      "callsign": "PNS_S_APP",
+      "id": "01JFRSH2542ZZK49JTBER0QR9W",
+      "physicalFacility": "P31",
+      "name": "Arrival Radar Navy",
+      "radioName": "Pensacola Approach",
+      "callsign": "PNS_N_APP",
+      "areaId": "01GA1022QH5FDS393DQGZCVRQ3",
+      "tcpId": "01K2NF1DFE42DTB7VH2SW8V0W7",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.47342,
+        "lon": -87.18661
       },
+      "range": 150,
+      "freq": 125.35
+    },
+    {
+      "id": "01JFRXHPKKFY1TTBCNYRJ6FMTV",
+      "physicalFacility": "P31",
+      "name": "Arrival Radar South",
+      "radioName": "Pensacola Appraoch",
+      "callsign": "PNS_S_APP",
+      "areaId": "01GA1022QH5FDS393DQGZCVRQ3",
+      "tcpId": "01K2NF1DFE0C98NGX12F9N2NBN",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 30.47342,
+        "lon": -87.18661
+      },
+      "range": 150,
       "freq": 120.65
     },
     {
-      "id": "1D",
+      "id": "01GA7S1ZQW23X9107DZXE6Q56Z",
+      "physicalFacility": "PNS",
+      "name": "Local Control",
+      "radioName": "Pensacola Tower",
+      "callsign": "PNS_TWR",
+      "areaId": "01GA7S0GDKDXSN0ZXP08V6JH1J",
+      "tcpId": "01K2NF1DFEH6K7H6RD0SSNVEGP",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 30.47342,
+        "lon": -87.18661
+      },
+      "range": 150,
+      "freq": 119.9
     },
     {
-      "id": "1E",
+      "id": "01GA10Z5CFFCY5KXCGBY9K9WCE",
+      "physicalFacility": "P31",
+      "name": " Arrival Radar West",
+      "radioName": "Pensacola Approach",
+      "callsign": "PNS_W_APP",
+      "areaId": "01GA1022QH5FDS393DQGZCVRQ3",
+      "tcpId": "01K2NF1DFEDD3H50ZFRY4ZRVWK",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 30.47342,
+        "lon": -87.18661
+      },
+      "range": 150,
+      "freq": 118.6
     },
     {
-      "id": "1F",
+      "id": "01JFRR3D72V8W5FPQ1V1BVZQ17",
+      "physicalFacility": "P31",
+      "name": "Arrival Radar Texan",
+      "radioName": "Pensacola Approach",
+      "callsign": "PNS_X_APP",
+      "areaId": "01GA1022QH5FDS393DQGZCVRQ3",
+      "tcpId": "01K2NF1DFE2WEXS2KQ8HGHCJB5",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 30.47342,
+        "lon": -87.18661
+      },
+      "range": 150,
+      "freq": 126.85
     },
     {
-      "id": "1H",
+      "id": "01HAZ97PE9QKYY56YP4SXWWMA9",
+      "physicalFacility": "NPA",
+      "name": "Ground",
+      "radioName": "Sherman Ground",
+      "callsign": "NPA_GND",
+      "areaId": "01JFZBTNC9ZPYPGKB5ZYSTSR0R",
+      "tcpId": "01K2NF1DFENRYNQ8RZYX44ZJ8G",
+      "tcp": "2D",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 30.3532728,
+        "lon": -87.3179711
+      },
+      "range": 50,
+      "freq": 121.7
     },
     {
-      "id": "1M",
+      "id": "01HAZ1B4WVAYGPZEZEJR5NG1G8",
+      "physicalFacility": "NDZ",
+      "name": "Tower",
+      "radioName": "South Whiting Tower",
+      "callsign": "NDZ_TWR",
+      "areaId": "01JFZF5DG6CE9Q18QEQE1GSHB8",
+      "tcpId": "01K2NF1DFEVHMSZ93ARD4Y45AY",
+      "tcp": "2N",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 30.6985731,
+        "lon": -87.0144086
+      },
+      "range": 50,
+      "freq": 123.075
     },
     {
-      "id": "1N",
+      "id": "01HC0QQCGN8K5SKFB0SPYW7W46",
+      "physicalFacility": "NSE",
+      "name": "Tower",
+      "radioName": "North Whiting Tower",
+      "callsign": "NSE_TWR",
+      "areaId": "01JFZE9BCHKJMX262R16MWE9CD",
+      "tcpId": "01K2NF1DFEDBVMQFQ9HRS1Q39K",
+      "tcp": "2S",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 30.7224722,
+        "lon": -87.0239031
+      },
+      "range": 50,
+      "freq": 121.4
     },
     {
-      "id": "1S",
+      "id": "01HAZ987ZNJZH3VM6KYE20C54H",
+      "physicalFacility": "NPA",
+      "name": "Tower",
+      "radioName": "Sherman Tower",
+      "callsign": "NPA_TWR",
+      "areaId": "01JFZBTNC9ZPYPGKB5ZYSTSR0R",
+      "tcpId": "01K2NF1DFEGT06EHJSHZC2AQT8",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "2D",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "2N",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "2S",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 30.3532728,
+        "lon": -87.3179711
+      },
+      "range": 50,
+      "freq": 120.7
     }
   ],
   "mapGroups": [

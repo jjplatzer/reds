@@ -4,132 +4,290 @@
   "name": "Green Bay ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 44.49443213476068,
+    "lon": -87.40926383162366
   },
+  "areas": [
+    {
+      "id": "01GFD6ZA4X9B210PX67S7QHBB4",
+      "name": "GRB",
+      "visibilityCenter": {
+        "lat": 44.480916190253794,
+        "lon": -88.12591507140674
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "92C",
+        "CLI",
+        "EZS",
+        "GRB",
+        "MNM",
+        "MTW",
+        "OCG",
+        "SUE"
+      ],
+      "ssaAirports": [
+        "GRB",
+        "ATW"
+      ]
+    },
+    {
+      "id": "01GFFSE7E19BC805K8A8QH648R",
+      "name": "TVC",
+      "visibilityCenter": {
+        "lat": 44.74428711402824,
+        "lon": -85.58280422346428
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "TVC"
+      ],
+      "ssaAirports": [
+        "TVC"
+      ]
+    },
+    {
+      "id": "01H69PWETGD0RC33TJMJ530G04",
+      "name": "ATW",
+      "visibilityCenter": {
+        "lat": 44.2580931,
+        "lon": -88.5190722
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ATW"
+      ],
+      "ssaAirports": [
+        "ATW"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3K2NH2396RR4BN7WSG",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1D3KZDRKV7G881P9MFZP",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1D3KFPHZ6HRW8N3RXE9A",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1D3KNGGXF4H08D58V9JM",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1D3KZDRKV7G881P9MFZP",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01K2NF1D3KND6PFJZNC1ZY0X7P",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1D3KVDRDB3SWVKC8PWQX",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1D3KZDRKV7G881P9MFZP",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01K2NF1D3KWXC74C7WT0V2Q32E",
+      "code": "2A",
+      "subset": 2,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1D3K2NH2396RR4BN7WSG",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1D3KESXHDHS2QCCRWG26",
+      "code": "2R",
+      "subset": 2,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1D3KFPHZ6HRW8N3RXE9A",
+      "parentTcp": "1R"
+    },
+    {
+      "id": "01K2NF1D3KP1PAM1EKPAG3JJKW",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1D3KND6PFJZNC1ZY0X7P",
+      "parentTcp": "1T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GFD5Q4R3QHTGR9T9R4576J4B",
+      "id": "01GFEQGPY1EG14T5JPXM9ZBAPY",
+      "physicalFacility": "ATW",
       "name": "Local Control",
-      "callsign": "GRB_TWR",
+      "radioName": "Appleton Tower",
+      "callsign": "ATW_TWR",
+      "areaId": "01H69PWETGD0RC33TJMJ530G04",
+      "tcpId": "01K2NF1D3K2NH2396RR4BN7WSG",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 44.2580931,
+        "lon": -88.5190722
       },
-      "freq": 118.7
-    },
-    {
-      "id": "01GFD5QVS7EF5VN911NYZDWKG0",
-      "name": "Ground Control",
-      "callsign": "GRB_GND",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GFD5RA84NQBP0YVJFBJVTJ3G",
-      "name": "Clearance Delivery",
-      "callsign": "GRB_DEL",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 121.75
+      "range": 50,
+      "freq": 119.6
     },
     {
       "id": "01GFD759PF51STZ2EYA8KQAQSJ",
+      "physicalFacility": "GRB",
       "name": "Green Bay Arrival/Departure",
+      "radioName": "Green Bay Approach",
       "callsign": "GRB_G_APP",
+      "areaId": "01GFD6ZA4X9B210PX67S7QHBB4",
+      "tcpId": "01K2NF1D3KZDRKV7G881P9MFZP",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 44.480916190253794,
+        "lon": -88.12591507140674
       },
+      "range": 150,
       "freq": 119.4
     },
     {
-      "id": "01GFD764FWWCKJ50CGCKA3B2BQ",
-      "name": "Green Bay Satellite 2",
-      "callsign": "GRB_S_APP",
+      "id": "01GFFSJAXQQGMHZRVW41DEF2YT",
+      "physicalFacility": "TVC",
+      "name": "Local Control",
+      "radioName": "Traverse City Tower",
+      "callsign": "TVC_TWR",
+      "areaId": "01GFFSE7E19BC805K8A8QH648R",
+      "tcpId": "01K2NF1D3KFPHZ6HRW8N3RXE9A",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 44.74428711402824,
+        "lon": -85.58280422346428
       },
+      "range": 150,
+      "freq": 124.2
+    },
+    {
+      "id": "01GFD764FWWCKJ50CGCKA3B2BQ",
+      "physicalFacility": "GRB",
+      "name": "Green Bay Satellite 2",
+      "radioName": "Green Bay Approach",
+      "callsign": "GRB_S_APP",
+      "areaId": "01GFD6ZA4X9B210PX67S7QHBB4",
+      "tcpId": "01K2NF1D3KNGGXF4H08D58V9JM",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 44.480916190253794,
+        "lon": -88.12591507140674
+      },
+      "range": 150,
       "freq": 126.3
     },
     {
-      "id": "01GFD76V2D3Q7TGF3ZB5V3F1G7",
-      "name": "Green Bay Satellite 3",
-      "callsign": "GRB_X_APP",
+      "id": "01GFD5Q4R3QHTGR9T9R4576J4B",
+      "physicalFacility": "GRB",
+      "name": "Local Control",
+      "radioName": "Green Bay Tower",
+      "callsign": "GRB_TWR",
+      "areaId": "01GFD6ZA4X9B210PX67S7QHBB4",
+      "tcpId": "01K2NF1D3KND6PFJZNC1ZY0X7P",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 44.480916190253794,
+        "lon": -88.12591507140674
       },
+      "range": 150,
+      "freq": 118.7
+    },
+    {
+      "id": "01GFD76V2D3Q7TGF3ZB5V3F1G7",
+      "physicalFacility": "GRB",
+      "name": "Green Bay Satellite 3",
+      "radioName": "GRB_X_APP",
+      "callsign": "GRB_X_APP",
+      "areaId": "01GFD6ZA4X9B210PX67S7QHBB4",
+      "tcpId": "01K2NF1D3KVDRDB3SWVKC8PWQX",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 44.480916190253794,
+        "lon": -88.12591507140674
+      },
+      "range": 150,
       "freq": 120.2
     },
     {
-      "id": "1A",
+      "id": "01GFEQHDZCV6KM17RZ6FP6W633",
+      "physicalFacility": "ATW",
+      "name": "Ground Control",
+      "radioName": "Appleton Ground",
+      "callsign": "ATW_GND",
+      "areaId": "01H69PWETGD0RC33TJMJ530G04",
+      "tcpId": "01K2NF1D3KWXC74C7WT0V2Q32E",
+      "tcp": "2A",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.2580931,
+        "lon": -88.5190722
+      },
+      "range": 50,
+      "freq": 121.7
     },
     {
-      "id": "1G",
+      "id": "01GFFSK9RD1096FF6GVE03ZKCR",
+      "physicalFacility": "TVC",
+      "name": "Ground Control",
+      "radioName": "Traverse City Ground",
+      "callsign": "TVC_GND",
+      "areaId": "01GFFSE7E19BC805K8A8QH648R",
+      "tcpId": "01K2NF1D3KESXHDHS2QCCRWG26",
+      "tcp": "2R",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.74428711402824,
+        "lon": -85.58280422346428
+      },
+      "range": 150,
+      "freq": 121.8
     },
     {
-      "id": "1R",
+      "id": "01GFD5RA84NQBP0YVJFBJVTJ3G",
+      "physicalFacility": "GRB",
+      "name": "Clearance Delivery",
+      "radioName": "Green Bay Clearance",
+      "callsign": "GRB_DEL",
+      "areaId": "01GFD6ZA4X9B210PX67S7QHBB4",
+      "tcpId": "01K2NF1D3KP1PAM1EKPAG3JJKW",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.480916190253794,
+        "lon": -88.12591507140674
+      },
+      "range": 150,
+      "freq": 121.75
     },
     {
-      "id": "1S",
+      "id": "01GFD5QVS7EF5VN911NYZDWKG0",
+      "physicalFacility": "GRB",
+      "name": "Ground Control",
+      "radioName": "Green Bay Ground",
+      "callsign": "GRB_GND",
+      "areaId": "01GFD6ZA4X9B210PX67S7QHBB4",
+      "tcpId": "01K2NF1D3KP1PAM1EKPAG3JJKW",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2A",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2R",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 44.480916190253794,
+        "lon": -88.12591507140674
+      },
+      "range": 150,
+      "freq": 121.9
     }
   ],
   "mapGroups": [

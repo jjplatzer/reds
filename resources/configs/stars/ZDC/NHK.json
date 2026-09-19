@@ -4,97 +4,137 @@
   "name": "Patuxent ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 37,
-    "lon": -77
+    "lat": 38.283593,
+    "lon": -76.415425
   },
+  "areas": [
+    {
+      "id": "01HAAPG7M6NP3NJR7RWMP6ZT20",
+      "name": "RAPCON",
+      "visibilityCenter": {
+        "lat": 38.283593,
+        "lon": -76.415425
+      },
+      "surveillanceRange": 80,
+      "underlyingAirports": [
+        "NHK",
+        "CGE",
+        "MFV",
+        "N06",
+        "NUI",
+        "OXB",
+        "SBY",
+        "TGI",
+        "W41",
+        "WAL",
+        "1N5",
+        "2W6"
+      ],
+      "ssaAirports": [
+        "NHK"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E0VM5TB7F8PK3Z6FG6S",
+      "code": "5E",
+      "subset": 5,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E0VM4Q9X2GHKEJBSQY6",
+      "parentTcp": "5W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0V07063C04RZTF2E6E",
+      "code": "5F",
+      "subset": 5,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1E0VM4Q9X2GHKEJBSQY6",
+      "parentTcp": "5W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0VM4Q9X2GHKEJBSQY6",
+      "code": "5W",
+      "subset": 5,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0VZGQS8D1EBWES1RR3",
+      "code": "5Z",
+      "subset": 5,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1E0VM4Q9X2GHKEJBSQY6",
+      "parentTcp": "5W",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01HAAPSYA75941WECXPRP04PWC",
-      "name": "Clearance",
-      "callsign": "NHK_DEL",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 135.2
-    },
-    {
-      "id": "01HAAPTWNTRZ92KCZD3R43PJYT",
-      "name": "Ground",
-      "callsign": "NHK_GND",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 120.6
-    },
-    {
-      "id": "01HAAPVFSJN2500TDW73141AJM",
-      "name": "Local",
-      "callsign": "NHK_TWR",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 123.7
-    },
-    {
-      "id": "01HAAPW742PHKXW0B6DWH1MEGZ",
-      "name": "West Approach",
-      "callsign": "NHK_W_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 120.05
-    },
-    {
       "id": "01HAQBDME9FEKYT3KBWKYF3W4N",
+      "physicalFacility": "NHK",
       "name": "East Approach",
+      "radioName": "Patuxent Approach",
       "callsign": "NHK_E_APP",
+      "areaId": "01HAAPG7M6NP3NJR7RWMP6ZT20",
+      "tcpId": "01K2NF1E0VM5TB7F8PK3Z6FG6S",
+      "tcp": "5E",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.283593,
+        "lon": -76.415425
       },
+      "range": 80,
       "freq": 127.95
     },
     {
       "id": "01HAQBES7HJ6QH50CVYXK4R3YM",
+      "physicalFacility": "NHK",
       "name": "Arrival",
+      "radioName": "Patuxent Approach",
       "callsign": "NHK_F_APP",
+      "areaId": "01HAAPG7M6NP3NJR7RWMP6ZT20",
+      "tcpId": "01K2NF1E0V07063C04RZTF2E6E",
+      "tcp": "5F",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.283593,
+        "lon": -76.415425
       },
+      "range": 80,
       "freq": 127.95
     },
     {
-      "id": "5E",
+      "id": "01HAAPW742PHKXW0B6DWH1MEGZ",
+      "physicalFacility": "NHK",
+      "name": "West Approach",
+      "radioName": "Patuxent Approach",
+      "callsign": "NHK_W_APP",
+      "areaId": "01HAAPG7M6NP3NJR7RWMP6ZT20",
+      "tcpId": "01K2NF1E0VM4Q9X2GHKEJBSQY6",
+      "tcp": "5W",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.283593,
+        "lon": -76.415425
+      },
+      "range": 80,
+      "freq": 120.05
     },
     {
-      "id": "5F",
+      "id": "01HAAPVFSJN2500TDW73141AJM",
+      "physicalFacility": "NHK",
+      "name": "Local",
+      "radioName": "Patuxent Tower",
+      "callsign": "NHK_TWR",
+      "areaId": "01HAAPG7M6NP3NJR7RWMP6ZT20",
+      "tcpId": "01K2NF1E0VZGQS8D1EBWES1RR3",
+      "tcp": "5Z",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "5W",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "5Z",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.283593,
+        "lon": -76.415425
+      },
+      "range": 80,
+      "freq": 123.7
     }
   ],
   "mapGroups": [

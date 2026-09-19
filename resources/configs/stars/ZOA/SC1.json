@@ -4,141 +4,209 @@
   "name": "Stockton ATCT",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37.9016125,
-    "lon": -120.687685
+    "lat": 37.899087,
+    "lon": -121.233545
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01K8C5QK2R1CTTYE6VEB07EVWG",
-      "name": "Valley",
-      "callsign": "SCK_Y_APP",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+      "id": "01K8C5X64SX0KTDMGFMZBNQ83G",
+      "name": "SCK",
+      "visibilityCenter": {
+        "lat": 37.899087,
+        "lon": -121.233545
       },
-      "freq": 125.1
+      "surveillanceRange": 90,
+      "underlyingAirports": [
+        "SCK",
+        "MOD",
+        "LVK",
+        "TCY",
+        "MER"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K8C2XGZDN8NV05AKFHMAF912",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J"
     },
     {
+      "id": "01K8C2ZCTTCCYE1EWQA8BZHZD1",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K8C8VH657QMN38YZJ83CKBGP",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K8C8W489JE5PM1BPQ5SQTRZT",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P"
+    },
+    {
+      "id": "01K8C2X8XFKPQYF6VFCWQ6Z1JS",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y"
+    },
+    {
+      "id": "01K8C8XC5S9Z4R1G8QQ67NBZ1D",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
+  "controlPositions": [
+    {
       "id": "01K8C8Y4CR59673FD2AWMVM0CV",
+      "physicalFacility": "SC1",
       "name": "Tracy",
+      "radioName": "Stockton Approach",
       "callsign": "SCK_J_APP",
+      "areaId": "01K8C5X64SX0KTDMGFMZBNQ83G",
+      "tcpId": "01K8C2XGZDN8NV05AKFHMAF912",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 37.899087,
+        "lon": -121.233545
       },
+      "range": 90,
       "freq": 123.85
     },
     {
       "id": "01K8C930SK46W9XGQVHW3GDPD6",
+      "physicalFacility": "SC1",
       "name": "Castle",
+      "radioName": "Stockton Approach",
       "callsign": "SCK_K_APP",
+      "areaId": "01K8C5X64SX0KTDMGFMZBNQ83G",
+      "tcpId": "01K8C2ZCTTCCYE1EWQA8BZHZD1",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 37.899087,
+        "lon": -121.233545
       },
+      "range": 90,
       "freq": 120.95
     },
     {
-      "id": "01K8C95G1100RTZF75XNKMK1YS",
-      "name": "SCK LC",
-      "callsign": "SCK_TWR",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 120.3
-    },
-    {
-      "id": "01K8C97GK8SE9CD7SW1FPQXQ10",
-      "name": "SCK GC",
-      "callsign": "SCK_GND",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01K8C98JDZZKJH900H8MS35MZ2",
-      "name": "MOD LC",
-      "callsign": "MOD_TWR",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 125.3
-    },
-    {
-      "id": "01K8C99VXPZP1M016WS7PYVTFB",
-      "name": "MOD GC",
-      "callsign": "MOD_GND",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 121.7
-    },
-    {
-      "id": "01K8C9AZX0F00A9BWVGB213P8A",
-      "name": "LVK LC",
-      "callsign": "LVK_TWR",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 118.1
-    },
-    {
       "id": "01K8C9CDH9Z1971CMS13KP2X3M",
+      "physicalFacility": "SC1",
       "name": "LVK GC",
+      "radioName": "Livermore Ground",
       "callsign": "LVK_GND",
+      "areaId": "01K8C5X64SX0KTDMGFMZBNQ83G",
+      "tcpId": "01K8C8VH657QMN38YZJ83CKBGP",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 37.899087,
+        "lon": -121.233545
       },
+      "range": 90,
       "freq": 121.6
     },
     {
-      "id": "1J",
+      "id": "01K8C9AZX0F00A9BWVGB213P8A",
+      "physicalFacility": "SC1",
+      "name": "LVK LC",
+      "radioName": "Livermore Tower",
+      "callsign": "LVK_TWR",
+      "areaId": "01K8C5X64SX0KTDMGFMZBNQ83G",
+      "tcpId": "01K8C8VH657QMN38YZJ83CKBGP",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 37.899087,
+        "lon": -121.233545
+      },
+      "range": 90,
+      "freq": 118.1
     },
     {
-      "id": "1K",
+      "id": "01K8C99VXPZP1M016WS7PYVTFB",
+      "physicalFacility": "SC1",
+      "name": "MOD GC",
+      "radioName": "Modesto Ground",
+      "callsign": "MOD_GND",
+      "areaId": "01K8C5X64SX0KTDMGFMZBNQ83G",
+      "tcpId": "01K8C8W489JE5PM1BPQ5SQTRZT",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 37.899087,
+        "lon": -121.233545
+      },
+      "range": 90,
+      "freq": 121.7
     },
     {
-      "id": "1L",
+      "id": "01K8C98JDZZKJH900H8MS35MZ2",
+      "physicalFacility": "SC1",
+      "name": "MOD LC",
+      "radioName": "Modesto Tower",
+      "callsign": "MOD_TWR",
+      "areaId": "01K8C5X64SX0KTDMGFMZBNQ83G",
+      "tcpId": "01K8C8W489JE5PM1BPQ5SQTRZT",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 37.899087,
+        "lon": -121.233545
+      },
+      "range": 90,
+      "freq": 125.3
     },
     {
-      "id": "1P",
+      "id": "01K8C5QK2R1CTTYE6VEB07EVWG",
+      "physicalFacility": "SC1",
+      "name": "Valley",
+      "radioName": "Stockton Approach",
+      "callsign": "SCK_Y_APP",
+      "areaId": "01K8C5X64SX0KTDMGFMZBNQ83G",
+      "tcpId": "01K8C2X8XFKPQYF6VFCWQ6Z1JS",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 37.899087,
+        "lon": -121.233545
+      },
+      "range": 90,
+      "freq": 125.1
     },
     {
-      "id": "1Y",
+      "id": "01K8C97GK8SE9CD7SW1FPQXQ10",
+      "physicalFacility": "SC1",
+      "name": "SCK GC",
+      "radioName": "Stockton Ground",
+      "callsign": "SCK_GND",
+      "areaId": "01K8C5X64SX0KTDMGFMZBNQ83G",
+      "tcpId": "01K8C8XC5S9Z4R1G8QQ67NBZ1D",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 37.899087,
+        "lon": -121.233545
+      },
+      "range": 90,
+      "freq": 121.9
     },
     {
-      "id": "1Z",
+      "id": "01K8C95G1100RTZF75XNKMK1YS",
+      "physicalFacility": "SC1",
+      "name": "SCK LC",
+      "radioName": "Stockton Tower",
+      "callsign": "SCK_TWR",
+      "areaId": "01K8C5X64SX0KTDMGFMZBNQ83G",
+      "tcpId": "01K8C8XC5S9Z4R1G8QQ67NBZ1D",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 37.899087,
+        "lon": -121.233545
+      },
+      "range": 90,
+      "freq": 120.3
     }
   ],
   "mapGroups": [

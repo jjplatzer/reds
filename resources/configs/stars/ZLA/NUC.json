@@ -4,59 +4,127 @@
   "name": "San Clemente Island NALF",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 34.9691453,
-    "lon": -116.63582625
+    "lat": 33.022749,
+    "lon": -118.5884974
   },
+  "areas": [
+    {
+      "id": "01KK3FFJPW8WCKFJRBXTQXN1B3",
+      "name": "Main",
+      "visibilityCenter": {
+        "lat": 33.022749,
+        "lon": -118.5884974
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "NUC"
+      ],
+      "ssaAirports": [
+        "NUC"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01KK3FAPEZ9G4PNGY3MQPMYHXB",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK3FAPQYVNQ4JDDJY9FH4KYW",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK3FAPWYQK3SQC43203CQVX0",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK3FAQ127Q5YQ23KP6TASH6M",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK3FAQ5NP6DSHBTT4T6EVG1Z",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01KK3FCR4CPN8QT6SF5XF3XWC4",
+      "physicalFacility": "NUC",
       "name": "Approach",
+      "radioName": "San Clemente Approach",
       "callsign": "NUC_APP",
+      "areaId": "01KK3FFJPW8WCKFJRBXTQXN1B3",
+      "tcpId": "01KK3FAPEZ9G4PNGY3MQPMYHXB",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 33.022749,
+        "lon": -118.5884974
       },
+      "range": 50,
       "freq": 127.05
     },
     {
       "id": "01KK3FGXNQ3ZT0M62K19VG79VR",
+      "physicalFacility": "NUC",
       "name": "CCA Marshal",
+      "radioName": "Marshal",
       "callsign": "NUC_M_APP",
+      "areaId": "01KK3FFJPW8WCKFJRBXTQXN1B3",
+      "tcpId": "01KK3FAPQYVNQ4JDDJY9FH4KYW",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 33.022749,
+        "lon": -118.5884974
       },
+      "range": 50,
       "freq": 127.05
     },
     {
       "id": "01KK3FJ0WHY1QSW55WV1H1CVBJ",
+      "physicalFacility": "NUC",
       "name": "RFC Feeder",
+      "radioName": "San Clemente Approach",
       "callsign": "NUC_F_APP",
+      "areaId": "01KK3FFJPW8WCKFJRBXTQXN1B3",
+      "tcpId": "01KK3FAPWYQK3SQC43203CQVX0",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 33.022749,
+        "lon": -118.5884974
       },
+      "range": 50,
       "freq": 127.05
     },
     {
       "id": "01KK3FJXZHE1WF4TKG385CYVX0",
+      "physicalFacility": "NUC",
       "name": "Local",
+      "radioName": "San Clemente Tower",
       "callsign": "NUC_TWR",
+      "areaId": "01KK3FFJPW8WCKFJRBXTQXN1B3",
+      "tcpId": "01KK3FAQ5NP6DSHBTT4T6EVG1Z",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 33.022749,
+        "lon": -118.5884974
       },
+      "range": 50,
       "freq": 126.75
-    },
-    {
-      "id": "01KK3FMB8K23TF7XJSVGE06XAR",
-      "name": "Ground",
-      "callsign": "NUC_GND",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 119.55
     }
   ]
 }

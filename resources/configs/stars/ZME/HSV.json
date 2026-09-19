@@ -4,111 +4,243 @@
   "name": "Huntsville ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 35.0424167,
-    "lon": -89.9766667
+    "lat": 34.6510182,
+    "lon": -86.74496633333332
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GMVQNXQAZ2YRY6KQEM1JKZBA",
-      "name": "Clearance",
-      "callsign": "HSV_DEL",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+      "id": "01GMVR2K1D3AAWR6E1TSQHG4N6",
+      "name": "HSV TRACON",
+      "visibilityCenter": {
+        "lat": 34.6371969,
+        "lon": -86.7750542
       },
-      "freq": 120.35
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "00AL",
+        "1AL1",
+        "1M3",
+        "30AL",
+        "32AL",
+        "3AL8",
+        "3AL9",
+        "3M5",
+        "4AL4",
+        "4AL5",
+        "4AL8",
+        "5AL0",
+        "5AL9",
+        "5M0",
+        "8A1",
+        "8AL7",
+        "9A4",
+        "AL04",
+        "AL10",
+        "AL36",
+        "AL93",
+        "AL99",
+        "CMD",
+        "DCU",
+        "FYM",
+        "HSV",
+        "HUA",
+        "M38",
+        "MDQ"
+      ],
+      "ssaAirports": [
+        "HSV",
+        "HUA"
+      ]
     },
     {
-      "id": "01GMVQPR5X2GDZ1E55ATYDSP0P",
-      "name": "Ground",
-      "callsign": "HSV_GND",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+      "id": "01JCYDKW6VGW07VKWKN035VF7D",
+      "name": "HSV TOWER",
+      "visibilityCenter": {
+        "lat": 34.6371969,
+        "lon": -86.7750542
       },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "HSV"
+      ],
+      "ssaAirports": [
+        "HSV"
+      ]
+    },
+    {
+      "id": "01KMY5NYC92J9Q2P1NAA491B19",
+      "name": "HUA TOWER",
+      "visibilityCenter": {
+        "lat": 34.6786608,
+        "lon": -86.6847906
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "HUA"
+      ],
+      "ssaAirports": [
+        "HUA"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01KMXNS6DS7CMKXTMKBH9WSKMK",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D197FVRXQQJA6TQGJMN",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D198BBQJ9V35M82WR87",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KMY5JT7J2K92SWZP8XAW0GR5",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19PKHJGQQFNNRZCWV1",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D191NNBQG17KMRVNX5A",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1D197FVRXQQJA6TQGJMN",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GMVQPR5X2GDZ1E55ATYDSP0P",
+      "physicalFacility": "HSV",
+      "name": "Ground",
+      "radioName": "Huntsville Ground",
+      "callsign": "HSV_GND",
+      "areaId": "01JCYDKW6VGW07VKWKN035VF7D",
+      "tcpId": "01KMXNS6DS7CMKXTMKBH9WSKMK",
+      "tcp": "1A",
+      "visualCenter": {
+        "lat": 34.6371969,
+        "lon": -86.7750542
+      },
+      "range": 50,
       "freq": 121.9
     },
     {
-      "id": "01GMVQQCHYY873DBAZ9N2QVWC6",
-      "name": "Local",
-      "callsign": "HSV_TWR",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 127.6
-    },
-    {
       "id": "01GMVQQYRXKXSHHVT35H31MMPK",
+      "physicalFacility": "HSV",
       "name": "East Radar",
+      "radioName": "Huntsville Approach",
       "callsign": "HSV_E_APP",
+      "areaId": "01GMVR2K1D3AAWR6E1TSQHG4N6",
+      "tcpId": "01K2NF1D197FVRXQQJA6TQGJMN",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 34.6371969,
+        "lon": -86.7750542
       },
+      "range": 150,
       "freq": 125.6
     },
     {
-      "id": "01GMVQRQW9N37NCJ5DBE0KGKPS",
-      "name": "West Radar",
-      "callsign": "HSV_W_APP",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 118.05
-    },
-    {
       "id": "01GMVQSRKBPG5P7480PHFGZ9D4",
+      "physicalFacility": "HSV",
       "name": "Final Radar",
+      "radioName": "Huntsville Approach",
       "callsign": "HSV_F_APP",
+      "areaId": "01GMVR2K1D3AAWR6E1TSQHG4N6",
+      "tcpId": "01K2NF1D198BBQJ9V35M82WR87",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 34.6371969,
+        "lon": -86.7750542
       },
+      "range": 150,
       "freq": 118.75
     },
     {
-      "id": "1A",
+      "id": "01GPH58Q1NBZ5NFCAMA4S652NQ",
+      "physicalFacility": "HUA",
+      "name": "Local",
+      "radioName": "Redstone Tower",
+      "callsign": "HUA_TWR",
+      "areaId": "01KMY5NYC92J9Q2P1NAA491B19",
+      "tcpId": "01KMY5JT7J2K92SWZP8XAW0GR5",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.6786608,
+        "lon": -86.6847906
+      },
+      "range": 60,
+      "freq": 126.95
     },
     {
-      "id": "1E",
+      "id": "01GMVQNXQAZ2YRY6KQEM1JKZBA",
+      "physicalFacility": "HSV",
+      "name": "Clearance",
+      "radioName": "Huntsville Clearance",
+      "callsign": "HSV_DEL",
+      "areaId": "01JCYDKW6VGW07VKWKN035VF7D",
+      "tcpId": "01K2NF1D19PKHJGQQFNNRZCWV1",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.6371969,
+        "lon": -86.7750542
+      },
+      "range": 50,
+      "freq": 120.35
     },
     {
-      "id": "1F",
+      "id": "01GMVQQCHYY873DBAZ9N2QVWC6",
+      "physicalFacility": "HSV",
+      "name": "Local",
+      "radioName": "Huntsville Tower",
+      "callsign": "HSV_TWR",
+      "areaId": "01JCYDKW6VGW07VKWKN035VF7D",
+      "tcpId": "01K2NF1D19PKHJGQQFNNRZCWV1",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.6371969,
+        "lon": -86.7750542
+      },
+      "range": 50,
+      "freq": 127.6
     },
     {
-      "id": "1R",
+      "id": "01GMVQRQW9N37NCJ5DBE0KGKPS",
+      "physicalFacility": "HSV",
+      "name": "West Radar",
+      "radioName": "Huntsville Approach",
+      "callsign": "HSV_W_APP",
+      "areaId": "01GMVR2K1D3AAWR6E1TSQHG4N6",
+      "tcpId": "01K2NF1D191NNBQG17KMRVNX5A",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.6371969,
+        "lon": -86.7750542
+      },
+      "range": 150,
+      "freq": 118.05
     }
   ],
   "mapGroups": [

@@ -4,107 +4,186 @@
   "name": "Whidbey Island ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 45.116049633333326,
-    "lon": -122.83189593333333
+    "lat": 47.820665000000005,
+    "lon": -124.73048445
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GF9NC9DP4HH3CXCKV8J7Y027",
-      "name": "West Approach",
-      "callsign": "NUW_W_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+      "id": "01GF9N446B8JAP6SK4WEN2YAEK",
+      "name": "Main",
+      "visibilityCenter": {
+        "lat": 48.35184,
+        "lon": -122.6559589
       },
-      "freq": 118.2
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "WA83",
+        "7WA2",
+        "WA68",
+        "0S9",
+        "WT29",
+        "W66",
+        "NOW",
+        "26WA",
+        "7WA0",
+        "WN21",
+        "WN37",
+        "CLM",
+        "NUW",
+        "OKH",
+        "81W",
+        "S31",
+        "03WT",
+        "FHR",
+        "W33",
+        "88WA",
+        "01WN",
+        "NRA",
+        "78WA",
+        "15WA",
+        "13W",
+        "WA33",
+        "6WA5",
+        "4WA6",
+        "0WN0",
+        "WN49",
+        "W28",
+        "3WA9",
+        "2WA1",
+        "WA59",
+        "WN29",
+        "WN23",
+        "WA47",
+        "W49",
+        "0WA3",
+        "0WA5",
+        "4WA4",
+        "WA18",
+        "WN07",
+        "27WA",
+        "WN51",
+        "BVS",
+        "38WA",
+        "21H",
+        "WA02",
+        "WN18",
+        "74S"
+      ],
+      "ssaAirports": [
+        "NUW"
+      ]
     },
     {
-      "id": "01GF9ND469ZNMA8R585WGHBNRG",
-      "name": "East Approach",
-      "callsign": "NUW_E_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+      "id": "01K9BC1VVXPRS3NWTA8FH7M7RK",
+      "name": "Downrigger",
+      "visibilityCenter": {
+        "lat": 47.28949,
+        "lon": -126.80501
       },
+      "surveillanceRange": 155,
+      "ssaAirports": [
+        "NUW"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DN6CDNCXXJ65YZV6Q7F",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DN6X48HQB401VFHP6G2",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K9B7XZ4M4SG2K9CEMQR55YAD",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1DN6X48HQB401VFHP6G2",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN60T7G1MQE9J14HEYK",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6X48HQB401VFHP6G2",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GF9ND469ZNMA8R585WGHBNRG",
+      "physicalFacility": "NUW",
+      "name": "East Approach",
+      "radioName": "Whidbey Approach",
+      "callsign": "NUW_E_APP",
+      "areaId": "01GF9N446B8JAP6SK4WEN2YAEK",
+      "tcpId": "01K2NF1DN6CDNCXXJ65YZV6Q7F",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 48.35184,
+        "lon": -122.6559589
+      },
+      "range": 150,
       "freq": 120.7
     },
     {
-      "id": "01GF9NE33Q83DD142XDE96SYAV",
-      "name": "Tower",
-      "callsign": "NUW_TWR",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 127.9
-    },
-    {
-      "id": "01GF9NERKV07B7K23TH5RHT2ES",
-      "name": "Ground",
-      "callsign": "NUW_GND",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 121.75
-    },
-    {
-      "id": "01GF9NF6H9GZB8NYDVQSYMT1KY",
-      "name": "Clearance Delivery",
-      "callsign": "NUW_DEL",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 135.1
-    },
-    {
-      "id": "01JGHWSFQ2YQBCY0VJY7BJ8X1S",
-      "name": "NUW Guard",
-      "callsign": "NUW_G_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 121.5
-    },
-    {
       "id": "01K9B7TGATND84ZFKV2MPFZFT3",
+      "physicalFacility": "NUW",
       "name": "Downrigger",
+      "radioName": "Whidbey Approach",
       "callsign": "NUW_F_APP",
+      "areaId": "01K9BC1VVXPRS3NWTA8FH7M7RK",
+      "tcpId": "01K9B7XZ4M4SG2K9CEMQR55YAD",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.28949,
+        "lon": -126.80501
       },
+      "range": 155,
       "freq": 128.025
     },
     {
-      "id": "1E",
+      "id": "01GF9NE33Q83DD142XDE96SYAV",
+      "physicalFacility": "NUW",
+      "name": "Tower",
+      "radioName": "Whidbey Tower",
+      "callsign": "NUW_TWR",
+      "areaId": "01GF9N446B8JAP6SK4WEN2YAEK",
+      "tcpId": "01K2NF1DN60T7G1MQE9J14HEYK",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
+        "lat": 48.35184,
+        "lon": -122.6559589
+      },
+      "range": 150,
+      "freq": 127.9
     },
     {
-      "id": "1F",
+      "id": "01GF9NC9DP4HH3CXCKV8J7Y027",
+      "physicalFacility": "NUW",
+      "name": "West Approach",
+      "radioName": "W",
+      "callsign": "NUW_W_APP",
+      "areaId": "01GF9N446B8JAP6SK4WEN2YAEK",
+      "tcpId": "01K2NF1DN6X48HQB401VFHP6G2",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
+        "lat": 48.35184,
+        "lon": -122.6559589
+      },
+      "range": 150,
+      "freq": 118.2
     }
   ],
   "mapGroups": [

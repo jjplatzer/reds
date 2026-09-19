@@ -4,73 +4,146 @@
   "name": "Abilene ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 32.3970722,
+    "lon": -99.6667778
   },
+  "areas": [
+    {
+      "id": "01H3C4DR2B22XJ8MDCDDW0XJD4",
+      "name": "ABI",
+      "visibilityCenter": {
+        "lat": 32.3970722,
+        "lon": -99.6667778
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "3F2",
+        "77F",
+        "ABI",
+        "DYS",
+        "F56",
+        "GZN",
+        "SWW",
+        "T23"
+      ],
+      "ssaAirports": [
+        "ABI",
+        "DYS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8SGJMV3CAHH5HSFT5Y",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1D8SGPPV423GZ3XH7AD9",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1D8SK9NMJXH506S5CP7J",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1D8SW2ENDR89D432YVYG",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1D8SYEV18S8DQJQQ6CH2",
+      "code": "2L",
+      "subset": 2,
+      "sectorId": "L"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01H3C50QJ48MA95P4P2T1JAZ3A",
-      "name": "Radar East",
-      "callsign": "ABI_R_APP",
+      "id": "01H87BY5GNJXNTYYHDZ0620WNS",
+      "physicalFacility": "DYS",
+      "name": "Local",
+      "radioName": "Dyess Tower",
+      "callsign": "DYS_TWR",
+      "areaId": "01H3C4DR2B22XJ8MDCDDW0XJD4",
+      "tcpId": "01K2NF1D8SGJMV3CAHH5HSFT5Y",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.3970722,
+        "lon": -99.6667778
       },
-      "freq": 125
+      "range": 150,
+      "freq": 133
     },
     {
       "id": "01H3C536EGGZF43GBG6HCPZN72",
+      "physicalFacility": "ABI",
       "name": "Local",
+      "radioName": "Abilene Tower",
       "callsign": "ABI_TWR",
+      "areaId": "01H3C4DR2B22XJ8MDCDDW0XJD4",
+      "tcpId": "01K2NF1D8SGPPV423GZ3XH7AD9",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.3970722,
+        "lon": -99.6667778
       },
+      "range": 150,
       "freq": 120.1
     },
     {
-      "id": "01H3C54B1ZKDQYEHQPC0C2TVBC",
-      "name": "Ground",
-      "callsign": "ABI_GND",
+      "id": "01H3C50QJ48MA95P4P2T1JAZ3A",
+      "physicalFacility": "ABI",
+      "name": "Radar East",
+      "radioName": "Abilene Approach",
+      "callsign": "ABI_R_APP",
+      "areaId": "01H3C4DR2B22XJ8MDCDDW0XJD4",
+      "tcpId": "01K2NF1D8SK9NMJXH506S5CP7J",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.3970722,
+        "lon": -99.6667778
       },
-      "freq": 121.7
+      "range": 150,
+      "freq": 125
     },
     {
       "id": "01HVDEMYQSA8RDRP85G33X1VNK",
+      "physicalFacility": "ABI",
       "name": "Radar West",
+      "radioName": "Abilene Approach",
       "callsign": "ABI_W_APP",
+      "areaId": "01H3C4DR2B22XJ8MDCDDW0XJD4",
+      "tcpId": "01K2NF1D8SW2ENDR89D432YVYG",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.3970722,
+        "lon": -99.6667778
       },
+      "range": 150,
       "freq": 127.2
     },
     {
-      "id": "01J9YHPAST7DARYCD1CN5HRRQD",
-      "name": "Guard",
-      "callsign": "ABI_EM_APP",
+      "id": "01H3C54B1ZKDQYEHQPC0C2TVBC",
+      "physicalFacility": "ABI",
+      "name": "Ground",
+      "radioName": "Abilene Ground",
+      "callsign": "ABI_GND",
+      "areaId": "01H3C4DR2B22XJ8MDCDDW0XJD4",
+      "tcpId": "01K2NF1D8SYEV18S8DQJQQ6CH2",
+      "tcp": "2L",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.3970722,
+        "lon": -99.6667778
       },
-      "freq": 121.5
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+      "range": 150,
+      "freq": 121.7
     }
   ],
   "mapGroups": [

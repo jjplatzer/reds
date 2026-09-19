@@ -4,253 +4,594 @@
   "name": "Salt Lake City TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 44.1394906,
-    "lon": -111.3092792325
+    "lat": 40.741753,
+    "lon": -111.92826099999999
   },
+  "areas": [
+    {
+      "id": "01G9BSJNC01SSJNJWSSRH9FE9Y",
+      "name": "OGD-TWR",
+      "visibilityCenter": {
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "OGD"
+      ]
+    },
+    {
+      "id": "01G9BSKBXQ1EQ9BV6NRV74PJ3W",
+      "name": "PVU-TWR",
+      "visibilityCenter": {
+        "lat": 40.216255,
+        "lon": -111.726635
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "PVU"
+      ]
+    },
+    {
+      "id": "01G9BV7VV372PMMQ3CDJYBRCZ7",
+      "name": "S56",
+      "visibilityCenter": {
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "surveillanceRange": 100,
+      "ssaAirports": [
+        "SLC",
+        "OGD",
+        "PVU",
+        "HIF",
+        "BMC",
+        "TVY",
+        "SVR",
+        "SPK"
+      ]
+    },
+    {
+      "id": "01G9BXCZM0Q4SVB0EHB0MRQ8V5",
+      "name": "SLC-TWR",
+      "visibilityCenter": {
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "SLC"
+      ]
+    },
+    {
+      "id": "01HM7PFTS6K36XDWTWV8AE86CB",
+      "name": "HIF-TWR",
+      "visibilityCenter": {
+        "lat": 41.12281,
+        "lon": -111.97737
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "HIF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E41Z42GBSYA60R84K6Z",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1E41M89M7ZND0Q1DSYJB",
+      "parentTcp": "1J"
+    },
+    {
+      "id": "01K2NF1E416YWJC1CBNBSB3KZ1",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1E41NHVBRR2QXPDT4Q6H",
+      "parentTcp": "1K"
+    },
+    {
+      "id": "01K2NF1E41XM9DZ7RPNMYDGCRC",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1E41WXE7079Z6VV4TFQZ",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E414D6WVV8BMERAEXF6",
+      "parentTcp": "1L"
+    },
+    {
+      "id": "01K2NF1E41M9YQ8RBX05MXPKVM",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1E41NHVBRR2QXPDT4Q6H",
+      "parentTcp": "1K"
+    },
+    {
+      "id": "01K2NF1E41K4YP3XZD7Y9ZP7WP",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1E41NHVBRR2QXPDT4Q6H",
+      "parentTcp": "1K"
+    },
+    {
+      "id": "01K2NF1E41RB6999SFHXB2XT2E",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1E416YWJC1CBNBSB3KZ1",
+      "parentTcp": "1B"
+    },
+    {
+      "id": "01K2NF1E41M89M7ZND0Q1DSYJB",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "parentTcpId": "01K2NF1E41NHVBRR2QXPDT4Q6H",
+      "parentTcp": "1K"
+    },
+    {
+      "id": "01K2NF1E41NHVBRR2QXPDT4Q6H",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1E414D6WVV8BMERAEXF6",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1E41BH4JZ6PB47P506H5",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P"
+    },
+    {
+      "id": "01K2NF1E414RFA1FGFCHJH01SJ",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E416YWJC1CBNBSB3KZ1",
+      "parentTcp": "1B"
+    },
+    {
+      "id": "01K2NF1E41YXAE1YT1J9BCQFPT",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1E41CVMWQTZKSX018M8W",
+      "parentTcp": "1X"
+    },
+    {
+      "id": "01K2NF1E41WNAVCG286ZEFAYT9",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1E41M9YQ8RBX05MXPKVM",
+      "parentTcp": "1F"
+    },
+    {
+      "id": "01K2NF1E41QEQG4JB6346NA4M9",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E414D6WVV8BMERAEXF6",
+      "parentTcp": "1L"
+    },
+    {
+      "id": "01K2NF1E41CVMWQTZKSX018M8W",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X"
+    },
+    {
+      "id": "01K2NF1E419G6SJ9QEFKPB2HTM",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1E41WXE7079Z6VV4TFQZ",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1E41NJACV6ZXVVC41CN5",
+      "code": "2L",
+      "subset": 2,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K92ZJVZSFEX2SDSM5RCG8EHP",
+      "code": "2M",
+      "subset": 2,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K910NKX54EBRVDXHR1GN9FP8",
+      "code": "3G",
+      "subset": 3,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1E41X6799TV7J7B78D4V",
+      "code": "4D",
+      "subset": 4,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1E41GHM12CD13W7Z20C6",
+      "code": "4G",
+      "subset": 4,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1E419MJRS9AWVSVWHMPV",
+      "code": "4L",
+      "subset": 4,
+      "sectorId": "L"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G9BV9H83ZJBKVMNBRGQAG7YS",
-      "name": "Bear",
-      "callsign": "SLC_B_APP",
+      "id": "01G9BVPDRT2MN0YGGVKE1VDG4V",
+      "physicalFacility": "S56",
+      "name": "Alpine",
+      "radioName": "Salt Lake City Approach",
+      "callsign": "SLC_A_APP",
+      "areaId": "01G9BV7VV372PMMQ3CDJYBRCZ7",
+      "tcpId": "01K2NF1E41Z42GBSYA60R84K6Z",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 40.7899,
+        "lon": -111.9791
       },
+      "range": 100,
+      "freq": 118.85
+    },
+    {
+      "id": "01G9BV9H83ZJBKVMNBRGQAG7YS",
+      "physicalFacility": "S56",
+      "name": "Bear",
+      "radioName": "Salt Lake City Approach",
+      "callsign": "SLC_B_APP",
+      "areaId": "01G9BV7VV372PMMQ3CDJYBRCZ7",
+      "tcpId": "01K2NF1E416YWJC1CBNBSB3KZ1",
+      "tcp": "1B",
+      "visualCenter": {
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "range": 100,
       "freq": 124.9
     },
     {
-      "id": "01G9BVH63CH2J1TZQQZ59SQC4A",
-      "name": "Gunnison",
-      "callsign": "SLC_G_APP",
+      "id": "01G9BY7WWSQEG7M8ADTZ1EDYKX",
+      "physicalFacility": "SLC",
+      "name": "Clearance Delivery",
+      "radioName": "Salt Lake City Clearance",
+      "callsign": "SLC_DEL",
+      "areaId": "01G9BXCZM0Q4SVB0EHB0MRQ8V5",
+      "tcpId": "01K2NF1E41XM9DZ7RPNMYDGCRC",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 40.7899,
+        "lon": -111.9791
       },
+      "range": 50,
+      "freq": 127.3
+    },
+    {
+      "id": "01G9BXZK7HCBZ52G6G188X71E3",
+      "physicalFacility": "SLC",
+      "name": "Local Control East",
+      "radioName": "Salt Lake City Tower",
+      "callsign": "SLC_E_TWR",
+      "areaId": "01G9BXCZM0Q4SVB0EHB0MRQ8V5",
+      "tcpId": "01K2NF1E41WXE7079Z6VV4TFQZ",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "range": 50,
+      "freq": 118.3
+    },
+    {
+      "id": "01G9BVS5RWQ11G8F0FFQNJACNS",
+      "physicalFacility": "S56",
+      "name": "Final",
+      "radioName": "Salt Lake City Approach",
+      "callsign": "SLC_F_APP",
+      "areaId": "01G9BV7VV372PMMQ3CDJYBRCZ7",
+      "tcpId": "01K2NF1E41M9YQ8RBX05MXPKVM",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "range": 100,
+      "freq": 125.7
+    },
+    {
+      "id": "01G9BVH63CH2J1TZQQZ59SQC4A",
+      "physicalFacility": "S56",
+      "name": "Gunnison",
+      "radioName": "Salt Lake City Approach",
+      "callsign": "SLC_G_APP",
+      "areaId": "01G9BV7VV372PMMQ3CDJYBRCZ7",
+      "tcpId": "01K2NF1E41K4YP3XZD7Y9ZP7WP",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "range": 100,
       "freq": 126.25
     },
     {
-      "id": "01G9BVJE54SRVRYA7CZN5JK06K",
-      "name": "Jordan",
-      "callsign": "SLC_J_APP",
+      "id": "01G9BVMAGCZSEVP0D94YD1G5TZ",
+      "physicalFacility": "S56",
+      "name": "Hart",
+      "radioName": "Salt Lake City Approach",
+      "callsign": "SLC_H_APP",
+      "areaId": "01G9BV7VV372PMMQ3CDJYBRCZ7",
+      "tcpId": "01K2NF1E41RB6999SFHXB2XT2E",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 40.7899,
+        "lon": -111.9791
       },
+      "range": 100,
+      "freq": 121.1
+    },
+    {
+      "id": "01G9BVJE54SRVRYA7CZN5JK06K",
+      "physicalFacility": "S56",
+      "name": "Jordan",
+      "radioName": "Salt Lake City Approach",
+      "callsign": "SLC_J_APP",
+      "areaId": "01G9BV7VV372PMMQ3CDJYBRCZ7",
+      "tcpId": "01K2NF1E41M89M7ZND0Q1DSYJB",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "range": 100,
       "freq": 128.6
     },
     {
       "id": "01G9BVKB3E5GAYBP10DRW4DBT7",
+      "physicalFacility": "S56",
       "name": "Lake",
+      "radioName": "Salt Lake City Approach",
       "callsign": "SLC_K_APP",
+      "areaId": "01G9BV7VV372PMMQ3CDJYBRCZ7",
+      "tcpId": "01K2NF1E41NHVBRR2QXPDT4Q6H",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 40.7899,
+        "lon": -111.9791
       },
+      "range": 100,
       "freq": 135.5
     },
     {
-      "id": "01G9BVMAGCZSEVP0D94YD1G5TZ",
-      "name": "Hart",
-      "callsign": "SLC_H_APP",
+      "id": "01G9BXX4B2Y4Z1BS8T4Y50WA05",
+      "physicalFacility": "SLC",
+      "name": "Local Control Center",
+      "radioName": "Salt Lake City Tower",
+      "callsign": "SLC_C_TWR",
+      "areaId": "01G9BXCZM0Q4SVB0EHB0MRQ8V5",
+      "tcpId": "01K2NF1E414D6WVV8BMERAEXF6",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 40.7899,
+        "lon": -111.9791
       },
-      "freq": 121.1
+      "range": 50,
+      "freq": 119.05
     },
     {
-      "id": "01G9BVPDRT2MN0YGGVKE1VDG4V",
-      "name": "Alpine",
-      "callsign": "SLC_A_APP",
+      "id": "01G9BSQVGCDT2EEZW0XBGP73F5",
+      "physicalFacility": "PVU",
+      "name": "Local Control",
+      "radioName": "Provo Tower",
+      "callsign": "PVU_TWR",
+      "areaId": "01G9BSKBXQ1EQ9BV6NRV74PJ3W",
+      "tcpId": "01K2NF1E41BH4JZ6PB47P506H5",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 40.216255,
+        "lon": -111.726635
       },
-      "freq": 118.85
-    },
-    {
-      "id": "01G9BVQTS8AMDCBDCC0ZAVEWY7",
-      "name": "Valley",
-      "callsign": "SLC_V_APP",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      },
-      "freq": 120.9
+      "range": 50,
+      "freq": 125.3
     },
     {
       "id": "01G9BVRJMQHN8ZW5D4DT2Y9FZ0",
+      "physicalFacility": "S56",
       "name": "Stockton",
+      "radioName": "Salt Lake City Approach",
       "callsign": "SLC_S_APP",
+      "areaId": "01G9BV7VV372PMMQ3CDJYBRCZ7",
+      "tcpId": "01K2NF1E414RFA1FGFCHJH01SJ",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 40.7899,
+        "lon": -111.9791
       },
+      "range": 100,
       "freq": 128.1
     },
     {
-      "id": "01G9BVS5RWQ11G8F0FFQNJACNS",
-      "name": "Final",
-      "callsign": "SLC_F_APP",
+      "id": "01G9BY5PB3FCVQREKVA3HHYTDH",
+      "physicalFacility": "SLC",
+      "name": "Ground Control East",
+      "radioName": "Salt Lake City Ground",
+      "callsign": "SLC_E_GND",
+      "areaId": "01G9BXCZM0Q4SVB0EHB0MRQ8V5",
+      "tcpId": "01K2NF1E41YXAE1YT1J9BCQFPT",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 40.7899,
+        "lon": -111.9791
       },
-      "freq": 125.7
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1A",
+      "id": "01G9BVQTS8AMDCBDCC0ZAVEWY7",
+      "physicalFacility": "S56",
+      "name": "Valley",
+      "radioName": "Salt Lake City Approach",
+      "callsign": "SLC_V_APP",
+      "areaId": "01G9BV7VV372PMMQ3CDJYBRCZ7",
+      "tcpId": "01K2NF1E41WNAVCG286ZEFAYT9",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "range": 100,
+      "freq": 120.9
     },
     {
-      "id": "1B",
+      "id": "01G9BXE74P8EB87GD5M8ZHFJ62",
+      "physicalFacility": "SLC",
+      "name": "Local Control West",
+      "radioName": "Salt Lake City Tower",
+      "callsign": "SLC_W_TWR",
+      "areaId": "01G9BXCZM0Q4SVB0EHB0MRQ8V5",
+      "tcpId": "01K2NF1E41QEQG4JB6346NA4M9",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "range": 50,
+      "freq": 132.65
     },
     {
-      "id": "1D",
+      "id": "01G9BY6EDEH676R34M1CTWRPV1",
+      "physicalFacility": "SLC",
+      "name": "Ground Control West",
+      "radioName": "Salt Lake City Ground",
+      "callsign": "SLC_W_GND",
+      "areaId": "01G9BXCZM0Q4SVB0EHB0MRQ8V5",
+      "tcpId": "01K2NF1E41CVMWQTZKSX018M8W",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "range": 50,
+      "freq": 123.775
     },
     {
-      "id": "1E",
+      "id": "01JJ4ZNPHAR80GEKYCJ16VA7V4",
+      "physicalFacility": "SLC",
+      "name": "Local Assist City",
+      "radioName": "Salt Lake City Tower",
+      "callsign": "SLC_A_TWR",
+      "areaId": "01G9BXCZM0Q4SVB0EHB0MRQ8V5",
+      "tcpId": "01K2NF1E419G6SJ9QEFKPB2HTM",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "range": 50,
+      "freq": 120.2
     },
     {
-      "id": "1F",
+      "id": "01G9BSKY5C186VWSER169BR4G9",
+      "physicalFacility": "OGD",
+      "name": "Local Control",
+      "radioName": "Ogden Tower",
+      "callsign": "OGD_TWR",
+      "areaId": "01G9BSJNC01SSJNJWSSRH9FE9Y",
+      "tcpId": "01K2NF1E41NJACV6ZXVVC41CN5",
+      "tcp": "2L",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 40.7899,
+        "lon": -111.9791
+      },
+      "range": 50,
+      "freq": 118.7
     },
     {
-      "id": "1G",
+      "id": "01G9BSS350B3C3BSN6VBQWECGF",
+      "physicalFacility": "PVU",
+      "name": "Ground Control",
+      "radioName": "Provo Ground",
+      "callsign": "PVU_GND",
+      "areaId": "01G9BSKBXQ1EQ9BV6NRV74PJ3W",
+      "tcpId": "01K910NKX54EBRVDXHR1GN9FP8",
+      "tcp": "3G",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 40.216255,
+        "lon": -111.726635
+      },
+      "range": 50,
+      "freq": 119.4
     },
     {
-      "id": "1H",
+      "id": "01JHPB38N0X4NHKJH124ZKS4E8",
+      "physicalFacility": "HIF",
+      "name": "Clearance Delivery",
+      "radioName": "Hill Clearance",
+      "callsign": "HIF_DEL",
+      "areaId": "01HM7PFTS6K36XDWTWV8AE86CB",
+      "tcpId": "01K2NF1E41X6799TV7J7B78D4V",
+      "tcp": "4D",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 41.12281,
+        "lon": -111.97737
+      },
+      "range": 50,
+      "freq": 124.1
     },
     {
-      "id": "1J",
+      "id": "01JHPB5VJS2KRDE9E94R817ET3",
+      "physicalFacility": "HIF",
+      "name": "Ground Control",
+      "radioName": "Hill Ground",
+      "callsign": "HIF_GND",
+      "areaId": "01HM7PFTS6K36XDWTWV8AE86CB",
+      "tcpId": "01K2NF1E41GHM12CD13W7Z20C6",
+      "tcp": "4G",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 41.12281,
+        "lon": -111.97737
+      },
+      "range": 50,
+      "freq": 121.6
     },
     {
-      "id": "1K",
+      "id": "01HMMHTEF2NBPKK52HP9T67QH9",
+      "physicalFacility": "HIF",
+      "name": "Local Control",
+      "radioName": "Hill Tower",
+      "callsign": "HIF_TWR",
+      "areaId": "01HM7PFTS6K36XDWTWV8AE86CB",
+      "tcpId": "01K2NF1E419MJRS9AWVSVWHMPV",
+      "tcp": "4L",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "2L",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "3G",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "3L",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "4D",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "4G",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "4L",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 41.12281,
+        "lon": -111.97737
+      },
+      "range": 50,
+      "freq": 127.15
     }
   ],
   "mapGroups": [

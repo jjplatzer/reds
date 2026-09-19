@@ -4,104 +4,170 @@
   "name": "Tallahassee ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 30.39663,
+    "lon": -84.35099
   },
+  "areas": [
+    {
+      "id": "01GA7Q2M6GFFEWMSZZHV4A3PJS",
+      "name": "TLH",
+      "visibilityCenter": {
+        "lat": 30.39663,
+        "lon": -84.35099
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "BGE",
+        "TLH"
+      ]
+    },
+    {
+      "id": "01HCKDP7VH4X3F8B2T42VPJRQF",
+      "name": "Tallahassee Tower",
+      "visibilityCenter": {
+        "lat": 30.39663,
+        "lon": -84.35099
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "TLH"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFEVP4AWCA3KX2ED9CR",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1DFEBP5MZ9ADCFCVKBEK",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1DFE9V6ZQSTWY9Y4XPXW",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1DFEYR6GVN8RTWX6JQJV",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1DFEMKNFHBB4TPW6R3QW",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DFET3401MK2X0MG1FTS",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GA7QRDHX78FWH6NE51V2WA20",
-      "name": "Radar East",
-      "callsign": "TLH_E_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 135.8
-    },
-    {
-      "id": "01GA7QSZQFW0V4MZ1S87Y8MXS8",
-      "name": "Radar West",
-      "callsign": "TLH_W_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 128.7
-    },
-    {
-      "id": "01GA7QTY834K7WY7DR7M3AG74C",
-      "name": "Radar Final",
-      "callsign": "TLH_F_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 133.85
-    },
-    {
       "id": "01GA7R14AY0RR19907GNSTMFNC",
+      "physicalFacility": "TLH",
       "name": "Clearance Delivery ",
+      "radioName": "Tallahassee Clearance Delivery",
       "callsign": "TLH_DEL",
+      "areaId": "01HCKDP7VH4X3F8B2T42VPJRQF",
+      "tcpId": "01K2NF1DFEVP4AWCA3KX2ED9CR",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.39663,
+        "lon": -84.35099
       },
+      "range": 50,
       "freq": 126.65
     },
     {
-      "id": "01GA7R24HSZYNV42Q0QGHYHKKH",
-      "name": "Ground Control",
-      "callsign": "TLH_GND",
+      "id": "01GA7QRDHX78FWH6NE51V2WA20",
+      "physicalFacility": "TLH",
+      "name": "Radar East",
+      "radioName": "Tallahassee Approach",
+      "callsign": "TLH_E_APP",
+      "areaId": "01GA7Q2M6GFFEWMSZZHV4A3PJS",
+      "tcpId": "01K2NF1DFEBP5MZ9ADCFCVKBEK",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.39663,
+        "lon": -84.35099
       },
+      "range": 150,
+      "freq": 135.8
+    },
+    {
+      "id": "01GA7QTY834K7WY7DR7M3AG74C",
+      "physicalFacility": "TLH",
+      "name": "Radar Final",
+      "radioName": "Tallahassee Approach",
+      "callsign": "TLH_F_APP",
+      "areaId": "01GA7Q2M6GFFEWMSZZHV4A3PJS",
+      "tcpId": "01K2NF1DFE9V6ZQSTWY9Y4XPXW",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 30.39663,
+        "lon": -84.35099
+      },
+      "range": 150,
+      "freq": 133.85
+    },
+    {
+      "id": "01GA7R24HSZYNV42Q0QGHYHKKH",
+      "physicalFacility": "TLH",
+      "name": "Ground Control",
+      "radioName": "Tallahassee Ground",
+      "callsign": "TLH_GND",
+      "areaId": "01HCKDP7VH4X3F8B2T42VPJRQF",
+      "tcpId": "01K2NF1DFEYR6GVN8RTWX6JQJV",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 30.39663,
+        "lon": -84.35099
+      },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01GA7R2SPYEPWQT54MFT02R3RX",
+      "physicalFacility": "TLH",
       "name": "Local Control",
+      "radioName": "Tallahassee Tower",
       "callsign": "TLH_TWR",
+      "areaId": "01HCKDP7VH4X3F8B2T42VPJRQF",
+      "tcpId": "01K2NF1DFEMKNFHBB4TPW6R3QW",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.39663,
+        "lon": -84.35099
       },
+      "range": 50,
       "freq": 118.7
     },
     {
-      "id": "1D",
+      "id": "01GA7QSZQFW0V4MZ1S87Y8MXS8",
+      "physicalFacility": "TLH",
+      "name": "Radar West",
+      "radioName": "Tallahassee Approach",
+      "callsign": "TLH_W_APP",
+      "areaId": "01GA7Q2M6GFFEWMSZZHV4A3PJS",
+      "tcpId": "01K2NF1DFET3401MK2X0MG1FTS",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 30.39663,
+        "lon": -84.35099
+      },
+      "range": 150,
+      "freq": 128.7
     }
   ],
   "mapGroups": [

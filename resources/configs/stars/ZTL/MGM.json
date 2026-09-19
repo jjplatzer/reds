@@ -4,114 +4,162 @@
   "name": "Montgomery ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.90558406666667,
-    "lon": -83.96840666666667
+    "lat": 32.32332666666667,
+    "lon": -86.38605933333334
   },
+  "areas": [
+    {
+      "id": "01H2MDHDGG1XZZTRE8WR6KY77G",
+      "name": "Approach",
+      "visibilityCenter": {
+        "lat": 32.29524,
+        "lon": -86.397839
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "MGM",
+        "MXF"
+      ]
+    },
+    {
+      "id": "01H2ME49YRYNCDCW6YMHSR2VZD",
+      "name": "MGM",
+      "visibilityCenter": {
+        "lat": 32.29524,
+        "lon": -86.397839
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "MGM"
+      ]
+    },
+    {
+      "id": "01H4Q5HKQW3QTZ9TWJ286DMHQ9",
+      "name": "MXF",
+      "visibilityCenter": {
+        "lat": 32.3795,
+        "lon": -86.3625
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "MXF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E98AZMBC9JK7DGJDHMN",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1E98H0EP9PPKD2HAZM01",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1E9821VYYZ9FJCC3Y98G",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1E9821VYYZ9FJCC3Y98G",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1E98NB1E2VN0H8NMRRTZ",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X"
+    },
+    {
+      "id": "01K2NF1E98XSAVZJNRZACMVX5Q",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01H2MD1DBESE5Z0XGXWH3XZRJX",
-      "name": "Radar South",
-      "callsign": "MGM_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 124
-    },
-    {
-      "id": "01H2MDMV9VPX0X27WR6948WGDZ",
-      "name": "Radar North",
-      "callsign": "MGM_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.2
-    },
-    {
       "id": "01H2MDTXWE5PDJ1C9HTQRTZT5V",
+      "physicalFacility": "MGM",
       "name": "Radar Arrival",
+      "radioName": "Montgomery Approach",
       "callsign": "MGM_APP",
+      "areaId": "01H2MDHDGG1XZZTRE8WR6KY77G",
+      "tcpId": "01K2NF1E98AZMBC9JK7DGJDHMN",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 32.29524,
+        "lon": -86.397839
       },
+      "range": 150,
       "freq": 132.45
     },
     {
-      "id": "01H2MDVQM5G2AQBVH76E6TC1B3",
-      "name": "Local Control",
-      "callsign": "MGM_TWR",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 119.7
-    },
-    {
-      "id": "01H2ME7C1T35SJ356ZG17A0ZTA",
-      "name": "Ground Control",
-      "callsign": "MGM_GND",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.7
-    },
-    {
-      "id": "01H2MECXZ84S89ZYSG2VMXRB7Q",
-      "name": "Clearance Delivery",
-      "callsign": "MGM_DEL",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 118.3
-    },
-    {
-      "id": "01KWQ3C4TZWEG1H8C4MGW4CGAQ",
-      "name": "MGM Guard",
+      "id": "01H2MDMV9VPX0X27WR6948WGDZ",
+      "physicalFacility": "MGM",
+      "name": "Radar North",
+      "radioName": "Montgomery Approach",
       "callsign": "MGM_APP",
+      "areaId": "01H2MDHDGG1XZZTRE8WR6KY77G",
+      "tcpId": "01K2NF1E98H0EP9PPKD2HAZM01",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 32.29524,
+        "lon": -86.397839
       },
-      "freq": 121.5
+      "range": 150,
+      "freq": 121.2
     },
     {
-      "id": "1F",
+      "id": "01H2MD1DBESE5Z0XGXWH3XZRJX",
+      "physicalFacility": "MGM",
+      "name": "Radar South",
+      "radioName": "Montgomery Approach",
+      "callsign": "MGM_APP",
+      "areaId": "01H2MDHDGG1XZZTRE8WR6KY77G",
+      "tcpId": "01K2NF1E9821VYYZ9FJCC3Y98G",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 32.29524,
+        "lon": -86.397839
+      },
+      "range": 150,
+      "freq": 124
     },
     {
-      "id": "1N",
+      "id": "01H4Q5FHFY97Y5K1RF6P901VHA",
+      "physicalFacility": "MXF",
+      "name": "Local Control",
+      "radioName": "Maxwell Tower",
+      "callsign": "MXF_TWR",
+      "areaId": "01H4Q5HKQW3QTZ9TWJ286DMHQ9",
+      "tcpId": "01K2NF1E98NB1E2VN0H8NMRRTZ",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 32.3795,
+        "lon": -86.3625
+      },
+      "range": 50,
+      "freq": 118.15
     },
     {
-      "id": "1S",
+      "id": "01H2MDVQM5G2AQBVH76E6TC1B3",
+      "physicalFacility": "MGM",
+      "name": "Local Control",
+      "radioName": "Montgomery Tower",
+      "callsign": "MGM_TWR",
+      "areaId": "01H2ME49YRYNCDCW6YMHSR2VZD",
+      "tcpId": "01K2NF1E98XSAVZJNRZACMVX5Q",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 32.29524,
+        "lon": -86.397839
+      },
+      "range": 50,
+      "freq": 119.7
     }
   ],
   "mapGroups": [

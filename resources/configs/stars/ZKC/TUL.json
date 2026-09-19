@@ -4,155 +4,321 @@
   "name": "Tulsa ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37.593354149999996,
-    "lon": -95.43247947500001
+    "lat": 36.19970825,
+    "lon": -95.88745955
   },
+  "areas": [
+    {
+      "id": "01G9HY9RBMMKA4E80ADD5PS3RJ",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 36.1983936,
+        "lon": -95.8881056
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "1H6",
+        "2F6",
+        "2K9",
+        "GCM",
+        "H71",
+        "O38",
+        "OKM",
+        "OWP",
+        "RVS",
+        "TUL"
+      ],
+      "ssaAirports": [
+        "TUL",
+        "RVS"
+      ]
+    },
+    {
+      "id": "01HBT58J78C1PWPWG6ENESN9TJ",
+      "name": "TUL LOCAL",
+      "visibilityCenter": {
+        "lat": 36.2010229,
+        "lon": -95.8868135
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "TUL"
+      ],
+      "ssaAirports": [
+        "TUL"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1EE5JDR8ZSPKMNQJPSPT",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1EE5BYRX1WFP5GTDD83A",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1EE5VKF895E0WZ18NAJH",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1EE5NY94T9BD9VT8Y2PJ",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1EE51KYF3915W0940VA4",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J"
+    },
+    {
+      "id": "01K2NF1EE5KYKTP1GZYW0VVSR8",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1EE508EMRJW4RRQVJA7S",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1EE5QAYGNZKM0SBFTVPC",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K2NF1EE5YZZ3BC64WR2J192D",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V"
+    },
+    {
+      "id": "01K2NF1EE5W3JANGN4KKERGDK2",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G9HYJRC8K6DFP9KQH6GH7ZMM",
-      "name": "Radar West",
-      "callsign": "TUL_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 124
-    },
-    {
-      "id": "01G9HYKDX44S9JHV0VBBPX10YE",
-      "name": "Radar East",
-      "callsign": "TUL_E_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 119.1
-    },
-    {
       "id": "01G9HYNFE10B68MPSZA04DBYVY",
+      "physicalFacility": "TUL",
       "name": "Radar Satellite East",
+      "radioName": "Tulsa Approach",
       "callsign": "TUL_A_APP",
+      "areaId": "01G9HY9RBMMKA4E80ADD5PS3RJ",
+      "tcpId": "01K2NF1EE5JDR8ZSPKMNQJPSPT",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 36.1983936,
+        "lon": -95.8881056
       },
+      "range": 150,
       "freq": 119.85
     },
     {
       "id": "01G9HYRFJNZZPVYE2CSA76H3JS",
+      "physicalFacility": "TUL",
       "name": "Radar Satellite West",
+      "radioName": "Tulsa Approach",
       "callsign": "TUL_B_APP",
+      "areaId": "01G9HY9RBMMKA4E80ADD5PS3RJ",
+      "tcpId": "01K2NF1EE5BYRX1WFP5GTDD83A",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 36.1983936,
+        "lon": -95.8881056
       },
+      "range": 150,
       "freq": 134.7
     },
     {
-      "id": "01G9HYSAGJZE63KXZKJVN21TGJ",
-      "name": "Radar Final",
-      "callsign": "TUL_F_APP",
+      "id": "01G9HYKDX44S9JHV0VBBPX10YE",
+      "physicalFacility": "TUL",
+      "name": "Radar East",
+      "radioName": "Tulsa Approach",
+      "callsign": "TUL_E_APP",
+      "areaId": "01G9HY9RBMMKA4E80ADD5PS3RJ",
+      "tcpId": "01K2NF1EE5VKF895E0WZ18NAJH",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 36.1983936,
+        "lon": -95.8881056
       },
+      "range": 150,
+      "freq": 119.1
+    },
+    {
+      "id": "01G9HYSAGJZE63KXZKJVN21TGJ",
+      "physicalFacility": "TUL",
+      "name": "Radar Final",
+      "radioName": "Tulsa Approach",
+      "callsign": "TUL_F_APP",
+      "areaId": "01G9HY9RBMMKA4E80ADD5PS3RJ",
+      "tcpId": "01K2NF1EE5NY94T9BD9VT8Y2PJ",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 36.1983936,
+        "lon": -95.8881056
+      },
+      "range": 150,
       "freq": 132.1
     },
     {
-      "id": "01G9HYTYB151PF2R3JPAVX51EJ",
-      "name": "Local East",
-      "callsign": "TUL_TWR",
+      "id": "01H2SKFP348DYEV07JDHP8X9B0",
+      "physicalFacility": "RVS",
+      "name": "Clearance",
+      "radioName": "Riverside Clearance",
+      "callsign": "RVS_DEL",
+      "areaId": "01G9HY9RBMMKA4E80ADD5PS3RJ",
+      "tcpId": "01K2NF1EE51KYF3915W0940VA4",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 36.1983936,
+        "lon": -95.8881056
       },
-      "freq": 121.2
+      "range": 150,
+      "freq": 124.5
     },
     {
-      "id": "01G9HYVW9DS8WCGJ9YHGY0W6G5",
-      "name": "Local West",
-      "callsign": "TUL_V_TWR",
+      "id": "01JFGXFXN2CJHJBBHJY0VAJYNM",
+      "physicalFacility": "RVS",
+      "name": "East Local",
+      "radioName": "Riverside Tower",
+      "callsign": "RVS_E_TWR",
+      "areaId": "01G9HY9RBMMKA4E80ADD5PS3RJ",
+      "tcpId": "01K2NF1EE51KYF3915W0940VA4",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 36.1983936,
+        "lon": -95.8881056
       },
-      "freq": 118.7
+      "range": 150,
+      "freq": 119.2
     },
     {
-      "id": "01G9HYWN3X79Q200PGC8GAABG7",
+      "id": "01H2SKF7SMFDNNGBKCRV92G4VY",
+      "physicalFacility": "RVS",
       "name": "Ground",
-      "callsign": "TUL_GND",
+      "radioName": "Riverside Ground",
+      "callsign": "RVS_GND",
+      "areaId": "01G9HY9RBMMKA4E80ADD5PS3RJ",
+      "tcpId": "01K2NF1EE51KYF3915W0940VA4",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 36.1983936,
+        "lon": -95.8881056
       },
-      "freq": 121.9
+      "range": 150,
+      "freq": 121.7
+    },
+    {
+      "id": "01H2SJKQFFXPKDNVTP8M9M4696",
+      "physicalFacility": "RVS",
+      "name": "Local",
+      "radioName": "Riverside Tower",
+      "callsign": "RVS_TWR",
+      "areaId": "01G9HY9RBMMKA4E80ADD5PS3RJ",
+      "tcpId": "01K2NF1EE51KYF3915W0940VA4",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 36.1983936,
+        "lon": -95.8881056
+      },
+      "range": 150,
+      "freq": 120.3
     },
     {
       "id": "01G9HYXKC93F72MCMH5VCF8FM5",
+      "physicalFacility": "TUL",
       "name": "Clearance",
+      "radioName": "Tulsa Clearance",
       "callsign": "TUL_DEL",
+      "areaId": "01HBT58J78C1PWPWG6ENESN9TJ",
+      "tcpId": "01K2NF1EE5KYKTP1GZYW0VVSR8",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 36.2010229,
+        "lon": -95.8868135
       },
+      "range": 50,
       "freq": 134.05
     },
     {
-      "id": "1A",
+      "id": "01G9HYTYB151PF2R3JPAVX51EJ",
+      "physicalFacility": "TUL",
+      "name": "Local East",
+      "radioName": "Tulsa Tower",
+      "callsign": "TUL_TWR",
+      "areaId": "01HBT58J78C1PWPWG6ENESN9TJ",
+      "tcpId": "01K2NF1EE508EMRJW4RRQVJA7S",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 36.2010229,
+        "lon": -95.8868135
+      },
+      "range": 50,
+      "freq": 121.2
     },
     {
-      "id": "1B",
+      "id": "01G9HYWN3X79Q200PGC8GAABG7",
+      "physicalFacility": "TUL",
+      "name": "Ground",
+      "radioName": "Tulsa Ground",
+      "callsign": "TUL_GND",
+      "areaId": "01HBT58J78C1PWPWG6ENESN9TJ",
+      "tcpId": "01K2NF1EE5QAYGNZKM0SBFTVPC",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 36.2010229,
+        "lon": -95.8868135
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1E",
+      "id": "01G9HYVW9DS8WCGJ9YHGY0W6G5",
+      "physicalFacility": "TUL",
+      "name": "Local West",
+      "radioName": "Tulsa Tower",
+      "callsign": "TUL_V_TWR",
+      "areaId": "01HBT58J78C1PWPWG6ENESN9TJ",
+      "tcpId": "01K2NF1EE5YZZ3BC64WR2J192D",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 36.2010229,
+        "lon": -95.8868135
+      },
+      "range": 50,
+      "freq": 118.7
     },
     {
-      "id": "1G",
+      "id": "01G9HYJRC8K6DFP9KQH6GH7ZMM",
+      "physicalFacility": "TUL",
+      "name": "Radar West",
+      "radioName": "Tulsa Approach",
+      "callsign": "TUL_APP",
+      "areaId": "01G9HY9RBMMKA4E80ADD5PS3RJ",
+      "tcpId": "01K2NF1EE5W3JANGN4KKERGDK2",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1J",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 36.1983936,
+        "lon": -95.8881056
+      },
+      "range": 150,
+      "freq": 124
     }
   ],
   "mapGroups": [

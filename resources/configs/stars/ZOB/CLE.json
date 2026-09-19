@@ -4,237 +4,627 @@
   "name": "Cleveland ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.65805,
-    "lon": -81.181585
+    "lat": 41.40361000000001,
+    "lon": -81.85222
   },
+  "areas": [
+    {
+      "id": "01G90HA4X64CQWDH9VVMFTZ8VD",
+      "name": "Cleveland TRACON",
+      "visibilityCenter": {
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "CLE",
+        "BKL",
+        "CGF",
+        "CAK",
+        "MFD"
+      ],
+      "ssaAirports": [
+        "CLE",
+        "BKL",
+        "CGF",
+        "CAK",
+        "MFD"
+      ]
+    },
+    {
+      "id": "01HE76C8FYET3HR7T676EAHP91",
+      "name": "Cleveland ATCT",
+      "visibilityCenter": {
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "CLE"
+      ],
+      "ssaAirports": [
+        "CLE"
+      ]
+    },
+    {
+      "id": "01HE77X2GXK2J15MBCJGB27Q09",
+      "name": "Lakefront ATCT",
+      "visibilityCenter": {
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "BKL"
+      ],
+      "ssaAirports": [
+        "BKL"
+      ]
+    },
+    {
+      "id": "01HE77XS2FNWQR8A20H9297D00",
+      "name": "County ATCT",
+      "visibilityCenter": {
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "CGF"
+      ],
+      "ssaAirports": [
+        "CGF"
+      ]
+    },
+    {
+      "id": "01HE77YBYDSMZTF6S1XGX2FEWE",
+      "name": "Akron-Canton ATCT",
+      "visibilityCenter": {
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "CAK"
+      ],
+      "ssaAirports": [
+        "CAK"
+      ]
+    },
+    {
+      "id": "01HE77YQ51RNQYEAJX5R5MBWDP",
+      "name": "Mansfield ATCT",
+      "visibilityCenter": {
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "MFD"
+      ],
+      "ssaAirports": [
+        "MFD"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E62M4WXATG1YMTAGBYR",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1E62AQD2T0F91BY5KER1",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1E62CTHYXMVKBJVYXQZ0",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1E62M4WXATG1YMTAGBYR",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1E62ZKMZFEF24SVZZRSR",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1E62ATEWV6SC0M00EDYN",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1E62M4WXATG1YMTAGBYR",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1E62YF6PJ4TDW9VC6ZG7",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H"
+    },
+    {
+      "id": "01K2NF1E62QB2VCEKEF06NDD4S",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1E620VC6P1Y66GDPQFWW",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1E626981CTMPVJTFFRBP",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P"
+    },
+    {
+      "id": "01K2NF1E62MTRDFESQES90530A",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q"
+    },
+    {
+      "id": "01K2NF1E62FYJZ579NQXCHT48S",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1E62CTHYXMVKBJVYXQZ0",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1E6282CXRAZC0G2PANBT",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1E627TWJVA0M0ZXJR7HQ",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E62Y8F42RTG2RVC4DWJ",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K2NF1E6243SS3838KW65ZAT0",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1E62CNT4CKBSN46DTTMJ",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X"
+    },
+    {
+      "id": "01K2NF1E62P40XTWZWGWC3XF8C",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    },
+    {
+      "id": "01K2NF1E62JDZMHNFJBGMMZCAQ",
+      "code": "2L",
+      "subset": 2,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1E62E2YQ5BX55W5XKTH7",
+      "code": "2N",
+      "subset": 2,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1E62CTHYXMVKBJVYXQZ0",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1E62F6QQ1FP18247CCN5",
+      "code": "3E",
+      "subset": 3,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E62E2YQ5BX55W5XKTH7",
+      "parentTcp": "2N"
+    },
+    {
+      "id": "01K2NF1E626E4VQDFK6TEEH5SQ",
+      "code": "3L",
+      "subset": 3,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1E62HZY54GYNW965DBZJ",
+      "code": "3S",
+      "subset": 3,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E62F6QQ1FP18247CCN5",
+      "parentTcp": "3E"
+    },
+    {
+      "id": "01K2NF1E624Z8CDBXZN4VEEA0E",
+      "code": "4T",
+      "subset": 4,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E62W1W68ZRR26G00SHH",
+      "code": "4W",
+      "subset": 4,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E62E2YQ5BX55W5XKTH7",
+      "parentTcp": "2N"
+    },
+    {
+      "id": "01K2NF1E62G9F8VZ7RHYTPHQMH",
+      "code": "5T",
+      "subset": 5,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G90JMV9C7Q2K2520384EF7TW",
+      "physicalFacility": "CLE",
       "name": "Feeder",
+      "radioName": "Cleveland Approach",
       "callsign": "CLE_A_APP",
+      "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
+      "tcpId": "01K2NF1E62M4WXATG1YMTAGBYR",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.40361,
+        "lon": -81.85222
       },
+      "range": 150,
       "freq": 124
     },
     {
-      "id": "01G90JRK764YP2BC1BVRBV96YW",
-      "name": "Final",
-      "callsign": "CLE_F_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 119.625
-    },
-    {
       "id": "01G90JZ5PX5BNS1AZ6SDRJ1CCV",
+      "physicalFacility": "CLE",
       "name": "Departure North",
+      "radioName": "Cleveland Departure",
       "callsign": "CLE_D_DEP",
+      "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
+      "tcpId": "01K2NF1E62CTHYXMVKBJVYXQZ0",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.40361,
+        "lon": -81.85222
       },
+      "range": 150,
       "freq": 128.25
     },
     {
-      "id": "01G90K0TQTH2ARQG4BM3EEDXAX",
-      "name": "Departure South",
-      "callsign": "CLE_R_DEP",
+      "id": "01G90JRK764YP2BC1BVRBV96YW",
+      "physicalFacility": "CLE",
+      "name": "Final",
+      "radioName": "Cleveland Approach",
+      "callsign": "CLE_F_APP",
+      "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
+      "tcpId": "01K2NF1E62ATEWV6SC0M00EDYN",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.40361,
+        "lon": -81.85222
       },
+      "range": 150,
+      "freq": 119.625
+    },
+    {
+      "id": "01G90M22B9Z8VAFK5HDBP59BSG",
+      "physicalFacility": "CLE",
+      "name": "Local Control",
+      "radioName": "Cleveland Tower",
+      "callsign": "CLE_TWR",
+      "areaId": "01HE76C8FYET3HR7T676EAHP91",
+      "tcpId": "01K2NF1E62QB2VCEKEF06NDD4S",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 50,
+      "freq": 124.5
+    },
+    {
+      "id": "01KXV1J07W0CW4VPCY2EY0V38V",
+      "physicalFacility": "CLE",
+      "name": "Local TMU/CIC",
+      "radioName": "CLE TMU",
+      "callsign": "CLE_T_TWR",
+      "areaId": "01HE76C8FYET3HR7T676EAHP91",
+      "tcpId": "01K2NF1E62QB2VCEKEF06NDD4S",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 50,
+      "freq": 123.45
+    },
+    {
+      "id": "01G90K0TQTH2ARQG4BM3EEDXAX",
+      "physicalFacility": "CLE",
+      "name": "Departure South",
+      "radioName": "Cleveland Departure",
+      "callsign": "CLE_R_DEP",
+      "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
+      "tcpId": "01K2NF1E62FYJZ579NQXCHT48S",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 150,
       "freq": 135.875
     },
     {
-      "id": "01G90K268P6SR8WWAXXBBCW3XN",
-      "name": "Satellite North",
-      "callsign": "CLE_N_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 125.35
-    },
-    {
-      "id": "01G90K3FKEPXWF82BFZ8T3ZB78",
-      "name": "Satellite South",
-      "callsign": "CAK_S_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 118.6
-    },
-    {
-      "id": "01G90KS475NZ57Y0CMK5NFKRCP",
-      "name": "Satellite East",
-      "callsign": "CAK_E_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 125.5
-    },
-    {
-      "id": "01G90KVWBMY1VSRRB2XHH1JQST",
-      "name": "Satellite West",
-      "callsign": "MFD_W_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 128.35
-    },
-    {
       "id": "01G90KZ9NCWDT7KZ39CNWNB6NR",
+      "physicalFacility": "CLE",
       "name": "Clearance Delivery",
+      "radioName": "Cleveland Clearance",
       "callsign": "CLE_DEL",
+      "areaId": "01HE76C8FYET3HR7T676EAHP91",
+      "tcpId": "01K2NF1E627TWJVA0M0ZXJR7HQ",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.40361,
+        "lon": -81.85222
       },
+      "range": 50,
       "freq": 125.05
     },
     {
       "id": "01G90M0RSWN507KEK9P2N9SDX8",
+      "physicalFacility": "CLE",
       "name": "Ground",
+      "radioName": "Cleveland Ground",
       "callsign": "CLE_GND",
+      "areaId": "01HE76C8FYET3HR7T676EAHP91",
+      "tcpId": "01K2NF1E627TWJVA0M0ZXJR7HQ",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.40361,
+        "lon": -81.85222
       },
+      "range": 50,
       "freq": 121.7
     },
     {
-      "id": "01G90M22B9Z8VAFK5HDBP59BSG",
-      "name": "Local Control",
-      "callsign": "CLE_TWR",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 124.5
-    },
-    {
       "id": "01HDV1Y7Y80Q1X7Q7YHE3M7F0K",
+      "physicalFacility": "CLE",
       "name": "TMU/OTHER",
+      "radioName": "Cleveland Approach",
       "callsign": "CLE_T_APP",
+      "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
+      "tcpId": "01K2NF1E62P40XTWZWGWC3XF8C",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.40361,
+        "lon": -81.85222
       },
+      "range": 150,
       "freq": 123.45
     },
     {
-      "id": "01KXV1J07W0CW4VPCY2EY0V38V",
-      "name": "Local TMU/CIC",
-      "callsign": "CLE_T_TWR",
+      "id": "01G90MNVRAZY6DMCAM5Y8P8ZTD",
+      "physicalFacility": "BKL",
+      "name": "Ground",
+      "radioName": "Lakefront Ground",
+      "callsign": "BKL_GND",
+      "areaId": "01HE77X2GXK2J15MBCJGB27Q09",
+      "tcpId": "01K2NF1E62JDZMHNFJBGMMZCAQ",
+      "tcp": "2L",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.40361,
+        "lon": -81.85222
       },
-      "freq": 123.45
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1A",
+      "id": "01G90MQ61E0AB3VF3VN62Y7F7S",
+      "physicalFacility": "BKL",
+      "name": "Local Control",
+      "radioName": "Lakefront Tower",
+      "callsign": "BKL_TWR",
+      "areaId": "01HE77X2GXK2J15MBCJGB27Q09",
+      "tcpId": "01K2NF1E62JDZMHNFJBGMMZCAQ",
+      "tcp": "2L",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 50,
+      "freq": 124.3
     },
     {
-      "id": "1D",
+      "id": "01G90K268P6SR8WWAXXBBCW3XN",
+      "physicalFacility": "CLE",
+      "name": "Satellite North",
+      "radioName": "Cleveland Approach",
+      "callsign": "CLE_N_APP",
+      "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
+      "tcpId": "01K2NF1E62E2YQ5BX55W5XKTH7",
+      "tcp": "2N",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 150,
+      "freq": 125.35
     },
     {
-      "id": "1F",
+      "id": "01G90KS475NZ57Y0CMK5NFKRCP",
+      "physicalFacility": "CLE",
+      "name": "Satellite East",
+      "radioName": "Cleveland Approach",
+      "callsign": "CAK_E_APP",
+      "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
+      "tcpId": "01K2NF1E62F6QQ1FP18247CCN5",
+      "tcp": "3E",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 150,
+      "freq": 125.5
     },
     {
-      "id": "1L",
+      "id": "01G90N20DR3D6R8PDYWHK1HB7Z",
+      "physicalFacility": "CAK",
+      "name": "Clearance Delivery",
+      "radioName": "Akron-Canton Clearance",
+      "callsign": "CAK_DEL",
+      "areaId": "01HE77YBYDSMZTF6S1XGX2FEWE",
+      "tcpId": "01K2NF1E626E4VQDFK6TEEH5SQ",
+      "tcp": "3L",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 50,
+      "freq": 132.05
     },
     {
-      "id": "1R",
+      "id": "01G90N3TAS10GZGTNANCV9WJ84",
+      "physicalFacility": "CAK",
+      "name": "Ground",
+      "radioName": "Akron-Canton Ground",
+      "callsign": "CAK_GND",
+      "areaId": "01HE77YBYDSMZTF6S1XGX2FEWE",
+      "tcpId": "01K2NF1E626E4VQDFK6TEEH5SQ",
+      "tcp": "3L",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 50,
+      "freq": 121.7
     },
     {
-      "id": "1Z",
+      "id": "01G90N4SAG1N37W5J51E92N471",
+      "physicalFacility": "CAK",
+      "name": "Local Control",
+      "radioName": "Akron-Canton Tower",
+      "callsign": "CAK_TWR",
+      "areaId": "01HE77YBYDSMZTF6S1XGX2FEWE",
+      "tcpId": "01K2NF1E626E4VQDFK6TEEH5SQ",
+      "tcp": "3L",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 50,
+      "freq": 134.75
     },
     {
-      "id": "2L",
+      "id": "01G90K3FKEPXWF82BFZ8T3ZB78",
+      "physicalFacility": "CLE",
+      "name": "Satellite South",
+      "radioName": "Cleveland Approach",
+      "callsign": "CAK_S_APP",
+      "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
+      "tcpId": "01K2NF1E62HZY54GYNW965DBZJ",
+      "tcp": "3S",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 150,
+      "freq": 118.6
     },
     {
-      "id": "2N",
+      "id": "01G90NPW4P7X9BA4W2E9GZ91B6",
+      "physicalFacility": "MFD",
+      "name": "Ground",
+      "radioName": "Mansfield Ground",
+      "callsign": "MFD_GND",
+      "areaId": "01HE77YQ51RNQYEAJX5R5MBWDP",
+      "tcpId": "01K2NF1E624Z8CDBXZN4VEEA0E",
+      "tcp": "4T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 50,
+      "freq": 121.8
     },
     {
-      "id": "2T",
+      "id": "01G90NRCSJ2J6E2KD1HCW13VAC",
+      "physicalFacility": "MFD",
+      "name": "Local Control",
+      "radioName": "Mansfield Tower",
+      "callsign": "MFD_TWR",
+      "areaId": "01HE77YQ51RNQYEAJX5R5MBWDP",
+      "tcpId": "01K2NF1E624Z8CDBXZN4VEEA0E",
+      "tcp": "4T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 50,
+      "freq": 119.8
     },
     {
-      "id": "3E",
+      "id": "01G90KVWBMY1VSRRB2XHH1JQST",
+      "physicalFacility": "CLE",
+      "name": "Satellite West",
+      "radioName": "Cleveland Approach",
+      "callsign": "MFD_W_APP",
+      "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
+      "tcpId": "01K2NF1E62W1W68ZRR26G00SHH",
+      "tcp": "4W",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 150,
+      "freq": 128.35
     },
     {
-      "id": "3L",
+      "id": "01G90MTF9NGXFMABD0XVKG1TWC",
+      "physicalFacility": "CGF",
+      "name": "Ground",
+      "radioName": "County Ground",
+      "callsign": "CGF_GND",
+      "areaId": "01HE77XS2FNWQR8A20H9297D00",
+      "tcpId": "01K2NF1E62G9F8VZ7RHYTPHQMH",
+      "tcp": "5T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 50,
+      "freq": 121.85
     },
     {
-      "id": "3S",
+      "id": "01G90MVK5QYBCPA2SYHB9YY0SQ",
+      "physicalFacility": "CGF",
+      "name": "Local Control",
+      "radioName": "County Tower",
+      "callsign": "CGF_TWR",
+      "areaId": "01HE77XS2FNWQR8A20H9297D00",
+      "tcpId": "01K2NF1E62G9F8VZ7RHYTPHQMH",
+      "tcp": "5T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "4L",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "4W",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 41.40361,
+        "lon": -81.85222
+      },
+      "range": 50,
+      "freq": 118.5
     }
   ],
   "mapGroups": [

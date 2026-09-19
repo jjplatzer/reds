@@ -4,80 +4,213 @@
   "name": "North Island Naval Air Station",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 34.9691453,
-    "lon": -116.63582625
+    "lat": 32.6325,
+    "lon": -117.16486111115
   },
+  "areas": [
+    {
+      "id": "01KK3HJSMQFFBNKZ6KWSBNX5S4",
+      "name": "Main",
+      "visibilityCenter": {
+        "lat": 32.6983333333,
+        "lon": -117.2130555556
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "NZY",
+        "NRS"
+      ],
+      "ssaAirports": [
+        "NZY"
+      ]
+    },
+    {
+      "id": "01KK3KDTEK215V51TBSM1PYBYN",
+      "name": "NRS Tower",
+      "visibilityCenter": {
+        "lat": 32.5666666667,
+        "lon": -117.1166666667
+      },
+      "surveillanceRange": 20,
+      "underlyingAirports": [
+        "NRS"
+      ],
+      "ssaAirports": [
+        "NRS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01KK3HNV0WQ54ERT64GJ772ZG0",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK3HQAPMCBZY6M91D0TH43S1",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01KK3HNV0WQ54ERT64GJ772ZG0",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK3HQAV1NPE1SRBSA636NGFW",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01KK3HNV0WQ54ERT64GJ772ZG0",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK3HQAZBBQ59373RGRHS6Q92",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01KK3HNV0WQ54ERT64GJ772ZG0",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK3HQB3XEYE16JBFFHBBSXCS",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK3HQB8JEDZJDFNQQDH04T0Q",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01KK3HNV0WQ54ERT64GJ772ZG0",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK3HQPDYNYJWYRMKDFG87G02",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01KK3J25D0Y44V302ZM686QJX0",
+      "physicalFacility": "NZY",
       "name": "Arrival",
+      "radioName": "North Island",
       "callsign": "NZY_APP",
+      "areaId": "01KK3HJSMQFFBNKZ6KWSBNX5S4",
+      "tcpId": "01KK3HNV0WQ54ERT64GJ772ZG0",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 32.6983333333,
+        "lon": -117.2130555556
       },
+      "range": 50,
       "freq": 127.7
     },
     {
       "id": "01KK3J4S03JCGHTCBTYZ7S9Z2R",
+      "physicalFacility": "NZY",
       "name": "ASR1",
+      "radioName": "North Island Tower",
       "callsign": "NZY_B_APP",
+      "areaId": "01KK3HJSMQFFBNKZ6KWSBNX5S4",
+      "tcpId": "01KK3HQAPMCBZY6M91D0TH43S1",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 32.6983333333,
+        "lon": -117.2130555556
       },
+      "range": 50,
       "freq": 133.175
     },
     {
-      "id": "01KK3J6581381PNHPS2ES5JQTX",
-      "name": "North Island Local",
-      "callsign": "NZY_TWR",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 135.1
-    },
-    {
-      "id": "01KK3J80Z5RHRYTM7ZS4CG3F2X",
-      "name": "North Island Ground",
-      "callsign": "NZY_GND",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 118
-    },
-    {
       "id": "01KK3J8QVBAYK9VGENMNJ02S9N",
+      "physicalFacility": "NZY",
       "name": "North Island Clearance",
+      "radioName": "North Island Clearance",
       "callsign": "NZY_DEL",
+      "areaId": "01KK3HJSMQFFBNKZ6KWSBNX5S4",
+      "tcpId": "01KK3HQB3XEYE16JBFFHBBSXCS",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 32.6983333333,
+        "lon": -117.2130555556
       },
+      "range": 50,
       "freq": 128.4
     },
     {
-      "id": "1A",
+      "id": "01KK3J80Z5RHRYTM7ZS4CG3F2X",
+      "physicalFacility": "NZY",
+      "name": "North Island Ground",
+      "radioName": "North Island Ground",
+      "callsign": "NZY_GND",
+      "areaId": "01KK3HJSMQFFBNKZ6KWSBNX5S4",
+      "tcpId": "01KK3HQB3XEYE16JBFFHBBSXCS",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 32.6983333333,
+        "lon": -117.2130555556
+      },
+      "range": 50,
+      "freq": 118
     },
     {
-      "id": "1L",
+      "id": "01KK3J6581381PNHPS2ES5JQTX",
+      "physicalFacility": "NZY",
+      "name": "North Island Local",
+      "radioName": "North Island Tower",
+      "callsign": "NZY_TWR",
+      "areaId": "01KK3HJSMQFFBNKZ6KWSBNX5S4",
+      "tcpId": "01KK3HQB3XEYE16JBFFHBBSXCS",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 32.6983333333,
+        "lon": -117.2130555556
+      },
+      "range": 50,
+      "freq": 135.1
     },
     {
-      "id": "1Z",
+      "id": "01KK3K70RBHD1FP1WNF8D3R2B4",
+      "physicalFacility": "NRS",
+      "name": "Ground",
+      "radioName": "Imperial Beach Ground",
+      "callsign": "NRS_GND",
+      "areaId": "01KK3KDTEK215V51TBSM1PYBYN",
+      "tcpId": "01KK3HQPDYNYJWYRMKDFG87G02",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 32.5666666667,
+        "lon": -117.1166666667
+      },
+      "range": 20,
+      "freq": 120.65
+    },
+    {
+      "id": "01KK3K671EJRGBTKZZ7QB4YSXP",
+      "physicalFacility": "NRS",
+      "name": "Local",
+      "radioName": "Imperial Beach Tower",
+      "callsign": "NRS_TWR",
+      "areaId": "01KK3KDTEK215V51TBSM1PYBYN",
+      "tcpId": "01KK3HQPDYNYJWYRMKDFG87G02",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 32.5666666667,
+        "lon": -117.1166666667
+      },
+      "range": 20,
+      "freq": 120.65
     }
   ],
   "mapGroups": [

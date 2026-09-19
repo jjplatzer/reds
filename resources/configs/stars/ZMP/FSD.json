@@ -4,87 +4,148 @@
   "name": "Sioux Falls ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 43.5820189,
+    "lon": -96.741925
   },
+  "areas": [
+    {
+      "id": "01GFETTA4A8DD63C031CWBX6Y4",
+      "name": "FSD",
+      "visibilityCenter": {
+        "lat": 43.5820189,
+        "lon": -96.741925
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "7G9",
+        "FSD",
+        "LYV",
+        "MDS",
+        "PQN",
+        "RRQ",
+        "Y14"
+      ],
+      "ssaAirports": [
+        "FSD"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3MWQAZC55KPSPAP7RT",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1D3M87SPH21YABRKNHQN",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1D3MX43H16S0HJ60CRBK",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1D3M6R0QPD5VDEGB1Y3Y",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1D3MFWCTRQ9PHKXFWM2J",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1D3MFWCTRQ9PHKXFWM2J",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1D3MX43H16S0HJ60CRBK",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GFETYCNR3JQ72G79QXGD4GVR",
-      "name": "RW",
-      "callsign": "FSD_W_APP",
+      "id": "01H69N1BTCXZ2A0EPPE5HTAQ1X",
+      "physicalFacility": "FSD",
+      "name": "RE",
+      "radioName": "Sioux Falls Approach",
+      "callsign": "FSD_E_APP",
+      "areaId": "01GFETTA4A8DD63C031CWBX6Y4",
+      "tcpId": "01K2NF1D3M87SPH21YABRKNHQN",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 43.5820189,
+        "lon": -96.741925
       },
+      "range": 150,
+      "freq": 126.9
+    },
+    {
+      "id": "01GFETZXA0S5WV3RP6R5Z5P41A",
+      "physicalFacility": "FSD",
+      "name": "GC",
+      "radioName": "Sioux Falls Ground",
+      "callsign": "FSD_GND",
+      "areaId": "01GFETTA4A8DD63C031CWBX6Y4",
+      "tcpId": "01K2NF1D3M6R0QPD5VDEGB1Y3Y",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 43.5820189,
+        "lon": -96.741925
+      },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
+      "id": "01H69N25TN9Z1BFTR8C4RMKYXT",
+      "physicalFacility": "FSD",
+      "name": "TRACAB",
+      "radioName": "Sioux Falls Approach",
+      "callsign": "FSD_APP",
+      "areaId": "01GFETTA4A8DD63C031CWBX6Y4",
+      "tcpId": "01K2NF1D3MFWCTRQ9PHKXFWM2J",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 43.5820189,
+        "lon": -96.741925
+      },
+      "range": 150,
       "freq": 125.8
     },
     {
       "id": "01GFETZ8PDDASEVTR574E0SE5R",
+      "physicalFacility": "FSD",
       "name": "LC",
+      "radioName": "Sioux Falls Tower",
       "callsign": "FSD_TWR",
+      "areaId": "01GFETTA4A8DD63C031CWBX6Y4",
+      "tcpId": "01K2NF1D3MFWCTRQ9PHKXFWM2J",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 43.5820189,
+        "lon": -96.741925
       },
+      "range": 150,
       "freq": 118.3
     },
     {
-      "id": "01GFETZXA0S5WV3RP6R5Z5P41A",
-      "name": "GC",
-      "callsign": "FSD_GND",
+      "id": "01GFETYCNR3JQ72G79QXGD4GVR",
+      "physicalFacility": "FSD",
+      "name": "RW",
+      "radioName": "Sioux Falls Approach",
+      "callsign": "FSD_W_APP",
+      "areaId": "01GFETTA4A8DD63C031CWBX6Y4",
+      "tcpId": "01K2NF1D3MX43H16S0HJ60CRBK",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 43.5820189,
+        "lon": -96.741925
       },
-      "freq": 121.9
-    },
-    {
-      "id": "01H69N1BTCXZ2A0EPPE5HTAQ1X",
-      "name": "RE",
-      "callsign": "FSD_E_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 126.9
-    },
-    {
-      "id": "01H69N25TN9Z1BFTR8C4RMKYXT",
-      "name": "TRACAB",
-      "callsign": "FSD_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
+      "range": 150,
       "freq": 125.8
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
     }
   ],
   "mapGroups": [

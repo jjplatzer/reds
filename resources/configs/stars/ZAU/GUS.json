@@ -4,70 +4,120 @@
   "name": "Grissom ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 41.879166749999996,
-    "lon": -88.975
+    "lat": 40.660190948448225,
+    "lon": -86.14214549749934
   },
+  "areas": [
+    {
+      "id": "01H5XWWYEH9CGY2WCM5V7KC078",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 40.660190948448225,
+        "lon": -86.14214549749934
+      },
+      "surveillanceRange": 100,
+      "ssaAirports": [
+        "GUS",
+        "GGP",
+        "OKK",
+        "MZZ",
+        "IWH",
+        "LAF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DXNYPR10W6K70RSPAPA",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1DXNNK6J22CPA4Y0WZAV",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1DXNXQ8BWFA8ANJSSVH1",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DXNYPR10W6K70RSPAPA",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1DXNSX4HGTVAN252GVDK",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01H5XX1BH51C6T49MXQ79ADQ5N",
+      "physicalFacility": "GUS",
       "name": "East Approach",
+      "radioName": "Grissom Approach",
       "callsign": "GUS_E_APP",
+      "areaId": "01H5XWWYEH9CGY2WCM5V7KC078",
+      "tcpId": "01K2NF1DXNYPR10W6K70RSPAPA",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 40.660190948448225,
+        "lon": -86.14214549749934
       },
+      "range": 100,
       "freq": 121.05
     },
     {
-      "id": "01H5XX28PEK4D10EGVCZ3NSCH6",
-      "name": "West Approach",
-      "callsign": "GUS_W_APP",
+      "id": "01H38DX4XM1BRYNMM8J0CFJ6CY",
+      "physicalFacility": "LAF",
+      "name": "Local",
+      "radioName": "Lafayette Tower",
+      "callsign": "LAF_TWR",
+      "areaId": "01H5XWWYEH9CGY2WCM5V7KC078",
+      "tcpId": "01K2NF1DXNNK6J22CPA4Y0WZAV",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 40.660190948448225,
+        "lon": -86.14214549749934
       },
+      "range": 100,
+      "freq": 119.6
+    },
+    {
+      "id": "01H5XX28PEK4D10EGVCZ3NSCH6",
+      "physicalFacility": "GUS",
+      "name": "West Approach",
+      "radioName": "Grissom Approach",
+      "callsign": "GUS_W_APP",
+      "areaId": "01H5XWWYEH9CGY2WCM5V7KC078",
+      "tcpId": "01K2NF1DXNXQ8BWFA8ANJSSVH1",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 40.660190948448225,
+        "lon": -86.14214549749934
+      },
+      "range": 100,
       "freq": 123.85
     },
     {
       "id": "01H5XX3S5JGWR2NXDHHZ78PEEX",
+      "physicalFacility": "GUS",
       "name": "Local",
+      "radioName": "Grissom Tower",
       "callsign": "GUS_TWR",
+      "areaId": "01H5XWWYEH9CGY2WCM5V7KC078",
+      "tcpId": "01K2NF1DXNSX4HGTVAN252GVDK",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 40.660190948448225,
+        "lon": -86.14214549749934
       },
+      "range": 100,
       "freq": 133.7
-    },
-    {
-      "id": "01H5XX4VVE4PBREMNRG0R70XWW",
-      "name": "Ground",
-      "callsign": "GUS_GND",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 128.425
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
     }
   ],
   "mapGroups": [

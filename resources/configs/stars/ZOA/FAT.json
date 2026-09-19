@@ -4,107 +4,160 @@
   "name": "Fresno ATCT",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37.9016125,
-    "lon": -120.687685
+    "lat": 36.77611,
+    "lon": -119.7181
   },
+  "areas": [
+    {
+      "id": "01GEBMA3NJEKVB101ZRY7VE9QK",
+      "name": "FAT",
+      "visibilityCenter": {
+        "lat": 36.77611,
+        "lon": -119.7181
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "FAT"
+      ],
+      "ssaAirports": [
+        "FAT"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1C9RJTVTH3JCEMQA344W",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1C9RHXYN5T0W1K2RZPK9",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1C9R8NFKQPZSK55S3GC1",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1C9RK36DGR7T698MX7ZX",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1C9RVVMNV2KQD9PMK392",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1C9RVVMNV2KQD9PMK392",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1C9RJTVTH3JCEMQA344W",
+      "parentTcp": "1F"
+    },
+    {
+      "id": "01K2NF1C9RHXYN5T0W1K2RZPK9",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GEAM1H5YVXKEVXCC6YX41RXC",
-      "name": "LC",
-      "callsign": "FAT_TWR",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 118.2
-    },
-    {
-      "id": "01GEAM2FM93FQ55ABPQ6WGJ57P",
-      "name": "GC",
-      "callsign": "FAT_GND",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 121.7
-    },
-    {
-      "id": "01GEAM36EMQ2W9AGH4T38YDBSD",
-      "name": "CD",
-      "callsign": "FAT_DEL",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 124.35
-    },
-    {
       "id": "01GEAM5K0M20YD6EZCDD7X7Q8R",
+      "physicalFacility": "FAT",
       "name": "Friant Radar",
+      "radioName": "Fresno Approach",
       "callsign": "FAT_F_APP",
+      "areaId": "01GEBMA3NJEKVB101ZRY7VE9QK",
+      "tcpId": "01K2NF1C9RJTVTH3JCEMQA344W",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 36.77611,
+        "lon": -119.7181
       },
+      "range": 150,
       "freq": 119.6
     },
     {
       "id": "01GEAM6ABWPGTF26HQQJX74RCE",
+      "physicalFacility": "FAT",
       "name": "Chandler Radar",
+      "radioName": "Fresno Approach",
       "callsign": "FAT_H_APP",
+      "areaId": "01GEBMA3NJEKVB101ZRY7VE9QK",
+      "tcpId": "01K2NF1C9RK36DGR7T698MX7ZX",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 36.77611,
+        "lon": -119.7181
       },
+      "range": 150,
       "freq": 132.35
     },
     {
       "id": "01GEBM3EE5TPXWYF16DN6WRRBV",
+      "physicalFacility": "FAT",
       "name": "South Radar",
+      "radioName": "Fresno Approach",
       "callsign": "FAT_S_APP",
+      "areaId": "01GEBMA3NJEKVB101ZRY7VE9QK",
+      "tcpId": "01K2NF1C9RVVMNV2KQD9PMK392",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 36.77611,
+        "lon": -119.7181
       },
+      "range": 150,
       "freq": 118.5
     },
     {
-      "id": "01K8VYH7DY9NBEKP85NRWZBYCW",
-      "name": "ATIS",
-      "callsign": "FAT_RMP",
+      "id": "01GEAM36EMQ2W9AGH4T38YDBSD",
+      "physicalFacility": "FAT",
+      "name": "CD",
+      "radioName": "Fresno Clearance",
+      "callsign": "FAT_DEL",
+      "areaId": "01GEBMA3NJEKVB101ZRY7VE9QK",
+      "tcpId": "01K2NF1C9RHXYN5T0W1K2RZPK9",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 36.77611,
+        "lon": -119.7181
       },
-      "freq": 121.35
+      "range": 150,
+      "freq": 124.35
     },
     {
-      "id": "1F",
+      "id": "01GEAM2FM93FQ55ABPQ6WGJ57P",
+      "physicalFacility": "FAT",
+      "name": "GC",
+      "radioName": "Fresno Ground",
+      "callsign": "FAT_GND",
+      "areaId": "01GEBMA3NJEKVB101ZRY7VE9QK",
+      "tcpId": "01K2NF1C9RHXYN5T0W1K2RZPK9",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 36.77611,
+        "lon": -119.7181
+      },
+      "range": 150,
+      "freq": 121.7
     },
     {
-      "id": "1H",
+      "id": "01GEAM1H5YVXKEVXCC6YX41RXC",
+      "physicalFacility": "FAT",
+      "name": "LC",
+      "radioName": "Fresno Tower",
+      "callsign": "FAT_TWR",
+      "areaId": "01GEBMA3NJEKVB101ZRY7VE9QK",
+      "tcpId": "01K2NF1C9RHXYN5T0W1K2RZPK9",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 36.77611,
+        "lon": -119.7181
+      },
+      "range": 150,
+      "freq": 118.2
     }
   ],
   "mapGroups": [

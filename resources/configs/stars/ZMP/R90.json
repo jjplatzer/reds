@@ -4,153 +4,347 @@
   "name": "Omaha TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 41.143,
+    "lon": -95.903722
   },
+  "areas": [
+    {
+      "id": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "name": "R90",
+      "visibilityCenter": {
+        "lat": 41.143,
+        "lon": -95.903722
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "OMA",
+        "OFF",
+        "LNK",
+        "CBF",
+        "MLE"
+      ],
+      "ssaAirports": [
+        "OMA",
+        "LNK",
+        "OFF",
+        "CBF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3K5WFAPNZV4JM68B1F",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1D3KD8NEAAVMD8BP048R",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1D3KDS452W7N2EV1Z240",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1D3KH7MSZWSF9T7TM5J4",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1D3KDS452W7N2EV1Z240",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1D3K07BJM7W9XJMR4F7X",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1D3KDY4Z0X912QQ8W6P5",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "parentTcpId": "01K2NF1D3KH7MSZWSF9T7TM5J4",
+      "parentTcp": "1L"
+    },
+    {
+      "id": "01K2NF1D3K6S09QSXM18715A3M",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1D3KHS4MKTVTTYMRRBVR",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1D3KFQZ9VRSK5693MZDP",
+      "parentTcp": "1X"
+    },
+    {
+      "id": "01K2NF1D3KDS452W7N2EV1Z240",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1D3KFQZ9VRSK5693MZDP",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1D3KDS452W7N2EV1Z240",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1D3K1D6AY5Z3QQM8XJ6T",
+      "code": "2A",
+      "subset": 2,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1D3K5WFAPNZV4JM68B1F",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1D3K9ZTADJBCT365ZSEP",
+      "code": "2N",
+      "subset": 2,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1D3K07BJM7W9XJMR4F7X",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1D3KNCF0XCFGF29CP0N8",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1D3K6S09QSXM18715A3M",
+      "parentTcp": "1T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GF4NP9GA6HWXDX8MX82F412N",
-      "name": "RW",
-      "callsign": "OMA_W_APP",
+      "id": "01GF4QQ8ARS819JQJV2B6TGAYE",
+      "physicalFacility": "OMA",
+      "name": "Local Control",
+      "radioName": "Omaha Tower",
+      "callsign": "OMA_TWR",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3K5WFAPNZV4JM68B1F",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 41.143,
+        "lon": -95.903722
       },
+      "range": 150,
+      "freq": 132.1
+    },
+    {
+      "id": "01GF4NVFDVBVFQPK9HBP2M719W",
+      "physicalFacility": "R90",
+      "name": "LW",
+      "radioName": "Omaha Approach",
+      "callsign": "LNK_L_APP",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3KH7MSZWSF9T7TM5J4",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 41.143,
+        "lon": -95.903722
+      },
+      "range": 150,
+      "freq": 124
+    },
+    {
+      "id": "01GF4R03ARSVG0HE173TA29NTP",
+      "physicalFacility": "LNK",
+      "name": "Local Control",
+      "radioName": "Lincoln Tower",
+      "callsign": "LNK_TWR",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3K07BJM7W9XJMR4F7X",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 41.143,
+        "lon": -95.903722
+      },
+      "range": 150,
+      "freq": 118.5
+    },
+    {
+      "id": "01H6BMXRGNK8HA3FPM19HGF3DR",
+      "physicalFacility": "R90",
+      "name": "LF",
+      "radioName": "Omaha Approach",
+      "callsign": "LNK_F_APP",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3KDY4Z0X912QQ8W6P5",
+      "tcp": "1O",
+      "visualCenter": {
+        "lat": 41.143,
+        "lon": -95.903722
+      },
+      "range": 150,
+      "freq": 128.15
+    },
+    {
+      "id": "01GF4NSCNT2PRE9YMDMP7DDW6M",
+      "physicalFacility": "R90",
+      "name": "RO",
+      "radioName": "Omaha Approach",
+      "callsign": "OMA_O_APP",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3KDY4Z0X912QQ8W6P5",
+      "tcp": "1O",
+      "visualCenter": {
+        "lat": 41.143,
+        "lon": -95.903722
+      },
+      "range": 150,
+      "freq": 124.95
+    },
+    {
+      "id": "01GFFKEB4KM64Q67YSMBETVTPN",
+      "physicalFacility": "OFF",
+      "name": "Local Control",
+      "radioName": "Offutt Tower",
+      "callsign": "OFF_TWR",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3K6S09QSXM18715A3M",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.143,
+        "lon": -95.903722
+      },
+      "range": 150,
+      "freq": 123.7
+    },
+    {
+      "id": "01GF4NRS8JX7VDK3GFJ34BA4FT",
+      "physicalFacility": "R90",
+      "name": "RF",
+      "radioName": "Omaha Approach",
+      "callsign": "OMA_V_APP",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3KHS4MKTVTTYMRRBVR",
+      "tcp": "1V",
+      "visualCenter": {
+        "lat": 41.143,
+        "lon": -95.903722
+      },
+      "range": 150,
+      "freq": 133.325
+    },
+    {
+      "id": "01GF4NP9GA6HWXDX8MX82F412N",
+      "physicalFacility": "R90",
+      "name": "RW",
+      "radioName": "Omaha Approach",
+      "callsign": "OMA_W_APP",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3KDS452W7N2EV1Z240",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 41.143,
+        "lon": -95.903722
+      },
+      "range": 150,
       "freq": 135.875
     },
     {
       "id": "01GF4NR3NHYSE616D9M2WHSEV8",
+      "physicalFacility": "R90",
       "name": "RE",
+      "radioName": "Omaha Approach",
       "callsign": "OMA_X_APP",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3KFQZ9VRSK5693MZDP",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 41.143,
+        "lon": -95.903722
       },
+      "range": 150,
       "freq": 124.5
     },
     {
-      "id": "01GF4NRS8JX7VDK3GFJ34BA4FT",
-      "name": "RF",
-      "callsign": "OMA_V_APP",
+      "id": "01GF4QVYEVR3K3HTMWP3WYDQB5",
+      "physicalFacility": "OMA",
+      "name": "Clearance Delivery",
+      "radioName": "Omaha Clearance",
+      "callsign": "OMA_DEL",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3K1D6AY5Z3QQM8XJ6T",
+      "tcp": "2A",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 41.143,
+        "lon": -95.903722
       },
-      "freq": 133.325
+      "range": 150,
+      "freq": 119.9
     },
     {
-      "id": "01GF4NSCNT2PRE9YMDMP7DDW6M",
-      "name": "RO",
-      "callsign": "OMA_O_APP",
+      "id": "01GF4QTG07PV0T5YAFEYBBR0TH",
+      "physicalFacility": "OMA",
+      "name": "Ground Control",
+      "radioName": "Omaha Ground",
+      "callsign": "OMA_GND",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3K1D6AY5Z3QQM8XJ6T",
+      "tcp": "2A",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 41.143,
+        "lon": -95.903722
       },
-      "freq": 124.95
+      "range": 150,
+      "freq": 121.9
     },
     {
-      "id": "01GF4NVFDVBVFQPK9HBP2M719W",
-      "name": "LW",
-      "callsign": "LNK_L_APP",
+      "id": "01GF4R1X4WYCF8KF4STXNDBTPE",
+      "physicalFacility": "LNK",
+      "name": "Clearance Delivery",
+      "radioName": "Lincoln Clearance",
+      "callsign": "LNK_DEL",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3K9ZTADJBCT365ZSEP",
+      "tcp": "2N",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 41.143,
+        "lon": -95.903722
       },
-      "freq": 124
+      "range": 150,
+      "freq": 120.7
     },
     {
-      "id": "01H6BMXRGNK8HA3FPM19HGF3DR",
-      "name": "LF",
-      "callsign": "LNK_F_APP",
+      "id": "01GF4R1ENRRCZ9CFDFR9XAKZK7",
+      "physicalFacility": "LNK",
+      "name": "Ground Control",
+      "radioName": "Lincoln Ground",
+      "callsign": "LNK_GND",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3K9ZTADJBCT365ZSEP",
+      "tcp": "2N",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 41.143,
+        "lon": -95.903722
       },
-      "freq": 128.15
+      "range": 150,
+      "freq": 121.9
     },
     {
-      "id": "1A",
+      "id": "01GFFKKM644JP1R10JPD1DZXKB",
+      "physicalFacility": "OFF",
+      "name": "Ground Control",
+      "radioName": "Offutt Ground",
+      "callsign": "OFF_GND",
+      "areaId": "01GF4M2Z5X5FKBAG2K11QZCX4E",
+      "tcpId": "01K2NF1D3KNCF0XCFGF29CP0N8",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1O",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2A",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2N",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 41.143,
+        "lon": -95.903722
+      },
+      "range": 150,
+      "freq": 121.7
     }
   ],
   "mapGroups": [

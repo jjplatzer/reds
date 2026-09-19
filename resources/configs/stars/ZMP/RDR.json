@@ -4,132 +4,277 @@
   "name": "Grand Forks AFB ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 47.9542778,
+    "lon": -97.28729584999999
   },
+  "areas": [
+    {
+      "id": "01GFEWYDJXWQ4KCDEE0RGG5DBE",
+      "name": "RDR",
+      "visibilityCenter": {
+        "lat": 47.9612778,
+        "lon": -97.4008139
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "2L1",
+        "3H4",
+        "CKN",
+        "D37",
+        "D41",
+        "D56",
+        "GAF",
+        "RDR"
+      ],
+      "ssaAirports": [
+        "GFK",
+        "RDR"
+      ]
+    },
+    {
+      "id": "01H6BMCPXD9JR919HCRR9A3FKS",
+      "name": "GFK",
+      "visibilityCenter": {
+        "lat": 47.9472778,
+        "lon": -97.1737778
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "GFK"
+      ],
+      "ssaAirports": [
+        "GFK"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3MY05CKN8ZHRQHKZSK",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1D3MAMNDB8NTM9HK6KNK",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1D3MT75M12Y78Q2MFBE6",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1D3MH1T907ZNEY8KJCRH",
+      "parentTcp": "1U"
+    },
+    {
+      "id": "01K2NF1D3MAMNDB8NTM9HK6KNK",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1D3MP4YM787WQGM5951T",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1D3MH1T907ZNEY8KJCRH",
+      "parentTcp": "1U"
+    },
+    {
+      "id": "01K2NF1D3MGFBGH1991BR7141K",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1D3MAMNDB8NTM9HK6KNK",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1D3MH1T907ZNEY8KJCRH",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K2NF1D3MZDNF04RAX6WN6HQX",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1D3MAMNDB8NTM9HK6KNK",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1D3M0QNF3J48CY8Z68VY",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    },
+    {
+      "id": "01K2NF1D3M55380Q98QZ14MJMS",
+      "code": "2Z",
+      "subset": 2,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1D3M0QNF3J48CY8Z68VY",
+      "parentTcp": "1Z"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GFEX1JFAJ5GZE60T8D54P5ZM",
-      "name": "LC",
-      "callsign": "RDR_TWR",
+      "id": "01GFEXD5G4HF96CFH6R79R4A4Z",
+      "physicalFacility": "RDR",
+      "name": "GFK AR",
+      "radioName": "Grand Forks Arrival",
+      "callsign": "RDR_A_APP",
+      "areaId": "01GFEWYDJXWQ4KCDEE0RGG5DBE",
+      "tcpId": "01K2NF1D3MY05CKN8ZHRQHKZSK",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 47.9612778,
+        "lon": -97.4008139
       },
+      "range": 150,
+      "freq": 121.1
+    },
+    {
+      "id": "01GFEXK23DN935XM5MGMVWGT74",
+      "physicalFacility": "GFK",
+      "name": "CD",
+      "radioName": "Grand Forks Clearance",
+      "callsign": "GFK_DEL",
+      "areaId": "01H6BMCPXD9JR919HCRR9A3FKS",
+      "tcpId": "01K2NF1D3MT75M12Y78Q2MFBE6",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 47.9472778,
+        "lon": -97.1737778
+      },
+      "range": 50,
+      "freq": 135.725
+    },
+    {
+      "id": "01GFEXJAG5GQXJ6N8222DDCNXS",
+      "physicalFacility": "GFK",
+      "name": "GC",
+      "radioName": "Grand Forks Ground",
+      "callsign": "GFK_GND",
+      "areaId": "01H6BMCPXD9JR919HCRR9A3FKS",
+      "tcpId": "01K2NF1D3MT75M12Y78Q2MFBE6",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 47.9472778,
+        "lon": -97.1737778
+      },
+      "range": 50,
+      "freq": 124.575
+    },
+    {
+      "id": "01GFEXBDSVA3XBJF29WKS9DVCJ",
+      "physicalFacility": "RDR",
+      "name": "RE",
+      "radioName": "Grand Forks Approach",
+      "callsign": "RDR_E_APP",
+      "areaId": "01GFEWYDJXWQ4KCDEE0RGG5DBE",
+      "tcpId": "01K2NF1D3MAMNDB8NTM9HK6KNK",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 47.9612778,
+        "lon": -97.4008139
+      },
+      "range": 150,
+      "freq": 118.1
+    },
+    {
+      "id": "01GFEXHEJ5JNJJNX0JHQDFQR85",
+      "physicalFacility": "GFK",
+      "name": "LC2",
+      "radioName": "Grand Forks Tower",
+      "callsign": "GFK_E_TWR",
+      "areaId": "01H6BMCPXD9JR919HCRR9A3FKS",
+      "tcpId": "01K2NF1D3MP4YM787WQGM5951T",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 47.9472778,
+        "lon": -97.1737778
+      },
+      "range": 50,
+      "freq": 120.55
+    },
+    {
+      "id": "01H6BM6DYK1SAH7TF0CZH8X85K",
+      "physicalFacility": "RDR",
+      "name": "RDR AR",
+      "radioName": "Red River Arrival",
+      "callsign": "RDR_R_APP",
+      "areaId": "01GFEWYDJXWQ4KCDEE0RGG5DBE",
+      "tcpId": "01K2NF1D3MGFBGH1991BR7141K",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 47.9612778,
+        "lon": -97.4008139
+      },
+      "range": 150,
+      "freq": 124.4
+    },
+    {
+      "id": "01GFEXFFB2D246PBDXCR9GCHY6",
+      "physicalFacility": "GFK",
+      "name": "LC1",
+      "radioName": "Grand Forks Tower",
+      "callsign": "GFK_W_TWR",
+      "areaId": "01H6BMCPXD9JR919HCRR9A3FKS",
+      "tcpId": "01K2NF1D3MH1T907ZNEY8KJCRH",
+      "tcp": "1U",
+      "visualCenter": {
+        "lat": 47.9472778,
+        "lon": -97.1737778
+      },
+      "range": 50,
+      "freq": 118.4
+    },
+    {
+      "id": "01GFEXCD87JN6555NXNF8Y84W7",
+      "physicalFacility": "RDR",
+      "name": "RW",
+      "radioName": "Grand Forks Approach",
+      "callsign": "RDR_W_APP",
+      "areaId": "01GFEWYDJXWQ4KCDEE0RGG5DBE",
+      "tcpId": "01K2NF1D3MZDNF04RAX6WN6HQX",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 47.9612778,
+        "lon": -97.4008139
+      },
+      "range": 150,
+      "freq": 132.3
+    },
+    {
+      "id": "01GFEX1JFAJ5GZE60T8D54P5ZM",
+      "physicalFacility": "RDR",
+      "name": "LC",
+      "radioName": "Red River Tower",
+      "callsign": "RDR_TWR",
+      "areaId": "01GFEWYDJXWQ4KCDEE0RGG5DBE",
+      "tcpId": "01K2NF1D3M0QNF3J48CY8Z68VY",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 47.9612778,
+        "lon": -97.4008139
+      },
+      "range": 150,
       "freq": 124.9
     },
     {
       "id": "01GFEXASDH2APW436KWMB4S4RN",
+      "physicalFacility": "RDR",
       "name": "GC",
+      "radioName": "Red River Ground",
       "callsign": "RDR_GND",
+      "areaId": "01GFEWYDJXWQ4KCDEE0RGG5DBE",
+      "tcpId": "01K2NF1D3M55380Q98QZ14MJMS",
+      "tcp": "2Z",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 47.9612778,
+        "lon": -97.4008139
       },
+      "range": 150,
       "freq": 119.15
-    },
-    {
-      "id": "01GFEXBDSVA3XBJF29WKS9DVCJ",
-      "name": "RE",
-      "callsign": "RDR_E_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 118.1
-    },
-    {
-      "id": "01GFEXCD87JN6555NXNF8Y84W7",
-      "name": "RW",
-      "callsign": "RDR_W_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 132.3
-    },
-    {
-      "id": "01GFEXD5G4HF96CFH6R79R4A4Z",
-      "name": "GFK AR",
-      "callsign": "RDR_A_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 121.1
-    },
-    {
-      "id": "01H6BM6DYK1SAH7TF0CZH8X85K",
-      "name": "RDR AR",
-      "callsign": "RDR_R_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 124.4
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2Z",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
     }
   ],
   "mapGroups": [

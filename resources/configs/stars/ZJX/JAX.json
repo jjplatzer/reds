@@ -4,295 +4,574 @@
   "name": "Jacksonville ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 30.303895971428574,
+    "lon": -81.60104969999999
   },
+  "areas": [
+    {
+      "id": "01GA5QNHQYP7C3YNH92QVHFM5N",
+      "name": "JAX",
+      "visibilityCenter": {
+        "lat": 30.49406,
+        "lon": -81.68783
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "JAX",
+        "CRG",
+        "SGJ",
+        "GNV",
+        "NIP",
+        "NRB",
+        "VQQ",
+        "OCF"
+      ]
+    },
+    {
+      "id": "01HC9EG0MS5DJ93FXP64FWSXBK",
+      "name": "Jacksonville Tower",
+      "visibilityCenter": {
+        "lat": 30.49406,
+        "lon": -81.68783
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "JAX"
+      ]
+    },
+    {
+      "id": "01JFV1BZ5CJF4BM4631VMZ6Z3Z",
+      "name": "CRG",
+      "visibilityCenter": {
+        "lat": 30.336,
+        "lon": -81.514
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "CRG"
+      ],
+      "ssaAirports": [
+        "CRG"
+      ]
+    },
+    {
+      "id": "01JFV1CHE55WM9B9J1PW3W55C2",
+      "name": "GNV",
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "GNV"
+      ],
+      "ssaAirports": [
+        "GNV"
+      ]
+    },
+    {
+      "id": "01JFV1DDZ77E5ZJABTY2W5ZSZ3",
+      "name": "SGJ",
+      "visibilityCenter": {
+        "lat": 29.959,
+        "lon": -81.34
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "SGJ"
+      ],
+      "ssaAirports": [
+        "SGJ"
+      ]
+    },
+    {
+      "id": "01JFV1ESZBQ0E3V5P1QG2DY9WV",
+      "name": "VQQ",
+      "visibilityCenter": {
+        "lat": 30.2187778,
+        "lon": -81.8771667
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "VQQ"
+      ],
+      "ssaAirports": [
+        "VQQ"
+      ]
+    },
+    {
+      "id": "01JFV20BF528B2X6WXQNB116NP",
+      "name": "NIP",
+      "visibilityCenter": {
+        "lat": 30.234,
+        "lon": -81.676
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "NIP"
+      ],
+      "ssaAirports": [
+        "NIP"
+      ]
+    },
+    {
+      "id": "01JG0AX2C2ZYMQWA8MHEPF8GWK",
+      "name": "NRB",
+      "visibilityCenter": {
+        "lat": 30.391374,
+        "lon": -81.4245212
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "NRB"
+      ],
+      "ssaAirports": [
+        "NRB"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFE7EYTPYH7RSHR3YQ7",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1DFEPP9H2F5S9RJY2PWW",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01K2NF1DFEMN6YMPHEJBXN7F3H",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1DFEE2D238HXMBPQZXQX",
+      "parentTcp": "1V"
+    },
+    {
+      "id": "01K2NF1DFEFPQBBPT8N4G6XNTE",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DFE7KHC4F5QGG1228A1",
+      "parentTcp": "1R"
+    },
+    {
+      "id": "01K2NF1DFEPP9H2F5S9RJY2PWW",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1DFEE2D238HXMBPQZXQX",
+      "parentTcp": "1V"
+    },
+    {
+      "id": "01K2NF1DFEQ1A3S96G73QXGYAH",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1DFE2QY6XWGKDEWQDNJC",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1DFE1CKNNF0ZNP7TP128",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "parentTcpId": "01K2NF1DFEJBRRWB1VJ9RHGVKG",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1DFEC7XM8R39JG5SYQRW",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1DFE236F5DHW7V0EVA98",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K2NF1DFEJBRRWB1VJ9RHGVKG",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1DFEDK4N6VMC5DVR4YSX",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1DFE55S9MGD3ATXW8R67",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q"
+    },
+    {
+      "id": "01K2NF1DFE7KHC4F5QGG1228A1",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1DFEJBRRWB1VJ9RHGVKG",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1DFEDK4N6VMC5DVR4YSX",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1DFE2QY6XWGKDEWQDNJC",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DFE4QG5SSJAP0KJGR9S",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K2NF1DFEE2D238HXMBPQZXQX",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1DFEDK4N6VMC5DVR4YSX",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1DFEZ32A8M3DHZGWZ3B3",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DFE7KHC4F5QGG1228A1",
+      "parentTcp": "1R"
+    },
+    {
+      "id": "01K2NF1DFEWMQ4P4ZWJBV086ZQ",
+      "code": "3N",
+      "subset": 3,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1DFE1JRDE5WQKGHXHZ6R",
+      "code": "3V",
+      "subset": 3,
+      "sectorId": "V"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GA5SDX1ST70PXP6C7FZP90VR",
-      "name": "Clearance Delivery",
-      "callsign": "JAX_DEL",
+      "id": "01HS933FESEC088GH097N422N2",
+      "physicalFacility": "JAX",
+      "name": "Radar Palatka",
+      "radioName": "Jacksonville Approach",
+      "callsign": "JAX_A_APP",
+      "areaId": "01GA5QNHQYP7C3YNH92QVHFM5N",
+      "tcpId": "01K2NF1DFE7EYTPYH7RSHR3YQ7",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.49406,
+        "lon": -81.68783
       },
+      "range": 150,
+      "freq": 121.3
+    },
+    {
+      "id": "01HS935NX8JA7C4G7K95JWSGT8",
+      "physicalFacility": "JAX",
+      "name": "Radar Dunnellon",
+      "radioName": "Jacksonville Approach",
+      "callsign": "JAX_D_APP",
+      "areaId": "01GA5QNHQYP7C3YNH92QVHFM5N",
+      "tcpId": "01K2NF1DFEMN6YMPHEJBXN7F3H",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 30.49406,
+        "lon": -81.68783
+      },
+      "range": 150,
+      "freq": 128.675
+    },
+    {
+      "id": "01HS930F5MTGEEA1RHV3MY62C7",
+      "physicalFacility": "JAX",
+      "name": "Radar East",
+      "radioName": "Jacksonville Approach",
+      "callsign": "JAX_E_APP",
+      "areaId": "01GA5QNHQYP7C3YNH92QVHFM5N",
+      "tcpId": "01K2NF1DFEFPQBBPT8N4G6XNTE",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 30.49406,
+        "lon": -81.68783
+      },
+      "range": 150,
+      "freq": 132.775
+    },
+    {
+      "id": "01HS934ET5VVJHN611R5YAJKR5",
+      "physicalFacility": "JAX",
+      "name": "Radar Gainesville",
+      "radioName": "Jacksonville Approach",
+      "callsign": "JAX_G_APP",
+      "areaId": "01GA5QNHQYP7C3YNH92QVHFM5N",
+      "tcpId": "01K2NF1DFEPP9H2F5S9RJY2PWW",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 30.49406,
+        "lon": -81.68783
+      },
+      "range": 150,
+      "freq": 118.175
+    },
+    {
+      "id": "01GA5SDX1ST70PXP6C7FZP90VR",
+      "physicalFacility": "JAX",
+      "name": "Clearance Delivery",
+      "radioName": "Jacksonville Clearance Delivery",
+      "callsign": "JAX_DEL",
+      "areaId": "01HC9EG0MS5DJ93FXP64FWSXBK",
+      "tcpId": "01K2NF1DFEQ1A3S96G73QXGYAH",
+      "tcp": "1I",
+      "visualCenter": {
+        "lat": 30.49406,
+        "lon": -81.68783
+      },
+      "range": 50,
       "freq": 119.5
     },
     {
       "id": "01GA5SEY9DAY33PNSXH086AS58",
+      "physicalFacility": "JAX",
       "name": "Ground Control",
+      "radioName": "Jacksonville Ground",
       "callsign": "JAX_GND",
+      "areaId": "01HC9EG0MS5DJ93FXP64FWSXBK",
+      "tcpId": "01K2NF1DFEQ1A3S96G73QXGYAH",
+      "tcp": "1I",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.49406,
+        "lon": -81.68783
       },
+      "range": 50,
       "freq": 121.9
     },
     {
-      "id": "01GA5SFP9PVEE6J72G2EJ2G5GS",
-      "name": "Local Control",
-      "callsign": "JAX_TWR",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 118.3
-    },
-    {
-      "id": "01HS92Y3KHTFSWE6YB1BJT1A4E",
-      "name": "Radar West",
-      "callsign": "JAX_W_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 127.775
-    },
-    {
-      "id": "01HS92ZQ4MZ0KWT49P88FAZ0AR",
-      "name": "Radar North",
-      "callsign": "JAX_N_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 127
-    },
-    {
-      "id": "01HS930F5MTGEEA1RHV3MY62C7",
-      "name": "Radar East",
-      "callsign": "JAX_E_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 132.775
-    },
-    {
-      "id": "01HS9315DM1BFN9B0R4NZS7M2V",
-      "name": "Radar Arrival",
-      "callsign": "JAX_R_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 119
-    },
-    {
       "id": "01HS93203C54ZMP7XCSE53J0NM",
+      "physicalFacility": "JAX",
       "name": "Radar Final",
+      "radioName": "Jacksonville Approach",
       "callsign": "JAX_J_APP",
+      "areaId": "01GA5QNHQYP7C3YNH92QVHFM5N",
+      "tcpId": "01K2NF1DFE1CKNNF0ZNP7TP128",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.49406,
+        "lon": -81.68783
       },
+      "range": 150,
       "freq": 119.85
     },
     {
-      "id": "01HS932R0SQ0AFKP9SV597K2YT",
-      "name": "Radar Satellite",
-      "callsign": "JAX_S_APP",
+      "id": "01GA813C5KJJXJTZ90Y5SA5QAN",
+      "physicalFacility": "CRG",
+      "name": "Ground Control",
+      "radioName": "Craig Ground",
+      "callsign": "CRG_GND",
+      "areaId": "01JFV1BZ5CJF4BM4631VMZ6Z3Z",
+      "tcpId": "01K2NF1DFEC7XM8R39JG5SYQRW",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.336,
+        "lon": -81.514
       },
+      "range": 50,
+      "freq": 121.8
+    },
+    {
+      "id": "01GA8144Y1S8P0J15FV06QEMY2",
+      "physicalFacility": "CRG",
+      "name": "Local Control",
+      "radioName": "Craig Tower",
+      "callsign": "CRG_TWR",
+      "areaId": "01JFV1BZ5CJF4BM4631VMZ6Z3Z",
+      "tcpId": "01K2NF1DFEC7XM8R39JG5SYQRW",
+      "tcp": "1K",
+      "visualCenter": {
+        "lat": 30.336,
+        "lon": -81.514
+      },
+      "range": 50,
+      "freq": 132.1
+    },
+    {
+      "id": "01HF7YJMK30EWZY9ZH9MYKJ29N",
+      "physicalFacility": "SGJ",
+      "name": "Tower",
+      "radioName": "St. Augustine Tower",
+      "callsign": "SGJ_TWR",
+      "areaId": "01JFV1DDZ77E5ZJABTY2W5ZSZ3",
+      "tcpId": "01K2NF1DFE236F5DHW7V0EVA98",
+      "tcp": "1M",
+      "visualCenter": {
+        "lat": 29.959,
+        "lon": -81.34
+      },
+      "range": 50,
+      "freq": 127.625
+    },
+    {
+      "id": "01HS92ZQ4MZ0KWT49P88FAZ0AR",
+      "physicalFacility": "JAX",
+      "name": "Radar North",
+      "radioName": "Jacksonville Approach",
+      "callsign": "JAX_N_APP",
+      "areaId": "01GA5QNHQYP7C3YNH92QVHFM5N",
+      "tcpId": "01K2NF1DFEJBRRWB1VJ9RHGVKG",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 30.49406,
+        "lon": -81.68783
+      },
+      "range": 150,
+      "freq": 127
+    },
+    {
+      "id": "01HC2Y8NF80M0T2HG4MXMTTQ1Z",
+      "physicalFacility": "VQQ",
+      "name": "Tower",
+      "radioName": "Cecil Tower",
+      "callsign": "VQQ_TWR",
+      "areaId": "01JFV1ESZBQ0E3V5P1QG2DY9WV",
+      "tcpId": "01K2NF1DFE55S9MGD3ATXW8R67",
+      "tcp": "1Q",
+      "visualCenter": {
+        "lat": 30.2187778,
+        "lon": -81.8771667
+      },
+      "range": 50,
+      "freq": 126.1
+    },
+    {
+      "id": "01HS9315DM1BFN9B0R4NZS7M2V",
+      "physicalFacility": "JAX",
+      "name": "Radar Arrival",
+      "radioName": "Jacksonville Approach",
+      "callsign": "JAX_R_APP",
+      "areaId": "01GA5QNHQYP7C3YNH92QVHFM5N",
+      "tcpId": "01K2NF1DFE7KHC4F5QGG1228A1",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 30.49406,
+        "lon": -81.68783
+      },
+      "range": 150,
+      "freq": 119
+    },
+    {
+      "id": "01HS932R0SQ0AFKP9SV597K2YT",
+      "physicalFacility": "JAX",
+      "name": "Radar Satellite",
+      "radioName": "Jacksonville Approach",
+      "callsign": "JAX_S_APP",
+      "areaId": "01GA5QNHQYP7C3YNH92QVHFM5N",
+      "tcpId": "01K2NF1DFEDK4N6VMC5DVR4YSX",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 30.49406,
+        "lon": -81.68783
+      },
+      "range": 150,
       "freq": 124.9
     },
     {
-      "id": "01HS933FESEC088GH097N422N2",
-      "name": "Radar Palatka",
-      "callsign": "JAX_A_APP",
+      "id": "01GA5SFP9PVEE6J72G2EJ2G5GS",
+      "physicalFacility": "JAX",
+      "name": "Local Control",
+      "radioName": "Jacksonville Tower",
+      "callsign": "JAX_TWR",
+      "areaId": "01HC9EG0MS5DJ93FXP64FWSXBK",
+      "tcpId": "01K2NF1DFE2QY6XWGKDEWQDNJC",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.49406,
+        "lon": -81.68783
       },
-      "freq": 121.3
+      "range": 50,
+      "freq": 118.3
     },
     {
-      "id": "01HS934ET5VVJHN611R5YAJKR5",
-      "name": "Radar Gainesville",
-      "callsign": "JAX_G_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 118.175
-    },
-    {
-      "id": "01HS935NX8JA7C4G7K95JWSGT8",
-      "name": "Radar Dunnellon",
-      "callsign": "JAX_D_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 128.675
+      "id": "01HAPKWHCJV51W146H0JKMEEPE",
+      "physicalFacility": "GNV",
+      "name": "Tower",
+      "radioName": "Gainesville Tower",
+      "callsign": "GNV_TWR",
+      "areaId": "01JFV1CHE55WM9B9J1PW3W55C2",
+      "tcpId": "01K2NF1DFE4QG5SSJAP0KJGR9S",
+      "tcp": "1U",
+      "range": 50,
+      "freq": 119.55
     },
     {
       "id": "01HS936RESNZK0NKKNXDQBWZSS",
+      "physicalFacility": "JAX",
       "name": "Radar Vitts",
+      "radioName": "Jacksonville Approach",
       "callsign": "JAX_V_APP",
+      "areaId": "01GA5QNHQYP7C3YNH92QVHFM5N",
+      "tcpId": "01K2NF1DFEE2D238HXMBPQZXQX",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.49406,
+        "lon": -81.68783
       },
+      "range": 150,
       "freq": 118.6
     },
     {
-      "id": "01K2JA3XN8KV7MV8CD8G9M415N",
-      "name": "JAX TMU",
-      "callsign": "JAX_T_APP",
+      "id": "01HS92Y3KHTFSWE6YB1BJT1A4E",
+      "physicalFacility": "JAX",
+      "name": "Radar West",
+      "radioName": "Jacksonville Approach",
+      "callsign": "JAX_W_APP",
+      "areaId": "01GA5QNHQYP7C3YNH92QVHFM5N",
+      "tcpId": "01K2NF1DFEZ32A8M3DHZGWZ3B3",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.49406,
+        "lon": -81.68783
       },
-      "freq": 136.95
+      "range": 150,
+      "freq": 127.775
     },
     {
-      "id": "01K2JA4YQ4KQ11RT9Y0CSDKPYF",
-      "name": "ZJX LANDLINE",
-      "callsign": "JAX_Z_APP",
+      "id": "01HC0SYJ4SB2S4B9BG3F7DJ3JZ",
+      "physicalFacility": "NRB",
+      "name": "Tower",
+      "radioName": "Navy Mayport Tower",
+      "callsign": "NRB_TWR",
+      "areaId": "01JG0AX2C2ZYMQWA8MHEPF8GWK",
+      "tcpId": "01K2NF1DFEWMQ4P4ZWJBV086ZQ",
+      "tcp": "3N",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.391374,
+        "lon": -81.4245212
       },
-      "freq": 132.65
+      "range": 50,
+      "freq": 118.75
     },
     {
-      "id": "01KFA7DSRMF1SSY2X0GSFF9V28",
-      "name": "JAX Flight DATA",
-      "callsign": "JAX_FD_APP",
+      "id": "01HAT126100FWDND6PQ0K2H2JQ",
+      "physicalFacility": "NIP",
+      "name": "Tower",
+      "radioName": "Navy Jacksonville Tower",
+      "callsign": "NIP_TWR",
+      "areaId": "01JFV20BF528B2X6WXQNB116NP",
+      "tcpId": "01K2NF1DFE1JRDE5WQKGHXHZ6R",
+      "tcp": "3V",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.234,
+        "lon": -81.676
       },
-      "freq": 135.075
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1J",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3G",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3I",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3K",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3N",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3S",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3V",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3Z",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+      "range": 50,
+      "freq": 125.15
     }
   ],
   "mapGroups": [

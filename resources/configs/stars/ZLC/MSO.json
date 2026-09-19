@@ -4,46 +4,97 @@
   "name": "Missoula ATCT | Spokane TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 44.1394906,
-    "lon": -111.3092792325
+    "lat": 46.91839,
+    "lon": -114.1009
   },
+  "areas": [
+    {
+      "id": "01HNH9TM6P9PX9CCVQ0Q1Y2K9N",
+      "name": "Approach",
+      "visibilityCenter": {
+        "lat": 46.91839,
+        "lon": -114.1009
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "32S",
+        "52S"
+      ],
+      "ssaAirports": [
+        "MSO"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E41GD28277W6ZT8DDJB",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1E415YJVD40YTA4V26EE",
+      "code": "2G",
+      "subset": 2,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1E41TDG5F3BGGY8AVRWJ",
+      "parentTcp": "2L"
+    },
+    {
+      "id": "01K2NF1E41TDG5F3BGGY8AVRWJ",
+      "code": "2L",
+      "subset": 2,
+      "sectorId": "L"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01HNH9QE6PBQAK5V3ZCZSVT84N",
+      "physicalFacility": "MSO",
       "name": "Spokane Approach",
+      "radioName": "Spokane Approach",
       "callsign": "MSO_APP",
+      "areaId": "01HNH9TM6P9PX9CCVQ0Q1Y2K9N",
+      "tcpId": "01K2NF1E41GD28277W6ZT8DDJB",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 46.91839,
+        "lon": -114.1009
       },
+      "range": 75,
       "freq": 124.9
     },
     {
-      "id": "01HNHAQZ6HB3YA5ST65ENHV6JQ",
-      "name": "Local",
-      "callsign": "MSO_TWR",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      },
-      "freq": 118.4
-    },
-    {
       "id": "01HNHAT3YZ52DE64THF76KZ8XJ",
+      "physicalFacility": "MSO",
       "name": "Ground",
+      "radioName": "Missoula Ground",
       "callsign": "MSO_GND",
+      "areaId": "01HNH9TM6P9PX9CCVQ0Q1Y2K9N",
+      "tcpId": "01K2NF1E415YJVD40YTA4V26EE",
+      "tcp": "2G",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 46.91839,
+        "lon": -114.1009
       },
+      "range": 75,
       "freq": 121.9
     },
     {
-      "id": "1M",
+      "id": "01HNHAQZ6HB3YA5ST65ENHV6JQ",
+      "physicalFacility": "MSO",
+      "name": "Local",
+      "radioName": "Missoula Tower",
+      "callsign": "MSO_TWR",
+      "areaId": "01HNH9TM6P9PX9CCVQ0Q1Y2K9N",
+      "tcpId": "01K2NF1E41TDG5F3BGGY8AVRWJ",
+      "tcp": "2L",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 46.91839,
+        "lon": -114.1009
+      },
+      "range": 75,
+      "freq": 118.4
     }
   ],
   "mapGroups": [

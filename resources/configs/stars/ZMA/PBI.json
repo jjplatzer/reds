@@ -4,239 +4,623 @@
   "name": "Palm Beach ATCT",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 25.98185666666667,
-    "lon": -76.699767
+    "lat": 26.998241299999997,
+    "lon": -80.23416725714286
   },
+  "areas": [
+    {
+      "id": "01HAHVX32JYDZHX35ZH7YQJ74A",
+      "name": "Palm Beach",
+      "visibilityCenter": {
+        "lat": 26.6831617,
+        "lon": -80.0955919
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "PBI",
+        "FPR",
+        "SUA",
+        "VRB",
+        "BCT",
+        "DJT"
+      ],
+      "ssaAirports": [
+        "PBI",
+        "DJT",
+        "FPR",
+        "SUA",
+        "VRB",
+        "BCT"
+      ]
+    },
+    {
+      "id": "01HBR8JKX9YYA7GXRFW27EBZRA",
+      "name": "Palm Beach Tower",
+      "visibilityCenter": {
+        "lat": 26.6831617,
+        "lon": -80.0955919
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "PBI",
+        "DJT"
+      ],
+      "ssaAirports": [
+        "PBI",
+        "DJT"
+      ]
+    },
+    {
+      "id": "01HBR8JKXA13CFEKVSE3D8BXEH",
+      "name": "Stuart Tower",
+      "visibilityCenter": {
+        "lat": 27.1816992,
+        "lon": -80.2212933
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "SUA"
+      ]
+    },
+    {
+      "id": "01HBR8JKXA6WT946P3HS3PWK2B",
+      "name": "Vero Beach Tower",
+      "visibilityCenter": {
+        "lat": 27.6555556,
+        "lon": -80.4179444
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "VRB"
+      ]
+    },
+    {
+      "id": "01HBR8JKXAEDGZES27RXMBEB4Z",
+      "name": "Fort Pierce Tower",
+      "visibilityCenter": {
+        "lat": 27.4974722,
+        "lon": -80.3726389
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "FPR"
+      ]
+    },
+    {
+      "id": "01HBR8JKXAQ79XE5ZCEHVFEPPS",
+      "name": "Gwinn Tower",
+      "visibilityCenter": {
+        "lat": 26.9081531,
+        "lon": -80.328414
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "06FA"
+      ]
+    },
+    {
+      "id": "01HBR8JKXAS14463B1MAH3C1DX",
+      "name": "Boca Raton Tower",
+      "visibilityCenter": {
+        "lat": 26.3784856,
+        "lon": -80.1076964
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "BCT"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1C5T41JNN702DZE2A2CV",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1C5TQPEDSPZH3V7BKPME",
+      "parentTcp": "1I",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5T0ABGJBMK8Y1WNZEN",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TKGM2Z3E8SAR75P5D",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TM9EP9XW3Z5FPRZ51",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5T8SWJPDPNW2JQST5X",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1C5TTP3A601M3ST1F35V",
+      "parentTcp": "1P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TQ821DQBVXGG2SJ5G",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1C5TYJ0WKYC0G522M10D",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TQPEDSPZH3V7BKPME",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1C5T0ABGJBMK8Y1WNZEN",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TRRXTMGCT4XC7CD8R",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TW34QRV0ZD3B2W8T5",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1C5T0ABGJBMK8Y1WNZEN",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TTP3A601M3ST1F35V",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1C5T0ABGJBMK8Y1WNZEN",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5T1D5PS1S2B9PVYQN1",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TYJ0WKYC0G522M10D",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1C5TW34QRV0ZD3B2W8T5",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5T8ZHPF5KVZQ0WP114",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TPQYJD4656MH72W0Z",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TWW2HSH6RDTEKSB1A",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TF6BYR4RNGS4YX11T",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TKTNJR8RXC64RY68Z",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TESSH5A95VKR8GTAR",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GFEQC7PHP0TRADJA9AD12MRH",
-      "name": "North Departure",
-      "callsign": "PBI_B_DEP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 128.3
-    },
-    {
-      "id": "01GFEQD0808JEPZGEFNV93WH05",
-      "name": "North Arrival",
-      "callsign": "PBI_I_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 124.6
-    },
-    {
-      "id": "01GFEQDWX9GA2Q058DG8TMMRHN",
-      "name": "South Satellite",
-      "callsign": "PBI_S_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 132.8
-    },
-    {
-      "id": "01GFEQEH9591EWY70JJHF8PEPN",
-      "name": "South Arrival",
-      "callsign": "PBI_F_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 125.2
-    },
-    {
       "id": "01GFEQF9CR0BYETZ07KTKCGGZ3",
+      "physicalFacility": "PBI",
       "name": "Final",
+      "radioName": "Palm Beach Approach",
       "callsign": "PBI_A_APP",
+      "areaId": "01HAHVX32JYDZHX35ZH7YQJ74A",
+      "tcpId": "01K2NF1C5T41JNN702DZE2A2CV",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 26.6831617,
+        "lon": -80.0955919
       },
+      "range": 150,
       "freq": 125
     },
     {
-      "id": "01HBMMBHPRHQCGHF9PYQ999R1N",
-      "name": "West Arrival",
-      "callsign": "PBI_P_APP",
+      "id": "01GFEQC7PHP0TRADJA9AD12MRH",
+      "physicalFacility": "PBI",
+      "name": "North Departure",
+      "radioName": "Palm Beach Approach",
+      "callsign": "PBI_B_DEP",
+      "areaId": "01HAHVX32JYDZHX35ZH7YQJ74A",
+      "tcpId": "01K2NF1C5T0ABGJBMK8Y1WNZEN",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 26.6831617,
+        "lon": -80.0955919
       },
-      "freq": 127.35
+      "range": 150,
+      "freq": 128.3
     },
     {
-      "id": "01HBRBSFHD7Z6E3CMBVDG5WVFK",
-      "name": "North Satellite",
-      "callsign": "PBI_N_APP",
+      "id": "01GFEQJBFXNJTFDYQNBSGMH5CZ",
+      "physicalFacility": "DJT",
+      "name": "Ground Control 2",
+      "radioName": "Palm Beach Ground",
+      "callsign": "PBI_2_GND",
+      "areaId": "01HBR8JKX9YYA7GXRFW27EBZRA",
+      "tcpId": "01K2NF1C5TKGM2Z3E8SAR75P5D",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 26.6831617,
+        "lon": -80.0955919
       },
-      "freq": 123.625
+      "range": 150,
+      "freq": 118.75
     },
     {
-      "id": "01JAET1J2C6JMWS1XWRM15WY9W",
-      "name": "ZMA Guard",
-      "callsign": "PBI_RMP",
+      "id": "01GFEQM2R3EFS4Q2J8NTJSTFEW",
+      "physicalFacility": "DJT",
+      "name": "Clearance Delivery",
+      "radioName": "Palm Beach Clearance",
+      "callsign": "PBI_DEL",
+      "areaId": "01HBR8JKX9YYA7GXRFW27EBZRA",
+      "tcpId": "01K2NF1C5TKGM2Z3E8SAR75P5D",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 26.6831617,
+        "lon": -80.0955919
       },
-      "freq": 121.5
+      "range": 150,
+      "freq": 121.6
+    },
+    {
+      "id": "01KK7FBJ463GA284G24TNNN8PV",
+      "physicalFacility": "DJT",
+      "name": "Gate Hold",
+      "radioName": "Palm Beach Ground",
+      "callsign": "PBI_GH_GND",
+      "areaId": "01HBR8JKX9YYA7GXRFW27EBZRA",
+      "tcpId": "01K2NF1C5TKGM2Z3E8SAR75P5D",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 26.6831617,
+        "lon": -80.0955919
+      },
+      "range": 150,
+      "freq": 118.75
+    },
+    {
+      "id": "01GFEQK9YXZXW9VCVT8WK5WRCQ",
+      "physicalFacility": "DJT",
+      "name": "Ground Control 1",
+      "radioName": "Palm Beach Ground",
+      "callsign": "PBI_GND",
+      "areaId": "01HBR8JKX9YYA7GXRFW27EBZRA",
+      "tcpId": "01K2NF1C5TKGM2Z3E8SAR75P5D",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 26.6831617,
+        "lon": -80.0955919
+      },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
+      "id": "01HBRBV9ZVQ3684TD3CQM1MMKR",
+      "physicalFacility": "VRB",
+      "name": "Local Control",
+      "radioName": "Vero Beach Tower",
+      "callsign": "VRB_TWR",
+      "areaId": "01HBR8JKXA6WT946P3HS3PWK2B",
+      "tcpId": "01K2NF1C5TM9EP9XW3Z5FPRZ51",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 27.6555556,
+        "lon": -80.4179444
+      },
+      "range": 150,
+      "freq": 126.3
+    },
+    {
+      "id": "01GFEQEH9591EWY70JJHF8PEPN",
+      "physicalFacility": "PBI",
+      "name": "South Arrival",
+      "radioName": "Palm Beach Approach",
+      "callsign": "PBI_F_APP",
+      "areaId": "01HAHVX32JYDZHX35ZH7YQJ74A",
+      "tcpId": "01K2NF1C5T8SWJPDPNW2JQST5X",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 26.6831617,
+        "lon": -80.0955919
+      },
+      "range": 150,
+      "freq": 125.2
     },
     {
       "id": "01JEZ30EPF85S0QFM3KVDY4XVQ",
+      "physicalFacility": "PBI",
       "name": "FPR Satellite",
+      "radioName": "Palm Beach Approach",
       "callsign": "PBI_H_APP",
+      "areaId": "01HAHVX32JYDZHX35ZH7YQJ74A",
+      "tcpId": "01K2NF1C5TQ821DQBVXGG2SJ5G",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 26.6831617,
+        "lon": -80.0955919
       },
+      "range": 150,
       "freq": 125.925
     },
     {
-      "id": "1A",
+      "id": "01GFEQD0808JEPZGEFNV93WH05",
+      "physicalFacility": "PBI",
+      "name": "North Arrival",
+      "radioName": "Palm Beach Approach",
+      "callsign": "PBI_I_APP",
+      "areaId": "01HAHVX32JYDZHX35ZH7YQJ74A",
+      "tcpId": "01K2NF1C5TQPEDSPZH3V7BKPME",
+      "tcp": "1I",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.6831617,
+        "lon": -80.0955919
+      },
+      "range": 150,
+      "freq": 124.6
     },
     {
-      "id": "1B",
+      "id": "01HBRBSFHD7Z6E3CMBVDG5WVFK",
+      "physicalFacility": "PBI",
+      "name": "North Satellite",
+      "radioName": "Palm Beach Approach",
+      "callsign": "PBI_N_APP",
+      "areaId": "01HAHVX32JYDZHX35ZH7YQJ74A",
+      "tcpId": "01K2NF1C5TW34QRV0ZD3B2W8T5",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.6831617,
+        "lon": -80.0955919
+      },
+      "range": 150,
+      "freq": 123.625
     },
     {
-      "id": "1D",
+      "id": "01HBMMBHPRHQCGHF9PYQ999R1N",
+      "physicalFacility": "PBI",
+      "name": "West Arrival",
+      "radioName": "Palm Beach Approach",
+      "callsign": "PBI_P_APP",
+      "areaId": "01HAHVX32JYDZHX35ZH7YQJ74A",
+      "tcpId": "01K2NF1C5TTP3A601M3ST1F35V",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.6831617,
+        "lon": -80.0955919
+      },
+      "range": 150,
+      "freq": 127.35
     },
     {
-      "id": "1E",
+      "id": "01GFERTHRGZ962D7TZQFRWDFSQ",
+      "physicalFacility": "BCT",
+      "name": "Ground Control",
+      "radioName": "Boca Raton Ground",
+      "callsign": "BCT_GND",
+      "areaId": "01HBR8JKXAS14463B1MAH3C1DX",
+      "tcpId": "01K2NF1C5T1D5PS1S2B9PVYQN1",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.3784856,
+        "lon": -80.1076964
+      },
+      "range": 150,
+      "freq": 121.8
     },
     {
-      "id": "1F",
+      "id": "01GFERSQCQ8ZD0QQMGYVSY4KZC",
+      "physicalFacility": "BCT",
+      "name": "Local Control",
+      "radioName": "Boca Raton Tower",
+      "callsign": "BCT_TWR",
+      "areaId": "01HBR8JKXAS14463B1MAH3C1DX",
+      "tcpId": "01K2NF1C5T1D5PS1S2B9PVYQN1",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.3784856,
+        "lon": -80.1076964
+      },
+      "range": 150,
+      "freq": 118.425
     },
     {
-      "id": "1H",
+      "id": "01GFEQDWX9GA2Q058DG8TMMRHN",
+      "physicalFacility": "PBI",
+      "name": "South Satellite",
+      "radioName": "Palm Beach Approach",
+      "callsign": "PBI_S_APP",
+      "areaId": "01HAHVX32JYDZHX35ZH7YQJ74A",
+      "tcpId": "01K2NF1C5TYJ0WKYC0G522M10D",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.6831617,
+        "lon": -80.0955919
+      },
+      "range": 150,
+      "freq": 132.8
     },
     {
-      "id": "1I",
+      "id": "01GFEQHCKHES92SEJR2KAPJ5Y1",
+      "physicalFacility": "DJT",
+      "name": "Local Control 1",
+      "radioName": "Palm Beach Tower",
+      "callsign": "PBI_TWR",
+      "areaId": "01HBR8JKX9YYA7GXRFW27EBZRA",
+      "tcpId": "01K2NF1C5T8ZHPF5KVZQ0WP114",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.6831617,
+        "lon": -80.0955919
+      },
+      "range": 150,
+      "freq": 119.1
     },
     {
-      "id": "1J",
+      "id": "01HBRBYDD7CBEG5X0J4CZYHYZF",
+      "physicalFacility": "VRB",
+      "name": "Clearance Delivery",
+      "radioName": "Vero Beach Clearance",
+      "callsign": "VRB_DEL",
+      "areaId": "01HBR8JKXA6WT946P3HS3PWK2B",
+      "tcpId": "01K2NF1C5TPQYJD4656MH72W0Z",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.6555556,
+        "lon": -80.4179444
+      },
+      "range": 150,
+      "freq": 134.975
     },
     {
-      "id": "1K",
+      "id": "01HBRBWT3TCK5F9K4PB203JC3A",
+      "physicalFacility": "VRB",
+      "name": "Ground Control",
+      "radioName": "Vero Beach Ground",
+      "callsign": "VRB_GND",
+      "areaId": "01HBR8JKXA6WT946P3HS3PWK2B",
+      "tcpId": "01K2NF1C5TPQYJD4656MH72W0Z",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.6555556,
+        "lon": -80.4179444
+      },
+      "range": 150,
+      "freq": 127.45
     },
     {
-      "id": "1L",
+      "id": "01GRYM030FN786WR85FZ2G8PXX",
+      "physicalFacility": "SUA",
+      "name": "Clearance Delivery",
+      "radioName": "Stuart Clearance",
+      "callsign": "SUA_DEL",
+      "areaId": "01HBR8JKXA13CFEKVSE3D8BXEH",
+      "tcpId": "01K2NF1C5TWW2HSH6RDTEKSB1A",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.1816992,
+        "lon": -80.2212933
+      },
+      "range": 150,
+      "freq": 121.025
     },
     {
-      "id": "1N",
+      "id": "01GRYM3YNGY99TRJEY3CDR88EJ",
+      "physicalFacility": "SUA",
+      "name": "Ground Control",
+      "radioName": "Stuart Ground",
+      "callsign": "SUA_GND",
+      "areaId": "01HBR8JKXA13CFEKVSE3D8BXEH",
+      "tcpId": "01K2NF1C5TWW2HSH6RDTEKSB1A",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.1816992,
+        "lon": -80.2212933
+      },
+      "range": 150,
+      "freq": 121.7
     },
     {
-      "id": "1P",
+      "id": "01GRYM4GNA53FYJ2MRDYCAXCCH",
+      "physicalFacility": "SUA",
+      "name": "Local Control",
+      "radioName": "Stuart Tower",
+      "callsign": "SUA_TWR",
+      "areaId": "01HBR8JKXA13CFEKVSE3D8BXEH",
+      "tcpId": "01K2NF1C5TWW2HSH6RDTEKSB1A",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.1816992,
+        "lon": -80.2212933
+      },
+      "range": 150,
+      "freq": 126.6
     },
     {
-      "id": "1R",
+      "id": "01GFES68H5S1DXYFBFJ25D3612",
+      "physicalFacility": "FPR",
+      "name": "Ground Control",
+      "radioName": "Fort Pierce Ground",
+      "callsign": "FPR_GND",
+      "areaId": "01HBR8JKXAEDGZES27RXMBEB4Z",
+      "tcpId": "01K2NF1C5TESSH5A95VKR8GTAR",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.4974722,
+        "lon": -80.3726389
+      },
+      "range": 150,
+      "freq": 119.55
     },
     {
-      "id": "1S",
+      "id": "01GFES5KE18R3MVQ0J4XG8TR59",
+      "physicalFacility": "FPR",
+      "name": "Local Control",
+      "radioName": "Fort Pierce Tower",
+      "callsign": "FPR_TWR",
+      "areaId": "01HBR8JKXAEDGZES27RXMBEB4Z",
+      "tcpId": "01K2NF1C5TESSH5A95VKR8GTAR",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.4974722,
+        "lon": -80.3726389
+      },
+      "range": 150,
+      "freq": 128.2
     }
   ],
   "mapGroups": [

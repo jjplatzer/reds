@@ -4,57 +4,204 @@
   "name": "Tucson TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 34.19564814666666,
-    "lon": -107.50666666666666
+    "lat": 32.1166667,
+    "lon": -110.9416667
   },
+  "areas": [
+    {
+      "id": "01G93BBDE2AS2MWPQPHBMW7MJ6",
+      "name": "U90",
+      "visibilityCenter": {
+        "lat": 32.1166667,
+        "lon": -110.9416667
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "DMA",
+        "RYN",
+        "TUS",
+        "AVQ",
+        "OLS"
+      ],
+      "ssaAirports": [
+        "DMA",
+        "RYN",
+        "TUS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1BHSW58F2VMXQWRD3708",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSFA1YBNWMVFHK2P1D",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1BHSW58F2VMXQWRD3708",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSYZD2EB5CVX7CYC01",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSQ3H6F6CC18EQ9W0M",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSY956QMKTW71V9YGJ",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHS33Q6JHY7RSQT6HX4",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSJ10X90NA0FWR233D",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHS42EJCTJV2D7S5VVQ",
+      "code": "3T",
+      "subset": 3,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G941RS5AM4C1CSD4S3QW0BPN",
+      "physicalFacility": "U90",
       "name": "Arrival",
+      "radioName": "Tucson Approach",
       "callsign": "TUS_APP",
+      "areaId": "01G93BBDE2AS2MWPQPHBMW7MJ6",
+      "tcpId": "01K2NF1BHSW58F2VMXQWRD3708",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 32.1166667,
+        "lon": -110.9416667
       },
+      "range": 75,
       "freq": 119.4
     },
     {
       "id": "01G941SV46TW415PMXCPSDRXA9",
+      "physicalFacility": "U90",
       "name": "Departure",
+      "radioName": "Tucson Departure",
       "callsign": "TUS_DEP",
+      "areaId": "01G93BBDE2AS2MWPQPHBMW7MJ6",
+      "tcpId": "01K2NF1BHSFA1YBNWMVFHK2P1D",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 32.1166667,
+        "lon": -110.9416667
       },
+      "range": 75,
       "freq": 125.1
     },
     {
-      "id": "1A",
+      "id": "01G93BK0XY1M6EPKAS9DXV8ANM",
+      "physicalFacility": "TUS",
+      "name": "Clearance Delivery",
+      "radioName": "Tucson Clearance Delivery",
+      "callsign": "TUS_DEL",
+      "areaId": "01G93BBDE2AS2MWPQPHBMW7MJ6",
+      "tcpId": "01K2NF1BHSJ10X90NA0FWR233D",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 32.1166667,
+        "lon": -110.9416667
+      },
+      "range": 75,
+      "freq": 126.65
     },
     {
-      "id": "1D",
+      "id": "01G93BHZ1JZY4YCQ6NN1F7SBQ5",
+      "physicalFacility": "TUS",
+      "name": "Ground",
+      "radioName": "Tucson Ground",
+      "callsign": "TUS_GND",
+      "areaId": "01G93BBDE2AS2MWPQPHBMW7MJ6",
+      "tcpId": "01K2NF1BHSJ10X90NA0FWR233D",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 32.1166667,
+        "lon": -110.9416667
+      },
+      "range": 75,
+      "freq": 120.025
     },
     {
-      "id": "2T",
+      "id": "01G93B15AHS28Q2PWF1FTM3V13",
+      "physicalFacility": "TUS",
+      "name": "Local Control",
+      "radioName": "Tucson Tower",
+      "callsign": "TUS_TWR",
+      "areaId": "01G93BBDE2AS2MWPQPHBMW7MJ6",
+      "tcpId": "01K2NF1BHSJ10X90NA0FWR233D",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 32.1166667,
+        "lon": -110.9416667
+      },
+      "range": 75,
+      "freq": 118.3
     },
     {
-      "id": "3T",
+      "id": "01G93A9CS7NT4KFH9CXB516F8N",
+      "physicalFacility": "DMA",
+      "name": "Ground",
+      "radioName": "Davis Monthan Ground",
+      "callsign": "DMA_GND",
+      "areaId": "01G93BBDE2AS2MWPQPHBMW7MJ6",
+      "tcpId": "01K2NF1BHS42EJCTJV2D7S5VVQ",
+      "tcp": "3T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 32.1166667,
+        "lon": -110.9416667
+      },
+      "range": 75,
+      "freq": 121.8
+    },
+    {
+      "id": "01G93A7XJ3PW0S9P66P2RZA7ZT",
+      "physicalFacility": "DMA",
+      "name": "Local Control",
+      "radioName": "Davis Monthan Tower",
+      "callsign": "DMA_TWR",
+      "areaId": "01G93BBDE2AS2MWPQPHBMW7MJ6",
+      "tcpId": "01K2NF1BHS42EJCTJV2D7S5VVQ",
+      "tcp": "3T",
+      "visualCenter": {
+        "lat": 32.1166667,
+        "lon": -110.9416667
+      },
+      "range": 75,
+      "freq": 118.85
     }
   ],
   "mapGroups": [

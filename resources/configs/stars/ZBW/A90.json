@@ -4,520 +4,1266 @@
   "name": "Boston Consolidated TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 42.93753,
-    "lon": -70.70471
+    "lat": 42.27298043333334,
+    "lon": -70.92030291666667
   },
+  "areas": [
+    {
+      "id": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "name": "Core",
+      "visibilityCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "1B9",
+        "28M",
+        "2B2",
+        "6B6",
+        "BED",
+        "BOS",
+        "BVY",
+        "FIT",
+        "GHG",
+        "LWM",
+        "OWD"
+      ],
+      "ssaAirports": [
+        "BOS",
+        "BED",
+        "OWD",
+        "BVY",
+        "LWM"
+      ]
+    },
+    {
+      "id": "01G40N6HQT8DVTXHRY7R2E9T84",
+      "name": "Manchester",
+      "visibilityCenter": {
+        "lat": 42.9328056,
+        "lon": -71.43575
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "2N2",
+        "3B4",
+        "7B3",
+        "8B1",
+        "ASH",
+        "CON",
+        "DAW",
+        "LCI",
+        "MHT",
+        "PSM"
+      ],
+      "ssaAirports": [
+        "MHT",
+        "ASH",
+        "PSM"
+      ]
+    },
+    {
+      "id": "01G40N6ZKSCZ04F6JHG50Y4WEG",
+      "name": "Cape",
+      "visibilityCenter": {
+        "lat": 41.2532994,
+        "lon": -70.0605119
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "1B2",
+        "2B1",
+        "5B6",
+        "ACK",
+        "CQX",
+        "FMH",
+        "HYA",
+        "MVY",
+        "PVC",
+        "PYM"
+      ],
+      "ssaAirports": [
+        "ACK",
+        "MVY",
+        "HYA",
+        "FMH"
+      ]
+    },
+    {
+      "id": "01G4TC8EG7SVV31F1B0C3KSZ4F",
+      "name": "Boston Tower",
+      "visibilityCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "BOS"
+      ],
+      "ssaAirports": [
+        "BOS"
+      ]
+    },
+    {
+      "id": "01GFTX6XMCV3C07TK9DG17J3FY",
+      "name": "Consolidated",
+      "visibilityCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "1B2",
+        "1B9",
+        "28M",
+        "2B1",
+        "2B2",
+        "2N2",
+        "3B4",
+        "5B6",
+        "6B6",
+        "7B3",
+        "8B1",
+        "ACK",
+        "ASH",
+        "BED",
+        "BOS",
+        "BVY",
+        "CON",
+        "CQX",
+        "DAW",
+        "FIT",
+        "FMH",
+        "GHG",
+        "HYA",
+        "LCI",
+        "LWM",
+        "MHT",
+        "MVY",
+        "OWD",
+        "PSM",
+        "PVC",
+        "PYM"
+      ],
+      "ssaAirports": [
+        "BOS",
+        "BED",
+        "OWD",
+        "BVY",
+        "LWM",
+        "MHT",
+        "ASH",
+        "PSM",
+        "ACK",
+        "MVY",
+        "HYA",
+        "FMH"
+      ]
+    },
+    {
+      "id": "01HCX8Y5V38KD8SQAD6VRB1YAQ",
+      "name": "Incognito",
+      "visibilityCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "1B9",
+        "28M",
+        "2B2",
+        "6B6",
+        "BED",
+        "BOS",
+        "BVY",
+        "FIT",
+        "GHG",
+        "LWM",
+        "OWD"
+      ],
+      "ssaAirports": [
+        "BOS",
+        "BED",
+        "OWD",
+        "BVY",
+        "LWM"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CGPPY6SRGRZVSFCTQ0S",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1CGP94YCAAJREM8BWN83",
+      "parentTcp": "1K",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPV994A02ET1DV1787",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1CGPA6DMGG2AVQR6EJZN",
+      "parentTcp": "1R",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGPTJ2P6N2DG6N5X4JS",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGPA6B0XRFBXDVWTAQA",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1CGPWPAND5SXBA6KMBY3",
+      "parentTcp": "1Z",
+      "terminalSector": "M"
+    },
+    {
+      "id": "01K2NF1CGPQNNYE9ABVV8E3T36",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1CGPA6DMGG2AVQR6EJZN",
+      "parentTcp": "1R",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGPHGX34R524BJR27JT",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1CGPMVCJ6E670926DMKQ",
+      "parentTcp": "1T",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGP1TRDB3QX93A7EVFF",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1CGPMVCJ6E670926DMKQ",
+      "parentTcp": "1T",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGP4ZWH411J696MK4X4",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1CGPQNNYE9ABVV8E3T36",
+      "parentTcp": "1F",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGP2JASQT26P9RSHQAD",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "parentTcpId": "01K2NF1CGPWPAND5SXBA6KMBY3",
+      "parentTcp": "1Z",
+      "terminalSector": "M"
+    },
+    {
+      "id": "01K2NF1CGP94YCAAJREM8BWN83",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "parentTcpId": "01K2NF1CGPX0S4PWA1P71FSBVB",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPW7Q2XX9R2XSBHH26",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1CGP3Z1VJZRW4P5AFQ31",
+      "parentTcp": "1M",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGP3Z1VJZRW4P5AFQ31",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1CGPTJ2P6N2DG6N5X4JS",
+      "parentTcp": "1D",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGPX0S4PWA1P71FSBVB",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP44M3T2HQ76TZB25V",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "parentTcpId": "01K2NF1CGPX0S4PWA1P71FSBVB",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPPX6ZRX26JN0NMTMS",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1CGPA6B0XRFBXDVWTAQA",
+      "parentTcp": "1E",
+      "terminalSector": "M"
+    },
+    {
+      "id": "01K2NF1CGPZ4TDTXNXGZQBSZR4",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGPA6DMGG2AVQR6EJZN",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1CGPTJ2P6N2DG6N5X4JS",
+      "parentTcp": "1D",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGPF98GSMVGK67NQF9R",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1CGPX0S4PWA1P71FSBVB",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPMVCJ6E670926DMKQ",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGP6Y27H2VJ2NJSVM69",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1CGPTJ2P6N2DG6N5X4JS",
+      "parentTcp": "1D",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGPWCPCVSN2R6DY73F6",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "terminalSector": "M"
+    },
+    {
+      "id": "01K2NF1CGPHQMDMY7DQHMK8ZXP",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1CGPWPAND5SXBA6KMBY3",
+      "parentTcp": "1Z",
+      "terminalSector": "M"
+    },
+    {
+      "id": "01K2NF1CGPA0YHMG0FPJ5MAX2S",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGPQJD5XP9BST6ZN2KG",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1CGPX0S4PWA1P71FSBVB",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPWPAND5SXBA6KMBY3",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "M"
+    },
+    {
+      "id": "01K2NF1CGP913VK6784HGYZ1GR",
+      "code": "2Q",
+      "subset": 2,
+      "sectorId": "Q",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGPBEB0C62GNE6CXNDN",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "terminalSector": "M"
+    },
+    {
+      "id": "01K2NF1CGP1ETH7CT72K2HBZEH",
+      "code": "2X",
+      "subset": 2,
+      "sectorId": "X",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGPHVTHEKDPXKVVA2CZ",
+      "code": "3Q",
+      "subset": 3,
+      "sectorId": "Q",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGPYG7CW4J5DH3K5XZM",
+      "code": "3T",
+      "subset": 3,
+      "sectorId": "T",
+      "terminalSector": "M"
+    },
+    {
+      "id": "01K2NF1CGPYG9R0653J97JFXRV",
+      "code": "4G",
+      "subset": 4,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP5K7R1KBTCHQFEE7A",
+      "code": "4H",
+      "subset": 4,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPGT1JDY461J49PZFA",
+      "code": "4J",
+      "subset": 4,
+      "sectorId": "J",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPACBCR555AJ73Q1DS",
+      "code": "4Q",
+      "subset": 4,
+      "sectorId": "Q",
+      "terminalSector": "B"
+    },
+    {
+      "id": "01K2NF1CGPENJSNM1ZQ9ZD7TF9",
+      "code": "4T",
+      "subset": 4,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPAHV7M0V5T6YDMDCT",
+      "code": "4V",
+      "subset": 4,
+      "sectorId": "V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP4N60NSR25B1XB2PC",
+      "code": "4X",
+      "subset": 4,
+      "sectorId": "X",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G40MCWS18WDRTSM64G4TV2X9",
-      "name": "Rockport",
-      "callsign": "BOS_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 118.25
-    },
-    {
-      "id": "01G40MDKTN67RSF48F8D3BEY59",
-      "name": "Plymouth",
-      "callsign": "BOS_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 120.6
-    },
-    {
-      "id": "01G40MVGMFF4KY16SXWEA3K9WJ",
-      "name": "Lincoln",
-      "callsign": "BOS_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 127.2
-    },
-    {
-      "id": "01G40N2TZEBC4NH123XYA97HKD",
-      "name": "Final One",
-      "callsign": "BOS_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 126.5
-    },
-    {
-      "id": "01G40N3C40QCCBE6DBKMDED65J",
-      "name": "Final Two",
-      "callsign": "BOS_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 119.65
-    },
-    {
-      "id": "01G40N51MH69G0Q2PQB4JQHDZQ",
-      "name": "Lynch",
-      "callsign": "BOS_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 124.1
-    },
-    {
-      "id": "01G40N7ZH7198N267CTNE16M09",
-      "name": "West",
-      "callsign": "MHT_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 134.75
-    },
-    {
-      "id": "01G40N8FT03GJ6NMXYP8JGS9TF",
-      "name": "FITZY",
-      "callsign": "MHT_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 124.9
-    },
-    {
-      "id": "01G40N91X1C69Z3DS1F9F3B4NN",
-      "name": "East",
-      "callsign": "MHT_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 125.05
-    },
-    {
-      "id": "01G40NA0ZF362YEV998WY3WGWD",
-      "name": "Low",
-      "callsign": "MHT_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 125.825
-    },
-    {
-      "id": "01G40NAJEFNHMRMTTQ0FYW79KH",
-      "name": "TOMMY",
-      "callsign": "MHT_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 127.35
-    },
-    {
-      "id": "01G40NBX7XRSMZ6QKT8CVQFQD2",
-      "name": "Cape North",
-      "callsign": "ACK_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 118.2
-    },
-    {
-      "id": "01G40NCD62EN85DW391870HXYN",
-      "name": "Otis",
-      "callsign": "ACK_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 126.3
-    },
-    {
-      "id": "01G40ND0ZKN7H3HXJSFTMTGCY9",
-      "name": "Martha's Vineyard Arrival",
-      "callsign": "ACK_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 119.7
-    },
-    {
-      "id": "01G40NDW6N6YHR33VMQF5M52A4",
-      "name": "Cape South",
-      "callsign": "ACK_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 133.75
-    },
-    {
-      "id": "01G40NEKHA7CTH764V33ENY1G5",
-      "name": "Nantucket Departure",
-      "callsign": "ACK_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 126.1
-    },
-    {
       "id": "01G40NFF6MVX7KFY5YX7JDR79T",
+      "physicalFacility": "A90",
       "name": "Nantucket Arrival",
+      "radioName": "Boston Approach",
       "callsign": "ACK_APP",
+      "areaId": "01G40N6ZKSCZ04F6JHG50Y4WEG",
+      "tcpId": "01K2NF1CGPPY6SRGRZVSFCTQ0S",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 41.2532994,
+        "lon": -70.0605119
       },
+      "range": 150,
       "freq": 124.05
     },
     {
       "id": "01G40NGJ7G6S49AXYAMNMKAFJD",
+      "physicalFacility": "A90",
       "name": "Bedford",
+      "radioName": "Boston Approach",
       "callsign": "BOS_APP",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGPV994A02ET1DV1787",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.3629444,
+        "lon": -71.0063889
       },
+      "range": 150,
       "freq": 124.4
     },
     {
-      "id": "01G953CXAC4Q0EF2SN9NVY4QAJ",
-      "name": "Initial Departure",
-      "callsign": "BOS_APP",
+      "id": "01GFTX5XZQXGDQK1H82YK1FG6N",
+      "physicalFacility": "A90",
+      "name": "Consolidated",
+      "radioName": "Boston Approach",
+      "callsign": "A90_APP",
+      "areaId": "01GFTX6XMCV3C07TK9DG17J3FY",
+      "tcpId": "01K2NF1CGPTJ2P6N2DG6N5X4JS",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.3629444,
+        "lon": -71.0063889
       },
+      "range": 150,
       "freq": 133
     },
     {
-      "id": "01GFTX5XZQXGDQK1H82YK1FG6N",
-      "name": "Consolidated",
-      "callsign": "A90_APP",
+      "id": "01KS5CC3W2J4G1DJWP7E770PHJ",
+      "physicalFacility": "A90",
+      "name": "A90 South",
+      "radioName": "Boston Approach",
+      "callsign": "A90_S_APP",
+      "areaId": "01GFTX6XMCV3C07TK9DG17J3FY",
+      "tcpId": "01K2NF1CGPTJ2P6N2DG6N5X4JS",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.3629444,
+        "lon": -71.0063889
       },
+      "range": 150,
+      "freq": 133
+    },
+    {
+      "id": "01G953CXAC4Q0EF2SN9NVY4QAJ",
+      "physicalFacility": "A90",
+      "name": "Initial Departure",
+      "radioName": "Boston Approach",
+      "callsign": "BOS_APP",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGPTJ2P6N2DG6N5X4JS",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
       "freq": 133
     },
     {
       "id": "01HBK9864AM22RFKPEX9SZX49F",
+      "physicalFacility": "A90",
       "name": "Initial Departure [Hidden]",
+      "radioName": "Boston Approach",
       "callsign": "BOS_B_CTR",
+      "areaId": "01HCX8Y5V38KD8SQAD6VRB1YAQ",
+      "tcpId": "01K2NF1CGPTJ2P6N2DG6N5X4JS",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.3629444,
+        "lon": -71.0063889
       },
+      "range": 150,
       "freq": 133
     },
     {
-      "id": "01KAMD493HA2B7NCBYGWA7DHDQ",
-      "name": "Cape Guard",
-      "callsign": "BOS_EM_APP",
+      "id": "01G40N91X1C69Z3DS1F9F3B4NN",
+      "physicalFacility": "A90",
+      "name": "East",
+      "radioName": "Boston Approach",
+      "callsign": "MHT_APP",
+      "areaId": "01G40N6HQT8DVTXHRY7R2E9T84",
+      "tcpId": "01K2NF1CGPA6B0XRFBXDVWTAQA",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.9328056,
+        "lon": -71.43575
       },
+      "range": 150,
+      "freq": 125.05
+    },
+    {
+      "id": "01G40N2TZEBC4NH123XYA97HKD",
+      "physicalFacility": "A90",
+      "name": "Final One",
+      "radioName": "Boston Approach",
+      "callsign": "BOS_APP",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGPQNNYE9ABVV8E3T36",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 126.5
+    },
+    {
+      "id": "01G40M6KSQNCS1D3K67VBWHZH4",
+      "physicalFacility": "BOS",
+      "name": "Local Control East",
+      "radioName": "Boston Tower",
+      "callsign": "BOS_TWR",
+      "areaId": "01G4TC8EG7SVV31F1B0C3KSZ4F",
+      "tcpId": "01K2NF1CGPHGX34R524BJR27JT",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 132.225
+    },
+    {
+      "id": "01G40M8HSRSQW20Z63BYTAQRW9",
+      "physicalFacility": "BOS",
+      "name": "Local Control Helicopter (Skyways)",
+      "radioName": "Boston Skyways",
+      "callsign": "BOS_TWR",
+      "areaId": "01G4TC8EG7SVV31F1B0C3KSZ4F",
+      "tcpId": "01K2NF1CGP1TRDB3QX93A7EVFF",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 124.725
+    },
+    {
+      "id": "01G40N3C40QCCBE6DBKMDED65J",
+      "physicalFacility": "A90",
+      "name": "Final Two",
+      "radioName": "Boston Approach",
+      "callsign": "BOS_APP",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGP4ZWH411J696MK4X4",
+      "tcp": "1I",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 119.65
+    },
+    {
+      "id": "01G40NAJEFNHMRMTTQ0FYW79KH",
+      "physicalFacility": "A90",
+      "name": "TOMMY",
+      "radioName": "Boston Approach",
+      "callsign": "MHT_APP",
+      "areaId": "01G40N6HQT8DVTXHRY7R2E9T84",
+      "tcpId": "01K2NF1CGP2JASQT26P9RSHQAD",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 42.9328056,
+        "lon": -71.43575
+      },
+      "range": 150,
+      "freq": 127.35
+    },
+    {
+      "id": "01G40NEKHA7CTH764V33ENY1G5",
+      "physicalFacility": "A90",
+      "name": "Nantucket Departure",
+      "radioName": "Boston Departure",
+      "callsign": "ACK_APP",
+      "areaId": "01G40N6ZKSCZ04F6JHG50Y4WEG",
+      "tcpId": "01K2NF1CGP94YCAAJREM8BWN83",
+      "tcp": "1K",
+      "visualCenter": {
+        "lat": 41.2532994,
+        "lon": -70.0605119
+      },
+      "range": 150,
+      "freq": 126.1
+    },
+    {
+      "id": "01G40N51MH69G0Q2PQB4JQHDZQ",
+      "physicalFacility": "A90",
+      "name": "Lynch",
+      "radioName": "Boston Approach",
+      "callsign": "BOS_APP",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGPW7Q2XX9R2XSBHH26",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 124.1
+    },
+    {
+      "id": "01G40MDKTN67RSF48F8D3BEY59",
+      "physicalFacility": "A90",
+      "name": "Plymouth",
+      "radioName": "Boston Approach",
+      "callsign": "BOS_APP",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGP3Z1VJZRW4P5AFQ31",
+      "tcp": "1M",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 120.6
+    },
+    {
+      "id": "01G40NBX7XRSMZ6QKT8CVQFQD2",
+      "physicalFacility": "A90",
+      "name": "Cape North",
+      "radioName": "Boston Approach",
+      "callsign": "ACK_APP",
+      "areaId": "01G40N6ZKSCZ04F6JHG50Y4WEG",
+      "tcpId": "01K2NF1CGPX0S4PWA1P71FSBVB",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 41.2532994,
+        "lon": -70.0605119
+      },
+      "range": 150,
+      "freq": 118.2
+    },
+    {
+      "id": "01G40NCD62EN85DW391870HXYN",
+      "physicalFacility": "A90",
+      "name": "Otis",
+      "radioName": "Boston Approach",
+      "callsign": "ACK_APP",
+      "areaId": "01G40N6ZKSCZ04F6JHG50Y4WEG",
+      "tcpId": "01K2NF1CGP44M3T2HQ76TZB25V",
+      "tcp": "1O",
+      "visualCenter": {
+        "lat": 41.2532994,
+        "lon": -70.0605119
+      },
+      "range": 150,
+      "freq": 126.3
+    },
+    {
+      "id": "01G40NA0ZF362YEV998WY3WGWD",
+      "physicalFacility": "A90",
+      "name": "Low",
+      "radioName": "Boston Approach",
+      "callsign": "MHT_APP",
+      "areaId": "01G40N6HQT8DVTXHRY7R2E9T84",
+      "tcpId": "01K2NF1CGPPX6ZRX26JN0NMTMS",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 42.9328056,
+        "lon": -71.43575
+      },
+      "range": 150,
+      "freq": 125.825
+    },
+    {
+      "id": "01G7SY5KC7YT5F01XHF7Q5BDKC",
+      "physicalFacility": "BED",
+      "name": "Local Control",
+      "radioName": "Hanscom Tower",
+      "callsign": "BED_TWR",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGPZ4TDTXNXGZQBSZR4",
+      "tcp": "1Q",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 118.5
+    },
+    {
+      "id": "01KS5C93H76KZKK2MV8G23HAMC",
+      "physicalFacility": "A90",
+      "name": "A90 North",
+      "radioName": "Boston Approach",
+      "callsign": "A90_N_APP",
+      "areaId": "01GFTX6XMCV3C07TK9DG17J3FY",
+      "tcpId": "01K2NF1CGPA6DMGG2AVQR6EJZN",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 118.25
+    },
+    {
+      "id": "01G40MCWS18WDRTSM64G4TV2X9",
+      "physicalFacility": "A90",
+      "name": "Rockport",
+      "radioName": "Boston Approach",
+      "callsign": "BOS_APP",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGPA6DMGG2AVQR6EJZN",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 118.25
+    },
+    {
+      "id": "01G40NDW6N6YHR33VMQF5M52A4",
+      "physicalFacility": "A90",
+      "name": "Cape South",
+      "radioName": "Boston Approach",
+      "callsign": "ACK_APP",
+      "areaId": "01G40N6ZKSCZ04F6JHG50Y4WEG",
+      "tcpId": "01K2NF1CGPF98GSMVGK67NQF9R",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 41.2532994,
+        "lon": -70.0605119
+      },
+      "range": 150,
+      "freq": 133.75
+    },
+    {
+      "id": "01G40M7DVQ7J4G3B2PTR4961Y0",
+      "physicalFacility": "BOS",
+      "name": "Ground Control (Secondary)",
+      "radioName": "Boston Ground",
+      "callsign": "BOS_B_GND",
+      "areaId": "01G4TC8EG7SVV31F1B0C3KSZ4F",
+      "tcpId": "01K2NF1CGPMVCJ6E670926DMKQ",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 121.75
+    },
+    {
+      "id": "01G40M7X0SGW9DS7K5BWE5HYQV",
+      "physicalFacility": "BOS",
+      "name": "Clearance Delivery",
+      "radioName": "Boston Clearance",
+      "callsign": "BOS_DEL",
+      "areaId": "01G4TC8EG7SVV31F1B0C3KSZ4F",
+      "tcpId": "01K2NF1CGPMVCJ6E670926DMKQ",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 121.65
+    },
+    {
+      "id": "01HDF4ZBMNF16QM3KBYFG3XH8T",
+      "physicalFacility": "BOS",
+      "name": "Flight Data",
+      "radioName": "Boston Clearance",
+      "callsign": "BOS_D_GND",
+      "areaId": "01G4TC8EG7SVV31F1B0C3KSZ4F",
+      "tcpId": "01K2NF1CGPMVCJ6E670926DMKQ",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 129.65
+    },
+    {
+      "id": "01G40M6ZY6HFEVWP1SDT71NWHV",
+      "physicalFacility": "BOS",
+      "name": "Ground Control",
+      "radioName": "Boston Ground",
+      "callsign": "BOS_GND",
+      "areaId": "01G4TC8EG7SVV31F1B0C3KSZ4F",
+      "tcpId": "01K2NF1CGPMVCJ6E670926DMKQ",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
+      "id": "01HDF4XTPYG3A1V4MEGA2338KY",
+      "physicalFacility": "BOS",
+      "name": "Ground Control (Tertiary)",
+      "radioName": "Boston Ground",
+      "callsign": "BOS_R_GND",
+      "areaId": "01G4TC8EG7SVV31F1B0C3KSZ4F",
+      "tcpId": "01K2NF1CGPMVCJ6E670926DMKQ",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 134.05
+    },
+    {
+      "id": "01J886D6784ZFSG7PYB52GPAD2",
+      "physicalFacility": "BOS",
+      "name": "Ramp Control",
+      "radioName": "Boston Ramp",
+      "callsign": "BOS_R_GND",
+      "areaId": "01G4TC8EG7SVV31F1B0C3KSZ4F",
+      "tcpId": "01K2NF1CGPMVCJ6E670926DMKQ",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 131.85
+    },
+    {
+      "id": "01G40M5DQF8SYDY7RTST90FSQX",
+      "physicalFacility": "BOS",
+      "name": "Local Control West",
+      "radioName": "Boston Tower",
+      "callsign": "BOS_TWR",
+      "areaId": "01G4TC8EG7SVV31F1B0C3KSZ4F",
+      "tcpId": "01K2NF1CGPMVCJ6E670926DMKQ",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 128.8
+    },
+    {
+      "id": "01KBRCQ89KRJSENJW5AEWQF7W0",
+      "physicalFacility": "BOS",
+      "name": "Boston CIC",
+      "radioName": "Boston CIC",
+      "callsign": "BOS_T_TWR",
+      "areaId": "01G4TC8EG7SVV31F1B0C3KSZ4F",
+      "tcpId": "01K2NF1CGPMVCJ6E670926DMKQ",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 128.825
+    },
+    {
+      "id": "01G40MVGMFF4KY16SXWEA3K9WJ",
+      "physicalFacility": "A90",
+      "name": "Lincoln",
+      "radioName": "Boston Approach",
+      "callsign": "BOS_APP",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGP6Y27H2VJ2NJSVM69",
+      "tcp": "1U",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 127.2
+    },
+    {
+      "id": "01G9GVS5ZX44S6G2VHERY6761E",
+      "physicalFacility": "MHT",
+      "name": "Local Control",
+      "radioName": "Manchester Tower",
+      "callsign": "MHT_TWR",
+      "areaId": "01G40N6HQT8DVTXHRY7R2E9T84",
+      "tcpId": "01K2NF1CGPWCPCVSN2R6DY73F6",
+      "tcp": "1V",
+      "visualCenter": {
+        "lat": 42.9328056,
+        "lon": -71.43575
+      },
+      "range": 150,
+      "freq": 121.3
+    },
+    {
+      "id": "01G40N7ZH7198N267CTNE16M09",
+      "physicalFacility": "A90",
+      "name": "West",
+      "radioName": "Boston Approach",
+      "callsign": "MHT_APP",
+      "areaId": "01G40N6HQT8DVTXHRY7R2E9T84",
+      "tcpId": "01K2NF1CGPHQMDMY7DQHMK8ZXP",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 42.9328056,
+        "lon": -71.43575
+      },
+      "range": 150,
+      "freq": 134.75
+    },
+    {
+      "id": "01KSG9TV081A8P4S86B7QTNYVR",
+      "physicalFacility": "A90",
+      "name": "A90 CIC",
+      "radioName": "A90 TMU",
+      "callsign": "BOS_T_APP",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGPA0YHMG0FPJ5MAX2S",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 122.45
+    },
+    {
+      "id": "01G40ND0ZKN7H3HXJSFTMTGCY9",
+      "physicalFacility": "A90",
+      "name": "Martha's Vineyard Arrival",
+      "radioName": "Boston Approach",
+      "callsign": "ACK_APP",
+      "areaId": "01G40N6ZKSCZ04F6JHG50Y4WEG",
+      "tcpId": "01K2NF1CGPQJD5XP9BST6ZN2KG",
+      "tcp": "1Y",
+      "visualCenter": {
+        "lat": 41.2532994,
+        "lon": -70.0605119
+      },
+      "range": 150,
+      "freq": 119.7
+    },
+    {
+      "id": "01G40N8FT03GJ6NMXYP8JGS9TF",
+      "physicalFacility": "A90",
+      "name": "FITZY",
+      "radioName": "Boston Approach",
+      "callsign": "MHT_APP",
+      "areaId": "01G40N6HQT8DVTXHRY7R2E9T84",
+      "tcpId": "01K2NF1CGPWPAND5SXBA6KMBY3",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 42.9328056,
+        "lon": -71.43575
+      },
+      "range": 150,
+      "freq": 124.9
+    },
+    {
+      "id": "01G9GSCPDVTJAD0Q40CV0F4B74",
+      "physicalFacility": "BVY",
+      "name": "Local Control",
+      "radioName": "Beverly Tower",
+      "callsign": "BVY_TWR",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGP913VK6784HGYZ1GR",
+      "tcp": "2Q",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 125.2
+    },
+    {
+      "id": "01G9GREJJQASXX3ZE38845S9RV",
+      "physicalFacility": "ASH",
+      "name": "Local Control",
+      "radioName": "Nashua Tower",
+      "callsign": "ASH_TWR",
+      "areaId": "01G40N6HQT8DVTXHRY7R2E9T84",
+      "tcpId": "01K2NF1CGPBEB0C62GNE6CXNDN",
+      "tcp": "2T",
+      "visualCenter": {
+        "lat": 42.9328056,
+        "lon": -71.43575
+      },
+      "range": 150,
+      "freq": 133.2
+    },
+    {
+      "id": "01G9GSDZZ2KYEWRCTGEV9KQDPH",
+      "physicalFacility": "LWM",
+      "name": "Local Control",
+      "radioName": "Lawrence Tower",
+      "callsign": "LWM_TWR",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGPHVTHEKDPXKVVA2CZ",
+      "tcp": "3Q",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 119.25
+    },
+    {
+      "id": "01G7SYEP359FXE94R16HVVF0PZ",
+      "physicalFacility": "PSM",
+      "name": "Local Control",
+      "radioName": "Portsmouth Tower",
+      "callsign": "PSM_TWR",
+      "areaId": "01G40N6HQT8DVTXHRY7R2E9T84",
+      "tcpId": "01K2NF1CGPYG7CW4J5DH3K5XZM",
+      "tcp": "3T",
+      "visualCenter": {
+        "lat": 42.9328056,
+        "lon": -71.43575
+      },
+      "range": 150,
+      "freq": 128.4
+    },
+    {
+      "id": "01G9GQX8KSZJ1K0R1KMC3PDVY7",
+      "physicalFacility": "HYA",
+      "name": "Local Control",
+      "radioName": "Hyannis Tower",
+      "callsign": "HYA_TWR",
+      "areaId": "01G40N6ZKSCZ04F6JHG50Y4WEG",
+      "tcpId": "01K2NF1CGP5K7R1KBTCHQFEE7A",
+      "tcp": "4H",
+      "visualCenter": {
+        "lat": 41.2532994,
+        "lon": -70.0605119
+      },
+      "range": 150,
+      "freq": 119.5
+    },
+    {
+      "id": "01G7SYBY8JXVKJ7KQG5T5PWQXH",
+      "physicalFacility": "FMH",
+      "name": "Local Control",
+      "radioName": "Coast Guard Tower",
+      "callsign": "FMH_TWR",
+      "areaId": "01G40N6ZKSCZ04F6JHG50Y4WEG",
+      "tcpId": "01K2NF1CGPGT1JDY461J49PZFA",
+      "tcp": "4J",
+      "visualCenter": {
+        "lat": 41.2532994,
+        "lon": -70.0605119
+      },
+      "range": 150,
+      "freq": 128.425
+    },
+    {
+      "id": "01G7SY2N9S5NH6BZQTW79SV6VP",
+      "physicalFacility": "OWD",
+      "name": "Local Control",
+      "radioName": "Norwood Tower",
+      "callsign": "OWD_TWR",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
+      "tcpId": "01K2NF1CGPACBCR555AJ73Q1DS",
+      "tcp": "4Q",
+      "visualCenter": {
+        "lat": 42.3629444,
+        "lon": -71.0063889
+      },
+      "range": 150,
+      "freq": 126
+    },
+    {
+      "id": "01G9GNR8EKSCZQB2FFDVYQ7513",
+      "physicalFacility": "ACK",
+      "name": "Local Control",
+      "radioName": "Nantucket Tower",
+      "callsign": "ACK_TWR",
+      "areaId": "01G40N6ZKSCZ04F6JHG50Y4WEG",
+      "tcpId": "01K2NF1CGPENJSNM1ZQ9ZD7TF9",
+      "tcp": "4T",
+      "visualCenter": {
+        "lat": 41.2532994,
+        "lon": -70.0605119
+      },
+      "range": 150,
+      "freq": 118.3
+    },
+    {
+      "id": "01G9GQYQPE26JYMY6JMNDCW5XN",
+      "physicalFacility": "MVY",
+      "name": "Local Control",
+      "radioName": "Vineyard Tower",
+      "callsign": "MVY_TWR",
+      "areaId": "01G40N6ZKSCZ04F6JHG50Y4WEG",
+      "tcpId": "01K2NF1CGPAHV7M0V5T6YDMDCT",
+      "tcp": "4V",
+      "visualCenter": {
+        "lat": 41.2532994,
+        "lon": -70.0605119
+      },
+      "range": 150,
+      "freq": 121.4
+    },
+    {
+      "id": "01KAMD493HA2B7NCBYGWA7DHDQ",
+      "physicalFacility": "A90",
+      "name": "Cape Guard",
+      "radioName": "Guard",
+      "callsign": "BOS_EM_APP",
+      "areaId": "01G40N6ZKSCZ04F6JHG50Y4WEG",
+      "visualCenter": {
+        "lat": 41.2532994,
+        "lon": -70.0605119
+      },
+      "range": 150,
       "freq": 121.5
     },
     {
       "id": "01KAMD7R7TEV046B86ZQBF3XPY",
+      "physicalFacility": "A90",
       "name": "BOS Guard",
+      "radioName": "Guard",
       "callsign": "BOS_EM_APP",
+      "areaId": "01G40MBDWD8E7C8BXH66QTHM9B",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.3629444,
+        "lon": -71.0063889
       },
-      "freq": 121.5
-    },
-    {
-      "id": "01KAMDBFYN50S6GBPJT0HXRVG5",
-      "name": "MHT Guard",
-      "callsign": "MHT_EM_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
+      "range": 150,
       "freq": 121.5
     },
     {
       "id": "01KAMDMH806NV24XWN3RRTR7FQ",
+      "physicalFacility": "A90",
       "name": "BOS Consolidated Guard",
+      "radioName": "Guard",
       "callsign": "BOS_EM_APP",
+      "areaId": "01GFTX6XMCV3C07TK9DG17J3FY",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.3629444,
+        "lon": -71.0063889
       },
+      "range": 150,
       "freq": 121.5
     },
     {
-      "id": "01KS5C93H76KZKK2MV8G23HAMC",
-      "name": "A90 North",
-      "callsign": "A90_N_APP",
+      "id": "01KAMDBFYN50S6GBPJT0HXRVG5",
+      "physicalFacility": "A90",
+      "name": "MHT Guard",
+      "radioName": "Guard",
+      "callsign": "MHT_EM_APP",
+      "areaId": "01G40N6HQT8DVTXHRY7R2E9T84",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 42.9328056,
+        "lon": -71.43575
       },
-      "freq": 118.25
-    },
-    {
-      "id": "01KS5CC3W2J4G1DJWP7E770PHJ",
-      "name": "A90 South",
-      "callsign": "A90_S_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 133
-    },
-    {
-      "id": "01KSG9TV081A8P4S86B7QTNYVR",
-      "name": "A90 CIC",
-      "callsign": "BOS_T_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 122.45
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1I",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1J",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1O",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1Q",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "2Q",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "3Q",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "3T",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "4H",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "4J",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "4Q",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "4T",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "4V",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
+      "range": 150,
+      "freq": 121.5
     }
   ],
   "mapGroups": [

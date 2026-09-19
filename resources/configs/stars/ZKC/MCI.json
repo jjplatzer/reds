@@ -4,199 +4,371 @@
   "name": "Kansas City ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37.593354149999996,
-    "lon": -95.43247947500001
+    "lat": 39.1391692,
+    "lon": -94.694326
   },
+  "areas": [
+    {
+      "id": "01G9GD5NJRK9X0H79WW170XZKC",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 39.2827778,
+        "lon": -94.72500000000001
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "0C1",
+        "0N0",
+        "3EX",
+        "3GV",
+        "63K",
+        "EZZ",
+        "FLV",
+        "IXD",
+        "K34",
+        "K59",
+        "LXT",
+        "MCI",
+        "MKC",
+        "OJC",
+        "STJ"
+      ],
+      "ssaAirports": [
+        "MCI",
+        "MKC",
+        "OJC",
+        "IXD",
+        "STJ"
+      ]
+    },
+    {
+      "id": "01HBWPDCF5N44JYSG066W3PBF4",
+      "name": "MCI Local",
+      "visibilityCenter": {
+        "lat": 39.30231,
+        "lon": -94.72119
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "MCI"
+      ],
+      "ssaAirports": [
+        "MCI"
+      ]
+    },
+    {
+      "id": "01HBWPGMDC4MDG4B5CMD5QP73D",
+      "name": "MKC Local",
+      "visibilityCenter": {
+        "lat": 39.12417,
+        "lon": -94.592839
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "MKC"
+      ],
+      "ssaAirports": [
+        "MKC"
+      ]
+    },
+    {
+      "id": "01HBWPHQ5DA4GAGGPZH63V8DHS",
+      "name": "OJC Local",
+      "visibilityCenter": {
+        "lat": 38.847419,
+        "lon": -94.738275
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "OJC"
+      ],
+      "ssaAirports": [
+        "OJC"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1EE4TK98GAKYXGG2AW76",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1EE47ZDHVWTKC7RYB8YR",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1EE4MCM1ZN7XEB9BBKG3",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1EE4EB88CND1HQ1R59MQ",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1EE49M9SE8XA81QER7H6",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1EE4WCTR3MAYJW2NP04Q",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1EE41450W6CADJHDWGW4",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K2NF1EE485EVZ8X97DXDKZTT",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1EE407062XX20TWFS9D5",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P"
+    },
+    {
+      "id": "01K2NF1EE4085WE49YCJS0P1E7",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1EE47SMWBAF0GK3K7RCM",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1EE4C08K00HEKBXP8371",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G9HS6PKKD41FHTJGP55P512J",
-      "name": "Departure East",
-      "callsign": "KC_DEP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 123.95
-    },
-    {
-      "id": "01G9HS8TD261NSV4GBXZBTTQRY",
-      "name": "Departure West",
-      "callsign": "KC_W_DEP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 124.7
-    },
-    {
       "id": "01G9HSBDDX7RETCD4EGF1Q47E8",
+      "physicalFacility": "MCI",
       "name": "Arrival East",
+      "radioName": "Kansas City Approach",
       "callsign": "KC_E_APP",
+      "areaId": "01G9GD5NJRK9X0H79WW170XZKC",
+      "tcpId": "01K2NF1EE4TK98GAKYXGG2AW76",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 39.2827778,
+        "lon": -94.72500000000001
       },
+      "range": 150,
       "freq": 120.95
     },
     {
       "id": "01G9HSCTV8D2YK67HNNGCRPGQ0",
+      "physicalFacility": "MCI",
       "name": "Arrival West",
+      "radioName": "Kansas City Approach",
       "callsign": "KC_B_APP",
+      "areaId": "01G9GD5NJRK9X0H79WW170XZKC",
+      "tcpId": "01K2NF1EE47ZDHVWTKC7RYB8YR",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 39.2827778,
+        "lon": -94.72500000000001
       },
+      "range": 150,
       "freq": 135.375
     },
     {
-      "id": "01G9HSDTHGX0EVFG20Y8N9TQBP",
-      "name": "Final East",
-      "callsign": "KC_P_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 124.7
-    },
-    {
-      "id": "01G9HSET0D95V5MEYJ4DKSGKBY",
-      "name": "Final West",
-      "callsign": "KC_F_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 119.825
-    },
-    {
-      "id": "01G9HSGV657BJHRV7JPG0YSSJD",
-      "name": "Satellite North",
-      "callsign": "KC_N_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 118.4
-    },
-    {
-      "id": "01G9HSHDGQ6J4J9TXT2BCTJ7AZ",
-      "name": "Satellite South",
-      "callsign": "KC_S_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 118.9
-    },
-    {
-      "id": "01G9HSJEG8J6NJC3SS6X53DQNV",
-      "name": "Local Control",
-      "callsign": "MCI_TWR",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 128.2
-    },
-    {
-      "id": "01G9HSKDYW2KZBZSHKH8Q4P574",
-      "name": "Ground",
-      "callsign": "MCI_GND",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 121.8
-    },
-    {
       "id": "01G9HSKSW6GRDWXHY2NW4WSDQD",
+      "physicalFacility": "MCI",
       "name": "Clearance ",
+      "radioName": "International Clearance",
       "callsign": "MCI_DEL",
+      "areaId": "01HBWPDCF5N44JYSG066W3PBF4",
+      "tcpId": "01K2NF1EE4MCM1ZN7XEB9BBKG3",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 39.30231,
+        "lon": -94.72119
       },
+      "range": 50,
       "freq": 135.7
     },
     {
       "id": "01HFTJFANA8FYY9W5MSR7TT7X3",
+      "physicalFacility": "MCI",
       "name": "Combined",
+      "radioName": "Kansas City Approach",
       "callsign": "KC_APP",
+      "areaId": "01G9GD5NJRK9X0H79WW170XZKC",
+      "tcpId": "01K2NF1EE4EB88CND1HQ1R59MQ",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 39.2827778,
+        "lon": -94.72500000000001
       },
+      "range": 150,
       "freq": 123.95
     },
     {
-      "id": "1A",
+      "id": "01G9HS6PKKD41FHTJGP55P512J",
+      "physicalFacility": "MCI",
+      "name": "Departure East",
+      "radioName": "Kansas City Departure",
+      "callsign": "KC_DEP",
+      "areaId": "01G9GD5NJRK9X0H79WW170XZKC",
+      "tcpId": "01K2NF1EE4EB88CND1HQ1R59MQ",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 39.2827778,
+        "lon": -94.72500000000001
+      },
+      "range": 150,
+      "freq": 123.95
     },
     {
-      "id": "1B",
+      "id": "01G9HSET0D95V5MEYJ4DKSGKBY",
+      "physicalFacility": "MCI",
+      "name": "Final West",
+      "radioName": "Kansas City Approach",
+      "callsign": "KC_F_APP",
+      "areaId": "01G9GD5NJRK9X0H79WW170XZKC",
+      "tcpId": "01K2NF1EE49M9SE8XA81QER7H6",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 39.2827778,
+        "lon": -94.72500000000001
+      },
+      "range": 150,
+      "freq": 119.825
     },
     {
-      "id": "1D",
+      "id": "01G9HSKDYW2KZBZSHKH8Q4P574",
+      "physicalFacility": "MCI",
+      "name": "Ground",
+      "radioName": "International Ground",
+      "callsign": "MCI_GND",
+      "areaId": "01HBWPDCF5N44JYSG066W3PBF4",
+      "tcpId": "01K2NF1EE4WCTR3MAYJW2NP04Q",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 39.30231,
+        "lon": -94.72119
+      },
+      "range": 50,
+      "freq": 121.8
     },
     {
-      "id": "1E",
+      "id": "01H2GK9J5J0XHT5HPF98M2FG1A",
+      "physicalFacility": "MKC",
+      "name": "Local",
+      "radioName": "Downtown Tower",
+      "callsign": "MKC_TWR",
+      "areaId": "01HBWPGMDC4MDG4B5CMD5QP73D",
+      "tcpId": "01K2NF1EE41450W6CADJHDWGW4",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 39.12417,
+        "lon": -94.592839
+      },
+      "range": 50,
+      "freq": 133.3
     },
     {
-      "id": "1F",
+      "id": "01G9HSGV657BJHRV7JPG0YSSJD",
+      "physicalFacility": "MCI",
+      "name": "Satellite North",
+      "radioName": "Kansas City Approach",
+      "callsign": "KC_N_APP",
+      "areaId": "01G9GD5NJRK9X0H79WW170XZKC",
+      "tcpId": "01K2NF1EE485EVZ8X97DXDKZTT",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 39.2827778,
+        "lon": -94.72500000000001
+      },
+      "range": 150,
+      "freq": 118.4
     },
     {
-      "id": "1M",
+      "id": "01G9HSDTHGX0EVFG20Y8N9TQBP",
+      "physicalFacility": "MCI",
+      "name": "Final East",
+      "radioName": "Kansas City Approach",
+      "callsign": "KC_P_APP",
+      "areaId": "01G9GD5NJRK9X0H79WW170XZKC",
+      "tcpId": "01K2NF1EE407062XX20TWFS9D5",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 39.2827778,
+        "lon": -94.72500000000001
+      },
+      "range": 150,
+      "freq": 124.7
     },
     {
-      "id": "1N",
+      "id": "01G9HSHDGQ6J4J9TXT2BCTJ7AZ",
+      "physicalFacility": "MCI",
+      "name": "Satellite South",
+      "radioName": "Kansas City Approach",
+      "callsign": "KC_S_APP",
+      "areaId": "01G9GD5NJRK9X0H79WW170XZKC",
+      "tcpId": "01K2NF1EE4085WE49YCJS0P1E7",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 39.2827778,
+        "lon": -94.72500000000001
+      },
+      "range": 150,
+      "freq": 118.9
     },
     {
-      "id": "1S",
+      "id": "01G9HSJEG8J6NJC3SS6X53DQNV",
+      "physicalFacility": "MCI",
+      "name": "Local Control",
+      "radioName": "International Tower",
+      "callsign": "MCI_TWR",
+      "areaId": "01HBWPDCF5N44JYSG066W3PBF4",
+      "tcpId": "01K2NF1EE47SMWBAF0GK3K7RCM",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 39.30231,
+        "lon": -94.72119
+      },
+      "range": 50,
+      "freq": 128.2
     },
     {
-      "id": "1T",
+      "id": "01G9HS8TD261NSV4GBXZBTTQRY",
+      "physicalFacility": "MCI",
+      "name": "Departure West",
+      "radioName": "Kansas City Departure",
+      "callsign": "KC_W_DEP",
+      "areaId": "01G9GD5NJRK9X0H79WW170XZKC",
+      "tcpId": "01K2NF1EE4C08K00HEKBXP8371",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 39.2827778,
+        "lon": -94.72500000000001
+      },
+      "range": 150,
+      "freq": 124.7
     }
   ],
   "mapGroups": [

@@ -4,46 +4,69 @@
   "name": "Volk ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 41.879166749999996,
-    "lon": -88.975
+    "lat": 43.9392397,
+    "lon": -90.2531617
   },
+  "areas": [
+    {
+      "id": "01HAN83KXJSN95C8HWVB9JPHHC",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 43.9392397,
+        "lon": -90.2531617
+      },
+      "surveillanceRange": 120,
+      "ssaAirports": [
+        "VOK"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DXPGQ2GDBMDF2CE3BV7",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1DXPA2089TQ2DH4XHQXK",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01HETGY6EF47ZCP01XE8Z0FH38",
+      "physicalFacility": "VOK",
       "name": "Approach",
+      "radioName": "Volk Approach",
       "callsign": "VOK_APP",
+      "areaId": "01HAN83KXJSN95C8HWVB9JPHHC",
+      "tcpId": "01K2NF1DXPGQ2GDBMDF2CE3BV7",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 43.9392397,
+        "lon": -90.2531617
       },
+      "range": 120,
       "freq": 135.25
     },
     {
       "id": "01HETJ1AEBAFSR82GC037NWS5H",
+      "physicalFacility": "VOK",
       "name": "Local",
+      "radioName": "Volk Tower",
       "callsign": "VOK_TWR",
+      "areaId": "01HAN83KXJSN95C8HWVB9JPHHC",
+      "tcpId": "01K2NF1DXPA2089TQ2DH4XHQXK",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 43.9392397,
+        "lon": -90.2531617
       },
+      "range": 120,
       "freq": 127.5
-    },
-    {
-      "id": "01HETJ2NNGJSDYRE9KE6PCFDKK",
-      "name": "Ground",
-      "callsign": "VOK_GND",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
     }
   ],
   "mapGroups": [
