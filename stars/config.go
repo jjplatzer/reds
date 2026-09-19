@@ -118,21 +118,24 @@ func adaptedSystemAltimeterAirport(artcc, tracon, positionID string) (string, er
 	if err != nil {
 		return "", err
 	}
+	return cfg.systemAltimeterAirport(), nil
+}
 
+func (cfg selectedConfig) systemAltimeterAirport() string {
 	if airport := adaptedAirportCode(cfg.ControlPosition.PhysicalFacility); airport != "" {
-		return airport, nil
+		return airport
 	}
 	if prefix, _, ok := strings.Cut(strings.TrimSpace(cfg.ControlPosition.Callsign), "_"); ok {
 		if airport := adaptedAirportCode(prefix); airport != "" {
-			return airport, nil
+			return airport
 		}
 	}
 	for _, airport := range cfg.Area.SSAAirports {
 		if airport := adaptedAirportCode(airport); airport != "" {
-			return airport, nil
+			return airport
 		}
 	}
-	return "", nil
+	return ""
 }
 
 func normalizedSTARSResourceCode(kind, code string) (string, error) {
