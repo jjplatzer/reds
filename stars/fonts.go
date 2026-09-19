@@ -6,25 +6,62 @@ import (
 )
 
 const (
-	// VICE maps STARS' non-legacy Font Set B list character size 1 to
-	// sddCharFontSetBSize1. The source bitmap has a 10x12 character cell, so
-	// 12 is the renderer size used for the default SSA/list text.
-	defaultListFontSize = 12
-	defaultListFontName = "sddCharFontSetBSize1"
+	// VICE maps STARS list character size 1 to these renderer sizes. Font Set
+	// B is the non-legacy/ARTS face and is REDS' default; Font Set A is the
+	// legacy face selected when "Use Font Set B" is disabled.
+	fontSetAListFontSize = 14
+	fontSetAListFontName = "sddCharFontSetASize1"
+	fontSetBListFontSize = 12
+	fontSetBListFontName = "sddCharFontSetBSize1"
 )
 
-// newDefaultSystemFont builds only the Font Set B size currently needed by
-// the initial SSA implementation. Additional STARS character sizes can be
-// added lazily as their controls are implemented instead of allocating atlas
-// storage for unused sizes now.
-func newDefaultSystemFont() *renderer.BitmapFont {
-	font := starsassets.StarsFonts[defaultListFontName]
+// newSystemFont builds only the currently selected list character size. More
+// sizes can be added lazily when the STARS character-size controls are added.
+func newSystemFont(useFontSetB bool) *renderer.BitmapFont {
+	name, size := fontSetAListFontName, fontSetAListFontSize
+	if useFontSetB {
+		name, size = fontSetBListFontName, fontSetBListFontSize
+	}
+
+	font := starsassets.StarsFonts[name]
 	if font == nil {
 		return nil
 	}
 	return renderer.NewBitmapFontFromMono(map[int]*renderer.MonoBitmapFont{
-		defaultListFontSize: font,
+		size: font,
 	})
+}
+
+func (p *STARSPane) listFontSize() int {
+	if p != nil && p.useFontSetB {
+		return fontSetBListFontSize
+	}
+	return fontSetAListFontSize
+}
+
+// UseFontSetB reports the state shown by the STARS-only title-bar menu item.
+func (p *STARSPane) UseFontSetB() bool {
+	return p != nil && p.useFontSetB
+}
+
+// ToggleFontSetB switches between the non-legacy Font Set B and legacy Font
+// Set A. Destroy the old atlas before replacing it so repeated toggles do not
+// accumulate unused GPU textures.
+func (p *STARSPane) ToggleFontSetB(r renderer.Renderer) {
+	if p == nil {
+		return
+	}
+
+	if r != nil {
+		for _, texture := range p.systemFontTextures {
+			if texture != 0 {
+				r.DestroyTexture(texture)
+			}
+		}
+	}
+	p.systemFontTextures = nil
+	p.useFontSetB = !p.useFontSetB
+	p.systemFont = newSystemFont(p.useFontSetB)
 }
 
 func (p *STARSPane) systemFontTexture(r renderer.Renderer, size int) renderer.TextureID {

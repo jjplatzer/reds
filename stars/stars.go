@@ -13,6 +13,7 @@ const zBackground renderer.Z = -1000
 type STARSPane struct {
 	colors             MonitorColors
 	cursorTexture      renderer.TextureID
+	useFontSetB        bool
 	systemFont         *renderer.BitmapFont
 	systemFontTextures map[int]renderer.TextureID
 }
@@ -20,9 +21,11 @@ type STARSPane struct {
 // NewPane creates the initial STARS TCW pane using the official TCW default
 // palette from TI 6191.409 Rev. 30, Appendix B.
 func NewPane() *STARSPane {
+	const useFontSetB = true
 	return &STARSPane{
-		colors:     defaultTCWColors,
-		systemFont: newDefaultSystemFont(),
+		colors:      defaultTCWColors,
+		useFontSetB: useFontSetB,
+		systemFont:  newSystemFont(useFontSetB),
 	}
 }
 

@@ -19,16 +19,20 @@ const (
 )
 
 const (
-	titleBarMenuPopupWidth       = 300
-	titleBarMenuItemHeight       = 30
-	titleBarMenuTextPadX         = 13
-	titleBarMenuShortcutPadRight = 14
-	titleBarMenuPopupRounding    = 6
-	titleBarMenuPopupBorderSize  = 1
+	titleBarMenuPopupWidth         = 300
+	titleBarMenuItemHeight         = 30
+	titleBarMenuTextPadX           = 13
+	titleBarMenuCheckedTextPadX    = 40
+	titleBarMenuCheckGlyphOffsetX  = 8
+	titleBarMenuCheckGlyphBoxWidth = 20
+	titleBarMenuShortcutPadRight   = 14
+	titleBarMenuPopupRounding      = 6
+	titleBarMenuPopupBorderSize    = 1
 )
 
 const (
 	titleBarGlyphMenu     = "\ue700"
+	titleBarGlyphCheck    = "\ue73e"
 	titleBarGlyphMinimize = "\ue949"
 	titleBarGlyphMaximize = "\ue15b"
 	titleBarGlyphRestore  = "\ue158"
@@ -64,7 +68,13 @@ type titleBarAction int
 const (
 	titleBarActionNone titleBarAction = iota
 	titleBarActionSwitchFacility
+	titleBarActionToggleStarsFontSetB
 )
+
+type titleBarMenuOptions struct {
+	ShowStarsFontSetB bool
+	UseStarsFontSetB  bool
+}
 
 type titleBarButtonType int
 
@@ -84,6 +94,7 @@ func drawScopeTitleBar(
 	plat platform.Platform,
 	title string,
 	displaySize [2]float32,
+	menuOptions titleBarMenuOptions,
 ) (bool, titleBarAction) {
 	if plat == nil || displaySize[0] <= 0 {
 		return false, titleBarActionNone
@@ -112,7 +123,7 @@ func drawScopeTitleBar(
 	imgui.BeginV("##scope-titlebar", nil, flags)
 
 	drawTitleBarBackground(displaySize[0])
-	menuCaptured, menuAction := drawTitleBarMenuButton()
+	menuCaptured, menuAction := drawTitleBarMenuButton(menuOptions)
 	if shortcutAction := titleBarShortcutAction(plat); shortcutAction != titleBarActionNone {
 		menuAction = shortcutAction
 	}
@@ -153,7 +164,7 @@ func drawTitleBarTitle(title string) {
 	)
 }
 
-func drawTitleBarMenuButton() (bool, titleBarAction) {
+func drawTitleBarMenuButton(menuOptions titleBarMenuOptions) (bool, titleBarAction) {
 	min := imgui.Vec2{X: 0, Y: 0}
 	max := imgui.Vec2{X: titleBarMenuButtonWidth, Y: scopeTitleBarHeight}
 
@@ -181,7 +192,7 @@ func drawTitleBarMenuButton() (bool, titleBarAction) {
 		imgui.OpenPopupStrV("##titlebar-menu-popup", imgui.PopupFlagsNone)
 	}
 
-	action := drawTitleBarMenuPopup(min, max)
+	action := drawTitleBarMenuPopup(min, max, menuOptions)
 	captured := hovered ||
 		imgui.IsItemActive() ||
 		imgui.IsPopupOpenStr("##titlebar-menu-popup")
@@ -199,14 +210,21 @@ func drawBurgerIcon(min, max imgui.Vec2) {
 	)
 }
 
-func drawTitleBarMenuPopup(buttonMin, buttonMax imgui.Vec2) titleBarAction {
+func drawTitleBarMenuPopup(
+	buttonMin, buttonMax imgui.Vec2,
+	menuOptions titleBarMenuOptions,
+) titleBarAction {
 	imgui.SetNextWindowPosV(
 		imgui.Vec2{X: buttonMin.X, Y: buttonMax.Y},
 		imgui.CondAlways,
 		imgui.Vec2{},
 	)
+	menuHeight := float32(titleBarMenuItemHeight)
+	if menuOptions.ShowStarsFontSetB {
+		menuHeight += float32(titleBarMenuItemHeight)
+	}
 	imgui.SetNextWindowSizeV(
-		imgui.Vec2{X: titleBarMenuPopupWidth, Y: titleBarMenuItemHeight},
+		imgui.Vec2{X: titleBarMenuPopupWidth, Y: menuHeight},
 		imgui.CondAlways,
 	)
 
@@ -256,12 +274,84 @@ func drawTitleBarMenuPopup(buttonMin, buttonMax imgui.Vec2) titleBarAction {
 			imgui.CloseCurrentPopup()
 		}
 
+		if menuOptions.ShowStarsFontSetB {
+			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: titleBarMenuItemHeight})
+			fontClicked := imgui.InvisibleButtonV(
+				"##stars-font-set-b-menu-item",
+				imgui.Vec2{X: titleBarMenuPopupWidth, Y: titleBarMenuItemHeight},
+				imgui.ButtonFlagsMouseButtonLeft,
+			)
+
+			fontRowMin := imgui.ItemRectMin()
+			fontRowMax := imgui.ItemRectMax()
+			if imgui.IsItemHovered() {
+				imgui.WindowDrawList().AddRectFilledV(
+					fontRowMin,
+					fontRowMax,
+					imgui.ColorU32Vec4(titleBarMenuHover),
+					titleBarMenuPopupRounding,
+					imgui.DrawFlagsRoundCornersAll,
+				)
+			}
+
+			if menuOptions.UseStarsFontSetB {
+				drawTitleBarMenuCheck(fontRowMin, titleBarMenuItemHeight)
+			}
+			drawTitleBarMenuItemTextWithPad(
+				fontRowMin,
+				titleBarMenuItemHeight,
+				titleBarMenuCheckedTextPadX,
+				"Use Font Set B",
+			)
+
+			if fontClicked {
+				action = titleBarActionToggleStarsFontSetB
+				imgui.CloseCurrentPopup()
+			}
+		}
+
 		imgui.EndPopup()
 	}
 
 	imgui.PopStyleColorV(2)
 	imgui.PopStyleVarV(4)
 	return action
+}
+
+func drawTitleBarMenuCheck(rowMin imgui.Vec2, itemHeight float32) {
+	min := imgui.Vec2{
+		X: rowMin.X + titleBarMenuCheckGlyphOffsetX,
+		Y: rowMin.Y,
+	}
+	max := imgui.Vec2{
+		X: min.X + titleBarMenuCheckGlyphBoxWidth,
+		Y: rowMin.Y + itemHeight,
+	}
+	drawTitleBarSymbolGlyph(
+		titleBarGlyphCheck,
+		symbolsFont12,
+		12,
+		min,
+		max,
+		titleBarFg,
+	)
+}
+
+func drawTitleBarMenuItemTextWithPad(
+	rowMin imgui.Vec2,
+	itemHeight, textPadX float32,
+	label string,
+) {
+	textY := rowMin.Y + (itemHeight-imgui.FontSize())*0.5
+	if textY < rowMin.Y {
+		textY = rowMin.Y
+	}
+
+	imgui.WindowDrawList().AddTextVec2(
+		imgui.Vec2{X: rowMin.X + textPadX, Y: textY},
+		imgui.ColorU32Vec4(titleBarMenuFg),
+		label,
+	)
 }
 
 func drawTitleBarMenuItemText(

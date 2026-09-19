@@ -84,7 +84,8 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	// TI 6191.409 Rev. 30, Table 2-15 field E displays UTC as HHMM/SS.
 	// VICE places the first SSA text line 10 display units below the Red Check
 	// anchor, with its left edge aligned to the check box's left edge.
-	texture := p.systemFontTexture(ctx.Renderer, defaultListFontSize)
+	fontSize := p.listFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
 	if texture != 0 && p.systemFont != nil {
 		td := renderer.GetTextDrawBuilder()
 		td.SetFont(p.systemFont)
@@ -92,7 +93,7 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			time.Now().UTC().Format("1504/05"),
 			redsmath.Vec2{X: ssaDefaultX * w, Y: centerY + 10},
 			renderer.TextStyle{
-				Size:  defaultListFontSize,
+				Size:  fontSize,
 				Color: p.colors.List.ToRGBA(),
 			},
 		)
