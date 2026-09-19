@@ -183,7 +183,7 @@ type redsSTARSVideoMapAsset struct {
 
 func runStars(args []string) error {
 	if len(args) < 1 {
-		return fmt.Errorf("usage: crc2reds stars <config> ...")
+		return fmt.Errorf("usage: crc2reds stars <config|maps|audio> ...")
 	}
 
 	switch args[0] {
@@ -191,9 +191,116 @@ func runStars(args []string) error {
 		return runStarsConfig(args[1:])
 	case "maps":
 		return runStarsMaps(args[1:])
+	case "audio":
+		return runStarsAudio(args[1:])
 	default:
-		return fmt.Errorf("unknown STARS conversion %q; expected config or maps", args[0])
+		return fmt.Errorf(
+			"unknown STARS conversion %q; expected config, maps, or audio",
+			args[0],
+		)
 	}
+}
+
+// runStarsAudio extracts CRC's shared STARS/ATC sounds.
+//
+// CRC's SoundService loads shared sounds from:
+//
+//	<CRC install>/Sounds/<name>.wav
+//
+// Only root-level WAV files are copied. We intentionally do not recurse into
+// Sounds subdirectories because those may contain display-specific sound sets
+// such as ASDE-X.
+func runStarsAudio(args []string) error {
+	fs := flag.NewFlagSet("stars audio", flag.ContinueOnError)
+
+	inPath := fs.String(
+		"in",
+		"",
+		"CRC data root containing Sounds/",
+	)
+	outDir := fs.String(
+		"out",
+		"",
+		"output directory for STARS WAV resources",
+	)
+
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *inPath == "" || *outDir == "" {
+		return fmt.Errorf(
+			"usage: crc2reds stars audio -in /path/to/CRC -out resources/audio/stars",
+		)
+	}
+
+	return convertSTARSAudio(*inPath, *outDir)
+}
+
+func convertSTARSAudio(root, outDir string) error {
+	soundsDir := filepath.Join(root, "Sounds")
+
+	entries, err := os.ReadDir(soundsDir)
+	if err != nil {
+		return fmt.Errorf(
+			"read CRC sounds directory %s: %w",
+			soundsDir,
+			err,
+		)
+	}
+
+	var names []string
+	for _, entry := range entries {
+		if entry.IsDir() {
+			continue
+		}
+
+		name := entry.Name()
+		if strings.HasPrefix(name, "._") {
+			continue
+		}
+		if !strings.EqualFold(filepath.Ext(name), ".wav") {
+			continue
+		}
+
+		names = append(names, name)
+	}
+
+	sort.Strings(names)
+
+	if len(names) == 0 {
+		return fmt.Errorf(
+			"no root-level .wav files found in %s",
+			soundsDir,
+		)
+	}
+
+	if err := os.MkdirAll(outDir, 0o755); err != nil {
+		return err
+	}
+
+	for _, name := range names {
+		src := filepath.Join(soundsDir, name)
+		dst := filepath.Join(outDir, name)
+
+		raw, err := os.ReadFile(src)
+		if err != nil {
+			return fmt.Errorf("read %s: %w", src, err)
+		}
+
+		// Preserve CRC's WAV payload exactly; only the filesystem location
+		// changes.
+		if err := os.WriteFile(dst, raw, 0o644); err != nil {
+			return fmt.Errorf("write %s: %w", dst, err)
+		}
+	}
+
+	fmt.Printf(
+		"wrote %d STARS/shared CRC WAV files to %s\n",
+		len(names),
+		outDir,
+	)
+
+	return nil
 }
 
 func runStarsConfig(args []string) error {

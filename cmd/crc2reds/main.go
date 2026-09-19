@@ -36,6 +36,7 @@ func printUsageAndExit() {
   go run ./cmd/crc2reds eram  cursors -in /path/to/CRC/Cursors -out eram/assets/cursors.go
   go run ./cmd/crc2reds eram  maps    -in /path/to/CRC -artcc ZLA -out resources/videomaps/eram/ZLA.json.zst
   go run ./cmd/crc2reds stars config  -in /path/to/CRC -out resources/configs/stars [-artcc ZBW]
-  go run ./cmd/crc2reds stars maps    -in /path/to/CRC -out resources/videomaps/stars [-artcc ZBW]`)
+  go run ./cmd/crc2reds stars maps    -in /path/to/CRC -out resources/videomaps/stars [-artcc ZBW]
+  go run ./cmd/crc2reds stars audio   -in /path/to/CRC -out resources/audio/stars`)
 	os.Exit(2)
 }
