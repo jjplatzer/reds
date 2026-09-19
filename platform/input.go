@@ -79,6 +79,7 @@ const (
 	KeyCommand
 	KeyC
 	KeyF
+	KeyS
 )
 
 // KeyboardState is the keyboard input for one frame.
