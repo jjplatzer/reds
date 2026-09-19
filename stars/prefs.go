@@ -21,19 +21,24 @@ const (
 // be saved/restored by STARS preference sets. The names mirror VICE's STARS
 // Preferences so DCB commands and saved preference sets can use the same state.
 type Preferences struct {
-	DefaultCenter configPoint
-	UserCenter    configPoint
-	UseUserCenter bool
-	Range         float32
+	DefaultCenter       configPoint
+	UserCenter          configPoint
+	UseUserCenter       bool
+	Range               float32
+	DisplayWeatherLevel [6]bool
 }
 
 func newPreferences(cfg selectedConfig) Preferences {
 	center := initialSTARSCenter(cfg)
-	return Preferences{
+	prefs := Preferences{
 		DefaultCenter: center,
 		UserCenter:    center,
 		Range:         initialSTARSRange(cfg),
 	}
+	for i := range prefs.DisplayWeatherLevel {
+		prefs.DisplayWeatherLevel[i] = true
+	}
+	return prefs
 }
 
 func initialSTARSCenter(cfg selectedConfig) configPoint {

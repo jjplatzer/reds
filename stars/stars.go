@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"time"
 
+	"github.com/juliusplatzer/reds/cmd/wx"
 	redslog "github.com/juliusplatzer/reds/log"
 	redsmath "github.com/juliusplatzer/reds/math"
 	"github.com/juliusplatzer/reds/panes"
@@ -12,7 +13,10 @@ import (
 	"github.com/juliusplatzer/reds/renderer"
 )
 
-const zBackground renderer.Z = -1000
+const (
+	zBackground renderer.Z = -1000
+	zWeather    renderer.Z = -950
+)
 
 // STARSPane is the STARS TCW/TDW display surface. Facility adaptation feeds
 // its preference/view state; maps, targets, data blocks, and DCB controls all
@@ -28,6 +32,16 @@ type STARSPane struct {
 	systemFont           *renderer.BitmapFont
 	systemFontTextures   map[int]renderer.TextureID
 	systemAltimeter      systemAltimeterState
+
+	wxDomain          wx.Domain
+	wxLogger          *redslog.Logger
+	wxCenter          configPoint
+	wxRadiusNM        float64
+	wxStream          *wx.Stream
+	wxGrid            *wx.Grid
+	wxGeneration      uint64
+	wxBuiltGeneration uint64
+	wxLevels          [6]starsWXLevelCmdBuffers
 
 	commandMode     CommandMode
 	commandInput    string
@@ -56,6 +70,9 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	}
 	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()
 	pane.initializeSystemAltimeter(cfg.systemAltimeterAirport())
+	pane.wxDomain = wx.DomainForARTCC(cfg.Facility.ARTCC)
+	pane.wxLogger = logger.With(slog.String("component", "wx"))
+	pane.restartWxStream(starsInitialWxRadiusNM)
 	return pane, nil
 }
 
@@ -73,15 +90,31 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	p.consumeSystemAltimeterUpdates()
 	p.refreshSystemAltimeter()
+	p.consumeWxUpdates()
+	p.ensureWxCoverage(ctx)
+	p.rebuildWxIfNeeded()
 
 	p.processKeyboardInput(ctx)
 	transforms := p.scopeTransformations(ctx)
 	p.consumeMouseEvents(ctx, transforms)
 
+	p.drawWX(ctx, zcb, transforms)
 	p.drawDCBBackground(ctx, zcb)
 	p.drawSSA(ctx, zcb)
 	p.applyCursor(ctx)
 	p.renderCursor(ctx, zcb)
+}
+
+func (p *STARSPane) Dispose() {
+	if p == nil {
+		return
+	}
+	if p.wxStream != nil {
+		p.wxStream.Close()
+		p.wxStream = nil
+	}
+	p.releaseWxCmdBuffers()
+	p.wxGrid = nil
 }
 
 func (p *STARSPane) scopeTransformations(ctx *panes.Context) radar.LatLonTransformations {
@@ -206,9 +239,12 @@ type MonitorColors struct {
 	RestrictionAreaText renderer.RGB
 	RestrictionAreaGeom [8]renderer.RGB
 
-	// Weather.
-	WX        [6]renderer.RGB
-	WXPattern renderer.RGB
+	// Weather. TI 6191.409 Table B-1 defines the two base colors and white
+	// weather pattern; the level-to-pattern mapping follows the STARS stipple
+	// masks used by VICE (0=solid, 1=light, 2=dense).
+	WX             [6]renderer.RGB
+	WXPattern      renderer.RGB
+	WXLevelStipple [6]int
 
 	// FMA display colors. FMA is not available at TDWs; the TDW palette leaves
 	// these at their zero value.
@@ -367,7 +403,8 @@ var defaultTCWColors = MonitorColors{
 		starsDarkMustard,
 		starsDarkMustard,
 	},
-	WXPattern: starsWhite,
+	WXPattern:      starsWhite,
+	WXLevelStipple: [6]int{0, 1, 2, 0, 1, 2},
 
 	FMARunway:         starsGray,
 	FMANTZNormal:      starsWhite,

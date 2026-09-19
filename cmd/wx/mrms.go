@@ -275,7 +275,7 @@ func DecodeMRMS(r io.Reader, cropBounds Bounds) (*Grid, error) {
 		}, nil
 	}
 
-	levels := make([]Level, crop.NX()*crop.NY())
+	dbzValues := make([]uint8, crop.NX()*crop.NY())
 	for y := 0; y < crop.NY(); y++ {
 		normalizedY := crop.Y0 + y
 		sourceY := normalizedY
@@ -292,7 +292,7 @@ func DecodeMRMS(r io.Reader, cropBounds Bounds) (*Grid, error) {
 
 			raw, missing := pngSample(img, sourceX, sourceY, message.bitWidth)
 			dbz := scaledValue(raw, message.reference, message.binaryScale, message.decimalScale)
-			levels[x+y*crop.NX()] = LevelForDBZ(dbz, missing)
+			dbzValues[x+y*crop.NX()] = quantizeDBZ(dbz, missing)
 		}
 	}
 
@@ -303,8 +303,21 @@ func DecodeMRMS(r io.Reader, cropBounds Bounds) (*Grid, error) {
 		NY:         crop.NY(),
 		DLat:       metadata.DLat,
 		DLon:       metadata.DLon,
-		Levels:     levels,
+		DBZ:        dbzValues,
 	}, nil
+}
+
+func quantizeDBZ(dbz float32, missing bool) uint8 {
+	if missing {
+		return MissingDBZ
+	}
+	if dbz <= 0 {
+		return 0
+	}
+	if dbz >= float32(MissingDBZ-1) {
+		return MissingDBZ - 1
+	}
+	return uint8(math.Ceil(float64(dbz)))
 }
 
 type gribMessage struct {
