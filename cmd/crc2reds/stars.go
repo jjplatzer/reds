@@ -53,7 +53,6 @@ type crcSTARSARTCC struct {
 	Facility crcSTARSFacility `json:"facility"`
 
 	VisibilityCenters []json.RawMessage  `json:"visibilityCenters"`
-	Positions         []crcSTARSPosition `json:"positions"`
 	VideoMaps         []crcSTARSVideoMap `json:"videoMaps"`
 }
 
@@ -62,8 +61,7 @@ type crcSTARSFacility struct {
 	Type string `json:"type"`
 	Name string `json:"name"`
 
-	Positions         []crcSTARSPosition `json:"positions"`
-	VisibilityCenters []json.RawMessage  `json:"visibilityCenters"`
+	Positions []crcSTARSPosition `json:"positions"`
 
 	STARSConfiguration *crcSTARSConfiguration `json:"starsConfiguration"`
 
@@ -71,12 +69,10 @@ type crcSTARSFacility struct {
 }
 
 type crcSTARSConfiguration struct {
+	Areas       []crcSTARSArea     `json:"areas"`
 	VideoMapIDs []string           `json:"videoMapIds"`
 	MapGroups   []crcSTARSMapGroup `json:"mapGroups"`
-
-	Center       json.RawMessage `json:"center"`
-	VisualCenter json.RawMessage `json:"visualCenter"`
-	Range        starsFloat64    `json:"range"`
+	TCPs        []crcSTARSTCP      `json:"tcps"`
 }
 
 type crcSTARSMapGroup struct {
@@ -84,29 +80,37 @@ type crcSTARSMapGroup struct {
 	TCPs   []string `json:"tcps"`
 }
 
+type crcSTARSArea struct {
+	ID                 string          `json:"id"`
+	Name               string          `json:"name"`
+	VisibilityCenter   json.RawMessage `json:"visibilityCenter"`
+	SurveillanceRange  int             `json:"surveillanceRange"`
+	UnderlyingAirports []string        `json:"underlyingAirports"`
+	SSAAirports        []string        `json:"ssaAirports"`
+}
+
+type crcSTARSTCP struct {
+	Subset         int    `json:"subset"`
+	SectorID       string `json:"sectorId"`
+	ID             string `json:"id"`
+	ParentTCPID    string `json:"parentTcpId"`
+	TerminalSector string `json:"terminalSector"`
+}
+
+type crcSTARSPositionConfiguration struct {
+	AreaID string `json:"areaId"`
+	TCPID  string `json:"tcpId"`
+}
+
 type crcSTARSPosition struct {
-	ID   string `json:"id"`
-	TCP  string `json:"tcp"`
-	Code string `json:"code"`
-
-	Name     string `json:"name"`
-	Callsign string `json:"callsign"`
-
-	FacilityID string `json:"facilityId"`
-	Facility   string `json:"facility"`
-	Area       string `json:"area"`
-
-	Scope     string `json:"scope"`
-	ScopeChar string `json:"scopeChar"`
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	RadioName string `json:"radioName"`
+	Callsign  string `json:"callsign"`
 
 	Frequency starsFloat64 `json:"frequency"`
-	Range     starsFloat64 `json:"range"`
 
-	Center           json.RawMessage `json:"center"`
-	VisualCenter     json.RawMessage `json:"visualCenter"`
-	VisibilityCenter json.RawMessage `json:"visibilityCenter"`
-
-	STARSConfiguration json.RawMessage `json:"starsConfiguration"`
+	STARSConfiguration *crcSTARSPositionConfiguration `json:"starsConfiguration"`
 }
 
 type crcSTARSVideoMap struct {
@@ -123,14 +127,36 @@ type redsSTARSLatLon struct {
 }
 
 type redsSTARSControlPosition struct {
-	ID           string           `json:"id"`
-	Name         string           `json:"name,omitempty"`
-	Callsign     string           `json:"callsign,omitempty"`
-	Scope        string           `json:"scope,omitempty"`
-	Area         string           `json:"area,omitempty"`
-	VisualCenter *redsSTARSLatLon `json:"visualCenter,omitempty"`
-	Range        *float64         `json:"range,omitempty"`
-	Frequency    float64          `json:"freq,omitempty"`
+	ID               string           `json:"id"`
+	PhysicalFacility string           `json:"physicalFacility,omitempty"`
+	Name             string           `json:"name,omitempty"`
+	RadioName        string           `json:"radioName,omitempty"`
+	Callsign         string           `json:"callsign,omitempty"`
+	AreaID           string           `json:"areaId"`
+	TCPID            string           `json:"tcpId,omitempty"`
+	TCP              string           `json:"tcp,omitempty"`
+	VisualCenter     *redsSTARSLatLon `json:"visualCenter,omitempty"`
+	Range            *float64         `json:"range,omitempty"`
+	Frequency        float64          `json:"freq,omitempty"`
+}
+
+type redsSTARSArea struct {
+	ID                 string           `json:"id"`
+	Name               string           `json:"name,omitempty"`
+	VisibilityCenter   *redsSTARSLatLon `json:"visibilityCenter,omitempty"`
+	SurveillanceRange  int              `json:"surveillanceRange"`
+	UnderlyingAirports []string         `json:"underlyingAirports,omitempty"`
+	SSAAirports        []string         `json:"ssaAirports,omitempty"`
+}
+
+type redsSTARSTCP struct {
+	ID             string `json:"id"`
+	Code           string `json:"code"`
+	Subset         int    `json:"subset"`
+	SectorID       string `json:"sectorId"`
+	ParentTCPID    string `json:"parentTcpId,omitempty"`
+	ParentTCP      string `json:"parentTcp,omitempty"`
+	TerminalSector string `json:"terminalSector,omitempty"`
 }
 
 type redsSTARSMapGroup struct {
@@ -157,8 +183,9 @@ type redsSTARSFacilityConfig struct {
 	Type     string `json:"type,omitempty"`
 
 	DefaultCenter *redsSTARSLatLon `json:"defaultCenter,omitempty"`
-	DefaultRange  *float64         `json:"defaultRange,omitempty"`
 
+	Areas            []redsSTARSArea            `json:"areas,omitempty"`
+	TCPs             []redsSTARSTCP             `json:"tcps,omitempty"`
 	ControlPositions []redsSTARSControlPosition `json:"controlPositions"`
 
 	MapGroups []redsSTARSMapGroup `json:"mapGroups,omitempty"`
@@ -591,9 +618,6 @@ func convertSTARSConfig(root, artcc, outDir string) (int, error) {
 	}
 
 	rootCenter := starsMeanCenters(src.VisibilityCenters)
-	if rootCenter == nil {
-		rootCenter = starsMeanCenters(src.Facility.VisibilityCenters)
-	}
 
 	videoByID := make(map[string]crcSTARSVideoMap, len(src.VideoMaps))
 	for _, vm := range src.VideoMaps {
@@ -615,13 +639,15 @@ func convertSTARSConfig(root, artcc, outDir string) (int, error) {
 			continue
 		}
 
-		cfg := buildSTARSFacilityConfig(
+		cfg, err := buildSTARSFacilityConfig(
 			artcc,
-			&src,
 			facility,
 			rootCenter,
 			videoByID,
 		)
+		if err != nil {
+			return written, fmt.Errorf("build STARS config %s/%s: %w", artcc, facility.ID, err)
+		}
 
 		dstDir := filepath.Join(outDir, artcc)
 		if err := os.MkdirAll(dstDir, 0o755); err != nil {
@@ -670,14 +696,18 @@ func starsCollectFacilities(f *crcSTARSFacility, out *[]*crcSTARSFacility) {
 
 func buildSTARSFacilityConfig(
 	artcc string,
-	src *crcSTARSARTCC,
 	facility *crcSTARSFacility,
 	rootCenter *redsSTARSLatLon,
 	videoByID map[string]crcSTARSVideoMap,
-) redsSTARSFacilityConfig {
-	center := starsFacilityCenter(facility)
+) (redsSTARSFacilityConfig, error) {
+	stars := facility.STARSConfiguration
+	if stars == nil {
+		return redsSTARSFacilityConfig{}, fmt.Errorf("facility has no STARS configuration")
+	}
+
+	center := starsMeanAreaCenters(stars.Areas)
 	if center == nil {
-		center = starsCopyCenter(rootCenter)
+		center = rootCenter
 	}
 
 	cfg := redsSTARSFacilityConfig{
@@ -688,70 +718,151 @@ func buildSTARSFacilityConfig(
 		DefaultCenter: center,
 	}
 
-	if r := float64(facility.STARSConfiguration.Range); r > 0 {
-		cfg.DefaultRange = &r
+	areaByID := make(map[string]crcSTARSArea, len(stars.Areas))
+	for _, area := range stars.Areas {
+		id := strings.TrimSpace(area.ID)
+		if id == "" {
+			return redsSTARSFacilityConfig{}, fmt.Errorf("STARS area with empty id")
+		}
+		if _, exists := areaByID[id]; exists {
+			return redsSTARSFacilityConfig{}, fmt.Errorf("duplicate STARS area id %q", id)
+		}
+		areaByID[id] = area
+
+		cfg.Areas = append(cfg.Areas, redsSTARSArea{
+			ID:                 id,
+			Name:               area.Name,
+			VisibilityCenter:   starsDecodeLatLon(area.VisibilityCenter),
+			SurveillanceRange:  starsAreaRange(area),
+			UnderlyingAirports: append([]string(nil), area.UnderlyingAirports...),
+			SSAAirports:        append([]string(nil), area.SSAAirports...),
+		})
+	}
+	sort.Slice(cfg.Areas, func(i, j int) bool { return cfg.Areas[i].ID < cfg.Areas[j].ID })
+
+	tcpByID := make(map[string]crcSTARSTCP, len(stars.TCPs))
+	tcpByCode := make(map[string]crcSTARSTCP, len(stars.TCPs))
+	for _, tcp := range stars.TCPs {
+		id := strings.TrimSpace(tcp.ID)
+		if id == "" {
+			return redsSTARSFacilityConfig{}, fmt.Errorf("STARS TCP with empty unique id")
+		}
+		code := starsTCPCode(tcp)
+		if code == "" {
+			return redsSTARSFacilityConfig{}, fmt.Errorf("STARS TCP %q has empty operational code", id)
+		}
+		if _, exists := tcpByID[id]; exists {
+			return redsSTARSFacilityConfig{}, fmt.Errorf("duplicate STARS TCP unique id %q", id)
+		}
+		if other, exists := tcpByCode[code]; exists {
+			return redsSTARSFacilityConfig{}, fmt.Errorf(
+				"duplicate STARS TCP code %q for ids %q and %q",
+				code,
+				other.ID,
+				id,
+			)
+		}
+		tcpByID[id] = tcp
+		tcpByCode[code] = tcp
 	}
 
-	positions := starsPositionsForFacility(src, facility)
-	byID := make(map[string]crcSTARSPosition, len(positions))
+	for _, tcp := range stars.TCPs {
+		parentCode := ""
+		parentID := strings.TrimSpace(tcp.ParentTCPID)
+		if parentID != "" {
+			if parent, ok := tcpByID[parentID]; ok {
+				parentCode = starsTCPCode(parent)
+			}
+		}
 
-	for _, p := range positions {
-		id := starsPositionID(p)
-		if id == "" {
+		cfg.TCPs = append(cfg.TCPs, redsSTARSTCP{
+			ID:             strings.TrimSpace(tcp.ID),
+			Code:           starsTCPCode(tcp),
+			Subset:         tcp.Subset,
+			SectorID:       strings.TrimSpace(tcp.SectorID),
+			ParentTCPID:    parentID,
+			ParentTCP:      parentCode,
+			TerminalSector: strings.TrimSpace(tcp.TerminalSector),
+		})
+	}
+	sort.Slice(cfg.TCPs, func(i, j int) bool {
+		if cfg.TCPs[i].Code != cfg.TCPs[j].Code {
+			return cfg.TCPs[i].Code < cfg.TCPs[j].Code
+		}
+		return cfg.TCPs[i].ID < cfg.TCPs[j].ID
+	})
+
+	for _, fp := range starsPositionsForRadarFacility(facility) {
+		p := fp.Position
+		if p.STARSConfiguration == nil {
 			continue
 		}
-		if _, exists := byID[id]; !exists {
-			byID[id] = p
+
+		positionID := strings.TrimSpace(p.ID)
+		if positionID == "" {
+			return redsSTARSFacilityConfig{}, fmt.Errorf(
+				"STARS position %q has empty position id",
+				p.Callsign,
+			)
 		}
-	}
 
-	tcpSet := make(map[string]bool)
+		areaID := strings.TrimSpace(p.STARSConfiguration.AreaID)
+		area, ok := areaByID[areaID]
+		if !ok {
+			return redsSTARSFacilityConfig{}, fmt.Errorf(
+				"position %q (%s) references unknown STARS area %q",
+				p.Callsign,
+				positionID,
+				areaID,
+			)
+		}
 
-	for _, mg := range facility.STARSConfiguration.MapGroups {
-		for _, tcp := range mg.TCPs {
-			tcp = strings.TrimSpace(tcp)
-			if tcp != "" {
-				tcpSet[tcp] = true
+		tcpID := strings.TrimSpace(p.STARSConfiguration.TCPID)
+		tcpCode := ""
+		if tcpID != "" {
+			tcp, ok := tcpByID[tcpID]
+			if !ok {
+				return redsSTARSFacilityConfig{}, fmt.Errorf(
+					"position %q (%s) references unknown STARS TCP id %q",
+					p.Callsign,
+					positionID,
+					tcpID,
+				)
 			}
-		}
-	}
-	for id := range byID {
-		tcpSet[id] = true
-	}
-
-	ids := make([]string, 0, len(tcpSet))
-	for id := range tcpSet {
-		ids = append(ids, id)
-	}
-	sort.Strings(ids)
-
-	for _, id := range ids {
-		p, ok := byID[id]
-
-		pos := redsSTARSControlPosition{
-			ID:           id,
-			VisualCenter: starsCopyCenter(center),
+			tcpCode = starsTCPCode(tcp)
 		}
 
-		if ok {
-			pos.Name = p.Name
-			pos.Callsign = p.Callsign
-			pos.Area = p.Area
-			pos.Scope = starsFirstNonEmpty(p.Scope, p.ScopeChar)
-			pos.Frequency = starsFrequencyMHz(float64(p.Frequency))
-
-			if c := starsPositionCenter(p); c != nil {
-				pos.VisualCenter = c
-			}
-			if r, ok := starsPositionRange(p); ok {
-				pos.Range = &r
-			}
-		}
-
-		cfg.ControlPositions = append(cfg.ControlPositions, pos)
+		rangeNM := float64(starsAreaRange(area))
+		cfg.ControlPositions = append(cfg.ControlPositions, redsSTARSControlPosition{
+			ID:               positionID,
+			PhysicalFacility: fp.FacilityID,
+			Name:             p.Name,
+			RadioName:        p.RadioName,
+			Callsign:         p.Callsign,
+			AreaID:           areaID,
+			TCPID:            tcpID,
+			TCP:              tcpCode,
+			VisualCenter:     starsDecodeLatLon(area.VisibilityCenter),
+			Range:            &rangeNM,
+			Frequency:        starsFrequencyMHz(float64(p.Frequency)),
+		})
 	}
 
-	for _, mg := range facility.STARSConfiguration.MapGroups {
+	sort.Slice(cfg.ControlPositions, func(i, j int) bool {
+		a, b := cfg.ControlPositions[i], cfg.ControlPositions[j]
+		if (a.TCP == "") != (b.TCP == "") {
+			return a.TCP != ""
+		}
+		if a.TCP != b.TCP {
+			return a.TCP < b.TCP
+		}
+		if a.Callsign != b.Callsign {
+			return a.Callsign < b.Callsign
+		}
+		return a.ID < b.ID
+	})
+
+	for _, mg := range stars.MapGroups {
 		cfg.MapGroups = append(cfg.MapGroups, redsSTARSMapGroup{
 			TCPs:          append([]string(nil), mg.TCPs...),
 			MapIDs:        starsCloneMapIDs(mg.MapIDs),
@@ -761,7 +872,7 @@ func buildSTARSFacilityConfig(
 	}
 
 	seen := make(map[string]bool)
-	for _, id := range facility.STARSConfiguration.VideoMapIDs {
+	for _, id := range stars.VideoMapIDs {
 		if id == "" || seen[id] {
 			continue
 		}
@@ -815,83 +926,70 @@ func buildSTARSFacilityConfig(
 		return a.ID < b.ID
 	})
 
-	return cfg
+	return cfg, nil
 }
 
-func starsPositionsForFacility(
-	src *crcSTARSARTCC,
-	f *crcSTARSFacility,
-) []crcSTARSPosition {
-	out := append([]crcSTARSPosition(nil), f.Positions...)
+type starsFacilityPosition struct {
+	FacilityID string
+	Position   crcSTARSPosition
+}
 
-	for _, p := range src.Positions {
-		if starsPositionFacility(p) == f.ID {
-			out = append(out, p)
-		}
+func starsPositionsForRadarFacility(f *crcSTARSFacility) []starsFacilityPosition {
+	out := make([]starsFacilityPosition, 0, len(f.Positions))
+	for _, p := range f.Positions {
+		out = append(out, starsFacilityPosition{FacilityID: f.ID, Position: p})
 	}
-	for _, p := range src.Facility.Positions {
-		if starsPositionFacility(p) == f.ID {
-			out = append(out, p)
+
+	// CRC's Artcc.GetStarsFacility() uses a STARS-configured parent facility
+	// as the radar facility for a direct child that has no STARS configuration
+	// of its own. Include those physical-facility positions here as well so the
+	// generated radar-facility config has the same position -> TCP mapping.
+	for i := range f.ChildFacilities {
+		child := &f.ChildFacilities[i]
+		if child.STARSConfiguration != nil {
+			continue
+		}
+		for _, p := range child.Positions {
+			out = append(out, starsFacilityPosition{FacilityID: child.ID, Position: p})
 		}
 	}
 
 	return out
 }
 
-func starsPositionFacility(p crcSTARSPosition) string {
-	return strings.TrimSpace(
-		starsFirstNonEmpty(p.FacilityID, p.Facility),
-	)
-}
-
-func starsPositionID(p crcSTARSPosition) string {
-	return strings.TrimSpace(
-		starsFirstNonEmpty(p.ID, p.TCP, p.Code),
-	)
-}
-
-func starsFacilityCenter(f *crcSTARSFacility) *redsSTARSLatLon {
-	if f.STARSConfiguration != nil {
-		if c := starsDecodeLatLon(
-			f.STARSConfiguration.VisualCenter,
-		); c != nil {
-			return c
-		}
-
-		if c := starsDecodeLatLon(
-			f.STARSConfiguration.Center,
-		); c != nil {
-			return c
-		}
+func starsTCPCode(tcp crcSTARSTCP) string {
+	sectorID := strings.TrimSpace(tcp.SectorID)
+	if sectorID == "" {
+		return ""
 	}
-
-	return starsMeanCenters(f.VisibilityCenters)
+	return fmt.Sprintf("%d%s", tcp.Subset, sectorID)
 }
 
-func starsPositionCenter(p crcSTARSPosition) *redsSTARSLatLon {
-	for _, raw := range []json.RawMessage{
-		p.VisualCenter,
-		p.VisibilityCenter,
-		p.Center,
-	} {
-		if c := starsDecodeLatLon(raw); c != nil {
-			return c
+func starsAreaRange(area crcSTARSArea) int {
+	if area.SurveillanceRange > 0 {
+		return area.SurveillanceRange
+	}
+	// This is the default initializer in CRC's StarsArea class.
+	return 50
+}
+
+func starsMeanAreaCenters(areas []crcSTARSArea) *redsSTARSLatLon {
+	var lat float64
+	var lon float64
+	n := 0
+	for _, area := range areas {
+		center := starsDecodeLatLon(area.VisibilityCenter)
+		if center == nil {
+			continue
 		}
+		lat += center.Lat
+		lon += center.Lon
+		n++
 	}
-
-	return starsCenterFromObject(
-		p.STARSConfiguration,
-		"visualCenter",
-		"visibilityCenter",
-		"center",
-	)
-}
-
-func starsPositionRange(p crcSTARSPosition) (float64, bool) {
-	if r := float64(p.Range); r > 0 {
-		return r, true
+	if n == 0 {
+		return nil
 	}
-	return starsNumberFromObject(p.STARSConfiguration, "range")
+	return &redsSTARSLatLon{Lat: lat / float64(n), Lon: lon / float64(n)}
 }
 
 func starsDecodeLatLon(raw json.RawMessage) *redsSTARSLatLon {
@@ -920,46 +1018,6 @@ func starsDecodeLatLon(raw json.RawMessage) *redsSTARSLatLon {
 		Lat: lat,
 		Lon: lon,
 	}
-}
-
-func starsCenterFromObject(
-	raw json.RawMessage,
-	keys ...string,
-) *redsSTARSLatLon {
-	if len(raw) == 0 || string(raw) == "null" {
-		return nil
-	}
-
-	var obj map[string]json.RawMessage
-	if err := json.Unmarshal(raw, &obj); err != nil {
-		return nil
-	}
-
-	for _, key := range keys {
-		if child, ok := obj[key]; ok {
-			if c := starsDecodeLatLon(child); c != nil {
-				return c
-			}
-		}
-	}
-
-	return nil
-}
-
-func starsNumberFromObject(
-	raw json.RawMessage,
-	key string,
-) (float64, bool) {
-	if len(raw) == 0 || string(raw) == "null" {
-		return 0, false
-	}
-
-	var obj map[string]json.RawMessage
-	if err := json.Unmarshal(raw, &obj); err != nil {
-		return 0, false
-	}
-
-	return starsNumberFromMap(obj, key)
 }
 
 func starsNumberFromMap(
@@ -1015,16 +1073,6 @@ func starsMeanCenters(
 		Lat: lat / float64(n),
 		Lon: lon / float64(n),
 	}
-}
-
-func starsCopyCenter(
-	c *redsSTARSLatLon,
-) *redsSTARSLatLon {
-	if c == nil {
-		return nil
-	}
-	out := *c
-	return &out
 }
 
 func starsFrequencyMHz(v float64) float64 {
@@ -1098,13 +1146,4 @@ func starsLooksLikeBoundaryMap(vm crcSTARSVideoMap) bool {
 	}
 
 	return false
-}
-
-func starsFirstNonEmpty(values ...string) string {
-	for _, value := range values {
-		if value != "" {
-			return value
-		}
-	}
-	return ""
 }
