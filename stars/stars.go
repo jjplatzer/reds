@@ -34,6 +34,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	backgroundCB.DisableScissor()
 
 	p.drawDCBBackground(ctx, zcb)
+	p.drawSSA(ctx, zcb)
 	p.applyCursor(ctx)
 	p.renderCursor(ctx, zcb)
 }
