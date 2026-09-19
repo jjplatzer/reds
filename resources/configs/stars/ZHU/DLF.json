@@ -4,93 +4,157 @@
   "name": "Laughlin ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 29.35175,
+    "lon": -100.805518
   },
+  "areas": [
+    {
+      "id": "01GYRKPT8QVDDNS2H78X4T40RM",
+      "name": "DLF RAPCON",
+      "visibilityCenter": {
+        "lat": 29.35175,
+        "lon": -100.805518
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "5T9",
+        "DLF",
+        "DRT",
+        "ECU",
+        "T70"
+      ],
+      "ssaAirports": [
+        "DLF"
+      ]
+    },
+    {
+      "id": "01JCPPKC1JK1ED5SQ85TCN3DQR",
+      "name": "DLF TOWER",
+      "visibilityCenter": {
+        "lat": 29.35175,
+        "lon": -100.805518
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "DLF"
+      ],
+      "ssaAirports": [
+        "DLF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDRTEDANQHWRZV9133T",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1CDRDWHEA8PRQ2AVDDJH",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1CDRSMTE93J98TKTF0PY",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1CDRKAXT3HVXZ3QTQY2G",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1CDR59C8S9F9BHRCP1KH",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GSJ4DF8C1KMQ0EG11V8E4ETJ",
-      "name": "Clearance Delivery",
-      "callsign": "DLF_DEL",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 120.5
-    },
-    {
-      "id": "01GSJ4NZWPEJFF7AGYK87ER4YA",
-      "name": "East Approach",
-      "callsign": "DLF_E_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 119.6
-    },
-    {
-      "id": "01GSJ4Y3PVACSKAEXKY18H4FGR",
-      "name": "Local",
-      "callsign": "DLF_TWR",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 125.2
-    },
-    {
-      "id": "01H6QJTXAF7PM4V0QG28J8KMDQ",
-      "name": "Ground",
-      "callsign": "DLF_GND",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01HAWT835P66W846MAR9FFTPJ5",
-      "name": "West Approach",
-      "callsign": "DLF_W_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 118
-    },
-    {
-      "id": "01HAWT9PXR1RENPG9X8RR0EQ7S",
-      "name": "South Approach",
-      "callsign": "DLF_S_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 127.75
-    },
-    {
       "id": "01JQ59ZAFVCD2561SRT12EHPK4",
+      "physicalFacility": "DLF",
       "name": "Arrival Radar",
+      "radioName": "Del Rio Approach",
       "callsign": "DLF_A_APP",
+      "areaId": "01GYRKPT8QVDDNS2H78X4T40RM",
+      "tcpId": "01K2NF1CDRTEDANQHWRZV9133T",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.35175,
+        "lon": -100.805518
       },
+      "range": 100,
       "freq": 123.1
     },
     {
-      "id": "1D",
+      "id": "01GSJ4NZWPEJFF7AGYK87ER4YA",
+      "physicalFacility": "DLF",
+      "name": "East Approach",
+      "radioName": "Del Rio Approach",
+      "callsign": "DLF_E_APP",
+      "areaId": "01GYRKPT8QVDDNS2H78X4T40RM",
+      "tcpId": "01K2NF1CDRDWHEA8PRQ2AVDDJH",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.35175,
+        "lon": -100.805518
+      },
+      "range": 100,
+      "freq": 119.6
     },
     {
-      "id": "1T",
+      "id": "01HAWT9PXR1RENPG9X8RR0EQ7S",
+      "physicalFacility": "DLF",
+      "name": "South Approach",
+      "radioName": "Del Rio Approach",
+      "callsign": "DLF_S_APP",
+      "areaId": "01GYRKPT8QVDDNS2H78X4T40RM",
+      "tcpId": "01K2NF1CDRSMTE93J98TKTF0PY",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.35175,
+        "lon": -100.805518
+      },
+      "range": 100,
+      "freq": 127.75
+    },
+    {
+      "id": "01HAWT835P66W846MAR9FFTPJ5",
+      "physicalFacility": "DLF",
+      "name": "West Approach",
+      "radioName": "Del Rio Approach",
+      "callsign": "DLF_W_APP",
+      "areaId": "01GYRKPT8QVDDNS2H78X4T40RM",
+      "tcpId": "01K2NF1CDRKAXT3HVXZ3QTQY2G",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 29.35175,
+        "lon": -100.805518
+      },
+      "range": 100,
+      "freq": 118
+    },
+    {
+      "id": "01GSJ4Y3PVACSKAEXKY18H4FGR",
+      "physicalFacility": "DLF",
+      "name": "Local",
+      "radioName": "Laughlin Tower",
+      "callsign": "DLF_TWR",
+      "areaId": "01GYRKPT8QVDDNS2H78X4T40RM",
+      "tcpId": "01K2NF1CDR59C8S9F9BHRCP1KH",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 29.35175,
+        "lon": -100.805518
+      },
+      "range": 100,
+      "freq": 125.2
     }
   ],
   "mapGroups": [

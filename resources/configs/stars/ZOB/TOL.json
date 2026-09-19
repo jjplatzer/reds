@@ -4,97 +4,165 @@
   "name": "Toledo ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.65805,
-    "lon": -81.181585
+    "lat": 41.58267,
+    "lon": -83.8025
   },
+  "areas": [
+    {
+      "id": "01G92VB46FK6VQJP7P6K0FFG2D",
+      "name": "Toledo TRACON",
+      "visibilityCenter": {
+        "lat": 41.58267,
+        "lon": -83.8025
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "TOL"
+      ],
+      "ssaAirports": [
+        "TOL"
+      ]
+    },
+    {
+      "id": "01HE774733VC46X09Q2VC6NSF4",
+      "name": "Toledo ATCT",
+      "visibilityCenter": {
+        "lat": 41.58267,
+        "lon": -83.8025
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "TOL"
+      ],
+      "ssaAirports": [
+        "TOL"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E63QWDXT46HRA1WATFC",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E63EWRV5E6GZXY2P2S7",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1E63W9977CDBSDTH44NB",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E63EWRV5E6GZXY2P2S7",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1E63R8KT236YTKYPYG65",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G92VDTGNK3SMDCY14J7HA2QK",
+      "physicalFacility": "TOL",
       "name": "East",
+      "radioName": "Toledo Approach",
       "callsign": "TOL_E_APP",
+      "areaId": "01G92VB46FK6VQJP7P6K0FFG2D",
+      "tcpId": "01K2NF1E63QWDXT46HRA1WATFC",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.58267,
+        "lon": -83.8025
       },
+      "range": 150,
       "freq": 126.1
     },
     {
-      "id": "01G92VERT1B2Q44N8SYN4P8ZKQ",
-      "name": "West",
-      "callsign": "TOL_W_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 134.35
-    },
-    {
       "id": "01G92VFH2D0HYN0W058H4YVTPT",
+      "physicalFacility": "TOL",
       "name": "Clearance Delivery",
+      "radioName": "Toledo Clearance",
       "callsign": "TOL_DEL",
+      "areaId": "01HE774733VC46X09Q2VC6NSF4",
+      "tcpId": "01K2NF1E63W9977CDBSDTH44NB",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.58267,
+        "lon": -83.8025
       },
+      "range": 50,
       "freq": 121.75
     },
     {
       "id": "01G92VGJ8XW3NSNYAB8HVBQRKM",
+      "physicalFacility": "TOL",
       "name": "Ground",
+      "radioName": "Toledo Ground",
       "callsign": "TOL_GND",
+      "areaId": "01HE774733VC46X09Q2VC6NSF4",
+      "tcpId": "01K2NF1E63W9977CDBSDTH44NB",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.58267,
+        "lon": -83.8025
       },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01G92VHJMT5XHMPQNW8WXYJKZF",
+      "physicalFacility": "TOL",
       "name": "Local Control",
+      "radioName": "Toledo Tower",
       "callsign": "TOL_TWR",
+      "areaId": "01HE774733VC46X09Q2VC6NSF4",
+      "tcpId": "01K2NF1E63W9977CDBSDTH44NB",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.58267,
+        "lon": -83.8025
       },
+      "range": 50,
       "freq": 118.1
     },
     {
-      "id": "01HDWY5GX4ZZBM9DM402NBMWCD",
-      "name": "TMU/OTHER",
-      "callsign": "TOL_T_APP",
+      "id": "01G92VERT1B2Q44N8SYN4P8ZKQ",
+      "physicalFacility": "TOL",
+      "name": "West",
+      "radioName": "Toledo Approach",
+      "callsign": "TOL_W_APP",
+      "areaId": "01G92VB46FK6VQJP7P6K0FFG2D",
+      "tcpId": "01K2NF1E63EWRV5E6GZXY2P2S7",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 41.58267,
+        "lon": -83.8025
       },
+      "range": 150,
+      "freq": 134.35
+    },
+    {
+      "id": "01HDWY5GX4ZZBM9DM402NBMWCD",
+      "physicalFacility": "TOL",
+      "name": "TMU/OTHER",
+      "radioName": "Toledo Approach",
+      "callsign": "TOL_T_APP",
+      "areaId": "01G92VB46FK6VQJP7P6K0FFG2D",
+      "tcpId": "01K2NF1E63R8KT236YTKYPYG65",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 41.58267,
+        "lon": -83.8025
+      },
+      "range": 150,
       "freq": 123.45
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
     }
   ],
   "mapGroups": [

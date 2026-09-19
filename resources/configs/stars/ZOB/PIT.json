@@ -4,196 +4,401 @@
   "name": "Pittsburgh ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.65805,
-    "lon": -81.181585
+    "lat": 40.48685,
+    "lon": -80.23394
   },
+  "areas": [
+    {
+      "id": "01G90W7GPYAH36YNPY6APE38V5",
+      "name": "Pittsburgh TRACON",
+      "visibilityCenter": {
+        "lat": 40.48685,
+        "lon": -80.23394
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "AGC",
+        "BVI",
+        "HLG",
+        "PIT"
+      ],
+      "ssaAirports": [
+        "AGC",
+        "BVI",
+        "HLG",
+        "PIT"
+      ]
+    },
+    {
+      "id": "01HE76YSX2GPQ8J4FKH9YD8NT0",
+      "name": "Pittsburgh ATCT",
+      "visibilityCenter": {
+        "lat": 40.48685,
+        "lon": -80.23394
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "PIT"
+      ],
+      "ssaAirports": [
+        "PIT"
+      ]
+    },
+    {
+      "id": "01HE788BX0SATV4SYQJCE63HA8",
+      "name": "Allegheny ATCT",
+      "visibilityCenter": {
+        "lat": 40.48685,
+        "lon": -80.23394
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "AGC"
+      ],
+      "ssaAirports": [
+        "AGC"
+      ]
+    },
+    {
+      "id": "01HE788SKCN5ZNHE5EE664XSB5",
+      "name": "Beaver County ATCT",
+      "visibilityCenter": {
+        "lat": 40.48685,
+        "lon": -80.23394
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "BVI"
+      ],
+      "ssaAirports": [
+        "BVI"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E626KGGJ7R8SEPX6Q97",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1E628PCXHXZDNDG8KGD4",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1E628GC5KB4HCJ1BB9VH",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1E6236HRWVXERJBMPMXM",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1E6236HRWVXERJBMPMXM",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1E62B9J7XY72Y48J79A1",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1E623P4DWAS730RHVWSD",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1E62QGENV7RY0JBY39EZ",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1E628PCXHXZDNDG8KGD4",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E6236HRWVXERJBMPMXM",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1E62TP82G0QXQRYH50FQ",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1E623P4DWAS730RHVWSD",
+      "parentTcp": "1L"
+    },
+    {
+      "id": "01K2NF1E624CMBZF8QC50S325Y",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1E628PCXHXZDNDG8KGD4",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1E62HR32WQHSQJSAYHX4",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    },
+    {
+      "id": "01K2NF1E621818KS4X5DBD6EVE",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E62V4BJ9W6KRG53YR46",
+      "code": "3T",
+      "subset": 3,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G90WEMVQW42XZ5S8Q73NRXKN",
-      "name": "Arrival North",
-      "callsign": "PIT_B_APP",
+      "id": "01G90WJJMRN7TZET5HAP1NXPFB",
+      "physicalFacility": "PIT",
+      "name": "Departure North",
+      "radioName": "Pittsburgh Departure",
+      "callsign": "PIT_N_DEP",
+      "areaId": "01G90W7GPYAH36YNPY6APE38V5",
+      "tcpId": "01K2NF1E626KGGJ7R8SEPX6Q97",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 40.48685,
+        "lon": -80.23394
       },
+      "range": 150,
+      "freq": 124.75
+    },
+    {
+      "id": "01G90WEMVQW42XZ5S8Q73NRXKN",
+      "physicalFacility": "PIT",
+      "name": "Arrival North",
+      "radioName": "Pittsburgh Approach",
+      "callsign": "PIT_B_APP",
+      "areaId": "01G90W7GPYAH36YNPY6APE38V5",
+      "tcpId": "01K2NF1E628GC5KB4HCJ1BB9VH",
+      "tcp": "1B",
+      "visualCenter": {
+        "lat": 40.48685,
+        "lon": -80.23394
+      },
+      "range": 150,
       "freq": 124.15
     },
     {
       "id": "01G90WHHGDG0PT679CSG226JQA",
+      "physicalFacility": "PIT",
       "name": "Arrival South",
+      "radioName": "Pittsburgh Approach",
       "callsign": "PIT_D_APP",
+      "areaId": "01G90W7GPYAH36YNPY6APE38V5",
+      "tcpId": "01K2NF1E6236HRWVXERJBMPMXM",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 40.48685,
+        "lon": -80.23394
       },
+      "range": 150,
       "freq": 123.95
     },
     {
-      "id": "01G90WJJMRN7TZET5HAP1NXPFB",
-      "name": "Departure North",
-      "callsign": "PIT_N_DEP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 124.75
-    },
-    {
-      "id": "01G90WN22SC80P7XA0C3BVNCAY",
-      "name": "Departure South",
-      "callsign": "PIT_S_DEP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 119.35
-    },
-    {
-      "id": "01G90WP5B4TTSTF1GRMCH7CZHP",
-      "name": "Satellite",
-      "callsign": "PIT_U_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 125.275
-    },
-    {
       "id": "01G90WWR5342GGFMJQDXWZSBQZ",
+      "physicalFacility": "PIT",
       "name": "Clearance Delivery",
+      "radioName": "Pittsburgh Clearance",
       "callsign": "PIT_DEL",
+      "areaId": "01HE76YSX2GPQ8J4FKH9YD8NT0",
+      "tcpId": "01K2NF1E62B9J7XY72Y48J79A1",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 40.48685,
+        "lon": -80.23394
       },
+      "range": 50,
       "freq": 126.75
     },
     {
-      "id": "01G90WZAKQE2Z5A2RAASAHW5VD",
-      "name": "Ground South",
-      "callsign": "PIT_S_GND",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 121.9
-    },
-    {
       "id": "01G90X13YRYHBY33N3DGZC22T9",
+      "physicalFacility": "PIT",
       "name": "Ground North",
+      "radioName": "Pittsburgh Ground",
       "callsign": "PIT_N_GND",
+      "areaId": "01HE76YSX2GPQ8J4FKH9YD8NT0",
+      "tcpId": "01K2NF1E62B9J7XY72Y48J79A1",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 40.48685,
+        "lon": -80.23394
       },
+      "range": 50,
       "freq": 127.8
     },
     {
-      "id": "01G90X2X1A9GRK9CNBZ6913ZFZ",
-      "name": "Local Control South",
-      "callsign": "PIT_S_TWR",
+      "id": "01G90WZAKQE2Z5A2RAASAHW5VD",
+      "physicalFacility": "PIT",
+      "name": "Ground South",
+      "radioName": "Pittsburgh Ground",
+      "callsign": "PIT_S_GND",
+      "areaId": "01HE76YSX2GPQ8J4FKH9YD8NT0",
+      "tcpId": "01K2NF1E62B9J7XY72Y48J79A1",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 40.48685,
+        "lon": -80.23394
       },
+      "range": 50,
+      "freq": 121.9
+    },
+    {
+      "id": "01G90X2X1A9GRK9CNBZ6913ZFZ",
+      "physicalFacility": "PIT",
+      "name": "Local Control South",
+      "radioName": "Pittsburgh Tower",
+      "callsign": "PIT_S_TWR",
+      "areaId": "01HE76YSX2GPQ8J4FKH9YD8NT0",
+      "tcpId": "01K2NF1E623P4DWAS730RHVWSD",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 40.48685,
+        "lon": -80.23394
+      },
+      "range": 50,
       "freq": 128.3
     },
     {
-      "id": "01G90X66B970TV7066EWVQZT4P",
-      "name": "Local Control North",
-      "callsign": "PIT_N_TWR",
+      "id": "01G90WN22SC80P7XA0C3BVNCAY",
+      "physicalFacility": "PIT",
+      "name": "Departure South",
+      "radioName": "Pittsburgh Departure",
+      "callsign": "PIT_S_DEP",
+      "areaId": "01G90W7GPYAH36YNPY6APE38V5",
+      "tcpId": "01K2NF1E628PCXHXZDNDG8KGD4",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 40.48685,
+        "lon": -80.23394
       },
+      "range": 150,
+      "freq": 119.35
+    },
+    {
+      "id": "01G90X66B970TV7066EWVQZT4P",
+      "physicalFacility": "PIT",
+      "name": "Local Control North",
+      "radioName": "Pittsburgh Tower",
+      "callsign": "PIT_N_TWR",
+      "areaId": "01HE76YSX2GPQ8J4FKH9YD8NT0",
+      "tcpId": "01K2NF1E62TP82G0QXQRYH50FQ",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 40.48685,
+        "lon": -80.23394
+      },
+      "range": 50,
       "freq": 119.1
     },
     {
-      "id": "01HDV202PF9XQ576RZT6QR236N",
-      "name": "TMU/OTHER",
-      "callsign": "PIT_T_APP",
+      "id": "01G90WP5B4TTSTF1GRMCH7CZHP",
+      "physicalFacility": "PIT",
+      "name": "Satellite",
+      "radioName": "Pittsburgh Approach",
+      "callsign": "PIT_U_APP",
+      "areaId": "01G90W7GPYAH36YNPY6APE38V5",
+      "tcpId": "01K2NF1E624CMBZF8QC50S325Y",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 40.48685,
+        "lon": -80.23394
       },
+      "range": 150,
+      "freq": 125.275
+    },
+    {
+      "id": "01HDV202PF9XQ576RZT6QR236N",
+      "physicalFacility": "PIT",
+      "name": "TMU/OTHER",
+      "radioName": "Pittsburgh Approach",
+      "callsign": "PIT_T_APP",
+      "areaId": "01G90W7GPYAH36YNPY6APE38V5",
+      "tcpId": "01K2NF1E62HR32WQHSQJSAYHX4",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 40.48685,
+        "lon": -80.23394
+      },
+      "range": 150,
       "freq": 123.45
     },
     {
-      "id": "1A",
+      "id": "01G90Z1FZDT95AN0FAPFCFYR1Y",
+      "physicalFacility": "AGC",
+      "name": "Ground",
+      "radioName": "Allegheny Ground",
+      "callsign": "AGC_GND",
+      "areaId": "01HE788BX0SATV4SYQJCE63HA8",
+      "tcpId": "01K2NF1E621818KS4X5DBD6EVE",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 40.48685,
+        "lon": -80.23394
+      },
+      "range": 50,
+      "freq": 121.7
     },
     {
-      "id": "1B",
+      "id": "01G90Z33Y53NKK1NCBKAZS57SK",
+      "physicalFacility": "AGC",
+      "name": "Local Control",
+      "radioName": "Allegheny Tower",
+      "callsign": "AGC_TWR",
+      "areaId": "01HE788BX0SATV4SYQJCE63HA8",
+      "tcpId": "01K2NF1E621818KS4X5DBD6EVE",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 40.48685,
+        "lon": -80.23394
+      },
+      "range": 50,
+      "freq": 121.1
     },
     {
-      "id": "1D",
+      "id": "01G90YJMRVEX0SAPR15RT3MN56",
+      "physicalFacility": "BVI",
+      "name": "Ground",
+      "radioName": "Beaver County Ground",
+      "callsign": "BVI_GND",
+      "areaId": "01HE788SKCN5ZNHE5EE664XSB5",
+      "tcpId": "01K2NF1E62V4BJ9W6KRG53YR46",
+      "tcp": "3T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 40.48685,
+        "lon": -80.23394
+      },
+      "range": 50,
+      "freq": 121.8
     },
     {
-      "id": "1G",
+      "id": "01G90YNGZJV5NNS1WR895S7H7K",
+      "physicalFacility": "BVI",
+      "name": "Local Control",
+      "radioName": "Beaver County Tower",
+      "callsign": "BVI_TWR",
+      "areaId": "01HE788SKCN5ZNHE5EE664XSB5",
+      "tcpId": "01K2NF1E62V4BJ9W6KRG53YR46",
+      "tcp": "3T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "2L",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "2U",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 40.48685,
+        "lon": -80.23394
+      },
+      "range": 50,
+      "freq": 120.3
     }
   ],
   "mapGroups": [

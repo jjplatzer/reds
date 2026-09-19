@@ -4,63 +4,74 @@
   "name": "Aspen TRACAB",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 40.569587575,
-    "lon": -104.96660805
+    "lat": 39.2218889,
+    "lon": -106.868222
   },
+  "areas": [
+    {
+      "id": "01GG8RJKJVZJVQMSYXMZMWS3TN",
+      "name": "ASE",
+      "visibilityCenter": {
+        "lat": 39.2218889,
+        "lon": -106.868222
+      },
+      "surveillanceRange": 80,
+      "underlyingAirports": [
+        "ASE"
+      ],
+      "ssaAirports": [
+        "ASE"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CJTBNKVKG55F4JNHJ50",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJTYWZDB0GR93YAQPC7",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GG1F41B8TD2V87SKB8YGNQD9",
-      "name": "Aspen Local",
-      "callsign": "ASE_TWR",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 118.85
-    },
-    {
-      "id": "01GG8RREGGWET4B8M76HHBM4ZB",
-      "name": "Ground",
-      "callsign": "ASE_GND",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 121.9
-    },
-    {
       "id": "01GG8RS07YMFBN5A6PXKRBE0Z1",
+      "physicalFacility": "ASE",
       "name": "Approach",
+      "radioName": "Aspen Approach",
       "callsign": "ASE_APP",
+      "areaId": "01GG8RJKJVZJVQMSYXMZMWS3TN",
+      "tcpId": "01K2NF1CJTBNKVKG55F4JNHJ50",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.2218889,
+        "lon": -106.868222
       },
+      "range": 80,
       "freq": 123.8
     },
     {
-      "id": "01HX5ETCXADNJZ0C2AK4K59W9P",
-      "name": "Delivery",
-      "callsign": "ASE_DEL",
+      "id": "01GG1F41B8TD2V87SKB8YGNQD9",
+      "physicalFacility": "ASE",
+      "name": "Aspen Local",
+      "radioName": "Aspen Tower",
+      "callsign": "ASE_TWR",
+      "areaId": "01GG8RJKJVZJVQMSYXMZMWS3TN",
+      "tcpId": "01K2NF1CJTYWZDB0GR93YAQPC7",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.2218889,
+        "lon": -106.868222
       },
-      "freq": 123.75
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
+      "range": 80,
+      "freq": 118.85
     }
   ],
   "mapGroups": [

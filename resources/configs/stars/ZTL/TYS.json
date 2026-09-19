@@ -4,100 +4,103 @@
   "name": "Knoxville ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.90558406666667,
-    "lon": -83.96840666666667
+    "lat": 35.812833,
+    "lon": -83.993333
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01H2MB77SFYRR8AT6DAD1YYBXT",
-      "name": "Clearance Delivery",
-      "callsign": "TYS_DEL",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+      "id": "01H2MBP7E0K8T2ZV0XG6ZX7WY9",
+      "name": "Approach",
+      "visibilityCenter": {
+        "lat": 35.812833,
+        "lon": -83.993333
       },
-      "freq": 121.65
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "TYS"
+      ]
     },
     {
-      "id": "01H2MBD1D9MKJCH70RN56DZWJE",
-      "name": "Ground Control",
-      "callsign": "TYS_GND",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+      "id": "01H2MBPCRBX7RNKK57G9XS9D7Z",
+      "name": "Tower",
+      "visibilityCenter": {
+        "lat": 35.812833,
+        "lon": -83.993333
       },
-      "freq": 121.9
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "TYS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E98VD5CH6PMNDEGV3C8",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1E986WSA7ECC2HF9AGZR",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1E982W014DZV7RW1E3SB",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01H2MC93N188BYASGFCJHYW55Q",
+      "physicalFacility": "TYS",
+      "name": "Radar East",
+      "radioName": "Knoxville Approach",
+      "callsign": "TYS_APP",
+      "areaId": "01H2MBP7E0K8T2ZV0XG6ZX7WY9",
+      "tcpId": "01K2NF1E98VD5CH6PMNDEGV3C8",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 35.812833,
+        "lon": -83.993333
+      },
+      "range": 150,
+      "freq": 118
     },
     {
       "id": "01H2MBN6FD0REN777J3KZTEPMP",
+      "physicalFacility": "TYS",
       "name": "Local Control",
+      "radioName": "Knoxville Tower",
       "callsign": "TYS_TWR",
+      "areaId": "01H2MBPCRBX7RNKK57G9XS9D7Z",
+      "tcpId": "01K2NF1E986WSA7ECC2HF9AGZR",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.812833,
+        "lon": -83.993333
       },
+      "range": 50,
       "freq": 121.2
     },
     {
       "id": "01H2MBVRB9WFKC8T8PYDQVNR29",
+      "physicalFacility": "TYS",
       "name": "Radar West",
+      "radioName": "Knoxville Approach",
       "callsign": "TYS_APP",
+      "areaId": "01H2MBP7E0K8T2ZV0XG6ZX7WY9",
+      "tcpId": "01K2NF1E982W014DZV7RW1E3SB",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.812833,
+        "lon": -83.993333
       },
+      "range": 150,
       "freq": 123.9
-    },
-    {
-      "id": "01H2MC93N188BYASGFCJHYW55Q",
-      "name": "Radar East",
-      "callsign": "TYS_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 118
-    },
-    {
-      "id": "01JAS6FCDW5HGE8C1WZZY70GBE",
-      "name": "TYS Guard",
-      "callsign": "TYS_G_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "01JAS6GN3DBCZMWMV6XTMJDBSW",
-      "name": "DKX Clearance",
-      "callsign": "TYS_FD_DEL",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.7
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
     }
   ],
   "mapGroups": [

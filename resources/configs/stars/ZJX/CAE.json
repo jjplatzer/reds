@@ -4,111 +4,181 @@
   "name": "Columbia ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 33.938833900000006,
+    "lon": -81.11954305
   },
+  "areas": [
+    {
+      "id": "01GA55TN9SM07CAWXPDVST4EJE",
+      "name": "CAE",
+      "visibilityCenter": {
+        "lat": 33.93883,
+        "lon": -81.11955
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "CAE",
+        "CUB",
+        "EOE",
+        "FDW",
+        "XNO",
+        "OGB"
+      ]
+    },
+    {
+      "id": "01JFZFJ9B1JYMJBBS3KFW4K9B4",
+      "name": "CAE TOWER",
+      "visibilityCenter": {
+        "lat": 33.9388378,
+        "lon": -81.1195361
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "CAE"
+      ],
+      "ssaAirports": [
+        "CAE"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFEX5BKH1BE09E9R9DR",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1DFE6J7VWV8H0G5YQ9ZN",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1DFE82PWDV24826B66K1",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1DFECZGMWEQX2QBEKR86",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1DFE82PWDV24826B66K1",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1DFEG6B6MCMJ2FHH1S7P",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1DFE82PWDV24826B66K1",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1DFEX51F4N89NAR6HK6K",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GA56633X3T4RTVS388TCGZ44",
-      "name": "Radar South",
-      "callsign": "CAE_S_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 124.15
-    },
-    {
-      "id": "01GA566HE20BP8C5B386F7D7GP",
-      "name": "Radar North",
-      "callsign": "CAE_N_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 133.4
-    },
-    {
       "id": "01GA56CJ45FX4QCNXQQ50KD507",
+      "physicalFacility": "CAE",
       "name": "Radar Final",
+      "radioName": "Columbia Approach",
       "callsign": "CAE_F_APP",
+      "areaId": "01GA55TN9SM07CAWXPDVST4EJE",
+      "tcpId": "01K2NF1DFE6J7VWV8H0G5YQ9ZN",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 33.93883,
+        "lon": -81.11955
       },
+      "range": 150,
       "freq": 128.5
     },
     {
-      "id": "01GA56HCB5Z1YD5YK98RG7795M",
-      "name": "Clearance Delivery",
-      "callsign": "CAE_DEL",
+      "id": "01GA566HE20BP8C5B386F7D7GP",
+      "physicalFacility": "CAE",
+      "name": "Radar North",
+      "radioName": "Columbia Approach",
+      "callsign": "CAE_N_APP",
+      "areaId": "01GA55TN9SM07CAWXPDVST4EJE",
+      "tcpId": "01K2NF1DFE82PWDV24826B66K1",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 33.93883,
+        "lon": -81.11955
       },
+      "range": 150,
+      "freq": 133.4
+    },
+    {
+      "id": "01GA56633X3T4RTVS388TCGZ44",
+      "physicalFacility": "CAE",
+      "name": "Radar South",
+      "radioName": "Columbia Approach",
+      "callsign": "CAE_S_APP",
+      "areaId": "01GA55TN9SM07CAWXPDVST4EJE",
+      "tcpId": "01K2NF1DFEG6B6MCMJ2FHH1S7P",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 33.93883,
+        "lon": -81.11955
+      },
+      "range": 150,
+      "freq": 124.15
+    },
+    {
+      "id": "01GA56HCB5Z1YD5YK98RG7795M",
+      "physicalFacility": "CAE",
+      "name": "Clearance Delivery",
+      "radioName": "Columbia Clearance Delivery",
+      "callsign": "CAE_DEL",
+      "areaId": "01JFZFJ9B1JYMJBBS3KFW4K9B4",
+      "tcpId": "01K2NF1DFEX51F4N89NAR6HK6K",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 33.9388378,
+        "lon": -81.1195361
+      },
+      "range": 50,
       "freq": 119.75
     },
     {
       "id": "01GA56JJGJZQXZASFQAA56YFQA",
+      "physicalFacility": "CAE",
       "name": "Ground Control",
+      "radioName": "Columbia Ground",
       "callsign": "CAE_GND",
+      "areaId": "01JFZFJ9B1JYMJBBS3KFW4K9B4",
+      "tcpId": "01K2NF1DFEX51F4N89NAR6HK6K",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 33.9388378,
+        "lon": -81.1195361
       },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01GA56MF54D1P8SB35KTQ4KJ1P",
+      "physicalFacility": "CAE",
       "name": "Local Control",
+      "radioName": "Columbia Tower",
       "callsign": "CAE_TWR",
+      "areaId": "01JFZFJ9B1JYMJBBS3KFW4K9B4",
+      "tcpId": "01K2NF1DFEX51F4N89NAR6HK6K",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 33.9388378,
+        "lon": -81.1195361
       },
+      "range": 50,
       "freq": 119.5
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
     }
   ],
   "mapGroups": [

@@ -4,90 +4,98 @@
   "name": "Monroe ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 32.51089,
+    "lon": -92.03859
   },
+  "areas": [
+    {
+      "id": "01H89R80N9WQ8T2WJRCBFF5JR2",
+      "name": "MLU",
+      "visibilityCenter": {
+        "lat": 32.51089,
+        "lon": -92.03859
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "BQP",
+        "F88",
+        "M79",
+        "MLU",
+        "RSN"
+      ],
+      "ssaAirports": [
+        "MLU"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8SV0YF0TTN1G1RG5XN",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H"
+    },
+    {
+      "id": "01K2NF1D8SQ7HJDZKCGK9SX42R",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1D8ST3J9CM0QMG0P09KV",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01H89RH2BR4CKY599QJ2N40QTY",
+      "physicalFacility": "MLU",
       "name": "High Radar",
+      "radioName": "Monroe Approach",
       "callsign": "MLU_H_APP",
+      "areaId": "01H89R80N9WQ8T2WJRCBFF5JR2",
+      "tcpId": "01K2NF1D8SV0YF0TTN1G1RG5XN",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.51089,
+        "lon": -92.03859
       },
+      "range": 150,
       "freq": 126.9
     },
     {
       "id": "01H89RJYSEGTE4YAW2VJ6VPDHA",
+      "physicalFacility": "MLU",
       "name": "Low Radar",
+      "radioName": "Monroe Approach",
       "callsign": "MLU_L_APP",
+      "areaId": "01H89R80N9WQ8T2WJRCBFF5JR2",
+      "tcpId": "01K2NF1D8SQ7HJDZKCGK9SX42R",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.51089,
+        "lon": -92.03859
       },
+      "range": 150,
       "freq": 118.15
     },
     {
       "id": "01H89RKVT7WDSRA953YR8E1AJ8",
+      "physicalFacility": "MLU",
       "name": "Local",
+      "radioName": "Monroe Tower",
       "callsign": "MLU_TWR",
+      "areaId": "01H89R80N9WQ8T2WJRCBFF5JR2",
+      "tcpId": "01K2NF1D8ST3J9CM0QMG0P09KV",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.51089,
+        "lon": -92.03859
       },
+      "range": 150,
       "freq": 118.9
-    },
-    {
-      "id": "01H89RN0GPA7NTSSJP6KBVV6Z5",
-      "name": "Ground",
-      "callsign": "MLU_GND",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01H89RNP7ZVSPFCAB3DJ3EGR7A",
-      "name": "Clearance",
-      "callsign": "MLU_DEL",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.65
-    },
-    {
-      "id": "01J9YHWG054RC8EK48544B6ZA6",
-      "name": "Guard",
-      "callsign": "MLU_EM_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
     }
   ],
   "mapGroups": [

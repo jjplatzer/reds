@@ -4,111 +4,208 @@
   "name": "Savannah ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 32.15894,
+    "lon": -81.03414666666667
   },
+  "areas": [
+    {
+      "id": "01GA7P1GRKPTGSAJWFD0G75FTY",
+      "name": "SAV",
+      "visibilityCenter": {
+        "lat": 32.12641,
+        "lon": -81.20272
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "HXD",
+        "LHW",
+        "SAV",
+        "SVN",
+        "TBR"
+      ]
+    },
+    {
+      "id": "01HCKHDYFX61V5WQ5CY8EC44EN",
+      "name": "Savannah Tower",
+      "visibilityCenter": {
+        "lat": 32.12641,
+        "lon": -81.20272
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "SAV"
+      ]
+    },
+    {
+      "id": "01JG0CQCPHT4A3P9110HVQF4T3",
+      "name": "HXD",
+      "visibilityCenter": {
+        "lat": 32.224,
+        "lon": -80.697
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "HXD"
+      ],
+      "ssaAirports": [
+        "HXD"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFEJ9F9J56CK8HE8FRQ",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1DFE4PNFK0S4K5BVXYK5",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1DFERV6X2VEXDY2PMZ7C",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1DFE4PNFK0S4K5BVXYK5",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1DFEJCRAZ87NF32MRHY2",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DFETKJX6S30JJJHCTH9",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DFE4PNFK0S4K5BVXYK5",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1DFEAMJD5HXVA66XHM4B",
+      "code": "3H",
+      "subset": 3,
+      "sectorId": "H"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GA7PFRTDDPZY2ZC4MVS8MGMV",
+      "physicalFacility": "SAV",
       "name": "North Radar",
+      "radioName": "Savannah Approach",
       "callsign": "SAV_N_APP",
+      "areaId": "01GA7P1GRKPTGSAJWFD0G75FTY",
+      "tcpId": "01K2NF1DFE4PNFK0S4K5BVXYK5",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 32.12641,
+        "lon": -81.20272
       },
+      "range": 150,
       "freq": 125.3
     },
     {
-      "id": "01GA7PHESHAM8614AAZFB58BTR",
-      "name": "West Radar",
-      "callsign": "SAV_W_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 118.4
-    },
-    {
       "id": "01GA7PJG92B1XKE4RTGQ4ZBMWH",
+      "physicalFacility": "SAV",
       "name": "South Radar",
+      "radioName": "Savannah Approach",
       "callsign": "SAV_S_APP",
+      "areaId": "01GA7P1GRKPTGSAJWFD0G75FTY",
+      "tcpId": "01K2NF1DFERV6X2VEXDY2PMZ7C",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 32.12641,
+        "lon": -81.20272
       },
+      "range": 150,
       "freq": 120.4
     },
     {
       "id": "01GA7PKBKKSE785916ZVFAM618",
+      "physicalFacility": "SAV",
       "name": "Clearance Delivery",
+      "radioName": "Savannah Clearance Delivery",
       "callsign": "SAV_DEL",
+      "areaId": "01HCKHDYFX61V5WQ5CY8EC44EN",
+      "tcpId": "01K2NF1DFEJCRAZ87NF32MRHY2",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 32.12641,
+        "lon": -81.20272
       },
+      "range": 50,
       "freq": 119.55
     },
     {
       "id": "01GA7PME6NPRTAAM6ZW51W8BV9",
+      "physicalFacility": "SAV",
       "name": "Ground Control",
+      "radioName": "Savannah Ground",
       "callsign": "SAV_GND",
+      "areaId": "01HCKHDYFX61V5WQ5CY8EC44EN",
+      "tcpId": "01K2NF1DFEJCRAZ87NF32MRHY2",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 32.12641,
+        "lon": -81.20272
       },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01GA7PNAJC1XGKNDHJ5BYK9MTB",
+      "physicalFacility": "SAV",
       "name": "Local Control",
+      "radioName": "Savannah Tower",
       "callsign": "SAV_TWR",
+      "areaId": "01HCKHDYFX61V5WQ5CY8EC44EN",
+      "tcpId": "01K2NF1DFEJCRAZ87NF32MRHY2",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 32.12641,
+        "lon": -81.20272
       },
+      "range": 50,
       "freq": 125.975
     },
     {
-      "id": "1D",
+      "id": "01GA7PHESHAM8614AAZFB58BTR",
+      "physicalFacility": "SAV",
+      "name": "West Radar",
+      "radioName": "Savannah Approach",
+      "callsign": "SAV_W_APP",
+      "areaId": "01GA7P1GRKPTGSAJWFD0G75FTY",
+      "tcpId": "01K2NF1DFETKJX6S30JJJHCTH9",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 32.12641,
+        "lon": -81.20272
+      },
+      "range": 150,
+      "freq": 118.4
     },
     {
-      "id": "1N",
+      "id": "01GA80V29ETQ5TAAWXS83W4303",
+      "physicalFacility": "HXD",
+      "name": "Local Control",
+      "radioName": "Hilton Head Tower",
+      "callsign": "HXD_TWR",
+      "areaId": "01JG0CQCPHT4A3P9110HVQF4T3",
+      "tcpId": "01K2NF1DFEAMJD5HXVA66XHM4B",
+      "tcp": "3H",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "3H",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 32.224,
+        "lon": -80.697
+      },
+      "range": 50,
+      "freq": 118.975
     }
   ],
   "mapGroups": [

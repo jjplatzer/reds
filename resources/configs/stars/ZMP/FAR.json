@@ -4,87 +4,138 @@
   "name": "Fargo ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 46.91183,
+    "lon": -96.8285
   },
+  "areas": [
+    {
+      "id": "01GFESKSW9QSZGZJWW3639Z0PW",
+      "name": "FAR",
+      "visibilityCenter": {
+        "lat": 46.91183,
+        "lon": -96.8285
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "FAR",
+        "JKJ"
+      ],
+      "ssaAirports": [
+        "FAR",
+        "JKJ"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3M75XMMDVTEE7VE9X7",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1D3MGZH5F7ZV23PB04KE",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1D3MGEHF5J3WWKGFKGJ7",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1D3MNAYHXFBZCT8KWBPG",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1D3MNAYHXFBZCT8KWBPG",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1D3MGZH5F7ZV23PB04KE",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GFESS4B9WEHNPZ04VH548KER",
+      "physicalFacility": "FAR",
       "name": "RE",
+      "radioName": "Fargo Approach",
       "callsign": "FAR_E_APP",
+      "areaId": "01GFESKSW9QSZGZJWW3639Z0PW",
+      "tcpId": "01K2NF1D3M75XMMDVTEE7VE9X7",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 46.91183,
+        "lon": -96.8285
       },
+      "range": 150,
       "freq": 120.4
     },
     {
-      "id": "01GFESZ1BKFZTRPKTPSCHTDRE6",
-      "name": "RW",
-      "callsign": "FAR_W_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 125.125
-    },
-    {
-      "id": "01GFESZMWVQ0BEDJK16G9GCY05",
-      "name": "LC",
-      "callsign": "FAR_TWR",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 133.8
-    },
-    {
       "id": "01GFET0DZP1FR7SWTZEV81ZF94",
+      "physicalFacility": "FAR",
       "name": "GC",
+      "radioName": "FAR_GND",
       "callsign": "FAR_GND",
+      "areaId": "01GFESKSW9QSZGZJWW3639Z0PW",
+      "tcpId": "01K2NF1D3MGEHF5J3WWKGFKGJ7",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 46.91183,
+        "lon": -96.8285
       },
+      "range": 150,
       "freq": 121.9
     },
     {
       "id": "01H69MP8VQHCAK7ACVD9896YZT",
+      "physicalFacility": "FAR",
       "name": "AR/DR TRACAB",
+      "radioName": "Fargo Approach",
       "callsign": "FAR_APP",
+      "areaId": "01GFESKSW9QSZGZJWW3639Z0PW",
+      "tcpId": "01K2NF1D3MNAYHXFBZCT8KWBPG",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 46.91183,
+        "lon": -96.8285
       },
+      "range": 150,
       "freq": 120.4
     },
     {
-      "id": "1E",
+      "id": "01GFESZMWVQ0BEDJK16G9GCY05",
+      "physicalFacility": "FAR",
+      "name": "LC",
+      "radioName": "Fargo Tower",
+      "callsign": "FAR_TWR",
+      "areaId": "01GFESKSW9QSZGZJWW3639Z0PW",
+      "tcpId": "01K2NF1D3MNAYHXFBZCT8KWBPG",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 46.91183,
+        "lon": -96.8285
+      },
+      "range": 150,
+      "freq": 133.8
     },
     {
-      "id": "1G",
+      "id": "01GFESZ1BKFZTRPKTPSCHTDRE6",
+      "physicalFacility": "FAR",
+      "name": "RW",
+      "radioName": "Fargo Approach",
+      "callsign": "FAR_W_APP",
+      "areaId": "01GFESKSW9QSZGZJWW3639Z0PW",
+      "tcpId": "01K2NF1D3MGZH5F7ZV23PB04KE",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
+        "lat": 46.91183,
+        "lon": -96.8285
+      },
+      "range": 150,
+      "freq": 125.125
     }
   ],
   "mapGroups": [

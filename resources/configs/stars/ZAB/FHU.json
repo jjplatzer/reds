@@ -4,53 +4,90 @@
   "name": "Libby ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 34.19564814666666,
-    "lon": -107.50666666666666
+    "lat": 31.59,
+    "lon": -110.34
   },
+  "areas": [
+    {
+      "id": "01G98PV9SK5NTCMSJ2HGKNZS7K",
+      "name": "FHU",
+      "visibilityCenter": {
+        "lat": 31.59,
+        "lon": -110.34
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "FHU"
+      ],
+      "ssaAirports": [
+        "FHU"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1BHTJCPY37Q2TJTMF309",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHTJRW2Z0QS7YAZ9Y1B",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G98PW7SSCQKAHG5R93EJFRVA",
+      "physicalFacility": "FHU",
       "name": "Approach",
+      "radioName": "Libby approach",
       "callsign": "FHU_APP",
+      "areaId": "01G98PV9SK5NTCMSJ2HGKNZS7K",
+      "tcpId": "01K2NF1BHTJCPY37Q2TJTMF309",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 31.59,
+        "lon": -110.34
       },
+      "range": 75,
       "freq": 127.05
     },
     {
-      "id": "01G98PXBX2A9JNY84YCDPN9E7V",
-      "name": "Local Control",
-      "callsign": "FHU_TWR",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 124.95
-    },
-    {
       "id": "01G98PYB5RP8D7YZH87J6NST3B",
+      "physicalFacility": "FHU",
       "name": "Ground",
+      "radioName": "Libby Ground",
       "callsign": "FHU_GND",
+      "areaId": "01G98PV9SK5NTCMSJ2HGKNZS7K",
+      "tcpId": "01K2NF1BHTJRW2Z0QS7YAZ9Y1B",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 31.59,
+        "lon": -110.34
       },
+      "range": 75,
       "freq": 121.7
     },
     {
-      "id": "1A",
+      "id": "01G98PXBX2A9JNY84YCDPN9E7V",
+      "physicalFacility": "FHU",
+      "name": "Local Control",
+      "radioName": "Libby Tower",
+      "callsign": "FHU_TWR",
+      "areaId": "01G98PV9SK5NTCMSJ2HGKNZS7K",
+      "tcpId": "01K2NF1BHTJRW2Z0QS7YAZ9Y1B",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 31.59,
+        "lon": -110.34
+      },
+      "range": 75,
+      "freq": 124.95
     }
   ],
   "mapGroups": [

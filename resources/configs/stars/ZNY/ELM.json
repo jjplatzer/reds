@@ -4,70 +4,120 @@
   "name": "Elmira ATCT/TRACAB",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 35.914982499999994,
-    "lon": -73.0446825
+    "lat": 42.162661,
+    "lon": -76.895409
   },
+  "areas": [
+    {
+      "id": "01H2BAQRM06JY06E4JMXD93D6A",
+      "name": "TRACAB",
+      "visibilityCenter": {
+        "lat": 42.162661,
+        "lon": -76.895409
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "ELM",
+        "ITH",
+        "N03",
+        "N38",
+        "PEO"
+      ],
+      "ssaAirports": [
+        "ELM",
+        "ITH"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DSGDVDNGRV9KBT53VKR",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DSGVWRF1H9FD9GNXR23",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSGVWRF1H9FD9GNXR23",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSG7YHT3MV43X58R4QF",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GAPPRN12ZJ7WPT6JETR942Y5",
-      "name": "Ground",
-      "callsign": "ELM_GND",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 121.95
-    },
-    {
-      "id": "01GAPPS6NGE5GQFEWM2YHDM47B",
-      "name": "Local",
-      "callsign": "ELM_TWR",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 121.1
-    },
-    {
       "id": "01H2BAXFTK80W0GVXZB8V8TFAM",
+      "physicalFacility": "ELM",
       "name": "North (Ithaca)",
+      "radioName": "Elmira Approach",
       "callsign": "ELM_N_APP",
+      "areaId": "01H2BAQRM06JY06E4JMXD93D6A",
+      "tcpId": "01K2NF1DSGDVDNGRV9KBT53VKR",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 42.162661,
+        "lon": -76.895409
       },
+      "range": 150,
       "freq": 124.3
     },
     {
       "id": "01H2BAYRJNW4AJQ6K79JHRBYS5",
+      "physicalFacility": "ELM",
       "name": "South (Elmira)",
+      "radioName": "Elmira Approach",
       "callsign": "ELM_S_APP",
+      "areaId": "01H2BAQRM06JY06E4JMXD93D6A",
+      "tcpId": "01K2NF1DSGVWRF1H9FD9GNXR23",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 42.162661,
+        "lon": -76.895409
       },
+      "range": 150,
       "freq": 128.425
     },
     {
-      "id": "1E",
+      "id": "01GAPPRN12ZJ7WPT6JETR942Y5",
+      "physicalFacility": "ELM",
+      "name": "Ground",
+      "radioName": "Elmira Ground",
+      "callsign": "ELM_GND",
+      "areaId": "01H2BAQRM06JY06E4JMXD93D6A",
+      "tcpId": "01K2NF1DSG7YHT3MV43X58R4QF",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 42.162661,
+        "lon": -76.895409
+      },
+      "range": 150,
+      "freq": 121.95
     },
     {
-      "id": "1I",
+      "id": "01GAPPS6NGE5GQFEWM2YHDM47B",
+      "physicalFacility": "ELM",
+      "name": "Local",
+      "radioName": "Elmira Tower",
+      "callsign": "ELM_TWR",
+      "areaId": "01H2BAQRM06JY06E4JMXD93D6A",
+      "tcpId": "01K2NF1DSG7YHT3MV43X58R4QF",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 42.162661,
+        "lon": -76.895409
+      },
+      "range": 150,
+      "freq": 121.1
     }
   ],
   "mapGroups": [

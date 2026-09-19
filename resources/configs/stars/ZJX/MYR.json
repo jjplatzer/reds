@@ -4,77 +4,131 @@
   "name": "Myrtle Beach ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 33.67966,
+    "lon": -78.9283
   },
+  "areas": [
+    {
+      "id": "01GA5TSK3HB6TQ3R46A1EE16TR",
+      "name": "MYR",
+      "visibilityCenter": {
+        "lat": 33.67966,
+        "lon": -78.9283
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "MYR",
+        "CRE",
+        "CPC",
+        "HYW",
+        "GGE",
+        "PHH",
+        "CKI"
+      ]
+    },
+    {
+      "id": "01HWTTWEEEMZHJKK35T7K9QV28",
+      "name": "MYR Tower",
+      "visibilityCenter": {
+        "lat": 33.67966,
+        "lon": -78.9283
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "MYR"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFE4KYH6TQSXX5F1SP4",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1DFEMB2JH1WGMY4SARJN",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1DFEM7XF9SJ1Q5PM0769",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DFEQ92ZD5KK1DYDH3Y8",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GA5V1PBBJDJ5B8FRGK42NQYB",
-      "name": "West Approach",
-      "callsign": "MYR_W_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 127.4
-    },
-    {
-      "id": "01GA5V3E06WYZEMGNWHV8NRT1N",
-      "name": "East Approach",
-      "callsign": "MYR_E_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 119.2
-    },
-    {
       "id": "01GA5V4XPSFFX13MTSPD6CZKJJ",
+      "physicalFacility": "MYR",
       "name": "Ground Control",
+      "radioName": "Myrtle Beach Ground",
       "callsign": "MYR_GND",
+      "areaId": "01HWTTWEEEMZHJKK35T7K9QV28",
+      "tcpId": "01K2NF1DFE4KYH6TQSXX5F1SP4",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 33.67966,
+        "lon": -78.9283
       },
+      "range": 50,
       "freq": 120.3
     },
     {
-      "id": "01GA5V6KCRAJ3HSQVWX51MQFC0",
-      "name": "Local Control",
-      "callsign": "MYR_TWR",
+      "id": "01GA5V3E06WYZEMGNWHV8NRT1N",
+      "physicalFacility": "MYR",
+      "name": "East Approach",
+      "radioName": "Myrtle Beach Approach",
+      "callsign": "MYR_E_APP",
+      "areaId": "01GA5TSK3HB6TQ3R46A1EE16TR",
+      "tcpId": "01K2NF1DFEMB2JH1WGMY4SARJN",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 33.67966,
+        "lon": -78.9283
       },
+      "range": 150,
+      "freq": 119.2
+    },
+    {
+      "id": "01GA5V6KCRAJ3HSQVWX51MQFC0",
+      "physicalFacility": "MYR",
+      "name": "Local Control",
+      "radioName": "Myrtle Beach Tower",
+      "callsign": "MYR_TWR",
+      "areaId": "01HWTTWEEEMZHJKK35T7K9QV28",
+      "tcpId": "01K2NF1DFEM7XF9SJ1Q5PM0769",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 33.67966,
+        "lon": -78.9283
+      },
+      "range": 50,
       "freq": 128.45
     },
     {
-      "id": "1D",
+      "id": "01GA5V1PBBJDJ5B8FRGK42NQYB",
+      "physicalFacility": "MYR",
+      "name": "West Approach",
+      "radioName": "Myrtle Beach Approach",
+      "callsign": "MYR_W_APP",
+      "areaId": "01GA5TSK3HB6TQ3R46A1EE16TR",
+      "tcpId": "01K2NF1DFEQ92ZD5KK1DYDH3Y8",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 33.67966,
+        "lon": -78.9283
+      },
+      "range": 150,
+      "freq": 127.4
     }
   ],
   "mapGroups": [

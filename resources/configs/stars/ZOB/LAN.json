@@ -4,179 +4,411 @@
   "name": "Great Lakes ATCT/TRACON East Wall",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.65805,
-    "lon": -81.181585
+    "lat": 42.91655,
+    "lon": -83.95717499999999
   },
+  "areas": [
+    {
+      "id": "01G9104KSGMJJ2R2B727SEGS7Y",
+      "name": "Great Lakes TRACON",
+      "visibilityCenter": {
+        "lat": 42.9637,
+        "lon": -83.7464
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "LAN",
+        "FNT",
+        "MBS",
+        "JXN"
+      ],
+      "ssaAirports": [
+        "LAN",
+        "FNT",
+        "MBS",
+        "JXN"
+      ]
+    },
+    {
+      "id": "01HE76SZEHKRMDWZXZD9NA0K85",
+      "name": "Lansing ATCT",
+      "visibilityCenter": {
+        "lat": 42.7751,
+        "lon": -84.5895
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "LAN"
+      ],
+      "ssaAirports": [
+        "LAN"
+      ]
+    },
+    {
+      "id": "01HE783YMDZFH1E53FWFZ57EV8",
+      "name": "Flint ATCT",
+      "visibilityCenter": {
+        "lat": 42.9637,
+        "lon": -83.7464
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "FNT"
+      ],
+      "ssaAirports": [
+        "FNT"
+      ]
+    },
+    {
+      "id": "01HE784YF9FVQQFKBRTK81G2Y2",
+      "name": "Saginaw ATCT",
+      "visibilityCenter": {
+        "lat": 42.9637,
+        "lon": -83.7464
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "MDS"
+      ],
+      "ssaAirports": [
+        "MBS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E62TNVHPZJNKDB6RD54",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1E62QG0N7NMMAYQ8WZ9B",
+      "parentTcp": "1H"
+    },
+    {
+      "id": "01K2NF1E62MA34JKVKPS5JBDMG",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1E625G0AFKPJWHZ8KH3D",
+      "parentTcp": "1L"
+    },
+    {
+      "id": "01K2NF1E62QG0N7NMMAYQ8WZ9B",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1E625G0AFKPJWHZ8KH3D",
+      "parentTcp": "1L"
+    },
+    {
+      "id": "01K2NF1E625G0AFKPJWHZ8KH3D",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1E62X53K16V9KEPE62KC",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "parentTcpId": "01K2NF1E62MA34JKVKPS5JBDMG",
+      "parentTcp": "1B"
+    },
+    {
+      "id": "01K2NF1E62678HA97RHH7F1V6E",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1E625G0AFKPJWHZ8KH3D",
+      "parentTcp": "1L"
+    },
+    {
+      "id": "01K2NF1E62G9DMYH91A77PZT6W",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    },
+    {
+      "id": "01K2NF1E627RHP0HCKXS0RM3QD",
+      "code": "4L",
+      "subset": 4,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1E62K9PWM2NJGC1A44TN",
+      "code": "4T",
+      "subset": 4,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E62FMTFG2NVR65AV24A",
+      "code": "5T",
+      "subset": 5,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E62RDMGE2KWGJFFAWWJ",
+      "code": "6T",
+      "subset": 6,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G910QBJ1JXHZ16RSPVH5BP92",
-      "name": "Buick",
-      "callsign": "LAN_B_APP",
+      "id": "01G9111TMTGTHKWYD9VR0VD9D1",
+      "physicalFacility": "LAN",
+      "name": "Bay",
+      "radioName": "Great Lakes Approach",
+      "callsign": "LAN_A_APP",
+      "areaId": "01G9104KSGMJJ2R2B727SEGS7Y",
+      "tcpId": "01K2NF1E62TNVHPZJNKDB6RD54",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9637,
+        "lon": -83.7464
       },
+      "range": 150,
+      "freq": 120.95
+    },
+    {
+      "id": "01G910QBJ1JXHZ16RSPVH5BP92",
+      "physicalFacility": "LAN",
+      "name": "Buick",
+      "radioName": "Great Lakes Approach",
+      "callsign": "LAN_B_APP",
+      "areaId": "01G9104KSGMJJ2R2B727SEGS7Y",
+      "tcpId": "01K2NF1E62MA34JKVKPS5JBDMG",
+      "tcp": "1B",
+      "visualCenter": {
+        "lat": 42.9637,
+        "lon": -83.7464
+      },
+      "range": 150,
       "freq": 118.8
     },
     {
-      "id": "01G910W0Q175S9F5W7GKEYJ3AD",
-      "name": "Olds",
-      "callsign": "LAN_O_APP",
+      "id": "01G911DFW919DKD0WDTSGHKRC8",
+      "physicalFacility": "LAN",
+      "name": "Chippewa",
+      "radioName": "Great Lakes Approach",
+      "callsign": "LAN_H_APP",
+      "areaId": "01G9104KSGMJJ2R2B727SEGS7Y",
+      "tcpId": "01K2NF1E62QG0N7NMMAYQ8WZ9B",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9637,
+        "lon": -83.7464
       },
+      "range": 150,
+      "freq": 126.45
+    },
+    {
+      "id": "01G910Z525SRPQ5WDTXQJ5W7KK",
+      "physicalFacility": "LAN",
+      "name": "Capital",
+      "radioName": "Great Lakes Approach",
+      "callsign": "LAN_L_APP",
+      "areaId": "01G9104KSGMJJ2R2B727SEGS7Y",
+      "tcpId": "01K2NF1E625G0AFKPJWHZ8KH3D",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 42.9637,
+        "lon": -83.7464
+      },
+      "range": 150,
+      "freq": 118.65
+    },
+    {
+      "id": "01G910W0Q175S9F5W7GKEYJ3AD",
+      "physicalFacility": "LAN",
+      "name": "Olds",
+      "radioName": "Great Lakes Approach",
+      "callsign": "LAN_O_APP",
+      "areaId": "01G9104KSGMJJ2R2B727SEGS7Y",
+      "tcpId": "01K2NF1E62X53K16V9KEPE62KC",
+      "tcp": "1O",
+      "visualCenter": {
+        "lat": 42.9637,
+        "lon": -83.7464
+      },
+      "range": 150,
       "freq": 128.55
     },
     {
       "id": "01G910XKF8117DYPJ3SXXK1CF9",
+      "physicalFacility": "LAN",
       "name": "Reynolds",
+      "radioName": "Great Lakes Approach",
       "callsign": "LAN_Y_APP",
+      "areaId": "01G9104KSGMJJ2R2B727SEGS7Y",
+      "tcpId": "01K2NF1E62678HA97RHH7F1V6E",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9637,
+        "lon": -83.7464
       },
+      "range": 150,
       "freq": 127.3
     },
     {
-      "id": "01G910Z525SRPQ5WDTXQJ5W7KK",
-      "name": "Capital",
-      "callsign": "LAN_L_APP",
+      "id": "01HDWY0TPY5QBM4BV65WTN3MJK",
+      "physicalFacility": "LAN",
+      "name": "TMU/OTHER",
+      "radioName": "Great Lakes Approach",
+      "callsign": "LAN_T_APP",
+      "areaId": "01G9104KSGMJJ2R2B727SEGS7Y",
+      "tcpId": "01K2NF1E62G9DMYH91A77PZT6W",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9637,
+        "lon": -83.7464
       },
-      "freq": 118.65
+      "range": 150,
+      "freq": 123.45
     },
     {
-      "id": "01G9111TMTGTHKWYD9VR0VD9D1",
-      "name": "Bay",
-      "callsign": "LAN_A_APP",
+      "id": "01G9127SC42EVW1KJMGSRD3T9H",
+      "physicalFacility": "MBS",
+      "name": "Clearance Delivery",
+      "radioName": "Saginaw Clearance",
+      "callsign": "MBS_DEL",
+      "areaId": "01HE784YF9FVQQFKBRTK81G2Y2",
+      "tcpId": "01K2NF1E627RHP0HCKXS0RM3QD",
+      "tcp": "4L",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9637,
+        "lon": -83.7464
       },
-      "freq": 120.95
+      "range": 50,
+      "freq": 121.85
     },
     {
-      "id": "01G911DFW919DKD0WDTSGHKRC8",
-      "name": "Chippewa",
-      "callsign": "LAN_H_APP",
+      "id": "01G912AM8Z90CE7YH8327YZVV5",
+      "physicalFacility": "MBS",
+      "name": "Ground",
+      "radioName": "Saginaw Ground",
+      "callsign": "MBS_GND",
+      "areaId": "01HE784YF9FVQQFKBRTK81G2Y2",
+      "tcpId": "01K2NF1E627RHP0HCKXS0RM3QD",
+      "tcp": "4L",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9637,
+        "lon": -83.7464
       },
-      "freq": 126.45
+      "range": 50,
+      "freq": 121.7
+    },
+    {
+      "id": "01G912BHTFWCXMZ9VJRCSN636G",
+      "physicalFacility": "MBS",
+      "name": "Local Control",
+      "radioName": "Saginaw Tower",
+      "callsign": "MBS_TWR",
+      "areaId": "01HE784YF9FVQQFKBRTK81G2Y2",
+      "tcpId": "01K2NF1E627RHP0HCKXS0RM3QD",
+      "tcp": "4L",
+      "visualCenter": {
+        "lat": 42.9637,
+        "lon": -83.7464
+      },
+      "range": 50,
+      "freq": 120.1
     },
     {
       "id": "01G911H2MAK31KZK69R921W0RM",
+      "physicalFacility": "LAN",
       "name": "Clearance Delivery",
+      "radioName": "Lansing Clearance",
       "callsign": "LAN_DEL",
+      "areaId": "01HE76SZEHKRMDWZXZD9NA0K85",
+      "tcpId": "01K2NF1E62FMTFG2NVR65AV24A",
+      "tcp": "5T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.7751,
+        "lon": -84.5895
       },
+      "range": 50,
       "freq": 123.675
     },
     {
       "id": "01G911K4N80ZE5QBGH9DZVPNRP",
+      "physicalFacility": "LAN",
       "name": "Ground",
+      "radioName": "Lansing Ground",
       "callsign": "LAN_GND",
+      "areaId": "01HE76SZEHKRMDWZXZD9NA0K85",
+      "tcpId": "01K2NF1E62FMTFG2NVR65AV24A",
+      "tcp": "5T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.7751,
+        "lon": -84.5895
       },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01G911KYSWXMD1CBHC98KD49V6",
+      "physicalFacility": "LAN",
       "name": "Local Control",
+      "radioName": "Lansing Tower",
       "callsign": "LAN_TWR",
+      "areaId": "01HE76SZEHKRMDWZXZD9NA0K85",
+      "tcpId": "01K2NF1E62FMTFG2NVR65AV24A",
+      "tcp": "5T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.7751,
+        "lon": -84.5895
       },
+      "range": 50,
       "freq": 119.9
     },
     {
-      "id": "01HDWY0TPY5QBM4BV65WTN3MJK",
-      "name": "TMU/OTHER",
-      "callsign": "LAN_T_APP",
+      "id": "01G91220H3NQ30XZMWR91Y10W5",
+      "physicalFacility": "FNT",
+      "name": "Clearance Delivery",
+      "radioName": "Flint Clearance",
+      "callsign": "FNT_DEL",
+      "areaId": "01HE783YMDZFH1E53FWFZ57EV8",
+      "tcpId": "01K2NF1E62RDMGE2KWGJFFAWWJ",
+      "tcp": "6T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9637,
+        "lon": -83.7464
       },
-      "freq": 123.45
+      "range": 50,
+      "freq": 121.75
     },
     {
-      "id": "1L",
+      "id": "01G91232VC0Z4BTGCWY8QYADPB",
+      "physicalFacility": "FNT",
+      "name": "Ground",
+      "radioName": "Flint Ground",
+      "callsign": "FNT_GND",
+      "areaId": "01HE783YMDZFH1E53FWFZ57EV8",
+      "tcpId": "01K2NF1E62RDMGE2KWGJFFAWWJ",
+      "tcp": "6T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.9637,
+        "lon": -83.7464
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1T",
+      "id": "01G9123YCF230JGW4EARAHF0CD",
+      "physicalFacility": "FNT",
+      "name": "Local Control",
+      "radioName": "Flint Tower",
+      "callsign": "FNT_TWR",
+      "areaId": "01HE783YMDZFH1E53FWFZ57EV8",
+      "tcpId": "01K2NF1E62RDMGE2KWGJFFAWWJ",
+      "tcp": "6T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "2B",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "2L",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "2O",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "3A",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "3H",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "3L",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
+        "lat": 42.9637,
+        "lon": -83.7464
+      },
+      "range": 50,
+      "freq": 126.3
     }
   ],
   "mapGroups": [

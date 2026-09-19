@@ -4,128 +4,189 @@
   "name": "NAS Fallon RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 37.9016125,
-    "lon": -120.687685
+    "lat": 39.4178306,
+    "lon": -118.6985883
   },
+  "areas": [
+    {
+      "id": "01GFG8R1FBBXT6DAJWYXR2T71W",
+      "name": "NFL",
+      "visibilityCenter": {
+        "lat": 39.4178306,
+        "lon": -118.6985883
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "NFL"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1C9S49J9HDMQ6ZEMTWAX",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1C9SWQE3501ZBAWR66HQ",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1C9S49J9HDMQ6ZEMTWAX",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1C9SZSKF5BKYHZ5V0RXS",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1C9S49J9HDMQ6ZEMTWAX",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1C9S371VW9R7E104CM2Q",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1C9S49J9HDMQ6ZEMTWAX",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1C9SR8SEQJBRNZRRPQVS",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1C9S49J9HDMQ6ZEMTWAX",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1C9SEPSB3VG9CQ3GCEDE",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1C9S49J9HDMQ6ZEMTWAX",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1C9SD94H9TA455KT87P3",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GFG8Y383R720VTM3VGWNBSHZ",
+      "physicalFacility": "NFL",
       "name": "Approach 1",
+      "radioName": "Fallon Approach",
       "callsign": "NFL_APP",
+      "areaId": "01GFG8R1FBBXT6DAJWYXR2T71W",
+      "tcpId": "01K2NF1C9S49J9HDMQ6ZEMTWAX",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 39.4178306,
+        "lon": -118.6985883
       },
+      "range": 150,
       "freq": 120.85
     },
     {
-      "id": "01GFG8Z9B2RE4EABCG38ZS4FKE",
-      "name": "LC",
-      "callsign": "NFL_TWR",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 119.25
-    },
-    {
       "id": "01HN95NNMT4S6M67AGV8EEJPJF",
+      "physicalFacility": "NFL",
       "name": "Approach 2",
+      "radioName": "Fallon Approach",
       "callsign": "NFL_APP",
+      "areaId": "01GFG8R1FBBXT6DAJWYXR2T71W",
+      "tcpId": "01K2NF1C9SWQE3501ZBAWR66HQ",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 39.4178306,
+        "lon": -118.6985883
       },
+      "range": 150,
       "freq": 120.85
     },
     {
       "id": "01HN95PH6XJKWN663EFSKXEQ25",
+      "physicalFacility": "NFL",
       "name": "Desert 1",
+      "radioName": "Fallon Desert",
       "callsign": "NFL_D_APP",
+      "areaId": "01GFG8R1FBBXT6DAJWYXR2T71W",
+      "tcpId": "01K2NF1C9SZSKF5BKYHZ5V0RXS",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 39.4178306,
+        "lon": -118.6985883
       },
+      "range": 150,
       "freq": 120.85
     },
     {
       "id": "01HN95QWJWBET0K1MG848TVMVD",
+      "physicalFacility": "NFL",
       "name": "Desert 2",
+      "radioName": "Fallon Desert",
       "callsign": "NFL_D_APP",
+      "areaId": "01GFG8R1FBBXT6DAJWYXR2T71W",
+      "tcpId": "01K2NF1C9S371VW9R7E104CM2Q",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 39.4178306,
+        "lon": -118.6985883
       },
-      "freq": 120.85
-    },
-    {
-      "id": "01HN964M26H2AC7ACCBMZYRA2G",
-      "name": "ASR-1",
-      "callsign": "NFL_APP",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
+      "range": 150,
       "freq": 120.85
     },
     {
       "id": "01HN965KGPYD9RZWNY67E6T1RH",
+      "physicalFacility": "NFL",
       "name": "ASR-2",
+      "radioName": "Fallon Final",
       "callsign": "NFL_APP",
+      "areaId": "01GFG8R1FBBXT6DAJWYXR2T71W",
+      "tcpId": "01K2NF1C9SR8SEQJBRNZRRPQVS",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 39.4178306,
+        "lon": -118.6985883
       },
+      "range": 150,
       "freq": 120.85
     },
     {
-      "id": "1A",
+      "id": "01HN964M26H2AC7ACCBMZYRA2G",
+      "physicalFacility": "NFL",
+      "name": "ASR-1",
+      "radioName": "Fallon Final",
+      "callsign": "NFL_APP",
+      "areaId": "01GFG8R1FBBXT6DAJWYXR2T71W",
+      "tcpId": "01K2NF1C9SEPSB3VG9CQ3GCEDE",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 39.4178306,
+        "lon": -118.6985883
+      },
+      "range": 150,
+      "freq": 120.85
     },
     {
-      "id": "1B",
+      "id": "01GFG8Z9B2RE4EABCG38ZS4FKE",
+      "physicalFacility": "NFL",
+      "name": "LC",
+      "radioName": "Navy Fallon Tower",
+      "callsign": "NFL_TWR",
+      "areaId": "01GFG8R1FBBXT6DAJWYXR2T71W",
+      "tcpId": "01K2NF1C9SD94H9TA455KT87P3",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 39.4178306,
+        "lon": -118.6985883
+      },
+      "range": 150,
+      "freq": 119.25
     }
   ],
   "mapGroups": [

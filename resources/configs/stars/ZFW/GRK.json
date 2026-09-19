@@ -4,90 +4,100 @@
   "name": "Robert Gray AAF ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 31.06725,
+    "lon": -97.8289167
   },
+  "areas": [
+    {
+      "id": "01GW3Z8G78VASSDA2RQ6825S19",
+      "name": "GRK",
+      "visibilityCenter": {
+        "lat": 31.06725,
+        "lon": -97.8289167
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "GRK",
+        "HLR",
+        "ILE",
+        "LZZ",
+        "MNZ",
+        "TPL"
+      ],
+      "ssaAirports": [
+        "GRK",
+        "HLR"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8TXC2S67Y8Q54PJDF3",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1D8TZ0THRC72FXH2JT57",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1D8T0D1Y5323VVBDVCN9",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GW3ZDXY0X65BF6JNBQZCVPKV",
-      "name": "West Radar",
-      "callsign": "GRK_W_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 120.075
-    },
-    {
-      "id": "01GW3ZGG4Y03KYZ51JK40PB9ED",
-      "name": "Local",
-      "callsign": "GRK_TWR",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 120.75
-    },
-    {
-      "id": "01GW3ZNEN5PZS3KPVAAZS6CDZH",
-      "name": "Ground",
-      "callsign": "GRK_GND",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.8
-    },
-    {
       "id": "01H89VHNSRMENNP7MN1XPRVPP9",
+      "physicalFacility": "GRK",
       "name": "East Radar",
+      "radioName": "Gray Approach",
       "callsign": "GRK_E_APP",
+      "areaId": "01GW3Z8G78VASSDA2RQ6825S19",
+      "tcpId": "01K2NF1D8TXC2S67Y8Q54PJDF3",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 31.06725,
+        "lon": -97.8289167
       },
+      "range": 150,
       "freq": 134.35
     },
     {
-      "id": "01H89VKHTNNRX0H4Q4MY983J2Z",
-      "name": "Clearance",
-      "callsign": "GRK_DEL",
+      "id": "01GW3ZGG4Y03KYZ51JK40PB9ED",
+      "physicalFacility": "GRK",
+      "name": "Local",
+      "radioName": "Gray Tower",
+      "callsign": "GRK_TWR",
+      "areaId": "01GW3Z8G78VASSDA2RQ6825S19",
+      "tcpId": "01K2NF1D8TZ0THRC72FXH2JT57",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 31.06725,
+        "lon": -97.8289167
       },
-      "freq": 126.2
+      "range": 150,
+      "freq": 120.75
     },
     {
-      "id": "01J9YJ0WTAFJV86DJ72A86GTQ8",
-      "name": "Guard",
-      "callsign": "GRK_EM_APP",
+      "id": "01GW3ZDXY0X65BF6JNBQZCVPKV",
+      "physicalFacility": "GRK",
+      "name": "West Radar",
+      "radioName": "Gray Approach",
+      "callsign": "GRK_W_APP",
+      "areaId": "01GW3Z8G78VASSDA2RQ6825S19",
+      "tcpId": "01K2NF1D8T0D1Y5323VVBDVCN9",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 31.06725,
+        "lon": -97.8289167
       },
-      "freq": 121.5
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+      "range": 150,
+      "freq": 120.075
     }
   ],
   "mapGroups": [

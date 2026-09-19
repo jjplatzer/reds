@@ -4,333 +4,890 @@
   "name": "Tampa ATCT",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 25.98185666666667,
-    "lon": -76.699767
+    "lat": 27.92071087777778,
+    "lon": -82.4139046
   },
+  "areas": [
+    {
+      "id": "01GTHKG708WXNYY3P9A4ENKG44",
+      "name": "Tampa",
+      "visibilityCenter": {
+        "lat": 27.987778,
+        "lon": -82.545
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "TPA",
+        "SRQ",
+        "PIE",
+        "LAL",
+        "SPG",
+        "BKV",
+        "BOW",
+        "MCF"
+      ],
+      "ssaAirports": [
+        "TPA",
+        "SRQ",
+        "PIE",
+        "LAL",
+        "SPG"
+      ]
+    },
+    {
+      "id": "01HBR7Q243C0KJRVVA1ET8GT50",
+      "name": "Lakeland Tower",
+      "visibilityCenter": {
+        "lat": 27.9876389,
+        "lon": -82.019
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "LAL"
+      ]
+    },
+    {
+      "id": "01HBR7Q243FGAE8Y25D87FRH4G",
+      "name": "Whitted Tower",
+      "visibilityCenter": {
+        "lat": 27.7651142,
+        "lon": -82.6269397
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "SPG"
+      ]
+    },
+    {
+      "id": "01HBR7Q243FXNS902WN9W5VN83",
+      "name": "Sarasota Tower",
+      "visibilityCenter": {
+        "lat": 27.3954444,
+        "lon": -82.5543889
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "SRQ"
+      ]
+    },
+    {
+      "id": "01HBR7Q243TPVXA6YR943JZJ9Z",
+      "name": "St. Petersburg-Clearwater Tower",
+      "visibilityCenter": {
+        "lat": 27.9086336,
+        "lon": -82.68651
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "PIE"
+      ]
+    },
+    {
+      "id": "01HBR7Q243Y4G9TYAGNBMGJ81Q",
+      "name": "Tampa Tower",
+      "visibilityCenter": {
+        "lat": 27.9754722,
+        "lon": -82.53325
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "TPA"
+      ],
+      "ssaAirports": [
+        "TPA"
+      ]
+    },
+    {
+      "id": "01HBR7Q244367T1TN6F7JA5HQW",
+      "name": "Bartow Tower",
+      "visibilityCenter": {
+        "lat": 27.9433611,
+        "lon": -81.7834167
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "BOW"
+      ]
+    },
+    {
+      "id": "01HBR7Q2448MGCM0A5WZBVKQY2",
+      "name": "Brooksville Tower",
+      "visibilityCenter": {
+        "lat": 28.4736111,
+        "lon": -82.4554167
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "BKV"
+      ]
+    },
+    {
+      "id": "01HBR7Q244JXK1ATZGYVNWYP5Q",
+      "name": "MacDill Tower",
+      "visibilityCenter": {
+        "lat": 27.8493444,
+        "lon": -82.5212194
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "MCF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1C5SMNFP7YPNB50S25WK",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SGSFWGCW0TVJXMH3H",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1C5SDSQR42NX711D7PBY",
+      "parentTcp": "1L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S4EDJCHD3P6XFWSVK",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1C5SDSQR42NX711D7PBY",
+      "parentTcp": "1L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SSQB1AQAY6KG73MDW",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1C5SGSFWGCW0TVJXMH3H",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SZSQVDX96ZKEW9CYN",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1C5SDSQR42NX711D7PBY",
+      "parentTcp": "1L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SM60CJSDYDZTK5197",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1C5SJ1Q8766Z0W304Q4A",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S173JH64AXKAF692J",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SDSQR42NX711D7PBY",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SMXBPBN265QQHZ2RE",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1C5SJ1Q8766Z0W304Q4A",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SJVR4PCKGNQHADYEV",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1C5S4EDJCHD3P6XFWSVK",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S82HM2PMDW8QE3HDV",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SZHN7CXVY49Q6K1EN",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1C5SDSQR42NX711D7PBY",
+      "parentTcp": "1L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SJ1Q8766Z0W304Q4A",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1C5SDSQR42NX711D7PBY",
+      "parentTcp": "1L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SXZ8BR803G5323JD3",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S0CVXHCKDD7G7P47T",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SPW29GWXN3P0HGXPR",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1C5S4EDJCHD3P6XFWSVK",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SRWWTMRX8TSWGHJK6",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SE7X1041PT7K08N74",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1C5SXZ8BR803G5323JD3",
+      "parentTcp": "1T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S3G3NHH8R77R4KX6P",
+      "code": "2I",
+      "subset": 2,
+      "sectorId": "I",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SDKA1THX336AFD7FF",
+      "code": "2Q",
+      "subset": 2,
+      "sectorId": "Q",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5SZ74P6DAVYHSD8F4T",
+      "code": "2Z",
+      "subset": 2,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5S45J1QYTT4EPC4C4E",
+      "code": "3Z",
+      "subset": 3,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GFER5YMGSKR7YB8225X70KEH",
-      "name": "Local Control 1",
-      "callsign": "TPA_TWR",
+      "id": "01GFESMKN3NMQKMKHWCR3MSAJX",
+      "physicalFacility": "SPG",
+      "name": "Ground Control",
+      "radioName": "Whitted Ground",
+      "callsign": "SPG_GND",
+      "areaId": "01HBR7Q243FGAE8Y25D87FRH4G",
+      "tcpId": "01K2NF1C5SMNFP7YPNB50S25WK",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 27.7651142,
+        "lon": -82.6269397
       },
-      "freq": 119.5
+      "range": 150,
+      "freq": 121.8
     },
     {
-      "id": "01GFER6J72R6S984CES443V060",
-      "name": "Ground Control 1",
-      "callsign": "TPA_GND",
+      "id": "01GFESM82S6RTDFGQ8XSAHYY71",
+      "physicalFacility": "SPG",
+      "name": "Local Control",
+      "radioName": "Whitted Tower",
+      "callsign": "SPG_TWR",
+      "areaId": "01HBR7Q243FGAE8Y25D87FRH4G",
+      "tcpId": "01K2NF1C5SMNFP7YPNB50S25WK",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 27.7651142,
+        "lon": -82.6269397
       },
-      "freq": 121.7
-    },
-    {
-      "id": "01GFER7FB9HZMNTEAQ3BVW9CH7",
-      "name": "Clearance Delivery",
-      "callsign": "TPA_DEL",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 133.6
-    },
-    {
-      "id": "01GFER8D62QZGCFDKD9Y0ES9F3",
-      "name": "Local Control 2",
-      "callsign": "TPA_2_TWR",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 119.05
-    },
-    {
-      "id": "01GFER9BDMJPWQVE4N18T8N7ND",
-      "name": "East Satellite",
-      "callsign": "TPA_L_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 119.9
-    },
-    {
-      "id": "01GFERAJNJASCYKV70VHCPSJM0",
-      "name": "West Arrival",
-      "callsign": "TPA_W_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 132.525
-    },
-    {
-      "id": "01GFERB8SJM5MTAMJNK9Z9V7A3",
-      "name": "West Satellite",
-      "callsign": "TPA_P_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 125.3
-    },
-    {
-      "id": "01GFERC878RT6BYB4ASRNQPC7B",
-      "name": "West Departure",
-      "callsign": "TPA_D_DEP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 118.8
-    },
-    {
-      "id": "01GFERCXY3P47FX3KPR6XRG8ED",
-      "name": "South Satellite",
-      "callsign": "TPA_S_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 119.65
-    },
-    {
-      "id": "01GFERDC36ZGG1P13G2W7PEPRV",
-      "name": "Final",
-      "callsign": "TPA_F_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 118.5
+      "range": 150,
+      "freq": 127.4
     },
     {
       "id": "01HBQAG9GD20G9JKEC0F3BFAD3",
+      "physicalFacility": "TPA",
       "name": "East Departure",
+      "radioName": "Tampa Approach",
       "callsign": "TPA_B_DEP",
+      "areaId": "01GTHKG708WXNYY3P9A4ENKG44",
+      "tcpId": "01K2NF1C5SGSFWGCW0TVJXMH3H",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 27.987778,
+        "lon": -82.545
       },
+      "range": 150,
       "freq": 135.5
     },
     {
-      "id": "01HBQAK9PT7NWQSXG50NGBFTXN",
-      "name": "East Arrival",
-      "callsign": "TPA_E_APP",
+      "id": "01GFERC878RT6BYB4ASRNQPC7B",
+      "physicalFacility": "TPA",
+      "name": "West Departure",
+      "radioName": "Tampa Approach",
+      "callsign": "TPA_D_DEP",
+      "areaId": "01GTHKG708WXNYY3P9A4ENKG44",
+      "tcpId": "01K2NF1C5S4EDJCHD3P6XFWSVK",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 27.987778,
+        "lon": -82.545
       },
+      "range": 150,
+      "freq": 118.8
+    },
+    {
+      "id": "01HBQAK9PT7NWQSXG50NGBFTXN",
+      "physicalFacility": "TPA",
+      "name": "East Arrival",
+      "radioName": "Tampa Approach",
+      "callsign": "TPA_E_APP",
+      "areaId": "01GTHKG708WXNYY3P9A4ENKG44",
+      "tcpId": "01K2NF1C5SSQB1AQAY6KG73MDW",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 27.987778,
+        "lon": -82.545
+      },
+      "range": 150,
       "freq": 118.15
     },
     {
-      "id": "01HBQAKZYKNN0ETRYM0SCNDNH0",
-      "name": "Lakeland Low",
-      "callsign": "TPA_R_APP",
+      "id": "01GFERDC36ZGG1P13G2W7PEPRV",
+      "physicalFacility": "TPA",
+      "name": "Final",
+      "radioName": "Tampa Approach",
+      "callsign": "TPA_F_APP",
+      "areaId": "01GTHKG708WXNYY3P9A4ENKG44",
+      "tcpId": "01K2NF1C5SZSQVDX96ZKEW9CYN",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 27.987778,
+        "lon": -82.545
       },
-      "freq": 120.65
-    },
-    {
-      "id": "01HBQAMP10AV7X5YVXDHGVETRW",
-      "name": "MacDill",
-      "callsign": "TPA_M_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 126
-    },
-    {
-      "id": "01JAET0BY6DM8KR446Q2K3XDCZ",
-      "name": "ZMA Guard",
-      "callsign": "TPA_RMP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "01JEZ1758GR2Q2W7VEXC848VBA",
-      "name": "Ground Control 2",
-      "callsign": "TPA_2_GND",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 121.35
+      "range": 150,
+      "freq": 118.5
     },
     {
       "id": "01JEZ1KCWB82N6NNPW2612YEXF",
+      "physicalFacility": "TPA",
       "name": "South Departure",
+      "radioName": "Tampa Approach",
       "callsign": "TPA_G_DEP",
+      "areaId": "01GTHKG708WXNYY3P9A4ENKG44",
+      "tcpId": "01K2NF1C5SM60CJSDYDZTK5197",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 27.987778,
+        "lon": -82.545
       },
+      "range": 150,
       "freq": 134.25
     },
     {
-      "id": "1A",
+      "id": "01GFESH9WXFKNHTWSW5PYD2T9G",
+      "physicalFacility": "PIE",
+      "name": "Local Control",
+      "radioName": "St. Petersburg Tower",
+      "callsign": "PIE_TWR",
+      "areaId": "01HBR7Q243TPVXA6YR943JZJ9Z",
+      "tcpId": "01K2NF1C5S173JH64AXKAF692J",
+      "tcp": "1I",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9086336,
+        "lon": -82.68651
+      },
+      "range": 150,
+      "freq": 118.3
     },
     {
-      "id": "1B",
+      "id": "01GFER9BDMJPWQVE4N18T8N7ND",
+      "physicalFacility": "TPA",
+      "name": "East Satellite",
+      "radioName": "Tampa Approach",
+      "callsign": "TPA_L_APP",
+      "areaId": "01GTHKG708WXNYY3P9A4ENKG44",
+      "tcpId": "01K2NF1C5SDSQR42NX711D7PBY",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.987778,
+        "lon": -82.545
+      },
+      "range": 150,
+      "freq": 119.9
     },
     {
-      "id": "1D",
+      "id": "01HBQAMP10AV7X5YVXDHGVETRW",
+      "physicalFacility": "TPA",
+      "name": "MacDill",
+      "radioName": "Tampa Approach",
+      "callsign": "TPA_M_APP",
+      "areaId": "01GTHKG708WXNYY3P9A4ENKG44",
+      "tcpId": "01K2NF1C5SMXBPBN265QQHZ2RE",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.987778,
+        "lon": -82.545
+      },
+      "range": 150,
+      "freq": 126
     },
     {
-      "id": "1E",
+      "id": "01GFERB8SJM5MTAMJNK9Z9V7A3",
+      "physicalFacility": "TPA",
+      "name": "West Satellite",
+      "radioName": "Tampa Approach",
+      "callsign": "TPA_P_APP",
+      "areaId": "01GTHKG708WXNYY3P9A4ENKG44",
+      "tcpId": "01K2NF1C5SJVR4PCKGNQHADYEV",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.987778,
+        "lon": -82.545
+      },
+      "range": 150,
+      "freq": 125.3
     },
     {
-      "id": "1F",
+      "id": "01GFESNEXVBTSBG5KKQ52K5B66",
+      "physicalFacility": "SRQ",
+      "name": "Local Control",
+      "radioName": "Sarasota Tower",
+      "callsign": "SRQ_TWR",
+      "areaId": "01HBR7Q243FXNS902WN9W5VN83",
+      "tcpId": "01K2NF1C5S82HM2PMDW8QE3HDV",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.3954444,
+        "lon": -82.5543889
+      },
+      "range": 150,
+      "freq": 120.1
     },
     {
-      "id": "1G",
+      "id": "01HBQAKZYKNN0ETRYM0SCNDNH0",
+      "physicalFacility": "TPA",
+      "name": "Lakeland Low",
+      "radioName": "Tampa Approach",
+      "callsign": "TPA_R_APP",
+      "areaId": "01GTHKG708WXNYY3P9A4ENKG44",
+      "tcpId": "01K2NF1C5SZHN7CXVY49Q6K1EN",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.987778,
+        "lon": -82.545
+      },
+      "range": 150,
+      "freq": 120.65
     },
     {
-      "id": "1I",
+      "id": "01GFERCXY3P47FX3KPR6XRG8ED",
+      "physicalFacility": "TPA",
+      "name": "South Satellite",
+      "radioName": "Tampa Approach",
+      "callsign": "TPA_S_APP",
+      "areaId": "01GTHKG708WXNYY3P9A4ENKG44",
+      "tcpId": "01K2NF1C5SJ1Q8766Z0W304Q4A",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.987778,
+        "lon": -82.545
+      },
+      "range": 150,
+      "freq": 119.65
     },
     {
-      "id": "1L",
+      "id": "01GFER5YMGSKR7YB8225X70KEH",
+      "physicalFacility": "TPA",
+      "name": "Local Control 1",
+      "radioName": "Tampa Tower",
+      "callsign": "TPA_TWR",
+      "areaId": "01HBR7Q243Y4G9TYAGNBMGJ81Q",
+      "tcpId": "01K2NF1C5SXZ8BR803G5323JD3",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9754722,
+        "lon": -82.53325
+      },
+      "range": 150,
+      "freq": 119.5
     },
     {
-      "id": "1M",
+      "id": "01GFESCSXKJYHY088JCGTPV4JQ",
+      "physicalFacility": "MCF",
+      "name": "Ground Control",
+      "radioName": "MacDill Ground",
+      "callsign": "MCF_GND",
+      "areaId": "01HBR7Q244JXK1ATZGYVNWYP5Q",
+      "tcpId": "01K2NF1C5S0CVXHCKDD7G7P47T",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.8493444,
+        "lon": -82.5212194
+      },
+      "range": 150,
+      "freq": 121.65
     },
     {
-      "id": "1O",
+      "id": "01GFESCBKYM4YQYKCPSW5WFD27",
+      "physicalFacility": "MCF",
+      "name": "Local Control",
+      "radioName": "MacDill Tower",
+      "callsign": "MCF_TWR",
+      "areaId": "01HBR7Q244JXK1ATZGYVNWYP5Q",
+      "tcpId": "01K2NF1C5S0CVXHCKDD7G7P47T",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.8493444,
+        "lon": -82.5212194
+      },
+      "range": 150,
+      "freq": 123.7
     },
     {
-      "id": "1P",
+      "id": "01GFERAJNJASCYKV70VHCPSJM0",
+      "physicalFacility": "TPA",
+      "name": "West Arrival",
+      "radioName": "Tampa Approach",
+      "callsign": "TPA_W_APP",
+      "areaId": "01GTHKG708WXNYY3P9A4ENKG44",
+      "tcpId": "01K2NF1C5SPW29GWXN3P0HGXPR",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.987778,
+        "lon": -82.545
+      },
+      "range": 150,
+      "freq": 132.525
     },
     {
-      "id": "1Q",
+      "id": "01J0J2FHZAZ82HAPE5VVZPGYFN",
+      "physicalFacility": "LAL",
+      "name": "SNF Sun 'n Fun Ground Advisory",
+      "radioName": "Sun'N'Fun Ground Advisory",
+      "callsign": "LAL_A_GND",
+      "areaId": "01HBR7Q243C0KJRVVA1ET8GT50",
+      "tcpId": "01K2NF1C5SRWWTMRX8TSWGHJK6",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9876389,
+        "lon": -82.019
+      },
+      "range": 150,
+      "freq": 126.075
     },
     {
-      "id": "1R",
+      "id": "01GFESBQBM411B2ZKM6TY7GGTE",
+      "physicalFacility": "LAL",
+      "name": "Ground Control",
+      "radioName": "Lakeland Ground",
+      "callsign": "LAL_GND",
+      "areaId": "01HBR7Q243C0KJRVVA1ET8GT50",
+      "tcpId": "01K2NF1C5SRWWTMRX8TSWGHJK6",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9876389,
+        "lon": -82.019
+      },
+      "range": 150,
+      "freq": 121.4
     },
     {
-      "id": "1S",
+      "id": "01JPTCC42Y81ENBR2KA7GCM3DW",
+      "physicalFacility": "LAL",
+      "name": "SNF Ground Control",
+      "radioName": "Lakeland Ground",
+      "callsign": "LAL_GND",
+      "areaId": "01HBR7Q243C0KJRVVA1ET8GT50",
+      "tcpId": "01K2NF1C5SRWWTMRX8TSWGHJK6",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9876389,
+        "lon": -82.019
+      },
+      "range": 150,
+      "freq": 121.4
     },
     {
-      "id": "1T",
+      "id": "01JPTC5ZSEB1TMWVM0971SN8XB",
+      "physicalFacility": "LAL",
+      "name": "SNF Lakeland Helicopter",
+      "radioName": "Lakeland Tower",
+      "callsign": "LAL_H_TWR",
+      "areaId": "01HBR7Q243C0KJRVVA1ET8GT50",
+      "tcpId": "01K2NF1C5SRWWTMRX8TSWGHJK6",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9876389,
+        "lon": -82.019
+      },
+      "range": 150,
+      "freq": 123.025
     },
     {
-      "id": "1V",
+      "id": "01J0J22HHYQ230CNT9MQCWNS9R",
+      "physicalFacility": "LAL",
+      "name": "SNF Lake Parker Arrival",
+      "radioName": "Lake Parker Arrival",
+      "callsign": "LAL_LP_APP",
+      "areaId": "01HBR7Q243C0KJRVVA1ET8GT50",
+      "tcpId": "01K2NF1C5SRWWTMRX8TSWGHJK6",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9876389,
+        "lon": -82.019
+      },
+      "range": 150,
+      "freq": 124.5
     },
     {
-      "id": "1W",
+      "id": "01J0J2DQX16P3HYBS2ZCFDH8MS",
+      "physicalFacility": "LAL",
+      "name": "SNF RWY 10L/28R Departure Monitor",
+      "radioName": "Lakeland Tower",
+      "callsign": "LAL_ND_TWR",
+      "areaId": "01HBR7Q243C0KJRVVA1ET8GT50",
+      "tcpId": "01K2NF1C5SRWWTMRX8TSWGHJK6",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9876389,
+        "lon": -82.019
+      },
+      "range": 150,
+      "freq": 133.125
     },
     {
-      "id": "1X",
+      "id": "01HKV8N37GJKPZFGSM1NDBRW6D",
+      "physicalFacility": "LAL",
+      "name": "SNF Local Control North ",
+      "radioName": "Lakeland Tower",
+      "callsign": "LAL_N_TWR",
+      "areaId": "01HBR7Q243C0KJRVVA1ET8GT50",
+      "tcpId": "01K2NF1C5SRWWTMRX8TSWGHJK6",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9876389,
+        "lon": -82.019
+      },
+      "range": 150,
+      "freq": 135.225
     },
     {
-      "id": "1Z",
+      "id": "01J0J2ESBD4CFNFZA0X484A53W",
+      "physicalFacility": "LAL",
+      "name": "SNF RWY 10R/28L Departure Monitor",
+      "radioName": "Lakeland Tower",
+      "callsign": "LAL_SD_TWR",
+      "areaId": "01HBR7Q243C0KJRVVA1ET8GT50",
+      "tcpId": "01K2NF1C5SRWWTMRX8TSWGHJK6",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9876389,
+        "lon": -82.019
+      },
+      "range": 150,
+      "freq": 127.85
     },
     {
-      "id": "2I",
+      "id": "01J0J2AAC49M5E7VJM650JNDHF",
+      "physicalFacility": "LAL",
+      "name": "SNF Local Control South",
+      "radioName": "Lakeland Tower",
+      "callsign": "LAL_S_TWR",
+      "areaId": "01HBR7Q243C0KJRVVA1ET8GT50",
+      "tcpId": "01K2NF1C5SRWWTMRX8TSWGHJK6",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9876389,
+        "lon": -82.019
+      },
+      "range": 150,
+      "freq": 125.425
     },
     {
-      "id": "2Q",
+      "id": "01GFESBCR39CP8W5J49MD0HXJW",
+      "physicalFacility": "LAL",
+      "name": "Local Control",
+      "radioName": "Lakeland Tower",
+      "callsign": "LAL_TWR",
+      "areaId": "01HBR7Q243C0KJRVVA1ET8GT50",
+      "tcpId": "01K2NF1C5SRWWTMRX8TSWGHJK6",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9876389,
+        "lon": -82.019
+      },
+      "range": 150,
+      "freq": 124.5
     },
     {
-      "id": "3Z",
+      "id": "01GFER8D62QZGCFDKD9Y0ES9F3",
+      "physicalFacility": "TPA",
+      "name": "Local Control 2",
+      "radioName": "Tampa Tower",
+      "callsign": "TPA_2_TWR",
+      "areaId": "01HBR7Q243Y4G9TYAGNBMGJ81Q",
+      "tcpId": "01K2NF1C5SE7X1041PT7K08N74",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 27.9754722,
+        "lon": -82.53325
+      },
+      "range": 150,
+      "freq": 119.05
+    },
+    {
+      "id": "01GFESJ50H8238D0E0XTT7AFGX",
+      "physicalFacility": "PIE",
+      "name": "Clearance Delivery",
+      "radioName": "St. Petersburg Clearance",
+      "callsign": "PIE_DEL",
+      "areaId": "01HBR7Q243TPVXA6YR943JZJ9Z",
+      "tcpId": "01K2NF1C5S3G3NHH8R77R4KX6P",
+      "tcp": "2I",
+      "visualCenter": {
+        "lat": 27.9086336,
+        "lon": -82.68651
+      },
+      "range": 150,
+      "freq": 120.6
+    },
+    {
+      "id": "01GFESHMY0ZM7C517HPRM04PCA",
+      "physicalFacility": "PIE",
+      "name": "Ground Control",
+      "radioName": "St. Petersburg Ground",
+      "callsign": "PIE_GND",
+      "areaId": "01HBR7Q243TPVXA6YR943JZJ9Z",
+      "tcpId": "01K2NF1C5S3G3NHH8R77R4KX6P",
+      "tcp": "2I",
+      "visualCenter": {
+        "lat": 27.9086336,
+        "lon": -82.68651
+      },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
+      "id": "01GFESPA547Z382K6QGF8F2VK2",
+      "physicalFacility": "SRQ",
+      "name": "Clearance Delivery",
+      "radioName": "Sarasota Clearance",
+      "callsign": "SRQ_DEL",
+      "areaId": "01HBR7Q243FXNS902WN9W5VN83",
+      "tcpId": "01K2NF1C5SDKA1THX336AFD7FF",
+      "tcp": "2Q",
+      "visualCenter": {
+        "lat": 27.3954444,
+        "lon": -82.5543889
+      },
+      "range": 150,
+      "freq": 118.25
+    },
+    {
+      "id": "01GFESNVXAQR2R14AGTET26X6J",
+      "physicalFacility": "SRQ",
+      "name": "Ground Control",
+      "radioName": "Sarasota Ground",
+      "callsign": "SRQ_GND",
+      "areaId": "01HBR7Q243FXNS902WN9W5VN83",
+      "tcpId": "01K2NF1C5SDKA1THX336AFD7FF",
+      "tcp": "2Q",
+      "visualCenter": {
+        "lat": 27.3954444,
+        "lon": -82.5543889
+      },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
+      "id": "01JEZ1758GR2Q2W7VEXC848VBA",
+      "physicalFacility": "TPA",
+      "name": "Ground Control 2",
+      "radioName": "Tampa Ground",
+      "callsign": "TPA_2_GND",
+      "areaId": "01HBR7Q243Y4G9TYAGNBMGJ81Q",
+      "tcpId": "01K2NF1C5SZ74P6DAVYHSD8F4T",
+      "tcp": "2Z",
+      "visualCenter": {
+        "lat": 27.9754722,
+        "lon": -82.53325
+      },
+      "range": 150,
+      "freq": 121.35
+    },
+    {
+      "id": "01GFER7FB9HZMNTEAQ3BVW9CH7",
+      "physicalFacility": "TPA",
+      "name": "Clearance Delivery",
+      "radioName": "Tampa Clearance",
+      "callsign": "TPA_DEL",
+      "areaId": "01HBR7Q243Y4G9TYAGNBMGJ81Q",
+      "tcpId": "01K2NF1C5SZ74P6DAVYHSD8F4T",
+      "tcp": "2Z",
+      "visualCenter": {
+        "lat": 27.9754722,
+        "lon": -82.53325
+      },
+      "range": 150,
+      "freq": 133.6
+    },
+    {
+      "id": "01GFER6J72R6S984CES443V060",
+      "physicalFacility": "TPA",
+      "name": "Ground Control 1",
+      "radioName": "Tampa Ground",
+      "callsign": "TPA_GND",
+      "areaId": "01HBR7Q243Y4G9TYAGNBMGJ81Q",
+      "tcpId": "01K2NF1C5SZ74P6DAVYHSD8F4T",
+      "tcp": "2Z",
+      "visualCenter": {
+        "lat": 27.9754722,
+        "lon": -82.53325
+      },
+      "range": 150,
+      "freq": 121.7
     }
   ],
   "mapGroups": [

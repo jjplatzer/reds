@@ -4,87 +4,151 @@
   "name": "Bozeman ATCT | Big Sky TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 44.1394906,
-    "lon": -111.3092792325
+    "lat": 45.7772358,
+    "lon": -111.1502603
   },
+  "areas": [
+    {
+      "id": "01GE8WA8C0JK4SFFSC142N5EVH",
+      "name": "RADAR",
+      "visibilityCenter": {
+        "lat": 45.7772358,
+        "lon": -111.1502603
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "K6S0",
+        "9S5",
+        "BZN",
+        "EKS",
+        "LVM",
+        "WYS",
+        "MT36",
+        "3MT6",
+        "MT34",
+        "9U1",
+        "MT41",
+        "2MT8",
+        "MT42",
+        "MT48",
+        "MT94",
+        "2MT5",
+        "23MT",
+        "21MT"
+      ],
+      "ssaAirports": [
+        "BZN",
+        "LVM",
+        "EKS"
+      ]
+    },
+    {
+      "id": "01GE8WC5FP7NP8MDYWEJ2CBS83",
+      "name": "BZN CTRD",
+      "visibilityCenter": {
+        "lat": 45.7772358,
+        "lon": -111.1502603
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "BZN"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E410CGX6E5RB39VEFX2",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1E41QEPG6X6PM6JCDQJZ",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1E41Q41NDYV2RX6DARE2",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1E41Q41NDYV2RX6DARE2",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E41ZSFJWSCJR1C8KB4B",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1E41QEPG6X6PM6JCDQJZ",
+      "parentTcp": "1N"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GE8WE0KPF3BDW3D7RT0T7VGX",
+      "physicalFacility": "BZN",
       "name": "Bozeman Radar",
+      "radioName": "Big Sky Approach",
       "callsign": "BZN_APP",
+      "areaId": "01GE8WA8C0JK4SFFSC142N5EVH",
+      "tcpId": "01K2NF1E410CGX6E5RB39VEFX2",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 45.7772358,
+        "lon": -111.1502603
       },
+      "range": 75,
       "freq": 118.975
     },
     {
-      "id": "01GE8WGTYWV82CC6PYT9Z9F5JS",
-      "name": "Tower",
-      "callsign": "BZN_TWR",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      },
-      "freq": 118.2
-    },
-    {
       "id": "01GE8WJFDHN2RYRNBHZ9QZJC6C",
+      "physicalFacility": "BZN",
       "name": "Ground",
+      "radioName": "Bozeman Ground",
       "callsign": "BZN_GND",
+      "areaId": "01GE8WC5FP7NP8MDYWEJ2CBS83",
+      "tcpId": "01K2NF1E41QEPG6X6PM6JCDQJZ",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 45.7772358,
+        "lon": -111.1502603
       },
+      "range": 50,
       "freq": 121.8
     },
     {
+      "id": "01GE8WGTYWV82CC6PYT9Z9F5JS",
+      "physicalFacility": "BZN",
+      "name": "Tower",
+      "radioName": "Bozeman Tower",
+      "callsign": "BZN_TWR",
+      "areaId": "01GE8WC5FP7NP8MDYWEJ2CBS83",
+      "tcpId": "01K2NF1E41Q41NDYV2RX6DARE2",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 45.7772358,
+        "lon": -111.1502603
+      },
+      "range": 50,
+      "freq": 118.2
+    },
+    {
       "id": "01JMBDWGEARN1BS53XHK1R7SJG",
+      "physicalFacility": "BZN",
       "name": "Clearance",
+      "radioName": "Bozeman Clearance",
       "callsign": "BZN_DEL",
+      "areaId": "01GE8WC5FP7NP8MDYWEJ2CBS83",
+      "tcpId": "01K2NF1E41ZSFJWSCJR1C8KB4B",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 45.7772358,
+        "lon": -111.1502603
       },
+      "range": 50,
       "freq": 124.05
-    },
-    {
-      "id": "01KH9TPBG3308SYZY2PZ3QH4B1",
-      "name": "Bozeman LVM Freq",
-      "callsign": "BZN_APP",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      },
-      "freq": 119.55
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
     }
   ],
   "mapGroups": [

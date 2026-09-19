@@ -4,94 +4,162 @@
   "name": "Mountain Home ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 44.1394906,
-    "lon": -111.3092792325
+    "lat": 43.0435972,
+    "lon": -115.8724333
   },
+  "areas": [
+    {
+      "id": "01HM7KNZ3PEJPE9AHXH7CDM9Q2",
+      "name": "MUO_RAPCON",
+      "visibilityCenter": {
+        "lat": 43.0435972,
+        "lon": -115.8724333
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "MUO"
+      ]
+    },
+    {
+      "id": "01JMZVS0HW5EZG3E71236RWVW8",
+      "name": "Range Control",
+      "visibilityCenter": {
+        "lat": 43.0435972,
+        "lon": -115.8724333
+      },
+      "surveillanceRange": 250,
+      "underlyingAirports": [
+        "MUO",
+        "U91",
+        "3U0",
+        "08U",
+        "10U",
+        "U89"
+      ],
+      "ssaAirports": [
+        "MUO",
+        "REO"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E41V8869F3K4FN03KZ7",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1E41FRJV7RFA41QN1AEB",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1E415ZTSWHWK7TWQYCCR",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01K2NF1E415ZTSWHWK7TWQYCCR",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1E41Q5P22N1APYSFN73R",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1E41MFC6E3S7NVDR1D97",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E41V8869F3K4FN03KZ7",
+      "parentTcp": "1B"
+    },
+    {
+      "id": "01K2NF1E41Q5P22N1APYSFN73R",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01HM7KC66ZHRFDX45XBV7G0HFB",
+      "physicalFacility": "MUO",
       "name": "Mountain Home RAPCON",
+      "radioName": "Mountain Home Approach",
       "callsign": "MUO_N_APP",
+      "areaId": "01HM7KNZ3PEJPE9AHXH7CDM9Q2",
+      "tcpId": "01K2NF1E41V8869F3K4FN03KZ7",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 43.0435972,
+        "lon": -115.8724333
       },
+      "range": 50,
       "freq": 124.8
     },
     {
-      "id": "01HRA622WYE947F5TGWAYDM3K5",
-      "name": "Local Control",
-      "callsign": "MUO_TWR",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      },
-      "freq": 133.85
-    },
-    {
-      "id": "01HRA69F909JEBAGVTKSQDXWVF",
-      "name": "Ground Control",
-      "callsign": "MUO_GND",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      },
-      "freq": 120.5
-    },
-    {
       "id": "01HRA6AN9RPERNAZ65NFE3DKPX",
+      "physicalFacility": "MUO",
       "name": "Clearance Delivery",
+      "radioName": "Mountain Home Delivery",
       "callsign": "MUO_DEL",
+      "areaId": "01HM7KNZ3PEJPE9AHXH7CDM9Q2",
+      "tcpId": "01K2NF1E41FRJV7RFA41QN1AEB",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 43.0435972,
+        "lon": -115.8724333
       },
+      "range": 50,
       "freq": 127.1
     },
     {
-      "id": "01JMZWH7E0AFGHPSJTD6CQ3VZY",
-      "name": "Cowboy Range",
-      "callsign": "MUO_S_APP",
+      "id": "01HRA69F909JEBAGVTKSQDXWVF",
+      "physicalFacility": "MUO",
+      "name": "Ground Control",
+      "radioName": "MUO_GND",
+      "callsign": "MUO_GND",
+      "areaId": "01HM7KNZ3PEJPE9AHXH7CDM9Q2",
+      "tcpId": "01K2NF1E415ZTSWHWK7TWQYCCR",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 43.0435972,
+        "lon": -115.8724333
       },
+      "range": 50,
+      "freq": 120.5
+    },
+    {
+      "id": "01JMZWH7E0AFGHPSJTD6CQ3VZY",
+      "physicalFacility": "MUO",
+      "name": "Cowboy Range",
+      "radioName": "Cowboy Control",
+      "callsign": "MUO_S_APP",
+      "areaId": "01JMZVS0HW5EZG3E71236RWVW8",
+      "tcpId": "01K2NF1E41MFC6E3S7NVDR1D97",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 43.0435972,
+        "lon": -115.8724333
+      },
+      "range": 250,
       "freq": 134.1
     },
     {
-      "id": "1C",
+      "id": "01HRA622WYE947F5TGWAYDM3K5",
+      "physicalFacility": "MUO",
+      "name": "Local Control",
+      "radioName": "Mountain Home Tower",
+      "callsign": "MUO_TWR",
+      "areaId": "01HM7KNZ3PEJPE9AHXH7CDM9Q2",
+      "tcpId": "01K2NF1E41Q5P22N1APYSFN73R",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 43.0435972,
+        "lon": -115.8724333
+      },
+      "range": 50,
+      "freq": 133.85
     }
   ],
   "mapGroups": [

@@ -7,135 +7,169 @@
     "lat": 37.593354149999996,
     "lon": -95.43247947500001
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GV8MFKYQHQCKAVS7NCGDJSHQ",
-      "name": "Approach High",
-      "callsign": "END_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 120.525
+      "id": "01GV8MXGMK2HFG8G4MFQAQS7XM",
+      "name": "RAPCON",
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "1K5",
+        "1OK",
+        "4O5",
+        "6K4",
+        "AVK",
+        "CKA",
+        "END",
+        "JWG",
+        "O53",
+        "O65",
+        "WDG"
+      ],
+      "ssaAirports": [
+        "END",
+        "WDG"
+      ]
     },
     {
-      "id": "01GV8MYTAS1J2SC8PPDZ9PGSHS",
-      "name": "Approach West",
+      "id": "01GV8QAFK11TA3843SM9ARBZG5",
+      "name": "TOWER",
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "END"
+      ],
+      "ssaAirports": [
+        "END"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1EE5MYZH3M51MEKJYP1Y",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1EE5FNYDRSBPMRHRMCSH",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1EE5K4MPQTQEWX85FBQS",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H"
+    },
+    {
+      "id": "01K2NF1EE50J94SZEYRTTVBZV7",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1EE5C65QRRWDS2KED0DC",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1EE52B1KE1VKGQ7Y2DFE",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1EE5Z7J3A5MTRG1AAP5B",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GV8PPQQ3EGW4YZ3KRR9VE6W5",
+      "physicalFacility": "END",
+      "name": "Arrival East",
+      "radioName": "Vance Arrival",
       "callsign": "END_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 119.775
+      "areaId": "01GV8MXGMK2HFG8G4MFQAQS7XM",
+      "tcpId": "01K2NF1EE5MYZH3M51MEKJYP1Y",
+      "tcp": "1A",
+      "range": 150,
+      "freq": 121.3
     },
     {
       "id": "01GV8PD081RF7J2FRFPEYQBPR2",
+      "physicalFacility": "END",
       "name": "Approach East",
+      "radioName": "Vance Approach",
       "callsign": "END_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
+      "areaId": "01GV8MXGMK2HFG8G4MFQAQS7XM",
+      "tcpId": "01K2NF1EE5FNYDRSBPMRHRMCSH",
+      "tcp": "1E",
+      "range": 150,
       "freq": 125.45
     },
     {
-      "id": "01GV8PM5MNE3GS41JFM68RGNG4",
-      "name": "Approach North",
+      "id": "01GV8MFKYQHQCKAVS7NCGDJSHQ",
+      "physicalFacility": "END",
+      "name": "Approach High",
+      "radioName": "VANCE APPROACH",
       "callsign": "END_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
+      "areaId": "01GV8MXGMK2HFG8G4MFQAQS7XM",
+      "tcpId": "01K2NF1EE5K4MPQTQEWX85FBQS",
+      "tcp": "1H",
+      "range": 150,
+      "freq": 120.525
+    },
+    {
+      "id": "01GV8PM5MNE3GS41JFM68RGNG4",
+      "physicalFacility": "END",
+      "name": "Approach North",
+      "radioName": "Vance Approach",
+      "callsign": "END_APP",
+      "areaId": "01GV8MXGMK2HFG8G4MFQAQS7XM",
+      "tcpId": "01K2NF1EE50J94SZEYRTTVBZV7",
+      "tcp": "1N",
+      "range": 150,
       "freq": 118.075
     },
     {
       "id": "01GV8PNQTZVV2V479T6CDCKKB7",
+      "physicalFacility": "END",
       "name": "Arrival West",
+      "radioName": "Vance Arrival ",
       "callsign": "END_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
+      "areaId": "01GV8MXGMK2HFG8G4MFQAQS7XM",
+      "tcpId": "01K2NF1EE5C65QRRWDS2KED0DC",
+      "tcp": "1R",
+      "range": 150,
       "freq": 119.775
     },
     {
-      "id": "01GV8PPQQ3EGW4YZ3KRR9VE6W5",
-      "name": "Arrival East",
+      "id": "01GV8MYTAS1J2SC8PPDZ9PGSHS",
+      "physicalFacility": "END",
+      "name": "Approach West",
+      "radioName": "Vance Approach",
       "callsign": "END_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 121.3
+      "areaId": "01GV8MXGMK2HFG8G4MFQAQS7XM",
+      "tcpId": "01K2NF1EE52B1KE1VKGQ7Y2DFE",
+      "tcp": "1W",
+      "range": 150,
+      "freq": 119.775
     },
     {
       "id": "01GV8PVRHP3NCYHC2N6ZE6CQ4K",
+      "physicalFacility": "END",
       "name": "Local",
+      "radioName": "Vance Tower",
       "callsign": "END_TWR",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
+      "areaId": "01GV8QAFK11TA3843SM9ARBZG5",
+      "tcpId": "01K2NF1EE5Z7J3A5MTRG1AAP5B",
+      "tcp": "1Z",
+      "range": 50,
       "freq": 124.05
-    },
-    {
-      "id": "01GV8QB6P9N78WB1BZWAY6XE80",
-      "name": "Ground",
-      "callsign": "END_GND",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 121.675
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
     }
   ],
   "mapGroups": [

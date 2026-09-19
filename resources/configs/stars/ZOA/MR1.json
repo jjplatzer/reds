@@ -4,97 +4,153 @@
   "name": "Monterrey ATCT",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37.9016125,
-    "lon": -120.687685
+    "lat": 36.5869522,
+    "lon": -121.8427831
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01K8CMJVTYSEF6Y8PAXCC95XGX",
-      "name": "Seca",
-      "callsign": "MRY_S_APP",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+      "id": "01K8CMD2KEPHFQJCHDYTTW3AB0",
+      "name": "MRY",
+      "visibilityCenter": {
+        "lat": 36.5869522,
+        "lon": -121.8427831
       },
-      "freq": 127.15
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "MRY",
+        "SNS",
+        "WVI",
+        "OAR"
+      ],
+      "ssaAirports": [
+        "MRY"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K8CMMV59HCNDSYRPX8QY82FY",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K8CMMPXE62XB0F4ECMVFRYSQ",
+      "parentTcp": "1S"
     },
     {
+      "id": "01K8CMMPXE62XB0F4ECMVFRYSQ",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K8CMMY5Z1GN6GJGV3PXGJ8CW",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y"
+    },
+    {
+      "id": "01K8CMN11T160CYB4SHW3TJPTN",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
+  "controlPositions": [
+    {
       "id": "01K8CMP69KT4HM227ZNQBAHKQQ",
+      "physicalFacility": "MR1",
       "name": "Fremont",
+      "radioName": "Monterrey Approach",
       "callsign": "MRY_F_APP",
+      "areaId": "01K8CMD2KEPHFQJCHDYTTW3AB0",
+      "tcpId": "01K8CMMV59HCNDSYRPX8QY82FY",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 36.5869522,
+        "lon": -121.8427831
       },
+      "range": 100,
       "freq": 133
     },
     {
-      "id": "01K8CMRE8XTCT0H2TJY4N3D5DY",
-      "name": "MRY LC",
-      "callsign": "MRY_TWR",
+      "id": "01K8CMJVTYSEF6Y8PAXCC95XGX",
+      "physicalFacility": "MR1",
+      "name": "Seca",
+      "radioName": "Monterrey Approach",
+      "callsign": "MRY_S_APP",
+      "areaId": "01K8CMD2KEPHFQJCHDYTTW3AB0",
+      "tcpId": "01K8CMMPXE62XB0F4ECMVFRYSQ",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 36.5869522,
+        "lon": -121.8427831
       },
-      "freq": 118.4
-    },
-    {
-      "id": "01K8CMT6QH0QX7VSCQF0FCE1D8",
-      "name": "MRY GC",
-      "callsign": "MRY_GND",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 120.875
-    },
-    {
-      "id": "01K8CMVF7YC0V7VFB48SE8Q4FP",
-      "name": "SNS LC",
-      "callsign": "SNS_TWR",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 119.525
+      "range": 100,
+      "freq": 127.15
     },
     {
       "id": "01K8CMWNFW50FG2AX34KY9T8C6",
+      "physicalFacility": "MR1",
       "name": "SNS GC",
+      "radioName": "Salinas Ground",
       "callsign": "SNS_GND",
+      "areaId": "01K8CMD2KEPHFQJCHDYTTW3AB0",
+      "tcpId": "01K8CMMY5Z1GN6GJGV3PXGJ8CW",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 36.5869522,
+        "lon": -121.8427831
       },
+      "range": 100,
       "freq": 121.7
     },
     {
-      "id": "1F",
+      "id": "01K8CMVF7YC0V7VFB48SE8Q4FP",
+      "physicalFacility": "MR1",
+      "name": "SNS LC",
+      "radioName": "Salinas Tower",
+      "callsign": "SNS_TWR",
+      "areaId": "01K8CMD2KEPHFQJCHDYTTW3AB0",
+      "tcpId": "01K8CMMY5Z1GN6GJGV3PXGJ8CW",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 36.5869522,
+        "lon": -121.8427831
+      },
+      "range": 100,
+      "freq": 119.525
     },
     {
-      "id": "1S",
+      "id": "01K8CMT6QH0QX7VSCQF0FCE1D8",
+      "physicalFacility": "MR1",
+      "name": "MRY GC",
+      "radioName": "Monterrey Ground",
+      "callsign": "MRY_GND",
+      "areaId": "01K8CMD2KEPHFQJCHDYTTW3AB0",
+      "tcpId": "01K8CMN11T160CYB4SHW3TJPTN",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 36.5869522,
+        "lon": -121.8427831
+      },
+      "range": 100,
+      "freq": 120.875
     },
     {
-      "id": "1Y",
+      "id": "01K8CMRE8XTCT0H2TJY4N3D5DY",
+      "physicalFacility": "MR1",
+      "name": "MRY LC",
+      "radioName": "Monterrey Tower",
+      "callsign": "MRY_TWR",
+      "areaId": "01K8CMD2KEPHFQJCHDYTTW3AB0",
+      "tcpId": "01K8CMN11T160CYB4SHW3TJPTN",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 36.5869522,
+        "lon": -121.8427831
+      },
+      "range": 100,
+      "freq": 118.4
     }
   ],
   "mapGroups": [

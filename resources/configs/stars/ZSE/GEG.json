@@ -4,131 +4,415 @@
   "name": "Spokane ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 45.116049633333326,
-    "lon": -122.83189593333333
+    "lat": 46.94185475,
+    "lon": -118.32712305000001
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GWMNMRYPA4RDBZHZ87ZFPKVY",
-      "name": "Spokane West Approach",
-      "callsign": "GEG_W_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+      "id": "01GX5C8YJ7PV6EZH0WBHAMSHJQ",
+      "name": "Spokane",
+      "visibilityCenter": {
+        "lat": 47.6190278,
+        "lon": -117.5352222
       },
-      "freq": 123.75
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "ID23",
+        "ID22",
+        "ID20",
+        "ID07",
+        "ID21",
+        "1ID1",
+        "COE",
+        "6ID1",
+        "15ID",
+        "ID98",
+        "ID71",
+        "ID65",
+        "ID43",
+        "ID02",
+        "ID03",
+        "ID27",
+        "S76",
+        "ID05",
+        "ID48",
+        "WT04",
+        "WT24",
+        "WA49",
+        "63WA",
+        "WA21",
+        "68S",
+        "WT21",
+        "WA52",
+        "DEW",
+        "38WT",
+        "17WT",
+        "7WA4",
+        "67WA",
+        "8WT0",
+        "8AN6",
+        "70S",
+        "16WA",
+        "0WA7",
+        "WN54",
+        "72S",
+        "WA08",
+        "WA23",
+        "SKA",
+        "WN41",
+        "SFF",
+        "WN92",
+        "12WA",
+        "11WA",
+        "09WA",
+        "07WA",
+        "06WA",
+        "05WA",
+        "04WA",
+        "GEG",
+        "03WA",
+        "WA62",
+        "39WA",
+        "WN04"
+      ],
+      "ssaAirports": [
+        "GEG",
+        "SKA",
+        "SFF"
+      ]
     },
     {
-      "id": "01GWMNPKSPS56SMAM9HHKJSMTQ",
-      "name": "Spokane East Approach",
-      "callsign": "GEG_E_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+      "id": "01GX5CGN82TXKSF9PDA2JZMK8S",
+      "name": "Tri-Cities/Yakima",
+      "visibilityCenter": {
+        "lat": 46.2646817,
+        "lon": -119.1190239
       },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "5WA1",
+        "OR18",
+        "21OR",
+        "OG09",
+        "HRI",
+        "9OR4",
+        "OG33",
+        "OG42",
+        "46OR",
+        "PDT",
+        "6WA3",
+        "59OR",
+        "S95",
+        "WA14",
+        "0WN2",
+        "87WA",
+        "W09",
+        "WN84",
+        "2WA9",
+        "WN31",
+        "97WA",
+        "91WA",
+        "M94",
+        "WA24",
+        "18WA",
+        "6WA6",
+        "PSC",
+        "WN81",
+        "RLD",
+        "WT02",
+        "WA89",
+        "WN77",
+        "53WA",
+        "S40",
+        "WT03",
+        "1S5",
+        "52WT",
+        "5WA3",
+        "WN06",
+        "WA10",
+        "ALW",
+        "96VE",
+        "Z99",
+        "WA76",
+        "0WN1",
+        "98WA",
+        "WN19",
+        "68WA",
+        "WN45",
+        "45WA",
+        "FCT",
+        "99WA",
+        "55WA",
+        "48WA",
+        "YKM",
+        "5WA4",
+        "5WA5"
+      ],
+      "ssaAirports": [
+        "PDT",
+        "PSC",
+        "YKM",
+        "ALW"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01KEFG1KV1TC9BV5MNH9XCRFCZ",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6SF51S9CSAD23JV47",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DN6KWJANZWAEK45TJWR",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KEFG52ZY2556KYBD0ZFTWXD8",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KEFG1CS22B2KTP9FR9STDXKG",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KEFG0JWD8GF10J64BRHBG9CV",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KEFG3NJB4E4TKWA6YYCSV57C",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KEFG25F85ZQAMY7F0WDEMS0G",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6H67ERAXPE7PGYEW5",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1DN6KWJANZWAEK45TJWR",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KEFG14A70CQBJGAQ2G0RRW3H",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN60A6485DDXWR45GT0",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KEFG6Z14D5EK5KHKNBETCQX2",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN6KWJANZWAEK45TJWR",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KEFG205RH5GZ07BX5FSM53BD",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN67Z85HKATKCJD6BK0",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1DN6H67ERAXPE7PGYEW5",
+      "parentTcp": "1P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KEFG67ECTYXW62YX9VWJ21E8",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GWMNPKSPS56SMAM9HHKJSMTQ",
+      "physicalFacility": "GEG",
+      "name": "Spokane East Approach",
+      "radioName": "Spokane Approach",
+      "callsign": "GEG_E_APP",
+      "areaId": "01GX5C8YJ7PV6EZH0WBHAMSHJQ",
+      "tcpId": "01K2NF1DN6SF51S9CSAD23JV47",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 47.6190278,
+        "lon": -117.5352222
+      },
+      "range": 150,
       "freq": 133.35
     },
     {
-      "id": "01GWMNS8PFAS2S2K6ZCWMCCGGM",
-      "name": "Clearance Delivery",
-      "callsign": "GEG_DEL",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 127.55
-    },
-    {
-      "id": "01GWMNT6GY4HQ1V526H9RDH81Q",
-      "name": "Ground",
-      "callsign": "GEG_GND",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 121.9
-    },
-    {
       "id": "01GWMNTKGMX9EFJFGS4EDVZF8Y",
+      "physicalFacility": "GEG",
       "name": "Tower",
+      "radioName": "Spokane Tower",
       "callsign": "GEG_TWR",
+      "areaId": "01GX5C8YJ7PV6EZH0WBHAMSHJQ",
+      "tcpId": "01KEFG1CS22B2KTP9FR9STDXKG",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.6190278,
+        "lon": -117.5352222
       },
+      "range": 150,
       "freq": 118.3
     },
     {
-      "id": "01GX5D54A83XV8CWWTS6JCHMK7",
-      "name": "Tri-Cities Approach",
-      "callsign": "PSC_APP",
+      "id": "01H37R2JZXGXFHA52T0TQMF7ZW",
+      "physicalFacility": "SKA",
+      "name": "Tower",
+      "radioName": "Fairchild Tower",
+      "callsign": "SKA_TWR",
+      "areaId": "01GX5C8YJ7PV6EZH0WBHAMSHJQ",
+      "tcpId": "01KEFG0JWD8GF10J64BRHBG9CV",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 47.6190278,
+        "lon": -117.5352222
       },
+      "range": 150,
+      "freq": 120.35
+    },
+    {
+      "id": "01GX5D54A83XV8CWWTS6JCHMK7",
+      "physicalFacility": "GEG",
+      "name": "Tri-Cities Approach",
+      "radioName": "Spokane Approach",
+      "callsign": "PSC_APP",
+      "areaId": "01GX5CGN82TXKSF9PDA2JZMK8S",
+      "tcpId": "01K2NF1DN6H67ERAXPE7PGYEW5",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 46.2646817,
+        "lon": -119.1190239
+      },
+      "range": 150,
       "freq": 128.75
     },
     {
+      "id": "01H37QX85EFRP7FRBBWSZMFRCV",
+      "physicalFacility": "SFF",
+      "name": "Tower",
+      "radioName": "Felts Tower",
+      "callsign": "SFF_TWR",
+      "areaId": "01GX5C8YJ7PV6EZH0WBHAMSHJQ",
+      "tcpId": "01KEFG14A70CQBJGAQ2G0RRW3H",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 47.6190278,
+        "lon": -117.5352222
+      },
+      "range": 150,
+      "freq": 132.5
+    },
+    {
+      "id": "01GX5DDY56B6ZJP8ZW8RDD6AVH",
+      "physicalFacility": "PSC",
+      "name": "Tower",
+      "radioName": "Tri-Cities Tower",
+      "callsign": "PSC_TWR",
+      "areaId": "01GX5CGN82TXKSF9PDA2JZMK8S",
+      "tcpId": "01K2NF1DN60A6485DDXWR45GT0",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 46.2646817,
+        "lon": -119.1190239
+      },
+      "range": 150,
+      "freq": 135.3
+    },
+    {
+      "id": "01GWMNMRYPA4RDBZHZ87ZFPKVY",
+      "physicalFacility": "GEG",
+      "name": "Spokane West Approach",
+      "radioName": "Spokane Approach",
+      "callsign": "GEG_W_APP",
+      "areaId": "01GX5C8YJ7PV6EZH0WBHAMSHJQ",
+      "tcpId": "01K2NF1DN6KWJANZWAEK45TJWR",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 47.6190278,
+        "lon": -117.5352222
+      },
+      "range": 150,
+      "freq": 123.75
+    },
+    {
+      "id": "01GX5DK8C9GSE1K1ZDXK8M5V1N",
+      "physicalFacility": "YKM",
+      "name": "Tower",
+      "radioName": "Yakima Tower",
+      "callsign": "YKM_TWR",
+      "areaId": "01GX5CGN82TXKSF9PDA2JZMK8S",
+      "tcpId": "01KEFG205RH5GZ07BX5FSM53BD",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 46.2646817,
+        "lon": -119.1190239
+      },
+      "range": 150,
+      "freq": 133.25
+    },
+    {
       "id": "01GX5D5RCMNT281F2QW028WJ2N",
+      "physicalFacility": "GEG",
       "name": "Yakima Approach",
+      "radioName": "Spokane Approach",
       "callsign": "YKM_APP",
+      "areaId": "01GX5CGN82TXKSF9PDA2JZMK8S",
+      "tcpId": "01K2NF1DN67Z85HKATKCJD6BK0",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 46.2646817,
+        "lon": -119.1190239
       },
+      "range": 150,
       "freq": 123.8
-    },
-    {
-      "id": "01JGHWMCH21FSMNKFJ9A8NXDHJ",
-      "name": "GEG Guard",
-      "callsign": "GEG_G_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
     }
   ],
   "mapGroups": [

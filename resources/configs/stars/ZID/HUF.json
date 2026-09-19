@@ -4,97 +4,160 @@
   "name": "Hulman ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 38.6494889,
-    "lon": -84.3106305555556
+    "lat": 39.4546715,
+    "lon": -87.30759085
   },
+  "areas": [
+    {
+      "id": "01GXYW04A82N1046V5Y94BE86V",
+      "name": "Hulman TRACON",
+      "visibilityCenter": {
+        "lat": 39.45,
+        "lon": -87.311667
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "0I2",
+        "1H8",
+        "3I3",
+        "60II",
+        "BMG",
+        "HUF",
+        "PRG",
+        "RSV",
+        "SIV"
+      ],
+      "ssaAirports": [
+        "HUF",
+        "BMG"
+      ]
+    },
+    {
+      "id": "01GZM7FW39A3KN2BX6W4K466JA",
+      "name": "Hulman Tower",
+      "visibilityCenter": {
+        "lat": 39.459343,
+        "lon": -87.3035147
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "HUF"
+      ],
+      "ssaAirports": [
+        "HUF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CN2C653R3ACD7X5GBRC",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1CN2EMVF6NX938PV94PW",
+      "parentTcp": "1H"
+    },
+    {
+      "id": "01K2NF1CN2EMVF6NX938PV94PW",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H"
+    },
+    {
+      "id": "01K2NF1CN24JQKMH7M6FGPX2TM",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q",
+      "parentTcpId": "01K2NF1CN2EMVF6NX938PV94PW",
+      "parentTcp": "1H"
+    },
+    {
+      "id": "01K2NF1CN22TSCNK3XXB802CCB",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GXRN7MNSW1YWE2PKMPDAG7RR",
-      "name": "Ground Control",
-      "callsign": "HUF_GND",
+      "id": "01GXRNCEA630D07CK5K9TAZRRK",
+      "physicalFacility": "HUF",
+      "name": "Satellite 2 Radar",
+      "radioName": "Hulman Approach",
+      "callsign": "HUF_G_APP",
+      "areaId": "01GXYW04A82N1046V5Y94BE86V",
+      "tcpId": "01K2NF1CN2C653R3ACD7X5GBRC",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.45,
+        "lon": -87.311667
       },
+      "range": 150,
+      "freq": 119.8
+    },
+    {
+      "id": "01GXRNB87EPBWPAWTJZX8E7NW0",
+      "physicalFacility": "HUF",
+      "name": "Arrival Radar",
+      "radioName": "Hulman Approach",
+      "callsign": "HUF_H_APP",
+      "areaId": "01GXYW04A82N1046V5Y94BE86V",
+      "tcpId": "01K2NF1CN2EMVF6NX938PV94PW",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 39.45,
+        "lon": -87.311667
+      },
+      "range": 150,
+      "freq": 125.45
+    },
+    {
+      "id": "01GXRNDCW24A8JXA0C483N6A9P",
+      "physicalFacility": "HUF",
+      "name": "Satellite 1 Radar",
+      "radioName": "Hulman Approach",
+      "callsign": "HUF_Q_APP",
+      "areaId": "01GXYW04A82N1046V5Y94BE86V",
+      "tcpId": "01K2NF1CN24JQKMH7M6FGPX2TM",
+      "tcp": "1Q",
+      "visualCenter": {
+        "lat": 39.45,
+        "lon": -87.311667
+      },
+      "range": 150,
+      "freq": 128.025
+    },
+    {
+      "id": "01GXRN7MNSW1YWE2PKMPDAG7RR",
+      "physicalFacility": "HUF",
+      "name": "Ground Control",
+      "radioName": "Hulman Ground",
+      "callsign": "HUF_GND",
+      "areaId": "01GZM7FW39A3KN2BX6W4K466JA",
+      "tcpId": "01K2NF1CN22TSCNK3XXB802CCB",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 39.459343,
+        "lon": -87.3035147
+      },
+      "range": 50,
       "freq": 121.6
     },
     {
       "id": "01GXRNA1G4EKZJHWHC83MP2VVR",
+      "physicalFacility": "HUF",
       "name": "Local Control",
+      "radioName": "Hulman Tower",
       "callsign": "HUF_TWR",
+      "areaId": "01GZM7FW39A3KN2BX6W4K466JA",
+      "tcpId": "01K2NF1CN22TSCNK3XXB802CCB",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.459343,
+        "lon": -87.3035147
       },
+      "range": 50,
       "freq": 134.725
-    },
-    {
-      "id": "01GXRNB87EPBWPAWTJZX8E7NW0",
-      "name": "Arrival Radar",
-      "callsign": "HUF_H_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 125.45
-    },
-    {
-      "id": "01GXRNCEA630D07CK5K9TAZRRK",
-      "name": "Satellite 2 Radar",
-      "callsign": "HUF_G_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 119.8
-    },
-    {
-      "id": "01GXRNDCW24A8JXA0C483N6A9P",
-      "name": "Satellite 1 Radar",
-      "callsign": "HUF_Q_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 128.025
-    },
-    {
-      "id": "01JA39RG7MPRAJ0330DA940ZJJ",
-      "name": "HUF GUARD",
-      "callsign": "HUF_EM_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1Q",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
     }
   ],
   "mapGroups": [

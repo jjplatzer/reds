@@ -4,389 +4,958 @@
   "name": "Denver TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 40.569587575,
-    "lon": -104.96660805
+    "lat": 39.465395874258405,
+    "lon": -105.4125964330597
   },
+  "areas": [
+    {
+      "id": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "name": "Denver",
+      "visibilityCenter": {
+        "lat": 39.86124,
+        "lon": -104.66006
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "DEN",
+        "APA",
+        "BJC",
+        "BDU",
+        "LMO",
+        "18V",
+        "CFO",
+        "FNL",
+        "GXY"
+      ],
+      "ssaAirports": [
+        "DEN",
+        "APA",
+        "BJC",
+        "CFO",
+        "FNL"
+      ]
+    },
+    {
+      "id": "01G91HBP49CXYHC2R6RY1GGWH3",
+      "name": "Pueblo",
+      "visibilityCenter": {
+        "lat": 38.2899475,
+        "lon": -104.4980281
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "PUB",
+        "1V6",
+        "7CO8",
+        "80CO",
+        "99CO",
+        "46CO",
+        "CO80"
+      ],
+      "ssaAirports": [
+        "PUB"
+      ]
+    },
+    {
+      "id": "01G91HC1CMZ643JENSJ59AYYD1",
+      "name": "Junction",
+      "visibilityCenter": {
+        "lat": 39.1224167,
+        "lon": -108.52675
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "GJT",
+        "10CO"
+      ],
+      "ssaAirports": [
+        "GJT"
+      ]
+    },
+    {
+      "id": "01HK9HGZWGBTVNJNHFKBD6WGJ2",
+      "name": "DEN TWR",
+      "visibilityCenter": {
+        "lat": 39.86124,
+        "lon": -104.66006
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "DEN"
+      ],
+      "ssaAirports": [
+        "DEN"
+      ]
+    },
+    {
+      "id": "01HRD2XQC780VV0AXFTTRHNXYV",
+      "name": "GJT TWR",
+      "visibilityCenter": {
+        "lat": 39.1220793580192,
+        "lon": -108.527347531323
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "GJT"
+      ],
+      "ssaAirports": [
+        "GJT"
+      ]
+    },
+    {
+      "id": "01HRD307ZCC5878DBZWFM89YDT",
+      "name": "PUB TWR",
+      "visibilityCenter": {
+        "lat": 38.2838639477103,
+        "lon": -104.49438690504
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "PUB"
+      ],
+      "ssaAirports": [
+        "PUB"
+      ]
+    },
+    {
+      "id": "01HRD339B3TJW8T3A758S6XYKR",
+      "name": "FNL TWR",
+      "visibilityCenter": {
+        "lat": 40.4493925560389,
+        "lon": -105.009721968427
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "FNL"
+      ],
+      "ssaAirports": [
+        "FNL"
+      ]
+    },
+    {
+      "id": "01HRFX8GKZGYS03ZBBBGZDGKBD",
+      "name": "APA TWR",
+      "visibilityCenter": {
+        "lat": 39.5752034292954,
+        "lon": -104.845410215314
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "APA"
+      ],
+      "ssaAirports": [
+        "APA"
+      ]
+    },
+    {
+      "id": "01HRFXC00TFZXTBBWGP1TH0033",
+      "name": "BJC TWR",
+      "visibilityCenter": {
+        "lat": 39.9063649440269,
+        "lon": -105.120997242728
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "BJC"
+      ],
+      "ssaAirports": [
+        "BJC"
+      ]
+    },
+    {
+      "id": "01HRFXE0J60QB5FV8D3G8JYKZZ",
+      "name": "CFO TWR",
+      "visibilityCenter": {
+        "lat": 39.7863661817517,
+        "lon": -104.535738800825
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "CFO"
+      ],
+      "ssaAirports": [
+        "CFO"
+      ]
+    },
+    {
+      "id": "01KCACF78CXE78QA2GR15EB3TA",
+      "name": "Hidden",
+      "visibilityCenter": {
+        "lat": 39.86124,
+        "lon": -104.66006
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "DEN",
+        "APA",
+        "BJC",
+        "BDU",
+        "LMO",
+        "18V",
+        "CFO",
+        "FNL",
+        "GXY"
+      ],
+      "ssaAirports": [
+        "DEN",
+        "APA",
+        "BJC",
+        "CFO",
+        "FNL"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CJSNGNX5K65NVEBESFV",
+      "code": "11",
+      "subset": 1,
+      "sectorId": "1",
+      "parentTcpId": "01K2NF1CJS02TDMEZAFB4VK6W4",
+      "parentTcp": "12",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJS02TDMEZAFB4VK6W4",
+      "code": "12",
+      "subset": 1,
+      "sectorId": "2",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJS64PYPHP0HQ4ZVW2R",
+      "code": "13",
+      "subset": 1,
+      "sectorId": "3",
+      "parentTcpId": "01K2NF1CJS02TDMEZAFB4VK6W4",
+      "parentTcp": "12",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSYB1AZREM7DCRF1KF",
+      "code": "14",
+      "subset": 1,
+      "sectorId": "4",
+      "parentTcpId": "01K2NF1CJS02TDMEZAFB4VK6W4",
+      "parentTcp": "12",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJS6KJ4P8EM64W7MHF5",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1CJS48BY3JCHATQEEQQH",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSH5K1HBRNWJZSGGXA",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1CJS6KJ4P8EM64W7MHF5",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJS151AM35XJYGK5ZBE",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1CJSMETD3BP4CZR46BY7",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJS0V2EAEA4G7DNYNS6",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJS01KQ7PPZW3H0787J",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1CJSP87XKFFGKBTNZP83",
+      "parentTcp": "1X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSG9X9YQXP711WFK6T",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1CJS01KQ7PPZW3H0787J",
+      "parentTcp": "1G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSTXE4RD0ANPMV62Y4",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1CJSP87XKFFGKBTNZP83",
+      "parentTcp": "1X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJS8MD5KZ13AV9X5Y8R",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "parentTcpId": "01K2NF1CJS6KJ4P8EM64W7MHF5",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJS64Z24NQ3X149RGBN",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1CJS48BY3JCHATQEEQQH",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJS07HK1PFQTKJ24J97",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1CJS48BY3JCHATQEEQQH",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSJ36D54AD4WJMRR2F",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "parentTcpId": "01K2NF1CJSMETD3BP4CZR46BY7",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSDTX2H0A40BPD5XK3",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1CJS48BY3JCHATQEEQQH",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJS48BY3JCHATQEEQQH",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1CJSP87XKFFGKBTNZP83",
+      "parentTcp": "1X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSZM1R603BF0KT0FJZ",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1CJSMETD3BP4CZR46BY7",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSMETD3BP4CZR46BY7",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1CJSP87XKFFGKBTNZP83",
+      "parentTcp": "1X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSP87XKFFGKBTNZP83",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSE43EX46MQD0ESEBF",
+      "code": "2B",
+      "subset": 2,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSKMMPWXT2XYFREFSR",
+      "code": "2F",
+      "subset": 2,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSHVYD6AWADMWRMQ6G",
+      "code": "2N",
+      "subset": 2,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSPA6HG4H8AFQJTKED",
+      "code": "2X",
+      "subset": 2,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1CJSE43EX46MQD0ESEBF",
+      "parentTcp": "2B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSJY7FAHZ7X6M9HEWW",
+      "code": "2Y",
+      "subset": 2,
+      "sectorId": "Y",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJS5EFTWJDEA1TVS2AA",
+      "code": "2Z",
+      "subset": 2,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1CJSJY7FAHZ7X6M9HEWW",
+      "parentTcp": "2Y",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSW5DK8YEJZ0XJ2596",
+      "code": "4A",
+      "subset": 4,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJS8MADX82WJ6CM8QK5",
+      "code": "4J",
+      "subset": 4,
+      "sectorId": "J",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSQ54Z73JRP785VRE6",
+      "code": "5F",
+      "subset": 5,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSH1W1DTM5SVHSA0XW",
+      "code": "5P",
+      "subset": 5,
+      "sectorId": "P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSCVCN7HWGDMEF0V3P",
+      "code": "5Q",
+      "subset": 5,
+      "sectorId": "Q",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSCJBQC44TMVHFJRTT",
+      "code": "5T",
+      "subset": 5,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJSCFH8N64PYS13K5NY",
+      "code": "5Y",
+      "subset": 5,
+      "sectorId": "Y",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G91HSF4EB5ZM7KXBNQ50NQ0R",
-      "name": "Quicksand - AR1",
-      "callsign": "DEN_I_APP",
+      "id": "01GFM0FZGW86MBMZ9KFFNAXQYX",
+      "physicalFacility": "DEN",
+      "name": "Local Control 1",
+      "radioName": "Denver Tower",
+      "callsign": "DEN_1_TWR",
+      "areaId": "01HK9HGZWGBTVNJNHFKBD6WGJ2",
+      "tcpId": "01K2NF1CJSNGNX5K65NVEBESFV",
+      "tcp": "11",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
-      "freq": 120.35
+      "range": 30,
+      "freq": 132.35
     },
     {
-      "id": "01G91HTF9JCQ7FN3ZT18H5Q6MM",
-      "name": "Honcho - AR2",
-      "callsign": "DEN_H_APP",
+      "id": "01GH2V2S6071XRVCV3RHGV2KRD",
+      "physicalFacility": "DEN",
+      "name": "Local Control 2",
+      "radioName": "Denver Tower",
+      "callsign": "DEN_2_TWR",
+      "areaId": "01HK9HGZWGBTVNJNHFKBD6WGJ2",
+      "tcpId": "01K2NF1CJS02TDMEZAFB4VK6W4",
+      "tcp": "12",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
-      "freq": 119.3
+      "range": 30,
+      "freq": 124.3
     },
     {
-      "id": "01G91HVJ8Q1X2HYVYJJ2AAN9ZR",
-      "name": "Tecate - AR3",
-      "callsign": "DEN_G_APP",
+      "id": "01GH2TE0NQ86MEQKFH1BFA5163",
+      "physicalFacility": "DEN",
+      "name": "Combined Local Control",
+      "radioName": "Denver Tower",
+      "callsign": "DEN_TWR",
+      "areaId": "01HK9HGZWGBTVNJNHFKBD6WGJ2",
+      "tcpId": "01K2NF1CJS02TDMEZAFB4VK6W4",
+      "tcp": "12",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
-      "freq": 124.95
+      "range": 30,
+      "freq": 124.3
     },
     {
-      "id": "01G91HWK4XJSZ13S2JQEQR9CXH",
-      "name": "Rush - AR4",
-      "callsign": "DEN_X_APP",
+      "id": "01GH2TG26JQEBDY8BSSJ0GDEJ0",
+      "physicalFacility": "DEN",
+      "name": "Local Control 3",
+      "radioName": "Denver Towr",
+      "callsign": "DEN_3_TWR",
+      "areaId": "01HK9HGZWGBTVNJNHFKBD6WGJ2",
+      "tcpId": "01K2NF1CJS64PYPHP0HQ4ZVW2R",
+      "tcp": "13",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
-      "freq": 126.55
+      "range": 30,
+      "freq": 128.75
     },
     {
-      "id": "01G91HXPV3YTMMJ2DX5AA24Z32",
-      "name": "West Final - FR1",
-      "callsign": "DEN_W_APP",
+      "id": "01GH2V4EJ2TN19P764DTQ8GC7R",
+      "physicalFacility": "DEN",
+      "name": "Local Control 4",
+      "radioName": "Denver Tower",
+      "callsign": "DEN_4_TWR",
+      "areaId": "01HK9HGZWGBTVNJNHFKBD6WGJ2",
+      "tcpId": "01K2NF1CJSYB1AZREM7DCRF1KF",
+      "tcp": "14",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
-      "freq": 123.85
+      "range": 30,
+      "freq": 135.3
+    },
+    {
+      "id": "01G91JD7GZF4AJV9VZY1NJKKXY",
+      "physicalFacility": "D01",
+      "name": "South Satellite - SR4",
+      "radioName": "Denver Approach",
+      "callsign": "DEN_A_APP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJS6KJ4P8EM64W7MHF5",
+      "tcp": "1A",
+      "visualCenter": {
+        "lat": 39.86124,
+        "lon": -104.66006
+      },
+      "range": 150,
+      "freq": 132.75
+    },
+    {
+      "id": "01G91JC82ASQM73036C4P5J197",
+      "physicalFacility": "D01",
+      "name": "North Satellite - SR2",
+      "radioName": "Denver Approach",
+      "callsign": "DEN_D_APP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJSH5K1HBRNWJZSGGXA",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 39.86124,
+        "lon": -104.66006
+      },
+      "range": 150,
+      "freq": 132.75
     },
     {
       "id": "01G91HYWQ657CEYGRY3QQ9TJV9",
+      "physicalFacility": "D01",
       "name": "East Final - FR2",
+      "radioName": "Denver Approach",
       "callsign": "DEN_E_APP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJS151AM35XJYGK5ZBE",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
+      "range": 150,
       "freq": 120.8
     },
     {
-      "id": "01G91HZNYTJJBVXPRP0J00BPQ8",
-      "name": "Center Final - FR3",
-      "callsign": "DEN_O_APP",
+      "id": "01G91HVJ8Q1X2HYVYJJ2AAN9ZR",
+      "physicalFacility": "D01",
+      "name": "Tecate - AR3",
+      "radioName": "Denver Approach",
+      "callsign": "DEN_G_APP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJS01KQ7PPZW3H0787J",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
-      "freq": 125.75
+      "range": 150,
+      "freq": 124.95
     },
     {
-      "id": "01G91J0NFAEQRAB200ETDX8YZR",
-      "name": "Tertiary Final - FR4",
-      "callsign": "DEN_T_APP",
+      "id": "01G91HTF9JCQ7FN3ZT18H5Q6MM",
+      "physicalFacility": "D01",
+      "name": "Honcho - AR2",
+      "radioName": "Denver Approach",
+      "callsign": "DEN_H_APP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJSG9X9YQXP711WFK6T",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
-      "freq": 133.625
+      "range": 150,
+      "freq": 119.3
+    },
+    {
+      "id": "01G91HSF4EB5ZM7KXBNQ50NQ0R",
+      "physicalFacility": "D01",
+      "name": "Quicksand - AR1",
+      "radioName": "Denver Approach",
+      "callsign": "DEN_I_APP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJSTXE4RD0ANPMV62Y4",
+      "tcp": "1I",
+      "visualCenter": {
+        "lat": 39.86124,
+        "lon": -104.66006
+      },
+      "range": 150,
+      "freq": 120.35
+    },
+    {
+      "id": "01G91JA4N9FA8Z4829CE4GJQ3V",
+      "physicalFacility": "D01",
+      "name": "West Satellite - SR1",
+      "radioName": "Denver Approach",
+      "callsign": "DEN_J_APP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJS8MD5KZ13AV9X5Y8R",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 39.86124,
+        "lon": -104.66006
+      },
+      "range": 150,
+      "freq": 125.125
     },
     {
       "id": "01G91J2ZTTPZA093A0WVY4BK3Y",
+      "physicalFacility": "D01",
       "name": "West Departure - DR1",
+      "radioName": "Denver Departure",
       "callsign": "DEN_L_DEP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJS64Z24NQ3X149RGBN",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
+      "range": 150,
       "freq": 126.1
     },
     {
       "id": "01G91J3R559MSEVHYTD9GDMWZ7",
+      "physicalFacility": "D01",
       "name": "North Departure - DR2",
+      "radioName": "Denver Departure",
       "callsign": "DEN_N_DEP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJS07HK1PFQTKJ24J97",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
+      "range": 150,
       "freq": 127.05
     },
     {
-      "id": "01G91J4NA16E0WM4WWWMVTH0EG",
-      "name": "East Departure - DR3",
-      "callsign": "DEN_R_DEP",
+      "id": "01G91HZNYTJJBVXPRP0J00BPQ8",
+      "physicalFacility": "D01",
+      "name": "Center Final - FR3",
+      "radioName": "Denver Approach",
+      "callsign": "DEN_O_APP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJSJ36D54AD4WJMRR2F",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
+      "range": 150,
+      "freq": 125.75
+    },
+    {
+      "id": "01G91J4NA16E0WM4WWWMVTH0EG",
+      "physicalFacility": "D01",
+      "name": "East Departure - DR3",
+      "radioName": "Denver Departure",
+      "callsign": "DEN_R_DEP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJSDTX2H0A40BPD5XK3",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 39.86124,
+        "lon": -104.66006
+      },
+      "range": 150,
       "freq": 128.25
     },
     {
       "id": "01G91J5MH8CC951Y7EAFCQ6FJZ",
+      "physicalFacility": "D01",
       "name": "South Departure - DR4",
+      "radioName": "Denver Departure",
       "callsign": "DEN_S_DEP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJS48BY3JCHATQEEQQH",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
+      "range": 150,
       "freq": 128.45
     },
     {
-      "id": "01G91JA4N9FA8Z4829CE4GJQ3V",
-      "name": "West Satellite - SR1",
-      "callsign": "DEN_J_APP",
+      "id": "01G91J0NFAEQRAB200ETDX8YZR",
+      "physicalFacility": "D01",
+      "name": "Tertiary Final - FR4",
+      "radioName": "Denver Approach",
+      "callsign": "DEN_T_APP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJSZM1R603BF0KT0FJZ",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
-      "freq": 125.125
+      "range": 150,
+      "freq": 133.625
     },
     {
-      "id": "01G91JC82ASQM73036C4P5J197",
-      "name": "North Satellite - SR2",
-      "callsign": "DEN_D_APP",
+      "id": "01G91HXPV3YTMMJ2DX5AA24Z32",
+      "physicalFacility": "D01",
+      "name": "West Final - FR1",
+      "radioName": "Denver Approach",
+      "callsign": "DEN_W_APP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJSMETD3BP4CZR46BY7",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
-      "freq": 132.75
+      "range": 150,
+      "freq": 123.85
     },
     {
-      "id": "01G91JD7GZF4AJV9VZY1NJKKXY",
-      "name": "South Satellite - SR4",
-      "callsign": "DEN_A_APP",
+      "id": "01G91HWK4XJSZ13S2JQEQR9CXH",
+      "physicalFacility": "D01",
+      "name": "Rush - AR4",
+      "radioName": "Denver Approach",
+      "callsign": "DEN_X_APP",
+      "areaId": "01G91H5AT6MD1DQHZ4V2VK7ZTB",
+      "tcpId": "01K2NF1CJSP87XKFFGKBTNZP83",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.86124,
+        "lon": -104.66006
       },
-      "freq": 132.75
+      "range": 150,
+      "freq": 126.55
+    },
+    {
+      "id": "01H2DYRHT3Z92CZE9Q52D281F5",
+      "physicalFacility": "BJC",
+      "name": "Local Control North",
+      "radioName": "Metro Tower",
+      "callsign": "BJC_N_TWR",
+      "areaId": "01HRFXC00TFZXTBBWGP1TH0033",
+      "tcpId": "01K2NF1CJSE43EX46MQD0ESEBF",
+      "tcp": "2B",
+      "visualCenter": {
+        "lat": 39.9063649440269,
+        "lon": -105.120997242728
+      },
+      "range": 30,
+      "freq": 118.6
+    },
+    {
+      "id": "01H295SWRB6PRRXG7ZSQF24XRZ",
+      "physicalFacility": "CFO",
+      "name": "Local Control",
+      "radioName": "Spaceport Tower",
+      "callsign": "CFO_TWR",
+      "areaId": "01HRFXE0J60QB5FV8D3G8JYKZZ",
+      "tcpId": "01K2NF1CJSKMMPWXT2XYFREFSR",
+      "tcp": "2F",
+      "visualCenter": {
+        "lat": 39.7863661817517,
+        "lon": -104.535738800825
+      },
+      "range": 30,
+      "freq": 120.2
+    },
+    {
+      "id": "01HA68EQ47JR4B2RGNN1FXJ8RQ",
+      "physicalFacility": "FNL",
+      "name": "Local Control",
+      "radioName": "NoCo Tower",
+      "callsign": "FNL_TWR",
+      "areaId": "01HRD339B3TJW8T3A758S6XYKR",
+      "tcpId": "01K2NF1CJSHVYD6AWADMWRMQ6G",
+      "tcp": "2N",
+      "visualCenter": {
+        "lat": 40.4493925560389,
+        "lon": -105.009721968427
+      },
+      "range": 50,
+      "freq": 118.4
+    },
+    {
+      "id": "01H2DYS7P2258H0GPEHFSQ1TK7",
+      "physicalFacility": "BJC",
+      "name": "Local Control South",
+      "radioName": "Metro Tower",
+      "callsign": "BJC_S_TWR",
+      "areaId": "01HRFXC00TFZXTBBWGP1TH0033",
+      "tcpId": "01K2NF1CJSPA6HG4H8AFQJTKED",
+      "tcp": "2X",
+      "visualCenter": {
+        "lat": 39.9063649440269,
+        "lon": -105.120997242728
+      },
+      "range": 30,
+      "freq": 123.95
+    },
+    {
+      "id": "01GG6NCP93ARGZPT70XKCHN8C7",
+      "physicalFacility": "APA",
+      "name": "Local Control East",
+      "radioName": "Centennial Tower",
+      "callsign": "APA_E_TWR",
+      "areaId": "01HRFX8GKZGYS03ZBBBGZDGKBD",
+      "tcpId": "01K2NF1CJSJY7FAHZ7X6M9HEWW",
+      "tcp": "2Y",
+      "visualCenter": {
+        "lat": 39.5752034292954,
+        "lon": -104.845410215314
+      },
+      "range": 30,
+      "freq": 118.9
+    },
+    {
+      "id": "01H2DYVZ25XNG7EB5AESS4R84Q",
+      "physicalFacility": "APA",
+      "name": "Local Control West",
+      "radioName": "Centennial Tower",
+      "callsign": "APA_W_TWR",
+      "areaId": "01HRFX8GKZGYS03ZBBBGZDGKBD",
+      "tcpId": "01K2NF1CJS5EFTWJDEA1TVS2AA",
+      "tcp": "2Z",
+      "visualCenter": {
+        "lat": 39.5752034292954,
+        "lon": -104.845410215314
+      },
+      "range": 30,
+      "freq": 123.7
+    },
+    {
+      "id": "01H58SMJ868XSEXNZH6MR09VKW",
+      "physicalFacility": "GJT",
+      "name": "Local Control",
+      "radioName": "Grand Junction Tower",
+      "callsign": "GJT_TWR",
+      "areaId": "01HRD2XQC780VV0AXFTTRHNXYV",
+      "tcpId": "01K2NF1CJSW5DK8YEJZ0XJ2596",
+      "tcp": "4A",
+      "visualCenter": {
+        "lat": 39.1220793580192,
+        "lon": -108.527347531323
+      },
+      "range": 30,
+      "freq": 118.1
     },
     {
       "id": "01G91JJN77Z401PMCTJ4104RCB",
+      "physicalFacility": "D01",
       "name": "Junction Radar",
+      "radioName": "Denver Approach",
       "callsign": "GJT_APP",
+      "areaId": "01G91HC1CMZ643JENSJ59AYYD1",
+      "tcpId": "01K2NF1CJS8MADX82WJ6CM8QK5",
+      "tcp": "4J",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.1224167,
+        "lon": -108.52675
       },
+      "range": 100,
       "freq": 119.7
     },
     {
       "id": "01G91JKRQ6ZRVHBQXDW84QYTE2",
+      "physicalFacility": "D01",
       "name": "Pueblo Radar",
+      "radioName": "Denver Approach",
       "callsign": "PUB_APP",
+      "areaId": "01G91HBP49CXYHC2R6RY1GGWH3",
+      "tcpId": "01K2NF1CJSH1W1DTM5SVHSA0XW",
+      "tcp": "5P",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 38.2899475,
+        "lon": -104.4980281
       },
+      "range": 50,
       "freq": 120.1
     },
     {
-      "id": "11",
+      "id": "01GFF6RMJTWX2N2FP5B1BHWJSR",
+      "physicalFacility": "PUB",
+      "name": "Pueblo Tower",
+      "radioName": "Pueblo Tower",
+      "callsign": "PUB_TWR",
+      "areaId": "01HRD307ZCC5878DBZWFM89YDT",
+      "tcpId": "01K2NF1CJSCJBQC44TMVHFJRTT",
+      "tcp": "5T",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "12",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "13",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "14",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1I",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1J",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1O",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "2B",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "2F",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "2N",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "2X",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "2Y",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "2Z",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "3T",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "4A",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "4J",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "5P",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "5T",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
+        "lat": 38.2838639477103,
+        "lon": -104.49438690504
+      },
+      "range": 30,
+      "freq": 119.1
     }
   ],
   "mapGroups": [

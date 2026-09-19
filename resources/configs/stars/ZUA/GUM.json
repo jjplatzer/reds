@@ -4,74 +4,85 @@
   "name": "Agana FCT",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 13.483889,
-    "lon": 144.797222
+    "lat": 13.48477595,
+    "lon": 144.79861469999997
   },
+  "areas": [
+    {
+      "id": "01GYZ99MDAXS3PCVN99R3YE0K0",
+      "name": "Consolidated",
+      "visibilityCenter": {
+        "lat": 13.4839519,
+        "lon": 144.7971294
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "GUM",
+        "UAM"
+      ]
+    },
+    {
+      "id": "01KKVB4XSFXX7AWFPFH5ZZGKF0",
+      "name": "Agana Area",
+      "visibilityCenter": {
+        "lat": 13.4856,
+        "lon": 144.8001
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "GUM"
+      ],
+      "ssaAirports": [
+        "GUM"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DF03WJ0M8QPWGQBZE0M",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DF0QGTWKNA9SDGMJPWE",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GYRCTVQ7D5KFMD64ZF39SETZ",
+      "physicalFacility": "GUM",
       "name": "Local Control",
+      "radioName": "Agana Tower",
       "callsign": "GUM_TWR",
+      "areaId": "01KKVB4XSFXX7AWFPFH5ZZGKF0",
+      "tcpId": "01K2NF1DF03WJ0M8QPWGQBZE0M",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 13.483889,
-        "lon": 144.797222
+        "lat": 13.4856,
+        "lon": 144.8001
       },
+      "range": 50,
       "freq": 118.1
     },
     {
-      "id": "01GYRCVDCQP6WDNT72CRB94NRM",
-      "name": "Ground Control",
-      "callsign": "GUM_GND",
+      "id": "01HCARAEWYAP9SBW4YDTYXBY3Q",
+      "physicalFacility": "UAM",
+      "name": "Local Control",
+      "radioName": "Andersen Tower",
+      "callsign": "UAM_TWR",
+      "areaId": "01GYZ99MDAXS3PCVN99R3YE0K0",
+      "tcpId": "01K2NF1DF0QGTWKNA9SDGMJPWE",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 13.483889,
-        "lon": 144.797222
+        "lat": 13.4839519,
+        "lon": 144.7971294
       },
-      "freq": 121.9
-    },
-    {
-      "id": "01HJTY5A994QVV4ZCQFBC0D430",
-      "name": "Ramp Control",
-      "callsign": "GUM_RMP",
-      "visualCenter": {
-        "lat": 13.483889,
-        "lon": 144.797222
-      },
-      "freq": 121.6
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 13.483889,
-        "lon": 144.797222
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 13.483889,
-        "lon": 144.797222
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 13.483889,
-        "lon": 144.797222
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 13.483889,
-        "lon": 144.797222
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 13.483889,
-        "lon": 144.797222
-      }
+      "range": 150,
+      "freq": 126.2
     }
   ],
   "mapGroups": [

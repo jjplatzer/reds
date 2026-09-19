@@ -4,80 +4,117 @@
   "name": "Fort Wayne ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.879166749999996,
-    "lon": -88.975
+    "lat": 40.9767,
+    "lon": -85.20665
   },
+  "areas": [
+    {
+      "id": "01H5FTYD5V73VGXHTZX0W7QBF5",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 40.9767,
+        "lon": -85.20665
+      },
+      "surveillanceRange": 1000,
+      "ssaAirports": [
+        "FWA"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DXN1CH9GBZ3CV0FXV9C",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1DXNX5CVY16VTJQV7NJ5",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DXNJZ251PVJCRWN3EPP",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1DXNJBVRV0AJ8KBBSA62",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1DXN5V7C4Y21NYJXC3Y8",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1DXN9VKYX11CBRE74FRE",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P"
+    },
+    {
+      "id": "01K2NF1DXNJZ251PVJCRWN3EPP",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1DXNX7Y2VBWFT8C5GSB0",
+      "code": "2F",
+      "subset": 2,
+      "sectorId": "F"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01H5FVGW6GAWXDEE5QFYQ1MA4F",
+      "physicalFacility": "FWA",
       "name": "West Approach",
+      "radioName": "Fort Wayne Approach",
       "callsign": "FWA_W_APP",
+      "areaId": "01H5FTYD5V73VGXHTZX0W7QBF5",
+      "tcpId": "01K2NF1DXNJBVRV0AJ8KBBSA62",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 40.9767,
+        "lon": -85.20665
       },
+      "range": 1000,
       "freq": 127.2
     },
     {
-      "id": "01H5FVPD838KZT55RTKY06V6N5",
-      "name": "East Approach",
-      "callsign": "FWA_E_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 132.15
-    },
-    {
       "id": "01H5FVQ54GTDCA829XVRQMD7DA",
+      "physicalFacility": "FWA",
       "name": "Local",
+      "radioName": "Fort Wayne Tower",
       "callsign": "FWA_TWR",
+      "areaId": "01H5FTYD5V73VGXHTZX0W7QBF5",
+      "tcpId": "01K2NF1DXN5V7C4Y21NYJXC3Y8",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 40.9767,
+        "lon": -85.20665
       },
+      "range": 1000,
       "freq": 119.1
     },
     {
-      "id": "01H5FVRACHAEH8X6D9JBQ46RRN",
-      "name": "Ground",
-      "callsign": "FWA_GND",
+      "id": "01H5FVPD838KZT55RTKY06V6N5",
+      "physicalFacility": "FWA",
+      "name": "East Approach",
+      "radioName": "Fort Wayne Approach",
+      "callsign": "FWA_E_APP",
+      "areaId": "01H5FTYD5V73VGXHTZX0W7QBF5",
+      "tcpId": "01K2NF1DXNX7Y2VBWFT8C5GSB0",
+      "tcp": "2F",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 40.9767,
+        "lon": -85.20665
       },
-      "freq": 121.9
-    },
-    {
-      "id": "01H5FVRS9YY9JC1S4ZP7MH3CAJ",
-      "name": "Clearance Delivery",
-      "callsign": "FWA_DEL",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 124.75
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "2F",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
+      "range": 1000,
+      "freq": 132.15
     }
   ],
   "mapGroups": [

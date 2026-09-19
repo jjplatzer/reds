@@ -4,80 +4,150 @@
   "name": "Binghamton ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 35.914982499999994,
-    "lon": -73.0446825
+    "lat": 42.208331,
+    "lon": -75.981989
   },
+  "areas": [
+    {
+      "id": "01H2BCVDVZR0NVNZCYQ1MSM92W",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 42.208331,
+        "lon": -75.981989
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "4N7",
+        "BGM",
+        "CZG",
+        "N27",
+        "NK68"
+      ],
+      "ssaAirports": [
+        "BGM"
+      ]
+    },
+    {
+      "id": "01H9V700TH7HGKM8J3T6WHR1N2",
+      "name": "Cab",
+      "visibilityCenter": {
+        "lat": 42.208331,
+        "lon": -75.981989
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "BGM"
+      ],
+      "ssaAirports": [
+        "BGM"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DSGPPAH4TV73CMKFVRR",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1DSGPW2XHDJ53B139PAR",
+      "parentTcp": "1L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSGCE5QXPYZKPWR9A6E",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSGPW2XHDJ53B139PAR",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GAPPQ0BCSHTSCWX1YR2A4380",
-      "name": "Ground",
-      "callsign": "BGM_GND",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GAPPQNY9V461JEW2AN5ZP9A7",
-      "name": "Local",
-      "callsign": "BGM_TWR",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 119.3
-    },
-    {
-      "id": "01H2BD14Z727T6GAYAX7EBZ8BV",
-      "name": "Radar Low",
-      "callsign": "BGM_L_APP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 118.6
-    },
-    {
       "id": "01H2BD22RHQCGGMC8MRN6QWMKJ",
+      "physicalFacility": "BGM",
       "name": "Radar High",
+      "radioName": "Binghamton Approach",
       "callsign": "BGM_H_APP",
+      "areaId": "01H2BCVDVZR0NVNZCYQ1MSM92W",
+      "tcpId": "01K2NF1DSGPPAH4TV73CMKFVRR",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 42.208331,
+        "lon": -75.981989
       },
+      "range": 150,
       "freq": 127.55
     },
     {
       "id": "01H9V55MGNYF81BN7CDDA12371",
+      "physicalFacility": "BGM",
       "name": "Clearance Delivery",
+      "radioName": "Binghampton Clearance Delivery",
       "callsign": "BGM_DEL",
+      "areaId": "01H9V700TH7HGKM8J3T6WHR1N2",
+      "tcpId": "01K2NF1DSGCE5QXPYZKPWR9A6E",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 42.208331,
+        "lon": -75.981989
       },
+      "range": 50,
       "freq": 125.05
     },
     {
-      "id": "1G",
+      "id": "01GAPPQ0BCSHTSCWX1YR2A4380",
+      "physicalFacility": "BGM",
+      "name": "Ground",
+      "radioName": "Binghamton Ground",
+      "callsign": "BGM_GND",
+      "areaId": "01H9V700TH7HGKM8J3T6WHR1N2",
+      "tcpId": "01K2NF1DSGCE5QXPYZKPWR9A6E",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 42.208331,
+        "lon": -75.981989
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1H",
+      "id": "01GAPPQNY9V461JEW2AN5ZP9A7",
+      "physicalFacility": "BGM",
+      "name": "Local",
+      "radioName": "Bignhamton Tower",
+      "callsign": "BGM_TWR",
+      "areaId": "01H9V700TH7HGKM8J3T6WHR1N2",
+      "tcpId": "01K2NF1DSGCE5QXPYZKPWR9A6E",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 42.208331,
+        "lon": -75.981989
+      },
+      "range": 50,
+      "freq": 119.3
     },
     {
-      "id": "1K",
+      "id": "01H2BD14Z727T6GAYAX7EBZ8BV",
+      "physicalFacility": "BGM",
+      "name": "Radar Low",
+      "radioName": "Binghamton Approach",
+      "callsign": "BGM_L_APP",
+      "areaId": "01H2BCVDVZR0NVNZCYQ1MSM92W",
+      "tcpId": "01K2NF1DSGPW2XHDJ53B139PAR",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 42.208331,
+        "lon": -75.981989
+      },
+      "range": 150,
+      "freq": 118.6
     }
   ],
   "mapGroups": [

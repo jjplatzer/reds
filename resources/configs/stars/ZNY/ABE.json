@@ -4,80 +4,155 @@
   "name": "Allentown ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 35.914982499999994,
-    "lon": -73.0446825
+    "lat": 40.652355,
+    "lon": -75.440399
   },
+  "areas": [
+    {
+      "id": "01GKYQEKA5KNGJ31YFSBYXM9TV",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 40.652355,
+        "lon": -75.440399
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "1N7",
+        "22N",
+        "69N",
+        "ABE",
+        "N40",
+        "N43",
+        "N53",
+        "N85",
+        "XLL"
+      ],
+      "ssaAirports": [
+        "ABE",
+        "XLL"
+      ]
+    },
+    {
+      "id": "01H9V6VKN0GWPT61K7C7W6KV2P",
+      "name": "Cab",
+      "visibilityCenter": {
+        "lat": 40.652355,
+        "lon": -75.440399
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ABE"
+      ],
+      "ssaAirports": [
+        "ABE"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DSGM22GMPB8569XH32N",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSGCHZC55MR7CHMMEJ7",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1DSGM22GMPB8569XH32N",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSG74F3GM8SQYMZ2AF3",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GAPPDKXMRGS3E4AJ8P4Z1T1G",
-      "name": "Clearance Delivery",
-      "callsign": "ABE_DEL",
+      "id": "01GZ9JD64P9TK72432M39VW6NK",
+      "physicalFacility": "ABE",
+      "name": "Arrival Radar",
+      "radioName": "Allentown Approach",
+      "callsign": "ABE_APP",
+      "areaId": "01GKYQEKA5KNGJ31YFSBYXM9TV",
+      "tcpId": "01K2NF1DSGM22GMPB8569XH32N",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 40.652355,
+        "lon": -75.440399
       },
+      "range": 150,
+      "freq": 119.65
+    },
+    {
+      "id": "01GKYQJCTR0T1GR5XM6E54KCZJ",
+      "physicalFacility": "ABE",
+      "name": "Departure Radar",
+      "radioName": "Allentown Departure",
+      "callsign": "ABE_DEP",
+      "areaId": "01GKYQEKA5KNGJ31YFSBYXM9TV",
+      "tcpId": "01K2NF1DSGCHZC55MR7CHMMEJ7",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 40.652355,
+        "lon": -75.440399
+      },
+      "range": 150,
+      "freq": 124.45
+    },
+    {
+      "id": "01GAPPDKXMRGS3E4AJ8P4Z1T1G",
+      "physicalFacility": "ABE",
+      "name": "Clearance Delivery",
+      "radioName": "Allentown Clearance Delivery",
+      "callsign": "ABE_DEL",
+      "areaId": "01H9V6VKN0GWPT61K7C7W6KV2P",
+      "tcpId": "01K2NF1DSG74F3GM8SQYMZ2AF3",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 40.652355,
+        "lon": -75.440399
+      },
+      "range": 50,
       "freq": 124.05
     },
     {
       "id": "01GAPPFKM7T36G95JN5TCEGY8G",
+      "physicalFacility": "ABE",
       "name": "Ground",
+      "radioName": "Allentown Ground",
       "callsign": "ABE_GND",
+      "areaId": "01H9V6VKN0GWPT61K7C7W6KV2P",
+      "tcpId": "01K2NF1DSG74F3GM8SQYMZ2AF3",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 40.652355,
+        "lon": -75.440399
       },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01GAPPG3HTHKP0HZ1YGNNWJG6A",
+      "physicalFacility": "ABE",
       "name": "Local",
+      "radioName": "Allentown Tower",
       "callsign": "ABE_TWR",
+      "areaId": "01H9V6VKN0GWPT61K7C7W6KV2P",
+      "tcpId": "01K2NF1DSG74F3GM8SQYMZ2AF3",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 40.652355,
+        "lon": -75.440399
       },
+      "range": 50,
       "freq": 120.5
-    },
-    {
-      "id": "01GKYQJCTR0T1GR5XM6E54KCZJ",
-      "name": "Departure Radar",
-      "callsign": "ABE_DEP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 124.45
-    },
-    {
-      "id": "01GZ9JD64P9TK72432M39VW6NK",
-      "name": "Arrival Radar",
-      "callsign": "ABE_APP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 119.65
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
     }
   ],
   "mapGroups": [

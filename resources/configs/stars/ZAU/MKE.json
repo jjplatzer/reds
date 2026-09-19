@@ -4,220 +4,508 @@
   "name": "Milwaukee ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.879166749999996,
-    "lon": -88.975
+    "lat": 42.9425,
+    "lon": -87.918611
   },
+  "areas": [
+    {
+      "id": "01GFQCE9B6A43RSN6V44YVEW6D",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "surveillanceRange": 125,
+      "underlyingAirports": [
+        "Y50",
+        "OSH",
+        "8D1",
+        "FLD",
+        "SBM",
+        "ETB",
+        "HXF",
+        "MWC",
+        "UES",
+        "57C",
+        "BUU",
+        "C02",
+        "ENW",
+        "RAC",
+        "MKE"
+      ],
+      "ssaAirports": [
+        "MKE",
+        "BUU",
+        "ENW",
+        "ETB",
+        "FLD",
+        "MWC",
+        "OSH",
+        "SBM",
+        "UES"
+      ]
+    },
+    {
+      "id": "01GFQD2WB252E8R8FT73BXQCAB",
+      "name": "Feeder",
+      "visibilityCenter": {
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "surveillanceRange": 125,
+      "underlyingAirports": [
+        "ETB",
+        "HXF",
+        "MWC",
+        "UES",
+        "57C",
+        "BUU",
+        "RAC",
+        "C02",
+        "ENW"
+      ],
+      "ssaAirports": [
+        "MKE"
+      ]
+    },
+    {
+      "id": "01GFQD49N0YBH66CTFW0AV9CKK",
+      "name": "Ripon",
+      "visibilityCenter": {
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "surveillanceRange": 125,
+      "underlyingAirports": [
+        "Y50",
+        "OSH",
+        "81D",
+        "FLD",
+        "SBM"
+      ],
+      "ssaAirports": [
+        "OSH",
+        "FLD",
+        "SBM"
+      ]
+    },
+    {
+      "id": "01GFQD7PDRS0Y4PKKKQ9XVA0HT",
+      "name": "Departure",
+      "visibilityCenter": {
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "surveillanceRange": 125,
+      "underlyingAirports": [
+        "Y50",
+        "OSH",
+        "8D1",
+        "FLD",
+        "SBM",
+        "ETB",
+        "HXF",
+        "MWC",
+        "UES",
+        "57C",
+        "BUU",
+        "C02",
+        "ENW",
+        "RAC",
+        "MKE"
+      ],
+      "ssaAirports": [
+        "MKE",
+        "BUU",
+        "ENW",
+        "ETB",
+        "FLD",
+        "MWC",
+        "OSH",
+        "SBM",
+        "UES",
+        "HXF"
+      ]
+    },
+    {
+      "id": "01GFQDBTRNT2KDKXVZVHSF4HCF",
+      "name": "Final",
+      "visibilityCenter": {
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "surveillanceRange": 125,
+      "ssaAirports": [
+        "MKE"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DXNP6AHE8BAW8HJ3T92",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1DXNEE6PKTVX366X44ED",
+      "parentTcp": "1M"
+    },
+    {
+      "id": "01K2NF1DXNR8BVKET13G8G6AVZ",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1DXN18MNS9XFMFX2PWM5",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1DXNR8BVKET13G8G6AVZ",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1DXNB0VSBXDWDBS012R0",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1DXN19E2DR2EP5R2NFYH",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1DXNDKNW50WY0BMERC60",
+      "parentTcp": "1L"
+    },
+    {
+      "id": "01K2NF1DXNBZP3X8PFS3NW18GR",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J"
+    },
+    {
+      "id": "01K2NF1DXNC0S62AQP5KZ1H4DT",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1DXNDKNW50WY0BMERC60",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1DXNEE6PKTVX366X44ED",
+      "parentTcp": "1M"
+    },
+    {
+      "id": "01K2NF1DXNEE6PKTVX366X44ED",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1DXNR8BVKET13G8G6AVZ",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1DXNRTDZMCWKRTZ3NEN8",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1DXNKN5NYCDBD2FG42RV",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1DXN203NF66HJ9F2WFZW",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DXN1TYH7SBYTR0CED0F",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K2NF1DXNMQNFKZMXACH7VSGV",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V"
+    },
+    {
+      "id": "01K2NF1DXN70SYZXAJJVQCHCXY",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DXNR8BVKET13G8G6AVZ",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1DXNDTB3XFVQ61CBW53N",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GFQD1G8PJA3ZYYT08CTKA5Y5",
-      "name": "East Feeder (Combined)",
-      "callsign": "MKE_E_APP",
+      "id": "01GFQDH6D5VFKTVD42JMX7WQSM",
+      "physicalFacility": "MKE",
+      "name": "West Departure",
+      "radioName": "Milwaukee Departure",
+      "callsign": "MKE_B_DEP",
+      "areaId": "01GFQD7PDRS0Y4PKKKQ9XVA0HT",
+      "tcpId": "01K2NF1DXNP6AHE8BAW8HJ3T92",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.9425,
+        "lon": -87.918611
       },
+      "range": 125,
+      "freq": 125.35
+    },
+    {
+      "id": "01GFQD1G8PJA3ZYYT08CTKA5Y5",
+      "physicalFacility": "MKE",
+      "name": "East Feeder (Combined)",
+      "radioName": "Milwaukee Approach",
+      "callsign": "MKE_E_APP",
+      "areaId": "01GFQCE9B6A43RSN6V44YVEW6D",
+      "tcpId": "01K2NF1DXNR8BVKET13G8G6AVZ",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "range": 125,
       "freq": 118
     },
     {
       "id": "01GFQDCVFSNKMXWRSHTXM7H64C",
+      "physicalFacility": "MKE",
       "name": "East Feeder",
+      "radioName": "Milwaukee Approach",
       "callsign": "MKE_E_APP",
+      "areaId": "01GFQD2WB252E8R8FT73BXQCAB",
+      "tcpId": "01K2NF1DXNR8BVKET13G8G6AVZ",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.9425,
+        "lon": -87.918611
       },
+      "range": 125,
       "freq": 118
     },
     {
-      "id": "01GFQDDGN4JBDWH08MEVAQRKYZ",
-      "name": "West Feeder",
-      "callsign": "MKE_W_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 126.5
-    },
-    {
       "id": "01GFQDE9QP1HKXQT1MRBHGEWX9",
+      "physicalFacility": "MKE",
       "name": "Final",
+      "radioName": "Milwaukee Approach",
       "callsign": "MKE_F_APP",
+      "areaId": "01GFQDBTRNT2KDKXVZVHSF4HCF",
+      "tcpId": "01K2NF1DXN18MNS9XFMFX2PWM5",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.9425,
+        "lon": -87.918611
       },
+      "range": 125,
       "freq": 118.475
     },
     {
-      "id": "01GFQDEW5ZXM6HPG9FSRBAGQHN",
-      "name": "Ripon West",
-      "callsign": "MKE_L_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 127
-    },
-    {
       "id": "01GFQDFHN0J07D4KD81MFSFNF0",
+      "physicalFacility": "MKE",
       "name": "Ripon East",
+      "radioName": "Milwaukee Approach",
       "callsign": "MKE_H_APP",
+      "areaId": "01GFQD49N0YBH66CTFW0AV9CKK",
+      "tcpId": "01K2NF1DXN19E2DR2EP5R2NFYH",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.9425,
+        "lon": -87.918611
       },
+      "range": 125,
       "freq": 127.375
     },
     {
-      "id": "01GFQDGCDBB892SNGVECYXPX6G",
-      "name": "East Departure",
-      "callsign": "MKE_M_DEP",
+      "id": "01GFS7BFGA9FAGRS7841NCAEXB",
+      "physicalFacility": "MWC",
+      "name": "Local",
+      "radioName": "Timmerman Tower",
+      "callsign": "MWC_TWR",
+      "areaId": "01GFQD7PDRS0Y4PKKKQ9XVA0HT",
+      "tcpId": "01K2NF1DXNBZP3X8PFS3NW18GR",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.9425,
+        "lon": -87.918611
       },
+      "range": 125,
+      "freq": 120.5
+    },
+    {
+      "id": "01GFRZ68M1QC553MGGTGJM8KNR",
+      "physicalFacility": "ENW",
+      "name": "Local",
+      "radioName": "Kenosha Tower",
+      "callsign": "ENW_TWR",
+      "areaId": "01GFQD7PDRS0Y4PKKKQ9XVA0HT",
+      "tcpId": "01K2NF1DXNC0S62AQP5KZ1H4DT",
+      "tcp": "1K",
+      "visualCenter": {
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "range": 125,
+      "freq": 118.6
+    },
+    {
+      "id": "01GFQDEW5ZXM6HPG9FSRBAGQHN",
+      "physicalFacility": "MKE",
+      "name": "Ripon West",
+      "radioName": "Milwaukee Approach",
+      "callsign": "MKE_L_APP",
+      "areaId": "01GFQD49N0YBH66CTFW0AV9CKK",
+      "tcpId": "01K2NF1DXNDKNW50WY0BMERC60",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "range": 125,
+      "freq": 127
+    },
+    {
+      "id": "01GFQDGCDBB892SNGVECYXPX6G",
+      "physicalFacility": "MKE",
+      "name": "East Departure",
+      "radioName": "Milwaukee Departure",
+      "callsign": "MKE_M_DEP",
+      "areaId": "01GFQD7PDRS0Y4PKKKQ9XVA0HT",
+      "tcpId": "01K2NF1DXNEE6PKTVX366X44ED",
+      "tcp": "1M",
+      "visualCenter": {
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "range": 125,
       "freq": 135.875
     },
     {
-      "id": "01GFQDH6D5VFKTVD42JMX7WQSM",
-      "name": "West Departure",
-      "callsign": "MKE_B_DEP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 125.35
-    },
-    {
-      "id": "01GFQDJ2YFYKKSJTK7E4YW14ZW",
-      "name": "Fisk Approach",
-      "callsign": "OSH_V_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 120.7
-    },
-    {
-      "id": "01GFQDK0NRGQCACKW1GTXJ5XTE",
-      "name": "Local",
-      "callsign": "MKE_TWR",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 124.575
-    },
-    {
       "id": "01GFQDKVHDK8KZGW3SG561BYRG",
+      "physicalFacility": "MKE",
       "name": "Ground",
+      "radioName": "Milwaukee Ground",
       "callsign": "MKE_GND",
+      "areaId": "01GFQCE9B6A43RSN6V44YVEW6D",
+      "tcpId": "01K2NF1DXN203NF66HJ9F2WFZW",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.9425,
+        "lon": -87.918611
       },
+      "range": 125,
       "freq": 121.8
     },
     {
-      "id": "01GFQDM8EV03N891FPMCBRP5RB",
-      "name": "Clearance Delivery",
-      "callsign": "MKE_DEL",
+      "id": "01GFQDK0NRGQCACKW1GTXJ5XTE",
+      "physicalFacility": "MKE",
+      "name": "Local",
+      "radioName": "Milwaukee Tower",
+      "callsign": "MKE_TWR",
+      "areaId": "01GFQCE9B6A43RSN6V44YVEW6D",
+      "tcpId": "01K2NF1DXN203NF66HJ9F2WFZW",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.9425,
+        "lon": -87.918611
       },
-      "freq": 120.8
+      "range": 125,
+      "freq": 124.575
     },
     {
-      "id": "1B",
+      "id": "01GFS4BMW43BT5C2C0HSD6P994",
+      "physicalFacility": "UES",
+      "name": "Local",
+      "radioName": "Waukesha Tower",
+      "callsign": "UES_TWR",
+      "areaId": "01GFQD7PDRS0Y4PKKKQ9XVA0HT",
+      "tcpId": "01K2NF1DXN1TYH7SBYTR0CED0F",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "range": 125,
+      "freq": 123.7
     },
     {
-      "id": "1E",
+      "id": "01GFQDJ2YFYKKSJTK7E4YW14ZW",
+      "physicalFacility": "MKE",
+      "name": "Fisk Approach",
+      "radioName": "Fisk Approach",
+      "callsign": "OSH_V_APP",
+      "areaId": "01GFQD49N0YBH66CTFW0AV9CKK",
+      "tcpId": "01K2NF1DXNMQNFKZMXACH7VSGV",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "range": 125,
+      "freq": 120.7
     },
     {
-      "id": "1F",
+      "id": "01GFQDDGN4JBDWH08MEVAQRKYZ",
+      "physicalFacility": "MKE",
+      "name": "West Feeder",
+      "radioName": "Milwaukee Approach",
+      "callsign": "MKE_W_APP",
+      "areaId": "01GFQD2WB252E8R8FT73BXQCAB",
+      "tcpId": "01K2NF1DXN70SYZXAJJVQCHCXY",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "range": 125,
+      "freq": 126.5
     },
     {
-      "id": "1H",
+      "id": "01GFSJVCPR01FZKMVZG27DWVDR",
+      "physicalFacility": "OSH",
+      "name": "Local North",
+      "radioName": "Oshkosh Tower",
+      "callsign": "OSH_TWR",
+      "areaId": "01GFQD49N0YBH66CTFW0AV9CKK",
+      "tcpId": "01K2NF1DXNDTB3XFVQ61CBW53N",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "range": 125,
+      "freq": 118.5
     },
     {
-      "id": "1J",
+      "id": "01HQHN1M5X6X7CGZW19XV7D8K6",
+      "physicalFacility": "OSH",
+      "name": "Local South",
+      "radioName": "Oshkosh Tower",
+      "callsign": "OSH_TWR",
+      "areaId": "01GFQD49N0YBH66CTFW0AV9CKK",
+      "tcpId": "01K2NF1DXNDTB3XFVQ61CBW53N",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
+        "lat": 42.9425,
+        "lon": -87.918611
+      },
+      "range": 125,
+      "freq": 126.6
     }
   ],
   "mapGroups": [

@@ -4,53 +4,79 @@
   "name": "CYS RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 40.569587575,
-    "lon": -104.96660805
+    "lat": 41.1556389,
+    "lon": -104.8104722
   },
+  "areas": [
+    {
+      "id": "01HB76GMGYV52HPS0D6H1K2YZE",
+      "name": "Cheyenne",
+      "visibilityCenter": {
+        "lat": 41.1556389,
+        "lon": -104.8104722
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "CYS",
+        "FEW",
+        "WY46",
+        "WY05",
+        "WY45",
+        "82V"
+      ],
+      "ssaAirports": [
+        "CYS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CJTM72EPP6KRTSW5AZQ",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJTZP98PQ18VK3750RF",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01H58SCCH99CCV92SXXEQBCSNT",
-      "name": "Ground",
-      "callsign": "CYS_GND",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01H58SCYJQS37GVS1F8KNVNYKJ",
-      "name": "Local Control",
-      "callsign": "CYS_TWR",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 118.7
-    },
-    {
       "id": "01HB76K2CMWNP8QTMK7DXEN0E5",
+      "physicalFacility": "CYS",
       "name": "Approach",
+      "radioName": "Cheyenne Approach",
       "callsign": "CYS_APP",
+      "areaId": "01HB76GMGYV52HPS0D6H1K2YZE",
+      "tcpId": "01K2NF1CJTM72EPP6KRTSW5AZQ",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 41.1556389,
+        "lon": -104.8104722
       },
+      "range": 100,
       "freq": 124.55
     },
     {
-      "id": "1A",
+      "id": "01H58SCYJQS37GVS1F8KNVNYKJ",
+      "physicalFacility": "CYS",
+      "name": "Local Control",
+      "radioName": "Cheyenne Tower",
+      "callsign": "CYS_TWR",
+      "areaId": "01HB76GMGYV52HPS0D6H1K2YZE",
+      "tcpId": "01K2NF1CJTZP98PQ18VK3750RF",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
+        "lat": 41.1556389,
+        "lon": -104.8104722
+      },
+      "range": 100,
+      "freq": 118.7
     }
   ],
   "mapGroups": [

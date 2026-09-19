@@ -4,80 +4,136 @@
   "name": "Lafayette ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 30.213674,
+    "lon": -91.987871
   },
+  "areas": [
+    {
+      "id": "01GZFXRXWHS0KMPSV00DW92J12",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 30.213674,
+        "lon": -91.987871
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "3R2",
+        "4R7",
+        "ARA",
+        "IYA",
+        "LFT",
+        "OPL"
+      ],
+      "ssaAirports": [
+        "LFT"
+      ]
+    },
+    {
+      "id": "01JCPP65RTPXD7AQSM2ACB7E62",
+      "name": "LFT TOWER",
+      "visibilityCenter": {
+        "lat": 30.213674,
+        "lon": -91.987871
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "LFT"
+      ],
+      "ssaAirports": [
+        "LFT"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDRP17BPRDCF7HDZW2S",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1CDRCNSCBYD0E45NM726",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1CDR93TP0TJ9XS2955T2",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1CDR9MJ4SHX43SBR01X4",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GSJ1Q51K0XE3M644CW5YRS2B",
-      "name": "West Approach",
-      "callsign": "LFT_W_APP",
+      "id": "01GB60Z01ZB701QNH3JRZDD1MZ",
+      "physicalFacility": "ARA",
+      "name": "Local",
+      "radioName": "Acadiana Tower",
+      "callsign": "ARA_TWR",
+      "areaId": "01GZFXRXWHS0KMPSV00DW92J12",
+      "tcpId": "01K2NF1CDRP17BPRDCF7HDZW2S",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.213674,
+        "lon": -91.987871
       },
-      "freq": 128.7
+      "range": 100,
+      "freq": 125
     },
     {
       "id": "01GSJ1ZY1MJ1A13DBHAPJ3BDFX",
+      "physicalFacility": "LFT",
       "name": "East Approach",
+      "radioName": "Lafayette Approach",
       "callsign": "LFT_E_APP",
+      "areaId": "01GZFXRXWHS0KMPSV00DW92J12",
+      "tcpId": "01K2NF1CDRCNSCBYD0E45NM726",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.213674,
+        "lon": -91.987871
       },
+      "range": 100,
       "freq": 121.1
     },
     {
-      "id": "01GSJ2A3Z5ZX6Q833A32T78EPN",
-      "name": "Clearance Delivery",
-      "callsign": "LFT_DEL",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 125.55
-    },
-    {
-      "id": "01GSJ2DEH6333YPWCJEPZX2DRG",
-      "name": "Ground",
-      "callsign": "LFT_GND",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 121.8
-    },
-    {
       "id": "01GSJ2QE5JEBF3MAF5KRC9JRCN",
+      "physicalFacility": "LFT",
       "name": "Tower",
+      "radioName": "Lafayette Tower",
       "callsign": "LFT_TWR",
+      "areaId": "01GZFXRXWHS0KMPSV00DW92J12",
+      "tcpId": "01K2NF1CDR93TP0TJ9XS2955T2",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.213674,
+        "lon": -91.987871
       },
+      "range": 100,
       "freq": 118.5
     },
     {
-      "id": "1E",
+      "id": "01GSJ1Q51K0XE3M644CW5YRS2B",
+      "physicalFacility": "LFT",
+      "name": "West Approach",
+      "radioName": "Lafayette Approach",
+      "callsign": "LFT_W_APP",
+      "areaId": "01GZFXRXWHS0KMPSV00DW92J12",
+      "tcpId": "01K2NF1CDR9MJ4SHX43SBR01X4",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 30.213674,
+        "lon": -91.987871
+      },
+      "range": 100,
+      "freq": 128.7
     }
   ],
   "mapGroups": [

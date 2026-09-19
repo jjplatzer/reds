@@ -4,87 +4,158 @@
   "name": "Charleston ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 32.89861,
+    "lon": -80.04028
   },
+  "areas": [
+    {
+      "id": "01GA5G5NZKYBBCC9BM6YGEAGTC",
+      "name": "CHS",
+      "visibilityCenter": {
+        "lat": 32.89861,
+        "lon": -80.04028
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "CHS",
+        "JZI",
+        "LRO",
+        "MKS",
+        "DYB",
+        "RBW"
+      ]
+    },
+    {
+      "id": "01HCKGV9WEVBB6FCWMT8B3HKB9",
+      "name": "Charleston Tower",
+      "visibilityCenter": {
+        "lat": 32.89861,
+        "lon": -80.04028
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "CHS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFEG2RKGBB6V021A08X",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1DFEDY7B7P3XQNS0F2N7",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01K2NF1DFEC04VRYFFBC6VAMVZ",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DFE2H4BA55BRN1SGFMJ",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1DFEDY7B7P3XQNS0F2N7",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1DFEYD4JPTJTC6WE3PHY",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1DFEYD4JPTJTC6WE3PHY",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DFE2H4BA55BRN1SGFMJ",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GA5E78N6EM8FH0AXAVEN5D60",
-      "name": "West Radar",
-      "callsign": "CHS_W_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 120.7
-    },
-    {
-      "id": "01GA5FDZQ6553AQPZ4VMDKA3KE",
-      "name": "East Radar",
-      "callsign": "CHS_E_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 121.275
-    },
-    {
       "id": "01GA5FF884H399RN6VVBFVR66S",
+      "physicalFacility": "CHS",
       "name": "Clearance Delivery",
+      "radioName": "Charleston Clearance Delivery",
       "callsign": "CHS_DEL",
+      "areaId": "01HCKGV9WEVBB6FCWMT8B3HKB9",
+      "tcpId": "01K2NF1DFEG2RKGBB6V021A08X",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 32.89861,
+        "lon": -80.04028
       },
+      "range": 50,
       "freq": 127.325
     },
     {
-      "id": "01GA5FGSNFKR5JRMABQF7DYYT3",
-      "name": "Ground Control",
-      "callsign": "CHS_GND",
+      "id": "01GA5FDZQ6553AQPZ4VMDKA3KE",
+      "physicalFacility": "CHS",
+      "name": "East Radar",
+      "radioName": "Charleston Approach",
+      "callsign": "CHS_E_APP",
+      "areaId": "01GA5G5NZKYBBCC9BM6YGEAGTC",
+      "tcpId": "01K2NF1DFEC04VRYFFBC6VAMVZ",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 32.89861,
+        "lon": -80.04028
       },
+      "range": 150,
+      "freq": 121.275
+    },
+    {
+      "id": "01GA5FGSNFKR5JRMABQF7DYYT3",
+      "physicalFacility": "CHS",
+      "name": "Ground Control",
+      "radioName": "Charleston Ground",
+      "callsign": "CHS_GND",
+      "areaId": "01HCKGV9WEVBB6FCWMT8B3HKB9",
+      "tcpId": "01K2NF1DFEDY7B7P3XQNS0F2N7",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 32.89861,
+        "lon": -80.04028
+      },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01GA5FHQYY7PC14K63QPW10KEH",
+      "physicalFacility": "CHS",
       "name": "Local Control",
+      "radioName": "Charleston Tower",
       "callsign": "CHS_TWR",
+      "areaId": "01HCKGV9WEVBB6FCWMT8B3HKB9",
+      "tcpId": "01K2NF1DFEYD4JPTJTC6WE3PHY",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 32.89861,
+        "lon": -80.04028
       },
+      "range": 50,
       "freq": 126
     },
     {
-      "id": "1D",
+      "id": "01GA5E78N6EM8FH0AXAVEN5D60",
+      "physicalFacility": "CHS",
+      "name": "West Radar",
+      "radioName": "Charleston Approach",
+      "callsign": "CHS_W_APP",
+      "areaId": "01GA5G5NZKYBBCC9BM6YGEAGTC",
+      "tcpId": "01K2NF1DFE2H4BA55BRN1SGFMJ",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 32.89861,
+        "lon": -80.04028
+      },
+      "range": 150,
+      "freq": 120.7
     }
   ],
   "mapGroups": [

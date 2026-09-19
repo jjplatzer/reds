@@ -4,56 +4,77 @@
   "name": "Dover ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 37,
-    "lon": -77
+    "lat": 39.1277,
+    "lon": -75.4684
   },
+  "areas": [
+    {
+      "id": "01H1F24JEJGND780Z6QGF7855P",
+      "name": "RAPCON",
+      "visibilityCenter": {
+        "lat": 39.1277,
+        "lon": -75.4684
+      },
+      "surveillanceRange": 80,
+      "underlyingAirports": [
+        "DOV",
+        "0N4",
+        "33N",
+        "MD1"
+      ],
+      "ssaAirports": [
+        "DOV"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E0T2H6QFZ8DKC4GEEDN",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0TAJZNX1127KT5SZQY",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01H1F27HWM2PVB18RQKA8JHWGZ",
-      "name": "Clearance",
-      "callsign": "DOV_DEL",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 125.55
-    },
-    {
-      "id": "01H1F282FW846DYG2TW5CTNRVB",
-      "name": "Ground",
-      "callsign": "DOV_GND",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 118.875
-    },
-    {
-      "id": "01H1F28GN69236DW07SQJ4RTN0",
-      "name": "Local",
-      "callsign": "DOV_TWR",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 126.35
-    },
-    {
       "id": "01H1F294069KMSANSDSV7W9Y2X",
+      "physicalFacility": "DOV",
       "name": "Approach",
+      "radioName": "Dover Approach",
       "callsign": "DOV_APP",
+      "areaId": "01H1F24JEJGND780Z6QGF7855P",
+      "tcpId": "01K2NF1E0T2H6QFZ8DKC4GEEDN",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 39.1277,
+        "lon": -75.4684
       },
+      "range": 80,
       "freq": 132.425
     },
     {
-      "id": "1A",
+      "id": "01H1F28GN69236DW07SQJ4RTN0",
+      "physicalFacility": "DOV",
+      "name": "Local",
+      "radioName": "Dover Tower",
+      "callsign": "DOV_TWR",
+      "areaId": "01H1F24JEJGND780Z6QGF7855P",
+      "tcpId": "01K2NF1E0TAJZNX1127KT5SZQY",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 39.1277,
+        "lon": -75.4684
+      },
+      "range": 80,
+      "freq": 126.35
     }
   ],
   "mapGroups": [

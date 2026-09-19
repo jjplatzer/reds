@@ -4,426 +4,895 @@
   "name": "Houston TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 29.95788050974403,
+    "lon": -95.2771746447878
   },
+  "areas": [
+    {
+      "id": "01GB3RC3HPARNW1E5Q153KQ26E",
+      "name": "Beaumont",
+      "visibilityCenter": {
+        "lat": 29.94701,
+        "lon": -94.02892
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "BPT",
+        "BMT",
+        "ORG"
+      ],
+      "ssaAirports": [
+        "BPT",
+        "BMT",
+        "ORG"
+      ]
+    },
+    {
+      "id": "01GB3RCG328W01PP7SD8EKSC0V",
+      "name": "College Station",
+      "visibilityCenter": {
+        "lat": 30.227480548720152,
+        "lon": -96.37921022393905
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "CLL",
+        "CFD",
+        "ELA"
+      ],
+      "ssaAirports": [
+        "CLL",
+        "CFD",
+        "ELA"
+      ]
+    },
+    {
+      "id": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "name": "Consolidated",
+      "visibilityCenter": {
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "11R",
+        "45R",
+        "54T",
+        "60R",
+        "6R3",
+        "ARM",
+        "AXH",
+        "BMT",
+        "BPT",
+        "BYY",
+        "CFD",
+        "CLL",
+        "CXO",
+        "DWH",
+        "EFD",
+        "ELA",
+        "GLS",
+        "HOU",
+        "HPY",
+        "IAH",
+        "IWS",
+        "LBX",
+        "LVJ",
+        "ORG",
+        "RCK",
+        "RWV",
+        "SGR",
+        "T00",
+        "T35",
+        "T41",
+        "T51",
+        "T78",
+        "TME"
+      ],
+      "ssaAirports": [
+        "DWH",
+        "EFD",
+        "HOU",
+        "IAH",
+        "SGR",
+        "GLS",
+        "BPT",
+        "CLL",
+        "CXO"
+      ]
+    },
+    {
+      "id": "01GZDCSKEZH6GQGYCNNBWSTRJC",
+      "name": "IAH Tower",
+      "visibilityCenter": {
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "IAH"
+      ],
+      "ssaAirports": [
+        "IAH"
+      ]
+    },
+    {
+      "id": "01GZDCVHKNC696HKZTA2S5ANZ1",
+      "name": "HOU Tower",
+      "visibilityCenter": {
+        "lat": 29.6182,
+        "lon": -95.270655
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "HOU"
+      ],
+      "ssaAirports": [
+        "HOU"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDRH0R3481V7HF9HRET",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRNVP777F3E5PQGRWP",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRC4SE0E5TKW5ZDV31",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRRGDVGZ7VJQZCDZ3S",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDR50126VHNJA8B3MV9",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRKGZ29Q7T5HRB99X5",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDR8C2D2YH0EHG6TDAN",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRV0E6084E6VSV7X1X",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRD3FXT3R2M49BN410",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRNQHKFHV14VBH268M",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRK4EZ3MNZC5ACRVTP",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDR4J0TTXRD41JZTXNX",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRFQX9ZA5ZJ3PQBBR3",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRXH97XXQ8FSVTDKQB",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRKA0FR9G4KNCYJMJ1",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRA39YT0SXPZCV06E1",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDR2WNMFZM301EQC9NY",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRN5HZ4GCDPA8VX908",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDR5TQ74YBXTVS9Q2SH",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRJAG6D6XT8ER9PTFA",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRY99JF8NMGXZPG7NV",
+      "code": "3T",
+      "subset": 3,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRFX1R3JASSQ9021SC",
+      "code": "4G",
+      "subset": 4,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRGQBGZ9MRAEC4KXQ7",
+      "code": "4J",
+      "subset": 4,
+      "sectorId": "J",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRBX2ENY24DMDC14VJ",
+      "code": "4L",
+      "subset": 4,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRNG8MZB5C0QQ3P4MC",
+      "code": "4O",
+      "subset": 4,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRH9V969RY80ZKNY93",
+      "code": "4Q",
+      "subset": 4,
+      "sectorId": "Q",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRWHMEKNBMEDJK3VAT",
+      "code": "4S",
+      "subset": 4,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRF6Q31130BMAYHC8X",
+      "code": "4T",
+      "subset": 4,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRFR6JFPXZAEG2DB2P",
+      "code": "4U",
+      "subset": 4,
+      "sectorId": "U",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRGDGN7WQ5N672A12Z",
+      "code": "4V",
+      "subset": 4,
+      "sectorId": "V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDRQSAQQHWC6SQ1MZ31",
+      "code": "4X",
+      "subset": 4,
+      "sectorId": "X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDR8R6S2HN1W8T4WZ2G",
+      "code": "4Y",
+      "subset": 4,
+      "sectorId": "Y",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CDR2R7N8AN2XSGACZ2R",
+      "code": "4Z",
+      "subset": 4,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G901MXEJ5YKQXK7RD0ZSHZR5",
-      "name": "East Arrival",
-      "callsign": "I90_D_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 120.05
-    },
-    {
-      "id": "01G901WKW76GB6K6FWH3H8SECN",
-      "name": "West Arrival",
-      "callsign": "I90_N_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 134.35
-    },
-    {
-      "id": "01G901Y9S3FA6Y1HJTE2AQWWXS",
-      "name": "Gulf Arrival",
-      "callsign": "I90_G_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 119.625
-    },
-    {
-      "id": "01G901ZAN6YDH4J7ART25HZP2H",
-      "name": "Eagle Lake Arrival",
-      "callsign": "I90_X_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 119.175
-    },
-    {
       "id": "01G90208DPZGX859GWMWTA2HWP",
+      "physicalFacility": "I90",
       "name": "Final North",
+      "radioName": "Houston Approach",
       "callsign": "I90_A_APP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRH0R3481V7HF9HRET",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.998356,
+        "lon": -95.353544
       },
+      "range": 150,
       "freq": 119.1
     },
     {
-      "id": "01G9024F7E0YNYEJYSRB9N2V15",
-      "name": "Final Center",
-      "callsign": "I90_I_APP",
+      "id": "01G902FCN93620P2VWWBP8EFBZ",
+      "physicalFacility": "I90",
+      "name": "Sanjac Satellite",
+      "radioName": "Houston Approach",
+      "callsign": "I90_B_APP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRNVP777F3E5PQGRWP",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.998356,
+        "lon": -95.353544
       },
-      "freq": 120.65
+      "range": 150,
+      "freq": 134.45
     },
     {
-      "id": "01G90259D4JK0BGB7H1F4BN672",
-      "name": "Final South",
-      "callsign": "I90_O_APP",
+      "id": "01G901MXEJ5YKQXK7RD0ZSHZR5",
+      "physicalFacility": "I90",
+      "name": "East Arrival",
+      "radioName": "Houston Approach",
+      "callsign": "I90_D_APP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRC4SE0E5TKW5ZDV31",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.998356,
+        "lon": -95.353544
       },
-      "freq": 134
+      "range": 150,
+      "freq": 120.05
+    },
+    {
+      "id": "01G902J7ESEY1SCPCBY05JPE7S",
+      "physicalFacility": "I90",
+      "name": "Departure East",
+      "radioName": "Houston Approach",
+      "callsign": "I90_E_DEP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRRGDVGZ7VJQZCDZ3S",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
+      "freq": 133.6
+    },
+    {
+      "id": "01G901Y9S3FA6Y1HJTE2AQWWXS",
+      "physicalFacility": "I90",
+      "name": "Gulf Arrival",
+      "radioName": "Houston Approach",
+      "callsign": "I90_G_APP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDR50126VHNJA8B3MV9",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
+      "freq": 119.625
     },
     {
       "id": "01G90263NHGENWNV2381SY0ZD5",
+      "physicalFacility": "I90",
       "name": "Hobby Final",
+      "radioName": "Houston Approach",
       "callsign": "I90_H_APP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRKGZ29Q7T5HRB99X5",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.998356,
+        "lon": -95.353544
       },
+      "range": 150,
       "freq": 133.05
     },
     {
-      "id": "01G9028497H10951EZ8JRKVBHN",
-      "name": "Beaumont Satellite",
-      "callsign": "I90_J_APP",
+      "id": "01G9024F7E0YNYEJYSRB9N2V15",
+      "physicalFacility": "I90",
+      "name": "Final Center",
+      "radioName": "Houston Approach",
+      "callsign": "I90_I_APP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDR8C2D2YH0EHG6TDAN",
+      "tcp": "1I",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.998356,
+        "lon": -95.353544
       },
+      "range": 150,
+      "freq": 120.65
+    },
+    {
+      "id": "01G9028497H10951EZ8JRKVBHN",
+      "physicalFacility": "I90",
+      "name": "Beaumont Satellite",
+      "radioName": "Houston Approach",
+      "callsign": "I90_J_APP",
+      "areaId": "01GB3RC3HPARNW1E5Q153KQ26E",
+      "tcpId": "01K2NF1CDRV0E6084E6VSV7X1X",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 29.94701,
+        "lon": -94.02892
+      },
+      "range": 60,
       "freq": 121.3
     },
     {
-      "id": "01G902907HTREGTBKC45B41NMT",
-      "name": "College Station Satellite",
-      "callsign": "I90_U_APP",
+      "id": "01G902HF7WF60RS5JBS069KYSK",
+      "physicalFacility": "I90",
+      "name": "Departure South",
+      "radioName": "Houston Approach",
+      "callsign": "I90_L_DEP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRD3FXT3R2M49BN410",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.998356,
+        "lon": -95.353544
       },
-      "freq": 134.3
+      "range": 150,
+      "freq": 127.125
     },
     {
-      "id": "01G9029VWHP9ZYVB74EQS43HDR",
-      "name": "Industry Satellite",
-      "callsign": "I90_Z_APP",
+      "id": "01G902GAD6AGYYFKRTSBGZAR73",
+      "physicalFacility": "I90",
+      "name": "Departure North",
+      "radioName": "Houston Approach",
+      "callsign": "I90_M_DEP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRNQHKFHV14VBH268M",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.998356,
+        "lon": -95.353544
       },
-      "freq": 124.225
+      "range": 150,
+      "freq": 132.25
+    },
+    {
+      "id": "01G901WKW76GB6K6FWH3H8SECN",
+      "physicalFacility": "I90",
+      "name": "West Arrival",
+      "radioName": "Houston Approach",
+      "callsign": "I90_N_APP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRK4EZ3MNZC5ACRVTP",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
+      "freq": 134.35
+    },
+    {
+      "id": "01G90259D4JK0BGB7H1F4BN672",
+      "physicalFacility": "I90",
+      "name": "Final South",
+      "radioName": "Houston Approach",
+      "callsign": "I90_O_APP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDR4J0TTXRD41JZTXNX",
+      "tcp": "1O",
+      "visualCenter": {
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
+      "freq": 134
     },
     {
       "id": "01G902AQG7QJMPYWDB95D8CNEK",
+      "physicalFacility": "I90",
       "name": "Lakeside Satellite",
+      "radioName": "Houston Approach",
       "callsign": "I90_P_APP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRFQX9ZA5ZJ3PQBBR3",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.998356,
+        "lon": -95.353544
       },
+      "range": 150,
       "freq": 123.8
     },
     {
       "id": "01G902BJN9S4KM8YG1VTD14MHK",
+      "physicalFacility": "I90",
       "name": "Tomball Satellite",
+      "radioName": "Houston Approach",
       "callsign": "I90_R_APP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRXH97XXQ8FSVTDKQB",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.998356,
+        "lon": -95.353544
       },
+      "range": 150,
       "freq": 119.7
     },
     {
-      "id": "01G902FCN93620P2VWWBP8EFBZ",
-      "name": "Sanjac Satellite",
-      "callsign": "I90_B_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 134.45
-    },
-    {
-      "id": "01G902GAD6AGYYFKRTSBGZAR73",
-      "name": "Departure North",
-      "callsign": "I90_M_DEP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 132.25
-    },
-    {
-      "id": "01G902HF7WF60RS5JBS069KYSK",
-      "name": "Departure South",
-      "callsign": "I90_L_DEP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 127.125
-    },
-    {
-      "id": "01G902J7ESEY1SCPCBY05JPE7S",
-      "name": "Departure East",
-      "callsign": "I90_E_DEP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 133.6
-    },
-    {
-      "id": "01G902JVXPXJK9XVYW4R81V82R",
-      "name": "Departure West",
-      "callsign": "I90_W_DEP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 126.675
-    },
-    {
       "id": "01H5J6ZX8NW4P9NP50SXARR20Q",
+      "physicalFacility": "I90",
       "name": "College Station Final",
+      "radioName": "Houston Approach",
       "callsign": "I90_T_APP",
+      "areaId": "01GB3RCG328W01PP7SD8EKSC0V",
+      "tcpId": "01K2NF1CDRKA0FR9G4KNCYJMJ1",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.227480548720152,
+        "lon": -96.37921022393905
       },
+      "range": 60,
       "freq": 127.475
     },
     {
-      "id": "01JHGV5YTMY6CJHKQP98HFHJ5A",
-      "name": "Houston TMC",
-      "callsign": "I90_TMU",
+      "id": "01G902907HTREGTBKC45B41NMT",
+      "physicalFacility": "I90",
+      "name": "College Station Satellite",
+      "radioName": "Houston Approach",
+      "callsign": "I90_U_APP",
+      "areaId": "01GB3RCG328W01PP7SD8EKSC0V",
+      "tcpId": "01K2NF1CDRA39YT0SXPZCV06E1",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.227480548720152,
+        "lon": -96.37921022393905
       },
+      "range": 60,
+      "freq": 134.3
+    },
+    {
+      "id": "01G902JVXPXJK9XVYW4R81V82R",
+      "physicalFacility": "I90",
+      "name": "Departure West",
+      "radioName": "Houston Approach",
+      "callsign": "I90_W_DEP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDR2WNMFZM301EQC9NY",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
+      "freq": 126.675
+    },
+    {
+      "id": "01G901ZAN6YDH4J7ART25HZP2H",
+      "physicalFacility": "I90",
+      "name": "Eagle Lake Arrival",
+      "radioName": "Houston Approach",
+      "callsign": "I90_X_APP",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRN5HZ4GCDPA8VX908",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
+      "freq": 119.175
+    },
+    {
+      "id": "01JHGV5YTMY6CJHKQP98HFHJ5A",
+      "physicalFacility": "I90",
+      "name": "Houston TMC",
+      "radioName": "Houston TMC",
+      "callsign": "I90_TMU",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDR5TQ74YBXTVS9Q2SH",
+      "tcp": "1Y",
+      "visualCenter": {
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
       "freq": 123.45
     },
     {
-      "id": "1B",
+      "id": "01G9029VWHP9ZYVB74EQS43HDR",
+      "physicalFacility": "I90",
+      "name": "Industry Satellite",
+      "radioName": "Houston Approach",
+      "callsign": "I90_Z_APP",
+      "areaId": "01GB3RCG328W01PP7SD8EKSC0V",
+      "tcpId": "01K2NF1CDRJAG6D6XT8ER9PTFA",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 30.227480548720152,
+        "lon": -96.37921022393905
+      },
+      "range": 60,
+      "freq": 124.225
     },
     {
-      "id": "1D",
+      "id": "01GB607P7YGNC15EAE7PT69N87",
+      "physicalFacility": "BPT",
+      "name": "Local",
+      "radioName": "Beaumont Tower",
+      "callsign": "BPT_TWR",
+      "areaId": "01GB3RC3HPARNW1E5Q153KQ26E",
+      "tcpId": "01K2NF1CDRY99JF8NMGXZPG7NV",
+      "tcp": "3T",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.94701,
+        "lon": -94.02892
+      },
+      "range": 60,
+      "freq": 119.5
     },
     {
-      "id": "1E",
+      "id": "01GB60AEBW9WNV0BXRY6Q4XQDQ",
+      "physicalFacility": "GLS",
+      "name": "Local",
+      "radioName": "Galveston Tower",
+      "callsign": "GLS_TWR",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRFX1R3JASSQ9021SC",
+      "tcp": "4G",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
+      "freq": 120.575
     },
     {
-      "id": "1G",
+      "id": "01GZDCNDBYSBR0XBDH3YSKDCED",
+      "physicalFacility": "IAH",
+      "name": "South Local",
+      "radioName": "Houston Tower",
+      "callsign": "IAH_S_TWR",
+      "areaId": "01GZDCSKEZH6GQGYCNNBWSTRJC",
+      "tcpId": "01K2NF1CDRGQBGZ9MRAEC4KXQ7",
+      "tcp": "4J",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 60,
+      "freq": 135.15
     },
     {
-      "id": "1H",
+      "id": "01GB603ZFFV3VJRH5M7B94W36X",
+      "physicalFacility": "CLL",
+      "name": "Local",
+      "radioName": "Easterwood Tower",
+      "callsign": "CLL_TWR",
+      "areaId": "01GB3RCG328W01PP7SD8EKSC0V",
+      "tcpId": "01K2NF1CDRBX2ENY24DMDC14VJ",
+      "tcp": "4L",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 30.227480548720152,
+        "lon": -96.37921022393905
+      },
+      "range": 60,
+      "freq": 118.5
     },
     {
-      "id": "1I",
+      "id": "01GZDHYTCD7CKJ55G24V828SXP",
+      "physicalFacility": "HOU",
+      "name": "Local",
+      "radioName": "Hobby Tower",
+      "callsign": "HOU_TWR",
+      "areaId": "01GZDCVHKNC696HKZTA2S5ANZ1",
+      "tcpId": "01K2NF1CDRNG8MZB5C0QQ3P4MC",
+      "tcp": "4O",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.6182,
+        "lon": -95.270655
+      },
+      "range": 60,
+      "freq": 118.7
     },
     {
-      "id": "1J",
+      "id": "01GB3SZ9AV1HMGTY3E274QVZF7",
+      "physicalFacility": "DWH",
+      "name": "West Local",
+      "radioName": "Hooks Tower",
+      "callsign": "DWH_W_TWR",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRH9V969RY80ZKNY93",
+      "tcp": "4Q",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
+      "freq": 118.4
     },
     {
-      "id": "1L",
+      "id": "01GB60SY0123V38JHCKJJF0RK1",
+      "physicalFacility": "SGR",
+      "name": "Local",
+      "radioName": "Sugar Land Tower",
+      "callsign": "SGR_TWR",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRWHMEKNBMEDJK3VAT",
+      "tcp": "4S",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
+      "freq": 118.65
     },
     {
-      "id": "1M",
+      "id": "01GZDCQHMDN9DZRSBF33D0Q7GF",
+      "physicalFacility": "IAH",
+      "name": "West Local",
+      "radioName": "Houston Tower",
+      "callsign": "IAH_W_TWR",
+      "areaId": "01GZDCSKEZH6GQGYCNNBWSTRJC",
+      "tcpId": "01K2NF1CDRF6Q31130BMAYHC8X",
+      "tcp": "4T",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 60,
+      "freq": 127.3
     },
     {
-      "id": "1N",
+      "id": "01GB3T03JYMF1VJ3KSE8037J1Z",
+      "physicalFacility": "DWH",
+      "name": "East Local",
+      "radioName": "Hooks Tower",
+      "callsign": "DWH_E_TWR",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRFR6JFPXZAEG2DB2P",
+      "tcp": "4U",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
+      "freq": 127.4
     },
     {
-      "id": "1O",
+      "id": "01GB60KJG1VNP1SAC1E8R9BJZQ",
+      "physicalFacility": "CXO",
+      "name": "Local",
+      "radioName": "Conroe Tower",
+      "callsign": "CXO_TWR",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRGDGN7WQ5N672A12Z",
+      "tcp": "4V",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
+      "freq": 124.125
     },
     {
-      "id": "1P",
+      "id": "01GB3SV7T1YJ3Y1SQ7ZNPA9PY0",
+      "physicalFacility": "EFD",
+      "name": "Local",
+      "radioName": "Ellington Tower",
+      "callsign": "EFD_TWR",
+      "areaId": "01GZDBYZXAZ4DGV26DXWEJ31FG",
+      "tcpId": "01K2NF1CDRQSAQQHWC6SQ1MZ31",
+      "tcp": "4X",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 150,
+      "freq": 126.05
     },
     {
-      "id": "1R",
+      "id": "01GZDCJWYVMQZHSSGM21AG2M2K",
+      "physicalFacility": "IAH",
+      "name": "North Local",
+      "radioName": "Houston Tower",
+      "callsign": "IAH_N_TWR",
+      "areaId": "01GZDCSKEZH6GQGYCNNBWSTRJC",
+      "tcpId": "01K2NF1CDR8R6S2HN1W8T4WZ2G",
+      "tcp": "4Y",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 60,
+      "freq": 120.725
     },
     {
-      "id": "1T",
+      "id": "01GZDCFX1YA4KSFFH6S6GR4WV7",
+      "physicalFacility": "IAH",
+      "name": "Center Local",
+      "radioName": "Houston Tower",
+      "callsign": "IAH_C_TWR",
+      "areaId": "01GZDCSKEZH6GQGYCNNBWSTRJC",
+      "tcpId": "01K2NF1CDR2R7N8AN2XSGACZ2R",
+      "tcp": "4Z",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "3T",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "4G",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "4J",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "4L",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "4O",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "4Q",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "4S",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "4T",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "4U",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "4V",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "4X",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "4Y",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "4Z",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.998356,
+        "lon": -95.353544
+      },
+      "range": 60,
+      "freq": 125.35
     }
   ],
   "mapGroups": [

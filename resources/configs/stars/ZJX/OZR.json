@@ -4,66 +4,70 @@
   "name": "Cairns Army Air ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 31.275775,
+    "lon": -85.71335
   },
+  "areas": [
+    {
+      "id": "01HAYVPMDZ6JFT6SAZ9WRGCRW2",
+      "name": "OZR",
+      "visibilityCenter": {
+        "lat": 31.275775,
+        "lon": -85.71335
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "OZR",
+        "TOI"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFEM6GHJT34SB49623X",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O"
+    },
+    {
+      "id": "01K2NF1DFEND62EQ1PF0QVFSB7",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01HAYVRHZ7RDX4DQ6PF3W447XP",
-      "name": "Clearance Delivery",
-      "callsign": "OZR_DEL",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 118.075
-    },
-    {
-      "id": "01HAYVS6CNAZ1KFR9Z4226QGB4",
-      "name": "Ground",
-      "callsign": "OZR_GND",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01HAYVSZ8MYX8CNCYM86432PJC",
-      "name": "Tower",
-      "callsign": "OZR_TWR",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 135.2
-    },
-    {
       "id": "01HAYVTCYRF05C4D7TBG5Q0V4N",
+      "physicalFacility": "OZR",
       "name": "Departure",
+      "radioName": "Cairns Departure",
       "callsign": "OZR_DEP",
+      "areaId": "01HAYVPMDZ6JFT6SAZ9WRGCRW2",
+      "tcpId": "01K2NF1DFEM6GHJT34SB49623X",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 31.275775,
+        "lon": -85.71335
       },
+      "range": 50,
       "freq": 121.1
     },
     {
       "id": "01HAYVVGCZ0WK0725R3P5E3Q5V",
+      "physicalFacility": "OZR",
       "name": "Approach",
+      "radioName": "Cairns Approach",
       "callsign": "OZR_APP",
+      "areaId": "01HAYVPMDZ6JFT6SAZ9WRGCRW2",
+      "tcpId": "01K2NF1DFEND62EQ1PF0QVFSB7",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 31.275775,
+        "lon": -85.71335
       },
+      "range": 50,
       "freq": 121.1
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
     }
   ],
   "mapGroups": [

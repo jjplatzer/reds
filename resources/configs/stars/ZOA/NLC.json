@@ -4,148 +4,173 @@
   "name": "NAS Lemoore RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 37.9016125,
-    "lon": -120.687685
+    "lat": 36.3331268,
+    "lon": -119.9521616
   },
+  "areas": [
+    {
+      "id": "01GFG8TJVKKC6JQCYZRP0YZMN5",
+      "name": "NLC",
+      "visibilityCenter": {
+        "lat": 36.3331268,
+        "lon": -119.9521616
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "NLC"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1C9S4QXS2VCCS2VZ83KS",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1C9S8FW2Y6AD2AEFFF7V",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1C9SD3Q0A365N2CM4QYF",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1C9S08QXAXQEM5B2ZX87",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K2NF1C9SVDVDCYCG3MJH8FVK",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1C9SKX21NE9NJZ6FWAWD",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GFG91KJBJW1EEBH0YQTY93Z9",
+      "physicalFacility": "NLC",
       "name": "Approach",
+      "radioName": "Lemoore Approach",
       "callsign": "NLC_APP",
+      "areaId": "01GFG8TJVKKC6JQCYZRP0YZMN5",
+      "tcpId": "01K2NF1C9S4QXS2VCCS2VZ83KS",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 36.3331268,
+        "lon": -119.9521616
       },
+      "range": 150,
       "freq": 118.15
-    },
-    {
-      "id": "01GFG92YBTCE8M6XGC122RV02J",
-      "name": "LCW",
-      "callsign": "NLC_TWR",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 128.3
-    },
-    {
-      "id": "01GFG93M9TS1KWX2H1AV3W784S",
-      "name": "GC",
-      "callsign": "NLC_GND",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 121.65
-    },
-    {
-      "id": "01GFG94349ASZADSXKPMRSTM85",
-      "name": "CD",
-      "callsign": "NLC_DEL",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 124.1
     },
     {
       "id": "01HN6PXZ0HKSF7GX58S8RE38NN",
+      "physicalFacility": "NLC",
       "name": "Departure",
+      "radioName": "Lemoore Departure",
       "callsign": "NLC_DEP",
+      "areaId": "01GFG8TJVKKC6JQCYZRP0YZMN5",
+      "tcpId": "01K2NF1C9S8FW2Y6AD2AEFFF7V",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 36.3331268,
+        "lon": -119.9521616
       },
+      "range": 150,
       "freq": 124.1
-    },
-    {
-      "id": "01HN6PYVESHPSCFCE8AXB6Y0X2",
-      "name": "SHOWTIME",
-      "callsign": "NLC_M_APP",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 134.225
-    },
-    {
-      "id": "01HN6Q29A72F4A1V5CF7EAZRGM",
-      "name": "LCE",
-      "callsign": "NLC_E_TWR",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      },
-      "freq": 128.3
     },
     {
       "id": "01HN6Q62XH1CV80NNBB49C2HJJ",
+      "physicalFacility": "NLC",
       "name": "ASR1",
+      "radioName": "Lemoore Final",
       "callsign": "NLC_APP",
+      "areaId": "01GFG8TJVKKC6JQCYZRP0YZMN5",
+      "tcpId": "01K2NF1C9SD3Q0A365N2CM4QYF",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 36.3331268,
+        "lon": -119.9521616
       },
+      "range": 150,
       "freq": 118.15
     },
     {
-      "id": "01HN6QC0P78E5KYCAVDF5ZFCNM",
-      "name": "ASR2",
-      "callsign": "NLC_APP",
+      "id": "01HN6PYVESHPSCFCE8AXB6Y0X2",
+      "physicalFacility": "NLC",
+      "name": "SHOWTIME",
+      "radioName": "Showtime",
+      "callsign": "NLC_M_APP",
+      "areaId": "01GFG8TJVKKC6JQCYZRP0YZMN5",
+      "tcpId": "01K2NF1C9S08QXAXQEM5B2ZX87",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
+        "lat": 36.3331268,
+        "lon": -119.9521616
       },
+      "range": 150,
+      "freq": 134.225
+    },
+    {
+      "id": "01HN6QC0P78E5KYCAVDF5ZFCNM",
+      "physicalFacility": "NLC",
+      "name": "ASR2",
+      "radioName": "Lemoore Final",
+      "callsign": "NLC_APP",
+      "areaId": "01GFG8TJVKKC6JQCYZRP0YZMN5",
+      "tcpId": "01K2NF1C9SVDVDCYCG3MJH8FVK",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 36.3331268,
+        "lon": -119.9521616
+      },
+      "range": 150,
       "freq": 124.1
     },
     {
-      "id": "1A",
+      "id": "01HN6Q29A72F4A1V5CF7EAZRGM",
+      "physicalFacility": "NLC",
+      "name": "LCE",
+      "radioName": "Lemoore Tower East",
+      "callsign": "NLC_E_TWR",
+      "areaId": "01GFG8TJVKKC6JQCYZRP0YZMN5",
+      "tcpId": "01K2NF1C9SKX21NE9NJZ6FWAWD",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 36.3331268,
+        "lon": -119.9521616
+      },
+      "range": 150,
+      "freq": 128.3
     },
     {
-      "id": "1D",
+      "id": "01GFG92YBTCE8M6XGC122RV02J",
+      "physicalFacility": "NLC",
+      "name": "LCW",
+      "radioName": "Lemoore Tower",
+      "callsign": "NLC_TWR",
+      "areaId": "01GFG8TJVKKC6JQCYZRP0YZMN5",
+      "tcpId": "01K2NF1C9SKX21NE9NJZ6FWAWD",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 37.9016125,
-        "lon": -120.687685
-      }
+        "lat": 36.3331268,
+        "lon": -119.9521616
+      },
+      "range": 150,
+      "freq": 128.3
     }
   ],
   "mapGroups": [

@@ -4,18 +4,118 @@
   "name": "Plead Range Control",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 34.9691453,
-    "lon": -116.63582625
+    "lat": 33.2475,
+    "lon": -119.525
   },
+  "areas": [
+    {
+      "id": "01KQ66XP00V1Z14YY0TFSMSF79",
+      "name": "Main",
+      "visibilityCenter": {
+        "lat": 33.2475,
+        "lon": -119.525
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "NSI"
+      ],
+      "ssaAirports": [
+        "NSI"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01KQ66YSSEGQ7RQAN8JJFH9DF0",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KQ670DC8XTCB73DCVCAAXD0V",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01KQ670DNRBM0EDRW84K0HKCGN",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KQ670DH9ZEWQ4F6D3NCY7YPW",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01KQ670DNRBM0EDRW84K0HKCGN",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KQ670DNRBM0EDRW84K0HKCGN",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KQ670E3VJTCK02WZNZ9H150H",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01KQ670DNRBM0EDRW84K0HKCGN",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KQ670RQJS2B1F3FNX0S55G90",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01KQ670DNRBM0EDRW84K0HKCGN",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KQ670RVWMYMS3ME1C0E8Z6HX",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01KQ670DNRBM0EDRW84K0HKCGN",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01KQ6744E6D7XCSC7KV5R5YV46",
-      "name": "Plead Range Control",
-      "callsign": "PLE_APP",
+      "id": "01KQ6ABPX3CWWSW41TYK9R6QV9",
+      "physicalFacility": "NSI",
+      "name": "Local",
+      "radioName": "Nicolas Tower",
+      "callsign": "NSI_TWR",
+      "areaId": "01KQ66XP00V1Z14YY0TFSMSF79",
+      "tcpId": "01KQ66YSSEGQ7RQAN8JJFH9DF0",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 33.2475,
+        "lon": -119.525
       },
+      "range": 50,
+      "freq": 126.85
+    },
+    {
+      "id": "01KQ6744E6D7XCSC7KV5R5YV46",
+      "physicalFacility": "PLE",
+      "name": "Plead Range Control",
+      "radioName": "Plead Range Control",
+      "callsign": "PLE_APP",
+      "areaId": "01KQ66XP00V1Z14YY0TFSMSF79",
+      "tcpId": "01KQ670DNRBM0EDRW84K0HKCGN",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 33.2475,
+        "lon": -119.525
+      },
+      "range": 50,
       "freq": 132.425
     }
   ]

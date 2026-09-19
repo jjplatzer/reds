@@ -4,39 +4,78 @@
   "name": "Oceana ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 37,
-    "lon": -77
+    "lat": 36.82746,
+    "lon": -76.01371
   },
+  "areas": [
+    {
+      "id": "01HAD25KN4F69829KABXZYWQV5",
+      "name": "RAPCON",
+      "visibilityCenter": {
+        "lat": 36.82746,
+        "lon": -76.01371
+      },
+      "surveillanceRange": 80,
+      "underlyingAirports": [
+        "NTU",
+        "NFE",
+        "ONX"
+      ],
+      "ssaAirports": [
+        "NTU",
+        "NFE",
+        "ONX"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E0VKDE167CRF6GNDRRF",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0VV5FR00QDQHAZXN75",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01HAD2A4YAQ1RB41SEGRWH359Y",
-      "name": "Ground",
-      "callsign": "NTU_GND",
+      "id": "01HAD2G2S7WDXSMGYKP8R8E40M",
+      "physicalFacility": "NTU",
+      "name": "Approach",
+      "radioName": "Oceana Approach",
+      "callsign": "NTU_APP",
+      "areaId": "01HAD25KN4F69829KABXZYWQV5",
+      "tcpId": "01K2NF1E0VKDE167CRF6GNDRRF",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 36.82746,
+        "lon": -76.01371
       },
-      "freq": 119.6
+      "range": 80,
+      "freq": 123.9
     },
     {
       "id": "01HAD2FA6QV1VTG5K488GXXSKJ",
+      "physicalFacility": "NTU",
       "name": "Local",
+      "radioName": "Oceana Tower",
       "callsign": "NTU_TWR",
+      "areaId": "01HAD25KN4F69829KABXZYWQV5",
+      "tcpId": "01K2NF1E0VV5FR00QDQHAZXN75",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 36.82746,
+        "lon": -76.01371
       },
+      "range": 80,
       "freq": 127.075
-    },
-    {
-      "id": "01HAD2G2S7WDXSMGYKP8R8E40M",
-      "name": "Approach",
-      "callsign": "NTU_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 123.9
     }
   ],
   "videoMaps": [

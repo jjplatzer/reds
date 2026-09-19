@@ -4,605 +4,1549 @@
   "name": "Dallas Fort-Worth TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 32.86393339006003,
+    "lon": -97.04211880397924
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GKZTP067830XCNP9F2H04F11",
-      "name": "Feeder East 1",
-      "callsign": "D10_E_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+      "id": "01GP4Y37G5CY6D95CF586G76TM",
+      "name": "D10",
+      "visibilityCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
       },
-      "freq": 125.025
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "1F7",
+        "25XS",
+        "2TE2",
+        "30F",
+        "4T2",
+        "4TX2",
+        "50F",
+        "52F",
+        "7TX4",
+        "9F9",
+        "ADS",
+        "AFW",
+        "CPT",
+        "DAL",
+        "DFW",
+        "DTO",
+        "F41",
+        "F46",
+        "F69",
+        "FTW",
+        "FWS",
+        "GKY",
+        "GPM",
+        "HQZ",
+        "JWY",
+        "LNC",
+        "LUD",
+        "NFW",
+        "RBD",
+        "T31",
+        "T56",
+        "T67",
+        "TKI",
+        "WEA"
+      ],
+      "ssaAirports": [
+        "DFW",
+        "DAL"
+      ]
     },
     {
-      "id": "01GKZTQWWDQ8J0GTTHB30FBQ3V",
-      "name": "Departure Radar 1",
-      "callsign": "D10_L_DEP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+      "id": "01H9YJPMYFF1BAF69SK79JT55Y",
+      "name": "DFW",
+      "visibilityCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
       },
-      "freq": 118.55
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "DFW"
+      ],
+      "ssaAirports": [
+        "DFW"
+      ]
+    },
+    {
+      "id": "01H9YJW1HZDV0MF2RTWPHYG0Z0",
+      "name": "DAL",
+      "visibilityCenter": {
+        "lat": 32.84603270772608,
+        "lon": -96.84978554537022
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "DAL"
+      ],
+      "ssaAirports": [
+        "DAL"
+      ]
+    },
+    {
+      "id": "01H9YJXJSQMYPABWJFYGGM7DWZ",
+      "name": "AFW",
+      "visibilityCenter": {
+        "lat": 32.991746021012105,
+        "lon": -97.3196809153725
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "AFW",
+        "7TX4"
+      ],
+      "ssaAirports": [
+        "AFW"
+      ]
+    },
+    {
+      "id": "01H9YJY8T6EPFK21AZ1F7DAAYZ",
+      "name": "FTW",
+      "visibilityCenter": {
+        "lat": 32.82087680619193,
+        "lon": -97.3618225940864
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "FTW"
+      ],
+      "ssaAirports": [
+        "FTW"
+      ]
+    },
+    {
+      "id": "01H9YK1R51FAY3TZWHCGCXFJBA",
+      "name": "FWS",
+      "visibilityCenter": {
+        "lat": 32.56434102263738,
+        "lon": -97.30969185898572
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "FWS"
+      ],
+      "ssaAirports": [
+        "FWS"
+      ]
+    },
+    {
+      "id": "01H9YK6GJAJK1R21X44KQF9R8N",
+      "name": "DTO",
+      "visibilityCenter": {
+        "lat": 33.202450087134366,
+        "lon": -97.19927026979578
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "DTO",
+        "74T",
+        "4TX8"
+      ],
+      "ssaAirports": [
+        "DTO"
+      ]
+    },
+    {
+      "id": "01H9YK82P80CWE3WTFBEKEFGF1",
+      "name": "GKY",
+      "visibilityCenter": {
+        "lat": 32.66360309411429,
+        "lon": -97.0944770924569
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "GKY"
+      ],
+      "ssaAirports": [
+        "GKY"
+      ]
+    },
+    {
+      "id": "01H9YK9TPWRF2F227MEZTPP9JW",
+      "name": "GPM",
+      "visibilityCenter": {
+        "lat": 32.6981953352374,
+        "lon": -97.04698158232746
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "GPM"
+      ],
+      "ssaAirports": [
+        "GPM"
+      ]
+    },
+    {
+      "id": "01H9YKCQK0YG052PC3ATJPBER7",
+      "name": "RBD",
+      "visibilityCenter": {
+        "lat": 32.68104236773861,
+        "lon": -96.86894274978388
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "RBD"
+      ],
+      "ssaAirports": [
+        "RBD"
+      ]
+    },
+    {
+      "id": "01H9YKE3ZD4HDB59ZRWNV279R3",
+      "name": "ADS",
+      "visibilityCenter": {
+        "lat": 32.96816591585139,
+        "lon": -96.83622692295178
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ADS",
+        "F69"
+      ],
+      "ssaAirports": [
+        "ADS"
+      ]
+    },
+    {
+      "id": "01H9YKF3Q0SB18VER5FZHFM7EF",
+      "name": "TKI",
+      "visibilityCenter": {
+        "lat": 33.17694732307683,
+        "lon": -96.58882611662041
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "TKI"
+      ],
+      "ssaAirports": [
+        "TKI"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8S3F2FZK3KYB6K2EYS",
+      "code": "11",
+      "subset": 1,
+      "sectorId": "1"
+    },
+    {
+      "id": "01K2NF1D8SMSWZ6K0R281WGG04",
+      "code": "12",
+      "subset": 1,
+      "sectorId": "2"
+    },
+    {
+      "id": "01K2NF1D8SD4NEDK0508AR2H1Z",
+      "code": "13",
+      "subset": 1,
+      "sectorId": "3"
+    },
+    {
+      "id": "01K2NF1D8S777D0M2S05A4C4HR",
+      "code": "14",
+      "subset": 1,
+      "sectorId": "4"
+    },
+    {
+      "id": "01K2NF1D8S9K0BZHFDGHHPS0D5",
+      "code": "15",
+      "subset": 1,
+      "sectorId": "5"
+    },
+    {
+      "id": "01K2NF1D8SP8EX0E6MJVZ355F7",
+      "code": "16",
+      "subset": 1,
+      "sectorId": "6"
+    },
+    {
+      "id": "01K2NF1D8SZ0TDSQHJ7P0KTBX0",
+      "code": "17",
+      "subset": 1,
+      "sectorId": "7"
+    },
+    {
+      "id": "01K2NF1D8S0JF4NF1PARFAKPA2",
+      "code": "18",
+      "subset": 1,
+      "sectorId": "8"
+    },
+    {
+      "id": "01K2NF1D8S0RPN3GG0ETTFC6S3",
+      "code": "19",
+      "subset": 1,
+      "sectorId": "9"
+    },
+    {
+      "id": "01K2NF1D8S4KDC14TSZJCHR8ZN",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1D8S7CA3YBHK7KRSZ3NC",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1D8SZ4XSMXAAR07EY29B",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1D8S528JMHWBK9T0KA4H",
+      "parentTcp": "1M"
+    },
+    {
+      "id": "01K2NF1D8SRR0FFRQBS8Q8PQVV",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1D8S528JMHWBK9T0KA4H",
+      "parentTcp": "1M"
+    },
+    {
+      "id": "01K2NF1D8S7CA3YBHK7KRSZ3NC",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1D8SMZHVZ4W38CGS5VSH",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1D8S8D3F0NDM00NRQZC2",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1D8S35MPPEPWAYC3FZZ4",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1D8S7CA3YBHK7KRSZ3NC",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1D8SDKQM0B6X24MPH2GF",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1D8SRTMY7EPTA4Z4J6D7",
+      "parentTcp": "1J"
+    },
+    {
+      "id": "01K2NF1D8SRTMY7EPTA4Z4J6D7",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "parentTcpId": "01K2NF1D8S35MPPEPWAYC3FZZ4",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01K2NF1D8SGT466H9G90ET1MZZ",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "parentTcpId": "01K2NF1D8S8D3F0NDM00NRQZC2",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1D8SK7YG3MZCCQJ3ENGJ",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1D8S7CA3YBHK7KRSZ3NC",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1D8S528JMHWBK9T0KA4H",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1D8S8D3F0NDM00NRQZC2",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1D8S8D3F0NDM00NRQZC2",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1D8SK7YG3MZCCQJ3ENGJ",
+      "parentTcp": "1L"
+    },
+    {
+      "id": "01K2NF1D8SMVHFXM09RW5Z6A6Z",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O"
+    },
+    {
+      "id": "01K2NF1D8S55FMRF446CSQMRZH",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1D8S528JMHWBK9T0KA4H",
+      "parentTcp": "1M"
+    },
+    {
+      "id": "01K2NF1D8S87BQNCS3T4MVVSSZ",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q",
+      "parentTcpId": "01K2NF1D8SK7YG3MZCCQJ3ENGJ",
+      "parentTcp": "1L"
+    },
+    {
+      "id": "01K2NF1D8SFNSHPZ559X57VD73",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1D8S528JMHWBK9T0KA4H",
+      "parentTcp": "1M"
+    },
+    {
+      "id": "01K2NF1D8S4FY5AY0BNEDD3RFJ",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1D8S8D3F0NDM00NRQZC2",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1D8SFG4JE9E8NFWHM5X6",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1D8SRR0FFRQBS8Q8PQVV",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1D8SZHDTW3C3ZRGYHF2B",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1D8S8D3F0NDM00NRQZC2",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1D8S8DCFZGG833P0Q9JM",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1D8S4FY5AY0BNEDD3RFJ",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1D8SM64RV26CDDWZHQEQ",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1D8S7CA3YBHK7KRSZ3NC",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1D8SD85FAPJDM7X8HH57",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1D8S528JMHWBK9T0KA4H",
+      "parentTcp": "1M"
+    },
+    {
+      "id": "01K2NF1D8SCQ818SYTFZBR3WMM",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1D8SM64RV26CDDWZHQEQ",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1D8SWACXC7MQ640D76GF",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1D8S87BQNCS3T4MVVSSZ",
+      "parentTcp": "1Q"
+    },
+    {
+      "id": "01K2NF1D8SXHWJQRZV86SV3GMB",
+      "code": "21",
+      "subset": 2,
+      "sectorId": "1"
+    },
+    {
+      "id": "01K2NF1D8SJ1SMTKA244K2G8SX",
+      "code": "22",
+      "subset": 2,
+      "sectorId": "2"
+    },
+    {
+      "id": "01K2NF1D8SQ3CVN88C3AY1TFYW",
+      "code": "3G",
+      "subset": 3,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1D8SGH90SVDD6KNNVJ1B",
+      "code": "3H",
+      "subset": 3,
+      "sectorId": "H"
+    },
+    {
+      "id": "01K2NF1D8SQ53B9ZPYXFP5YARF",
+      "code": "3I",
+      "subset": 3,
+      "sectorId": "I"
+    },
+    {
+      "id": "01K2NF1D8SCVT8AASN9MQH6GZY",
+      "code": "3J",
+      "subset": 3,
+      "sectorId": "J"
+    },
+    {
+      "id": "01K2NF1D8SE4WK3TPC6Z00W4RD",
+      "code": "78",
+      "subset": 7,
+      "sectorId": "8"
+    },
+    {
+      "id": "01K2NF1D8S90Q4TTCCSPDV1CZF",
+      "code": "7A",
+      "subset": 7,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1D8SN89WJ711GWER64RE",
+      "code": "7Z",
+      "subset": 7,
+      "sectorId": "Z"
+    },
+    {
+      "id": "01K2NF1D8SYPQXYB56Z1G1JN7F",
+      "code": "85",
+      "subset": 8,
+      "sectorId": "5"
+    },
+    {
+      "id": "01K2NF1D8SFTDPSC23F859T17R",
+      "code": "86",
+      "subset": 8,
+      "sectorId": "6"
+    },
+    {
+      "id": "01K2NF1D8SNX5Y25DY2S5Q9PF1",
+      "code": "87",
+      "subset": 8,
+      "sectorId": "7"
+    },
+    {
+      "id": "01K2NF1D8S2CZMGWDZFZB1XJNZ",
+      "code": "88",
+      "subset": 8,
+      "sectorId": "8"
+    },
+    {
+      "id": "01K2NF1D8SMBBE26D38CKCZX1E",
+      "code": "89",
+      "subset": 8,
+      "sectorId": "9"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01H87H1HMWJZSSD7KHX05R8CMW",
+      "physicalFacility": "DFW",
+      "name": "Flight Data",
+      "radioName": "DFW Clearance",
+      "callsign": "DFW_2_DEL",
+      "areaId": "01H9YJPMYFF1BAF69SK79JT55Y",
+      "tcpId": "01K2NF1D8S3F2FZK3KYB6K2EYS",
+      "tcp": "11",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 50,
+      "freq": 119.45
+    },
+    {
+      "id": "01H3AF48R474Z40YS2K23QVY6C",
+      "physicalFacility": "DFW",
+      "name": "Clearance",
+      "radioName": "DFW Clearance",
+      "callsign": "DFW_DEL",
+      "areaId": "01H9YJPMYFF1BAF69SK79JT55Y",
+      "tcpId": "01K2NF1D8S3F2FZK3KYB6K2EYS",
+      "tcp": "11",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 50,
+      "freq": 128.25
+    },
+    {
+      "id": "01GKZX0XNQGKF8RENATCNW9HES",
+      "physicalFacility": "DFW",
+      "name": "Ground East 1",
+      "radioName": "DFW Ground",
+      "callsign": "DFW_E_GND",
+      "areaId": "01H9YJPMYFF1BAF69SK79JT55Y",
+      "tcpId": "01K2NF1D8S3F2FZK3KYB6K2EYS",
+      "tcp": "11",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 50,
+      "freq": 121.65
+    },
+    {
+      "id": "01GKZWZC1TNMDMPXN3XBY1N4BK",
+      "physicalFacility": "DFW",
+      "name": "Local East 1",
+      "radioName": "DFW Tower",
+      "callsign": "DFW_E_TWR",
+      "areaId": "01H9YJPMYFF1BAF69SK79JT55Y",
+      "tcpId": "01K2NF1D8S3F2FZK3KYB6K2EYS",
+      "tcp": "11",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 50,
+      "freq": 126.55
+    },
+    {
+      "id": "01H3AF2NRPDJMRKWWM9M3C6MY6",
+      "physicalFacility": "DFW",
+      "name": "Ground West 1",
+      "radioName": "DFW Ground",
+      "callsign": "DFW_W_GND",
+      "areaId": "01H9YJPMYFF1BAF69SK79JT55Y",
+      "tcpId": "01K2NF1D8SMSWZ6K0R281WGG04",
+      "tcp": "12",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 50,
+      "freq": 121.85
+    },
+    {
+      "id": "01H3AEWVP3W93HDX6S84A99WHA",
+      "physicalFacility": "DFW",
+      "name": "Local West 1",
+      "radioName": "DFW Tower",
+      "callsign": "DFW_W_TWR",
+      "areaId": "01H9YJPMYFF1BAF69SK79JT55Y",
+      "tcpId": "01K2NF1D8SMSWZ6K0R281WGG04",
+      "tcp": "12",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 50,
+      "freq": 124.15
+    },
+    {
+      "id": "01H87GTMN7NXQ2HF9RG9FZKZ4X",
+      "physicalFacility": "DFW",
+      "name": "Ground East 2",
+      "radioName": "DFW Ground",
+      "callsign": "DFW_E2_GND",
+      "areaId": "01H9YJPMYFF1BAF69SK79JT55Y",
+      "tcpId": "01K2NF1D8SD4NEDK0508AR2H1Z",
+      "tcp": "13",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 50,
+      "freq": 121.8
+    },
+    {
+      "id": "01H87H4K5W93F1FYD4ASJS6ZG6",
+      "physicalFacility": "DFW",
+      "name": "Ground East 3",
+      "radioName": "DFW Ground",
+      "callsign": "DFW_E3_GND",
+      "areaId": "01H9YJPMYFF1BAF69SK79JT55Y",
+      "tcpId": "01K2NF1D8SD4NEDK0508AR2H1Z",
+      "tcp": "13",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 50,
+      "freq": 134.175
+    },
+    {
+      "id": "01H5KA89V732JK27AF1EB2E367",
+      "physicalFacility": "DFW",
+      "name": "Local East 3",
+      "radioName": "DFW Tower",
+      "callsign": "DFW_E3_TWR",
+      "areaId": "01H9YJPMYFF1BAF69SK79JT55Y",
+      "tcpId": "01K2NF1D8SD4NEDK0508AR2H1Z",
+      "tcp": "13",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 50,
+      "freq": 127.5
+    },
+    {
+      "id": "01H87GS50GVWD4WMGXMGWHX529",
+      "physicalFacility": "DFW",
+      "name": "Ground West 2",
+      "radioName": "DFW Ground",
+      "callsign": "DFW_W2_GND",
+      "areaId": "01H9YJPMYFF1BAF69SK79JT55Y",
+      "tcpId": "01K2NF1D8S777D0M2S05A4C4HR",
+      "tcp": "14",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 50,
+      "freq": 132.5
+    },
+    {
+      "id": "01H3AF0QE0XTPF9VB6DQMY1YHZ",
+      "physicalFacility": "DFW",
+      "name": "Local West 2",
+      "radioName": "DFW Tower",
+      "callsign": "DFW_W2_TWR",
+      "areaId": "01H9YJPMYFF1BAF69SK79JT55Y",
+      "tcpId": "01K2NF1D8S777D0M2S05A4C4HR",
+      "tcp": "14",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 50,
+      "freq": 134.9
+    },
+    {
+      "id": "01H87B03MBABTP8WMQZR9RSN7X",
+      "physicalFacility": "ADS",
+      "name": "Clearance",
+      "radioName": "Addison Clearance",
+      "callsign": "ADS_DEL",
+      "areaId": "01H9YKE3ZD4HDB59ZRWNV279R3",
+      "tcpId": "01K2NF1D8S9K0BZHFDGHHPS0D5",
+      "tcp": "15",
+      "visualCenter": {
+        "lat": 32.96816591585139,
+        "lon": -96.83622692295178
+      },
+      "range": 50,
+      "freq": 119.55
+    },
+    {
+      "id": "01H87AZHKFXZSYMBYCFXE861D1",
+      "physicalFacility": "ADS",
+      "name": "Ground",
+      "radioName": "Addison Ground",
+      "callsign": "ADS_GND",
+      "areaId": "01H9YKE3ZD4HDB59ZRWNV279R3",
+      "tcpId": "01K2NF1D8S9K0BZHFDGHHPS0D5",
+      "tcp": "15",
+      "visualCenter": {
+        "lat": 32.96816591585139,
+        "lon": -96.83622692295178
+      },
+      "range": 50,
+      "freq": 121.6
+    },
+    {
+      "id": "01H5KA4VKYJQB1F1VAEQTQ8KGS",
+      "physicalFacility": "ADS",
+      "name": "Local",
+      "radioName": "Addison Tower",
+      "callsign": "ADS_TWR",
+      "areaId": "01H9YKE3ZD4HDB59ZRWNV279R3",
+      "tcpId": "01K2NF1D8S9K0BZHFDGHHPS0D5",
+      "tcp": "15",
+      "visualCenter": {
+        "lat": 32.96816591585139,
+        "lon": -96.83622692295178
+      },
+      "range": 50,
+      "freq": 126
+    },
+    {
+      "id": "01H2VD4FC02QS71CAAY3S0F8GZ",
+      "physicalFacility": "DAL",
+      "name": "Clearance",
+      "radioName": "Love Clearance",
+      "callsign": "DAL_DEL",
+      "areaId": "01H9YJW1HZDV0MF2RTWPHYG0Z0",
+      "tcpId": "01K2NF1D8SP8EX0E6MJVZ355F7",
+      "tcp": "16",
+      "visualCenter": {
+        "lat": 32.84603270772608,
+        "lon": -96.84978554537022
+      },
+      "range": 50,
+      "freq": 127.9
+    },
+    {
+      "id": "01H2VD2QT99F22FQ1CDZK2N7H8",
+      "physicalFacility": "DAL",
+      "name": "Ground",
+      "radioName": "Love Ground",
+      "callsign": "DAL_GND",
+      "areaId": "01H9YJW1HZDV0MF2RTWPHYG0Z0",
+      "tcpId": "01K2NF1D8SP8EX0E6MJVZ355F7",
+      "tcp": "16",
+      "visualCenter": {
+        "lat": 32.84603270772608,
+        "lon": -96.84978554537022
+      },
+      "range": 50,
+      "freq": 121.75
+    },
+    {
+      "id": "01GM2DF8974DR9407W8YH34676",
+      "physicalFacility": "DAL",
+      "name": "Local",
+      "radioName": "Love Tower",
+      "callsign": "DAL_TWR",
+      "areaId": "01H9YJW1HZDV0MF2RTWPHYG0Z0",
+      "tcpId": "01K2NF1D8SP8EX0E6MJVZ355F7",
+      "tcp": "16",
+      "visualCenter": {
+        "lat": 32.84603270772608,
+        "lon": -96.84978554537022
+      },
+      "range": 50,
+      "freq": 123.7
+    },
+    {
+      "id": "01H87F4T4E4V8S8HWTGZW92P3B",
+      "physicalFacility": "RBD",
+      "name": "Clearance",
+      "radioName": "Executive Clearance",
+      "callsign": "RBD_DEL",
+      "areaId": "01H9YKCQK0YG052PC3ATJPBER7",
+      "tcpId": "01K2NF1D8SZ0TDSQHJ7P0KTBX0",
+      "tcp": "17",
+      "visualCenter": {
+        "lat": 32.68104236773861,
+        "lon": -96.86894274978388
+      },
+      "range": 50,
+      "freq": 118.625
+    },
+    {
+      "id": "01H87F3Z8PWQ0Q3G3NHQTQJC1Z",
+      "physicalFacility": "RBD",
+      "name": "Ground",
+      "radioName": "Executive Ground",
+      "callsign": "RBD_GND",
+      "areaId": "01H9YKCQK0YG052PC3ATJPBER7",
+      "tcpId": "01K2NF1D8SZ0TDSQHJ7P0KTBX0",
+      "tcp": "17",
+      "visualCenter": {
+        "lat": 32.68104236773861,
+        "lon": -96.86894274978388
+      },
+      "range": 50,
+      "freq": 119.475
+    },
+    {
+      "id": "01H87F2SB8Y8QR8ZSEPKWH0YVN",
+      "physicalFacility": "RBD",
+      "name": "Local",
+      "radioName": "Executive Tower",
+      "callsign": "RBD_TWR",
+      "areaId": "01H9YKCQK0YG052PC3ATJPBER7",
+      "tcpId": "01K2NF1D8SZ0TDSQHJ7P0KTBX0",
+      "tcp": "17",
+      "visualCenter": {
+        "lat": 32.68104236773861,
+        "lon": -96.86894274978388
+      },
+      "range": 50,
+      "freq": 127.25
+    },
+    {
+      "id": "01H879VKX8MWV3A16257VBWKDW",
+      "physicalFacility": "FTW",
+      "name": "Clearance",
+      "radioName": "Meacham Clearance",
+      "callsign": "FTW_DEL",
+      "areaId": "01H9YJY8T6EPFK21AZ1F7DAAYZ",
+      "tcpId": "01K2NF1D8S0JF4NF1PARFAKPA2",
+      "tcp": "18",
+      "visualCenter": {
+        "lat": 32.82087680619193,
+        "lon": -97.3618225940864
+      },
+      "range": 50,
+      "freq": 124.65
+    },
+    {
+      "id": "01H879V2P487AVNNJDPJ42H4WZ",
+      "physicalFacility": "FTW",
+      "name": "Ground",
+      "radioName": "Meacham Ground",
+      "callsign": "FTW_GND",
+      "areaId": "01H9YJY8T6EPFK21AZ1F7DAAYZ",
+      "tcpId": "01K2NF1D8S0JF4NF1PARFAKPA2",
+      "tcp": "18",
+      "visualCenter": {
+        "lat": 32.82087680619193,
+        "lon": -97.3618225940864
+      },
+      "range": 50,
+      "freq": 121.9
+    },
+    {
+      "id": "01H5K7NN4HHHDYDW4TEQ6H40V2",
+      "physicalFacility": "FTW",
+      "name": "Local",
+      "radioName": "Meacham Tower",
+      "callsign": "FTW_TWR",
+      "areaId": "01H9YJY8T6EPFK21AZ1F7DAAYZ",
+      "tcpId": "01K2NF1D8S0JF4NF1PARFAKPA2",
+      "tcp": "18",
+      "visualCenter": {
+        "lat": 32.82087680619193,
+        "lon": -97.3618225940864
+      },
+      "range": 50,
+      "freq": 118.3
+    },
+    {
+      "id": "01H202FA9EEX0VXCQ74GT7T5WR",
+      "physicalFacility": "AFW",
+      "name": "Clearance",
+      "radioName": "Alliance Clearance",
+      "callsign": "AFW_DEL",
+      "areaId": "01H9YJXJSQMYPABWJFYGGM7DWZ",
+      "tcpId": "01K2NF1D8S0RPN3GG0ETTFC6S3",
+      "tcp": "19",
+      "visualCenter": {
+        "lat": 32.991746021012105,
+        "lon": -97.3196809153725
+      },
+      "range": 50,
+      "freq": 128.725
+    },
+    {
+      "id": "01H202E74XJ02D3H5PRBCQNQ1A",
+      "physicalFacility": "AFW",
+      "name": "Ground",
+      "radioName": "Alliance Ground",
+      "callsign": "AFW_GND",
+      "areaId": "01H9YJXJSQMYPABWJFYGGM7DWZ",
+      "tcpId": "01K2NF1D8S0RPN3GG0ETTFC6S3",
+      "tcp": "19",
+      "visualCenter": {
+        "lat": 32.991746021012105,
+        "lon": -97.3196809153725
+      },
+      "range": 50,
+      "freq": 132.65
+    },
+    {
+      "id": "01GP52N6KEXBXXSD67QFJXMEPT",
+      "physicalFacility": "AFW",
+      "name": "Local",
+      "radioName": "Alliance Tower",
+      "callsign": "AFW_TWR",
+      "areaId": "01H9YJXJSQMYPABWJFYGGM7DWZ",
+      "tcpId": "01K2NF1D8S0RPN3GG0ETTFC6S3",
+      "tcp": "19",
+      "visualCenter": {
+        "lat": 32.991746021012105,
+        "lon": -97.3196809153725
+      },
+      "range": 50,
+      "freq": 135.15
     },
     {
       "id": "01GM25YQY6HP492P5F4E6RWTRD",
+      "physicalFacility": "D10",
       "name": "Feeder East 2",
+      "radioName": "Lone Star Approach",
       "callsign": "D10_A_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8S4KDC14TSZJCHR8ZN",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.8769,
+        "lon": -97.01486
       },
+      "range": 150,
       "freq": 133.525
     },
     {
-      "id": "01GM261R08X4R1VYQW7HNZKC6Q",
-      "name": "Feeder West 1",
-      "callsign": "D10_W_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 119.875
-    },
-    {
-      "id": "01GM262VNHMT14W1G6SFJG5ST4",
-      "name": "Feeder West 2",
-      "callsign": "D10_Y_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 133.625
-    },
-    {
-      "id": "01GM265VJV3AKVRGNAVBA7CH04",
-      "name": "Departure Radar 2",
-      "callsign": "D10_Q_DEP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 125.125
-    },
-    {
-      "id": "01GM269WYCCK7D6H4SE5FR65HQ",
-      "name": "Departure Radar 3",
-      "callsign": "D10_Z_DEP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 126.475
-    },
-    {
-      "id": "01GM26CBED4Z8AX1BM8JWHAWJM",
-      "name": "Arrival Radar 1",
-      "callsign": "D10_G_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 119.4
-    },
-    {
-      "id": "01GM26GREQ3VPWQ8ZF3WTRDJDK",
-      "name": "Arrival Radar 2",
-      "callsign": "D10_J_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 127.075
-    },
-    {
-      "id": "01GM26JE6M3H6NAWF1QZZ6PJ6F",
-      "name": "Arrival Radar 3",
-      "callsign": "D10_H_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 118.425
-    },
-    {
-      "id": "01GM26MXDJ2Q8SS4HD559W7HZZ",
-      "name": "Dallas North ",
-      "callsign": "D10_N_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 124.3
-    },
-    {
-      "id": "01GM26QGQR6DTJJ1YDEWYVTJSC",
-      "name": "Dallas East",
-      "callsign": "D10_U_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 125.275
-    },
-    {
-      "id": "01GM26S6TW05770S960HQYY8TW",
-      "name": "Dallas South",
-      "callsign": "D10_S_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 125.2
-    },
-    {
-      "id": "01GM26TNY4JQG4SYJ7D65K6C9Z",
-      "name": "Arrival Radar 6",
-      "callsign": "D10_V_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 135.5
-    },
-    {
-      "id": "01GM26WRR4E4NTEH9FY84T94EX",
-      "name": "Arrival Radar 7",
-      "callsign": "D10_K_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 123.9
-    },
-    {
-      "id": "01GM26ZZ8658S4DP9MBN1K667T",
-      "name": "Arrival Radar 8",
-      "callsign": "D10_F_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 124.25
-    },
-    {
-      "id": "01GM271PS5QT6C29KA98DF1ZXP",
-      "name": "Meacham North",
-      "callsign": "D10_M_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 118.1
-    },
-    {
       "id": "01GM273PTWQ3PTS33PMWXAKM6J",
+      "physicalFacility": "D10",
       "name": "Meacham North High",
+      "radioName": "Lone Star Approach",
       "callsign": "D10_B_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SZ4XSMXAAR07EY29B",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.8769,
+        "lon": -97.01486
       },
+      "range": 150,
       "freq": 119.05
     },
     {
-      "id": "01GM2759JY614TGDBTPZV4TTQH",
-      "name": "Meacham West",
-      "callsign": "D10_P_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 125.8
-    },
-    {
       "id": "01GM276TXVCW6C3JZQ709NWCY4",
+      "physicalFacility": "D10",
       "name": "Meacham South",
+      "radioName": "Lone Star Approach",
       "callsign": "D10_D_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SRR0FFRQBS8Q8PQVV",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.8769,
+        "lon": -97.01486
       },
+      "range": 150,
       "freq": 135.975
     },
     {
-      "id": "01GM2785E2F7RR888WPBB8JR03",
-      "name": "Arrival Radar 5",
-      "callsign": "D10_R_APP",
+      "id": "01GKZTP067830XCNP9F2H04F11",
+      "physicalFacility": "D10",
+      "name": "Feeder East 1",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_E_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8S7CA3YBHK7KRSZ3NC",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.8769,
+        "lon": -97.01486
       },
+      "range": 150,
+      "freq": 125.025
+    },
+    {
+      "id": "01GM26ZZ8658S4DP9MBN1K667T",
+      "physicalFacility": "D10",
+      "name": "Arrival Radar 8",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_F_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SMZHVZ4W38CGS5VSH",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 124.25
+    },
+    {
+      "id": "01GM26CBED4Z8AX1BM8JWHAWJM",
+      "physicalFacility": "D10",
+      "name": "Arrival Radar 1",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_G_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8S35MPPEPWAYC3FZZ4",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 119.4
+    },
+    {
+      "id": "01GM26JE6M3H6NAWF1QZZ6PJ6F",
+      "physicalFacility": "D10",
+      "name": "Arrival Radar 3",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_H_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SDKQM0B6X24MPH2GF",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 118.425
+    },
+    {
+      "id": "01GM26GREQ3VPWQ8ZF3WTRDJDK",
+      "physicalFacility": "D10",
+      "name": "Arrival Radar 2",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_J_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SRTMY7EPTA4Z4J6D7",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 127.075
+    },
+    {
+      "id": "01GM26WRR4E4NTEH9FY84T94EX",
+      "physicalFacility": "D10",
+      "name": "Arrival Radar 7",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_K_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SGT466H9G90ET1MZZ",
+      "tcp": "1K",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 123.9
+    },
+    {
+      "id": "01GKZTQWWDQ8J0GTTHB30FBQ3V",
+      "physicalFacility": "D10",
+      "name": "Departure Radar 1",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_L_DEP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SK7YG3MZCCQJ3ENGJ",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 118.55
+    },
+    {
+      "id": "01GM271PS5QT6C29KA98DF1ZXP",
+      "physicalFacility": "D10",
+      "name": "Meacham North",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_M_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8S528JMHWBK9T0KA4H",
+      "tcp": "1M",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 118.1
+    },
+    {
+      "id": "01GM26MXDJ2Q8SS4HD559W7HZZ",
+      "physicalFacility": "D10",
+      "name": "Dallas North ",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_N_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8S8D3F0NDM00NRQZC2",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 124.3
+    },
+    {
+      "id": "01GM2759JY614TGDBTPZV4TTQH",
+      "physicalFacility": "D10",
+      "name": "Meacham West",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_P_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8S55FMRF446CSQMRZH",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 125.8
+    },
+    {
+      "id": "01GM265VJV3AKVRGNAVBA7CH04",
+      "physicalFacility": "D10",
+      "name": "Departure Radar 2",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_Q_DEP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8S87BQNCS3T4MVVSSZ",
+      "tcp": "1Q",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 125.125
+    },
+    {
+      "id": "01GM2785E2F7RR888WPBB8JR03",
+      "physicalFacility": "D10",
+      "name": "Arrival Radar 5",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_R_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SFNSHPZ559X57VD73",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
       "freq": 133.15
     },
     {
-      "id": "01GM279K1344TDZ5BAST72V5YE",
-      "name": "Arrival Radar 9",
-      "callsign": "D10_T_APP",
+      "id": "01GM26S6TW05770S960HQYY8TW",
+      "physicalFacility": "D10",
+      "name": "Dallas South",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_S_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8S4FY5AY0BNEDD3RFJ",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.8769,
+        "lon": -97.01486
       },
+      "range": 150,
+      "freq": 125.2
+    },
+    {
+      "id": "01GM279K1344TDZ5BAST72V5YE",
+      "physicalFacility": "D10",
+      "name": "Arrival Radar 9",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_T_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SFG4JE9E8NFWHM5X6",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
       "freq": 124.825
     },
     {
-      "id": "01H220ZXSP2EA8WPJW0XVCN2SA",
-      "name": "Arrival Radar 10",
-      "callsign": "D10_X_APP",
+      "id": "01GM26QGQR6DTJJ1YDEWYVTJSC",
+      "physicalFacility": "D10",
+      "name": "Dallas East",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_U_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SZHDTW3C3ZRGYHF2B",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.8769,
+        "lon": -97.01486
       },
+      "range": 150,
+      "freq": 125.275
+    },
+    {
+      "id": "01GM26TNY4JQG4SYJ7D65K6C9Z",
+      "physicalFacility": "D10",
+      "name": "Arrival Radar 6",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_V_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8S8DCFZGG833P0Q9JM",
+      "tcp": "1V",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 135.5
+    },
+    {
+      "id": "01GM261R08X4R1VYQW7HNZKC6Q",
+      "physicalFacility": "D10",
+      "name": "Feeder West 1",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_W_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SM64RV26CDDWZHQEQ",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 119.875
+    },
+    {
+      "id": "01H220ZXSP2EA8WPJW0XVCN2SA",
+      "physicalFacility": "D10",
+      "name": "Arrival Radar 10",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_X_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SD85FAPJDM7X8HH57",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
       "freq": 125.9
     },
     {
-      "id": "01HF81Y385PAHKT3VW0NPCCMCV",
-      "name": "TMU1",
-      "callsign": "D10_TM_APP",
+      "id": "01GM262VNHMT14W1G6SFJG5ST4",
+      "physicalFacility": "D10",
+      "name": "Feeder West 2",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_Y_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SCQ818SYTFZBR3WMM",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.8769,
+        "lon": -97.01486
       },
+      "range": 150,
+      "freq": 133.625
+    },
+    {
+      "id": "01GM269WYCCK7D6H4SE5FR65HQ",
+      "physicalFacility": "D10",
+      "name": "Departure Radar 3",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_Z_DEP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SWACXC7MQ640D76GF",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 126.475
+    },
+    {
+      "id": "01H87BTFH9Z3QTGGZ1JJBK2YCJ",
+      "physicalFacility": "DTO",
+      "name": "Ground",
+      "radioName": "Denton Ground",
+      "callsign": "DTO_GND",
+      "areaId": "01H9YK6GJAJK1R21X44KQF9R8N",
+      "tcpId": "01K2NF1D8SE4WK3TPC6Z00W4RD",
+      "tcp": "78",
+      "visualCenter": {
+        "lat": 33.202450087134366,
+        "lon": -97.19927026979578
+      },
+      "range": 50,
+      "freq": 123.95
+    },
+    {
+      "id": "01J9YHJD2SYV3N713GR1X5K2RF",
+      "physicalFacility": "D10",
+      "name": "Guard",
+      "radioName": "Lone Star Approach Guard",
+      "callsign": "D10_EM_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8S90Q4TTCCSPDV1CZF",
+      "tcp": "7A",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
+      "freq": 121.5
+    },
+    {
+      "id": "01HF81Y385PAHKT3VW0NPCCMCV",
+      "physicalFacility": "D10",
+      "name": "TMU1",
+      "radioName": "Lone Star Approach",
+      "callsign": "D10_TM_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8S90Q4TTCCSPDV1CZF",
+      "tcp": "7A",
+      "visualCenter": {
+        "lat": 32.8769,
+        "lon": -97.01486
+      },
+      "range": 150,
       "freq": 123.775
     },
     {
       "id": "01HMB8SGRGTZZX9HC0T0TGEWCS",
+      "physicalFacility": "D10",
       "name": "TMU2",
+      "radioName": "Lone Star Approach",
       "callsign": "D10_TM_APP",
+      "areaId": "01GP4Y37G5CY6D95CF586G76TM",
+      "tcpId": "01K2NF1D8SN89WJ711GWER64RE",
+      "tcp": "7Z",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.8769,
+        "lon": -97.01486
       },
+      "range": 150,
       "freq": 123.775
     },
     {
-      "id": "01J9YHJD2SYV3N713GR1X5K2RF",
-      "name": "Guard",
-      "callsign": "D10_EM_APP",
+      "id": "01H87D700KGYM1PDSNQDHK3D5V",
+      "physicalFacility": "GPM",
+      "name": "Ground",
+      "radioName": "Grand Prairie Ground",
+      "callsign": "GPM_GND",
+      "areaId": "01H9YK9TPWRF2F227MEZTPP9JW",
+      "tcpId": "01K2NF1D8SYPQXYB56Z1G1JN7F",
+      "tcp": "85",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 32.6981953352374,
+        "lon": -97.04698158232746
       },
-      "freq": 121.5
+      "range": 50,
+      "freq": 121.15
     },
     {
-      "id": "11",
+      "id": "01H87D5C0PYWCRY4GWH9W647PX",
+      "physicalFacility": "GPM",
+      "name": "Local",
+      "radioName": "Grand Prairie Tower",
+      "callsign": "GPM_TWR",
+      "areaId": "01H9YK9TPWRF2F227MEZTPP9JW",
+      "tcpId": "01K2NF1D8SYPQXYB56Z1G1JN7F",
+      "tcp": "85",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 32.6981953352374,
+        "lon": -97.04698158232746
+      },
+      "range": 50,
+      "freq": 128.55
     },
     {
-      "id": "12",
+      "id": "01H87CYYCNK0HYPZJG6KTEP97V",
+      "physicalFacility": "FWS",
+      "name": "Ground",
+      "radioName": "Spinks Ground",
+      "callsign": "FWS_GND",
+      "areaId": "01H9YK1R51FAY3TZWHCGCXFJBA",
+      "tcpId": "01K2NF1D8SFTDPSC23F859T17R",
+      "tcp": "86",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 32.56434102263738,
+        "lon": -97.30969185898572
+      },
+      "range": 50,
+      "freq": 119.475
     },
     {
-      "id": "13",
+      "id": "01H87CXAH0HMJ83DF4RQ6BZX5K",
+      "physicalFacility": "FWS",
+      "name": "Local",
+      "radioName": "Spinks Tower",
+      "callsign": "FWS_TWR",
+      "areaId": "01H9YK1R51FAY3TZWHCGCXFJBA",
+      "tcpId": "01K2NF1D8SFTDPSC23F859T17R",
+      "tcp": "86",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 32.56434102263738,
+        "lon": -97.30969185898572
+      },
+      "range": 50,
+      "freq": 124.625
     },
     {
-      "id": "14",
+      "id": "01H87BRHGHRA9ZKZ7PJW60ZXNC",
+      "physicalFacility": "DTO",
+      "name": "Local",
+      "radioName": "Denton Tower",
+      "callsign": "DTO_TWR",
+      "areaId": "01H9YK6GJAJK1R21X44KQF9R8N",
+      "tcpId": "01K2NF1D8SNX5Y25DY2S5Q9PF1",
+      "tcp": "87",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 33.202450087134366,
+        "lon": -97.19927026979578
+      },
+      "range": 50,
+      "freq": 119.95
     },
     {
-      "id": "15",
+      "id": "01H87FRPFYRP0DXDKMQBB73MZM",
+      "physicalFacility": "TKI",
+      "name": "Ground",
+      "radioName": "McKinney Ground",
+      "callsign": "TKI_GND",
+      "areaId": "01H9YKF3Q0SB18VER5FZHFM7EF",
+      "tcpId": "01K2NF1D8S2CZMGWDZFZB1XJNZ",
+      "tcp": "88",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 33.17694732307683,
+        "lon": -96.58882611662041
+      },
+      "range": 50,
+      "freq": 121.875
     },
     {
-      "id": "16",
+      "id": "01H76WQNQRB13FQW1VG0Y22ZHG",
+      "physicalFacility": "TKI",
+      "name": "Local",
+      "radioName": "McKinney Tower",
+      "callsign": "TKI_TWR",
+      "areaId": "01H9YKF3Q0SB18VER5FZHFM7EF",
+      "tcpId": "01K2NF1D8S2CZMGWDZFZB1XJNZ",
+      "tcp": "88",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 33.17694732307683,
+        "lon": -96.58882611662041
+      },
+      "range": 50,
+      "freq": 118.825
     },
     {
-      "id": "17",
+      "id": "01H87D2TNSJP1DFDM9JP20YB1N",
+      "physicalFacility": "GKY",
+      "name": "Ground",
+      "radioName": "Arlington Ground",
+      "callsign": "GKY_GND",
+      "areaId": "01H9YK82P80CWE3WTFBEKEFGF1",
+      "tcpId": "01K2NF1D8SMBBE26D38CKCZX1E",
+      "tcp": "89",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 32.66360309411429,
+        "lon": -97.0944770924569
+      },
+      "range": 50,
+      "freq": 121.875
     },
     {
-      "id": "18",
+      "id": "01H87D1ACG7SFQK1PYK7E7N2WA",
+      "physicalFacility": "GKY",
+      "name": "Local",
+      "radioName": "Arlington Tower",
+      "callsign": "GKY_TWR",
+      "areaId": "01H9YK82P80CWE3WTFBEKEFGF1",
+      "tcpId": "01K2NF1D8SMBBE26D38CKCZX1E",
+      "tcp": "89",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "19",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1J",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1Q",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "21",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "22",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "26",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "31",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "32",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "34",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "43",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "51",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "7A",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "7Z",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "82",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "85",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "86",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "87",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "88",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "89",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 32.66360309411429,
+        "lon": -97.0944770924569
+      },
+      "range": 50,
+      "freq": 128.625
     }
   ],
   "mapGroups": [

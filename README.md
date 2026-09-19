@@ -1,4 +1,5 @@
-The **Radar Emulation Display System** (REDS) is a high-fidelity emulation of [ASDE-X](https://www.faa.gov/air_traffic/technology/asde-x) and [ERAM](https://www.faa.gov/air_traffic/technology/eram).
+The **Radar Emulation Display System** (REDS) is a high-fidelity emulation of [ASDE-X](https://www.faa.gov/air_traffic/technology/asde-x),
+[STARS](https://www.faa.gov/air_traffic/technology/tamr) and [ERAM](https://www.faa.gov/air_traffic/technology/eram).
 
 REDS uses the public live REDS server by default. You do not need SWIM credentials, Java, Maven, or a local SMES process for the desktop app.
 

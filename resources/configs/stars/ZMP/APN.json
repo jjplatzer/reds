@@ -4,77 +4,122 @@
   "name": "Alpena ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 45.0780833,
+    "lon": -83.5603056
   },
+  "areas": [
+    {
+      "id": "01GFEWJ3B25E7ZAX6TQXNCCZHS",
+      "name": "APN",
+      "visibilityCenter": {
+        "lat": 45.0780833,
+        "lon": -83.5603056
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "APN",
+        "PZQ"
+      ],
+      "ssaAirports": [
+        "APN",
+        "PZQ"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3MK4JYVCC54CT6JPG2",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1D3MSVMMK8MBJZ88F4MK",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1D3MK4JYVCC54CT6JPG2",
+      "parentTcp": "1A"
+    },
+    {
+      "id": "01K2NF1D3MHANVTZCNTYNYXV94",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    },
+    {
+      "id": "01K2NF1D3MXGVCS7S99TFMSKAB",
+      "code": "2Z",
+      "subset": 2,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1D3MHANVTZCNTYNYXV94",
+      "parentTcp": "1Z"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GFEWK8QVHG34D76WBQTR61HC",
+      "physicalFacility": "APN",
       "name": "AR/DR",
+      "radioName": "Alpena Approach",
       "callsign": "APN_APP",
+      "areaId": "01GFEWJ3B25E7ZAX6TQXNCCZHS",
+      "tcpId": "01K2NF1D3MK4JYVCC54CT6JPG2",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 45.0780833,
+        "lon": -83.5603056
       },
+      "range": 150,
       "freq": 128.425
     },
     {
-      "id": "01GFEWKYVVQ1AM9NB97G0AHQTF",
-      "name": "LC",
-      "callsign": "APN_TWR",
+      "id": "01H6BKCNAQ7YBT62P0D7N16BZS",
+      "physicalFacility": "APN",
+      "name": "GCA",
+      "radioName": "Alpena Arrival",
+      "callsign": "APN_F_APP",
+      "areaId": "01GFEWJ3B25E7ZAX6TQXNCCZHS",
+      "tcpId": "01K2NF1D3MSVMMK8MBJZ88F4MK",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 45.0780833,
+        "lon": -83.5603056
       },
+      "range": 150,
+      "freq": 118.5
+    },
+    {
+      "id": "01GFEWKYVVQ1AM9NB97G0AHQTF",
+      "physicalFacility": "APN",
+      "name": "LC",
+      "radioName": "Alpena Tower",
+      "callsign": "APN_TWR",
+      "areaId": "01GFEWJ3B25E7ZAX6TQXNCCZHS",
+      "tcpId": "01K2NF1D3MHANVTZCNTYNYXV94",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 45.0780833,
+        "lon": -83.5603056
+      },
+      "range": 150,
       "freq": 121.35
     },
     {
       "id": "01GFEWMZYGS5PQN2WBHE7KM411",
+      "physicalFacility": "APN",
       "name": "GC",
+      "radioName": "Alpena Ground",
       "callsign": "APN_GND",
+      "areaId": "01GFEWJ3B25E7ZAX6TQXNCCZHS",
+      "tcpId": "01K2NF1D3MXGVCS7S99TFMSKAB",
+      "tcp": "2Z",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 45.0780833,
+        "lon": -83.5603056
       },
+      "range": 150,
       "freq": 121.9
-    },
-    {
-      "id": "01H6BKCNAQ7YBT62P0D7N16BZS",
-      "name": "GCA",
-      "callsign": "APN_F_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 118.5
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2Z",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
     }
   ],
   "mapGroups": [

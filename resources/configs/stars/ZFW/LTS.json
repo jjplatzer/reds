@@ -4,73 +4,78 @@
   "name": "Altus ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 34.66189,
+    "lon": -99.26583
   },
+  "areas": [
+    {
+      "id": "01H89WCEBNPJW0QRCNRB73CREM",
+      "name": "LTS",
+      "visibilityCenter": {
+        "lat": 34.66189,
+        "lon": -99.26583
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "2K4",
+        "AXS",
+        "F05",
+        "FDR",
+        "HBR",
+        "LTS",
+        "O35"
+      ],
+      "ssaAirports": [
+        "LTS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8TA596SHG914CC7RWC",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1D8T2G2N6P64119NWEJ3",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01H89WERRK4X6VKMEH1659ZVP2",
+      "physicalFacility": "LTS",
       "name": "Radar",
+      "radioName": "Altus Approach",
       "callsign": "LTS_APP",
+      "areaId": "01H89WCEBNPJW0QRCNRB73CREM",
+      "tcpId": "01K2NF1D8TA596SHG914CC7RWC",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 34.66189,
+        "lon": -99.26583
       },
+      "range": 150,
       "freq": 125.1
     },
     {
       "id": "01H89WFJ8VPD6W1C4NZEAVGXZ2",
+      "physicalFacility": "LTS",
       "name": "Local",
+      "radioName": "Altus Tower",
       "callsign": "LTS_TWR",
+      "areaId": "01H89WCEBNPJW0QRCNRB73CREM",
+      "tcpId": "01K2NF1D8T2G2N6P64119NWEJ3",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 34.66189,
+        "lon": -99.26583
       },
+      "range": 150,
       "freq": 119.65
-    },
-    {
-      "id": "01H89WGCBSVPS11Y49NNBQJ8H2",
-      "name": "Ground",
-      "callsign": "LTS_GND",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.85
-    },
-    {
-      "id": "01H89WGSF6P0XBMYQKC4ASXKVT",
-      "name": "Clearance",
-      "callsign": "LTS_DEL",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 120.65
-    },
-    {
-      "id": "01J9YJ21MMKV5TW60ENKBMN031",
-      "name": "Guard",
-      "callsign": "LTS_EM_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
     }
   ],
   "mapGroups": [

@@ -4,77 +4,133 @@
   "name": "Sioux City ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 42.4013094,
+    "lon": -96.3844181
   },
+  "areas": [
+    {
+      "id": "01GFETD36JZ4PBRC77MJ2QA3TF",
+      "name": "SUX",
+      "visibilityCenter": {
+        "lat": 42.4013094,
+        "lon": -96.3844181
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "0C4",
+        "7K7",
+        "7K8",
+        "LCG",
+        "LRJ",
+        "MEY",
+        "SUX",
+        "SXK",
+        "VMR"
+      ],
+      "ssaAirports": [
+        "SUX",
+        "LRJ"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3MSPQAKRGTK9C499EV",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1D3M8ANWF9VGWPAS3W1A",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1D3MY81GYAG7Z9S41CM8",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1D3MK7J4T9HRHZCFHD1C",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1D3M9PAX9HVE62V1Y30F",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1D3M8ANWF9VGWPAS3W1A",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GFETFH86F7RNHX28D3JWJGYR",
-      "name": "Arrival/Departure",
-      "callsign": "SUX_APP",
+      "id": "01GFETGP5R8N8D6J3A1M2FK8VR",
+      "physicalFacility": "SUX",
+      "name": "Ground Control",
+      "radioName": "Sioux City Ground",
+      "callsign": "SUX_GND",
+      "areaId": "01GFETD36JZ4PBRC77MJ2QA3TF",
+      "tcpId": "01K2NF1D3MSPQAKRGTK9C499EV",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 42.4013094,
+        "lon": -96.3844181
       },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
+      "id": "01GFETFH86F7RNHX28D3JWJGYR",
+      "physicalFacility": "SUX",
+      "name": "Arrival/Departure",
+      "radioName": "Sioux City Approach",
+      "callsign": "SUX_APP",
+      "areaId": "01GFETD36JZ4PBRC77MJ2QA3TF",
+      "tcpId": "01K2NF1D3MY81GYAG7Z9S41CM8",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 42.4013094,
+        "lon": -96.3844181
+      },
+      "range": 150,
+      "freq": 124.6
+    },
+    {
+      "id": "01H69DZFG4R2D2AT4YWVHP36AN",
+      "physicalFacility": "SUX",
+      "name": "Arrival/Departure TRACAB",
+      "radioName": "Sioux City Approach",
+      "callsign": "SUX_APP",
+      "areaId": "01GFETD36JZ4PBRC77MJ2QA3TF",
+      "tcpId": "01K2NF1D3MK7J4T9HRHZCFHD1C",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 42.4013094,
+        "lon": -96.3844181
+      },
+      "range": 150,
       "freq": 124.6
     },
     {
       "id": "01GFETG80S2QB2R20A8QDYF5QS",
+      "physicalFacility": "SUX",
       "name": "Local Control",
+      "radioName": "Sioux City Tower",
       "callsign": "SUX_TWR",
+      "areaId": "01GFETD36JZ4PBRC77MJ2QA3TF",
+      "tcpId": "01K2NF1D3M8ANWF9VGWPAS3W1A",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 42.4013094,
+        "lon": -96.3844181
       },
+      "range": 150,
       "freq": 118.7
-    },
-    {
-      "id": "01GFETGP5R8N8D6J3A1M2FK8VR",
-      "name": "Ground Control",
-      "callsign": "SUX_GND",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01H69DZFG4R2D2AT4YWVHP36AN",
-      "name": "Arrival/Departure TRACAB",
-      "callsign": "SUX_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 124.6
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
     }
   ],
   "mapGroups": [

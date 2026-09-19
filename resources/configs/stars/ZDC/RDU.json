@@ -4,185 +4,308 @@
   "name": "Raleigh ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37,
-    "lon": -77
+    "lat": 35.87703,
+    "lon": -78.77619
   },
+  "areas": [
+    {
+      "id": "01GS5N5YATVWBKB2B81M7EZ3AY",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 35.87703,
+        "lon": -78.77619
+      },
+      "surveillanceRange": 80,
+      "underlyingAirports": [
+        "RDU",
+        "5W5",
+        "HNZ",
+        "JNX",
+        "LHZ",
+        "TDF",
+        "TTA",
+        "W17"
+      ],
+      "ssaAirports": [
+        "RDU"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E0S987HZDEW32SHCJCY",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1E0SEMAE43S9M8M63S2F",
+      "parentTcp": "1G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SG9WNWY5T85YTCWQN",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SEMAE43S9M8M63S2F",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1E0SVJVB1G66PFBN4E3S",
+      "parentTcp": "1T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SKPMTWDXSED4XSEBR",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1E0SG9WNWY5T85YTCWQN",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SVSRH2Y3VVS6G7BR6",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1E0SEMAE43S9M8M63S2F",
+      "parentTcp": "1G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0S569JNY2B3N64AXPJ",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E0SKPMTWDXSED4XSEBR",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SVJVB1G66PFBN4E3S",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1E0SG9WNWY5T85YTCWQN",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SZK5PCG33DH2JB4AM",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1E0SG9WNWY5T85YTCWQN",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SVY923BZDMCPZKGRT",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E0SG9WNWY5T85YTCWQN",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SQTH40QAGXKTEG1ZT",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1E0SZK5PCG33DH2JB4AM",
+      "parentTcp": "1U",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0S7V1D0RZR9ZQD699Y",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1E0SVJVB1G66PFBN4E3S",
+      "parentTcp": "1T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GS5N6N039MJ6592SSYGDCVA7",
-      "name": "North Departure Radar",
-      "callsign": "RDU_N_DEP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 132.35
-    },
-    {
-      "id": "01GS5N7KETK00W5X3MDDGTEV0N",
-      "name": "South Departure Radar",
-      "callsign": "RDU_S_DEP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 125.3
-    },
-    {
-      "id": "01GS5N84CT880KA8TP2CBZJRKB",
-      "name": "East Arrival Radar",
-      "callsign": "RDU_E_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 124.95
-    },
-    {
-      "id": "01GS5N8PYFFXQB3AKT5VM9CAC1",
-      "name": "West Arrival Radar",
-      "callsign": "RDU_W_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 127.675
-    },
-    {
-      "id": "01GS5N9B438Z112S5WVNGDJH0B",
-      "name": "East Final Radar",
-      "callsign": "RDU_U_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 124.8
-    },
-    {
-      "id": "01GS5NA0RP82T92HB3FWS8T3PF",
-      "name": "West Final Radar",
-      "callsign": "RDU_Y_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 135.15
-    },
-    {
-      "id": "01GS5NAMTSV85A2S3BEQBEKRJT",
-      "name": "Local Control East",
-      "callsign": "RDU_E_TWR",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 127.45
-    },
-    {
-      "id": "01GS5NB6EK5YX26SZ6KKB55WRR",
-      "name": "Local Control West",
-      "callsign": "RDU_W_TWR",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 119.3
-    },
-    {
-      "id": "01GS5NDG24EF1AZ3XNMW34F3WG",
-      "name": "Ground Control West",
-      "callsign": "RDU_W_GND",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 121.7
-    },
-    {
-      "id": "01GS5NDZHYFEYW8SVGD5YF37B6",
-      "name": "Ground Control East",
-      "callsign": "RDU_E_GND",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 121.9
-    },
-    {
       "id": "01GS5NERQZS32TWSPKXQ47AAVC",
+      "physicalFacility": "RDU",
       "name": "Clearance Delivery",
+      "radioName": "Raleigh Clearance",
       "callsign": "RDU_DEL",
+      "areaId": "01GS5N5YATVWBKB2B81M7EZ3AY",
+      "tcpId": "01K2NF1E0S987HZDEW32SHCJCY",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 35.87703,
+        "lon": -78.77619
       },
+      "range": 80,
       "freq": 120.1
     },
     {
-      "id": "01JB5DRRC5FFE38ZDTZQX2K105",
-      "name": "121.5 GUARD",
-      "callsign": "RDU_GG_APP",
+      "id": "01GS5N84CT880KA8TP2CBZJRKB",
+      "physicalFacility": "RDU",
+      "name": "East Arrival Radar",
+      "radioName": "Raleigh Approach",
+      "callsign": "RDU_E_APP",
+      "areaId": "01GS5N5YATVWBKB2B81M7EZ3AY",
+      "tcpId": "01K2NF1E0SG9WNWY5T85YTCWQN",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 35.87703,
+        "lon": -78.77619
       },
-      "freq": 121.5
+      "range": 80,
+      "freq": 124.95
     },
     {
-      "id": "1E",
+      "id": "01GS5NDZHYFEYW8SVGD5YF37B6",
+      "physicalFacility": "RDU",
+      "name": "Ground Control East",
+      "radioName": "Raleigh Ground",
+      "callsign": "RDU_E_GND",
+      "areaId": "01GS5N5YATVWBKB2B81M7EZ3AY",
+      "tcpId": "01K2NF1E0SEMAE43S9M8M63S2F",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 35.87703,
+        "lon": -78.77619
+      },
+      "range": 80,
+      "freq": 121.9
     },
     {
-      "id": "1F",
+      "id": "01GS5N6N039MJ6592SSYGDCVA7",
+      "physicalFacility": "RDU",
+      "name": "North Departure Radar",
+      "radioName": "Raleigh Approach",
+      "callsign": "RDU_N_DEP",
+      "areaId": "01GS5N5YATVWBKB2B81M7EZ3AY",
+      "tcpId": "01K2NF1E0SKPMTWDXSED4XSEBR",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 35.87703,
+        "lon": -78.77619
+      },
+      "range": 80,
+      "freq": 132.35
     },
     {
-      "id": "1G",
+      "id": "01GS5NDG24EF1AZ3XNMW34F3WG",
+      "physicalFacility": "RDU",
+      "name": "Ground Control West",
+      "radioName": "Raleigh Ground",
+      "callsign": "RDU_W_GND",
+      "areaId": "01GS5N5YATVWBKB2B81M7EZ3AY",
+      "tcpId": "01K2NF1E0SVSRH2Y3VVS6G7BR6",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 35.87703,
+        "lon": -78.77619
+      },
+      "range": 80,
+      "freq": 121.7
     },
     {
-      "id": "1N",
+      "id": "01GS5N7KETK00W5X3MDDGTEV0N",
+      "physicalFacility": "RDU",
+      "name": "South Departure Radar",
+      "radioName": "Raleigh Approach",
+      "callsign": "RDU_S_DEP",
+      "areaId": "01GS5N5YATVWBKB2B81M7EZ3AY",
+      "tcpId": "01K2NF1E0S569JNY2B3N64AXPJ",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 35.87703,
+        "lon": -78.77619
+      },
+      "range": 80,
+      "freq": 125.3
     },
     {
-      "id": "1S",
+      "id": "01GS5NAMTSV85A2S3BEQBEKRJT",
+      "physicalFacility": "RDU",
+      "name": "Local Control East",
+      "radioName": "Raleigh Tower",
+      "callsign": "RDU_E_TWR",
+      "areaId": "01GS5N5YATVWBKB2B81M7EZ3AY",
+      "tcpId": "01K2NF1E0SVJVB1G66PFBN4E3S",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 35.87703,
+        "lon": -78.77619
+      },
+      "range": 80,
+      "freq": 127.45
     },
     {
-      "id": "1T",
+      "id": "01GS5N9B438Z112S5WVNGDJH0B",
+      "physicalFacility": "RDU",
+      "name": "East Final Radar",
+      "radioName": "Raleigh Approach",
+      "callsign": "RDU_U_APP",
+      "areaId": "01GS5N5YATVWBKB2B81M7EZ3AY",
+      "tcpId": "01K2NF1E0SZK5PCG33DH2JB4AM",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 35.87703,
+        "lon": -78.77619
+      },
+      "range": 80,
+      "freq": 124.8
     },
     {
-      "id": "1W",
+      "id": "01GS5N8PYFFXQB3AKT5VM9CAC1",
+      "physicalFacility": "RDU",
+      "name": "West Arrival Radar",
+      "radioName": "Raleigh Approach",
+      "callsign": "RDU_W_APP",
+      "areaId": "01GS5N5YATVWBKB2B81M7EZ3AY",
+      "tcpId": "01K2NF1E0SVY923BZDMCPZKGRT",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 35.87703,
+        "lon": -78.77619
+      },
+      "range": 80,
+      "freq": 127.675
     },
     {
-      "id": "1Z",
+      "id": "01GS5NA0RP82T92HB3FWS8T3PF",
+      "physicalFacility": "RDU",
+      "name": "West Final Radar",
+      "radioName": "Raleigh Approach",
+      "callsign": "RDU_Y_APP",
+      "areaId": "01GS5N5YATVWBKB2B81M7EZ3AY",
+      "tcpId": "01K2NF1E0SQTH40QAGXKTEG1ZT",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 35.87703,
+        "lon": -78.77619
+      },
+      "range": 80,
+      "freq": 135.15
+    },
+    {
+      "id": "01GS5NB6EK5YX26SZ6KKB55WRR",
+      "physicalFacility": "RDU",
+      "name": "Local Control West",
+      "radioName": "Raleigh Tower",
+      "callsign": "RDU_W_TWR",
+      "areaId": "01GS5N5YATVWBKB2B81M7EZ3AY",
+      "tcpId": "01K2NF1E0S7V1D0RZR9ZQD699Y",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 35.87703,
+        "lon": -78.77619
+      },
+      "range": 80,
+      "freq": 119.3
     }
   ],
   "mapGroups": [

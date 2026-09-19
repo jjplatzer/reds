@@ -4,114 +4,191 @@
   "name": "Holloman ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 34.19564814666666,
-    "lon": -107.50666666666666
+    "lat": 32.851858,
+    "lon": -106.1085417
   },
+  "areas": [
+    {
+      "id": "01G98P8A5P0V6HHJYQB0H5M51C",
+      "name": "HMN",
+      "visibilityCenter": {
+        "lat": 32.851858,
+        "lon": -106.1085417
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "HMN",
+        "ALM"
+      ],
+      "ssaAirports": [
+        "HMN"
+      ]
+    },
+    {
+      "id": "01G9EF338AZ7XZSN9KR1NJJHX0",
+      "name": "TAC",
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "HMN"
+      ],
+      "ssaAirports": [
+        "HMN"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1BHTHV34WA140MX2DNT1",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHT96BX0TZBCSJWBK52",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1BHTHV34WA140MX2DNT1",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHTJ4PA7118VCX3H3D2",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHT95G6PYNW3783B7YN",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1BHTHV34WA140MX2DNT1",
+      "parentTcp": "1A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHT9J7XGYY9SE2QAT0Y",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G98P97GZW44WZJSADW3FTS0Y",
+      "physicalFacility": "HMN",
       "name": "Approach",
+      "radioName": "Holloman Approach",
       "callsign": "HMN_APP",
+      "areaId": "01G98P8A5P0V6HHJYQB0H5M51C",
+      "tcpId": "01K2NF1BHTHV34WA140MX2DNT1",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 32.851858,
+        "lon": -106.1085417
       },
+      "range": 75,
       "freq": 120.6
     },
     {
       "id": "01G98PAKH6WGP1H651HSMSE09K",
+      "physicalFacility": "HMN",
       "name": "Departure",
+      "radioName": "Holloman Departure",
       "callsign": "HMN_DEP",
+      "areaId": "01G98P8A5P0V6HHJYQB0H5M51C",
+      "tcpId": "01K2NF1BHT96BX0TZBCSJWBK52",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 32.851858,
+        "lon": -106.1085417
       },
+      "range": 75,
       "freq": 128.1
     },
     {
-      "id": "01G9EEY76KBE8MDD51MY6P3RFH",
-      "name": "Arrival",
-      "callsign": "HMN_R_APP",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 125.7
-    },
-    {
       "id": "01G9EEYRZR88SAYM6XMGN90EDC",
+      "physicalFacility": "HMN",
       "name": "Cherokee Tactical",
+      "radioName": "Cherokee",
       "callsign": "HMN_C_APP",
+      "areaId": "01G98P8A5P0V6HHJYQB0H5M51C",
+      "tcpId": "01K2NF1BHTJ4PA7118VCX3H3D2",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 32.851858,
+        "lon": -106.1085417
       },
+      "range": 75,
       "freq": 126.9
     },
     {
-      "id": "01G9EEZNZJ4EF5GAPJBC4N0A5M",
-      "name": "Local Control",
-      "callsign": "HMN_TWR",
+      "id": "01G9EEY76KBE8MDD51MY6P3RFH",
+      "physicalFacility": "HMN",
+      "name": "Arrival",
+      "radioName": "Holloman Approach",
+      "callsign": "HMN_R_APP",
+      "areaId": "01G98P8A5P0V6HHJYQB0H5M51C",
+      "tcpId": "01K2NF1BHT95G6PYNW3783B7YN",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 32.851858,
+        "lon": -106.1085417
       },
-      "freq": 119.3
-    },
-    {
-      "id": "01G9EF04PRWP3WVXN6CADPXX4F",
-      "name": "Ground",
-      "callsign": "HMN_GND",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 127.05
+      "range": 75,
+      "freq": 125.7
     },
     {
       "id": "01G9EF0M3D7X0X3RE08TXZA8AR",
+      "physicalFacility": "HMN",
       "name": "Clearance Delivery",
+      "radioName": "Holloman Clearance Delivery",
       "callsign": "HMN_DEL",
+      "areaId": "01G98P8A5P0V6HHJYQB0H5M51C",
+      "tcpId": "01K2NF1BHT9J7XGYY9SE2QAT0Y",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 32.851858,
+        "lon": -106.1085417
       },
+      "range": 75,
       "freq": 126.7
     },
     {
-      "id": "1A",
+      "id": "01G9EF04PRWP3WVXN6CADPXX4F",
+      "physicalFacility": "HMN",
+      "name": "Ground",
+      "radioName": "Holloman Ground",
+      "callsign": "HMN_GND",
+      "areaId": "01G98P8A5P0V6HHJYQB0H5M51C",
+      "tcpId": "01K2NF1BHT9J7XGYY9SE2QAT0Y",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 32.851858,
+        "lon": -106.1085417
+      },
+      "range": 75,
+      "freq": 127.05
     },
     {
-      "id": "1D",
+      "id": "01G9EEZNZJ4EF5GAPJBC4N0A5M",
+      "physicalFacility": "HMN",
+      "name": "Local Control",
+      "radioName": "Holloman Tower",
+      "callsign": "HMN_TWR",
+      "areaId": "01G98P8A5P0V6HHJYQB0H5M51C",
+      "tcpId": "01K2NF1BHT9J7XGYY9SE2QAT0Y",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 32.851858,
+        "lon": -106.1085417
+      },
+      "range": 75,
+      "freq": 119.3
     }
   ],
   "mapGroups": [

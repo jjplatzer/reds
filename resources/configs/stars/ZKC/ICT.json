@@ -4,145 +4,299 @@
   "name": "Wichita ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37.593354149999996,
-    "lon": -95.43247947500001
+    "lat": 37.74534299222513,
+    "lon": -97.49859256306773
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01G9HX484J96QTHYAC3CJBENAC",
-      "name": "Radar West",
-      "callsign": "ICT_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+      "id": "01G9HWR9JYCTDZCQAATN0ZVDWM",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 37.6433333,
+        "lon": -97.43583333333333
       },
-      "freq": 126.7
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "1K1",
+        "3AU",
+        "47K",
+        "55K",
+        "71K",
+        "8K2",
+        "9K8",
+        "AAO",
+        "ANY",
+        "BEC",
+        "EGT",
+        "EQA",
+        "HUT",
+        "IAB",
+        "ICT",
+        "M66",
+        "MPR"
+      ],
+      "ssaAirports": [
+        "ICT",
+        "IAB",
+        "HUT"
+      ]
     },
     {
-      "id": "01G9HX4TFH09SSBMABETY0Y2JC",
-      "name": "Radar East",
-      "callsign": "ICT_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+      "id": "01G9J5C6BEMR3J1MFBTS8VHWY0",
+      "name": "ICT Local",
+      "visibilityCenter": {
+        "lat": 37.64343566890054,
+        "lon": -97.4356919189376
       },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "ICT"
+      ],
+      "ssaAirports": [
+        "ICT"
+      ]
+    },
+    {
+      "id": "01HBWV585Z2ZCQ3S7M8DRWXPNP",
+      "name": "IAB Local",
+      "visibilityCenter": {
+        "lat": 37.626422,
+        "lon": -97.261893
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "IAB"
+      ],
+      "ssaAirports": [
+        "IAB"
+      ]
+    },
+    {
+      "id": "01HBWV6GGC4CDPB7KKC0JVHEW9",
+      "name": "HUT Local",
+      "visibilityCenter": {
+        "lat": 38.068181,
+        "lon": -97.860952
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "HUT"
+      ],
+      "ssaAirports": [
+        "HUT"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1EE5SHH4X3SKY3WZKN8H",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1EE5BB9AAJWXY8FXWD2H",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1EE5D62Z28YTD0A7PAJM",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H"
+    },
+    {
+      "id": "01K2NF1EE5KGZA9PVE72CN7SYT",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I"
+    },
+    {
+      "id": "01K2NF1EE54246RY77S411W514",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1EE5SDHRHFF27JF68498",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1EE5PJKGM6B957NZECKS",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K2NF1EE5RHQC5GJ7C21GSN7W",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01G9HX4TFH09SSBMABETY0Y2JC",
+      "physicalFacility": "ICT",
+      "name": "Radar East",
+      "radioName": "Wichita Approach",
+      "callsign": "ICT_APP",
+      "areaId": "01G9HWR9JYCTDZCQAATN0ZVDWM",
+      "tcpId": "01K2NF1EE5SHH4X3SKY3WZKN8H",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 37.6433333,
+        "lon": -97.43583333333333
+      },
+      "range": 150,
       "freq": 134.85
     },
     {
-      "id": "01G9HX62P076DJZW2TG2G65KAB",
-      "name": "Radar Satellite East",
-      "callsign": "ICT_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 134.8
-    },
-    {
-      "id": "01G9HX6YCMEGMK3EK5CZRR8F7B",
-      "name": "Radar Satellite West",
-      "callsign": "ICT_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 125.5
-    },
-    {
       "id": "01G9HX8ZKADN2AB8EPHV8TMT4E",
+      "physicalFacility": "ICT",
       "name": "Radar Final",
+      "radioName": "Wichita Approach",
       "callsign": "ICT_APP",
+      "areaId": "01G9HWR9JYCTDZCQAATN0ZVDWM",
+      "tcpId": "01K2NF1EE5BB9AAJWXY8FXWD2H",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 37.6433333,
+        "lon": -97.43583333333333
       },
+      "range": 150,
       "freq": 127.675
     },
     {
-      "id": "01G9HXBFGM0Z9GFJACYZC00GXS",
-      "name": "Local",
-      "callsign": "ICT_TWR",
+      "id": "01G9HX6YCMEGMK3EK5CZRR8F7B",
+      "physicalFacility": "ICT",
+      "name": "Radar Satellite West",
+      "radioName": "Wichita Approach",
+      "callsign": "ICT_APP",
+      "areaId": "01G9HWR9JYCTDZCQAATN0ZVDWM",
+      "tcpId": "01K2NF1EE5D62Z28YTD0A7PAJM",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 37.6433333,
+        "lon": -97.43583333333333
       },
-      "freq": 118.2
+      "range": 150,
+      "freq": 125.5
     },
     {
-      "id": "01G9HXCNTTVX7HJ4BWVARJNXJR",
-      "name": "Ground",
-      "callsign": "ICT_GND",
+      "id": "01H2GJKMQ0F0AG647T8B8VNE1W",
+      "physicalFacility": "IAB",
+      "name": "Local",
+      "radioName": "McConnell Tower",
+      "callsign": "IAB_TWR",
+      "areaId": "01HBWV585Z2ZCQ3S7M8DRWXPNP",
+      "tcpId": "01K2NF1EE5KGZA9PVE72CN7SYT",
+      "tcp": "1I",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 37.626422,
+        "lon": -97.261893
       },
-      "freq": 121.9
+      "range": 50,
+      "freq": 127.25
     },
     {
       "id": "01G9HXD5ECCCYRYDMC3W2J341R",
+      "physicalFacility": "ICT",
       "name": "Clearance",
+      "radioName": "Wichita Clearance",
       "callsign": "ICT_DEL",
+      "areaId": "01G9J5C6BEMR3J1MFBTS8VHWY0",
+      "tcpId": "01K2NF1EE54246RY77S411W514",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 37.64343566890054,
+        "lon": -97.4356919189376
       },
+      "range": 30,
       "freq": 125.7
     },
     {
-      "id": "1E",
+      "id": "01G9HXCNTTVX7HJ4BWVARJNXJR",
+      "physicalFacility": "ICT",
+      "name": "Ground",
+      "radioName": "Wichita Ground",
+      "callsign": "ICT_GND",
+      "areaId": "01G9J5C6BEMR3J1MFBTS8VHWY0",
+      "tcpId": "01K2NF1EE54246RY77S411W514",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 37.64343566890054,
+        "lon": -97.4356919189376
+      },
+      "range": 30,
+      "freq": 121.9
     },
     {
-      "id": "1F",
+      "id": "01G9HXBFGM0Z9GFJACYZC00GXS",
+      "physicalFacility": "ICT",
+      "name": "Local",
+      "radioName": "Wichita Tower",
+      "callsign": "ICT_TWR",
+      "areaId": "01G9J5C6BEMR3J1MFBTS8VHWY0",
+      "tcpId": "01K2NF1EE54246RY77S411W514",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 37.64343566890054,
+        "lon": -97.4356919189376
+      },
+      "range": 30,
+      "freq": 118.2
     },
     {
-      "id": "1H",
+      "id": "01G9HX62P076DJZW2TG2G65KAB",
+      "physicalFacility": "ICT",
+      "name": "Radar Satellite East",
+      "radioName": "Wichita Approach",
+      "callsign": "ICT_APP",
+      "areaId": "01G9HWR9JYCTDZCQAATN0ZVDWM",
+      "tcpId": "01K2NF1EE5SDHRHFF27JF68498",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 37.6433333,
+        "lon": -97.43583333333333
+      },
+      "range": 150,
+      "freq": 134.8
     },
     {
-      "id": "1I",
+      "id": "01HBWWXZG6TKY4SEX6SWQADZ8C",
+      "physicalFacility": "HUT",
+      "name": "Local",
+      "radioName": "Hutchinson Tower",
+      "callsign": "HUT_TWR",
+      "areaId": "01HBWV6GGC4CDPB7KKC0JVHEW9",
+      "tcpId": "01K2NF1EE5PJKGM6B957NZECKS",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 38.068181,
+        "lon": -97.860952
+      },
+      "range": 50,
+      "freq": 118.5
     },
     {
-      "id": "1L",
+      "id": "01G9HX484J96QTHYAC3CJBENAC",
+      "physicalFacility": "ICT",
+      "name": "Radar West",
+      "radioName": "Wichita Approach",
+      "callsign": "ICT_APP",
+      "areaId": "01G9HWR9JYCTDZCQAATN0ZVDWM",
+      "tcpId": "01K2NF1EE5RHQC5GJ7C21GSN7W",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 37.6433333,
+        "lon": -97.43583333333333
+      },
+      "range": 150,
+      "freq": 126.7
     }
   ],
   "mapGroups": [

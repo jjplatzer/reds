@@ -4,124 +4,147 @@
   "name": "Augusta ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.90558406666667,
-    "lon": -83.96840666666667
+    "lat": 33.3703,
+    "lon": -81.9649
   },
+  "areas": [
+    {
+      "id": "01H4Q4X58YWYW3MDNPJPRAGZTZ",
+      "name": "Approach",
+      "visibilityCenter": {
+        "lat": 33.3703,
+        "lon": -81.9649
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "AGS"
+      ]
+    },
+    {
+      "id": "01H4Q4Y41MA4G7GVZAFJVKGRJF",
+      "name": "Tower",
+      "visibilityCenter": {
+        "lat": 33.3703,
+        "lon": -81.9649
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "AGS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01KNNXC5HA48GDXCFGF7R938RE",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1E989M7DJ2RYPMVA7N65",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01KNNXCCJ0Q3Q9EPEMNZDY8JZW",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1E98NBN7A1KMEGVZB776",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E98DC3K5PZ37ZF1XH7H",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01H4Q4TE3R13VWFJY415E2DC4H",
-      "name": "Radar East",
-      "callsign": "AGS_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 119.15
-    },
-    {
-      "id": "01H4Q4V4HFQWFYDR73FQB4V3YG",
-      "name": "Radar West",
-      "callsign": "AGS_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 126.8
-    },
-    {
-      "id": "01H4Q4Z4QNKP7XH3T0SP2EXJVK",
-      "name": "Local Control",
-      "callsign": "AGS_TWR",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 118.7
-    },
-    {
-      "id": "01H4Q50136M5GPVQXT4C7TAPYS",
-      "name": "Ground Control",
-      "callsign": "AGS_GND",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01H4Q511VX8TFR8BRED95NWYRZ",
-      "name": "Clearance Delivery",
-      "callsign": "AGS_DEL",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 118.65
-    },
-    {
-      "id": "01JRDWW36WBZ954Y2TSWESV255",
-      "name": "AGS GUARD",
-      "callsign": "AGS_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.5
-    },
-    {
       "id": "01KNNX8XNFX3G0XM8Q0PHQ2253",
+      "physicalFacility": "AGS",
       "name": "Departure",
+      "radioName": "Augusta Approach",
       "callsign": "AGS_APP",
+      "areaId": "01H4Q4X58YWYW3MDNPJPRAGZTZ",
+      "tcpId": "01KNNXC5HA48GDXCFGF7R938RE",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.3703,
+        "lon": -81.9649
       },
+      "range": 150,
       "freq": 119.725
     },
     {
-      "id": "01KNNXDR7QSQRWMR6YX3KK5NYZ",
-      "name": "Final",
+      "id": "01H4Q4TE3R13VWFJY415E2DC4H",
+      "physicalFacility": "AGS",
+      "name": "Radar East",
+      "radioName": "Augusta Approach",
       "callsign": "AGS_APP",
+      "areaId": "01H4Q4X58YWYW3MDNPJPRAGZTZ",
+      "tcpId": "01K2NF1E989M7DJ2RYPMVA7N65",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 33.3703,
+        "lon": -81.9649
       },
+      "range": 150,
+      "freq": 119.15
+    },
+    {
+      "id": "01KNNXDR7QSQRWMR6YX3KK5NYZ",
+      "physicalFacility": "AGS",
+      "name": "Final",
+      "radioName": "Augusta Approach",
+      "callsign": "AGS_APP",
+      "areaId": "01H4Q4X58YWYW3MDNPJPRAGZTZ",
+      "tcpId": "01KNNXCCJ0Q3Q9EPEMNZDY8JZW",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 33.3703,
+        "lon": -81.9649
+      },
+      "range": 150,
       "freq": 124.55
     },
     {
-      "id": "1D",
+      "id": "01H4Q4Z4QNKP7XH3T0SP2EXJVK",
+      "physicalFacility": "AGS",
+      "name": "Local Control",
+      "radioName": "Augusta Tower",
+      "callsign": "AGS_TWR",
+      "areaId": "01H4Q4Y41MA4G7GVZAFJVKGRJF",
+      "tcpId": "01K2NF1E98NBN7A1KMEGVZB776",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.3703,
+        "lon": -81.9649
+      },
+      "range": 50,
+      "freq": 118.7
     },
     {
-      "id": "1E",
+      "id": "01H4Q4V4HFQWFYDR73FQB4V3YG",
+      "physicalFacility": "AGS",
+      "name": "Radar West",
+      "radioName": "Augusta Approach",
+      "callsign": "AGS_APP",
+      "areaId": "01H4Q4X58YWYW3MDNPJPRAGZTZ",
+      "tcpId": "01K2NF1E98DC3K5PZ37ZF1XH7H",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 33.3703,
+        "lon": -81.9649
+      },
+      "range": 150,
+      "freq": 126.8
     }
   ],
   "mapGroups": [

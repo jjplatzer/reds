@@ -4,162 +4,345 @@
   "name": "Oklahoma City ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 35.378611111111,
+    "lon": -97.618889
   },
+  "areas": [
+    {
+      "id": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "name": "OKC",
+      "visibilityCenter": {
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "OKC",
+        "TIK",
+        "PWA",
+        "OUN",
+        "HSD",
+        "1K4",
+        "SNL",
+        "HMY",
+        "RQO",
+        "CHK",
+        "GOK",
+        "RCE",
+        "3O3"
+      ],
+      "ssaAirports": [
+        "OKC",
+        "TIK",
+        "PWA",
+        "OUN"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8SJQZCZY18TA0XGDR8",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1D8S02TSNGRS0Y7D75FT",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1D8S02TSNGRS0Y7D75FT",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1D8S7XG000A4FEX7R9FG",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1D8SKQS46QKDWFAQ2R52",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1D8S7XG000A4FEX7R9FG",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1D8SZJF0RCXYYT5PD1WT",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1D8STSKD0BDM3KPRPFKN",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P"
+    },
+    {
+      "id": "01K2NF1D8SPAA58A7GCGRVJP7D",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1D8S7XG000A4FEX7R9FG",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1D8SANRFGWZ6AV4D076K",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1D8S7XG000A4FEX7R9FG",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1D8S80HR3QWYGEMRK5WQ",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G9RKXZN3JMH623W53S5BF3J6",
-      "name": "Final Radar",
-      "callsign": "OKC_F_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 133.6
-    },
-    {
-      "id": "01G9RM1D7MRGAG2P7HHH17WV47",
-      "name": "Northwest Radar",
-      "callsign": "OKC_W_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 124.6
-    },
-    {
-      "id": "01G9RM2YNJS4H8BXTHP0FBQWWN",
-      "name": "Southwest Radar",
-      "callsign": "OKC_S_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 126.65
-    },
-    {
-      "id": "01H045DHF6524XQ72JJ27TZB1F",
-      "name": "Local",
-      "callsign": "OKC_TWR",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 119.35
-    },
-    {
-      "id": "01H045EY0309FNCZFE9J3T1WKV",
-      "name": "Ground",
-      "callsign": "OKC_GND",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01H045FTHNNG80QM7BT535WG5Z",
-      "name": "Clearance",
-      "callsign": "OKC_DEL",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 124.35
-    },
-    {
-      "id": "01H3DAT4W6PD1BR23J98T76RK6",
-      "name": "Northeast Radar",
-      "callsign": "OKC_NE_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 124.2
-    },
-    {
       "id": "01H3DAZQRZRB0V27JR76D3W2TK",
+      "physicalFacility": "OKC",
       "name": "Southeast Radar",
+      "radioName": "Oke City Approach",
       "callsign": "OKC_SE_APP",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8SJQZCZY18TA0XGDR8",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 35.378611111111,
+        "lon": -97.618889
       },
+      "range": 150,
       "freq": 120.45
     },
     {
-      "id": "01J9YHXQNCSVA0JVDC9BR49AEC",
-      "name": "Guard",
-      "callsign": "OKC_EM_APP",
+      "id": "01H3DAT4W6PD1BR23J98T76RK6",
+      "physicalFacility": "OKC",
+      "name": "Northeast Radar",
+      "radioName": "Oke City Approach",
+      "callsign": "OKC_NE_APP",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8S02TSNGRS0Y7D75FT",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 35.378611111111,
+        "lon": -97.618889
       },
-      "freq": 121.5
+      "range": 150,
+      "freq": 124.2
     },
     {
-      "id": "1D",
+      "id": "01G9RKXZN3JMH623W53S5BF3J6",
+      "physicalFacility": "OKC",
+      "name": "Final Radar",
+      "radioName": "Oke City Approach",
+      "callsign": "OKC_F_APP",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8SKQS46QKDWFAQ2R52",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 133.6
     },
     {
-      "id": "1E",
+      "id": "01H87EWAHF5QH81ZPNJCC634SP",
+      "physicalFacility": "OUN",
+      "name": "Ground",
+      "radioName": "Westheimer Ground",
+      "callsign": "OUN_GND",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8SZJF0RCXYYT5PD1WT",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 121.6
     },
     {
-      "id": "1F",
+      "id": "01H87EPGGV3JMHDVQMGQ0FPSVH",
+      "physicalFacility": "OUN",
+      "name": "Local",
+      "radioName": "Westheimer Tower",
+      "callsign": "OUN_TWR",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8SZJF0RCXYYT5PD1WT",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 118
     },
     {
-      "id": "1N",
+      "id": "01H87F0RDKDZ2EZJZAK5GGWRWW",
+      "physicalFacility": "PWA",
+      "name": "Ground",
+      "radioName": "Wiley Post Ground",
+      "callsign": "PWA_GND",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8STSKD0BDM3KPRPFKN",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 121.7
     },
     {
-      "id": "1P",
+      "id": "01H87EZV434BGRZW2YYV64MSJE",
+      "physicalFacility": "PWA",
+      "name": "Local",
+      "radioName": "Wiley Post Tower",
+      "callsign": "PWA_TWR",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8STSKD0BDM3KPRPFKN",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 126.9
     },
     {
-      "id": "1S",
+      "id": "01G9RM2YNJS4H8BXTHP0FBQWWN",
+      "physicalFacility": "OKC",
+      "name": "Southwest Radar",
+      "radioName": "Oke City Approach",
+      "callsign": "OKC_S_APP",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8SPAA58A7GCGRVJP7D",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 126.65
     },
     {
-      "id": "1T",
+      "id": "01H87FMPHYX4W8QVNQYWGYBZ2E",
+      "physicalFacility": "TIK",
+      "name": "Clearance",
+      "radioName": "Tinker Clearance",
+      "callsign": "TIK_DEL",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8SANRFGWZ6AV4D076K",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 119.7
     },
     {
-      "id": "1W",
+      "id": "01H87FKXXEWC8GEJEH7RWMH2N1",
+      "physicalFacility": "TIK",
+      "name": "Ground",
+      "radioName": "Tinker Ground",
+      "callsign": "TIK_GND",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8SANRFGWZ6AV4D076K",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 121.8
     },
     {
-      "id": "1Z",
+      "id": "01H87FK2NN8726GGFE34JM61NQ",
+      "physicalFacility": "TIK",
+      "name": "Local",
+      "radioName": "Tinker Tower",
+      "callsign": "TIK_TWR",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8SANRFGWZ6AV4D076K",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 124.45
+    },
+    {
+      "id": "01G9RM1D7MRGAG2P7HHH17WV47",
+      "physicalFacility": "OKC",
+      "name": "Northwest Radar",
+      "radioName": "Oke City Approach",
+      "callsign": "OKC_W_APP",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8S7XG000A4FEX7R9FG",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 124.6
+    },
+    {
+      "id": "01H045FTHNNG80QM7BT535WG5Z",
+      "physicalFacility": "OKC",
+      "name": "Clearance",
+      "radioName": "Rogers Clearance",
+      "callsign": "OKC_DEL",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8S80HR3QWYGEMRK5WQ",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 124.35
+    },
+    {
+      "id": "01H045EY0309FNCZFE9J3T1WKV",
+      "physicalFacility": "OKC",
+      "name": "Ground",
+      "radioName": "Rogers Ground",
+      "callsign": "OKC_GND",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8S80HR3QWYGEMRK5WQ",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
+      "id": "01H045DHF6524XQ72JJ27TZB1F",
+      "physicalFacility": "OKC",
+      "name": "Local",
+      "radioName": "Rogers Tower",
+      "callsign": "OKC_TWR",
+      "areaId": "01G9RKVQJK9VMVH1XSBG16WV1W",
+      "tcpId": "01K2NF1D8S80HR3QWYGEMRK5WQ",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 35.378611111111,
+        "lon": -97.618889
+      },
+      "range": 150,
+      "freq": 119.35
     }
   ],
   "mapGroups": [

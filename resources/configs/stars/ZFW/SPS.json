@@ -4,73 +4,74 @@
   "name": "Wichita Falls AFB ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 33.98627,
+    "lon": -98.49337
   },
+  "areas": [
+    {
+      "id": "01H89VX5HWMRMV2EAB5AHDPBN0",
+      "name": "SPS",
+      "visibilityCenter": {
+        "lat": 33.98627,
+        "lon": -98.49337
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "CWC",
+        "F14",
+        "SPS"
+      ],
+      "ssaAirports": [
+        "SPS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8TVR9J14E0NCCYW2DQ",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1D8T432RNWNJDV5FE2E0",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01H89VZKW9K8Y6DCXYXGT9BP6S",
+      "physicalFacility": "SPS",
       "name": "Radar",
+      "radioName": "Sheppard Approach",
       "callsign": "SPS_APP",
+      "areaId": "01H89VX5HWMRMV2EAB5AHDPBN0",
+      "tcpId": "01K2NF1D8TVR9J14E0NCCYW2DQ",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 33.98627,
+        "lon": -98.49337
       },
+      "range": 150,
       "freq": 118.2
     },
     {
       "id": "01H89W4P7Y749C3P66CNP8VX44",
+      "physicalFacility": "SPS",
       "name": "Local",
+      "radioName": "Sheppard Tower",
       "callsign": "SPS_TWR",
+      "areaId": "01H89VX5HWMRMV2EAB5AHDPBN0",
+      "tcpId": "01K2NF1D8T432RNWNJDV5FE2E0",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 33.98627,
+        "lon": -98.49337
       },
+      "range": 150,
       "freq": 119.75
-    },
-    {
-      "id": "01H89W5GGQ1EB6XMV6GXE8VNRK",
-      "name": "Ground",
-      "callsign": "SPS_GND",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 125.5
-    },
-    {
-      "id": "01H89W5XW6GMQN9SBX3XG96RY7",
-      "name": "Clearance",
-      "callsign": "SPS_DEL",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.2
-    },
-    {
-      "id": "01J9YJ9F1QBH5NHK8K1SJPKY62",
-      "name": "Guard",
-      "callsign": "SPS_EM_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
     }
   ],
   "mapGroups": [

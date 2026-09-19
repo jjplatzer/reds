@@ -4,179 +4,312 @@
   "name": "NAS Key West RATCF",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 25.98185666666667,
-    "lon": -76.699767
+    "lat": 24.570007750000002,
+    "lon": -81.704973
   },
+  "areas": [
+    {
+      "id": "01HAHX1RQ9P571ZGFTQHD3QX3V",
+      "name": "Navy Key West",
+      "visibilityCenter": {
+        "lat": 24.5746371,
+        "lon": -81.6866454
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "EYW",
+        "NQX"
+      ],
+      "ssaAirports": [
+        "EYW",
+        "NQX"
+      ]
+    },
+    {
+      "id": "01HBR8TF0CJFWSTXQZH75T7RHE",
+      "name": "Navy Key West Tower",
+      "visibilityCenter": {
+        "lat": 24.5746371,
+        "lon": -81.6866454
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "NQX"
+      ]
+    },
+    {
+      "id": "01HBR8TF0CQZMB6NEK6A80W4Z8",
+      "name": "Key West Tower",
+      "visibilityCenter": {
+        "lat": 24.5561197,
+        "lon": -81.7599558
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "EYW"
+      ]
+    },
+    {
+      "id": "01KQFHKW3PCAD987TTSY61C0RV",
+      "name": "TARPON",
+      "visibilityCenter": {
+        "lat": 24.5746371,
+        "lon": -81.6866454
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "NQX",
+        "EYW"
+      ],
+      "ssaAirports": [
+        "NQX",
+        "EYW"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1C5TRNADW84HV4F8JQKM",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1C5TF77W013RVVY4N4P0",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TF77W013RVVY4N4P0",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KQFHD75XY36SP3P6E7X2QWQ5",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01KQFHD6MKAE67S8Q2XDDBA97G",
+      "parentTcp": "1T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KQFHD6ZJH4VTQE811GBPRF7C",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "parentTcpId": "01KQFHD6MKAE67S8Q2XDDBA97G",
+      "parentTcp": "1T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KQFHD6SZVW8G2V0YFY5GHDNN",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01KQFHD6MKAE67S8Q2XDDBA97G",
+      "parentTcp": "1T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KQFHD6MKAE67S8Q2XDDBA97G",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1C5TF77W013RVVY4N4P0",
+      "parentTcp": "1B"
+    },
+    {
+      "id": "01K2NF1C5TY9CJ5CRGG3MPJF3G",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TPC31RP535SYD7JVH",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GFERN6959D6G9QMPX6BR6VSW",
-      "name": "Approach Control",
-      "callsign": "NQX_B_APP",
+      "id": "01K9BKXZFSZ6YGXMQR1KEE39Y3",
+      "physicalFacility": "NQX",
+      "name": "VFR Advisories",
+      "radioName": "Key West Approach",
+      "callsign": "NQX_A_APP",
+      "areaId": "01HAHX1RQ9P571ZGFTQHD3QX3V",
+      "tcpId": "01K2NF1C5TRNADW84HV4F8JQKM",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 24.5746371,
+        "lon": -81.6866454
       },
+      "range": 150,
+      "freq": 126.575
+    },
+    {
+      "id": "01GFERN6959D6G9QMPX6BR6VSW",
+      "physicalFacility": "NQX",
+      "name": "Approach Control",
+      "radioName": "Key West Approach",
+      "callsign": "NQX_B_APP",
+      "areaId": "01HAHX1RQ9P571ZGFTQHD3QX3V",
+      "tcpId": "01K2NF1C5TF77W013RVVY4N4P0",
+      "tcp": "1B",
+      "visualCenter": {
+        "lat": 24.5746371,
+        "lon": -81.6866454
+      },
+      "range": 150,
       "freq": 124.025
     },
     {
-      "id": "01HBRCAEBR1A10CTHT4SW5KVD3",
-      "name": "Clearance Delivery",
-      "callsign": "NQX_DEL",
+      "id": "01KQFHPR359TA7XETSPXNJB5BB",
+      "physicalFacility": "NQX",
+      "name": "TARPON 4",
+      "radioName": "TARPON Control",
+      "callsign": "NQX_N_APP",
+      "areaId": "01KQFHKW3PCAD987TTSY61C0RV",
+      "tcpId": "01KQFHD75XY36SP3P6E7X2QWQ5",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 24.5746371,
+        "lon": -81.6866454
       },
+      "range": 50,
+      "freq": 125.085
+    },
+    {
+      "id": "01KQFHNV5H2AE8YDM1AVBNRRMA",
+      "physicalFacility": "NQX",
+      "name": "TARPON 3",
+      "radioName": "TARPON Control",
+      "callsign": "NQX_O_APP",
+      "areaId": "01KQFHKW3PCAD987TTSY61C0RV",
+      "tcpId": "01KQFHD6ZJH4VTQE811GBPRF7C",
+      "tcp": "1O",
+      "visualCenter": {
+        "lat": 24.5746371,
+        "lon": -81.6866454
+      },
+      "range": 50,
+      "freq": 131.89
+    },
+    {
+      "id": "01KQFHHSQPXDCHRJ0YRHTJ821N",
+      "physicalFacility": "NQX",
+      "name": "TARPON 2",
+      "radioName": "TARPON Control",
+      "callsign": "NQX_P_APP",
+      "areaId": "01KQFHKW3PCAD987TTSY61C0RV",
+      "tcpId": "01KQFHD6SZVW8G2V0YFY5GHDNN",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 24.5746371,
+        "lon": -81.6866454
+      },
+      "range": 50,
+      "freq": 130.235
+    },
+    {
+      "id": "01KQFH48YHFBHBA9V5MH7P8SBX",
+      "physicalFacility": "NQX",
+      "name": "TARPON 1",
+      "radioName": "TARPON Control",
+      "callsign": "NQX_T_APP",
+      "areaId": "01KQFHKW3PCAD987TTSY61C0RV",
+      "tcpId": "01KQFHD6MKAE67S8Q2XDDBA97G",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 24.5746371,
+        "lon": -81.6866454
+      },
+      "range": 50,
+      "freq": 127.565
+    },
+    {
+      "id": "01GFES342WKRY1EBQYA054ZN44",
+      "physicalFacility": "EYW",
+      "name": "Ground Control",
+      "radioName": "Key West Ground",
+      "callsign": "EYW_GND",
+      "areaId": "01HBR8TF0CQZMB6NEK6A80W4Z8",
+      "tcpId": "01K2NF1C5TY9CJ5CRGG3MPJF3G",
+      "tcp": "1Y",
+      "visualCenter": {
+        "lat": 24.5561197,
+        "lon": -81.7599558
+      },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
+      "id": "01GFES2J0GQ209XJDP8CJ3W4J5",
+      "physicalFacility": "EYW",
+      "name": "Local Control",
+      "radioName": "Key West Tower",
+      "callsign": "EYW_TWR",
+      "areaId": "01HBR8TF0CQZMB6NEK6A80W4Z8",
+      "tcpId": "01K2NF1C5TY9CJ5CRGG3MPJF3G",
+      "tcp": "1Y",
+      "visualCenter": {
+        "lat": 24.5561197,
+        "lon": -81.7599558
+      },
+      "range": 150,
+      "freq": 118.2
+    },
+    {
+      "id": "01HBRCAEBR1A10CTHT4SW5KVD3",
+      "physicalFacility": "NQX",
+      "name": "Clearance Delivery",
+      "radioName": "Navy Key West Clearance",
+      "callsign": "NQX_DEL",
+      "areaId": "01HBR8TF0CJFWSTXQZH75T7RHE",
+      "tcpId": "01K2NF1C5TPC31RP535SYD7JVH",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 24.5746371,
+        "lon": -81.6866454
+      },
+      "range": 150,
       "freq": 121.2
     },
     {
       "id": "01HBRCC4Z0V1MCEK1XEHHN9YH9",
+      "physicalFacility": "NQX",
       "name": "Ground Control",
+      "radioName": "Navy Key West Ground",
       "callsign": "NQX_GND",
+      "areaId": "01HBR8TF0CJFWSTXQZH75T7RHE",
+      "tcpId": "01K2NF1C5TPC31RP535SYD7JVH",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 24.5746371,
+        "lon": -81.6866454
       },
+      "range": 150,
       "freq": 121.7
     },
     {
       "id": "01HBRCCVPDYCMT4VVZN7BEX5XJ",
+      "physicalFacility": "NQX",
       "name": "Local Control",
+      "radioName": "Navy Key West Tower",
       "callsign": "NQX_TWR",
+      "areaId": "01HBR8TF0CJFWSTXQZH75T7RHE",
+      "tcpId": "01K2NF1C5TPC31RP535SYD7JVH",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 24.5746371,
+        "lon": -81.6866454
       },
+      "range": 150,
       "freq": 118.575
-    },
-    {
-      "id": "01JAET5S6SP98G7JMRB4Z5AE97",
-      "name": "ZMA Guard",
-      "callsign": "NQX_RMP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "01K9BKXZFSZ6YGXMQR1KEE39Y3",
-      "name": "VFR Advisories",
-      "callsign": "NQX_A_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 126.575
-    },
-    {
-      "id": "01KQFH48YHFBHBA9V5MH7P8SBX",
-      "name": "TARPON 1",
-      "callsign": "NQX_T_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 127.565
-    },
-    {
-      "id": "01KQFHHSQPXDCHRJ0YRHTJ821N",
-      "name": "TARPON 2",
-      "callsign": "NQX_P_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 130.235
-    },
-    {
-      "id": "01KQFHNV5H2AE8YDM1AVBNRRMA",
-      "name": "TARPON 3",
-      "callsign": "NQX_O_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 131.89
-    },
-    {
-      "id": "01KQFHPR359TA7XETSPXNJB5BB",
-      "name": "TARPON 4",
-      "callsign": "NQX_N_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 125.085
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1O",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
     }
   ],
   "mapGroups": [

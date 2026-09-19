@@ -4,50 +4,160 @@
   "name": "Meridian ATCT/RATCF",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 35.0424167,
-    "lon": -89.9766667
+    "lat": 32.479857433333336,
+    "lon": -88.6207963
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GQGGR2KSJ98HM1KGZRX141KN",
-      "name": "Local",
-      "callsign": "NMM_TWR",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+      "id": "01H510CR4MMKJZBTFMMY5D911E",
+      "name": "NMM RATCF",
+      "visibilityCenter": {
+        "lat": 32.5534806,
+        "lon": -88.5552639
       },
-      "freq": 126.2
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "09A",
+        "0MS0",
+        "14MS",
+        "1MS8",
+        "20M",
+        "23M",
+        "3MS8",
+        "3MS9",
+        "42AL",
+        "AL43",
+        "DYA",
+        "M23",
+        "MEI",
+        "MS32",
+        "MS70",
+        "NJW",
+        "NMM"
+      ],
+      "ssaAirports": [
+        "NMM",
+        "MEI"
+      ]
     },
     {
-      "id": "01H510NWRW2QD2DYXVJN8F6XCG",
-      "name": "Approach",
-      "callsign": "NMM_APP",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+      "id": "01HBPPCVS4TY2P62BVYZJMM2DJ",
+      "name": "MEI TOWER",
+      "visibilityCenter": {
+        "lat": 32.3326111,
+        "lon": -88.7518611
       },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "MEI"
+      ],
+      "ssaAirports": [
+        "MEI"
+      ]
+    },
+    {
+      "id": "01JCYE36ZRJY1639J7QGD6AWSR",
+      "name": "NMM TOWER",
+      "visibilityCenter": {
+        "lat": 32.5534806,
+        "lon": -88.5552639
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "NMM"
+      ],
+      "ssaAirports": [
+        "NMM"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D19D82F4F2FX38XNKVY",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19A2PN4DA3SZE84Y4E",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19KKRC7DAMXTZXMPC2",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01H510NWRW2QD2DYXVJN8F6XCG",
+      "physicalFacility": "NMM",
+      "name": "Approach",
+      "radioName": "Meridian Approach",
+      "callsign": "NMM_APP",
+      "areaId": "01H510CR4MMKJZBTFMMY5D911E",
+      "tcpId": "01K2NF1D19D82F4F2FX38XNKVY",
+      "tcp": "1A",
+      "visualCenter": {
+        "lat": 32.5534806,
+        "lon": -88.5552639
+      },
+      "range": 150,
       "freq": 120.5
     },
     {
-      "id": "1A",
+      "id": "01GPPMQB3DB1K6GNT5VY7252ST",
+      "physicalFacility": "MEI",
+      "name": "Ground",
+      "radioName": "Key Ground",
+      "callsign": "MEI_GND",
+      "areaId": "01HBPPCVS4TY2P62BVYZJMM2DJ",
+      "tcpId": "01K2NF1D19A2PN4DA3SZE84Y4E",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 32.3326111,
+        "lon": -88.7518611
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1T",
+      "id": "01GPPMQTHH6HJKPEKV74QW4XSC",
+      "physicalFacility": "MEI",
+      "name": "Local",
+      "radioName": "Key Tower",
+      "callsign": "MEI_TWR",
+      "areaId": "01HBPPCVS4TY2P62BVYZJMM2DJ",
+      "tcpId": "01K2NF1D19A2PN4DA3SZE84Y4E",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 32.3326111,
+        "lon": -88.7518611
+      },
+      "range": 50,
+      "freq": 133.975
     },
     {
-      "id": "1Z",
+      "id": "01GQGGR2KSJ98HM1KGZRX141KN",
+      "physicalFacility": "NMM",
+      "name": "Local",
+      "radioName": "Navy Mc Cain Tower",
+      "callsign": "NMM_TWR",
+      "areaId": "01JCYE36ZRJY1639J7QGD6AWSR",
+      "tcpId": "01K2NF1D19KKRC7DAMXTZXMPC2",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 32.5534806,
+        "lon": -88.5552639
+      },
+      "range": 50,
+      "freq": 126.2
     }
   ],
   "mapGroups": [

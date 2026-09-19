@@ -4,53 +4,87 @@
   "name": "Tyndall Air Force Base ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 30.21364415,
+    "lon": -85.6852918
   },
+  "areas": [
+    {
+      "id": "01HAWZJQTQCERA9ZTXH9RSWZ3Z",
+      "name": "PAM",
+      "visibilityCenter": {
+        "lat": 30.0690475,
+        "lon": -85.5749814
+      },
+      "surveillanceRange": 100,
+      "ssaAirports": [
+        "PAM",
+        "ECP",
+        "AAF",
+        "X13"
+      ]
+    },
+    {
+      "id": "01JG0E9XMV9TYSC6SVC3V75J3T",
+      "name": "ECP TOWER",
+      "visibilityCenter": {
+        "lat": 30.3582408,
+        "lon": -85.7956022
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ECP"
+      ],
+      "ssaAirports": [
+        "ECP"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFEH09A7DR4BEWWF7C3",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P"
+    },
+    {
+      "id": "01K2NF1DFEJ34H0TNJJBJ2TYQ1",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01HAWZQ9RN4T9SP0T9M3WR7Q26",
-      "name": "Ground",
-      "callsign": "PAM_GND",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01HAWZQR4Y71PTMMMNWWQBGWX7",
-      "name": "Tower",
-      "callsign": "PAM_TWR",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 133.95
-    },
-    {
       "id": "01HAWZRACNKGAR5B21VE7EN1W3",
+      "physicalFacility": "PAM",
       "name": "Approach",
+      "radioName": "Tyndall Approach",
       "callsign": "PAM_APP",
+      "areaId": "01HAWZJQTQCERA9ZTXH9RSWZ3Z",
+      "tcpId": "01K2NF1DFEH09A7DR4BEWWF7C3",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.0690475,
+        "lon": -85.5749814
       },
+      "range": 100,
       "freq": 124.15
     },
     {
-      "id": "1P",
+      "id": "01HBY71HW1CEHPFS8A7QS1VXCG",
+      "physicalFacility": "ECP",
+      "name": "Tower",
+      "radioName": "Panama City Tower",
+      "callsign": "ECP_TWR",
+      "areaId": "01JG0E9XMV9TYSC6SVC3V75J3T",
+      "tcpId": "01K2NF1DFEJ34H0TNJJBJ2TYQ1",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 30.3582408,
+        "lon": -85.7956022
+      },
+      "range": 50,
+      "freq": 118.95
     }
   ],
   "mapGroups": [

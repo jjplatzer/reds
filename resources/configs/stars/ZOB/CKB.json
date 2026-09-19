@@ -4,70 +4,133 @@
   "name": "Clarksburg ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.65805,
-    "lon": -81.181585
+    "lat": 39.29561,
+    "lon": -80.21995
   },
+  "areas": [
+    {
+      "id": "01G92TBTNKS12NMGBGZBX6P2C0",
+      "name": "Clarksburg TRACON",
+      "visibilityCenter": {
+        "lat": 39.29561,
+        "lon": -80.21995
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "CKB",
+        "MGW"
+      ],
+      "ssaAirports": [
+        "CKB",
+        "MGW"
+      ]
+    },
+    {
+      "id": "01HE76P6YHD32KCWQRR8DHERW6",
+      "name": "Clarksburg ATCT",
+      "visibilityCenter": {
+        "lat": 39.29561,
+        "lon": -80.21995
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "CKB"
+      ],
+      "ssaAirports": [
+        "CKB"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E62FGDEXEV4K903G9BT",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1E62918F4NH9YFA16E1E",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E62WQQ2PZTJXPPPAJS6",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1E62BVEAFRS6EMRP387Z",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G92TH8QPGX7041AYBH9WANFT",
+      "physicalFacility": "CKB",
       "name": "Approach",
+      "radioName": "Clarksburg Approach",
       "callsign": "CKB_APP",
+      "areaId": "01G92TBTNKS12NMGBGZBX6P2C0",
+      "tcpId": "01K2NF1E62FGDEXEV4K903G9BT",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 39.29561,
+        "lon": -80.21995
       },
+      "range": 150,
       "freq": 121.15
     },
     {
       "id": "01G92TK4F7EBN7DN3MYJY3GEYT",
+      "physicalFacility": "CKB",
       "name": "Ground",
+      "radioName": "Clarksburg Ground",
       "callsign": "CKB_GND",
+      "areaId": "01HE76P6YHD32KCWQRR8DHERW6",
+      "tcpId": "01K2NF1E62918F4NH9YFA16E1E",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 39.29561,
+        "lon": -80.21995
       },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01G92TKPVVBJ9N6JJSTSAMJGJV",
+      "physicalFacility": "CKB",
       "name": "Local Control",
+      "radioName": "Clarksburg Tower",
       "callsign": "CKB_TWR",
+      "areaId": "01HE76P6YHD32KCWQRR8DHERW6",
+      "tcpId": "01K2NF1E62918F4NH9YFA16E1E",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 39.29561,
+        "lon": -80.21995
       },
+      "range": 50,
       "freq": 126.7
     },
     {
       "id": "01HDWXZ69VZWW0KXAKGGN4S338",
+      "physicalFacility": "CKB",
       "name": "TMU/OTHER",
+      "radioName": "Clarksburg Approach",
       "callsign": "CKB_T_APP",
+      "areaId": "01G92TBTNKS12NMGBGZBX6P2C0",
+      "tcpId": "01K2NF1E62BVEAFRS6EMRP387Z",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 39.29561,
+        "lon": -80.21995
       },
+      "range": 150,
       "freq": 123.45
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
     }
   ],
   "mapGroups": [

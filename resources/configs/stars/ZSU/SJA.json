@@ -4,122 +4,315 @@
   "name": "San Juan Approach",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 18.43877,
-    "lon": -66.00218
+    "lat": 18.440543998235682,
+    "lon": -66.0787339217169
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01H5XEFQB71T6QFJM9BNRFPT3C",
-      "name": "Sector 1 (R1)",
-      "callsign": "SJU_1_APP",
-      "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
+      "id": "01H5XEGK46D58CQD7F7M5Z3RPN",
+      "name": "AREA 2",
+      "visibilityCenter": {
+        "lat": 18.474028,
+        "lon": -66.179833
       },
-      "freq": 119.4
+      "surveillanceRange": 165,
+      "underlyingAirports": [
+        "SJU",
+        "SIG",
+        "STT",
+        "STX",
+        "TUPJ",
+        "CPX",
+        "VQS",
+        "X63",
+        "RVR",
+        "TUPG",
+        "TUPW"
+      ],
+      "ssaAirports": [
+        "SJU",
+        "SIG",
+        "STT",
+        "STX",
+        "TUPJ"
+      ]
     },
     {
-      "id": "01H5XEV9A9TDMJWM0A8T60XVZ6",
-      "name": "Sector 3 (R3)",
-      "callsign": "SJU_3_APP",
-      "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
+      "id": "01HGKEDPQMTWX849GFH68RG4NS",
+      "name": "SJU Tower",
+      "visibilityCenter": {
+        "lat": 18.438844832275286,
+        "lon": -66.00397332928885
       },
-      "freq": 128.65
+      "surveillanceRange": 60,
+      "ssaAirports": [
+        "SJU",
+        "SIG"
+      ]
+    },
+    {
+      "id": "01HSW8F13Y2DWDSP919A715DZQ",
+      "name": "SIG Tower",
+      "visibilityCenter": {
+        "lat": 18.455681631283117,
+        "lon": -66.09904813800327
+      },
+      "surveillanceRange": 60,
+      "ssaAirports": [
+        "SIG",
+        "SJU"
+      ]
+    },
+    {
+      "id": "01HSW8HNNQJ8ZHSM4M908SW3FQ",
+      "name": "STT Tower",
+      "visibilityCenter": {
+        "lat": 18.339132759168432,
+        "lon": -64.97482460376072
+      },
+      "surveillanceRange": 60,
+      "ssaAirports": [
+        "STT"
+      ]
+    },
+    {
+      "id": "01K9TKQJ0H245HXWXCDS4AY865",
+      "name": "BQN Tower",
+      "visibilityCenter": {
+        "lat": 18.495032768451587,
+        "lon": -67.13599053753167
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "BQN"
+      ],
+      "ssaAirports": [
+        "BQN"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1EC8YQXZBY6T8G9SN6XQ",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K9TPFPXRM48PCCBWBE6Z2X6E",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1EC86H8N3HHE51H1Z42F",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1EC84S40QR70QHXMFP39",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1EC8T9J58H3HRKFX3SKT",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1EC8Z6PN3GFJ5S13C5JS",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1EC846B65MF140C4PE2S",
+      "parentTcp": "1U"
+    },
+    {
+      "id": "01K2NF1EC8WPG8R9PS67FWG770",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1EC8T9J58H3HRKFX3SKT",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1EC8QK2V2Y2GQ4HZ1DQ9",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1EC846B65MF140C4PE2S",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1EC8T9J58H3HRKFX3SKT",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1EC8T9J58H3HRKFX3SKT",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01HGM2MKC4FY9KXX3RRMYN0QR2",
+      "physicalFacility": "STT",
+      "name": "Local",
+      "radioName": "St. Thomas Tower",
+      "callsign": "STT_TWR",
+      "areaId": "01HSW8HNNQJ8ZHSM4M908SW3FQ",
+      "tcpId": "01K2NF1EC8YQXZBY6T8G9SN6XQ",
+      "tcp": "1A",
+      "visualCenter": {
+        "lat": 18.339132759168432,
+        "lon": -64.97482460376072
+      },
+      "range": 60,
+      "freq": 118.8
+    },
+    {
+      "id": "01KACVZ5KFVC5XJQ0R8GVEYQ04",
+      "physicalFacility": "BQN",
+      "name": "Local",
+      "radioName": "Aguadilla Tower",
+      "callsign": "BQN_TWR",
+      "areaId": "01K9TKQJ0H245HXWXCDS4AY865",
+      "tcpId": "01K9TPFPXRM48PCCBWBE6Z2X6E",
+      "tcp": "1B",
+      "visualCenter": {
+        "lat": 18.495032768451587,
+        "lon": -67.13599053753167
+      },
+      "range": 50,
+      "freq": 124.95
+    },
+    {
+      "id": "01HGM15S5MBAK6YXG2M68X8XV3",
+      "physicalFacility": "SIG",
+      "name": "Local",
+      "radioName": "Isla Grande Tower",
+      "callsign": "SIG_TWR",
+      "areaId": "01HSW8F13Y2DWDSP919A715DZQ",
+      "tcpId": "01K2NF1EC86H8N3HHE51H1Z42F",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 18.455681631283117,
+        "lon": -66.09904813800327
+      },
+      "range": 60,
+      "freq": 135.875
     },
     {
       "id": "01H5XEYSDENJ1CSQ4KB507G1ZM",
+      "physicalFacility": "SJA",
       "name": "Sector 5 (R5)",
+      "radioName": "San Juan Departure",
       "callsign": "SJU_5_APP",
+      "areaId": "01H5XEGK46D58CQD7F7M5Z3RPN",
+      "tcpId": "01K2NF1EC84S40QR70QHXMFP39",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
+        "lat": 18.474028,
+        "lon": -66.179833
       },
+      "range": 165,
       "freq": 120.9
     },
     {
       "id": "01H5XEZXYEX6RTTG6BH3A3MQA3",
+      "physicalFacility": "SJA",
       "name": "Sector 7 (R7)",
+      "radioName": "San Juan Approach",
       "callsign": "SJU_7_APP",
+      "areaId": "01H5XEGK46D58CQD7F7M5Z3RPN",
+      "tcpId": "01K2NF1EC8Z6PN3GFJ5S13C5JS",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
+        "lat": 18.474028,
+        "lon": -66.179833
       },
+      "range": 165,
       "freq": 132.25
     },
     {
       "id": "01H5XF0R66FTKGXS6S4DKRAE9H",
+      "physicalFacility": "SJA",
       "name": "Sector 9 (R9)",
+      "radioName": "San Juan Approach",
       "callsign": "SJU_9_APP",
+      "areaId": "01H5XEGK46D58CQD7F7M5Z3RPN",
+      "tcpId": "01K2NF1EC8WPG8R9PS67FWG770",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
+        "lat": 18.474028,
+        "lon": -66.179833
       },
+      "range": 165,
       "freq": 124.6
     },
     {
-      "id": "1A",
+      "id": "01JY2Y04WYQ0PZM8BBSCYQY67N",
+      "physicalFacility": "SJU",
+      "name": "Local",
+      "radioName": "San Juan Tower",
+      "callsign": "SJU_TWR",
+      "areaId": "01HGKEDPQMTWX849GFH68RG4NS",
+      "tcpId": "01K2NF1EC8QK2V2Y2GQ4HZ1DQ9",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
-      }
+        "lat": 18.438844832275286,
+        "lon": -66.00397332928885
+      },
+      "range": 60,
+      "freq": 132.05
     },
     {
-      "id": "1B",
+      "id": "01H5XEV9A9TDMJWM0A8T60XVZ6",
+      "physicalFacility": "SJA",
+      "name": "Sector 3 (R3)",
+      "radioName": "San Juan Approach",
+      "callsign": "SJU_3_APP",
+      "areaId": "01H5XEGK46D58CQD7F7M5Z3RPN",
+      "tcpId": "01K2NF1EC846B65MF140C4PE2S",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
-      }
+        "lat": 18.474028,
+        "lon": -66.179833
+      },
+      "range": 165,
+      "freq": 128.65
     },
     {
-      "id": "1D",
+      "id": "01H5XEFQB71T6QFJM9BNRFPT3C",
+      "physicalFacility": "SJA",
+      "name": "Sector 1 (R1)",
+      "radioName": "San Juan Approach",
+      "callsign": "SJU_1_APP",
+      "areaId": "01H5XEGK46D58CQD7F7M5Z3RPN",
+      "tcpId": "01K2NF1EC8T9J58H3HRKFX3SKT",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
-      }
+        "lat": 18.474028,
+        "lon": -66.179833
+      },
+      "range": 165,
+      "freq": 119.4
     },
     {
-      "id": "1F",
+      "id": "01KWJS5YC05K6XK7W7961917S1",
+      "physicalFacility": "STT",
+      "name": "Local North",
+      "radioName": "St. Thomas North",
+      "callsign": "STT_N_TWR",
+      "areaId": "01HSW8HNNQJ8ZHSM4M908SW3FQ",
       "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 18.43877,
-        "lon": -66.00218
-      }
+        "lat": 18.339132759168432,
+        "lon": -64.97482460376072
+      },
+      "range": 60,
+      "freq": 118.1
     }
   ],
   "mapGroups": [

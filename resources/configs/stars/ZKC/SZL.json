@@ -4,76 +4,162 @@
   "name": "Whiteman ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 37.593354149999996,
-    "lon": -95.43247947500001
+    "lat": 38.73211300622278,
+    "lon": -93.54739126792896
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01HD37KG1Q88BKJ52KV5MCXRKD",
-      "name": "Approach",
-      "callsign": "SZL_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+      "id": "01HD37RJMBFJ6DVT6A06WYKZ5G",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 38.73211300622278,
+        "lon": -93.54739126792896
       },
-      "freq": 127.45
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "0R2",
+        "3VS",
+        "DMO",
+        "GLY",
+        "HIG",
+        "MHL",
+        "RAW",
+        "RCM",
+        "SZL"
+      ],
+      "ssaAirports": [
+        "SZL"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1EE66F25THGY8JHF9643",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
     },
     {
+      "id": "01K2NF1EE6D7V0GWZ0SG4RMEDD",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1EE6YEDM41VE5VFWNFE3",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1EE6J48BVB7F5W3AT2DP",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K2NF1EE6RKQ857BZSPQN3QQH",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
+  "controlPositions": [
+    {
       "id": "01HDB9974V12DEZJ1W4BFXETD3",
+      "physicalFacility": "SZL",
       "name": "Arrival",
+      "radioName": "Whiteman Approach",
       "callsign": "SZL_APP",
+      "areaId": "01HD37RJMBFJ6DVT6A06WYKZ5G",
+      "tcpId": "01K2NF1EE66F25THGY8JHF9643",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 38.73211300622278,
+        "lon": -93.54739126792896
       },
+      "range": 100,
       "freq": 119.25
     },
     {
-      "id": "01HDB9AKKPMAWFGM1BHHZQCGYT",
-      "name": "MOA",
+      "id": "01HD37KG1Q88BKJ52KV5MCXRKD",
+      "physicalFacility": "SZL",
+      "name": "Approach",
+      "radioName": "Whiteman Approach",
       "callsign": "SZL_APP",
+      "areaId": "01HD37RJMBFJ6DVT6A06WYKZ5G",
+      "tcpId": "01K2NF1EE6D7V0GWZ0SG4RMEDD",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 38.73211300622278,
+        "lon": -93.54739126792896
       },
+      "range": 100,
+      "freq": 127.45
+    },
+    {
+      "id": "01HDB9DSRAQWRM7TYC9BF54P6R",
+      "physicalFacility": "SZL",
+      "name": "Clearance",
+      "radioName": "Whiteman Clearance",
+      "callsign": "SZL_DEL",
+      "areaId": "01HD37RJMBFJ6DVT6A06WYKZ5G",
+      "tcpId": "01K2NF1EE6D7V0GWZ0SG4RMEDD",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 38.73211300622278,
+        "lon": -93.54739126792896
+      },
+      "range": 100,
+      "freq": 121.75
+    },
+    {
+      "id": "01HDB9CYNWV5HMYWJ2JWZ7PYJP",
+      "physicalFacility": "SZL",
+      "name": "Ground",
+      "radioName": "Whiteman Ground",
+      "callsign": "SZL_GND",
+      "areaId": "01HD37RJMBFJ6DVT6A06WYKZ5G",
+      "tcpId": "01K2NF1EE6YEDM41VE5VFWNFE3",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 38.73211300622278,
+        "lon": -93.54739126792896
+      },
+      "range": 100,
+      "freq": 128.275
+    },
+    {
+      "id": "01HDB9AKKPMAWFGM1BHHZQCGYT",
+      "physicalFacility": "SZL",
+      "name": "MOA",
+      "radioName": "Whiteman Approach",
+      "callsign": "SZL_APP",
+      "areaId": "01HD37RJMBFJ6DVT6A06WYKZ5G",
+      "tcpId": "01K2NF1EE6J48BVB7F5W3AT2DP",
+      "tcp": "1M",
+      "visualCenter": {
+        "lat": 38.73211300622278,
+        "lon": -93.54739126792896
+      },
+      "range": 100,
       "freq": 124.475
     },
     {
       "id": "01HDB9C5AG5YA891DMSEK90WA3",
+      "physicalFacility": "SZL",
       "name": "Local",
+      "radioName": "Whiteman Tower",
       "callsign": "SZL_TWR",
+      "areaId": "01HD37RJMBFJ6DVT6A06WYKZ5G",
+      "tcpId": "01K2NF1EE6RKQ857BZSPQN3QQH",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 38.73211300622278,
+        "lon": -93.54739126792896
       },
+      "range": 100,
       "freq": 132.4
-    },
-    {
-      "id": "01HDB9CYNWV5HMYWJ2JWZ7PYJP",
-      "name": "Ground",
-      "callsign": "SZL_GND",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 128.275
-    },
-    {
-      "id": "01HDB9DSRAQWRM7TYC9BF54P6R",
-      "name": "Clearance",
-      "callsign": "SZL_DEL",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 121.75
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
     }
   ],
   "mapGroups": [

@@ -4,63 +4,150 @@
   "name": "Wilkes-Barre ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 35.914982499999994,
-    "lon": -73.0446825
+    "lat": 41.333749,
+    "lon": -75.721282
   },
+  "areas": [
+    {
+      "id": "01H2BDDZMZPCWSGQQYFPG4V21A",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 41.333749,
+        "lon": -75.721282
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "70N",
+        "76N",
+        "9N3",
+        "AVP",
+        "HZL",
+        "MPO",
+        "WBW"
+      ],
+      "ssaAirports": [
+        "AVP"
+      ]
+    },
+    {
+      "id": "01H9V6WYMQHHFMW5ZZWAW028EG",
+      "name": "Cab",
+      "visibilityCenter": {
+        "lat": 41.333749,
+        "lon": -75.721282
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "AVP"
+      ],
+      "ssaAirports": [
+        "AVP"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DSG3FM6KDQEKCR7CM38",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSG53CCWET64AY4VN35",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSG41RX1M7YFP1SGAJN",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1DSGHKSSDRHNB0Z7P4P3",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSGHKSSDRHNB0Z7P4P3",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSGRB5XFAPWBD2BMN2F",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GAPPHT2EK5Z5JJBX7DERDNJ8",
+      "physicalFacility": "AVP",
       "name": "Ground",
+      "radioName": "Wilkes Barre Ground",
       "callsign": "AVP_GND",
+      "areaId": "01H9V6WYMQHHFMW5ZZWAW028EG",
+      "tcpId": "01K2NF1DSG53CCWET64AY4VN35",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 41.333749,
+        "lon": -75.721282
       },
+      "range": 50,
       "freq": 121.925
     },
     {
       "id": "01GAPPJKTBN922QQTK18387CA6",
+      "physicalFacility": "AVP",
       "name": "Local",
+      "radioName": "Wilkes Barre Tower",
       "callsign": "AVP_TWR",
+      "areaId": "01H9V6WYMQHHFMW5ZZWAW028EG",
+      "tcpId": "01K2NF1DSG53CCWET64AY4VN35",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 41.333749,
+        "lon": -75.721282
       },
+      "range": 50,
       "freq": 120.1
     },
     {
-      "id": "01H2BDNCNVNTGBJP4C1V1BTJ0Y",
-      "name": "South Approach",
-      "callsign": "AVP_S_APP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 126.3
-    },
-    {
       "id": "01H2BDPV944P241MYY1Y9DMJWD",
+      "physicalFacility": "AVP",
       "name": "North Approach",
+      "radioName": "Wilkes Barre Approach",
       "callsign": "AVP_N_APP",
+      "areaId": "01H2BDDZMZPCWSGQQYFPG4V21A",
+      "tcpId": "01K2NF1DSG41RX1M7YFP1SGAJN",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 41.333749,
+        "lon": -75.721282
       },
+      "range": 150,
       "freq": 120.95
     },
     {
-      "id": "1B",
+      "id": "01H2BDNCNVNTGBJP4C1V1BTJ0Y",
+      "physicalFacility": "AVP",
+      "name": "South Approach",
+      "radioName": "Wilkes Barre Approach",
+      "callsign": "AVP_S_APP",
+      "areaId": "01H2BDDZMZPCWSGQQYFPG4V21A",
+      "tcpId": "01K2NF1DSGHKSSDRHNB0Z7P4P3",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 41.333749,
+        "lon": -75.721282
+      },
+      "range": 150,
+      "freq": 126.3
     }
   ],
   "mapGroups": [

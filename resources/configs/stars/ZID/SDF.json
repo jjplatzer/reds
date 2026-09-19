@@ -4,202 +4,361 @@
   "name": "Louisville ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 38.6494889,
-    "lon": -84.3106305555556
+    "lat": 38.200067999999995,
+    "lon": -85.70587636666666
   },
+  "areas": [
+    {
+      "id": "01GSFT7WPBFT3Z4Z0ZNPVSMY72",
+      "name": "Louisville TRACON",
+      "visibilityCenter": {
+        "lat": 38.18611,
+        "lon": -85.72694
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "6I2",
+        "BFR",
+        "BRY",
+        "EKX",
+        "FRH",
+        "FTK",
+        "I93",
+        "IMS",
+        "JVY",
+        "LOU",
+        "SDF",
+        "SER"
+      ],
+      "ssaAirports": [
+        "SDF",
+        "LOU",
+        "FTK"
+      ]
+    },
+    {
+      "id": "01GSG6DE8RKAHF244B5SY9QADT",
+      "name": "Louisville Tower",
+      "visibilityCenter": {
+        "lat": 38.18611,
+        "lon": -85.72694
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "SDF"
+      ],
+      "ssaAirports": [
+        "SDF"
+      ]
+    },
+    {
+      "id": "01JK673FW69WV7JXA0CA42ZQBC",
+      "name": "Bowman Tower",
+      "visibilityCenter": {
+        "lat": 38.227984,
+        "lon": -85.6637491
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "LOU"
+      ],
+      "ssaAirports": [
+        "LOU"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CN252260ZP01S0SHM5S",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1CN2Q3RJXC2NGKD7GHSF",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1CN2RWRJWEN44W0ZSJMB",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1CN2Q3RJXC2NGKD7GHSF",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1CN2Q3RJXC2NGKD7GHSF",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1CN2ZQGQ5JHDKT9PAR6J",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1CN2Q3RJXC2NGKD7GHSF",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1CN21EBG4W9QSKCZ167K",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1CN2Q3RJXC2NGKD7GHSF",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1CN2Z8VHZXC2P0ZQ0AE0",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1CN2MA34KXP2N8B3PF59",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01K2NF1CN2MA34KXP2N8B3PF59",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1CN2BMT50Z7QCT6FJYTH",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1CN2Q3RJXC2NGKD7GHSF",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1CN2407AYCSSEDC7GZXA",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GRSXVVC5JB6VQC4VQ857V1BD",
-      "name": "Clearance Delivery",
-      "callsign": "SDF_DEL",
+      "id": "01GRSY589BV2GSGPV0210T7SEN",
+      "physicalFacility": "SDF",
+      "name": "Arrival Radar 2",
+      "radioName": "Louisville Approach",
+      "callsign": "SDF_A_APP",
+      "areaId": "01GSFT7WPBFT3Z4Z0ZNPVSMY72",
+      "tcpId": "01K2NF1CN252260ZP01S0SHM5S",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.18611,
+        "lon": -85.72694
       },
+      "range": 150,
+      "freq": 134.15
+    },
+    {
+      "id": "01GRSYE1CTFFVMK0F92YJX34SZ",
+      "physicalFacility": "SDF",
+      "name": "Departure Radar 2",
+      "radioName": "Louisville Approach",
+      "callsign": "SDF_B_APP",
+      "areaId": "01GSFT7WPBFT3Z4Z0ZNPVSMY72",
+      "tcpId": "01K2NF1CN2RWRJWEN44W0ZSJMB",
+      "tcp": "1B",
+      "visualCenter": {
+        "lat": 38.18611,
+        "lon": -85.72694
+      },
+      "range": 150,
+      "freq": 123.675
+    },
+    {
+      "id": "01GRSYB41TN9CXF6QM1MBBWB1Y",
+      "physicalFacility": "SDF",
+      "name": "Departure Radar 1",
+      "radioName": "Louisville Approach",
+      "callsign": "SDF_D_APP",
+      "areaId": "01GSFT7WPBFT3Z4Z0ZNPVSMY72",
+      "tcpId": "01K2NF1CN2Q3RJXC2NGKD7GHSF",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 38.18611,
+        "lon": -85.72694
+      },
+      "range": 150,
+      "freq": 132.075
+    },
+    {
+      "id": "01GRSY8DWV42XWJ7XC19T16BF5",
+      "physicalFacility": "SDF",
+      "name": "Final Radar 2",
+      "radioName": "Louisville Approach",
+      "callsign": "SDF_E_APP",
+      "areaId": "01GSFT7WPBFT3Z4Z0ZNPVSMY72",
+      "tcpId": "01K2NF1CN2ZQGQ5JHDKT9PAR6J",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 38.18611,
+        "lon": -85.72694
+      },
+      "range": 150,
+      "freq": 135.775
+    },
+    {
+      "id": "01GRSY64NA9JJ67G2RCRCW0THX",
+      "physicalFacility": "SDF",
+      "name": "Arrival Radar 1",
+      "radioName": "Louisville Approach",
+      "callsign": "SDF_I_APP",
+      "areaId": "01GSFT7WPBFT3Z4Z0ZNPVSMY72",
+      "tcpId": "01K2NF1CN21EBG4W9QSKCZ167K",
+      "tcp": "1I",
+      "visualCenter": {
+        "lat": 38.18611,
+        "lon": -85.72694
+      },
+      "range": 150,
+      "freq": 132.325
+    },
+    {
+      "id": "01GZM7VGHTP5XBSN10CC2CJHGV",
+      "physicalFacility": "SDF",
+      "name": "Local Control West",
+      "radioName": "Louisville Tower",
+      "callsign": "SDF_W_TWR",
+      "areaId": "01GSG6DE8RKAHF244B5SY9QADT",
+      "tcpId": "01K2NF1CN2Z8VHZXC2P0ZQ0AE0",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 38.18611,
+        "lon": -85.72694
+      },
+      "range": 50,
+      "freq": 135.2
+    },
+    {
+      "id": "01GRSXVVC5JB6VQC4VQ857V1BD",
+      "physicalFacility": "SDF",
+      "name": "Clearance Delivery",
+      "radioName": "Louisville Clearance",
+      "callsign": "SDF_DEL",
+      "areaId": "01GSG6DE8RKAHF244B5SY9QADT",
+      "tcpId": "01K2NF1CN2MA34KXP2N8B3PF59",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 38.18611,
+        "lon": -85.72694
+      },
+      "range": 50,
       "freq": 126.1
     },
     {
       "id": "01GRSXXNDKDG0X37EBFFCQBN9E",
+      "physicalFacility": "SDF",
       "name": "Ground Control East",
+      "radioName": "Louisville Ground",
       "callsign": "SDF_E_GND",
+      "areaId": "01GSG6DE8RKAHF244B5SY9QADT",
+      "tcpId": "01K2NF1CN2MA34KXP2N8B3PF59",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.18611,
+        "lon": -85.72694
       },
+      "range": 50,
       "freq": 121.7
     },
     {
-      "id": "01GRSXZRRQANHQCH9CP2GSFY65",
-      "name": "Ground Control West",
-      "callsign": "SDF_W_GND",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 119.825
-    },
-    {
       "id": "01GRSY0X97QHN3PF6FQ9ZFGPYE",
+      "physicalFacility": "SDF",
       "name": "Local Control East",
+      "radioName": "Louisville Tower",
       "callsign": "SDF_E_TWR",
+      "areaId": "01GSG6DE8RKAHF244B5SY9QADT",
+      "tcpId": "01K2NF1CN2MA34KXP2N8B3PF59",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.18611,
+        "lon": -85.72694
       },
+      "range": 50,
       "freq": 124.2
     },
     {
-      "id": "01GRSY589BV2GSGPV0210T7SEN",
-      "name": "Arrival Radar 2",
-      "callsign": "SDF_A_APP",
+      "id": "01GRSXZRRQANHQCH9CP2GSFY65",
+      "physicalFacility": "SDF",
+      "name": "Ground Control West",
+      "radioName": "Louisville Ground",
+      "callsign": "SDF_W_GND",
+      "areaId": "01GSG6DE8RKAHF244B5SY9QADT",
+      "tcpId": "01K2NF1CN2MA34KXP2N8B3PF59",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.18611,
+        "lon": -85.72694
       },
-      "freq": 134.15
-    },
-    {
-      "id": "01GRSY64NA9JJ67G2RCRCW0THX",
-      "name": "Arrival Radar 1",
-      "callsign": "SDF_I_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 132.325
-    },
-    {
-      "id": "01GRSY8DWV42XWJ7XC19T16BF5",
-      "name": "Final Radar 2",
-      "callsign": "SDF_E_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 135.775
+      "range": 50,
+      "freq": 119.825
     },
     {
       "id": "01GRSY9KB7S415629CRMB4WZ71",
+      "physicalFacility": "SDF",
       "name": "Final Radar 1",
+      "radioName": "Louisville Approach",
       "callsign": "SDF_W_APP",
+      "areaId": "01GSFT7WPBFT3Z4Z0ZNPVSMY72",
+      "tcpId": "01K2NF1CN2BMT50Z7QCT6FJYTH",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.18611,
+        "lon": -85.72694
       },
+      "range": 150,
       "freq": 120.3
     },
     {
-      "id": "01GRSYB41TN9CXF6QM1MBBWB1Y",
-      "name": "Departure Radar 1",
-      "callsign": "SDF_D_APP",
+      "id": "01GRVKC5K2P1EBHGZ46W49DYQZ",
+      "physicalFacility": "LOU",
+      "name": "Clearance Delivery",
+      "radioName": "Bowman Clearance Delivery",
+      "callsign": "LOU_DEL",
+      "areaId": "01JK673FW69WV7JXA0CA42ZQBC",
+      "tcpId": "01K2NF1CN2407AYCSSEDC7GZXA",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.227984,
+        "lon": -85.6637491
       },
-      "freq": 132.075
+      "range": 50,
+      "freq": 118.9
     },
     {
-      "id": "01GRSYE1CTFFVMK0F92YJX34SZ",
-      "name": "Departure Radar 2",
-      "callsign": "SDF_B_APP",
+      "id": "01GRVKD9Z62N4QCJEYSF6FER2H",
+      "physicalFacility": "LOU",
+      "name": "Ground Control",
+      "radioName": "Bowman Ground",
+      "callsign": "LOU_GND",
+      "areaId": "01JK673FW69WV7JXA0CA42ZQBC",
+      "tcpId": "01K2NF1CN2407AYCSSEDC7GZXA",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.227984,
+        "lon": -85.6637491
       },
-      "freq": 123.675
+      "range": 50,
+      "freq": 121.8
     },
     {
-      "id": "01GZM7VGHTP5XBSN10CC2CJHGV",
-      "name": "Local Control West",
-      "callsign": "SDF_W_TWR",
+      "id": "01GRVKE3K4X2FEBXGSMW9XSD6M",
+      "physicalFacility": "LOU",
+      "name": "Local Control",
+      "radioName": "Bowman Tower",
+      "callsign": "LOU_TWR",
+      "areaId": "01JK673FW69WV7JXA0CA42ZQBC",
+      "tcpId": "01K2NF1CN2407AYCSSEDC7GZXA",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.227984,
+        "lon": -85.6637491
       },
-      "freq": 135.2
-    },
-    {
-      "id": "01JA39V278X18Q0DNDB5QVW3ZV",
-      "name": "SDF GUARD",
-      "callsign": "SDF_EM_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "01JRNVX3F33G8YXNXGPNNSGW5D",
-      "name": "UPS Ramp Control",
-      "callsign": "SDF_RMP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 129.95
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1I",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
+      "range": 50,
+      "freq": 119.5
     }
   ],
   "mapGroups": [

@@ -4,95 +4,141 @@
   "name": "FACSFAC San Diego",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 34.9691453,
-    "lon": -116.63582625
+    "lat": 34.251666665,
+    "lon": -120.98249999999999
   },
+  "areas": [
+    {
+      "id": "01KKN24GNEDHW770G7T84JC0KQ",
+      "name": "South",
+      "visibilityCenter": {
+        "lat": 31.23833333,
+        "lon": -118.2719444
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "NUC"
+      ]
+    },
+    {
+      "id": "01KKN5505HNQPDDHX7CM19K4QV",
+      "name": "North",
+      "visibilityCenter": {
+        "lat": 37.265,
+        "lon": -123.6930556
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "OAK"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01KKN26NS29Q64NWXVGTQRQNZP",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KKN26P4QM4Y6NSD12D2SJM03",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KKN26P9MTCJ4MPCHB5PR2HHH",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KKN26PDXS9VAC8MPXPP9MYEM",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KKN26PJA49C7H4VPT7FC59EV",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KKN27BFMKAPAF4A4YK5924ER",
+      "code": "2N",
+      "subset": 2,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KKN27FDWQ19C7PBAKBG722K7",
+      "code": "2P",
+      "subset": 2,
+      "sectorId": "P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KKN27FHTB00Q4ZJW56K775ZJ",
+      "code": "2S",
+      "subset": 2,
+      "sectorId": "S",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01KKN29EJ26P5J188KHYJ5CTA1",
+      "physicalFacility": "NSD",
       "name": "FWS",
+      "radioName": "Beaver Control",
       "callsign": "NSD_F_APP",
+      "areaId": "01KKN24GNEDHW770G7T84JC0KQ",
+      "tcpId": "01KKN26NS29Q64NWXVGTQRQNZP",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 31.23833333,
+        "lon": -118.2719444
       },
+      "range": 150,
       "freq": 118.65
     },
     {
       "id": "01KKN2BAC6KHGXXFS0D8P1K08D",
+      "physicalFacility": "NSD",
       "name": "Norcal Sector",
+      "radioName": "Beaver Control",
       "callsign": "NSD_N_APP",
+      "areaId": "01KKN5505HNQPDDHX7CM19K4QV",
+      "tcpId": "01KKN26P4QM4Y6NSD12D2SJM03",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 37.265,
+        "lon": -123.6930556
       },
+      "range": 150,
       "freq": 120.85
     },
     {
       "id": "01KKN2D0HPJR86DV5B25ZHDXJT",
+      "physicalFacility": "NSD",
       "name": "Southern Sector",
+      "radioName": "Beaver Control",
       "callsign": "NSD_S_APP",
+      "areaId": "01KKN24GNEDHW770G7T84JC0KQ",
+      "tcpId": "01KKN26PJA49C7H4VPT7FC59EV",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 31.23833333,
+        "lon": -118.2719444
       },
+      "range": 150,
       "freq": 118.65
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "2N",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "2P",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "2S",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
     }
   ],
   "mapGroups": [

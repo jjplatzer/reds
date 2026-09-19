@@ -4,53 +4,90 @@
   "name": "Homestead RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 25.98185666666667,
-    "lon": -76.699767
+    "lat": 25.4885506,
+    "lon": -80.3835664
   },
+  "areas": [
+    {
+      "id": "01JPVABPK963HYNB3251NHJ5ZC",
+      "name": "Homestead RAPCON",
+      "visibilityCenter": {
+        "lat": 25.4885506,
+        "lon": -80.3835664
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "HST"
+      ],
+      "ssaAirports": [
+        "HST"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1C5TPZ8K4SMHST8QJ1N0",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5T1NQBK0WG2PPMBXGP",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01JPVAAS14EF225QFA3RNYAN3K",
+      "physicalFacility": "HST",
       "name": "Homestead Approach",
+      "radioName": "Homestead Approach",
       "callsign": "HST_APP",
+      "areaId": "01JPVABPK963HYNB3251NHJ5ZC",
+      "tcpId": "01K2NF1C5TPZ8K4SMHST8QJ1N0",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 25.4885506,
+        "lon": -80.3835664
       },
+      "range": 150,
       "freq": 123.8
     },
     {
-      "id": "01JPVAETWFQZKFS2XH9X83S1N8",
-      "name": "Homestead Tower",
-      "callsign": "HST_TWR",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 133.45
-    },
-    {
       "id": "01JPVAFWQRR2S78R4Q68JF2XRK",
+      "physicalFacility": "HST",
       "name": "Homestead Ground",
+      "radioName": "Homestead Ground",
       "callsign": "HST_GND",
+      "areaId": "01JPVABPK963HYNB3251NHJ5ZC",
+      "tcpId": "01K2NF1C5T1NQBK0WG2PPMBXGP",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 25.4885506,
+        "lon": -80.3835664
       },
+      "range": 150,
       "freq": 121.75
     },
     {
-      "id": "1H",
+      "id": "01JPVAETWFQZKFS2XH9X83S1N8",
+      "physicalFacility": "HST",
+      "name": "Homestead Tower",
+      "radioName": "Homestead Tower",
+      "callsign": "HST_TWR",
+      "areaId": "01JPVABPK963HYNB3251NHJ5ZC",
+      "tcpId": "01K2NF1C5T1NQBK0WG2PPMBXGP",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 25.4885506,
+        "lon": -80.3835664
+      },
+      "range": 150,
+      "freq": 133.45
     }
   ],
   "mapGroups": [

@@ -4,57 +4,116 @@
   "name": "Kingsville ATCT/RATCF",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 27.481606,
+    "lon": -97.825428
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GB3MYDFF03R252WXPJ17VM3W",
-      "name": "Local",
-      "callsign": "NQI_TWR",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+      "id": "01GB3N18JZK63K5P5YGM1NM5H4",
+      "name": "NQI RATCF",
+      "visibilityCenter": {
+        "lat": 27.481606,
+        "lon": -97.825428
       },
-      "freq": 124.1
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "07R",
+        "67T",
+        "ALI",
+        "BKS",
+        "IKG",
+        "NOG",
+        "NQI"
+      ],
+      "ssaAirports": [
+        "NQI",
+        "NOG"
+      ]
     },
     {
-      "id": "01GB3MZXB1D0D871A2GW22SGYM",
-      "name": "Approach",
-      "callsign": "NQI_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+      "id": "01JCPP888VYBBC3AXF11K72PD8",
+      "name": "NQI TOWER",
+      "visibilityCenter": {
+        "lat": 27.481606,
+        "lon": -97.825428
       },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "NQI"
+      ],
+      "ssaAirports": [
+        "NQI"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDR7NZ8TA4RGAYARH7Z",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1CDR78MA1JNXDC03JR63",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O"
+    },
+    {
+      "id": "01K2NF1CDRXMVCT37E26KN1BPH",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GB3MZXB1D0D871A2GW22SGYM",
+      "physicalFacility": "NQI",
+      "name": "Approach",
+      "radioName": "Kingsville Approach",
+      "callsign": "NQI_APP",
+      "areaId": "01GB3N18JZK63K5P5YGM1NM5H4",
+      "tcpId": "01K2NF1CDR7NZ8TA4RGAYARH7Z",
+      "tcp": "1A",
+      "visualCenter": {
+        "lat": 27.481606,
+        "lon": -97.825428
+      },
+      "range": 100,
       "freq": 119.9
     },
     {
-      "id": "1A",
+      "id": "01GB3MWD1DQWGD67X1G25WNK98",
+      "physicalFacility": "NOG",
+      "name": "Local",
+      "radioName": "Navy Orange Tower",
+      "callsign": "NOG_TWR",
+      "areaId": "01GB3N18JZK63K5P5YGM1NM5H4",
+      "tcpId": "01K2NF1CDR78MA1JNXDC03JR63",
+      "tcp": "1O",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 27.481606,
+        "lon": -97.825428
+      },
+      "range": 100,
+      "freq": 128.4
     },
     {
-      "id": "1D",
+      "id": "01GB3MYDFF03R252WXPJ17VM3W",
+      "physicalFacility": "NQI",
+      "name": "Local",
+      "radioName": "Kingsville Tower",
+      "callsign": "NQI_TWR",
+      "areaId": "01GB3N18JZK63K5P5YGM1NM5H4",
+      "tcpId": "01K2NF1CDRXMVCT37E26KN1BPH",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1O",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 27.481606,
+        "lon": -97.825428
+      },
+      "range": 100,
+      "freq": 124.1
     }
   ],
   "mapGroups": [

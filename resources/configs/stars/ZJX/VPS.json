@@ -4,70 +4,110 @@
   "name": "Eglin Air Force base/Destin-Fort Walton Beach",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 30.4350247,
+    "lon": -86.46100715
   },
+  "areas": [
+    {
+      "id": "01HB8SKM37ZAGJR2XVG2GNBJHH",
+      "name": "EGLIN",
+      "visibilityCenter": {
+        "lat": 30.38683,
+        "lon": -86.39597
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "DTS",
+        "VPS",
+        "HRT",
+        "EGI",
+        "CEW"
+      ]
+    },
+    {
+      "id": "01JG0F2KDDCQ8E19RC2VB2GY4E",
+      "name": "VPS TOWER",
+      "visibilityCenter": {
+        "lat": 30.4832194,
+        "lon": -86.5260443
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "VPS"
+      ],
+      "ssaAirports": [
+        "VPS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFEG31R29VQEPMYPF1F",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1DFEEAAY8J1A260V7G1S",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1DFEZ4YHKA71QT1Z4ES3",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01HB8SJDDX5ACS3M3Y9904C0BH",
-      "name": "Ground",
-      "callsign": "VPS_GND",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 121.8
-    },
-    {
-      "id": "01HB8SJZ8RMEZ3HTDFNA3SJGE4",
-      "name": "Tower",
-      "callsign": "VPS_TWR",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 118.2
-    },
-    {
-      "id": "01HB8SMMBW1DPVASXXNJ59BJ11",
-      "name": "Radar South",
-      "callsign": "VPS_S_APP",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      },
-      "freq": 132.1
-    },
-    {
       "id": "01HM05DXYNQMZRQQG265GBZ45A",
+      "physicalFacility": "VPS",
       "name": "Radar North",
+      "radioName": "Eglin Approach",
       "callsign": "VPS_N_APP",
+      "areaId": "01HB8SKM37ZAGJR2XVG2GNBJHH",
+      "tcpId": "01K2NF1DFEG31R29VQEPMYPF1F",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 30.38683,
+        "lon": -86.39597
       },
+      "range": 50,
       "freq": 125.1
     },
     {
-      "id": "1N",
+      "id": "01HB8SMMBW1DPVASXXNJ59BJ11",
+      "physicalFacility": "VPS",
+      "name": "Radar South",
+      "radioName": "Eglin Approach",
+      "callsign": "VPS_S_APP",
+      "areaId": "01HB8SKM37ZAGJR2XVG2GNBJHH",
+      "tcpId": "01K2NF1DFEEAAY8J1A260V7G1S",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 30.38683,
+        "lon": -86.39597
+      },
+      "range": 50,
+      "freq": 132.1
     },
     {
-      "id": "1S",
+      "id": "01HB8SJZ8RMEZ3HTDFNA3SJGE4",
+      "physicalFacility": "VPS",
+      "name": "Tower",
+      "radioName": "Eglin Tower",
+      "callsign": "VPS_TWR",
+      "areaId": "01JG0F2KDDCQ8E19RC2VB2GY4E",
+      "tcpId": "01K2NF1DFEZ4YHKA71QT1Z4ES3",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
+        "lat": 30.4832194,
+        "lon": -86.5260443
+      },
+      "range": 50,
+      "freq": 118.2
     }
   ],
   "mapGroups": [

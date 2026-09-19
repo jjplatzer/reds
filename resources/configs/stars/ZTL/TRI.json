@@ -4,97 +4,127 @@
   "name": "Tri-Cities ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.90558406666667,
-    "lon": -83.96840666666667
+    "lat": 36.474833,
+    "lon": -82.4055
   },
+  "areas": [
+    {
+      "id": "01H5376BFETNNE9KCBM6RM8FT4",
+      "name": "Radar",
+      "visibilityCenter": {
+        "lat": 36.474833,
+        "lon": -82.4055
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "TRI"
+      ]
+    },
+    {
+      "id": "01H5376V20P4ZXTA9SB85JRGHY",
+      "name": "Tower",
+      "visibilityCenter": {
+        "lat": 36.474833,
+        "lon": -82.4055
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "TRI"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E98AQ4A8XJFDNVKZQET",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1E98PSFB8PQFH5J425NR",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1E98PGGMK3C5GW62KP84",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E98BP40XD7CCS5HQ5TM",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E98AQ4A8XJFDNVKZQET",
+      "parentTcp": "1E"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01H2RKS7TGTQ6H46H6N5HNHS1N",
-      "name": "Local Control ",
-      "callsign": "TRI_TWR",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 119.5
-    },
-    {
-      "id": "01H2RKSTEDJ4ZWYGTVDPYYBTBA",
-      "name": "Ground Control / Clearance Delivery",
-      "callsign": "TRI_GND",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.7
-    },
-    {
       "id": "01H5377TACRVFB7PAXENG8FHEB",
+      "physicalFacility": "TRI",
       "name": "East Radar",
+      "radioName": "Tri City Approach",
       "callsign": "TRI_APP",
+      "areaId": "01H5376BFETNNE9KCBM6RM8FT4",
+      "tcpId": "01K2NF1E98AQ4A8XJFDNVKZQET",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 36.474833,
+        "lon": -82.4055
       },
+      "range": 150,
       "freq": 134.425
     },
     {
       "id": "01H5377WYP386P27AZRC7P9F3J",
+      "physicalFacility": "TRI",
       "name": "Final Radar",
+      "radioName": "Tri City Approach",
       "callsign": "TRI_APP",
+      "areaId": "01H5376BFETNNE9KCBM6RM8FT4",
+      "tcpId": "01K2NF1E98PSFB8PQFH5J425NR",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 36.474833,
+        "lon": -82.4055
       },
+      "range": 150,
       "freq": 128.05
     },
     {
+      "id": "01H2RKS7TGTQ6H46H6N5HNHS1N",
+      "physicalFacility": "TRI",
+      "name": "Local Control ",
+      "radioName": "Tri City Tower",
+      "callsign": "TRI_TWR",
+      "areaId": "01H5376V20P4ZXTA9SB85JRGHY",
+      "tcpId": "01K2NF1E98PGGMK3C5GW62KP84",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 36.474833,
+        "lon": -82.4055
+      },
+      "range": 50,
+      "freq": 119.5
+    },
+    {
       "id": "01H5377YEP54PZB6VHE31KM7J4",
+      "physicalFacility": "TRI",
       "name": "West Radar",
+      "radioName": "Tri City Approach",
       "callsign": "TRI_APP",
+      "areaId": "01H5376BFETNNE9KCBM6RM8FT4",
+      "tcpId": "01K2NF1E98BP40XD7CCS5HQ5TM",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 36.474833,
+        "lon": -82.4055
       },
+      "range": 150,
       "freq": 125.5
-    },
-    {
-      "id": "01KWQ3FTQ4W36AFRTGH4AAZER4",
-      "name": "TRI Guard",
-      "callsign": "TRI_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
     }
   ],
   "mapGroups": [

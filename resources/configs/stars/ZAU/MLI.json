@@ -4,87 +4,93 @@
   "name": "Quad Cities ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.879166749999996,
-    "lon": -88.975
+    "lat": 41.449868,
+    "lon": -90.50642
   },
+  "areas": [
+    {
+      "id": "01H5FWHDYBMZDG1C7GAAJ29CPJ",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 41.449868,
+        "lon": -90.50642
+      },
+      "surveillanceRange": 100,
+      "ssaAirports": [
+        "MLI"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DXN5VTDYJ19EFJP87B5",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1DXNSKGWYG0N5WK7FE86",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1DXNVKYNAQRY80ZTNYTD",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1DXNSKGWYG0N5WK7FE86",
+      "parentTcp": "1N"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01H5FWMPJC1WV731VC96JPCC6M",
-      "name": "North Approach",
-      "callsign": "MLI_N_APP",
+      "id": "01H5FWP4CSPZPFSZDDQKFT9479",
+      "physicalFacility": "MLI",
+      "name": "Local",
+      "radioName": "Quad Cities Tower",
+      "callsign": "MLI_TWR",
+      "areaId": "01H5FWHDYBMZDG1C7GAAJ29CPJ",
+      "tcpId": "01K2NF1DXN5VTDYJ19EFJP87B5",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 41.449868,
+        "lon": -90.50642
       },
+      "range": 100,
+      "freq": 119.4
+    },
+    {
+      "id": "01H5FWMPJC1WV731VC96JPCC6M",
+      "physicalFacility": "MLI",
+      "name": "North Approach",
+      "radioName": "Quad Cities Approach",
+      "callsign": "MLI_N_APP",
+      "areaId": "01H5FWHDYBMZDG1C7GAAJ29CPJ",
+      "tcpId": "01K2NF1DXNSKGWYG0N5WK7FE86",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 41.449868,
+        "lon": -90.50642
+      },
+      "range": 100,
       "freq": 125.95
     },
     {
       "id": "01H5FWN78KVYNYQRAY13Q4HCZH",
+      "physicalFacility": "MLI",
       "name": "South Approach",
+      "radioName": "Quad Cities Approach",
       "callsign": "MLI_S_APP",
+      "areaId": "01H5FWHDYBMZDG1C7GAAJ29CPJ",
+      "tcpId": "01K2NF1DXNVKYNAQRY80ZTNYTD",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 41.449868,
+        "lon": -90.50642
       },
+      "range": 100,
       "freq": 133.275
-    },
-    {
-      "id": "01H5FWP4CSPZPFSZDDQKFT9479",
-      "name": "Local",
-      "callsign": "MLI_TWR",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 119.4
-    },
-    {
-      "id": "01H5FWQEMCE2SM2DVJZBZ29VBJ",
-      "name": "Ground",
-      "callsign": "MLI_GND",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01H5FWR390Y1XCD46QJ0DBSZ0C",
-      "name": "Clearance Delivery",
-      "callsign": "MLI_DEL",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 124.05
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
     }
   ],
   "mapGroups": [

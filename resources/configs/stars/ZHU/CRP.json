@@ -4,210 +4,369 @@
   "name": "Corpus Christi ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 27.311967172029135,
+    "lon": -98.04644337837595
   },
+  "areas": [
+    {
+      "id": "01GB3PYF4W8JNPE4AY7VNY2W3B",
+      "name": "Corpus TRACON",
+      "visibilityCenter": {
+        "lat": 27.77211944,
+        "lon": -97.5024167
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "CRP",
+        "NGP",
+        "NWL",
+        "NGW"
+      ],
+      "ssaAirports": [
+        "CRP",
+        "NGP",
+        "NWL",
+        "NGW"
+      ]
+    },
+    {
+      "id": "01HAANAQ9P25NNZV782VCG8530",
+      "name": "Valley TRACON",
+      "visibilityCenter": {
+        "lat": 26.162873,
+        "lon": -97.712187
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "BRO",
+        "MFE",
+        "HRL"
+      ],
+      "ssaAirports": [
+        "BRO",
+        "MFE",
+        "HRL"
+      ]
+    },
+    {
+      "id": "01HAWE6VPC159YK4Q9D9MDK3YG",
+      "name": "LRD TOWER",
+      "visibilityCenter": {
+        "lat": 27.54075680811654,
+        "lon": -99.46875311350387
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "LRD"
+      ],
+      "ssaAirports": [
+        "LRD"
+      ]
+    },
+    {
+      "id": "01JCPP3YJ38JG9VFQK2S8FFVHV",
+      "name": "CRP TOWER",
+      "visibilityCenter": {
+        "lat": 27.77211944,
+        "lon": -97.5024167
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "CRP"
+      ],
+      "ssaAirports": [
+        "CRP"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDRQ9Q27YPTNBAT96CS",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1CDRARW5ZZYA4X4759Q5",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1CDREW56Z6FKGVVTBCKM",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1CDRF2RQX0DTP4WF7JPP",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H"
+    },
+    {
+      "id": "01K2NF1CDRC51HH19G4VBRB4J6",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K2NF1CDR3GR86H30TJHBASQ4",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1CDR04J96DBE8QWX553W",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1CDRDQ39AHZ2D2M53B25",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1CDRTDPS2EF3DFGHYN3N",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1CDRX77B8461PJS9JDT5",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V"
+    },
+    {
+      "id": "01K2NF1CDR25QA5B6C7NADSG4M",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X"
+    },
+    {
+      "id": "01K2NF1CDRVGR77T9DCB97QJWY",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y"
+    },
+    {
+      "id": "01K2NF1CDRBCY56VX7W1BB783Y",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GB3Q66B9T8103MTPYSDNM249",
+      "id": "01H9YFABTQPK80DGJ42HJ7GW7T",
+      "physicalFacility": "HRL",
       "name": "Local",
-      "callsign": "CRP_TWR",
+      "radioName": "Harlingen Tower",
+      "callsign": "HRL_TWR",
+      "areaId": "01HAANAQ9P25NNZV782VCG8530",
+      "tcpId": "01K2NF1CDRQ9Q27YPTNBAT96CS",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 26.162873,
+        "lon": -97.712187
       },
-      "freq": 119.4
+      "range": 100,
+      "freq": 119.3
     },
     {
-      "id": "01GB3Q6YZTN06XWT4B8XS7ADRS",
-      "name": "Ground",
-      "callsign": "CRP_GND",
+      "id": "01H9YF4HVF9VQ02BM63FCKJ4Z4",
+      "physicalFacility": "BRO",
+      "name": "Local",
+      "radioName": "Brownsville Tower",
+      "callsign": "BRO_TWR",
+      "areaId": "01HAANAQ9P25NNZV782VCG8530",
+      "tcpId": "01K2NF1CDRARW5ZZYA4X4759Q5",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 26.162873,
+        "lon": -97.712187
       },
-      "freq": 121.9
+      "range": 100,
+      "freq": 118.9
     },
     {
-      "id": "01GB3Q7F6R6TF3TPXNAA80RKCQ",
-      "name": "Clearance Delivery",
-      "callsign": "CRP_DEL",
+      "id": "01H9YEYQQ5BZ022ZQYVJ7ETB8Z",
+      "physicalFacility": "MFE",
+      "name": "Local",
+      "radioName": "McAllen Tower",
+      "callsign": "MFE_TWR",
+      "areaId": "01HAANAQ9P25NNZV782VCG8530",
+      "tcpId": "01K2NF1CDREW56Z6FKGVVTBCKM",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 26.162873,
+        "lon": -97.712187
       },
-      "freq": 118.55
-    },
-    {
-      "id": "01GB3Q7XXR4PC5B6DYH667ZWZZ",
-      "name": "North Approach",
-      "callsign": "CRP_N_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 120.9
-    },
-    {
-      "id": "01GB3Q8GY4ST9P2ZZD7DW34R8K",
-      "name": "South Approach",
-      "callsign": "CRP_S_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 124.8
-    },
-    {
-      "id": "01GB3Q8YVNYPZBK63ZFVADRY1P",
-      "name": "Low East Approach",
-      "callsign": "CRP_L_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 128.675
-    },
-    {
-      "id": "01H5TS15DS7JHMB5XCRA01W3EJ",
-      "name": "Mustang Approach",
-      "callsign": "CRP_M_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 127.5
+      "range": 100,
+      "freq": 118.5
     },
     {
       "id": "01H5TSFRR1G37P8W573GASH4YP",
+      "physicalFacility": "CRP",
       "name": "High East Approach",
+      "radioName": "Corpus Approach",
       "callsign": "CRP_H_APP",
+      "areaId": "01GB3PYF4W8JNPE4AY7VNY2W3B",
+      "tcpId": "01K2NF1CDRF2RQX0DTP4WF7JPP",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 27.77211944,
+        "lon": -97.5024167
       },
+      "range": 100,
       "freq": 125.4
     },
     {
-      "id": "01HAAN8Y6125XVD2Q5102VXEZW",
-      "name": "Valley North Approach",
-      "callsign": "VLY_X_APP",
+      "id": "01H5TS15DS7JHMB5XCRA01W3EJ",
+      "physicalFacility": "CRP",
+      "name": "Mustang Approach",
+      "radioName": "Corpus Approach",
+      "callsign": "CRP_M_APP",
+      "areaId": "01GB3PYF4W8JNPE4AY7VNY2W3B",
+      "tcpId": "01K2NF1CDRC51HH19G4VBRB4J6",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 27.77211944,
+        "lon": -97.5024167
       },
+      "range": 100,
+      "freq": 127.5
+    },
+    {
+      "id": "01GB3Q7XXR4PC5B6DYH667ZWZZ",
+      "physicalFacility": "CRP",
+      "name": "North Approach",
+      "radioName": "Corpus Approach",
+      "callsign": "CRP_N_APP",
+      "areaId": "01GB3PYF4W8JNPE4AY7VNY2W3B",
+      "tcpId": "01K2NF1CDR3GR86H30TJHBASQ4",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 27.77211944,
+        "lon": -97.5024167
+      },
+      "range": 100,
+      "freq": 120.9
+    },
+    {
+      "id": "01GB3Q8YVNYPZBK63ZFVADRY1P",
+      "physicalFacility": "CRP",
+      "name": "Low East Approach",
+      "radioName": "Corpus Approach",
+      "callsign": "CRP_L_APP",
+      "areaId": "01GB3PYF4W8JNPE4AY7VNY2W3B",
+      "tcpId": "01K2NF1CDR04J96DBE8QWX553W",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 27.77211944,
+        "lon": -97.5024167
+      },
+      "range": 100,
+      "freq": 128.675
+    },
+    {
+      "id": "01GB3Q8GY4ST9P2ZZD7DW34R8K",
+      "physicalFacility": "CRP",
+      "name": "South Approach",
+      "radioName": "Corpus Approach",
+      "callsign": "CRP_S_APP",
+      "areaId": "01GB3PYF4W8JNPE4AY7VNY2W3B",
+      "tcpId": "01K2NF1CDRDQ39AHZ2D2M53B25",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 27.77211944,
+        "lon": -97.5024167
+      },
+      "range": 100,
+      "freq": 124.8
+    },
+    {
+      "id": "01GB3Q66B9T8103MTPYSDNM249",
+      "physicalFacility": "CRP",
+      "name": "Local",
+      "radioName": "Corpus Tower",
+      "callsign": "CRP_TWR",
+      "areaId": "01GB3PYF4W8JNPE4AY7VNY2W3B",
+      "tcpId": "01K2NF1CDRTDPS2EF3DFGHYN3N",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 27.77211944,
+        "lon": -97.5024167
+      },
+      "range": 100,
+      "freq": 119.4
+    },
+    {
+      "id": "01H6M9TCJTGK2KVGRWK74KXQ6N",
+      "physicalFacility": "LRD",
+      "name": "Local",
+      "radioName": "Laredo Tower",
+      "callsign": "LRD_TWR",
+      "areaId": "01HAWE6VPC159YK4Q9D9MDK3YG",
+      "tcpId": "01K2NF1CDRX77B8461PJS9JDT5",
+      "tcp": "1V",
+      "visualCenter": {
+        "lat": 27.54075680811654,
+        "lon": -99.46875311350387
+      },
+      "range": 60,
+      "freq": 120.1
+    },
+    {
+      "id": "01HAAN8Y6125XVD2Q5102VXEZW",
+      "physicalFacility": "CRP",
+      "name": "Valley North Approach",
+      "radioName": "Valley Approach",
+      "callsign": "VLY_X_APP",
+      "areaId": "01HAANAQ9P25NNZV782VCG8530",
+      "tcpId": "01K2NF1CDR25QA5B6C7NADSG4M",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 26.162873,
+        "lon": -97.712187
+      },
+      "range": 100,
       "freq": 120.7
     },
     {
       "id": "01HAANFN3QJAZRZXXJXQRWTAYT",
+      "physicalFacility": "CRP",
       "name": "Valley West Approach",
+      "radioName": "Valley Approach",
       "callsign": "VLY_Y_APP",
+      "areaId": "01HAANAQ9P25NNZV782VCG8530",
+      "tcpId": "01K2NF1CDRVGR77T9DCB97QJWY",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 26.162873,
+        "lon": -97.712187
       },
+      "range": 100,
       "freq": 126.55
     },
     {
       "id": "01HAANGQAK67P16E4NJ0VDZ0RM",
+      "physicalFacility": "CRP",
       "name": "Valley East Approach",
+      "radioName": "Valley Approach",
       "callsign": "VLY_Z_APP",
+      "areaId": "01HAANAQ9P25NNZV782VCG8530",
+      "tcpId": "01K2NF1CDRBCY56VX7W1BB783Y",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 26.162873,
+        "lon": -97.712187
       },
+      "range": 100,
       "freq": 119.5
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
     }
   ],
   "mapGroups": [

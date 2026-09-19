@@ -4,53 +4,72 @@
   "name": "Selfridge ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 41.65805,
-    "lon": -81.181585
+    "lat": 42.71659,
+    "lon": -82.35374
   },
+  "areas": [
+    {
+      "id": "01JPJJAB67BX76FWX91V5SEP3V",
+      "name": "Selfridge RAPCON",
+      "visibilityCenter": {
+        "lat": 42.71659,
+        "lon": -82.35374
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "MTC"
+      ],
+      "ssaAirports": [
+        "MTC"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E63A4F4MSZV354VJ7R7",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1E635FK545Z4QXJCAQ6B",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01JPJJE7BTZY792262S2HN2J4M",
+      "physicalFacility": "MTC",
       "name": "Approach",
+      "radioName": "Selfridge Approach",
       "callsign": "MTC_APP",
+      "areaId": "01JPJJAB67BX76FWX91V5SEP3V",
+      "tcpId": "01K2NF1E63A4F4MSZV354VJ7R7",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.71659,
+        "lon": -82.35374
       },
+      "range": 50,
       "freq": 132.35
     },
     {
-      "id": "01JPJJK1ZDWQRYXWH01MSGVR79",
-      "name": "Ground",
-      "callsign": "MTC_GND",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 128.3
-    },
-    {
       "id": "01JPJJMMJ4TSHTPRACGTTW9RDN",
+      "physicalFacility": "MTC",
       "name": "Local Control",
+      "radioName": "Selfridge Tower",
       "callsign": "MTC_TWR",
+      "areaId": "01JPJJAB67BX76FWX91V5SEP3V",
+      "tcpId": "01K2NF1E635FK545Z4QXJCAQ6B",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.71659,
+        "lon": -82.35374
       },
+      "range": 50,
       "freq": 120.15
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
     }
   ],
   "mapGroups": [

@@ -4,114 +4,188 @@
   "name": "Syracuse ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 42.93753,
-    "lon": -70.70471
+    "lat": 43.15284966666667,
+    "lon": -75.87245466666667
   },
+  "areas": [
+    {
+      "id": "01G9GJ1NC9DVCJZ334BSQH6D5T",
+      "name": "SYR",
+      "visibilityCenter": {
+        "lat": 43.11233,
+        "lon": -76.10521
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "0G7",
+        "2N4",
+        "6B4",
+        "6B9",
+        "B16",
+        "FZY",
+        "K16",
+        "N03",
+        "RME",
+        "SYR",
+        "VGC"
+      ],
+      "ssaAirports": [
+        "SYR",
+        "RME"
+      ]
+    },
+    {
+      "id": "01HAJJY3Y2FTV9EYSM9PEW9CE4",
+      "name": "Syracuse Tower",
+      "visibilityCenter": {
+        "lat": 43.11233,
+        "lon": -76.10521
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "SYR"
+      ],
+      "ssaAirports": [
+        "SYR"
+      ]
+    },
+    {
+      "id": "01HAJN93ST8EJNH8B7X4G8VZWW",
+      "name": "Griffiss FCT",
+      "visibilityCenter": {
+        "lat": 43.233889,
+        "lon": -75.406944
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "RME"
+      ],
+      "ssaAirports": [
+        "RME"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CGPHYXV2D1FAHRNJ62M",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1CGPSHXC5NY40JNA1PBM",
+      "parentTcp": "1V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPGYVFVMGXKBNHRKTM",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1CGPSHXC5NY40JNA1PBM",
+      "parentTcp": "1V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP5FB4NA9SJ2RSXYWF",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPSHXC5NY40JNA1PBM",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPB5GVZ6TJZ6KJDW0T",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G9GN4ASZ308TP3WBFDMB547F",
-      "name": "Clearance Delivery",
-      "callsign": "SYR_DEL",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 125.05
-    },
-    {
-      "id": "01G9GN55D5VMXSYTSZ3VY8387Y",
-      "name": "Ground Control",
-      "callsign": "SYR_GND",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 121.7
-    },
-    {
-      "id": "01G9GN5HK6MY2ZEJATHVF5KKRS",
-      "name": "Local Control",
-      "callsign": "SYR_TWR",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 120.3
-    },
-    {
       "id": "01G9GN61Z3Q287W8XSYWYK4RET",
+      "physicalFacility": "SYR",
       "name": "Syracuse Sector",
+      "radioName": "Syracuse Approach",
       "callsign": "SYR_APP",
+      "areaId": "01G9GJ1NC9DVCJZ334BSQH6D5T",
+      "tcpId": "01K2NF1CGPHYXV2D1FAHRNJ62M",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 43.11233,
+        "lon": -76.10521
       },
+      "range": 150,
       "freq": 134.275
     },
     {
-      "id": "01G9GNGJ846WSGGA3A6ND5BA50",
-      "name": "Georgetown Sector",
-      "callsign": "SYR_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 126.125
-    },
-    {
       "id": "01G9GNJ65T6T9WNHHBSCNQ086N",
+      "physicalFacility": "SYR",
       "name": "Utica Sector",
+      "radioName": "Syracuse Approach",
       "callsign": "SYR_APP",
+      "areaId": "01G9GJ1NC9DVCJZ334BSQH6D5T",
+      "tcpId": "01K2NF1CGPGYVFVMGXKBNHRKTM",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 43.11233,
+        "lon": -76.10521
       },
+      "range": 150,
       "freq": 127.425
     },
     {
-      "id": "01KAMCZTCT65RV5GMRDS5PEWQ2",
-      "name": "SYR Guard",
-      "callsign": "SYR_EM_APP",
+      "id": "01G9GSNH6SJ8B2A822WMWBVSRK",
+      "physicalFacility": "RME",
+      "name": "Local Control",
+      "radioName": "Griffiss Tower",
+      "callsign": "RME_TWR",
+      "areaId": "01HAJN93ST8EJNH8B7X4G8VZWW",
+      "tcpId": "01K2NF1CGP5FB4NA9SJ2RSXYWF",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 43.233889,
+        "lon": -75.406944
       },
-      "freq": 121.5
+      "range": 50,
+      "freq": 118.1
     },
     {
-      "id": "1A",
+      "id": "01G9GNGJ846WSGGA3A6ND5BA50",
+      "physicalFacility": "SYR",
+      "name": "Georgetown Sector",
+      "radioName": "Syracuse Approach",
+      "callsign": "SYR_APP",
+      "areaId": "01G9GJ1NC9DVCJZ334BSQH6D5T",
+      "tcpId": "01K2NF1CGPSHXC5NY40JNA1PBM",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
+        "lat": 43.11233,
+        "lon": -76.10521
+      },
+      "range": 150,
+      "freq": 126.125
     },
     {
-      "id": "1E",
+      "id": "01G9GN5HK6MY2ZEJATHVF5KKRS",
+      "physicalFacility": "SYR",
+      "name": "Local Control",
+      "radioName": "Syracuse Tower",
+      "callsign": "SYR_TWR",
+      "areaId": "01HAJJY3Y2FTV9EYSM9PEW9CE4",
+      "tcpId": "01K2NF1CGPB5GVZ6TJZ6KJDW0T",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
+        "lat": 43.11233,
+        "lon": -76.10521
+      },
+      "range": 50,
+      "freq": 120.3
     }
   ],
   "mapGroups": [

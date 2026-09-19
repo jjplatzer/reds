@@ -4,131 +4,223 @@
   "name": "Buffalo ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.65805,
-    "lon": -81.181585
+    "lat": 42.9404167,
+    "lon": -78.7305833
   },
+  "areas": [
+    {
+      "id": "01G90RGW03JFR0DGG7E1KXQES8",
+      "name": "Buffalo TRACON",
+      "visibilityCenter": {
+        "lat": 42.9404167,
+        "lon": -78.7305833
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "BUF",
+        "ERI",
+        "IAG"
+      ],
+      "ssaAirports": [
+        "BUF",
+        "ERI",
+        "IAG"
+      ]
+    },
+    {
+      "id": "01HE76G0KFFTNDXR98TC61EFNE",
+      "name": "Buffalo ATCT",
+      "visibilityCenter": {
+        "lat": 42.9404167,
+        "lon": -78.7305833
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "BUF"
+      ],
+      "ssaAirports": [
+        "BUF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E62A1WVGM09EAVWJZ0M",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1E627SE1Y6BACERNS51C",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1E62A1WVGM09EAVWJZ0M",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1E62TJJQ681QWJ2WMD12",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1E62FZ50BTY982PVF4GY",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E62P5VYCSFF8D0GQWX6",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E62A1WVGM09EAVWJZ0M",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1E625PW7MGVR9JS85E2K",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1E62A1WVGM09EAVWJZ0M",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1E62GQ94VN6DB1MWV1AG",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G90TP7B1ZJCAST9NSEVFJC6H",
+      "physicalFacility": "BUF",
       "name": "East",
+      "radioName": "Buffalo Approach",
       "callsign": "BUF_E_APP",
+      "areaId": "01G90RGW03JFR0DGG7E1KXQES8",
+      "tcpId": "01K2NF1E62A1WVGM09EAVWJZ0M",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9404167,
+        "lon": -78.7305833
       },
+      "range": 150,
       "freq": 126.15
     },
     {
-      "id": "01G90TS6W3XNSG4H6WZWDCKTAB",
-      "name": "West",
-      "callsign": "BUF_W_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 126.5
-    },
-    {
       "id": "01G90TT1DDZRGRKE1NR9DAN4CJ",
+      "physicalFacility": "BUF",
       "name": "Final",
+      "radioName": "Buffalo Approach",
       "callsign": "BUF_F_APP",
+      "areaId": "01G90RGW03JFR0DGG7E1KXQES8",
+      "tcpId": "01K2NF1E627SE1Y6BACERNS51C",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9404167,
+        "lon": -78.7305833
       },
+      "range": 150,
       "freq": 123.8
     },
     {
-      "id": "01G90VNQ9HNYWFEKZ4G8XTHAPE",
-      "name": "Erie",
-      "callsign": "ERI_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 121
-    },
-    {
       "id": "01G93XDC50SM98MDN1WNQEBRF5",
+      "physicalFacility": "BUF",
       "name": "Clearance Delivery",
+      "radioName": "Buffalo Clearance",
       "callsign": "BUF_DEL",
+      "areaId": "01HE76G0KFFTNDXR98TC61EFNE",
+      "tcpId": "01K2NF1E62FZ50BTY982PVF4GY",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9404167,
+        "lon": -78.7305833
       },
+      "range": 50,
       "freq": 124.7
     },
     {
       "id": "01G93XET9GYMXYE664WYKY4ZGP",
+      "physicalFacility": "BUF",
       "name": "Ground",
+      "radioName": "Buffalo Ground",
       "callsign": "BUF_GND",
+      "areaId": "01HE76G0KFFTNDXR98TC61EFNE",
+      "tcpId": "01K2NF1E62FZ50BTY982PVF4GY",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9404167,
+        "lon": -78.7305833
       },
+      "range": 50,
       "freq": 133.2
     },
     {
       "id": "01G93XJR488ZSZ6KTKH9W95HQ6",
+      "physicalFacility": "BUF",
       "name": "Local Control",
+      "radioName": "Buffalo Tower",
       "callsign": "BUF_TWR",
+      "areaId": "01HE76G0KFFTNDXR98TC61EFNE",
+      "tcpId": "01K2NF1E62FZ50BTY982PVF4GY",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9404167,
+        "lon": -78.7305833
       },
+      "range": 50,
       "freq": 120.5
     },
     {
-      "id": "01HDV1TE9CFM4WTPDNDXFT9BPR",
-      "name": "TMU/OTHER",
-      "callsign": "BUF_T_APP",
+      "id": "01G90TS6W3XNSG4H6WZWDCKTAB",
+      "physicalFacility": "BUF",
+      "name": "West",
+      "radioName": "Buffalo Approach",
+      "callsign": "BUF_W_APP",
+      "areaId": "01G90RGW03JFR0DGG7E1KXQES8",
+      "tcpId": "01K2NF1E62P5VYCSFF8D0GQWX6",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 42.9404167,
+        "lon": -78.7305833
       },
+      "range": 150,
+      "freq": 126.5
+    },
+    {
+      "id": "01G90VNQ9HNYWFEKZ4G8XTHAPE",
+      "physicalFacility": "BUF",
+      "name": "Erie",
+      "radioName": "Buffalo Approach",
+      "callsign": "ERI_APP",
+      "areaId": "01G90RGW03JFR0DGG7E1KXQES8",
+      "tcpId": "01K2NF1E625PW7MGVR9JS85E2K",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 42.9404167,
+        "lon": -78.7305833
+      },
+      "range": 150,
+      "freq": 121
+    },
+    {
+      "id": "01HDV1TE9CFM4WTPDNDXFT9BPR",
+      "physicalFacility": "BUF",
+      "name": "TMU/OTHER",
+      "radioName": "Buffalo Approach",
+      "callsign": "BUF_T_APP",
+      "areaId": "01G90RGW03JFR0DGG7E1KXQES8",
+      "tcpId": "01K2NF1E62GQ94VN6DB1MWV1AG",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 42.9404167,
+        "lon": -78.7305833
+      },
+      "range": 150,
       "freq": 123.45
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
     }
   ],
   "mapGroups": [

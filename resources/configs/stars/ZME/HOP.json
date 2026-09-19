@@ -4,70 +4,144 @@
   "name": "Fort Campbell ATCT/ARAC",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 35.0424167,
-    "lon": -89.9766667
+    "lat": 36.672956,
+    "lon": -87.4918195
   },
+  "areas": [
+    {
+      "id": "01GZ0NH1DD459TKJMX1ZGM1QTW",
+      "name": "HOP ARAC",
+      "visibilityCenter": {
+        "lat": 36.672956,
+        "lon": -87.4918195
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "1M9",
+        "2M0",
+        "4KY6",
+        "5KY4",
+        "5KY5",
+        "6KY5",
+        "8M7",
+        "95TN",
+        "9KY8",
+        "CKV",
+        "EOD",
+        "HOP",
+        "HVC",
+        "M21",
+        "TN23",
+        "TN53",
+        "TN93"
+      ],
+      "ssaAirports": [
+        "HOP"
+      ]
+    },
+    {
+      "id": "01JCYE0EBR5XPWNCHBP9SGBF6D",
+      "name": "HOP TOWER",
+      "visibilityCenter": {
+        "lat": 36.672956,
+        "lon": -87.4918195
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "HOP"
+      ],
+      "ssaAirports": [
+        "HOP"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D19RWX6Q5QK5TG92TP4",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19Q8ZWPS7EDME8472W",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D199DQTWPC5290WC4B8",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GPES1S0EVRBFK811JJQ4MX0C",
-      "name": "Ground",
-      "callsign": "HOP_GND",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 121.8
-    },
-    {
-      "id": "01GPES3GYNWSBPDJGAF1DARQ9N",
-      "name": "Local",
-      "callsign": "HOP_TWR",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 120.9
-    },
-    {
       "id": "01GZ0NPBXVXV0DWT085YAW6B00",
+      "physicalFacility": "HOP",
       "name": "North Radar",
+      "radioName": "Campbell Approach",
       "callsign": "HOP_N_APP",
+      "areaId": "01GZ0NH1DD459TKJMX1ZGM1QTW",
+      "tcpId": "01K2NF1D19RWX6Q5QK5TG92TP4",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 36.672956,
+        "lon": -87.4918195
       },
+      "range": 150,
       "freq": 118.1
     },
     {
       "id": "01GZ0NVHS9NWTE7F6RCYRTZ3BQ",
+      "physicalFacility": "HOP",
       "name": "South Radar",
+      "radioName": "Campbell Approach",
       "callsign": "HOP_S_APP",
+      "areaId": "01GZ0NH1DD459TKJMX1ZGM1QTW",
+      "tcpId": "01K2NF1D19Q8ZWPS7EDME8472W",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 36.672956,
+        "lon": -87.4918195
       },
+      "range": 150,
       "freq": 134.35
     },
     {
-      "id": "1N",
+      "id": "01GPES1S0EVRBFK811JJQ4MX0C",
+      "physicalFacility": "HOP",
+      "name": "Ground",
+      "radioName": "Campbell Ground",
+      "callsign": "HOP_GND",
+      "areaId": "01JCYE0EBR5XPWNCHBP9SGBF6D",
+      "tcpId": "01K2NF1D199DQTWPC5290WC4B8",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 36.672956,
+        "lon": -87.4918195
+      },
+      "range": 50,
+      "freq": 121.8
     },
     {
-      "id": "1S",
+      "id": "01GPES3GYNWSBPDJGAF1DARQ9N",
+      "physicalFacility": "HOP",
+      "name": "Local",
+      "radioName": "Campbell Tower",
+      "callsign": "HOP_TWR",
+      "areaId": "01JCYE0EBR5XPWNCHBP9SGBF6D",
+      "tcpId": "01K2NF1D199DQTWPC5290WC4B8",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 36.672956,
+        "lon": -87.4918195
+      },
+      "range": 50,
+      "freq": 120.9
     }
   ],
   "mapGroups": [

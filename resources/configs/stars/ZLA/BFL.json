@@ -4,94 +4,164 @@
   "name": "Bakersfield",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 34.9691453,
-    "lon": -116.63582625
+    "lat": 35.44097222,
+    "lon": -119.0597222
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GFH3YK3A9HG84SGTW7KACSGT",
-      "name": "Ground",
-      "callsign": "BFL_GND",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+      "id": "01GFH3WKAZEMHABX7115SPP0MB",
+      "name": "BFL",
+      "visibilityCenter": {
+        "lat": 35.44111111,
+        "lon": -119.0597222
       },
-      "freq": 121.7
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "BFL",
+        "DLO",
+        "HJO",
+        "L05",
+        "L17",
+        "L19",
+        "L45",
+        "L62",
+        "L73",
+        "L84",
+        "MIT",
+        "PTV",
+        "TLR",
+        "TSP"
+      ],
+      "ssaAirports": [
+        "BFL"
+      ]
     },
     {
-      "id": "01GFH3ZYKS9MN15B92ZQZG2K0W",
-      "name": "Local",
-      "callsign": "BFL_TWR",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+      "id": "01HBP3Z0AYRVSKV11ABQXN4N06",
+      "name": "Tower",
+      "visibilityCenter": {
+        "lat": 35.44083333,
+        "lon": -119.0597222
       },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "BFL"
+      ],
+      "ssaAirports": [
+        "BFL"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CRSJHH000Z63ZYVWDX7",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRSR7R8J937M4K6Q3T7",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1CRSCC8K68XY4CFS7QR1",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRSQ4D9NFMTV0QE8NNX",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRSCC8K68XY4CFS7QR1",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GFH3ZYKS9MN15B92ZQZG2K0W",
+      "physicalFacility": "BFL",
+      "name": "Local",
+      "radioName": "Bakersfield Tower",
+      "callsign": "BFL_TWR",
+      "areaId": "01GFH3WKAZEMHABX7115SPP0MB",
+      "tcpId": "01K2NF1CRSJHH000Z63ZYVWDX7",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 35.44111111,
+        "lon": -119.0597222
+      },
+      "range": 150,
       "freq": 118.1
     },
     {
-      "id": "01GFH40CWA24Q6JW8FWWYNM7AS",
-      "name": "South Approach",
-      "callsign": "BFL_S_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 118.8
-    },
-    {
       "id": "01H8WJ8EA3FYGSAM34NZW1NP3A",
+      "physicalFacility": "BFL",
       "name": "North Approach",
+      "radioName": "Bakersfield Approach",
       "callsign": "BFL_N_APP",
+      "areaId": "01GFH3WKAZEMHABX7115SPP0MB",
+      "tcpId": "01K2NF1CRSR7R8J937M4K6Q3T7",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 35.44111111,
+        "lon": -119.0597222
       },
+      "range": 150,
       "freq": 118.9
     },
     {
       "id": "01H8WJCQAZXXHQFMSKDGKD6VZX",
+      "physicalFacility": "BFL",
       "name": "Departure",
+      "radioName": "Bakersfield Departure",
       "callsign": "BFL_DEP",
+      "areaId": "01GFH3WKAZEMHABX7115SPP0MB",
+      "tcpId": "01K2NF1CRSQ4D9NFMTV0QE8NNX",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 35.44111111,
+        "lon": -119.0597222
       },
+      "range": 150,
       "freq": 126.45
     },
     {
-      "id": "1L",
+      "id": "01GFH40CWA24Q6JW8FWWYNM7AS",
+      "physicalFacility": "BFL",
+      "name": "South Approach",
+      "radioName": "Bakersfield Approach",
+      "callsign": "BFL_S_APP",
+      "areaId": "01GFH3WKAZEMHABX7115SPP0MB",
+      "tcpId": "01K2NF1CRSCC8K68XY4CFS7QR1",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 35.44111111,
+        "lon": -119.0597222
+      },
+      "range": 150,
+      "freq": 118.8
     },
     {
-      "id": "1N",
+      "id": "01GFH3YK3A9HG84SGTW7KACSGT",
+      "physicalFacility": "BFL",
+      "name": "Ground",
+      "radioName": "Bakersfield Ground",
+      "callsign": "BFL_GND",
+      "areaId": "01HBP3Z0AYRVSKV11ABQXN4N06",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 35.44083333,
+        "lon": -119.0597222
+      },
+      "range": 50,
+      "freq": 121.7
     }
   ],
   "mapGroups": [

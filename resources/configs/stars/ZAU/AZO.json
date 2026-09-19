@@ -4,179 +4,375 @@
   "name": "Great Lakes ATCT/TRACON West Wall",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.879166749999996,
-    "lon": -88.975
+    "lat": 42.749167,
+    "lon": -85.043333
   },
+  "areas": [
+    {
+      "id": "01GFSX152MGD4X029CHKZR1HT7",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 42.749167,
+        "lon": -85.043333
+      },
+      "surveillanceRange": 120,
+      "ssaAirports": [
+        "AZO",
+        "BIV",
+        "BTL",
+        "GRR",
+        "MKG"
+      ]
+    },
+    {
+      "id": "01GFSX4X0Y46AF3ACB72Q009S6",
+      "name": "Griffin",
+      "visibilityCenter": {
+        "lat": 42.749167,
+        "lon": -85.043333
+      },
+      "surveillanceRange": 120,
+      "ssaAirports": [
+        "GRR"
+      ]
+    },
+    {
+      "id": "01GFSX63YE2BYW6MQH1A0842SS",
+      "name": "Whitecap",
+      "visibilityCenter": {
+        "lat": 42.749167,
+        "lon": -85.043333
+      },
+      "surveillanceRange": 120,
+      "ssaAirports": [
+        "GRR"
+      ]
+    },
+    {
+      "id": "01GFSX6FG53GNFA1RTXKG5CRES",
+      "name": "Bronco",
+      "visibilityCenter": {
+        "lat": 42.749167,
+        "lon": -85.043333
+      },
+      "surveillanceRange": 120,
+      "ssaAirports": [
+        "AZO",
+        "BTL"
+      ]
+    },
+    {
+      "id": "01GFSX78CQ7X4KWB90SNBXK7WE",
+      "name": "Bells",
+      "visibilityCenter": {
+        "lat": 42.749167,
+        "lon": -85.043333
+      },
+      "surveillanceRange": 120,
+      "ssaAirports": [
+        "AZO",
+        "BTL"
+      ]
+    },
+    {
+      "id": "01GFSX7YMVCK6D4CN3ZRXN7PZ4",
+      "name": "Lumbertown",
+      "visibilityCenter": {
+        "lat": 42.749167,
+        "lon": -85.043333
+      },
+      "surveillanceRange": 120,
+      "ssaAirports": [
+        "MKG",
+        "BIV"
+      ]
+    },
+    {
+      "id": "01GFSX8EZTHS95GHTYEHEDEGF5",
+      "name": "Shoreline",
+      "visibilityCenter": {
+        "lat": 42.749167,
+        "lon": -85.043333
+      },
+      "surveillanceRange": 120,
+      "ssaAirports": [
+        "MKG",
+        "BIV"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DXNA3EANBQJPG7AXQEJ",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1DXNAWMHDACMKXJTTJCP",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DXNA2PN5CZVBVF89ZG5",
+      "parentTcp": "1R"
+    },
+    {
+      "id": "01K2NF1DXN0Z16E13HGZ2BB1PH",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1DXNFK789XBE4CJWPXBR",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1DXNKWYPCMQGQS8W2D0T",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K2NF1DXNTR6TBE6JG5TT8R1A",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1DXN0Z16E13HGZ2BB1PH",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01K2NF1DXNA2PN5CZVBVF89ZG5",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1DXN0Z16E13HGZ2BB1PH",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01K2NF1DXNBY5WT7ZQYS97MNMT",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1DXNTR6TBE6JG5TT8R1A",
+      "parentTcp": "1N"
+    },
+    {
+      "id": "01K2NF1DXN652XZ4ZZG3FWDN18",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DXNC7KWMJNGNPW61TR9",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DXN0Z16E13HGZ2BB1PH",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01K2NF1DXNBQJQHSFQXPJZZPQE",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    },
+    {
+      "id": "01K2NF1DXNTHDGSR4ZYPAD18VH",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DXNZZ8PG8Z0PT9CS4ND",
+      "code": "3D",
+      "subset": 3,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1DXNMFQVS33G4T3YDEG7",
+      "code": "3T",
+      "subset": 3,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GFSX0AYEPM5KW47E9V3T0G48",
-      "name": "Griffin (Combined)",
-      "callsign": "AZO_G_APP",
+      "id": "01GFV9WT6RDAWPWSRCXG54WX0W",
+      "physicalFacility": "BTL",
+      "name": "Local",
+      "radioName": "Battle Creek Tower",
+      "callsign": "BTL_TWR",
+      "areaId": "01GFSX78CQ7X4KWB90SNBXK7WE",
+      "tcpId": "01K2NF1DXNA3EANBQJPG7AXQEJ",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.749167,
+        "lon": -85.043333
       },
+      "range": 120,
+      "freq": 126.825
+    },
+    {
+      "id": "01GFSXAEV3P36105317W486FNR",
+      "physicalFacility": "AZO",
+      "name": "Bells",
+      "radioName": "Great Lakes Approach",
+      "callsign": "AZO_E_APP",
+      "areaId": "01GFSX78CQ7X4KWB90SNBXK7WE",
+      "tcpId": "01K2NF1DXNAWMHDACMKXJTTJCP",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 42.749167,
+        "lon": -85.043333
+      },
+      "range": 120,
+      "freq": 119.2
+    },
+    {
+      "id": "01GFSX0AYEPM5KW47E9V3T0G48",
+      "physicalFacility": "AZO",
+      "name": "Griffin (Combined)",
+      "radioName": "Great Lakes Approach",
+      "callsign": "AZO_G_APP",
+      "areaId": "01GFSX152MGD4X029CHKZR1HT7",
+      "tcpId": "01K2NF1DXN0Z16E13HGZ2BB1PH",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 42.749167,
+        "lon": -85.043333
+      },
+      "range": 120,
       "freq": 128.4
     },
     {
       "id": "01GFSX48VTWE696GQCMFBC2NSZ",
+      "physicalFacility": "AZO",
       "name": "Griffin",
+      "radioName": "Great Lakes Approach",
       "callsign": "AZO_G_APP",
+      "areaId": "01GFSX4X0Y46AF3ACB72Q009S6",
+      "tcpId": "01K2NF1DXN0Z16E13HGZ2BB1PH",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.749167,
+        "lon": -85.043333
       },
+      "range": 120,
       "freq": 128.4
     },
     {
-      "id": "01GFSX9AJ6T3PR1FDMM9KXNGDW",
-      "name": "Whitecap",
-      "callsign": "AZO_W_APP",
+      "id": "01GT4MJ3RRSZPJ03G4SAXX1GJZ",
+      "physicalFacility": "MKG",
+      "name": "Local",
+      "radioName": "Muskegon Tower",
+      "callsign": "MKG_TWR",
+      "areaId": "01GFSX7YMVCK6D4CN3ZRXN7PZ4",
+      "tcpId": "01K2NF1DXNKWYPCMQGQS8W2D0T",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.749167,
+        "lon": -85.043333
       },
-      "freq": 124.6
-    },
-    {
-      "id": "01GFSX9WDJQJAFG3PCYGHP9T8H",
-      "name": "Bronco",
-      "callsign": "AZO_R_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 121.2
-    },
-    {
-      "id": "01GFSXAEV3P36105317W486FNR",
-      "name": "Bells",
-      "callsign": "AZO_E_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 119.2
+      "range": 120,
+      "freq": 126.25
     },
     {
       "id": "01GFSXBBS8WBYG7NYFB7W8J1JB",
+      "physicalFacility": "AZO",
       "name": "Lumbertown",
+      "radioName": "Great Lakes Approach",
       "callsign": "AZO_N_APP",
+      "areaId": "01GFSX7YMVCK6D4CN3ZRXN7PZ4",
+      "tcpId": "01K2NF1DXNTR6TBE6JG5TT8R1A",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.749167,
+        "lon": -85.043333
       },
+      "range": 120,
       "freq": 119.8
     },
     {
-      "id": "01GFSXBWT8ANBT9SBX91GDJ4P4",
-      "name": "Shoreline",
-      "callsign": "AZO_S_APP",
+      "id": "01GFSX9WDJQJAFG3PCYGHP9T8H",
+      "physicalFacility": "AZO",
+      "name": "Bronco",
+      "radioName": "Great Lakes Approach",
+      "callsign": "AZO_R_APP",
+      "areaId": "01GFSX6FG53GNFA1RTXKG5CRES",
+      "tcpId": "01K2NF1DXNA2PN5CZVBVF89ZG5",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.749167,
+        "lon": -85.043333
       },
+      "range": 120,
+      "freq": 121.2
+    },
+    {
+      "id": "01GFSXBWT8ANBT9SBX91GDJ4P4",
+      "physicalFacility": "AZO",
+      "name": "Shoreline",
+      "radioName": "Great Lakes Approach",
+      "callsign": "AZO_S_APP",
+      "areaId": "01GFSX8EZTHS95GHTYEHEDEGF5",
+      "tcpId": "01K2NF1DXNBY5WT7ZQYS97MNMT",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 42.749167,
+        "lon": -85.043333
+      },
+      "range": 120,
       "freq": 133.825
     },
     {
-      "id": "01GFSXDA0VQZG12WSBD55VB8B4",
+      "id": "01GFVSDJF8P4G88F49917XS8RR",
+      "physicalFacility": "GRR",
       "name": "Local",
+      "radioName": "Grand Rapids Tower",
+      "callsign": "GRR_TWR",
+      "areaId": "01GFSX4X0Y46AF3ACB72Q009S6",
+      "tcpId": "01K2NF1DXN652XZ4ZZG3FWDN18",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 42.749167,
+        "lon": -85.043333
+      },
+      "range": 120,
+      "freq": 135.65
+    },
+    {
+      "id": "01GFSX9AJ6T3PR1FDMM9KXNGDW",
+      "physicalFacility": "AZO",
+      "name": "Whitecap",
+      "radioName": "Great Lakes Approach",
+      "callsign": "AZO_W_APP",
+      "areaId": "01GFSX63YE2BYW6MQH1A0842SS",
+      "tcpId": "01K2NF1DXNC7KWMJNGNPW61TR9",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 42.749167,
+        "lon": -85.043333
+      },
+      "range": 120,
+      "freq": 124.6
+    },
+    {
+      "id": "01GFSXDA0VQZG12WSBD55VB8B4",
+      "physicalFacility": "AZO",
+      "name": "Local",
+      "radioName": "Kalamazoo Tower",
       "callsign": "AZO_TWR",
+      "areaId": "01GFSX6FG53GNFA1RTXKG5CRES",
+      "tcpId": "01K2NF1DXNBQJQHSFQXPJZZPQE",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.749167,
+        "lon": -85.043333
       },
+      "range": 120,
       "freq": 118.3
-    },
-    {
-      "id": "01GFSXEKJKXGWQN3MQGPYAJ73S",
-      "name": "Ground",
-      "callsign": "AZO_GND",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GFSXFF9BWGMQZM5BFVJ4J3H0",
-      "name": "Clearance Delivery",
-      "callsign": "AZO_DEL",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 121.75
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
     }
   ],
   "mapGroups": [

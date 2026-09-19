@@ -4,90 +4,154 @@
   "name": "Huntington ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 38.6494889,
-    "lon": -84.3106305555556
+    "lat": 38.368138,
+    "lon": -82.55379465
   },
+  "areas": [
+    {
+      "id": "01GY0VXK0AF9PR98TNDBS3SJ0T",
+      "name": "Huntington TRACON",
+      "visibilityCenter": {
+        "lat": 38.366944,
+        "lon": -82.551667
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "12V",
+        "3I2",
+        "DWU",
+        "GAS",
+        "HTS",
+        "I18",
+        "JRO",
+        "OH23",
+        "OH62",
+        "PMH",
+        "SJS",
+        "UNI"
+      ],
+      "ssaAirports": [
+        "HTS"
+      ]
+    },
+    {
+      "id": "01HADADYXQ28N656099XD8K3TG",
+      "name": "Huntington Tower",
+      "visibilityCenter": {
+        "lat": 38.369332,
+        "lon": -82.5559223
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "HTS"
+      ],
+      "ssaAirports": [
+        "HTS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CN2XNF7JJPMFCR4NATC",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1CN28A71AM3VQH67694R",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1CN28A71AM3VQH67694R",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1CN272SJZ2KAQXQKTSN6",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GRVHC8WX67P3K5RZMB147ZY7",
-      "name": "Clearance Delivery",
-      "callsign": "HTS_DEL",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 118.05
-    },
-    {
-      "id": "01GRVHE6SXFPKDX80FJ7BNG0V4",
-      "name": "Ground Control",
-      "callsign": "HTS_GND",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GRVHFAV8YJGWM74NYAW21WPY",
-      "name": "Local Control",
-      "callsign": "HTS_TWR",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 118.5
-    },
-    {
       "id": "01GRVHGM3TT865JVRZN207JKFT",
+      "physicalFacility": "HTS",
       "name": "North Radar",
+      "radioName": "Huntington Approach",
       "callsign": "HTS_N_APP",
+      "areaId": "01GY0VXK0AF9PR98TNDBS3SJ0T",
+      "tcpId": "01K2NF1CN2XNF7JJPMFCR4NATC",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.366944,
+        "lon": -82.551667
       },
+      "range": 150,
       "freq": 128.4
     },
     {
       "id": "01GRVHHCB5XD92DHGD6FGYHJV8",
+      "physicalFacility": "HTS",
       "name": "South Radar",
+      "radioName": "Huntington Approach",
       "callsign": "HTS_S_APP",
+      "areaId": "01GY0VXK0AF9PR98TNDBS3SJ0T",
+      "tcpId": "01K2NF1CN28A71AM3VQH67694R",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.366944,
+        "lon": -82.551667
       },
+      "range": 150,
       "freq": 119.75
     },
     {
-      "id": "01JA39QW32NPJSQTPP1ZCWB3DR",
-      "name": "HTS GUARD",
-      "callsign": "HTS_EM_APP",
+      "id": "01GRVHC8WX67P3K5RZMB147ZY7",
+      "physicalFacility": "HTS",
+      "name": "Clearance Delivery",
+      "radioName": "Huntington Clearance",
+      "callsign": "HTS_DEL",
+      "areaId": "01HADADYXQ28N656099XD8K3TG",
+      "tcpId": "01K2NF1CN272SJZ2KAQXQKTSN6",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.369332,
+        "lon": -82.5559223
       },
-      "freq": 121.5
+      "range": 50,
+      "freq": 118.05
     },
     {
-      "id": "1N",
+      "id": "01GRVHE6SXFPKDX80FJ7BNG0V4",
+      "physicalFacility": "HTS",
+      "name": "Ground Control",
+      "radioName": "Huntington Ground",
+      "callsign": "HTS_GND",
+      "areaId": "01HADADYXQ28N656099XD8K3TG",
+      "tcpId": "01K2NF1CN272SJZ2KAQXQKTSN6",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
+        "lat": 38.369332,
+        "lon": -82.5559223
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1S",
+      "id": "01GRVHFAV8YJGWM74NYAW21WPY",
+      "physicalFacility": "HTS",
+      "name": "Local Control",
+      "radioName": "Huntington Tower",
+      "callsign": "HTS_TWR",
+      "areaId": "01HADADYXQ28N656099XD8K3TG",
+      "tcpId": "01K2NF1CN272SJZ2KAQXQKTSN6",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
+        "lat": 38.369332,
+        "lon": -82.5559223
+      },
+      "range": 50,
+      "freq": 118.5
     }
   ],
   "mapGroups": [

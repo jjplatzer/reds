@@ -4,148 +4,295 @@
   "name": "Norfolk ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37,
-    "lon": -77
+    "lat": 36.895728,
+    "lon": -76.192395
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GS5MHY24ASZ82ASW3CFEAW6T",
-      "name": "Departure Radar 1",
-      "callsign": "ORF_G_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
+      "id": "01GS5MG73V7GMH57NZ227CYKV8",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 36.895728,
+        "lon": -76.192395
       },
-      "freq": 125.2
+      "surveillanceRange": 80,
+      "underlyingAirports": [
+        "ORF",
+        "AKQ",
+        "CPK",
+        "FAF",
+        "FKN",
+        "LFI",
+        "NFE",
+        "NGU",
+        "NTU",
+        "NVF",
+        "ONX",
+        "PHF",
+        "PVG",
+        "SFQ"
+      ],
+      "ssaAirports": [
+        "ORF",
+        "NGU",
+        "LFI",
+        "PHF",
+        "FAF",
+        "SFQ",
+        "PVG",
+        "CPK"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E0S2NQPEXG8RYKX5PT1",
+      "code": "1C",
+      "subset": 1,
+      "sectorId": "C",
+      "parentTcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+      "parentTcp": "1W",
+      "terminalSector": "A"
     },
     {
-      "id": "01GS5MJQHEPZKJ56Z1NHJEPD9E",
-      "name": "Peninsula Sector Radar",
-      "callsign": "ORF_P_APP",
+      "id": "01K2NF1E0S8QEBNG28A8WRWSWY",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SYJ4MV66C2K8MBZ2P",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SJBZCJN77680133AD",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0ST6B2WVDVM355YQ1B",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0STDYDKWR9RV7QHFGX",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SASKK1QDCV2QEJ5DK",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0S28J899G1F3D6TYE7",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SYT6WT8JPXQCS9042",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0SXXKTEYR6VSGRCBMQ",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+      "parentTcp": "1W"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01HAPSNWJTAW470DMC062YG61K",
+      "physicalFacility": "NGU",
+      "name": "Local",
+      "radioName": "Chambers Tower",
+      "callsign": "NGU_TWR",
+      "areaId": "01GS5MG73V7GMH57NZ227CYKV8",
+      "tcpId": "01K2NF1E0S2NQPEXG8RYKX5PT1",
+      "tcp": "1C",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 36.895728,
+        "lon": -76.192395
       },
-      "freq": 125.7
+      "range": 80,
+      "freq": 124.3
     },
     {
       "id": "01GS5MKD7G1JE14N7GQAZAPJHR",
+      "physicalFacility": "ORF",
       "name": "East Feeder Radar",
+      "radioName": "Norfolk Approach",
       "callsign": "ORF_E_APP",
+      "areaId": "01GS5MG73V7GMH57NZ227CYKV8",
+      "tcpId": "01K2NF1E0S8QEBNG28A8WRWSWY",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 36.895728,
+        "lon": -76.192395
       },
+      "range": 80,
       "freq": 126.05
     },
     {
-      "id": "01GS5MKZ9FBFKREX1TJAD3WP5A",
-      "name": "West Feeder Radar",
-      "callsign": "ORF_W_APP",
+      "id": "01HZQWNXWA10JJX8JTJ312NVXE",
+      "physicalFacility": "ORF",
+      "name": "Final Radar",
+      "radioName": "Norfolk Approach",
+      "callsign": "ORF_F_APP",
+      "areaId": "01GS5MG73V7GMH57NZ227CYKV8",
+      "tcpId": "01K2NF1E0SYJ4MV66C2K8MBZ2P",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 36.895728,
+        "lon": -76.192395
       },
+      "range": 80,
+      "freq": 118.9
+    },
+    {
+      "id": "01GS5MHY24ASZ82ASW3CFEAW6T",
+      "physicalFacility": "ORF",
+      "name": "Departure Radar 1",
+      "radioName": "Norfolk Approach",
+      "callsign": "ORF_G_APP",
+      "areaId": "01GS5MG73V7GMH57NZ227CYKV8",
+      "tcpId": "01K2NF1E0SJBZCJN77680133AD",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 36.895728,
+        "lon": -76.192395
+      },
+      "range": 80,
+      "freq": 125.2
+    },
+    {
+      "id": "01HAMSGR6NMREZDEW4V39JPSFN",
+      "physicalFacility": "LFI",
+      "name": "Local",
+      "radioName": "Langley Tower",
+      "callsign": "LFI_TWR",
+      "areaId": "01GS5MG73V7GMH57NZ227CYKV8",
+      "tcpId": "01K2NF1E0ST6B2WVDVM355YQ1B",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 36.895728,
+        "lon": -76.192395
+      },
+      "range": 80,
+      "freq": 125
+    },
+    {
+      "id": "01HAQ42H5KHKWWJK8M3T3D79C7",
+      "physicalFacility": "PHF",
+      "name": "Local",
+      "radioName": "Newport News Tower",
+      "callsign": "PHF_TWR",
+      "areaId": "01GS5MG73V7GMH57NZ227CYKV8",
+      "tcpId": "01K2NF1E0STDYDKWR9RV7QHFGX",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 36.895728,
+        "lon": -76.192395
+      },
+      "range": 80,
+      "freq": 118.7
+    },
+    {
+      "id": "01GS5MJQHEPZKJ56Z1NHJEPD9E",
+      "physicalFacility": "ORF",
+      "name": "Peninsula Sector Radar",
+      "radioName": "Norfolk Approach",
+      "callsign": "ORF_P_APP",
+      "areaId": "01GS5MG73V7GMH57NZ227CYKV8",
+      "tcpId": "01K2NF1E0SASKK1QDCV2QEJ5DK",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 36.895728,
+        "lon": -76.192395
+      },
+      "range": 80,
+      "freq": 125.7
+    },
+    {
+      "id": "01HZQWG5AK4K71AM3E8Y7CJCKK",
+      "physicalFacility": "ORF",
+      "name": "South Feeder Radar",
+      "radioName": "Norfolk Approach",
+      "callsign": "ORF_S_APP",
+      "areaId": "01GS5MG73V7GMH57NZ227CYKV8",
+      "tcpId": "01K2NF1E0S28J899G1F3D6TYE7",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 36.895728,
+        "lon": -76.192395
+      },
+      "range": 80,
+      "freq": 127.9
+    },
+    {
+      "id": "01GS5MKZ9FBFKREX1TJAD3WP5A",
+      "physicalFacility": "ORF",
+      "name": "West Feeder Radar",
+      "radioName": "Norfolk Approach",
+      "callsign": "ORF_W_APP",
+      "areaId": "01GS5MG73V7GMH57NZ227CYKV8",
+      "tcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 36.895728,
+        "lon": -76.192395
+      },
+      "range": 80,
       "freq": 119.45
     },
     {
       "id": "01GS5MP0TS2MZ9A52DR03BT62S",
+      "physicalFacility": "ORF",
       "name": "Local",
+      "radioName": "Norfolk Tower",
       "callsign": "ORF_TWR",
+      "areaId": "01GS5MG73V7GMH57NZ227CYKV8",
+      "tcpId": "01K2NF1E0SXXKTEYR6VSGRCBMQ",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 36.895728,
+        "lon": -76.192395
       },
+      "range": 80,
       "freq": 120.8
-    },
-    {
-      "id": "01GS5MS5AKNTRBVM2A5VZS6WMG",
-      "name": "Ground",
-      "callsign": "ORF_GND",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GS5MSK1SD8KR0HZGP7E6GFWR",
-      "name": "Clearance",
-      "callsign": "ORF_DEL",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 118.5
-    },
-    {
-      "id": "01HZQWG5AK4K71AM3E8Y7CJCKK",
-      "name": "South Feeder Radar",
-      "callsign": "ORF_S_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 127.9
-    },
-    {
-      "id": "01HZQWNXWA10JJX8JTJ312NVXE",
-      "name": "Final Radar",
-      "callsign": "ORF_F_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 118.9
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "4D",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "4N",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
     }
   ],
   "mapGroups": [

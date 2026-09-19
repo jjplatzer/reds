@@ -4,90 +4,214 @@
   "name": "Fairbanks ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 61.879,
-    "lon": -154.693625
+    "lat": 64.83761,
+    "lon": -147.61449
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GESGDQSNT6E5QJCX3TJP7FTR",
-      "name": "West Radar",
-      "callsign": "FAI_W_APP",
-      "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
+      "id": "01GESGE7SC3EKP0YM2RC2NPEEM",
+      "name": "Approach",
+      "visibilityCenter": {
+        "lat": 64.83761,
+        "lon": -147.61449
       },
-      "freq": 125.35
+      "surveillanceRange": 75,
+      "ssaAirports": [
+        "FAI",
+        "FBK",
+        "EIL",
+        "ENN"
+      ]
     },
     {
-      "id": "01GESGENDXHS7R1GRBKVTMMSVC",
-      "name": "East Radar",
-      "callsign": "FAI_E_APP",
-      "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
+      "id": "01GESGF80YXCWPHZWM9PY6CE9W",
+      "name": "Tower",
+      "visibilityCenter": {
+        "lat": 64.83761,
+        "lon": -147.61449
       },
+      "surveillanceRange": 75,
+      "ssaAirports": [
+        "FAI"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DE8GJ9TRT7Q46TPP0NV",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1DE86CFQ0NHE6ESPPT1F",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I"
+    },
+    {
+      "id": "01K2NF1DE8RXPC0ZVCHWCYM5RK",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1DE81WV9FPZCYAKB70PF",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DE8KX890TPE0Z3XFTK0",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GESGENDXHS7R1GRBKVTMMSVC",
+      "physicalFacility": "FAI",
+      "name": "East Radar",
+      "radioName": "Fairbanks Approach",
+      "callsign": "FAI_E_APP",
+      "areaId": "01GESGE7SC3EKP0YM2RC2NPEEM",
+      "tcpId": "01K2NF1DE8GJ9TRT7Q46TPP0NV",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 64.83761,
+        "lon": -147.61449
+      },
+      "range": 75,
       "freq": 126.5
     },
     {
-      "id": "01GESGF52T6P7RGWCAY0HGHY44",
+      "id": "01GESHD9ENPYCB7JY7M2YPXW5E",
+      "physicalFacility": "EIL",
+      "name": "Ground",
+      "radioName": "Eielson Ground",
+      "callsign": "EIL_GND",
+      "areaId": "01GESGF80YXCWPHZWM9PY6CE9W",
+      "tcpId": "01K2NF1DE86CFQ0NHE6ESPPT1F",
+      "tcp": "1I",
+      "visualCenter": {
+        "lat": 64.83761,
+        "lon": -147.61449
+      },
+      "range": 75,
+      "freq": 121.8
+    },
+    {
+      "id": "01GESHBT5ESJ7Z5ABVDBWKBYJ6",
+      "physicalFacility": "EIL",
       "name": "Local Control",
-      "callsign": "FAI_TWR",
+      "radioName": "Eielson Tower",
+      "callsign": "EIL_TWR",
+      "areaId": "01GESGF80YXCWPHZWM9PY6CE9W",
+      "tcpId": "01K2NF1DE86CFQ0NHE6ESPPT1F",
+      "tcp": "1I",
       "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
+        "lat": 64.83761,
+        "lon": -147.61449
       },
-      "freq": 118.3
+      "range": 75,
+      "freq": 127.2
     },
     {
-      "id": "01GESGGRSBVGDZS1AGYV59DJBM",
-      "name": "Delivery",
-      "callsign": "FAI_DEL",
+      "id": "01GESHFR2RYCTPVF87C3W9877J",
+      "physicalFacility": "FBK",
+      "name": "Ground",
+      "radioName": "Ladd Ground",
+      "callsign": "FBK_GND",
+      "areaId": "01GESGF80YXCWPHZWM9PY6CE9W",
+      "tcpId": "01K2NF1DE8RXPC0ZVCHWCYM5RK",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
+        "lat": 64.83761,
+        "lon": -147.61449
       },
-      "freq": 127.6
+      "range": 75,
+      "freq": 121.7
     },
     {
-      "id": "01H7RPCXY9M7AZEXFGEQWEZ2AG",
-      "name": "TRACAB Radar",
-      "callsign": "FAI_W_APP",
+      "id": "01GESHF7V969P3R0ESA9T13XMG",
+      "physicalFacility": "FBK",
+      "name": "Local Control",
+      "radioName": "Ladd Tower",
+      "callsign": "FBK_TWR",
+      "areaId": "01GESGF80YXCWPHZWM9PY6CE9W",
+      "tcpId": "01K2NF1DE8RXPC0ZVCHWCYM5RK",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
+        "lat": 64.83761,
+        "lon": -147.61449
       },
-      "freq": 125.35
+      "range": 75,
+      "freq": 125
     },
     {
       "id": "01HBF3T0BDHY3ATRMQ66B77EAN",
+      "physicalFacility": "FAI",
       "name": "Ground",
+      "radioName": "Fairbanks Ground ",
       "callsign": "FAI_GND",
+      "areaId": "01GESGF80YXCWPHZWM9PY6CE9W",
+      "tcpId": "01K2NF1DE81WV9FPZCYAKB70PF",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
+        "lat": 64.83761,
+        "lon": -147.61449
       },
+      "range": 75,
       "freq": 121.9
     },
     {
-      "id": "1E",
+      "id": "01GESGF52T6P7RGWCAY0HGHY44",
+      "physicalFacility": "FAI",
+      "name": "Local Control",
+      "radioName": "Fairbanks Tower",
+      "callsign": "FAI_TWR",
+      "areaId": "01GESGF80YXCWPHZWM9PY6CE9W",
+      "tcpId": "01K2NF1DE81WV9FPZCYAKB70PF",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
-      }
+        "lat": 64.83761,
+        "lon": -147.61449
+      },
+      "range": 75,
+      "freq": 118.3
     },
     {
-      "id": "1T",
+      "id": "01GESGDQSNT6E5QJCX3TJP7FTR",
+      "physicalFacility": "FAI",
+      "name": "West Radar",
+      "radioName": "Fairbanks Approach",
+      "callsign": "FAI_W_APP",
+      "areaId": "01GESGE7SC3EKP0YM2RC2NPEEM",
+      "tcpId": "01K2NF1DE8KX890TPE0Z3XFTK0",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
-      }
+        "lat": 64.83761,
+        "lon": -147.61449
+      },
+      "range": 75,
+      "freq": 125.35
     },
     {
-      "id": "1W",
+      "id": "01H7RPCXY9M7AZEXFGEQWEZ2AG",
+      "physicalFacility": "FAI",
+      "name": "TRACAB Radar",
+      "radioName": "Fairbanks Approach",
+      "callsign": "FAI_W_APP",
+      "areaId": "01GESGE7SC3EKP0YM2RC2NPEEM",
+      "tcpId": "01K2NF1DE8KX890TPE0Z3XFTK0",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 61.879,
-        "lon": -154.693625
-      }
+        "lat": 64.83761,
+        "lon": -147.61449
+      },
+      "range": 75,
+      "freq": 125.35
     }
   ],
   "mapGroups": [

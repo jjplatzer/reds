@@ -4,94 +4,150 @@
   "name": "Duluth ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 46.845833,
+    "lon": -92.199167
   },
+  "areas": [
+    {
+      "id": "01GFES2RRJJDCRPY7ERZTTMRS5",
+      "name": "DLH",
+      "visibilityCenter": {
+        "lat": 46.845833,
+        "lon": -92.199167
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "DLH",
+        "HIB",
+        "SUW",
+        "MZH",
+        "EVM"
+      ],
+      "ssaAirports": [
+        "DLH",
+        "HIB",
+        "SUW",
+        "MZH",
+        "EVM"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3KH3YD8R0HW4R5ANJN",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1D3KA7DAGKKS49S9V1FZ",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1D3KMNTZCMN86KDB7QMQ",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1D3KMNTZCMN86KDB7QMQ",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1D3KC9MRXPN95WX309S5",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1D3KR0ZTYK7Y6YD43FY4",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1D3KC9MRXPN95WX309S5",
+      "parentTcp": "1T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GFES3EDV7YWQN2M9Q5J15JYK",
-      "name": "AR/DR S",
-      "callsign": "DLH_S_APP",
+      "id": "01H69KJ7TNGR78TQ0ZFNKM44D1",
+      "physicalFacility": "DLH",
+      "name": "AR/DR TRACAB",
+      "radioName": "Duluth Approach",
+      "callsign": "DLH_APP",
+      "areaId": "01GFES2RRJJDCRPY7ERZTTMRS5",
+      "tcpId": "01K2NF1D3KH3YD8R0HW4R5ANJN",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 46.845833,
+        "lon": -92.199167
       },
+      "range": 150,
       "freq": 125.45
     },
     {
       "id": "01GFES44Y8HAS5HNT9AZ2Q25TA",
+      "physicalFacility": "DLH",
       "name": "AR/DR N",
+      "radioName": "Duluth Approach",
       "callsign": "DLH_N_APP",
+      "areaId": "01GFES2RRJJDCRPY7ERZTTMRS5",
+      "tcpId": "01K2NF1D3KA7DAGKKS49S9V1FZ",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 46.845833,
+        "lon": -92.199167
       },
+      "range": 150,
       "freq": 119.5
     },
     {
-      "id": "01GFES4NBGR61YCG3RW4TJZ0PD",
-      "name": "LC",
-      "callsign": "DLH_TWR",
+      "id": "01GFES3EDV7YWQN2M9Q5J15JYK",
+      "physicalFacility": "DLH",
+      "name": "AR/DR S",
+      "radioName": "Duluth Approach",
+      "callsign": "DLH_S_APP",
+      "areaId": "01GFES2RRJJDCRPY7ERZTTMRS5",
+      "tcpId": "01K2NF1D3KMNTZCMN86KDB7QMQ",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 46.845833,
+        "lon": -92.199167
       },
-      "freq": 118.3
-    },
-    {
-      "id": "01H69KJ7TNGR78TQ0ZFNKM44D1",
-      "name": "AR/DR TRACAB",
-      "callsign": "DLH_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
+      "range": 150,
       "freq": 125.45
     },
     {
-      "id": "01H69KPV6MSE9XJ3QHB186FCK4",
-      "name": "GC",
-      "callsign": "DLH_GND",
+      "id": "01GFES4NBGR61YCG3RW4TJZ0PD",
+      "physicalFacility": "DLH",
+      "name": "LC",
+      "radioName": "Duluth Tower",
+      "callsign": "DLH_TWR",
+      "areaId": "01GFES2RRJJDCRPY7ERZTTMRS5",
+      "tcpId": "01K2NF1D3KC9MRXPN95WX309S5",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 46.845833,
+        "lon": -92.199167
       },
+      "range": 150,
+      "freq": 118.3
+    },
+    {
+      "id": "01H69KPV6MSE9XJ3QHB186FCK4",
+      "physicalFacility": "DLH",
+      "name": "GC",
+      "radioName": "Duluth Ground",
+      "callsign": "DLH_GND",
+      "areaId": "01GFES2RRJJDCRPY7ERZTTMRS5",
+      "tcpId": "01K2NF1D3KR0ZTYK7Y6YD43FY4",
+      "tcp": "2T",
+      "visualCenter": {
+        "lat": 46.845833,
+        "lon": -92.199167
+      },
+      "range": 150,
       "freq": 121.9
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
     }
   ],
   "mapGroups": [

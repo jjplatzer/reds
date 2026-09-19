@@ -4,111 +4,173 @@
   "name": "Greer ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.90558406666667,
-    "lon": -83.96840666666667
+    "lat": 34.85077475,
+    "lon": -82.2880415
   },
+  "areas": [
+    {
+      "id": "01GVS6KT5BM1V15PPFMH2P7PC3",
+      "name": "Tower",
+      "visibilityCenter": {
+        "lat": 34.898833,
+        "lon": -82.213333
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "GSP"
+      ]
+    },
+    {
+      "id": "01GW5982JPD2RS75E7ERVKF138",
+      "name": "Approach",
+      "visibilityCenter": {
+        "lat": 34.898833,
+        "lon": -82.213333
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "GSP"
+      ]
+    },
+    {
+      "id": "01H4Q5NMYGJSPX421SQNQRTHVZ",
+      "name": "GMU",
+      "visibilityCenter": {
+        "lat": 34.8481,
+        "lon": -82.3495
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "GMU"
+      ]
+    },
+    {
+      "id": "01H4Q5NZXKJTYBTNCBQTPDHT4W",
+      "name": "GYH",
+      "visibilityCenter": {
+        "lat": 34.757333,
+        "lon": -82.376
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "GYH"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E98KQXCE3W8KETGSZ9B",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E98QW4X81A91K1V1JTJ",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1E98P4NWGAFCG9HZ1JJX",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1E98NTRST2X81JP2HHEF",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E98ZY9MKJ5EGKYRNTWE",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K2NF1E98QW4X81A91K1V1JTJ",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GVHTED9NDHBPQDX6QVPPVWAV",
-      "name": "Local Control",
-      "callsign": "GSP_TWR",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 120.1
-    },
-    {
-      "id": "01GVHTG5FPKN978JYAZE1GM7MP",
-      "name": "Ground Control / Clearance Delivery",
-      "callsign": "GSP_GND",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GW598XK2DEDKNCR8M4J884QY",
-      "name": "Radar West",
-      "callsign": "GSP_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 118.8
-    },
-    {
       "id": "01GW59CFYAPP1YBV9GEVEMGDTN",
+      "physicalFacility": "GSP",
       "name": "Radar East",
+      "radioName": "Greer Approach",
       "callsign": "GSP_APP",
+      "areaId": "01GW5982JPD2RS75E7ERVKF138",
+      "tcpId": "01K2NF1E98KQXCE3W8KETGSZ9B",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 34.898833,
+        "lon": -82.213333
       },
+      "range": 150,
       "freq": 119.4
     },
     {
       "id": "01GW59FZ3XHNNYQCT6CAZ8VEBF",
+      "physicalFacility": "GSP",
       "name": "Radar South",
+      "radioName": "Greer Approach",
       "callsign": "GSP_APP",
+      "areaId": "01GW5982JPD2RS75E7ERVKF138",
+      "tcpId": "01K2NF1E98P4NWGAFCG9HZ1JJX",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 34.898833,
+        "lon": -82.213333
       },
+      "range": 150,
       "freq": 120.6
     },
     {
-      "id": "01KWQ3154N8YTF1QHS30G7JY88",
-      "name": "GSP Guard",
-      "callsign": "GSP_APP",
+      "id": "01GVHTED9NDHBPQDX6QVPPVWAV",
+      "physicalFacility": "GSP",
+      "name": "Local Control",
+      "radioName": "Greer Tower",
+      "callsign": "GSP_TWR",
+      "areaId": "01GVS6KT5BM1V15PPFMH2P7PC3",
+      "tcpId": "01K2NF1E98NTRST2X81JP2HHEF",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 34.898833,
+        "lon": -82.213333
       },
-      "freq": 121.5
+      "range": 50,
+      "freq": 120.1
     },
     {
-      "id": "1E",
+      "id": "01GWNK800501XC96VMVX3XMSF4",
+      "physicalFacility": "GMU",
+      "name": "Local Control",
+      "radioName": "Greenville Tower",
+      "callsign": "GMU_TWR",
+      "areaId": "01H4Q5NMYGJSPX421SQNQRTHVZ",
+      "tcpId": "01K2NF1E98ZY9MKJ5EGKYRNTWE",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 34.8481,
+        "lon": -82.3495
+      },
+      "range": 50,
+      "freq": 119.9
     },
     {
-      "id": "1S",
+      "id": "01GW598XK2DEDKNCR8M4J884QY",
+      "physicalFacility": "GSP",
+      "name": "Radar West",
+      "radioName": "Greer Approach",
+      "callsign": "GSP_APP",
+      "areaId": "01GW5982JPD2RS75E7ERVKF138",
+      "tcpId": "01K2NF1E98QW4X81A91K1V1JTJ",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 34.898833,
+        "lon": -82.213333
+      },
+      "range": 150,
+      "freq": 118.8
     }
   ],
   "mapGroups": [

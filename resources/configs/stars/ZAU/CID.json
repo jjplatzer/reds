@@ -4,94 +4,161 @@
   "name": "Cedar Rapids ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.879166749999996,
-    "lon": -88.975
+    "lat": 42.145498818829466,
+    "lon": -91.20492104120729
   },
+  "areas": [
+    {
+      "id": "01H5FRS4KK02XSZX5GGVJMPWQB",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 41.885353,
+        "lon": -91.704162
+      },
+      "surveillanceRange": 100,
+      "ssaAirports": [
+        "CID"
+      ]
+    },
+    {
+      "id": "01JJ85B3AAV812K11DX3JVP5QV",
+      "name": "DBQ",
+      "visibilityCenter": {
+        "lat": 42.40564463765894,
+        "lon": -90.70568008241457
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "DBQ"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DXNZ28MW6K67KB7DFZW",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1DXNT24A0X460J6V37G9",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1DXNPBXE6MM5WQ9HJSCM",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1DXNTT1P57SGNZ88K3XG",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1DXNEATZ8FGHS4V191FV",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q"
+    },
+    {
+      "id": "01K2NF1DXNTT1P57SGNZ88K3XG",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1DXNYP8M0FBFC2H7CSBF",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DXNHSJXYNMHTG565NG5",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01H5FSG839JKC43MG930WGZTT9",
-      "name": "North Approach",
-      "callsign": "CID_N_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 134.05
-    },
-    {
-      "id": "01H5FSK8FBZDQCB9XA6W1A2ZJ9",
-      "name": "South Approach",
-      "callsign": "CID_S_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 119.7
-    },
-    {
       "id": "01H5FSNES4Q9Y6X2B2PCZ18K0G",
+      "physicalFacility": "CID",
       "name": "Local",
+      "radioName": "Cedar Rapids Tower",
       "callsign": "CID_TWR",
+      "areaId": "01H5FRS4KK02XSZX5GGVJMPWQB",
+      "tcpId": "01K2NF1DXNT24A0X460J6V37G9",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 41.885353,
+        "lon": -91.704162
       },
+      "range": 100,
       "freq": 118.7
     },
     {
-      "id": "01H5FSPAMFB2ZVAXPSE9AJ3NCM",
+      "id": "01H5FSG839JKC43MG930WGZTT9",
+      "physicalFacility": "CID",
+      "name": "North Approach",
+      "radioName": "Cedar Rapids Approach",
+      "callsign": "CID_N_APP",
+      "areaId": "01H5FRS4KK02XSZX5GGVJMPWQB",
+      "tcpId": "01K2NF1DXNPBXE6MM5WQ9HJSCM",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 41.885353,
+        "lon": -91.704162
+      },
+      "range": 100,
+      "freq": 134.05
+    },
+    {
+      "id": "01JJ831FWHF1CVWPPA96G535A6",
+      "physicalFacility": "DBQ",
       "name": "Ground",
-      "callsign": "CID_GND",
+      "radioName": "Dubuque Ground",
+      "callsign": "DBQ_GND",
+      "areaId": "01JJ85B3AAV812K11DX3JVP5QV",
+      "tcpId": "01K2NF1DXNEATZ8FGHS4V191FV",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.40564463765894,
+        "lon": -90.70568008241457
       },
-      "freq": 121.6
+      "range": 50,
+      "freq": 119.5
     },
     {
-      "id": "01H5FSQ8AEZDNRWB1S8E4M3W21",
-      "name": "Clearance Delivery",
-      "callsign": "CID_DEL",
+      "id": "01JJ830KDJ5Z5FVTE35H8JR1T1",
+      "physicalFacility": "DBQ",
+      "name": "Local",
+      "radioName": "Dubuque Tower",
+      "callsign": "DBQ_TWR",
+      "areaId": "01JJ85B3AAV812K11DX3JVP5QV",
+      "tcpId": "01K2NF1DXNEATZ8FGHS4V191FV",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.40564463765894,
+        "lon": -90.70568008241457
       },
-      "freq": 125.45
+      "range": 50,
+      "freq": 119.5
     },
     {
-      "id": "1C",
+      "id": "01H5FSK8FBZDQCB9XA6W1A2ZJ9",
+      "physicalFacility": "CID",
+      "name": "South Approach",
+      "radioName": "Cedar Rapids Approach",
+      "callsign": "CID_S_APP",
+      "areaId": "01H5FRS4KK02XSZX5GGVJMPWQB",
+      "tcpId": "01K2NF1DXNTT1P57SGNZ88K3XG",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1Q",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
+        "lat": 41.885353,
+        "lon": -91.704162
+      },
+      "range": 100,
+      "freq": 119.7
     }
   ],
   "mapGroups": [

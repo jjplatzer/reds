@@ -4,172 +4,312 @@
   "name": "Des Moines ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 42.045780488403906,
+    "lon": -93.02367433525995
   },
+  "areas": [
+    {
+      "id": "01GFEQX561FC5T2TQ2QJ20FMR8",
+      "name": "DSM",
+      "visibilityCenter": {
+        "lat": 41.5405833333333,
+        "lon": -93.6528888888889
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "AMW",
+        "DSM",
+        "IKV",
+        "TNU"
+      ],
+      "ssaAirports": [
+        "DSM",
+        "TNU",
+        "IKV",
+        "AMW",
+        "ALO",
+        "IIB",
+        "MIW"
+      ]
+    },
+    {
+      "id": "01KV9AR1RN45Q46WK778JE37JC",
+      "name": "ALO",
+      "visibilityCenter": {
+        "lat": 42.5509776434745,
+        "lon": -92.39445978163101
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ALO",
+        "IIB",
+        "MIW"
+      ],
+      "ssaAirports": [
+        "ALO"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3K89W6X6FWYTE2JAF4",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1D3KF5V5SVDFAPR3YM4J",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1D3KF5V5SVDFAPR3YM4J",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01KV90D48S7G2MET9WTEX0BM3A",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01KV90CSS5B3PE0P6CE0Z1BCPD",
+      "parentTcp": "1L"
+    },
+    {
+      "id": "01KV90CSS5B3PE0P6CE0Z1BCPD",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1D3KZNQVA1JEMJT4TAXK",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1D3KF5V5SVDFAPR3YM4J",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1D3KKFXC13YAQJVBSGK9",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1D3KEYMQX26VVCZJ5ZQ4",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1D3KZNQVA1JEMJT4TAXK",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1D3KMPW50HQP9KARZRJA",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1D3KKFXC13YAQJVBSGK9",
+      "parentTcp": "1T"
+    },
+    {
+      "id": "01KV8TM1Z5S5TFTXD8C08DJEY5",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1D3KF5V5SVDFAPR3YM4J",
+      "parentTcp": "1D"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GFEQXJ38JHNDTQEWDGP4BYFG",
-      "name": "DR",
-      "callsign": "DSM_DEP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 123.9
-    },
-    {
-      "id": "01GFEQYWWYZ5WQ40SZZBKM0HEZ",
-      "name": "AR/DR",
-      "callsign": "DSM_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 123.9
-    },
-    {
       "id": "01GFER01NJ1ZXPBDF0KW8QRRPG",
+      "physicalFacility": "DSM",
       "name": "AR",
+      "radioName": "Des Moines Approach",
       "callsign": "DSM_A_APP",
+      "areaId": "01GFEQX561FC5T2TQ2QJ20FMR8",
+      "tcpId": "01K2NF1D3K89W6X6FWYTE2JAF4",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 41.5405833333333,
+        "lon": -93.6528888888889
       },
+      "range": 150,
       "freq": 135.2
     },
     {
-      "id": "01GFER1P569CC10HGBPW41HS7Y",
-      "name": "SR",
-      "callsign": "DSM_S_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 120.45
-    },
-    {
-      "id": "01GFER2HKBFXHHWZ45VACNEJAD",
-      "name": "LC",
-      "callsign": "DSM_TWR",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 118.3
-    },
-    {
-      "id": "01GFER3KWBAHQ7MFT5ZECBKCAY",
-      "name": "GC",
-      "callsign": "DSM_GND",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GFER413CYT849EFQMZJEJ8AF",
-      "name": "CD",
-      "callsign": "DSM_DEL",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 134.15
-    },
-    {
-      "id": "01H69M2WS3J19JR2E6HNMJQ37N",
-      "name": "SR Spare",
-      "callsign": "DSM_U_APP",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      },
-      "freq": 124.85
-    },
-    {
-      "id": "01H69M979QB7E173SF9045E09S",
-      "name": "AR/DR TRACAB",
+      "id": "01GFEQYWWYZ5WQ40SZZBKM0HEZ",
+      "physicalFacility": "DSM",
+      "name": "AR/DR",
+      "radioName": "Des Moines Approach",
       "callsign": "DSM_APP",
+      "areaId": "01GFEQX561FC5T2TQ2QJ20FMR8",
+      "tcpId": "01K2NF1D3KF5V5SVDFAPR3YM4J",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 41.5405833333333,
+        "lon": -93.6528888888889
       },
+      "range": 150,
       "freq": 123.9
     },
     {
-      "id": "01KV8TG7Z3T73WK2R9PNTBHN0V",
-      "name": "WR",
-      "callsign": "DSM_W_APP",
+      "id": "01GFEQXJ38JHNDTQEWDGP4BYFG",
+      "physicalFacility": "DSM",
+      "name": "DR",
+      "radioName": "Des Moines Departure",
+      "callsign": "DSM_DEP",
+      "areaId": "01GFEQX561FC5T2TQ2QJ20FMR8",
+      "tcpId": "01K2NF1D3KF5V5SVDFAPR3YM4J",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 41.5405833333333,
+        "lon": -93.6528888888889
       },
+      "range": 150,
+      "freq": 123.9
+    },
+    {
+      "id": "01KV9ANABATFCTFRF4EWZ30773",
+      "physicalFacility": "ALO",
+      "name": "Ground",
+      "radioName": "Waterloo Ground",
+      "callsign": "ALO_GND",
+      "areaId": "01KV9AR1RN45Q46WK778JE37JC",
+      "tcpId": "01KV90D48S7G2MET9WTEX0BM3A",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 42.5509776434745,
+        "lon": -92.39445978163101
+      },
+      "range": 50,
+      "freq": 121.9
+    },
+    {
+      "id": "01KV9AK3R24KVJJ4WB7W81S304",
+      "physicalFacility": "ALO",
+      "name": "Local",
+      "radioName": "Waterloo Tower",
+      "callsign": "ALO_TWR",
+      "areaId": "01KV9AR1RN45Q46WK778JE37JC",
+      "tcpId": "01KV90CSS5B3PE0P6CE0Z1BCPD",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 42.5509776434745,
+        "lon": -92.39445978163101
+      },
+      "range": 50,
+      "freq": 125.075
+    },
+    {
+      "id": "01GFER1P569CC10HGBPW41HS7Y",
+      "physicalFacility": "DSM",
+      "name": "SR",
+      "radioName": "Des Moines Approach",
+      "callsign": "DSM_S_APP",
+      "areaId": "01GFEQX561FC5T2TQ2QJ20FMR8",
+      "tcpId": "01K2NF1D3KZNQVA1JEMJT4TAXK",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 41.5405833333333,
+        "lon": -93.6528888888889
+      },
+      "range": 150,
+      "freq": 120.45
+    },
+    {
+      "id": "01H69M979QB7E173SF9045E09S",
+      "physicalFacility": "DSM",
+      "name": "AR/DR TRACAB",
+      "radioName": "Des Moines Approach",
+      "callsign": "DSM_APP",
+      "areaId": "01GFEQX561FC5T2TQ2QJ20FMR8",
+      "tcpId": "01K2NF1D3KKFXC13YAQJVBSGK9",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.5405833333333,
+        "lon": -93.6528888888889
+      },
+      "range": 150,
+      "freq": 123.9
+    },
+    {
+      "id": "01GFER2HKBFXHHWZ45VACNEJAD",
+      "physicalFacility": "DSM",
+      "name": "LC",
+      "radioName": "Des Moines Tower",
+      "callsign": "DSM_TWR",
+      "areaId": "01GFEQX561FC5T2TQ2QJ20FMR8",
+      "tcpId": "01K2NF1D3KKFXC13YAQJVBSGK9",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.5405833333333,
+        "lon": -93.6528888888889
+      },
+      "range": 150,
+      "freq": 118.3
+    },
+    {
+      "id": "01H69M2WS3J19JR2E6HNMJQ37N",
+      "physicalFacility": "DSM",
+      "name": "SR Spare",
+      "radioName": "Des Moines Approach",
+      "callsign": "DSM_U_APP",
+      "areaId": "01GFEQX561FC5T2TQ2QJ20FMR8",
+      "tcpId": "01K2NF1D3KEYMQX26VVCZJ5ZQ4",
+      "tcp": "1U",
+      "visualCenter": {
+        "lat": 41.5405833333333,
+        "lon": -93.6528888888889
+      },
+      "range": 150,
+      "freq": 124.85
+    },
+    {
+      "id": "01GFER413CYT849EFQMZJEJ8AF",
+      "physicalFacility": "DSM",
+      "name": "CD",
+      "radioName": "Des Moines Clearance",
+      "callsign": "DSM_DEL",
+      "areaId": "01GFEQX561FC5T2TQ2QJ20FMR8",
+      "tcpId": "01K2NF1D3KMPW50HQP9KARZRJA",
+      "tcp": "1V",
+      "visualCenter": {
+        "lat": 41.5405833333333,
+        "lon": -93.6528888888889
+      },
+      "range": 150,
+      "freq": 134.15
+    },
+    {
+      "id": "01GFER3KWBAHQ7MFT5ZECBKCAY",
+      "physicalFacility": "DSM",
+      "name": "GC",
+      "radioName": "Des Moines Ground",
+      "callsign": "DSM_GND",
+      "areaId": "01GFEQX561FC5T2TQ2QJ20FMR8",
+      "tcpId": "01K2NF1D3KMPW50HQP9KARZRJA",
+      "tcp": "1V",
+      "visualCenter": {
+        "lat": 41.5405833333333,
+        "lon": -93.6528888888889
+      },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
+      "id": "01KV8TG7Z3T73WK2R9PNTBHN0V",
+      "physicalFacility": "DSM",
+      "name": "WR",
+      "radioName": "Des Moines Approach",
+      "callsign": "DSM_W_APP",
+      "areaId": "01KV9AR1RN45Q46WK778JE37JC",
+      "tcpId": "01KV8TM1Z5S5TFTXD8C08DJEY5",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 42.5509776434745,
+        "lon": -92.39445978163101
+      },
+      "range": 50,
       "freq": 118.9
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
     }
   ],
   "mapGroups": [

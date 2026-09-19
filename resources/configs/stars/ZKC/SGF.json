@@ -4,97 +4,176 @@
   "name": "Springfield ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37.593354149999996,
-    "lon": -95.43247947500001
+    "lat": 37.597212330597415,
+    "lon": -92.86961019860914
   },
+  "areas": [
+    {
+      "id": "01G9GMCCWCK78EJJ0XSRJCMK40",
+      "name": "Springfield",
+      "visibilityCenter": {
+        "lat": 37.22803576119484,
+        "lon": -93.38338706388497
+      },
+      "surveillanceRange": 200,
+      "underlyingAirports": [
+        "03B",
+        "19T",
+        "2H2",
+        "2M5",
+        "3DW",
+        "63M",
+        "94K",
+        "AIZ",
+        "AOV",
+        "BBG",
+        "COU",
+        "FTT",
+        "FWB",
+        "H17",
+        "H58",
+        "H79",
+        "HFJ",
+        "JEF",
+        "K15",
+        "LBO",
+        "M17",
+        "MO3",
+        "MYJ",
+        "OZS",
+        "PLK",
+        "SGF",
+        "VER"
+      ],
+      "ssaAirports": [
+        "SGF",
+        "BBG"
+      ]
+    },
+    {
+      "id": "01G9GMCZV4DRS4C9NYYS53GQEA",
+      "name": "Mizzou",
+      "visibilityCenter": {
+        "lat": 37.9663889,
+        "lon": -92.35583333333332
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "COU",
+        "JEF"
+      ],
+      "ssaAirports": [
+        "COU",
+        "JEF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1EE5C7TW6TFKTZTDY3PY",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1EE5GYNV7AG1YXTF1T2Z",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1EE598CS8KE0XS4SAR29",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1EE5TZT9GCGV8VTZABAJ",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G9GMDP6530CMZWDYKYA45T6B",
-      "name": "Springfield/Mizzou Radar",
-      "callsign": "SGF_APP",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 124.95
-    },
-    {
-      "id": "01G9GMEG8DY4VWGH791MXPGCMM",
-      "name": "Local",
-      "callsign": "SGF_TWR",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 119.9
-    },
-    {
-      "id": "01G9GMF70PRMPGEP6Y584XT86Y",
-      "name": "Ground",
-      "callsign": "SGF_GND",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      },
-      "freq": 121.9
-    },
-    {
       "id": "01G9GMFV9M875FZ8WRWEYXK4H3",
+      "physicalFacility": "SGF",
       "name": "Clearance",
+      "radioName": "Springfield Clearance",
       "callsign": "SGF_DEL",
+      "areaId": "01G9GMCCWCK78EJJ0XSRJCMK40",
+      "tcpId": "01K2NF1EE5C7TW6TFKTZTDY3PY",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 37.22803576119484,
+        "lon": -93.38338706388497
       },
+      "range": 200,
       "freq": 123.675
     },
     {
       "id": "01G9GMGR2W8B97NZ3QR69TZKWN",
+      "physicalFacility": "SGF",
       "name": "Mizzou Radar",
+      "radioName": "Mizzou Approach",
       "callsign": "MZU_APP",
+      "areaId": "01G9GMCZV4DRS4C9NYYS53GQEA",
+      "tcpId": "01K2NF1EE5GYNV7AG1YXTF1T2Z",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 37.9663889,
+        "lon": -92.35583333333332
       },
+      "range": 150,
       "freq": 124.375
     },
     {
-      "id": "01KGQCYV3P66FEGDAN2F1HWF7J",
-      "name": "Springfield Radar",
-      "callsign": "SGF_S_APP",
+      "id": "01G9GMDP6530CMZWDYKYA45T6B",
+      "physicalFacility": "SGF",
+      "name": "Springfield/Mizzou Radar",
+      "radioName": "Springfield Approach",
+      "callsign": "SGF_APP",
+      "areaId": "01G9GMCCWCK78EJJ0XSRJCMK40",
+      "tcpId": "01K2NF1EE598CS8KE0XS4SAR29",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
+        "lat": 37.22803576119484,
+        "lon": -93.38338706388497
       },
+      "range": 200,
       "freq": 124.95
     },
     {
-      "id": "1D",
+      "id": "01KGQCYV3P66FEGDAN2F1HWF7J",
+      "physicalFacility": "SGF",
+      "name": "Springfield Radar",
+      "radioName": "Springfield Approach",
+      "callsign": "SGF_S_APP",
+      "areaId": "01G9GMCCWCK78EJJ0XSRJCMK40",
+      "tcpId": "01K2NF1EE598CS8KE0XS4SAR29",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 37.22803576119484,
+        "lon": -93.38338706388497
+      },
+      "range": 200,
+      "freq": 124.95
     },
     {
-      "id": "1N",
+      "id": "01G9GMEG8DY4VWGH791MXPGCMM",
+      "physicalFacility": "SGF",
+      "name": "Local",
+      "radioName": "Springfield Tower",
+      "callsign": "SGF_TWR",
+      "areaId": "01G9GMCCWCK78EJJ0XSRJCMK40",
+      "tcpId": "01K2NF1EE5TZT9GCGV8VTZABAJ",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 37.593354149999996,
-        "lon": -95.43247947500001
-      }
+        "lat": 37.22803576119484,
+        "lon": -93.38338706388497
+      },
+      "range": 200,
+      "freq": 119.9
     }
   ],
   "mapGroups": [

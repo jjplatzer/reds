@@ -4,80 +4,131 @@
   "name": "Roswell ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 34.19564814666666,
-    "lon": -107.50666666666666
+    "lat": 33.2998697,
+    "lon": -104.5293976
   },
+  "areas": [
+    {
+      "id": "01G98NJTX4PV4T8RSQ5TJH6777",
+      "name": "ROW",
+      "visibilityCenter": {
+        "lat": 33.2998697,
+        "lon": -104.5293976
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "ROW"
+      ],
+      "ssaAirports": [
+        "ROW"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1BHS6HV845THY71F0HC5",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSX4XRWEMMWZ5V5WFG",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHS62WT007W7CZ6RMNY",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1BHS6HV845THY71F0HC5",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G98NM39T8XFKQ67162DZPC5N",
+      "physicalFacility": "ROW",
       "name": "East Approach",
+      "radioName": "Roswell Approach",
       "callsign": "ROW_E_APP",
+      "areaId": "01G98NJTX4PV4T8RSQ5TJH6777",
+      "tcpId": "01K2NF1BHS6HV845THY71F0HC5",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 33.2998697,
+        "lon": -104.5293976
       },
+      "range": 75,
       "freq": 119.6
     },
     {
-      "id": "01G98NNFKAFM41GFBQ3W8NTW0R",
-      "name": "West Approach",
-      "callsign": "ROW_W_APP",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 120.35
-    },
-    {
-      "id": "01G98NPRZNQ5VECKHSGMWRM6V7",
-      "name": "Local Control",
-      "callsign": "ROW_TWR",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 118.5
-    },
-    {
-      "id": "01G98NQT91RVEQS4RJ73EH555T",
-      "name": "Ground",
-      "callsign": "ROW_GND",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 121.9
-    },
-    {
       "id": "01G98NRV9M4W76ADJQ1NE618FF",
+      "physicalFacility": "ROW",
       "name": "Clearance Delivery",
+      "radioName": "Roswell Clearance Delivery",
       "callsign": "ROW_DEL",
+      "areaId": "01G98NJTX4PV4T8RSQ5TJH6777",
+      "tcpId": "01K2NF1BHSX4XRWEMMWZ5V5WFG",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 33.2998697,
+        "lon": -104.5293976
       },
+      "range": 75,
       "freq": 132.875
     },
     {
-      "id": "1E",
+      "id": "01G98NQT91RVEQS4RJ73EH555T",
+      "physicalFacility": "ROW",
+      "name": "Ground",
+      "radioName": "Roswell Ground",
+      "callsign": "ROW_GND",
+      "areaId": "01G98NJTX4PV4T8RSQ5TJH6777",
+      "tcpId": "01K2NF1BHSX4XRWEMMWZ5V5WFG",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 33.2998697,
+        "lon": -104.5293976
+      },
+      "range": 75,
+      "freq": 121.9
     },
     {
-      "id": "1T",
+      "id": "01G98NPRZNQ5VECKHSGMWRM6V7",
+      "physicalFacility": "ROW",
+      "name": "Local Control",
+      "radioName": "Roswell Tower",
+      "callsign": "ROW_TWR",
+      "areaId": "01G98NJTX4PV4T8RSQ5TJH6777",
+      "tcpId": "01K2NF1BHSX4XRWEMMWZ5V5WFG",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 33.2998697,
+        "lon": -104.5293976
+      },
+      "range": 75,
+      "freq": 118.5
     },
     {
-      "id": "1W",
+      "id": "01G98NNFKAFM41GFBQ3W8NTW0R",
+      "physicalFacility": "ROW",
+      "name": "West Approach",
+      "radioName": "Roswell Approach",
+      "callsign": "ROW_W_APP",
+      "areaId": "01G98NJTX4PV4T8RSQ5TJH6777",
+      "tcpId": "01K2NF1BHS62WT007W7CZ6RMNY",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 33.2998697,
+        "lon": -104.5293976
+      },
+      "range": 75,
+      "freq": 120.35
     }
   ],
   "mapGroups": [

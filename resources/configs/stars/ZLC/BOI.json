@@ -4,101 +4,209 @@
   "name": "Boise ATCT | Big Sky TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 44.1394906,
-    "lon": -111.3092792325
+    "lat": 44.302960600000006,
+    "lon": -114.53163076666668
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01G9BQRKYZD5DFDS5KNKX42NFZ",
-      "name": "Sage Radar",
-      "callsign": "BOI_G_APP",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+      "id": "01G9BQKGYYC3NQ5873HRZ76C1A",
+      "name": "BOI RADAR",
+      "visibilityCenter": {
+        "lat": 43.565823,
+        "lon": -116.222316
       },
-      "freq": 119.6
+      "surveillanceRange": 350,
+      "underlyingAirports": [
+        "BOI",
+        "MAN",
+        "EUL",
+        "S78",
+        "50S",
+        "1U3",
+        "S66",
+        "28U",
+        "U88",
+        "2U0",
+        "U98"
+      ],
+      "ssaAirports": [
+        "BOI",
+        "MAN",
+        "EUL"
+      ]
     },
     {
-      "id": "01G9BQVG0RF468RQ51M8YF95WF",
-      "name": "Alpine Radar",
-      "callsign": "BOI_A_APP",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+      "id": "01G9BQMJDXJ2QFTDK21686B48G",
+      "name": "BOI ATCT",
+      "visibilityCenter": {
+        "lat": 43.565823,
+        "lon": -116.222316
       },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "BOI"
+      ],
+      "ssaAirports": [
+        "BOI"
+      ]
+    },
+    {
+      "id": "01KKVN3KQFV3QB46XJ4R3ECHDC",
+      "name": "BZN RADAR",
+      "visibilityCenter": {
+        "lat": 45.7772358,
+        "lon": -111.1502603
+      },
+      "surveillanceRange": 350,
+      "underlyingAirports": [
+        "K6S0",
+        "9S5",
+        "BZN",
+        "EKS",
+        "LVM",
+        "WYS",
+        "MT36",
+        "3MT6",
+        "MT34",
+        "9U1",
+        "MT41",
+        "2MT8",
+        "MT42",
+        "MT48",
+        "MT94",
+        "2MT5",
+        "23MT",
+        "21MT"
+      ],
+      "ssaAirports": [
+        "BZN",
+        "LVM",
+        "EKS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E41QNJ21667729PAJB5",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1E411SQ3NK2HSPJ3M89F",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01KKVNBFWA40DPXV1N1MY948M4",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1E411SQ3NK2HSPJ3M89F",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01K2NF1E411SQ3NK2HSPJ3M89F",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G"
+    },
+    {
+      "id": "01K2NF1E41S59H5AYKMQ47EKHR",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H"
+    },
+    {
+      "id": "01K2NF1E41CEPAV1VRD93J3R2T",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1E4159DWTEKXQC250WXA",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01G9BQVG0RF468RQ51M8YF95WF",
+      "physicalFacility": "BOI",
+      "name": "Alpine Radar",
+      "radioName": "Big Sky Approach",
+      "callsign": "BOI_A_APP",
+      "areaId": "01G9BQKGYYC3NQ5873HRZ76C1A",
+      "tcpId": "01K2NF1E41QNJ21667729PAJB5",
+      "tcp": "1A",
+      "visualCenter": {
+        "lat": 43.565823,
+        "lon": -116.222316
+      },
+      "range": 350,
       "freq": 126.9
     },
     {
-      "id": "01G9BQY7JWZ3KX0KFRV5H52KPW",
-      "name": "Local Control",
-      "callsign": "BOI_TWR",
+      "id": "01G9BQRKYZD5DFDS5KNKX42NFZ",
+      "physicalFacility": "BOI",
+      "name": "Sage Radar",
+      "radioName": "Big Sky Approach",
+      "callsign": "BOI_G_APP",
+      "areaId": "01G9BQKGYYC3NQ5873HRZ76C1A",
+      "tcpId": "01K2NF1E411SQ3NK2HSPJ3M89F",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 43.565823,
+        "lon": -116.222316
       },
-      "freq": 118.1
-    },
-    {
-      "id": "01G9BQZGYNF6V203D6DEC8GC7K",
-      "name": "Ground Control",
-      "callsign": "BOI_GND",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      },
-      "freq": 121.7
+      "range": 350,
+      "freq": 119.6
     },
     {
       "id": "01G9BR0K4Z584WFES61WDMSYKG",
+      "physicalFacility": "BOI",
       "name": "Clearance Delivery",
+      "radioName": "Boise Clearance",
       "callsign": "BOI_DEL",
+      "areaId": "01G9BQMJDXJ2QFTDK21686B48G",
+      "tcpId": "01K2NF1E41S59H5AYKMQ47EKHR",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 43.565823,
+        "lon": -116.222316
       },
+      "range": 50,
       "freq": 125.9
     },
     {
-      "id": "1A",
+      "id": "01G9BQZGYNF6V203D6DEC8GC7K",
+      "physicalFacility": "BOI",
+      "name": "Ground Control",
+      "radioName": "Boise Ground",
+      "callsign": "BOI_GND",
+      "areaId": "01G9BQMJDXJ2QFTDK21686B48G",
+      "tcpId": "01K2NF1E41CEPAV1VRD93J3R2T",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 43.565823,
+        "lon": -116.222316
+      },
+      "range": 50,
+      "freq": 121.7
     },
     {
-      "id": "1B",
+      "id": "01G9BQY7JWZ3KX0KFRV5H52KPW",
+      "physicalFacility": "BOI",
+      "name": "Local Control",
+      "radioName": "Boise Tower",
+      "callsign": "BOI_TWR",
+      "areaId": "01G9BQMJDXJ2QFTDK21686B48G",
+      "tcpId": "01K2NF1E4159DWTEKXQC250WXA",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 43.565823,
+        "lon": -116.222316
+      },
+      "range": 50,
+      "freq": 118.1
     }
   ],
   "mapGroups": [

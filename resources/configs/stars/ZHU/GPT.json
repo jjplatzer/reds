@@ -4,84 +4,137 @@
   "name": "Gulfport ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 30.395221,
+    "lon": -89.075146
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GSJ0MGM253BEG45VE0MPAAVV",
-      "name": "West Approach",
-      "callsign": "GPT_W_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+      "id": "01GZTBCVRVT3C8C5P1PQB80HD1",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 30.395221,
+        "lon": -89.075146
       },
-      "freq": 127.5
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "5R2",
+        "BIX",
+        "GPT",
+        "HSA",
+        "M13",
+        "M24",
+        "MJD"
+      ],
+      "ssaAirports": [
+        "GPT"
+      ]
     },
     {
-      "id": "01GSJ0Q3NVTNCWF3JN4FVQTQPG",
-      "name": "East Approach",
-      "callsign": "GPT_E_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+      "id": "01JCPP587VTC12G3A383V68TBJ",
+      "name": "GPT TOWER",
+      "visibilityCenter": {
+        "lat": 30.395221,
+        "lon": -89.075146
       },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "GPT"
+      ],
+      "ssaAirports": [
+        "GPT"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDRZG1C4K48QVX9D1KD",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1CDRTHXDSSZEMDBCQBF3",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1CDRB13JV8FJ0BSWEZMW",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1CDRPVKEG2VA5CQMR5G5",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GSJ0Q3NVTNCWF3JN4FVQTQPG",
+      "physicalFacility": "GPT",
+      "name": "East Approach",
+      "radioName": "Gulfport Approach",
+      "callsign": "GPT_E_APP",
+      "areaId": "01GZTBCVRVT3C8C5P1PQB80HD1",
+      "tcpId": "01K2NF1CDRZG1C4K48QVX9D1KD",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 30.395221,
+        "lon": -89.075146
+      },
+      "range": 100,
       "freq": 124.6
     },
     {
-      "id": "01GSJ0T4THWSRZX79A3X6CBZFK",
-      "name": "Ground",
-      "callsign": "GPT_GND",
+      "id": "01GBTAX07WRP6NCP7EGQC3DQ3Q",
+      "physicalFacility": "BIX",
+      "name": "Local",
+      "radioName": "Keesler Tower",
+      "callsign": "BIX_TWR",
+      "areaId": "01GZTBCVRVT3C8C5P1PQB80HD1",
+      "tcpId": "01K2NF1CDRTHXDSSZEMDBCQBF3",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.395221,
+        "lon": -89.075146
       },
-      "freq": 120.4
+      "range": 100,
+      "freq": 120.75
     },
     {
       "id": "01GSJ0W7CGB41JGBBKD8CDT11W",
+      "physicalFacility": "GPT",
       "name": "Tower",
+      "radioName": "Gulfport Tower",
       "callsign": "GPT_TWR",
+      "areaId": "01GZTBCVRVT3C8C5P1PQB80HD1",
+      "tcpId": "01K2NF1CDRB13JV8FJ0BSWEZMW",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.395221,
+        "lon": -89.075146
       },
+      "range": 100,
       "freq": 123.7
     },
     {
-      "id": "1E",
+      "id": "01GSJ0MGM253BEG45VE0MPAAVV",
+      "physicalFacility": "GPT",
+      "name": "West Approach",
+      "radioName": "Gulfport Approach",
+      "callsign": "GPT_W_APP",
+      "areaId": "01GZTBCVRVT3C8C5P1PQB80HD1",
+      "tcpId": "01K2NF1CDRPVKEG2VA5CQMR5G5",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 30.395221,
+        "lon": -89.075146
+      },
+      "range": 100,
+      "freq": 127.5
     }
   ],
   "mapGroups": [

@@ -4,107 +4,173 @@
   "name": "Charleston ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 38.6494889,
-    "lon": -84.3106305555556
+    "lat": 38.36600975,
+    "lon": -81.59234185
   },
+  "areas": [
+    {
+      "id": "01GTN1QNA8XHMR430A8S968PEY",
+      "name": "Charleston TRACON",
+      "visibilityCenter": {
+        "lat": 38.36139,
+        "lon": -81.58833
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "12V",
+        "6L4",
+        "BKW",
+        "CRW",
+        "I16",
+        "SXL",
+        "USW"
+      ],
+      "ssaAirports": [
+        "CRW"
+      ]
+    },
+    {
+      "id": "01GZKQKS549PQ4Y4KY486DZWZF",
+      "name": "Charleston Tower",
+      "visibilityCenter": {
+        "lat": 38.3706295,
+        "lon": -81.5963537
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "CRW"
+      ],
+      "ssaAirports": [
+        "CRW"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CN25892KZ97XA16F8RJ",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1CN2MAYH8XZXD5FSQEHZ",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1CN23P2HGY1FWBDTZJYV",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1CN2MAYH8XZXD5FSQEHZ",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1CN2MAYH8XZXD5FSQEHZ",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1CN2D9F5YYKGCHXJFWD1",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GRVGRACKMMMAVA9R0636R9AD",
-      "name": "Clearance Delivery",
-      "callsign": "CRW_DEL",
+      "id": "01GRVH0XYC70P28S27SQ8D91HK",
+      "physicalFacility": "CRW",
+      "name": "Beckley Radar",
+      "radioName": "Charleston Approach",
+      "callsign": "CRW_B_APP",
+      "areaId": "01GTN1QNA8XHMR430A8S968PEY",
+      "tcpId": "01K2NF1CN25892KZ97XA16F8RJ",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.36139,
+        "lon": -81.58833
       },
-      "freq": 118.55
-    },
-    {
-      "id": "01GRVGSV4AQ1458XSRGEQPM743",
-      "name": "Ground Control",
-      "callsign": "CRW_GND",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 121.8
-    },
-    {
-      "id": "01GRVGVF50X4DV8EXTPV3ACE3A",
-      "name": "Local Control",
-      "callsign": "CRW_TWR",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 125.7
+      "range": 150,
+      "freq": 125.4
     },
     {
       "id": "01GRVGYGT4ZBGRR812FJAVQGFF",
+      "physicalFacility": "CRW",
       "name": "North Radar",
+      "radioName": "Charleston Approach",
       "callsign": "CRW_N_APP",
+      "areaId": "01GTN1QNA8XHMR430A8S968PEY",
+      "tcpId": "01K2NF1CN23P2HGY1FWBDTZJYV",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.36139,
+        "lon": -81.58833
       },
+      "range": 150,
       "freq": 124.1
     },
     {
       "id": "01GRVGZVD97GT65QJ0A0HYH17G",
+      "physicalFacility": "CRW",
       "name": "South Radar",
+      "radioName": "Charleston Approach",
       "callsign": "CRW_S_APP",
+      "areaId": "01GTN1QNA8XHMR430A8S968PEY",
+      "tcpId": "01K2NF1CN2MAYH8XZXD5FSQEHZ",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.36139,
+        "lon": -81.58833
       },
+      "range": 150,
       "freq": 119.2
     },
     {
-      "id": "01GRVH0XYC70P28S27SQ8D91HK",
-      "name": "Beckley Radar",
-      "callsign": "CRW_B_APP",
+      "id": "01GRVGRACKMMMAVA9R0636R9AD",
+      "physicalFacility": "CRW",
+      "name": "Clearance Delivery",
+      "radioName": "Charleston Clearance",
+      "callsign": "CRW_DEL",
+      "areaId": "01GZKQKS549PQ4Y4KY486DZWZF",
+      "tcpId": "01K2NF1CN2D9F5YYKGCHXJFWD1",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.3706295,
+        "lon": -81.5963537
       },
-      "freq": 125.4
+      "range": 50,
+      "freq": 118.55
     },
     {
-      "id": "01JA39MXY165PJ6VH019T2BZBS",
-      "name": "CRW GUARD",
-      "callsign": "CRW_EM_APP",
+      "id": "01GRVGSV4AQ1458XSRGEQPM743",
+      "physicalFacility": "CRW",
+      "name": "Ground Control",
+      "radioName": "Charleston Ground",
+      "callsign": "CRW_GND",
+      "areaId": "01GZKQKS549PQ4Y4KY486DZWZF",
+      "tcpId": "01K2NF1CN2D9F5YYKGCHXJFWD1",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 38.3706295,
+        "lon": -81.5963537
       },
-      "freq": 121.5
+      "range": 50,
+      "freq": 121.8
     },
     {
-      "id": "1B",
+      "id": "01GRVGVF50X4DV8EXTPV3ACE3A",
+      "physicalFacility": "CRW",
+      "name": "Local Control",
+      "radioName": "Charleston Tower",
+      "callsign": "CRW_TWR",
+      "areaId": "01GZKQKS549PQ4Y4KY486DZWZF",
+      "tcpId": "01K2NF1CN2D9F5YYKGCHXJFWD1",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
+        "lat": 38.3706295,
+        "lon": -81.5963537
+      },
+      "range": 50,
+      "freq": 125.7
     }
   ],
   "mapGroups": [

@@ -4,224 +4,453 @@
   "name": "Fort Myers ATCT",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 25.98185666666667,
-    "lon": -76.699767
+    "lat": 26.545995220000002,
+    "lon": -81.82801644
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GFEQNH5XC5TDVG7YCGZ2DCHX",
-      "name": "West",
-      "callsign": "RSW_W_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+      "id": "01HAHWPJJFPZW1S2Q6E2WQSAPS",
+      "name": "Fort Myers",
+      "visibilityCenter": {
+        "lat": 26.5361639,
+        "lon": -81.755155
       },
-      "freq": 134.425
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "RSW",
+        "PGD",
+        "APF",
+        "FMY"
+      ],
+      "ssaAirports": [
+        "RSW",
+        "PGD",
+        "APF",
+        "FMY"
+      ]
     },
     {
-      "id": "01GFEQPJXQ3X0PFJKM5ECZ8D4P",
-      "name": "East",
-      "callsign": "RSW_E_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+      "id": "01HBR86FDZCQCNGZ8040WZQASP",
+      "name": "Fort Myers Tower",
+      "visibilityCenter": {
+        "lat": 26.5361639,
+        "lon": -81.755155
       },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "RSW"
+      ],
+      "ssaAirports": [
+        "RSW"
+      ]
+    },
+    {
+      "id": "01HBR86FDZDQ6A5W7P3HP72672",
+      "name": "Naples Tower",
+      "visibilityCenter": {
+        "lat": 26.1524408,
+        "lon": -81.7756392
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "APF"
+      ]
+    },
+    {
+      "id": "01HBR86FDZP81KGV6RFJHV07D4",
+      "name": "Page Tower",
+      "visibilityCenter": {
+        "lat": 26.586615,
+        "lon": -81.8632469
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "FMY"
+      ]
+    },
+    {
+      "id": "01HBR86FDZW5ZS49B6TD7CG1AG",
+      "name": "Punta Gorda Tower",
+      "visibilityCenter": {
+        "lat": 26.9185925,
+        "lon": -81.9908861
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "PGD"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1C5TG9C8WH4ZV5P32P11",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5T1WEW41KYS55RR4GE",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1C5TBS5JR9GQZKFKX3D7",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TE5CR352BAXA9B05C",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1C5TBS5JR9GQZKFKX3D7",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TXEA1PY2ATBSJ5J5J",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1C5TRE43FJ6NSF4PBZVY",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TM776XTYMF7Y3HVMF",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TR26BCEXD1BYJDQGZ",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "parentTcpId": "01K2NF1C5TM776XTYMF7Y3HVMF",
+      "parentTcp": "1J",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TRVW8PAJN3Q742ZXA",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1C5TBS5JR9GQZKFKX3D7",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5T7J7K8FTHCRC5G7JZ",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TCV11WDFZ775760QX",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TRE43FJ6NSF4PBZVY",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1C5T1WEW41KYS55RR4GE",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5TBS5JR9GQZKFKX3D7",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1C5T6KS41AZAGQAFPDQG",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GFEQPJXQ3X0PFJKM5ECZ8D4P",
+      "physicalFacility": "RSW",
+      "name": "East",
+      "radioName": "Fort Myers Approach",
+      "callsign": "RSW_E_APP",
+      "areaId": "01HAHWPJJFPZW1S2Q6E2WQSAPS",
+      "tcpId": "01K2NF1C5T1WEW41KYS55RR4GE",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 26.5361639,
+        "lon": -81.755155
+      },
+      "range": 150,
       "freq": 126.8
     },
     {
-      "id": "01GFEQQ88HCABKTW50QDC19PNH",
-      "name": "South",
-      "callsign": "RSW_S_APP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 124.125
-    },
-    {
       "id": "01GFEQQZ90PBWE9Q8RNG05R9P2",
+      "physicalFacility": "RSW",
       "name": "Final",
+      "radioName": "Fort Myers Approach",
       "callsign": "RSW_F_APP",
+      "areaId": "01HAHWPJJFPZW1S2Q6E2WQSAPS",
+      "tcpId": "01K2NF1C5TE5CR352BAXA9B05C",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 26.5361639,
+        "lon": -81.755155
       },
+      "range": 150,
       "freq": 125.15
     },
     {
-      "id": "01GFEQVREFVFNN1PC6JSEFFBC6",
-      "name": "Local Control",
-      "callsign": "RSW_TWR",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 128.75
-    },
-    {
-      "id": "01GFEQWAK5QGBASA5J9Z43HBSB",
-      "name": "Ground Control",
-      "callsign": "RSW_GND",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GFEQWTJH1T8T0FDM8C750XT9",
-      "name": "Clearance Delivery",
-      "callsign": "RSW_DEL",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 132.075
-    },
-    {
-      "id": "01JAET4Q5STHBRWTR97QNAMAXB",
-      "name": "ZMA Guard",
-      "callsign": "RSW_RMP",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
-      "freq": 121.5
-    },
-    {
       "id": "01JCRF5AC5SJ1TYSJJEQ0VQ8TS",
+      "physicalFacility": "RSW",
       "name": "Gulf",
+      "radioName": "Fort Myers Approach",
       "callsign": "RSW_G_APP",
+      "areaId": "01HAHWPJJFPZW1S2Q6E2WQSAPS",
+      "tcpId": "01K2NF1C5TXEA1PY2ATBSJ5J5J",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 26.5361639,
+        "lon": -81.755155
       },
+      "range": 150,
       "freq": 119.75
     },
     {
-      "id": "01JCRF706BQJNW112K36PWT2W9",
-      "name": "West Low",
-      "callsign": "RSW_L_APP",
+      "id": "01GFEQVREFVFNN1PC6JSEFFBC6",
+      "physicalFacility": "RSW",
+      "name": "Local Control",
+      "radioName": "Fort Myers Tower",
+      "callsign": "RSW_TWR",
+      "areaId": "01HBR86FDZCQCNGZ8040WZQASP",
+      "tcpId": "01K2NF1C5TM776XTYMF7Y3HVMF",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
+        "lat": 26.5361639,
+        "lon": -81.755155
       },
-      "freq": 127.05
-    },
-    {
-      "id": "01K1W6PFQT45CF53DKC44RBWX2",
-      "name": "Local Control 2",
-      "callsign": "RSW_2_TWR",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      },
+      "range": 150,
       "freq": 128.75
     },
     {
-      "id": "1A",
+      "id": "01K1W6PFQT45CF53DKC44RBWX2",
+      "physicalFacility": "RSW",
+      "name": "Local Control 2",
+      "radioName": "Fort Myers Tower",
+      "callsign": "RSW_2_TWR",
+      "areaId": "01HBR86FDZCQCNGZ8040WZQASP",
+      "tcpId": "01K2NF1C5TR26BCEXD1BYJDQGZ",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.5361639,
+        "lon": -81.755155
+      },
+      "range": 150,
+      "freq": 128.75
     },
     {
-      "id": "1B",
+      "id": "01GFEQWTJH1T8T0FDM8C750XT9",
+      "physicalFacility": "RSW",
+      "name": "Clearance Delivery",
+      "radioName": "Fort Myers Clearance",
+      "callsign": "RSW_DEL",
+      "areaId": "01HBR86FDZCQCNGZ8040WZQASP",
+      "tcpId": "01K2NF1C5TR26BCEXD1BYJDQGZ",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.5361639,
+        "lon": -81.755155
+      },
+      "range": 150,
+      "freq": 132.075
     },
     {
-      "id": "1E",
+      "id": "01GFEQWAK5QGBASA5J9Z43HBSB",
+      "physicalFacility": "RSW",
+      "name": "Ground Control",
+      "radioName": "Fort Myers Ground",
+      "callsign": "RSW_GND",
+      "areaId": "01HBR86FDZCQCNGZ8040WZQASP",
+      "tcpId": "01K2NF1C5TR26BCEXD1BYJDQGZ",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.5361639,
+        "lon": -81.755155
+      },
+      "range": 150,
+      "freq": 121.9
     },
     {
-      "id": "1F",
+      "id": "01JCRF706BQJNW112K36PWT2W9",
+      "physicalFacility": "RSW",
+      "name": "West Low",
+      "radioName": "Fort Myers Approach",
+      "callsign": "RSW_L_APP",
+      "areaId": "01HAHWPJJFPZW1S2Q6E2WQSAPS",
+      "tcpId": "01K2NF1C5TRVW8PAJN3Q742ZXA",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.5361639,
+        "lon": -81.755155
+      },
+      "range": 150,
+      "freq": 127.05
     },
     {
-      "id": "1G",
+      "id": "01GFES4N9K7CBKGY3CJS9K80A1",
+      "physicalFacility": "FMY",
+      "name": "Ground Control",
+      "radioName": "Page Ground",
+      "callsign": "FMY_GND",
+      "areaId": "01HBR86FDZP81KGV6RFJHV07D4",
+      "tcpId": "01K2NF1C5T7J7K8FTHCRC5G7JZ",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.586615,
+        "lon": -81.8632469
+      },
+      "range": 150,
+      "freq": 121.7
     },
     {
-      "id": "1J",
+      "id": "01GFES48QBSA91C18DBPPH80JN",
+      "physicalFacility": "FMY",
+      "name": "Local Control",
+      "radioName": "Page Tower",
+      "callsign": "FMY_TWR",
+      "areaId": "01HBR86FDZP81KGV6RFJHV07D4",
+      "tcpId": "01K2NF1C5T7J7K8FTHCRC5G7JZ",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.586615,
+        "lon": -81.8632469
+      },
+      "range": 150,
+      "freq": 119
     },
     {
-      "id": "1K",
+      "id": "01GFESG5FPRPTXRKN5772A4XDH",
+      "physicalFacility": "PGD",
+      "name": "Ground Control",
+      "radioName": "Punta Gorda Ground",
+      "callsign": "PGD_GND",
+      "areaId": "01HBR86FDZW5ZS49B6TD7CG1AG",
+      "tcpId": "01K2NF1C5TCV11WDFZ775760QX",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.9185925,
+        "lon": -81.9908861
+      },
+      "range": 150,
+      "freq": 119.55
     },
     {
-      "id": "1L",
+      "id": "01GFESFS9JSAYBA26AVN1VMTRP",
+      "physicalFacility": "PGD",
+      "name": "Local Control",
+      "radioName": "Punta Gorda Tower",
+      "callsign": "PGD_TWR",
+      "areaId": "01HBR86FDZW5ZS49B6TD7CG1AG",
+      "tcpId": "01K2NF1C5TCV11WDFZ775760QX",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.9185925,
+        "lon": -81.9908861
+      },
+      "range": 150,
+      "freq": 121
     },
     {
-      "id": "1M",
+      "id": "01GFEQQ88HCABKTW50QDC19PNH",
+      "physicalFacility": "RSW",
+      "name": "South",
+      "radioName": "Fort Myers Approach",
+      "callsign": "RSW_S_APP",
+      "areaId": "01HAHWPJJFPZW1S2Q6E2WQSAPS",
+      "tcpId": "01K2NF1C5TRE43FJ6NSF4PBZVY",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.5361639,
+        "lon": -81.755155
+      },
+      "range": 150,
+      "freq": 124.125
     },
     {
-      "id": "1P",
+      "id": "01GFEQNH5XC5TDVG7YCGZ2DCHX",
+      "physicalFacility": "RSW",
+      "name": "West",
+      "radioName": "Fort Myers Approach",
+      "callsign": "RSW_W_APP",
+      "areaId": "01HAHWPJJFPZW1S2Q6E2WQSAPS",
+      "tcpId": "01K2NF1C5TBS5JR9GQZKFKX3D7",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.5361639,
+        "lon": -81.755155
+      },
+      "range": 150,
+      "freq": 134.425
     },
     {
-      "id": "1R",
+      "id": "01JA43EJXJXMEXQP792BCK4QCR",
+      "physicalFacility": "APF",
+      "name": "Clearance Delivery",
+      "radioName": "Naples Clearance Delivery",
+      "callsign": "APF_DEL",
+      "areaId": "01HBR86FDZDQ6A5W7P3HP72672",
+      "tcpId": "01K2NF1C5T6KS41AZAGQAFPDQG",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.1524408,
+        "lon": -81.7756392
+      },
+      "range": 150,
+      "freq": 118
     },
     {
-      "id": "1S",
+      "id": "01GFERRWHJE6A9M9AZZN4PXB0Z",
+      "physicalFacility": "APF",
+      "name": "Ground Control",
+      "radioName": "Naples Ground",
+      "callsign": "APF_GND",
+      "areaId": "01HBR86FDZDQ6A5W7P3HP72672",
+      "tcpId": "01K2NF1C5T6KS41AZAGQAFPDQG",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.1524408,
+        "lon": -81.7756392
+      },
+      "range": 150,
+      "freq": 121.6
     },
     {
-      "id": "1W",
+      "id": "01GFERRFBA6EBF2WD7Z53SAA0J",
+      "physicalFacility": "APF",
+      "name": "Local Control",
+      "radioName": "Naples Tower",
+      "callsign": "APF_TWR",
+      "areaId": "01HBR86FDZDQ6A5W7P3HP72672",
+      "tcpId": "01K2NF1C5T6KS41AZAGQAFPDQG",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 25.98185666666667,
-        "lon": -76.699767
-      }
+        "lat": 26.1524408,
+        "lon": -81.7756392
+      },
+      "range": 150,
+      "freq": 128.5
     }
   ],
   "mapGroups": [

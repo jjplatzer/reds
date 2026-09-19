@@ -4,87 +4,106 @@
   "name": "Champaign ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.879166749999996,
-    "lon": -88.975
+    "lat": 40.0385608,
+    "lon": -88.2765392
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GT53Y2P5YNPZEYP383H2VM08",
-      "name": "Local",
-      "callsign": "CMI_TWR",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+      "id": "01GT5453TNZP23T2730BXNSB4Q",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 40.0385608,
+        "lon": -88.2765392
       },
-      "freq": 120.4
+      "surveillanceRange": 100,
+      "ssaAirports": [
+        "CMI",
+        "DEC"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DXN8CJC2DQDPHXK1JD6",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
     },
     {
+      "id": "01K2NF1DXND9PRCJ0D1VTTEKYT",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1DXN0DFYRQSHWPD6HB8C",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1DXNQ1K2BWXZ8ST88020",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DXNJQ1D2Q80VYE8T5BH",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DXN8CJC2DQDPHXK1JD6",
+      "parentTcp": "1E"
+    }
+  ],
+  "controlPositions": [
+    {
       "id": "01GT541A4GM8C86S485WQYW837",
+      "physicalFacility": "CMI",
       "name": "East Approach",
+      "radioName": "Champaign Approach",
       "callsign": "CMI_E_APP",
+      "areaId": "01GT5453TNZP23T2730BXNSB4Q",
+      "tcpId": "01K2NF1DXN8CJC2DQDPHXK1JD6",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 40.0385608,
+        "lon": -88.2765392
       },
+      "range": 100,
       "freq": 121.35
     },
     {
+      "id": "01GT53Y2P5YNPZEYP383H2VM08",
+      "physicalFacility": "CMI",
+      "name": "Local",
+      "radioName": "Champaign Tower",
+      "callsign": "CMI_TWR",
+      "areaId": "01GT5453TNZP23T2730BXNSB4Q",
+      "tcpId": "01K2NF1DXNQ1K2BWXZ8ST88020",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 40.0385608,
+        "lon": -88.2765392
+      },
+      "range": 100,
+      "freq": 120.4
+    },
+    {
       "id": "01GT542A6ACXGKAN7P7KHXD6AZ",
+      "physicalFacility": "CMI",
       "name": "West Approach",
+      "radioName": "Champaign Approach",
       "callsign": "CMI_W_APP",
+      "areaId": "01GT5453TNZP23T2730BXNSB4Q",
+      "tcpId": "01K2NF1DXNJQ1D2Q80VYE8T5BH",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 40.0385608,
+        "lon": -88.2765392
       },
+      "range": 100,
       "freq": 132.85
-    },
-    {
-      "id": "01GT543DC6CDC4Q9PXKCPSKWFS",
-      "name": "Ground",
-      "callsign": "CMI_GND",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 121.8
-    },
-    {
-      "id": "01GT543SQZV0E4PYFJG558WXSZ",
-      "name": "Clearance Delivery",
-      "callsign": "CMI_DEL",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 128.75
-    },
-    {
-      "id": "1C",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
     }
   ],
   "mapGroups": [

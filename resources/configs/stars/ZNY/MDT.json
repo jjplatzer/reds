@@ -4,104 +4,361 @@
   "name": "Harrisburg ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 35.914982499999994,
-    "lon": -73.0446825
+    "lat": 40.21794002,
+    "lon": -76.50781581999999
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GAPPT2Z3Q9BNCZERCFS5CBH4",
-      "name": "Ground",
-      "callsign": "MDT_GND",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+      "id": "01H2BB5GJCK0QQ9BCZP6FRHA7D",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 40.1967,
+        "lon": -76.7589
       },
-      "freq": 121.7
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "9D4",
+        "CXY",
+        "LNS",
+        "MDT",
+        "MUI",
+        "N68",
+        "N71",
+        "N76",
+        "N79",
+        "N94",
+        "RDG",
+        "SEG",
+        "THV",
+        "ZER"
+      ],
+      "ssaAirports": [
+        "MDT",
+        "CXY",
+        "LNS",
+        "RDG",
+        "MUI"
+      ]
     },
     {
-      "id": "01GAPPTJMHZ2C2BQ0KHFHM6CBR",
-      "name": "Local",
-      "callsign": "MDT_TWR",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+      "id": "01H9V74F4X6A2EVG7BBKZDHFJ4",
+      "name": "Cab",
+      "visibilityCenter": {
+        "lat": 40.1967,
+        "lon": -76.7589
       },
-      "freq": 124.8
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "MDT"
+      ],
+      "ssaAirports": [
+        "MDT",
+        "CXY"
+      ]
+    },
+    {
+      "id": "01H9V85WNYFPPZ1QB46Q2V7G20",
+      "name": "Capital City Cab",
+      "visibilityCenter": {
+        "lat": 40.1967,
+        "lon": -76.7589
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "CXY"
+      ],
+      "ssaAirports": [
+        "CXY",
+        "MDT"
+      ]
+    },
+    {
+      "id": "01H9VEHBF4Z12599Q3DRDBC56T",
+      "name": "Lancaster Cab",
+      "visibilityCenter": {
+        "lat": 40.1223611,
+        "lon": -76.2943611
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "LNS"
+      ],
+      "ssaAirports": [
+        "LNS"
+      ]
+    },
+    {
+      "id": "01JVNA7XYHAB99GTBM16MKAZTQ",
+      "name": "Reading Cab",
+      "visibilityCenter": {
+        "lat": 40.377239,
+        "lon": -75.968018
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "RDG"
+      ],
+      "ssaAirports": [
+        "RDG"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DSGGZGSDVEFXW4WDZA9",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1DSGD15SEMX3M2NTCQ93",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSGN4C0YJDFQ0A0F5NZ",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSGD15SEMX3M2NTCQ93",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSGBCER6KQ6MWZDSSK9",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1DSGD15SEMX3M2NTCQ93",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSGGHQX4GSQD5YG4YQR",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSG9DTE765PR9A1Y33H",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1DSGBCER6KQ6MWZDSSK9",
+      "parentTcp": "1L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSG0MX9KT6MZFJQ7T8N",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSG9HYT3GFKTCQSG5E9",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01H2BC1HK7E9JP6KCBQSTSNW0Z",
+      "physicalFacility": "MDT",
+      "name": "Ravine",
+      "radioName": "Harrisburg Approach",
+      "callsign": "MDT_N_APP",
+      "areaId": "01H2BB5GJCK0QQ9BCZP6FRHA7D",
+      "tcpId": "01K2NF1DSGGZGSDVEFXW4WDZA9",
+      "tcp": "1A",
+      "visualCenter": {
+        "lat": 40.1967,
+        "lon": -76.7589
+      },
+      "range": 150,
+      "freq": 118.25
+    },
+    {
+      "id": "01JVNQ5MQGWYB72X4P5G45H5ZY",
+      "physicalFacility": "RDG",
+      "name": "Ground",
+      "radioName": "Reading Ground",
+      "callsign": "RDG_GND",
+      "areaId": "01JVNA7XYHAB99GTBM16MKAZTQ",
+      "tcpId": "01K2NF1DSGN4C0YJDFQ0A0F5NZ",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 40.377239,
+        "lon": -75.968018
+      },
+      "range": 50,
+      "freq": 121.9
+    },
+    {
+      "id": "01JVNQ3Y1X24PSGHQJQSATMFHP",
+      "physicalFacility": "RDG",
+      "name": "Local",
+      "radioName": "Reading Tower",
+      "callsign": "RDG_TWR",
+      "areaId": "01JVNA7XYHAB99GTBM16MKAZTQ",
+      "tcpId": "01K2NF1DSGN4C0YJDFQ0A0F5NZ",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 40.377239,
+        "lon": -75.968018
+      },
+      "range": 50,
+      "freq": 119.9
     },
     {
       "id": "01H1EVSZH7E0MCVEBQKX60FB4J",
+      "physicalFacility": "MDT",
       "name": "Harrisburg",
+      "radioName": "Harrisburg Approach",
       "callsign": "MDT_SW_APP",
+      "areaId": "01H2BB5GJCK0QQ9BCZP6FRHA7D",
+      "tcpId": "01K2NF1DSGD15SEMX3M2NTCQ93",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 40.1967,
+        "lon": -76.7589
       },
+      "range": 150,
       "freq": 124.1
     },
     {
       "id": "01H2BC0EN94FN53HDNAYQT5YXZ",
+      "physicalFacility": "MDT",
       "name": "Lancaster",
+      "radioName": "Harrisburg Approach",
       "callsign": "MDT_SE_APP",
+      "areaId": "01H2BB5GJCK0QQ9BCZP6FRHA7D",
+      "tcpId": "01K2NF1DSGBCER6KQ6MWZDSSK9",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 40.1967,
+        "lon": -76.7589
       },
+      "range": 150,
       "freq": 126.45
     },
     {
-      "id": "01H2BC1HK7E9JP6KCBQSTSNW0Z",
-      "name": "Ravine",
-      "callsign": "MDT_N_APP",
+      "id": "01GAPQM6VNP1KZM36BMAPEDKB8",
+      "physicalFacility": "LNS",
+      "name": "Ground",
+      "radioName": "Lancaster Ground",
+      "callsign": "LNS_GND",
+      "areaId": "01H9VEHBF4Z12599Q3DRDBC56T",
+      "tcpId": "01K2NF1DSGGHQX4GSQD5YG4YQR",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 40.1223611,
+        "lon": -76.2943611
       },
-      "freq": 118.25
+      "range": 50,
+      "freq": 121.8
+    },
+    {
+      "id": "01GAPQPNJA8Z3M3S1E8H3ME3XS",
+      "physicalFacility": "LNS",
+      "name": "Local",
+      "radioName": "Lancaster Tower",
+      "callsign": "LNS_TWR",
+      "areaId": "01H9VEHBF4Z12599Q3DRDBC56T",
+      "tcpId": "01K2NF1DSGGHQX4GSQD5YG4YQR",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 40.1223611,
+        "lon": -76.2943611
+      },
+      "range": 50,
+      "freq": 120.9
     },
     {
       "id": "01JVN9S7NPDTV420XCE3FNXFSF",
+      "physicalFacility": "MDT",
       "name": "Reading",
+      "radioName": "Harrisburg Approach",
       "callsign": "MDT_R_APP",
+      "areaId": "01H2BB5GJCK0QQ9BCZP6FRHA7D",
+      "tcpId": "01K2NF1DSG9DTE765PR9A1Y33H",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 40.1967,
+        "lon": -76.7589
       },
+      "range": 150,
       "freq": 125.15
     },
     {
-      "id": "1D",
+      "id": "01GAPPT2Z3Q9BNCZERCFS5CBH4",
+      "physicalFacility": "MDT",
+      "name": "Ground",
+      "radioName": "Harrisburg Ground",
+      "callsign": "MDT_GND",
+      "areaId": "01H9V74F4X6A2EVG7BBKZDHFJ4",
+      "tcpId": "01K2NF1DSG0MX9KT6MZFJQ7T8N",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 40.1967,
+        "lon": -76.7589
+      },
+      "range": 50,
+      "freq": 121.7
     },
     {
-      "id": "1H",
+      "id": "01GAPPTJMHZ2C2BQ0KHFHM6CBR",
+      "physicalFacility": "MDT",
+      "name": "Local",
+      "radioName": "Harrisburg Tower",
+      "callsign": "MDT_TWR",
+      "areaId": "01H9V74F4X6A2EVG7BBKZDHFJ4",
+      "tcpId": "01K2NF1DSG0MX9KT6MZFJQ7T8N",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 40.1967,
+        "lon": -76.7589
+      },
+      "range": 50,
+      "freq": 124.8
     },
     {
-      "id": "1L",
+      "id": "01GAPQ6CZM3ZNVYZGD5NGEGMNX",
+      "physicalFacility": "CXY",
+      "name": "Ground",
+      "radioName": "Capital City Ground",
+      "callsign": "CXY_GND",
+      "areaId": "01H9V85WNYFPPZ1QB46Q2V7G20",
+      "tcpId": "01K2NF1DSG9HYT3GFKTCQSG5E9",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 40.1967,
+        "lon": -76.7589
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1R",
+      "id": "01GAPQ6YXTTJRHK1CEKPYBEX0P",
+      "physicalFacility": "CXY",
+      "name": "Local",
+      "radioName": "Capital City Tower",
+      "callsign": "CXY_TWR",
+      "areaId": "01H9V85WNYFPPZ1QB46Q2V7G20",
+      "tcpId": "01K2NF1DSG9HYT3GFKTCQSG5E9",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
+        "lat": 40.1967,
+        "lon": -76.7589
+      },
+      "range": 50,
+      "freq": 119.5
     }
   ],
   "mapGroups": [

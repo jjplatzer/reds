@@ -4,165 +4,319 @@
   "name": "San Antonio ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 29.558963,
+    "lon": -98.469303
   },
+  "areas": [
+    {
+      "id": "01H0E97F788X74S7GWJ778D3ZE",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 29.558963,
+        "lon": -98.469303
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "5C1",
+        "BAZ",
+        "CVB",
+        "PEZ",
+        "RND",
+        "SAT",
+        "SKF",
+        "SSF"
+      ],
+      "ssaAirports": [
+        "SAT",
+        "RND",
+        "SKF",
+        "SSF",
+        "BAZ",
+        "PEZ"
+      ]
+    },
+    {
+      "id": "01JCPP7HV291VN95RN6DPSQZSN",
+      "name": "SAT TOWER",
+      "visibilityCenter": {
+        "lat": 29.558963,
+        "lon": -98.469303
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "SAT"
+      ],
+      "ssaAirports": [
+        "SAT"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDRTKDMRCT58ERM2T38",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1CDR0SXZMC6E1DGRY3VF",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1CDRVGK7G4CMEJKYXJNP",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1CDR5VHH939AQKD71Y9S",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H"
+    },
+    {
+      "id": "01K2NF1CDR2YRRN2MVX2HMDNTM",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1CDRXNG6CJ0RWQD5VY4A",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1CDRBFJZZX969VZG6450",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N"
+    },
+    {
+      "id": "01K2NF1CDRFAJ3D2A40X6ZHYMA",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q"
+    },
+    {
+      "id": "01K2NF1CDR7Y97J03E9EK78XR9",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1CDRWW5SPCQFE9N97J7R",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S"
+    },
+    {
+      "id": "01K2NF1CDR4K24Z7DX7QAVG0FV",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1CDRAA1WFJR0CZVS5EWB",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GSJ3E86640S7C32S2H70KCRJ",
-      "name": "Clearance Delivery",
-      "callsign": "SAT_DEL",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 126.7
-    },
-    {
-      "id": "01GSJ3F8BX8PWT4ERW8E3K5P01",
-      "name": "Ground",
-      "callsign": "SAT_GND",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GSJ3GFW5T42XWA8QMBSDT9EE",
+      "id": "01GBTB6XGG696TD07N01M6TEKR",
+      "physicalFacility": "SKF",
       "name": "Local",
-      "callsign": "SAT_TWR",
+      "radioName": "Kelly Tower",
+      "callsign": "SKF_TWR",
+      "areaId": "01H0E97F788X74S7GWJ778D3ZE",
+      "tcpId": "01K2NF1CDRTKDMRCT58ERM2T38",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.558963,
+        "lon": -98.469303
       },
-      "freq": 119.8
+      "range": 100,
+      "freq": 124.3
     },
     {
-      "id": "01GSJ3KH0817WJ7MKE3EDWAMT5",
-      "name": "North Approach",
-      "callsign": "SAT_N_APP",
+      "id": "01GBTBEFWZBP7QPQAT7Q1FD6J3",
+      "physicalFacility": "RND",
+      "name": "Randolph Local",
+      "radioName": "Randolph Tower",
+      "callsign": "RND_R_TWR",
+      "areaId": "01H0E97F788X74S7GWJ778D3ZE",
+      "tcpId": "01K2NF1CDR0SXZMC6E1DGRY3VF",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.558963,
+        "lon": -98.469303
       },
-      "freq": 127.1
+      "range": 100,
+      "freq": 128.25
     },
     {
-      "id": "01GSJ3T19TXEEY1804TRKQRZF4",
-      "name": "South Approach",
-      "callsign": "SAT_S_APP",
+      "id": "01GBTBBARM89ETC93GHENNWW7S",
+      "physicalFacility": "SSF",
+      "name": "Local",
+      "radioName": "Stinson Tower",
+      "callsign": "SSF_TWR",
+      "areaId": "01H0E97F788X74S7GWJ778D3ZE",
+      "tcpId": "01K2NF1CDRVGK7G4CMEJKYXJNP",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.558963,
+        "lon": -98.469303
       },
-      "freq": 125.7
+      "range": 100,
+      "freq": 118.2
     },
     {
-      "id": "01GSJ3VTJ1623HZQWRJYKMV888",
-      "name": "West Approach",
-      "callsign": "SAT_W_APP",
+      "id": "01GBTBF6XDDVG8114TNTJF690Z",
+      "physicalFacility": "RND",
+      "name": "Hangover Local",
+      "radioName": "Hangover Towre",
+      "callsign": "RND_H_TWR",
+      "areaId": "01H0E97F788X74S7GWJ778D3ZE",
+      "tcpId": "01K2NF1CDR5VHH939AQKD71Y9S",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.558963,
+        "lon": -98.469303
       },
-      "freq": 125.1
+      "range": 100,
+      "freq": 120.5
     },
     {
       "id": "01H5TQFDKQM5P2FJM26XQMKN8Z",
+      "physicalFacility": "SAT",
       "name": "Kelley Approach",
+      "radioName": "San Antonio Approach",
       "callsign": "SAT_K_APP",
+      "areaId": "01H0E97F788X74S7GWJ778D3ZE",
+      "tcpId": "01K2NF1CDR2YRRN2MVX2HMDNTM",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.558963,
+        "lon": -98.469303
       },
+      "range": 100,
       "freq": 118.05
     },
     {
-      "id": "01H5TQHYZ94PR5KKT4Q0HGNY01",
-      "name": "Randolph Approach",
-      "callsign": "SAT_R_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 128.05
-    },
-    {
       "id": "01H5TQMP97NKFH8JSXBXTN3239",
+      "physicalFacility": "SAT",
       "name": "Low Approach",
+      "radioName": "San Antonio Approach",
       "callsign": "SAT_L_APP",
+      "areaId": "01H0E97F788X74S7GWJ778D3ZE",
+      "tcpId": "01K2NF1CDRXNG6CJ0RWQD5VY4A",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.558963,
+        "lon": -98.469303
       },
+      "range": 100,
       "freq": 120.55
     },
     {
-      "id": "01H5TQNP22J5MQCHN719RVKP97",
-      "name": "Final Approach",
-      "callsign": "SAT_Q_APP",
+      "id": "01GSJ3KH0817WJ7MKE3EDWAMT5",
+      "physicalFacility": "SAT",
+      "name": "North Approach",
+      "radioName": "San Antonio Approach",
+      "callsign": "SAT_N_APP",
+      "areaId": "01H0E97F788X74S7GWJ778D3ZE",
+      "tcpId": "01K2NF1CDRBFJZZX969VZG6450",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 29.558963,
+        "lon": -98.469303
       },
+      "range": 100,
+      "freq": 127.1
+    },
+    {
+      "id": "01H5TQNP22J5MQCHN719RVKP97",
+      "physicalFacility": "SAT",
+      "name": "Final Approach",
+      "radioName": "San Antonio Approach",
+      "callsign": "SAT_Q_APP",
+      "areaId": "01H0E97F788X74S7GWJ778D3ZE",
+      "tcpId": "01K2NF1CDRFAJ3D2A40X6ZHYMA",
+      "tcp": "1Q",
+      "visualCenter": {
+        "lat": 29.558963,
+        "lon": -98.469303
+      },
+      "range": 100,
       "freq": 124.45
     },
     {
-      "id": "1K",
+      "id": "01H5TQHYZ94PR5KKT4Q0HGNY01",
+      "physicalFacility": "SAT",
+      "name": "Randolph Approach",
+      "radioName": "San Antonio Approach",
+      "callsign": "SAT_R_APP",
+      "areaId": "01H0E97F788X74S7GWJ778D3ZE",
+      "tcpId": "01K2NF1CDR7Y97J03E9EK78XR9",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.558963,
+        "lon": -98.469303
+      },
+      "range": 100,
+      "freq": 128.05
     },
     {
-      "id": "1L",
+      "id": "01GSJ3T19TXEEY1804TRKQRZF4",
+      "physicalFacility": "SAT",
+      "name": "South Approach",
+      "radioName": "San Antonio Approach",
+      "callsign": "SAT_S_APP",
+      "areaId": "01H0E97F788X74S7GWJ778D3ZE",
+      "tcpId": "01K2NF1CDRWW5SPCQFE9N97J7R",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.558963,
+        "lon": -98.469303
+      },
+      "range": 100,
+      "freq": 125.7
     },
     {
-      "id": "1N",
+      "id": "01GSJ3GFW5T42XWA8QMBSDT9EE",
+      "physicalFacility": "SAT",
+      "name": "Local",
+      "radioName": "San Antonio Tower",
+      "callsign": "SAT_TWR",
+      "areaId": "01H0E97F788X74S7GWJ778D3ZE",
+      "tcpId": "01K2NF1CDR4K24Z7DX7QAVG0FV",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.558963,
+        "lon": -98.469303
+      },
+      "range": 100,
+      "freq": 119.8
     },
     {
-      "id": "1Q",
+      "id": "01GSJ3VTJ1623HZQWRJYKMV888",
+      "physicalFacility": "SAT",
+      "name": "West Approach",
+      "radioName": "San Antonio Approach",
+      "callsign": "SAT_W_APP",
+      "areaId": "01H0E97F788X74S7GWJ778D3ZE",
+      "tcpId": "01K2NF1CDRAA1WFJR0CZVS5EWB",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 29.558963,
+        "lon": -98.469303
+      },
+      "range": 100,
+      "freq": 125.1
     }
   ],
   "mapGroups": [

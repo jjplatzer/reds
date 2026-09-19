@@ -4,94 +4,243 @@
   "name": "Jackson ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 35.0424167,
-    "lon": -89.9766667
+    "lat": 32.31903706666667,
+    "lon": -90.12476853333332
   },
+  "areas": [
+    {
+      "id": "01GPCJ9ZBK2Y9N5339FR1SP7ST",
+      "name": "JAN TRACON",
+      "visibilityCenter": {
+        "lat": 32.3111667,
+        "lon": -90.0758889
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "12MS",
+        "18MS",
+        "1MS4",
+        "37MS",
+        "3MS3",
+        "3MS6",
+        "4MS0",
+        "4MS2",
+        "4MS6",
+        "4MS9",
+        "5MS6",
+        "6MS1",
+        "6MS2",
+        "6MS6",
+        "7MS1",
+        "7MS4",
+        "7MS7",
+        "99MS",
+        "HKS",
+        "JAN",
+        "JVW",
+        "MBO",
+        "MS07",
+        "MS08",
+        "MS11",
+        "MS20",
+        "MS29",
+        "MS36",
+        "MS46",
+        "MS58",
+        "MS69",
+        "MS71",
+        "MS90",
+        "MS91"
+      ],
+      "ssaAirports": [
+        "JAN",
+        "HKS"
+      ]
+    },
+    {
+      "id": "01GWXHPM6S7H0AJ5RQCPH42H41",
+      "name": "HKS TOWER",
+      "visibilityCenter": {
+        "lat": 32.3347778,
+        "lon": -90.2225278
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "HKS"
+      ],
+      "ssaAirports": [
+        "HKS"
+      ]
+    },
+    {
+      "id": "01JCYDRA1AWAF8JFK8X2VWW2JV",
+      "name": "JAN TOWER",
+      "visibilityCenter": {
+        "lat": 32.3111667,
+        "lon": -90.0758889
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "JAN"
+      ],
+      "ssaAirports": [
+        "JAN"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D19YQZBE6TQB9KFRRNG",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KMF3V735N8WJR09H4X6G0MRE",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1D19YQZBE6TQB9KFRRNG",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19R3TWNZXZB6A38JR0",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19AWPS8F068RPPJTSF",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19NZXFJ3G8RZJ4BCYK",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1D19YQZBE6TQB9KFRRNG",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GPCFQ39Q6JWZ9C6KZTN9Q9ZB",
-      "name": "Ground",
-      "callsign": "JAN_GND",
+      "id": "01GPCJ19E8ZJ9ZCK19G89YQWC6",
+      "physicalFacility": "JAN",
+      "name": "East Radar",
+      "radioName": "Jackson Approach",
+      "callsign": "JAN_E_APP",
+      "areaId": "01GPCJ9ZBK2Y9N5339FR1SP7ST",
+      "tcpId": "01K2NF1D19YQZBE6TQB9KFRRNG",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 32.3111667,
+        "lon": -90.0758889
       },
+      "range": 150,
+      "freq": 123.9
+    },
+    {
+      "id": "01KMF3VNHRK81C24P1TXYSBB3V",
+      "physicalFacility": "JAN",
+      "name": "Final Radar",
+      "radioName": "Jackson Approach",
+      "callsign": "JAN_F_APP",
+      "areaId": "01GPCJ9ZBK2Y9N5339FR1SP7ST",
+      "tcpId": "01KMF3V735N8WJR09H4X6G0MRE",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 32.3111667,
+        "lon": -90.0758889
+      },
+      "range": 150,
+      "freq": 119.05
+    },
+    {
+      "id": "01GPCFG1TY026BFAHQV9XEYGDG",
+      "physicalFacility": "HKS",
+      "name": "Ground",
+      "radioName": "Hawkins Ground",
+      "callsign": "HKS_GND",
+      "areaId": "01GWXHPM6S7H0AJ5RQCPH42H41",
+      "tcpId": "01K2NF1D19R3TWNZXZB6A38JR0",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 32.3347778,
+        "lon": -90.2225278
+      },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
+      "id": "01GPCFGSZ7A4R2VDES0D10BKXY",
+      "physicalFacility": "HKS",
+      "name": "Local",
+      "radioName": "Hawkins Tower",
+      "callsign": "HKS_TWR",
+      "areaId": "01GWXHPM6S7H0AJ5RQCPH42H41",
+      "tcpId": "01K2NF1D19R3TWNZXZB6A38JR0",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 32.3347778,
+        "lon": -90.2225278
+      },
+      "range": 150,
+      "freq": 119.65
+    },
+    {
+      "id": "01GPCFQ39Q6JWZ9C6KZTN9Q9ZB",
+      "physicalFacility": "JAN",
+      "name": "Ground",
+      "radioName": "Jackson Ground",
+      "callsign": "JAN_GND",
+      "areaId": "01JCYDRA1AWAF8JFK8X2VWW2JV",
+      "tcpId": "01K2NF1D19AWPS8F068RPPJTSF",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 32.3111667,
+        "lon": -90.0758889
+      },
+      "range": 50,
       "freq": 121.7
     },
     {
       "id": "01GPCFRSDJ9HB0G2WSYA6P003H",
+      "physicalFacility": "JAN",
       "name": "Local",
+      "radioName": "Jackson Tower",
       "callsign": "JAN_TWR",
+      "areaId": "01JCYDRA1AWAF8JFK8X2VWW2JV",
+      "tcpId": "01K2NF1D19AWPS8F068RPPJTSF",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 32.3111667,
+        "lon": -90.0758889
       },
+      "range": 50,
       "freq": 120.9
     },
     {
-      "id": "01GPCJ19E8ZJ9ZCK19G89YQWC6",
-      "name": "East Radar",
-      "callsign": "JAN_E_APP",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 123.9
-    },
-    {
       "id": "01GPCJ5X07KN0SX2WSPGSJVDVK",
+      "physicalFacility": "JAN",
       "name": "West Radar",
+      "radioName": "Jackson Approach",
       "callsign": "JAN_W_APP",
+      "areaId": "01GPCJ9ZBK2Y9N5339FR1SP7ST",
+      "tcpId": "01K2NF1D19NZXFJ3G8RZJ4BCYK",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 32.3111667,
+        "lon": -90.0758889
       },
+      "range": 150,
       "freq": 125.25
-    },
-    {
-      "id": "01KMF3VNHRK81C24P1TXYSBB3V",
-      "name": "Final Radar",
-      "callsign": "JAN_F_APP",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 119.05
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
     }
   ],
   "mapGroups": [

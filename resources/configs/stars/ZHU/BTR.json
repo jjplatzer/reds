@@ -4,80 +4,112 @@
   "name": "Baton Rouge ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 30.533241,
+    "lon": -91.137558
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GSE1B5Q870KYFR9ZXQCHH4CV",
-      "name": "Clearance Delivery",
-      "callsign": "BTR_DEL",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+      "id": "01GZHP34QD8QHPDCG7W2VC6MV2",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 30.533241,
+        "lon": -91.137558
       },
-      "freq": 119.4
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "7L9",
+        "BTR",
+        "HZR",
+        "REG"
+      ],
+      "ssaAirports": [
+        "BTR"
+      ]
     },
     {
-      "id": "01GSE1X3WF7TWYD2F5JWT6W12Q",
-      "name": "Ground",
-      "callsign": "BTR_GND",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+      "id": "01JCPNXCVJG2AC92057ASGBSZ8",
+      "name": "BTR TOWER",
+      "visibilityCenter": {
+        "lat": 30.533241,
+        "lon": -91.137558
       },
-      "freq": 121.9
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "BTR"
+      ],
+      "ssaAirports": [
+        "BTR"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDRQ4NM5RTQNBKB00XP",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1CDRCE8Z7DRVTKYWSB3Q",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1CDRAJQ9DECSTZFTH1VC",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GSE20Y39XC827A3NC58MM2GM",
+      "physicalFacility": "BTR",
+      "name": "East Approach",
+      "radioName": "Batton Rouge Approach",
+      "callsign": "BTR_E_APP",
+      "areaId": "01GZHP34QD8QHPDCG7W2VC6MV2",
+      "tcpId": "01K2NF1CDRQ4NM5RTQNBKB00XP",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 30.533241,
+        "lon": -91.137558
+      },
+      "range": 100,
+      "freq": 126.5
     },
     {
       "id": "01GSE1Y02KVXDF1QBT9B6ZNG4M",
+      "physicalFacility": "BTR",
       "name": "Local",
+      "radioName": "Ryan Tower",
       "callsign": "BTR_TWR",
+      "areaId": "01GZHP34QD8QHPDCG7W2VC6MV2",
+      "tcpId": "01K2NF1CDRCE8Z7DRVTKYWSB3Q",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.533241,
+        "lon": -91.137558
       },
+      "range": 100,
       "freq": 118.45
     },
     {
       "id": "01GSE1ZD23MYVV92AKC6859XJV",
+      "physicalFacility": "BTR",
       "name": "West Approach",
+      "radioName": "Baton Rouge Approach",
       "callsign": "BTR_W_APP",
+      "areaId": "01GZHP34QD8QHPDCG7W2VC6MV2",
+      "tcpId": "01K2NF1CDRAJQ9DECSTZFTH1VC",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.533241,
+        "lon": -91.137558
       },
+      "range": 100,
       "freq": 120.3
-    },
-    {
-      "id": "01GSE20Y39XC827A3NC58MM2GM",
-      "name": "East Approach",
-      "callsign": "BTR_E_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 126.5
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
     }
   ],
   "mapGroups": [

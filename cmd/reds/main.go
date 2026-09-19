@@ -134,7 +134,7 @@ func run(logger *redslog.Logger) error {
 
 	plat, err := platform.New(&platform.Config{
 		Title:             "REDS",
-		InitialWindowSize: [2]int{275, 350},
+		InitialWindowSize: [2]int{275, 475},
 		MinWindowSize:     [2]int{200, 200},
 		Resizable:         true,
 	})
@@ -174,9 +174,17 @@ func run(logger *redslog.Logger) error {
 			slog.Any("error", m.eramLoadErr),
 		)
 	}
+	if len(m.starsFacilities) == 0 {
+		logger.Error(
+			"No STARS facilities found",
+			slog.String("path", "resources/configs/stars"),
+			slog.Any("error", m.starsLoadErr),
+		)
+	}
 	logger.Info(
 		"Startup menu loaded",
 		slog.Int("asdex_facilities", len(m.asdexFacilities)),
+		slog.Int("stars_facilities", len(m.starsFacilities)),
 		slog.Int("eram_facilities", len(m.eramFacilities)),
 	)
 
@@ -258,6 +266,15 @@ func selectionLogAttrs(selection Selection) []any {
 			attrs,
 			slog.String("sector_id", selection.Sector.ID),
 			slog.String("sector_name", selection.Sector.Name),
+		)
+	}
+	if selection.Mode == DisplaySTARS && selection.Position != nil {
+		attrs = append(
+			attrs,
+			slog.String("tracon", selection.TRACON),
+			slog.String("position_id", selection.Position.ID),
+			slog.String("tcp", selection.Position.TCP),
+			slog.String("callsign", selection.Position.Callsign),
 		)
 	}
 	return attrs
@@ -347,7 +364,7 @@ func switchToMenu(
 		plat.ClearCursorOverride()
 		plat.SetWindowDecorated(true)
 		plat.SetWindowTitle("REDS")
-		plat.SetWindowSizeCentered(275, 350)
+		plat.SetWindowSizeCentered(275, 475)
 		plat.ShowSystemCursor()
 	}
 	if m != nil {

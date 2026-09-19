@@ -4,80 +4,169 @@
   "name": "El Paso ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 34.19564814666666,
-    "lon": -107.50666666666666
+    "lat": 31.8055556,
+    "lon": -106.3833333
   },
+  "areas": [
+    {
+      "id": "01G98MERSFXGHAY9261NNWT622",
+      "name": "ELP",
+      "visibilityCenter": {
+        "lat": 31.8055556,
+        "lon": -106.3833333
+      },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "BIF",
+        "ELP",
+        "DNA"
+      ],
+      "ssaAirports": [
+        "BIF",
+        "ELP"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1BHS98RR1QS5X4A3AB7G",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSHZX53E0JVM3Z1XE4",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSK6VT896PE9ZEJRWQ",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSKYA75PMDWT2AXE34",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1BHSK6VT896PE9ZEJRWQ",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHS0F9JNFPRYQGR87J1",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSZXMF9J1QCJF03FYK",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHS5NDMPB9EP1JHSP8G",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHSHWAACRV74YFEBKT8",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G98MG0KBYSWPE5WKVMXTH918",
+      "physicalFacility": "ELP",
       "name": "North Approach",
+      "radioName": "El Paso Approach",
       "callsign": "ELP_N_APP",
+      "areaId": "01G98MERSFXGHAY9261NNWT622",
+      "tcpId": "01K2NF1BHSK6VT896PE9ZEJRWQ",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 31.8055556,
+        "lon": -106.3833333
       },
+      "range": 75,
       "freq": 124.25
     },
     {
       "id": "01G98MJ26JSTVX82S654C7PHCX",
+      "physicalFacility": "ELP",
       "name": "South Approach",
+      "radioName": "El Paso Approach",
       "callsign": "ELP_S_APP",
+      "areaId": "01G98MERSFXGHAY9261NNWT622",
+      "tcpId": "01K2NF1BHSKYA75PMDWT2AXE34",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 31.8055556,
+        "lon": -106.3833333
       },
+      "range": 75,
       "freq": 119.15
     },
     {
-      "id": "01G98MKHZJPXVKV9D4GDYQ28EW",
-      "name": "Local Control",
-      "callsign": "ELP_TWR",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 118.3
-    },
-    {
-      "id": "01G98MMM5BD5FCJXBEQFKBBS1S",
-      "name": "Ground",
-      "callsign": "ELP_GND",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 121.9
-    },
-    {
       "id": "01G98MNMM9ANRBDPC1NBDXFV4E",
+      "physicalFacility": "ELP",
       "name": "Clearance Delivery",
+      "radioName": "El Paso Clearance Delivery",
       "callsign": "ELP_DEL",
+      "areaId": "01G98MERSFXGHAY9261NNWT622",
+      "tcpId": "01K2NF1BHSHWAACRV74YFEBKT8",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 31.8055556,
+        "lon": -106.3833333
       },
+      "range": 75,
       "freq": 125
     },
     {
-      "id": "1N",
+      "id": "01G98MMM5BD5FCJXBEQFKBBS1S",
+      "physicalFacility": "ELP",
+      "name": "Ground",
+      "radioName": "El Paso Ground",
+      "callsign": "ELP_GND",
+      "areaId": "01G98MERSFXGHAY9261NNWT622",
+      "tcpId": "01K2NF1BHSHWAACRV74YFEBKT8",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 31.8055556,
+        "lon": -106.3833333
+      },
+      "range": 75,
+      "freq": 121.9
     },
     {
-      "id": "1S",
+      "id": "01G98MKHZJPXVKV9D4GDYQ28EW",
+      "physicalFacility": "ELP",
+      "name": "Local Control",
+      "radioName": "El Paso Tower",
+      "callsign": "ELP_TWR",
+      "areaId": "01G98MERSFXGHAY9261NNWT622",
+      "tcpId": "01K2NF1BHSHWAACRV74YFEBKT8",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 31.8055556,
+        "lon": -106.3833333
+      },
+      "range": 75,
+      "freq": 118.3
     }
   ],
   "mapGroups": [

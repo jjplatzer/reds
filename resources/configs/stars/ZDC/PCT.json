@@ -4,833 +4,2104 @@
   "name": "Potomac Consolidated TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 37,
-    "lon": -77
+    "lat": 38.79170715882353,
+    "lon": -77.15671013529412
   },
+  "areas": [
+    {
+      "id": "01GNAB2E7QW35BWQN8VN2ZESQN",
+      "name": "Chesapeake",
+      "visibilityCenter": {
+        "lat": 39.174652,
+        "lon": -76.689543
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "BWI",
+        "ANP",
+        "APG",
+        "DMW",
+        "EDG",
+        "ESN",
+        "FME",
+        "GAI",
+        "MD43",
+        "MD95",
+        "MTN",
+        "RJD",
+        "W18",
+        "W29",
+        "W42",
+        "W48",
+        "W50",
+        "9W8",
+        "0W3",
+        "1W5",
+        "2W2",
+        "3W3",
+        "6W6"
+      ],
+      "ssaAirports": [
+        "BWI",
+        "DMW",
+        "ESN",
+        "FME",
+        "GAI",
+        "MRB",
+        "MTN"
+      ]
+    },
+    {
+      "id": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "name": "Shenandoah",
+      "visibilityCenter": {
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "IAD",
+        "CJR",
+        "EZF",
+        "FDK",
+        "FRR",
+        "HEF",
+        "HGR",
+        "HWY",
+        "JYO",
+        "MRB",
+        "NYG",
+        "OKV",
+        "RMN",
+        "W05",
+        "W35",
+        "2VA9",
+        "2VG2"
+      ],
+      "ssaAirports": [
+        "FDK",
+        "HEF",
+        "HGR",
+        "IAD",
+        "JYO",
+        "MRB",
+        "NYG"
+      ]
+    },
+    {
+      "id": "01GNAB7YSB371AKV9R1FSVV3N2",
+      "name": "Mount Vernon",
+      "visibilityCenter": {
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "DCA",
+        "ADW",
+        "CGS",
+        "DAA",
+        "NDY",
+        "VKX",
+        "W00",
+        "W32",
+        "2W5"
+      ],
+      "ssaAirports": [
+        "ADW",
+        "CGS",
+        "DAA",
+        "DCA"
+      ]
+    },
+    {
+      "id": "01GNAB8FH8KN04SN9R6F5M3BTZ",
+      "name": "James River",
+      "visibilityCenter": {
+        "lat": 37.506819,
+        "lon": -77.325857
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "RIC",
+        "CHO",
+        "APH",
+        "FCI",
+        "FYJ",
+        "GVE",
+        "LKU",
+        "OFP",
+        "OMH",
+        "PTB",
+        "SHD",
+        "VA39",
+        "VBW",
+        "W13",
+        "W96",
+        "XSA",
+        "NHK",
+        "CGE",
+        "MFV",
+        "N06",
+        "NUI",
+        "OXB",
+        "SBY",
+        "TGI",
+        "W41",
+        "WAL",
+        "1N5",
+        "2W6"
+      ],
+      "ssaAirports": [
+        "CHO",
+        "RIC",
+        "SBY",
+        "WAL"
+      ]
+    },
+    {
+      "id": "01GNABBJNMHSF9QZSE08W7M22E",
+      "name": "Consolidated",
+      "visibilityCenter": {
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "BWI",
+        "ANP",
+        "APG",
+        "DMW",
+        "EDG",
+        "ESN",
+        "FDK",
+        "FME",
+        "GAI",
+        "MD43",
+        "MD95",
+        "MTN",
+        "RJD",
+        "W18",
+        "W29",
+        "W42",
+        "W48",
+        "W50",
+        "9W8",
+        "0W3",
+        "1W5",
+        "2W2",
+        "3W3",
+        "6W6",
+        "IAD",
+        "CJR",
+        "EZF",
+        "FRR",
+        "HEF",
+        "HGR",
+        "HWY",
+        "JYO",
+        "MRB",
+        "NYG",
+        "OKV",
+        "RMN",
+        "W05",
+        "W35",
+        "2VA9",
+        "2VG2",
+        "DCA",
+        "ADW",
+        "CGS",
+        "DAA",
+        "NDY",
+        "NSF",
+        "VKX",
+        "W00",
+        "W32",
+        "2W5",
+        "RIC",
+        "CHO",
+        "APH",
+        "FCI",
+        "FYJ",
+        "GVE",
+        "LKU",
+        "OFP",
+        "OMH",
+        "PTB",
+        "SHD",
+        "VA39",
+        "VBW",
+        "W13",
+        "W96",
+        "XSA",
+        "NHK",
+        "CGE",
+        "MFV",
+        "N06",
+        "NUI",
+        "OXB",
+        "SBY",
+        "TGI",
+        "W41",
+        "WAL",
+        "1N5",
+        "2W6"
+      ],
+      "ssaAirports": [
+        "ADW",
+        "BWI",
+        "CHO",
+        "DCA",
+        "IAD",
+        "RIC"
+      ]
+    },
+    {
+      "id": "01GNJ79SR724PPNPWB0C9PRQP8",
+      "name": "Andrews Tower",
+      "visibilityCenter": {
+        "lat": 38.80522,
+        "lon": -76.87771
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "ADW"
+      ],
+      "ssaAirports": [
+        "ADW",
+        "DCA"
+      ]
+    },
+    {
+      "id": "01GNJ7BPZQWD3MV1ASW5YA81YC",
+      "name": "Baltimore Tower",
+      "visibilityCenter": {
+        "lat": 39.17919,
+        "lon": -76.66839
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "BWI"
+      ],
+      "ssaAirports": [
+        "BWI"
+      ]
+    },
+    {
+      "id": "01GNJ7CV164DVF5WM17MG905A4",
+      "name": "Charlottesville Tower",
+      "visibilityCenter": {
+        "lat": 38.13888,
+        "lon": -78.4498
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "CHO"
+      ],
+      "ssaAirports": [
+        "CHO"
+      ]
+    },
+    {
+      "id": "01GNJ7F44JMCYS843A977CJZE3",
+      "name": "Davison Tower",
+      "visibilityCenter": {
+        "lat": 38.71441,
+        "lon": -77.17729
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "DAA"
+      ],
+      "ssaAirports": [
+        "DAA",
+        "DCA"
+      ]
+    },
+    {
+      "id": "01GNJ7FVTPHE7731ZZ914P1K29",
+      "name": "Washington Tower",
+      "visibilityCenter": {
+        "lat": 38.8512,
+        "lon": -77.0402
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "DCA"
+      ],
+      "ssaAirports": [
+        "DCA",
+        "ADW",
+        "DAA"
+      ]
+    },
+    {
+      "id": "01GNJ7GYYEZ3XGM1WMSG4K4271",
+      "name": "Easton Tower",
+      "visibilityCenter": {
+        "lat": 38.80592,
+        "lon": -76.06998
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "ESN"
+      ],
+      "ssaAirports": [
+        "ESN"
+      ]
+    },
+    {
+      "id": "01GNJ7HMK88B3B5QCDW8DVGZG4",
+      "name": "Manassas Tower",
+      "visibilityCenter": {
+        "lat": 38.721,
+        "lon": -77.51935
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "HEF"
+      ],
+      "ssaAirports": [
+        "HEF",
+        "IAD",
+        "NYG"
+      ]
+    },
+    {
+      "id": "01GNJ7P3P175X9NKBWSJQSC99W",
+      "name": "Dulles Tower",
+      "visibilityCenter": {
+        "lat": 38.93905,
+        "lon": -77.44875
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "IAD"
+      ],
+      "ssaAirports": [
+        "IAD"
+      ]
+    },
+    {
+      "id": "01GNJ7PSYJ5D2HW8N9EG98F732",
+      "name": "Martin Tower",
+      "visibilityCenter": {
+        "lat": 39.32944,
+        "lon": -76.42105
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "MTN"
+      ],
+      "ssaAirports": [
+        "MTN"
+      ]
+    },
+    {
+      "id": "01GNJ89JCEB153WCPSSEZ7VV90",
+      "name": "Hagerstown Tower",
+      "visibilityCenter": {
+        "lat": 39.71056,
+        "lon": -77.73066
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "HGR"
+      ],
+      "ssaAirports": [
+        "HGR"
+      ]
+    },
+    {
+      "id": "01GSGAH1QKZXZ0PXJHD862H6GB",
+      "name": "Richmond Tower",
+      "visibilityCenter": {
+        "lat": 37.5134,
+        "lon": -77.33264
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "RIC"
+      ],
+      "ssaAirports": [
+        "RIC"
+      ]
+    },
+    {
+      "id": "01JK6GMTN8A8R8ESNJ007NDED2",
+      "name": "Frederick Tower",
+      "visibilityCenter": {
+        "lat": 39.4170211,
+        "lon": -77.3747322
+      },
+      "surveillanceRange": 99,
+      "underlyingAirports": [
+        "FDK"
+      ],
+      "ssaAirports": [
+        "FDK",
+        "IAD"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E0SA1HKB7WZPR115HJJ",
+      "code": "11",
+      "subset": 1,
+      "sectorId": "1"
+    },
+    {
+      "id": "01K2NF1E0SPYPGS2XVZRT8MG6T",
+      "code": "12",
+      "subset": 1,
+      "sectorId": "2"
+    },
+    {
+      "id": "01K2NF1E0S1AS5230YE6MWPMP6",
+      "code": "13",
+      "subset": 1,
+      "sectorId": "3"
+    },
+    {
+      "id": "01K2NF1E0SRCMEFW7HTZ04M9AF",
+      "code": "14",
+      "subset": 1,
+      "sectorId": "4"
+    },
+    {
+      "id": "01K2NF1E0SMR3MR6G7YHCZH3HA",
+      "code": "15",
+      "subset": 1,
+      "sectorId": "5"
+    },
+    {
+      "id": "01K2NF1E0SABWZM5P22DZ215CF",
+      "code": "17",
+      "subset": 1,
+      "sectorId": "7"
+    },
+    {
+      "id": "01K2NF1E0S9W7HPCTZ7XP1B0PP",
+      "code": "19",
+      "subset": 1,
+      "sectorId": "9"
+    },
+    {
+      "id": "01K2NF1E0SRKEXP3SQPN6WWJVP",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1E0SHECEA673ZY2NVJ1F",
+      "parentTcp": "1D"
+    },
+    {
+      "id": "01K2NF1E0S5AX7VMG1BSVC4MMH",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1E0SH86YWZ1FBS3S9R5Y",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1E0SHECEA673ZY2NVJ1F",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1E0S84BSN563A32ZTAH0",
+      "parentTcp": "1J"
+    },
+    {
+      "id": "01K2NF1E0ST1ERM5J5E5BPRC0A",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E0S84BSN563A32ZTAH0",
+      "parentTcp": "1J"
+    },
+    {
+      "id": "01K2NF1E0SMETD26Z6B17Z99RN",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1E0SDF1X1Q77T4RAAT58",
+      "parentTcp": "1Y"
+    },
+    {
+      "id": "01K2NF1E0SN0303V4FTSDXGB6S",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1E0SVPQBVRHD28ASTDCH",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1E0SEX8459ZHMRVDDCZW",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1E0SH86YWZ1FBS3S9R5Y",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1E0S84BSN563A32ZTAH0",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J"
+    },
+    {
+      "id": "01K2NF1E0SESERAYCRBWHGWQCJ",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "parentTcpId": "01K2NF1E0S84BSN563A32ZTAH0",
+      "parentTcp": "1J"
+    },
+    {
+      "id": "01K2NF1E0SB1MVMTC86YR6VGQY",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1E0SDF1X1Q77T4RAAT58",
+      "parentTcp": "1Y"
+    },
+    {
+      "id": "01K2NF1E0SW1NETRQJPMWVJFA2",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1E0SVPQBVRHD28ASTDCH",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1E0SWXTT8TARV1CNYY1V",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1E0SN0303V4FTSDXGB6S",
+      "parentTcp": "1G"
+    },
+    {
+      "id": "01K2NF1E0SZ66M36B291JE4FGD",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1E0S84BSN563A32ZTAH0",
+      "parentTcp": "1J"
+    },
+    {
+      "id": "01K2NF1E0SVPQBVRHD28ASTDCH",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E0SYJTN7R0MAETCMXH1",
+      "parentTcp": "3M"
+    },
+    {
+      "id": "01K2NF1E0SCF914E75BG1A9WFM",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1E0S84BSN563A32ZTAH0",
+      "parentTcp": "1J"
+    },
+    {
+      "id": "01K2NF1E0SH86YWZ1FBS3S9R5Y",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E0SVPQBVRHD28ASTDCH",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1E0SDF1X1Q77T4RAAT58",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1E0SESERAYCRBWHGWQCJ",
+      "parentTcp": "1K"
+    },
+    {
+      "id": "01K2NF1E0S1AR515C108032DX6",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1E0SVPQBVRHD28ASTDCH",
+      "parentTcp": "1S"
+    },
+    {
+      "id": "01K2NF1E0SSRCF335XNCYTPR25",
+      "code": "21",
+      "subset": 2,
+      "sectorId": "1"
+    },
+    {
+      "id": "01K2NF1E0SHD4WTZQN70WNNCAJ",
+      "code": "25",
+      "subset": 2,
+      "sectorId": "5"
+    },
+    {
+      "id": "01K2NF1E0S84YGY9T7M85NBFG6",
+      "code": "2E",
+      "subset": 2,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E0S01TQMJW6D6V108BW",
+      "parentTcp": "2L"
+    },
+    {
+      "id": "01K2NF1E0SVX5CTZF28HJSKXW5",
+      "code": "2F",
+      "subset": 2,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1E0S01TQMJW6D6V108BW",
+      "parentTcp": "2L"
+    },
+    {
+      "id": "01K2NF1E0S01TQMJW6D6V108BW",
+      "code": "2L",
+      "subset": 2,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1E0SYJTN7R0MAETCMXH1",
+      "parentTcp": "3M"
+    },
+    {
+      "id": "01K2NF1E0SG6KV4DFDV7A08093",
+      "code": "2M",
+      "subset": 2,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1E0S8HBVWM1AK0H6N82A",
+      "parentTcp": "2P"
+    },
+    {
+      "id": "01K2NF1E0S8HBVWM1AK0H6N82A",
+      "code": "2P",
+      "subset": 2,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1E0S01TQMJW6D6V108BW",
+      "parentTcp": "2L"
+    },
+    {
+      "id": "01K2NF1E0SQ67D1MRF7WH9HATP",
+      "code": "2W",
+      "subset": 2,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E0ST1ERM5J5E5BPRC0A",
+      "parentTcp": "1E"
+    },
+    {
+      "id": "01K2NF1E0SSN45N8831V4QP8XG",
+      "code": "2X",
+      "subset": 2,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1E0SG6KV4DFDV7A08093",
+      "parentTcp": "2M"
+    },
+    {
+      "id": "01K2NF1E0SVKJXJP27N3YJ7HA6",
+      "code": "31",
+      "subset": 3,
+      "sectorId": "1"
+    },
+    {
+      "id": "01K2NF1E0SRF0N61RAXHHCMFG7",
+      "code": "32",
+      "subset": 3,
+      "sectorId": "2"
+    },
+    {
+      "id": "01K2NF1E0S0GN11Q46Y44NSDCK",
+      "code": "33",
+      "subset": 3,
+      "sectorId": "3"
+    },
+    {
+      "id": "01K2NF1E0SFAGB9KCRHS2H3FPP",
+      "code": "36",
+      "subset": 3,
+      "sectorId": "6"
+    },
+    {
+      "id": "01K2NF1E0SQXMA88JDC5C6DZKG",
+      "code": "39",
+      "subset": 3,
+      "sectorId": "9"
+    },
+    {
+      "id": "01K2NF1E0SKJFF9T366S8R9TFA",
+      "code": "3A",
+      "subset": 3,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1E0SYJTN7R0MAETCMXH1",
+      "parentTcp": "3M"
+    },
+    {
+      "id": "01K2NF1E0SQMDXZJS9ZRVJPVNC",
+      "code": "3B",
+      "subset": 3,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1E0SYJTN7R0MAETCMXH1",
+      "parentTcp": "3M"
+    },
+    {
+      "id": "01K2NF1E0S9N1FYT7HF4ASTC00",
+      "code": "3G",
+      "subset": 3,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1E0SYJTN7R0MAETCMXH1",
+      "parentTcp": "3M"
+    },
+    {
+      "id": "01K2NF1E0SYJTN7R0MAETCMXH1",
+      "code": "3M",
+      "subset": 3,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1E0S84BSN563A32ZTAH0",
+      "parentTcp": "1J"
+    },
+    {
+      "id": "01K2NF1E0SPXXYEYMWKJ3VMJ5N",
+      "code": "3N",
+      "subset": 3,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1E0SQMDXZJS9ZRVJPVNC",
+      "parentTcp": "3B"
+    },
+    {
+      "id": "01K2NF1E0SWDCKF6JDTND7QTWZ",
+      "code": "3O",
+      "subset": 3,
+      "sectorId": "O",
+      "parentTcpId": "01K2NF1E0SQMDXZJS9ZRVJPVNC",
+      "parentTcp": "3B"
+    },
+    {
+      "id": "01K2NF1E0SYX0TMDJ2R139XC2V",
+      "code": "3R",
+      "subset": 3,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1E0SKJFF9T366S8R9TFA",
+      "parentTcp": "3A"
+    },
+    {
+      "id": "01K2NF1E0S3F7VM9BX0SF73CAW",
+      "code": "3S",
+      "subset": 3,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E0SMN5AKDX4R6B91C7T",
+      "parentTcp": "3X"
+    },
+    {
+      "id": "01K2NF1E0S8T7N1XH3YFW71SG1",
+      "code": "3T",
+      "subset": 3,
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1E0SKJFF9T366S8R9TFA",
+      "parentTcp": "3A"
+    },
+    {
+      "id": "01K2NF1E0S7YSEKXDV3N32PHN1",
+      "code": "3U",
+      "subset": 3,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1E0S3F7VM9BX0SF73CAW",
+      "parentTcp": "3S"
+    },
+    {
+      "id": "01K2NF1E0SX4GR73EB1F6YC5SB",
+      "code": "3V",
+      "subset": 3,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1E0SYJTN7R0MAETCMXH1",
+      "parentTcp": "3M"
+    },
+    {
+      "id": "01K2NF1E0SMN5AKDX4R6B91C7T",
+      "code": "3X",
+      "subset": 3,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1E0SYJTN7R0MAETCMXH1",
+      "parentTcp": "3M"
+    },
+    {
+      "id": "01K2NF1E0SK2EF033HMHD5E0FP",
+      "code": "3Z",
+      "subset": 3,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1E0SYJTN7R0MAETCMXH1",
+      "parentTcp": "3M"
+    },
+    {
+      "id": "01KF14BBPEE61NXRAM9NZACPDT",
+      "code": "6S",
+      "subset": 6,
+      "sectorId": "S"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GNAB9TNJ6VECC1JTYBEARBCY",
-      "name": "GRACO",
-      "callsign": "BWI_G_APP",
+      "id": "01GNAM34NQG482PZCPWEXVM5XE",
+      "physicalFacility": "BWI",
+      "name": "Clearance Delivery",
+      "radioName": "Baltimore Clearance",
+      "callsign": "BWI_DEL",
+      "areaId": "01GNJ7BPZQWD3MV1ASW5YA81YC",
+      "tcpId": "01K2NF1E0SA1HKB7WZPR115HJJ",
+      "tcp": "11",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 39.17919,
+        "lon": -76.66839
       },
-      "freq": 124.55
+      "range": 100,
+      "freq": 118.05
     },
     {
-      "id": "01GNABF7M4ZKTG04J8WQ200CVC",
-      "name": "WOOLY",
-      "callsign": "BWI_W_APP",
+      "id": "01GNAM446N21ZHDEEX6JQT9SK4",
+      "physicalFacility": "BWI",
+      "name": "Ground West",
+      "radioName": "Baltimore Ground",
+      "callsign": "BWI_W_GND",
+      "areaId": "01GNJ7BPZQWD3MV1ASW5YA81YC",
+      "tcpId": "01K2NF1E0SA1HKB7WZPR115HJJ",
+      "tcp": "11",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 39.17919,
+        "lon": -76.66839
       },
-      "freq": 128.7
+      "range": 100,
+      "freq": 121.9
     },
     {
-      "id": "01GNABG40A2Y5DQHER9G2XKBF8",
-      "name": "BELAY",
-      "callsign": "BWI_B_APP",
+      "id": "01GNAM5MNPX6MNG50835YC0MNC",
+      "physicalFacility": "BWI",
+      "name": "Local West",
+      "radioName": "Baltimore Tower",
+      "callsign": "BWI_W_TWR",
+      "areaId": "01GNJ7BPZQWD3MV1ASW5YA81YC",
+      "tcpId": "01K2NF1E0SA1HKB7WZPR115HJJ",
+      "tcp": "11",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 39.17919,
+        "lon": -76.66839
       },
-      "freq": 125.525
+      "range": 100,
+      "freq": 119.4
     },
     {
-      "id": "01GNABH0ZW1PHDRYAN23PM90VH",
-      "name": "BUFFR",
-      "callsign": "BWI_H_APP",
+      "id": "01GNAM4XBFM627XN9KY65YJVNS",
+      "physicalFacility": "BWI",
+      "name": "Ground East",
+      "radioName": "Baltimore Ground",
+      "callsign": "BWI_E_GND",
+      "areaId": "01GNJ7BPZQWD3MV1ASW5YA81YC",
+      "tcpId": "01K2NF1E0SPYPGS2XVZRT8MG6T",
+      "tcp": "12",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 39.17919,
+        "lon": -76.66839
       },
-      "freq": 133.85
+      "range": 100,
+      "freq": 120.2
     },
     {
-      "id": "01GNABHVNT0ZW0NGD51YTXF0S2",
-      "name": "PALEO",
-      "callsign": "BWI_P_APP",
+      "id": "01GNAM6KCXH8QMR4K39TTPSWJ5",
+      "physicalFacility": "BWI",
+      "name": "Local East",
+      "radioName": "Baltimore Tower",
+      "callsign": "BWI_E_TWR",
+      "areaId": "01GNJ7BPZQWD3MV1ASW5YA81YC",
+      "tcpId": "01K2NF1E0SPYPGS2XVZRT8MG6T",
+      "tcp": "12",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 39.17919,
+        "lon": -76.66839
       },
-      "freq": 133.75
+      "range": 100,
+      "freq": 123.75
     },
     {
-      "id": "01GNABJQ3M327E510P2AAAYBZR",
-      "name": "BWIFS",
-      "callsign": "BWI_S_APP",
+      "id": "01GNANHWZ6WSQQEZQMQF94MY6X",
+      "physicalFacility": "MTN",
+      "name": "Ground",
+      "radioName": "Martin Ground",
+      "callsign": "MTN_GND",
+      "areaId": "01GNJ7PSYJ5D2HW8N9EG98F732",
+      "tcpId": "01K2NF1E0S1AS5230YE6MWPMP6",
+      "tcp": "13",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 39.32944,
+        "lon": -76.42105
       },
-      "freq": 119.7
+      "range": 100,
+      "freq": 121.8
     },
     {
-      "id": "01GNABK6HAC5WM8JFGPNP7DH02",
-      "name": "BWIFN",
-      "callsign": "BWI_N_APP",
+      "id": "01GNANJCTFN0ECF8X0FRRP8GJ2",
+      "physicalFacility": "MTN",
+      "name": "Local",
+      "radioName": "Martin Tower",
+      "callsign": "MTN_TWR",
+      "areaId": "01GNJ7PSYJ5D2HW8N9EG98F732",
+      "tcpId": "01K2NF1E0S1AS5230YE6MWPMP6",
+      "tcp": "13",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 39.32944,
+        "lon": -76.42105
       },
-      "freq": 119
+      "range": 100,
+      "freq": 121.3
     },
     {
-      "id": "01GNABP1M65VEY2VXBCMJ6RAJ9",
-      "name": "CHOWE",
-      "callsign": "CHO_W_APP",
+      "id": "01GNAHEAH1QK412270RNDTKN02",
+      "physicalFacility": "DCA",
+      "name": "Clearance Delivery",
+      "radioName": "Washington Clearance",
+      "callsign": "DCA_DEL",
+      "areaId": "01GNJ7FVTPHE7731ZZ914P1K29",
+      "tcpId": "01K2NF1E0SRCMEFW7HTZ04M9AF",
+      "tcp": "14",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.8512,
+        "lon": -77.0402
       },
-      "freq": 132.85
+      "range": 100,
+      "freq": 128.25
     },
     {
-      "id": "01GNABQ2QDBAYFJYHF0JJBJDVS",
-      "name": "CHOEA",
-      "callsign": "CHO_E_APP",
+      "id": "01GNAHF1GAB3911TW83QYT95G1",
+      "physicalFacility": "DCA",
+      "name": "Ground",
+      "radioName": "Washington Ground",
+      "callsign": "DCA_GND",
+      "areaId": "01GNJ7FVTPHE7731ZZ914P1K29",
+      "tcpId": "01K2NF1E0SRCMEFW7HTZ04M9AF",
+      "tcp": "14",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.8512,
+        "lon": -77.0402
       },
-      "freq": 120.525
+      "range": 100,
+      "freq": 121.7
     },
     {
-      "id": "01GNABQYBFD0Z1F4FNREAY66MG",
-      "name": "FLTRK",
-      "callsign": "RIC_L_APP",
+      "id": "01GNAHGFT6S1JF414188KH60GG",
+      "physicalFacility": "DCA",
+      "name": "Local",
+      "radioName": "Washington Tower",
+      "callsign": "DCA_TWR",
+      "areaId": "01GNJ7FVTPHE7731ZZ914P1K29",
+      "tcpId": "01K2NF1E0SRCMEFW7HTZ04M9AF",
+      "tcp": "14",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.8512,
+        "lon": -77.0402
       },
-      "freq": 126.75
+      "range": 100,
+      "freq": 119.1
     },
     {
-      "id": "01GNABS1DG7KEQPKC9M3QP3QQ9",
-      "name": "RICFR",
-      "callsign": "RIC_F_APP",
+      "id": "01GNAHJQD9JNBWRM1BMWWNQ088",
+      "physicalFacility": "DCA",
+      "name": "Local (Helicopter)",
+      "radioName": "Washington Tower",
+      "callsign": "DCA_H_TWR",
+      "areaId": "01GNJ7FVTPHE7731ZZ914P1K29",
+      "tcpId": "01K2NF1E0SMR3MR6G7YHCZH3HA",
+      "tcp": "15",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.8512,
+        "lon": -77.0402
       },
-      "freq": 118.2
+      "range": 100,
+      "freq": 134.35
     },
     {
-      "id": "01GNABSTPRRFXX4V4W2XN6Q8XK",
-      "name": "TAPPA",
-      "callsign": "RIC_P_APP",
+      "id": "01GNAKDPCBBM51SE0QX88RJ8A6",
+      "physicalFacility": "ADW",
+      "name": "Clearance Delivery",
+      "radioName": "Andrews Clearance",
+      "callsign": "ADW_DEL",
+      "areaId": "01GNJ79SR724PPNPWB0C9PRQP8",
+      "tcpId": "01K2NF1E0SABWZM5P22DZ215CF",
+      "tcp": "17",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.80522,
+        "lon": -76.87771
       },
-      "freq": 126.4
+      "range": 100,
+      "freq": 127.55
     },
     {
-      "id": "01GNABTNBWWXREC1VN686Z8E9E",
-      "name": "CSIDE",
-      "callsign": "RIC_E_APP",
+      "id": "01GNAKE8J1BJG2TQYR903X5PV7",
+      "physicalFacility": "ADW",
+      "name": "Ground",
+      "radioName": "Andrews Ground",
+      "callsign": "ADW_GND",
+      "areaId": "01GNJ79SR724PPNPWB0C9PRQP8",
+      "tcpId": "01K2NF1E0SABWZM5P22DZ215CF",
+      "tcp": "17",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.80522,
+        "lon": -76.87771
       },
-      "freq": 127.2
+      "range": 100,
+      "freq": 121.8
     },
     {
-      "id": "01GNABVBVPRRNS94EZSV6CD2YT",
-      "name": "CSIDW",
-      "callsign": "RIC_W_APP",
+      "id": "01GNAKENH8WR0DJRARN4TSPZMR",
+      "physicalFacility": "ADW",
+      "name": "Local",
+      "radioName": "Andrews Tower",
+      "callsign": "ADW_TWR",
+      "areaId": "01GNJ79SR724PPNPWB0C9PRQP8",
+      "tcpId": "01K2NF1E0SABWZM5P22DZ215CF",
+      "tcp": "17",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.80522,
+        "lon": -76.87771
       },
-      "freq": 135.625
+      "range": 100,
+      "freq": 118.4
     },
     {
-      "id": "01GNABZCDDJ7G4VDNGJ0MBDJ9J",
-      "name": "ASPER",
-      "callsign": "IAD_A_APP",
+      "id": "01GNAMDH08YFDC69T1032MATZG",
+      "physicalFacility": "DAA",
+      "name": "Ground",
+      "radioName": "Davison Ground",
+      "callsign": "DAA_GND",
+      "areaId": "01GNJ7F44JMCYS843A977CJZE3",
+      "tcpId": "01K2NF1E0S9W7HPCTZ7XP1B0PP",
+      "tcp": "19",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.71441,
+        "lon": -77.17729
       },
-      "freq": 125.05
+      "range": 100,
+      "freq": 121.9
     },
     {
-      "id": "01GNAC07QVM0H2XAPPVQRBWVEF",
-      "name": "TILLY",
-      "callsign": "IAD_T_APP",
+      "id": "01GNAME6WNKHQ9EWQ4W6VX870F",
+      "physicalFacility": "DAA",
+      "name": "Local",
+      "radioName": "Davison Tower",
+      "callsign": "DAA_TWR",
+      "areaId": "01GNJ7F44JMCYS843A977CJZE3",
+      "tcpId": "01K2NF1E0S9W7HPCTZ7XP1B0PP",
+      "tcp": "19",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.71441,
+        "lon": -77.17729
       },
-      "freq": 126.65
-    },
-    {
-      "id": "01GNAC10VDTVANKFD2V56A7VRM",
-      "name": "BARIN",
-      "callsign": "IAD_B_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 128.525
-    },
-    {
-      "id": "01GNAC1RJQ71JWGXGVY6G7KS5Q",
-      "name": "BINNS",
-      "callsign": "IAD_V_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 133
-    },
-    {
-      "id": "01GNAC2E41H6QM32HBWJT506GS",
-      "name": "BRSTO",
-      "callsign": "IAD_O_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 120.825
-    },
-    {
-      "id": "01GNAC34A50564MJVACPKBHQQD",
-      "name": "IADFE",
-      "callsign": "IAD_X_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 125.8
-    },
-    {
-      "id": "01GNAC3RX69B2762E3VAPH386Q",
-      "name": "IADFC",
-      "callsign": "IAD_S_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 134.2
-    },
-    {
-      "id": "01GNAC4DFMXDS0PYS66FJ24DC7",
-      "name": "IADFW",
-      "callsign": "IAD_U_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 135.775
-    },
-    {
-      "id": "01GNAC59QC025X3Q4M7V0Q5C27",
-      "name": "LUCKE",
-      "callsign": "IAD_Z_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 126.825
-    },
-    {
-      "id": "01GNAC65M6QDHJY3XXGD3CC26H",
-      "name": "MANNE",
-      "callsign": "IAD_N_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 120.45
-    },
-    {
-      "id": "01GNAC72326E82NZPGED86ZMK4",
-      "name": "MULRR",
-      "callsign": "IAD_M_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 126.1
-    },
-    {
-      "id": "01GNAC7N9XT7Q06BFV6366VM38",
-      "name": "RCOLA",
-      "callsign": "IAD_R_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 133.775
-    },
-    {
-      "id": "01GNAC8FAFH6Q4VDV38VYG97XZ",
-      "name": "OJAAY",
-      "callsign": "DCA_J_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 119.85
-    },
-    {
-      "id": "01GNAC9794PJ60NNXVVX2RX4XS",
-      "name": "ENSUE",
-      "callsign": "DCA_E_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 124.2
-    },
-    {
-      "id": "01GNACA1Q9T6650DY4CDGKR4SX",
-      "name": "DEALE",
-      "callsign": "DCA_D_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 128.35
-    },
-    {
-      "id": "01GNACASMW1V701GN9A9PG26MQ",
-      "name": "LURAY",
-      "callsign": "DCA_L_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 118.675
-    },
-    {
-      "id": "01GNACBBN6EFBMFE0JZQ6J3R8A",
-      "name": "DCAFR",
-      "callsign": "DCA_V_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 124.7
-    },
-    {
-      "id": "01GNACBX69FWPNWG4H1GCNSNCJ",
-      "name": "FLUKY",
-      "callsign": "DCA_F_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 121.05
-    },
-    {
-      "id": "01GNACCR0SND03JVH190G846Q0",
-      "name": "TYSON",
-      "callsign": "DCA_Y_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 118.95
-    },
-    {
-      "id": "01GNACDHCM9MET5GERQZJA764S",
-      "name": "KRANT",
-      "callsign": "DCA_K_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 125.65
+      "range": 100,
+      "freq": 124.275
     },
     {
       "id": "01GNACE6V9VT789M890B6TQ6QH",
+      "physicalFacility": "PCT",
       "name": "ADWAR",
+      "radioName": "Potomac Approach",
       "callsign": "DCA_A_APP",
+      "areaId": "01GNAB7YSB371AKV9R1FSVV3N2",
+      "tcpId": "01K2NF1E0SRKEXP3SQPN6WWJVP",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.84779565,
+        "lon": -77.03737565
       },
+      "range": 100,
       "freq": 128
     },
     {
-      "id": "01GRRYCA9JER5R69YCVJEMTWWZ",
-      "name": "SFRAE",
-      "callsign": "BWI_Z_APP",
+      "id": "01GNABG40A2Y5DQHER9G2XKBF8",
+      "physicalFacility": "PCT",
+      "name": "BELAY",
+      "radioName": "Potomac Approach",
+      "callsign": "BWI_B_APP",
+      "areaId": "01GNAB2E7QW35BWQN8VN2ZESQN",
+      "tcpId": "01K2NF1E0S5AX7VMG1BSVC4MMH",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 39.174652,
+        "lon": -76.689543
       },
-      "freq": 132.775
+      "range": 100,
+      "freq": 125.525
     },
     {
-      "id": "01GRRYD9JR88TGV7CAZ3YBGA99",
-      "name": "SFRAS",
-      "callsign": "DCA_R_APP",
+      "id": "01GNACA1Q9T6650DY4CDGKR4SX",
+      "physicalFacility": "PCT",
+      "name": "DEALE",
+      "radioName": "Potomac Approach",
+      "callsign": "DCA_D_APP",
+      "areaId": "01GNAB7YSB371AKV9R1FSVV3N2",
+      "tcpId": "01K2NF1E0SHECEA673ZY2NVJ1F",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.84779565,
+        "lon": -77.03737565
       },
-      "freq": 125.125
+      "range": 100,
+      "freq": 128.35
     },
     {
-      "id": "01GRRYE09ARHDT3R7Z4RY9YSSF",
-      "name": "SFRAW",
-      "callsign": "IAD_G_APP",
+      "id": "01GNAC9794PJ60NNXVVX2RX4XS",
+      "physicalFacility": "PCT",
+      "name": "ENSUE",
+      "radioName": "Potomac Approach",
+      "callsign": "DCA_E_APP",
+      "areaId": "01GNAB7YSB371AKV9R1FSVV3N2",
+      "tcpId": "01K2NF1E0ST1ERM5J5E5BPRC0A",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.84779565,
+        "lon": -77.03737565
       },
-      "freq": 127.325
+      "range": 100,
+      "freq": 124.2
     },
     {
-      "id": "01HEDGY1GV33YN9PPY15Q91SP2",
-      "name": "OJAAY [Comb]",
-      "callsign": "PCT_APP",
+      "id": "01GNACBX69FWPNWG4H1GCNSNCJ",
+      "physicalFacility": "PCT",
+      "name": "FLUKY",
+      "radioName": "Potomac Approach",
+      "callsign": "DCA_F_APP",
+      "areaId": "01GNAB7YSB371AKV9R1FSVV3N2",
+      "tcpId": "01K2NF1E0SMETD26Z6B17Z99RN",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.84779565,
+        "lon": -77.03737565
       },
-      "freq": 119.85
+      "range": 100,
+      "freq": 121.05
     },
     {
-      "id": "01HEDGZ6EA1V8KYJ6H0JDT920R",
-      "name": "BWIFS [Comb]",
-      "callsign": "BWI_S_APP",
+      "id": "01GNAB9TNJ6VECC1JTYBEARBCY",
+      "physicalFacility": "PCT",
+      "name": "GRACO",
+      "radioName": "Potomac Approach",
+      "callsign": "BWI_G_APP",
+      "areaId": "01GNAB2E7QW35BWQN8VN2ZESQN",
+      "tcpId": "01K2NF1E0SN0303V4FTSDXGB6S",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 39.174652,
+        "lon": -76.689543
       },
-      "freq": 119.7
-    },
-    {
-      "id": "01HEDH0GNM78N8KTWDJJVYAET6",
-      "name": "MULRR [Comb]",
-      "callsign": "IAD_M_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 126.1
-    },
-    {
-      "id": "01HEDH194EXCX1DP38D0Y0AXKS",
-      "name": "FLTRK [Comb]",
-      "callsign": "RIC_L_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 126.75
-    },
-    {
-      "id": "01HR985Z0JJS4QV5JYF0QRV2KT",
-      "name": "SFRAS [Comb]",
-      "callsign": "PCT_R_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 125.125
+      "range": 100,
+      "freq": 124.55
     },
     {
       "id": "01JAXTYMANERA04CDGXKSHN6QA",
+      "physicalFacility": "PCT",
       "name": "121.5 Guard",
+      "radioName": "Guard",
       "callsign": "PCT_GG_APP",
+      "areaId": "01GNABBJNMHSF9QZSE08W7M22E",
+      "tcpId": "01K2NF1E0SN0303V4FTSDXGB6S",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.84779565,
+        "lon": -77.03737565
       },
+      "range": 100,
       "freq": 121.5
     },
     {
-      "id": "01KF14BXFHGC9QSSJW1M4A9D5S",
-      "name": "STMC1",
-      "callsign": "PCT_TMU",
+      "id": "01GNABH0ZW1PHDRYAN23PM90VH",
+      "physicalFacility": "PCT",
+      "name": "BUFFR",
+      "radioName": "Potomac Approach",
+      "callsign": "BWI_H_APP",
+      "areaId": "01GNAB2E7QW35BWQN8VN2ZESQN",
+      "tcpId": "01K2NF1E0SEX8459ZHMRVDDCZW",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 39.174652,
+        "lon": -76.689543
       },
-      "freq": 132.65
+      "range": 100,
+      "freq": 133.85
     },
     {
-      "id": "01KF18TCEZBSHFB2NQNKW80REQ",
-      "name": "TMU",
-      "callsign": "PCT_TMU",
+      "id": "01GNAC8FAFH6Q4VDV38VYG97XZ",
+      "physicalFacility": "PCT",
+      "name": "OJAAY",
+      "radioName": "Potomac Approach",
+      "callsign": "DCA_J_APP",
+      "areaId": "01GNAB7YSB371AKV9R1FSVV3N2",
+      "tcpId": "01K2NF1E0S84BSN563A32ZTAH0",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 38.84779565,
+        "lon": -77.03737565
       },
+      "range": 100,
       "freq": 119.85
     },
     {
-      "id": "11",
+      "id": "01HEDGY1GV33YN9PPY15Q91SP2",
+      "physicalFacility": "PCT",
+      "name": "OJAAY [Comb]",
+      "radioName": "Potomac Approach",
+      "callsign": "PCT_APP",
+      "areaId": "01GNABBJNMHSF9QZSE08W7M22E",
+      "tcpId": "01K2NF1E0S84BSN563A32ZTAH0",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "range": 100,
+      "freq": 119.85
     },
     {
-      "id": "12",
+      "id": "01KF18TCEZBSHFB2NQNKW80REQ",
+      "physicalFacility": "PCT",
+      "name": "TMU",
+      "radioName": "Potomac Approach",
+      "callsign": "PCT_TMU",
+      "areaId": "01GNABBJNMHSF9QZSE08W7M22E",
+      "tcpId": "01K2NF1E0S84BSN563A32ZTAH0",
+      "tcp": "1J",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "range": 100,
+      "freq": 119.85
     },
     {
-      "id": "13",
+      "id": "01GNACDHCM9MET5GERQZJA764S",
+      "physicalFacility": "PCT",
+      "name": "KRANT",
+      "radioName": "Potomac Approach",
+      "callsign": "DCA_K_APP",
+      "areaId": "01GNAB7YSB371AKV9R1FSVV3N2",
+      "tcpId": "01K2NF1E0SESERAYCRBWHGWQCJ",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "range": 100,
+      "freq": 125.65
     },
     {
-      "id": "14",
+      "id": "01GNACASMW1V701GN9A9PG26MQ",
+      "physicalFacility": "PCT",
+      "name": "LURAY",
+      "radioName": "Potomac Approach",
+      "callsign": "DCA_L_APP",
+      "areaId": "01GNAB7YSB371AKV9R1FSVV3N2",
+      "tcpId": "01K2NF1E0SB1MVMTC86YR6VGQY",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "range": 100,
+      "freq": 118.675
     },
     {
-      "id": "15",
+      "id": "01GNABK6HAC5WM8JFGPNP7DH02",
+      "physicalFacility": "PCT",
+      "name": "BWIFN",
+      "radioName": "Potomac Approach",
+      "callsign": "BWI_N_APP",
+      "areaId": "01GNAB2E7QW35BWQN8VN2ZESQN",
+      "tcpId": "01K2NF1E0SW1NETRQJPMWVJFA2",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 39.174652,
+        "lon": -76.689543
+      },
+      "range": 100,
+      "freq": 119
     },
     {
-      "id": "17",
+      "id": "01GNABHVNT0ZW0NGD51YTXF0S2",
+      "physicalFacility": "PCT",
+      "name": "PALEO",
+      "radioName": "Potomac Approach",
+      "callsign": "BWI_P_APP",
+      "areaId": "01GNAB2E7QW35BWQN8VN2ZESQN",
+      "tcpId": "01K2NF1E0SWXTT8TARV1CNYY1V",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 39.174652,
+        "lon": -76.689543
+      },
+      "range": 100,
+      "freq": 133.75
     },
     {
-      "id": "19",
+      "id": "01GRRYD9JR88TGV7CAZ3YBGA99",
+      "physicalFacility": "PCT",
+      "name": "SFRAS",
+      "radioName": "Potomac Approach",
+      "callsign": "DCA_R_APP",
+      "areaId": "01GNAB7YSB371AKV9R1FSVV3N2",
+      "tcpId": "01K2NF1E0SZ66M36B291JE4FGD",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "range": 100,
+      "freq": 125.125
     },
     {
-      "id": "1A",
+      "id": "01HR985Z0JJS4QV5JYF0QRV2KT",
+      "physicalFacility": "PCT",
+      "name": "SFRAS [Comb]",
+      "radioName": "Potomac Approach",
+      "callsign": "PCT_R_APP",
+      "areaId": "01GNABBJNMHSF9QZSE08W7M22E",
+      "tcpId": "01K2NF1E0SZ66M36B291JE4FGD",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "range": 100,
+      "freq": 125.125
     },
     {
-      "id": "1B",
+      "id": "01GNABJQ3M327E510P2AAAYBZR",
+      "physicalFacility": "PCT",
+      "name": "BWIFS",
+      "radioName": "Potomac Approach",
+      "callsign": "BWI_S_APP",
+      "areaId": "01GNAB2E7QW35BWQN8VN2ZESQN",
+      "tcpId": "01K2NF1E0SVPQBVRHD28ASTDCH",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 39.174652,
+        "lon": -76.689543
+      },
+      "range": 100,
+      "freq": 119.7
     },
     {
-      "id": "1D",
+      "id": "01HEDGZ6EA1V8KYJ6H0JDT920R",
+      "physicalFacility": "PCT",
+      "name": "BWIFS [Comb]",
+      "radioName": "Potomac Approach",
+      "callsign": "BWI_S_APP",
+      "areaId": "01GNABBJNMHSF9QZSE08W7M22E",
+      "tcpId": "01K2NF1E0SVPQBVRHD28ASTDCH",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "range": 100,
+      "freq": 119.7
     },
     {
-      "id": "1E",
+      "id": "01GNACBBN6EFBMFE0JZQ6J3R8A",
+      "physicalFacility": "PCT",
+      "name": "DCAFR",
+      "radioName": "Potomac Approach",
+      "callsign": "DCA_V_APP",
+      "areaId": "01GNAB7YSB371AKV9R1FSVV3N2",
+      "tcpId": "01K2NF1E0SCF914E75BG1A9WFM",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "range": 100,
+      "freq": 124.7
     },
     {
-      "id": "1F",
+      "id": "01GNABF7M4ZKTG04J8WQ200CVC",
+      "physicalFacility": "PCT",
+      "name": "WOOLY",
+      "radioName": "Potomac Approach",
+      "callsign": "BWI_W_APP",
+      "areaId": "01GNAB2E7QW35BWQN8VN2ZESQN",
+      "tcpId": "01K2NF1E0SH86YWZ1FBS3S9R5Y",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 39.174652,
+        "lon": -76.689543
+      },
+      "range": 100,
+      "freq": 128.7
     },
     {
-      "id": "1G",
+      "id": "01GNACCR0SND03JVH190G846Q0",
+      "physicalFacility": "PCT",
+      "name": "TYSON",
+      "radioName": "Potomac Approach",
+      "callsign": "DCA_Y_APP",
+      "areaId": "01GNAB7YSB371AKV9R1FSVV3N2",
+      "tcpId": "01K2NF1E0SDF1X1Q77T4RAAT58",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "range": 100,
+      "freq": 118.95
     },
     {
-      "id": "1H",
+      "id": "01GRRYCA9JER5R69YCVJEMTWWZ",
+      "physicalFacility": "PCT",
+      "name": "SFRAE",
+      "radioName": "Potomac Approach",
+      "callsign": "BWI_Z_APP",
+      "areaId": "01GNAB2E7QW35BWQN8VN2ZESQN",
+      "tcpId": "01K2NF1E0S1AR515C108032DX6",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 39.174652,
+        "lon": -76.689543
+      },
+      "range": 100,
+      "freq": 132.775
     },
     {
-      "id": "1J",
+      "id": "01GSAZ3SSVGXWSH3X60EDK7XZY",
+      "physicalFacility": "RIC",
+      "name": "Clearance",
+      "radioName": "Richmond Clearance",
+      "callsign": "RIC_DEL",
+      "areaId": "01GSGAH1QKZXZ0PXJHD862H6GB",
+      "tcpId": "01K2NF1E0SSRCF335XNCYTPR25",
+      "tcp": "21",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 37.5134,
+        "lon": -77.33264
+      },
+      "range": 100,
+      "freq": 127.55
     },
     {
-      "id": "1K",
+      "id": "01GSAZ4BPWXP9EN981E1H040XN",
+      "physicalFacility": "RIC",
+      "name": "Ground",
+      "radioName": "Richmond Ground",
+      "callsign": "RIC_GND",
+      "areaId": "01GSGAH1QKZXZ0PXJHD862H6GB",
+      "tcpId": "01K2NF1E0SSRCF335XNCYTPR25",
+      "tcp": "21",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 37.5134,
+        "lon": -77.33264
+      },
+      "range": 100,
+      "freq": 121.9
     },
     {
-      "id": "1L",
+      "id": "01GSAZ4RRY0B4JC4GWFQ68781C",
+      "physicalFacility": "RIC",
+      "name": "Local",
+      "radioName": "Richmond Tower",
+      "callsign": "RIC_TWR",
+      "areaId": "01GSGAH1QKZXZ0PXJHD862H6GB",
+      "tcpId": "01K2NF1E0SSRCF335XNCYTPR25",
+      "tcp": "21",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 37.5134,
+        "lon": -77.33264
+      },
+      "range": 100,
+      "freq": 121.1
     },
     {
-      "id": "1N",
+      "id": "01GNAM91HWBMTX47XRNHHVA2WZ",
+      "physicalFacility": "CHO",
+      "name": "Ground",
+      "radioName": "Charlottesville Ground",
+      "callsign": "CHO_GND",
+      "areaId": "01GNJ7CV164DVF5WM17MG905A4",
+      "tcpId": "01K2NF1E0SHD4WTZQN70WNNCAJ",
+      "tcp": "25",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.13888,
+        "lon": -78.4498
+      },
+      "range": 100,
+      "freq": 121.9
     },
     {
-      "id": "1P",
+      "id": "01GNAM9FCBKFB8DKGHZ432J8R9",
+      "physicalFacility": "CHO",
+      "name": "Local",
+      "radioName": "Charlottesville Tower",
+      "callsign": "CHO_TWR",
+      "areaId": "01GNJ7CV164DVF5WM17MG905A4",
+      "tcpId": "01K2NF1E0SHD4WTZQN70WNNCAJ",
+      "tcp": "25",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.13888,
+        "lon": -78.4498
+      },
+      "range": 100,
+      "freq": 124.5
     },
     {
-      "id": "1R",
+      "id": "01GNABQ2QDBAYFJYHF0JJBJDVS",
+      "physicalFacility": "PCT",
+      "name": "CHOEA",
+      "radioName": "Potomac Approach",
+      "callsign": "CHO_E_APP",
+      "areaId": "01GNAB8FH8KN04SN9R6F5M3BTZ",
+      "tcpId": "01K2NF1E0S84YGY9T7M85NBFG6",
+      "tcp": "2E",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 37.506819,
+        "lon": -77.325857
+      },
+      "range": 100,
+      "freq": 120.525
     },
     {
-      "id": "1S",
+      "id": "01GNABS1DG7KEQPKC9M3QP3QQ9",
+      "physicalFacility": "PCT",
+      "name": "RICFR",
+      "radioName": "Potomac Approach",
+      "callsign": "RIC_F_APP",
+      "areaId": "01GNAB8FH8KN04SN9R6F5M3BTZ",
+      "tcpId": "01K2NF1E0SVX5CTZF28HJSKXW5",
+      "tcp": "2F",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 37.506819,
+        "lon": -77.325857
+      },
+      "range": 100,
+      "freq": 118.2
     },
     {
-      "id": "1V",
+      "id": "01GNABQYBFD0Z1F4FNREAY66MG",
+      "physicalFacility": "PCT",
+      "name": "FLTRK",
+      "radioName": "Potomac Approach",
+      "callsign": "RIC_L_APP",
+      "areaId": "01GNAB8FH8KN04SN9R6F5M3BTZ",
+      "tcpId": "01K2NF1E0S01TQMJW6D6V108BW",
+      "tcp": "2L",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 37.506819,
+        "lon": -77.325857
+      },
+      "range": 100,
+      "freq": 126.75
     },
     {
-      "id": "1W",
+      "id": "01HEDH194EXCX1DP38D0Y0AXKS",
+      "physicalFacility": "PCT",
+      "name": "FLTRK [Comb]",
+      "radioName": "Potomac Approach",
+      "callsign": "RIC_L_APP",
+      "areaId": "01GNABBJNMHSF9QZSE08W7M22E",
+      "tcpId": "01K2NF1E0S01TQMJW6D6V108BW",
+      "tcp": "2L",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "range": 100,
+      "freq": 126.75
     },
     {
-      "id": "1Y",
+      "id": "01GNABVBVPRRNS94EZSV6CD2YT",
+      "physicalFacility": "PCT",
+      "name": "CSIDW",
+      "radioName": "Potomac Approach",
+      "callsign": "RIC_W_APP",
+      "areaId": "01GNAB8FH8KN04SN9R6F5M3BTZ",
+      "tcpId": "01K2NF1E0SG6KV4DFDV7A08093",
+      "tcp": "2M",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 37.506819,
+        "lon": -77.325857
+      },
+      "range": 100,
+      "freq": 135.625
     },
     {
-      "id": "1Z",
+      "id": "01GNABSTPRRFXX4V4W2XN6Q8XK",
+      "physicalFacility": "PCT",
+      "name": "TAPPA",
+      "radioName": "Potomac Approach",
+      "callsign": "RIC_P_APP",
+      "areaId": "01GNAB8FH8KN04SN9R6F5M3BTZ",
+      "tcpId": "01K2NF1E0S8HBVWM1AK0H6N82A",
+      "tcp": "2P",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 37.506819,
+        "lon": -77.325857
+      },
+      "range": 100,
+      "freq": 126.4
     },
     {
-      "id": "21",
+      "id": "01GNABP1M65VEY2VXBCMJ6RAJ9",
+      "physicalFacility": "PCT",
+      "name": "CHOWE",
+      "radioName": "Potomac Approach",
+      "callsign": "CHO_W_APP",
+      "areaId": "01GNAB8FH8KN04SN9R6F5M3BTZ",
+      "tcpId": "01K2NF1E0SQ67D1MRF7WH9HATP",
+      "tcp": "2W",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 37.506819,
+        "lon": -77.325857
+      },
+      "range": 100,
+      "freq": 132.85
     },
     {
-      "id": "25",
+      "id": "01GNABTNBWWXREC1VN686Z8E9E",
+      "physicalFacility": "PCT",
+      "name": "CSIDE",
+      "radioName": "Potomac Approach",
+      "callsign": "RIC_E_APP",
+      "areaId": "01GNAB8FH8KN04SN9R6F5M3BTZ",
+      "tcpId": "01K2NF1E0SSN45N8831V4QP8XG",
+      "tcp": "2X",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 37.506819,
+        "lon": -77.325857
+      },
+      "range": 100,
+      "freq": 127.2
     },
     {
-      "id": "2E",
+      "id": "01GFFK3YVA1ZPCG6GWQ54160MZ",
+      "physicalFacility": "IAD",
+      "name": "Ground West",
+      "radioName": "Dulles Ground",
+      "callsign": "IAD_W_GND",
+      "areaId": "01GNJ7P3P175X9NKBWSJQSC99W",
+      "tcpId": "01K2NF1E0SVKJXJP27N3YJ7HA6",
+      "tcp": "31",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.93905,
+        "lon": -77.44875
+      },
+      "range": 100,
+      "freq": 121.625
     },
     {
-      "id": "2F",
+      "id": "01GFFKAJ4WF2KDES88MN8FQ9H1",
+      "physicalFacility": "IAD",
+      "name": "Local West",
+      "radioName": "Dulles Tower",
+      "callsign": "IAD_W_TWR",
+      "areaId": "01GNJ7P3P175X9NKBWSJQSC99W",
+      "tcpId": "01K2NF1E0SVKJXJP27N3YJ7HA6",
+      "tcp": "31",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.93905,
+        "lon": -77.44875
+      },
+      "range": 100,
+      "freq": 120.25
     },
     {
-      "id": "2L",
+      "id": "01GFFK0Y06PCHDJFTVEBS9786G",
+      "physicalFacility": "IAD",
+      "name": "Clearance Delivery",
+      "radioName": "Dulles Clearance",
+      "callsign": "IAD_DEL",
+      "areaId": "01GNJ7P3P175X9NKBWSJQSC99W",
+      "tcpId": "01K2NF1E0SRF0N61RAXHHCMFG7",
+      "tcp": "32",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.93905,
+        "lon": -77.44875
+      },
+      "range": 100,
+      "freq": 135.7
     },
     {
-      "id": "2M",
+      "id": "01GFFK2QPAZY2R0TVTZ9MAVRFM",
+      "physicalFacility": "IAD",
+      "name": "Ground East",
+      "radioName": "Dulles Ground",
+      "callsign": "IAD_E_GND",
+      "areaId": "01GNJ7P3P175X9NKBWSJQSC99W",
+      "tcpId": "01K2NF1E0SRF0N61RAXHHCMFG7",
+      "tcp": "32",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.93905,
+        "lon": -77.44875
+      },
+      "range": 100,
+      "freq": 121.9
     },
     {
-      "id": "2P",
+      "id": "01GFFK9JC5Z9P0MQV4RJA8X96J",
+      "physicalFacility": "IAD",
+      "name": "Local East",
+      "radioName": "Dulles Tower",
+      "callsign": "IAD_E_TWR",
+      "areaId": "01GNJ7P3P175X9NKBWSJQSC99W",
+      "tcpId": "01K2NF1E0SRF0N61RAXHHCMFG7",
+      "tcp": "32",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.93905,
+        "lon": -77.44875
+      },
+      "range": 100,
+      "freq": 120.1
     },
     {
-      "id": "2W",
+      "id": "01GFHXJABRAGQ2XG12BFD14DMV",
+      "physicalFacility": "IAD",
+      "name": "Ground North",
+      "radioName": "Dulles Ground",
+      "callsign": "IAD_N_GND",
+      "areaId": "01GNJ7P3P175X9NKBWSJQSC99W",
+      "tcpId": "01K2NF1E0S0GN11Q46Y44NSDCK",
+      "tcp": "33",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.93905,
+        "lon": -77.44875
+      },
+      "range": 100,
+      "freq": 123.775
     },
     {
-      "id": "2X",
+      "id": "01GFHXQBS4QAP6T4XEX9M77EG7",
+      "physicalFacility": "IAD",
+      "name": "Local North",
+      "radioName": "Dulles Tower",
+      "callsign": "IAD_N_TWR",
+      "areaId": "01GNJ7P3P175X9NKBWSJQSC99W",
+      "tcpId": "01K2NF1E0S0GN11Q46Y44NSDCK",
+      "tcp": "33",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.93905,
+        "lon": -77.44875
+      },
+      "range": 100,
+      "freq": 134.425
     },
     {
-      "id": "31",
+      "id": "01GNAMPVJAKVEDD683N88EVH5T",
+      "physicalFacility": "HEF",
+      "name": "Ground",
+      "radioName": "Manassas Ground",
+      "callsign": "HEF_GND",
+      "areaId": "01GNJ7HMK88B3B5QCDW8DVGZG4",
+      "tcpId": "01K2NF1E0SFAGB9KCRHS2H3FPP",
+      "tcp": "36",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.721,
+        "lon": -77.51935
+      },
+      "range": 100,
+      "freq": 121.8
     },
     {
-      "id": "32",
+      "id": "01GNAMQ9SAW1J0JJWK9PS26XZQ",
+      "physicalFacility": "HEF",
+      "name": "Local",
+      "radioName": "Manassas Tower",
+      "callsign": "HEF_TWR",
+      "areaId": "01GNJ7HMK88B3B5QCDW8DVGZG4",
+      "tcpId": "01K2NF1E0SFAGB9KCRHS2H3FPP",
+      "tcp": "36",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.721,
+        "lon": -77.51935
+      },
+      "range": 100,
+      "freq": 133.1
     },
     {
-      "id": "33",
+      "id": "01GNAMSS51FF11GDSYADVZ99M9",
+      "physicalFacility": "HGR",
+      "name": "Ground",
+      "radioName": "Hagerstown Ground",
+      "callsign": "HGR_GND",
+      "areaId": "01GNJ89JCEB153WCPSSEZ7VV90",
+      "tcpId": "01K2NF1E0SQXMA88JDC5C6DZKG",
+      "tcp": "39",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 39.71056,
+        "lon": -77.73066
+      },
+      "range": 100,
+      "freq": 120.8
     },
     {
-      "id": "36",
+      "id": "01GNAMTDBYYY3V53EHHR0HGC5H",
+      "physicalFacility": "HGR",
+      "name": "Local",
+      "radioName": "Hagerstown Tower",
+      "callsign": "HGR_TWR",
+      "areaId": "01GNJ89JCEB153WCPSSEZ7VV90",
+      "tcpId": "01K2NF1E0SQXMA88JDC5C6DZKG",
+      "tcp": "39",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 39.71056,
+        "lon": -77.73066
+      },
+      "range": 100,
+      "freq": 120.3
     },
     {
-      "id": "39",
+      "id": "01GNABZCDDJ7G4VDNGJ0MBDJ9J",
+      "physicalFacility": "PCT",
+      "name": "ASPER",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_A_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0SKJFF9T366S8R9TFA",
+      "tcp": "3A",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 125.05
     },
     {
-      "id": "3A",
+      "id": "01GNAC10VDTVANKFD2V56A7VRM",
+      "physicalFacility": "PCT",
+      "name": "BARIN",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_B_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0SQMDXZJS9ZRVJPVNC",
+      "tcp": "3B",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 128.525
     },
     {
-      "id": "3B",
+      "id": "01KJX4EZP3Z5H64W5BG3AXPHYP",
+      "physicalFacility": "NYG",
+      "name": "Approach",
+      "radioName": "Quantico Apporach",
+      "callsign": "NYG_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0SQMDXZJS9ZRVJPVNC",
+      "tcp": "3B",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 127.05
     },
     {
-      "id": "3G",
+      "id": "01GRRYE09ARHDT3R7Z4RY9YSSF",
+      "physicalFacility": "PCT",
+      "name": "SFRAW",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_G_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0S9N1FYT7HF4ASTC00",
+      "tcp": "3G",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 127.325
     },
     {
-      "id": "3M",
+      "id": "01GNAC72326E82NZPGED86ZMK4",
+      "physicalFacility": "PCT",
+      "name": "MULRR",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_M_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0SYJTN7R0MAETCMXH1",
+      "tcp": "3M",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 126.1
     },
     {
-      "id": "3N",
+      "id": "01HEDH0GNM78N8KTWDJJVYAET6",
+      "physicalFacility": "PCT",
+      "name": "MULRR [Comb]",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_M_APP",
+      "areaId": "01GNABBJNMHSF9QZSE08W7M22E",
+      "tcpId": "01K2NF1E0SYJTN7R0MAETCMXH1",
+      "tcp": "3M",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "range": 100,
+      "freq": 126.1
     },
     {
-      "id": "3O",
+      "id": "01GNAC65M6QDHJY3XXGD3CC26H",
+      "physicalFacility": "PCT",
+      "name": "MANNE",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_N_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0SPXXYEYMWKJ3VMJ5N",
+      "tcp": "3N",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 120.45
     },
     {
-      "id": "3R",
+      "id": "01GNAC2E41H6QM32HBWJT506GS",
+      "physicalFacility": "PCT",
+      "name": "BRSTO",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_O_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0SWDCKF6JDTND7QTWZ",
+      "tcp": "3O",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 120.825
     },
     {
-      "id": "3S",
+      "id": "01GNAC7N9XT7Q06BFV6366VM38",
+      "physicalFacility": "PCT",
+      "name": "RCOLA",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_R_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0SYX0TMDJ2R139XC2V",
+      "tcp": "3R",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 133.775
     },
     {
-      "id": "3T",
+      "id": "01GNAC3RX69B2762E3VAPH386Q",
+      "physicalFacility": "PCT",
+      "name": "IADFC",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_S_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0S3F7VM9BX0SF73CAW",
+      "tcp": "3S",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 134.2
     },
     {
-      "id": "3U",
+      "id": "01GNAC07QVM0H2XAPPVQRBWVEF",
+      "physicalFacility": "PCT",
+      "name": "TILLY",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_T_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0S8T7N1XH3YFW71SG1",
+      "tcp": "3T",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 126.65
     },
     {
-      "id": "3V",
+      "id": "01GNAC4DFMXDS0PYS66FJ24DC7",
+      "physicalFacility": "PCT",
+      "name": "IADFW",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_U_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0S7YSEKXDV3N32PHN1",
+      "tcp": "3U",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 135.775
     },
     {
-      "id": "3X",
+      "id": "01GNAC1RJQ71JWGXGVY6G7KS5Q",
+      "physicalFacility": "PCT",
+      "name": "BINNS",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_V_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0SX4GR73EB1F6YC5SB",
+      "tcp": "3V",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 133
     },
     {
-      "id": "3Z",
+      "id": "01GNAC34A50564MJVACPKBHQQD",
+      "physicalFacility": "PCT",
+      "name": "IADFE",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_X_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0SMN5AKDX4R6B91C7T",
+      "tcp": "3X",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 125.8
+    },
+    {
+      "id": "01GNAC59QC025X3Q4M7V0Q5C27",
+      "physicalFacility": "PCT",
+      "name": "LUCKE",
+      "radioName": "Potomac Approach",
+      "callsign": "IAD_Z_APP",
+      "areaId": "01GNAB71F55SNRHYAQHQAR0XCE",
+      "tcpId": "01K2NF1E0SK2EF033HMHD5E0FP",
+      "tcp": "3Z",
+      "visualCenter": {
+        "lat": 38.9566683,
+        "lon": -77.4633688
+      },
+      "range": 100,
+      "freq": 126.825
+    },
+    {
+      "id": "01KF14BXFHGC9QSSJW1M4A9D5S",
+      "physicalFacility": "PCT",
+      "name": "STMC1",
+      "radioName": "PCT TMU",
+      "callsign": "PCT_TMU",
+      "areaId": "01GNABBJNMHSF9QZSE08W7M22E",
+      "tcpId": "01KF14BBPEE61NXRAM9NZACPDT",
+      "tcp": "6S",
+      "visualCenter": {
+        "lat": 38.84779565,
+        "lon": -77.03737565
+      },
+      "range": 100,
+      "freq": 132.65
     }
   ],
   "mapGroups": [

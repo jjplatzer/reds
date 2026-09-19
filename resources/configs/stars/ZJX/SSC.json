@@ -4,60 +4,95 @@
   "name": "Shaw Air Force ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 30.39404875,
-    "lon": -81.98462525
+    "lat": 33.972724,
+    "lon": -80.4705644
   },
+  "areas": [
+    {
+      "id": "01HC3HW8P7M4ARRGNYB41AYDXM",
+      "name": "General",
+      "visibilityCenter": {
+        "lat": 33.972724,
+        "lon": -80.4705644
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "SSC",
+        "MMT",
+        "CDN",
+        "HVS",
+        "SMS"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DFF2TV4GCXT4509P3XS",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D"
+    },
+    {
+      "id": "01K2NF1DFFGF34165397CM8P2G",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1DFFKJ7VSWRZ5BN8CRAY",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01HC3HYD9T8W1PZVPHX0EDWCS9",
+      "physicalFacility": "SSC",
       "name": "Ground",
+      "radioName": "Shaw Ground",
       "callsign": "SSC_GND",
+      "areaId": "01HC3HW8P7M4ARRGNYB41AYDXM",
+      "tcpId": "01K2NF1DFF2TV4GCXT4509P3XS",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 33.972724,
+        "lon": -80.4705644
       },
+      "range": 50,
       "freq": 126.1
     },
     {
       "id": "01HC3HYVPRTH850Z5VCDE292XA",
+      "physicalFacility": "SSC",
       "name": "Tower",
+      "radioName": "Shaw Tower",
       "callsign": "SSC_TWR",
+      "areaId": "01HC3HW8P7M4ARRGNYB41AYDXM",
+      "tcpId": "01K2NF1DFFGF34165397CM8P2G",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 33.972724,
+        "lon": -80.4705644
       },
+      "range": 50,
       "freq": 126.65
     },
     {
       "id": "01HC3HZBV4BYEWN7EPYMMP0JDF",
+      "physicalFacility": "SSC",
       "name": "Approach",
+      "radioName": "Shaw Approach",
       "callsign": "SSC_APP",
+      "areaId": "01HC3HW8P7M4ARRGNYB41AYDXM",
+      "tcpId": "01K2NF1DFFKJ7VSWRZ5BN8CRAY",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
+        "lat": 33.972724,
+        "lon": -80.4705644
       },
+      "range": 50,
       "freq": 125.4
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 30.39404875,
-        "lon": -81.98462525
-      }
     }
   ],
   "mapGroups": [

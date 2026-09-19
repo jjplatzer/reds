@@ -4,94 +4,227 @@
   "name": "Columbus ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 35.0424167,
-    "lon": -89.9766667
+    "lat": 33.853116666666665,
+    "lon": -88.55390923333333
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GVHV9ENAJSM4J45NCH9AYTPM",
-      "name": "Southeast Radar",
-      "callsign": "CBM_E_APP",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+      "id": "01GVHV57K16X9EYBCP3BZFPMF0",
+      "name": "CBM RAPCON",
+      "visibilityCenter": {
+        "lat": 33.645175,
+        "lon": -88.4459194
       },
-      "freq": 132.025
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "0MS9",
+        "25MS",
+        "2MS3",
+        "2MS9",
+        "3AL0",
+        "3M8",
+        "42MS",
+        "5A4",
+        "5MS8",
+        "AIV",
+        "AL01",
+        "AL54",
+        "CBM",
+        "GTR",
+        "M40",
+        "M44",
+        "M51",
+        "M55",
+        "M83",
+        "M95",
+        "MS56",
+        "MS63",
+        "MS76",
+        "STF",
+        "UBS"
+      ],
+      "ssaAirports": [
+        "CBM",
+        "GTR"
+      ]
     },
     {
-      "id": "01GVKTGT37W9SEYVG88M1VEXR8",
-      "name": "North Radar",
-      "callsign": "CBM_A_APP",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+      "id": "01JCYDWZD3HF7E0CM3S2E5GVCW",
+      "name": "CBM TOWER",
+      "visibilityCenter": {
+        "lat": 33.645175,
+        "lon": -88.4459194
       },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "CBM"
+      ],
+      "ssaAirports": [
+        "CBM"
+      ]
+    },
+    {
+      "id": "01KRJCMW95MA4D124FEN9YW4SY",
+      "name": "TUP TOWER",
+      "visibilityCenter": {
+        "lat": 34.269,
+        "lon": -88.7698889
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "TUP"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D19D6DBXJ2P4J089381",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19YM74YB8WYPZ5ADAH",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KRJCSV2D2NBFJV5Z58CFHFN6",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19H87YZ4KH8KQTKGSP",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D193PWRD6QP7VERYCP9",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GVKTGT37W9SEYVG88M1VEXR8",
+      "physicalFacility": "CBM",
+      "name": "North Radar",
+      "radioName": "Columbus Approach",
+      "callsign": "CBM_A_APP",
+      "areaId": "01GVHV57K16X9EYBCP3BZFPMF0",
+      "tcpId": "01K2NF1D19D6DBXJ2P4J089381",
+      "tcp": "1A",
+      "visualCenter": {
+        "lat": 33.645175,
+        "lon": -88.4459194
+      },
+      "range": 150,
       "freq": 126.075
     },
     {
-      "id": "01GVKTK46X7T2F0471WH6ZT62B",
-      "name": "Southwest Radar",
-      "callsign": "CBM_W_APP",
+      "id": "01GVHV9ENAJSM4J45NCH9AYTPM",
+      "physicalFacility": "CBM",
+      "name": "Southeast Radar",
+      "radioName": "Columbus Approach",
+      "callsign": "CBM_E_APP",
+      "areaId": "01GVHV57K16X9EYBCP3BZFPMF0",
+      "tcpId": "01K2NF1D19YM74YB8WYPZ5ADAH",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 33.645175,
+        "lon": -88.4459194
       },
+      "range": 150,
+      "freq": 132.025
+    },
+    {
+      "id": "01KRJCJTMYJJ337RK0C0504T7P",
+      "physicalFacility": "TUP",
+      "name": "Ground",
+      "radioName": "Tupelo Ground",
+      "callsign": "TUP_GND",
+      "areaId": "01KRJCMW95MA4D124FEN9YW4SY",
+      "tcpId": "01KRJCSV2D2NBFJV5Z58CFHFN6",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 34.269,
+        "lon": -88.7698889
+      },
+      "range": 50,
+      "freq": 121.825
+    },
+    {
+      "id": "01KRJCHZ4HV98Z2MVATPEYG8TC",
+      "physicalFacility": "TUP",
+      "name": "Local",
+      "radioName": "Tupelo Tower",
+      "callsign": "TUP_TWR",
+      "areaId": "01KRJCMW95MA4D124FEN9YW4SY",
+      "tcpId": "01KRJCSV2D2NBFJV5Z58CFHFN6",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 34.269,
+        "lon": -88.7698889
+      },
+      "range": 50,
+      "freq": 118.775
+    },
+    {
+      "id": "01GVKTK46X7T2F0471WH6ZT62B",
+      "physicalFacility": "CBM",
+      "name": "Southwest Radar",
+      "radioName": "Columbus Approach",
+      "callsign": "CBM_W_APP",
+      "areaId": "01GVHV57K16X9EYBCP3BZFPMF0",
+      "tcpId": "01K2NF1D19H87YZ4KH8KQTKGSP",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 33.645175,
+        "lon": -88.4459194
+      },
+      "range": 150,
       "freq": 135.6
     },
     {
       "id": "01GVKV3V64NPWXMGBVS4MQWD62",
+      "physicalFacility": "CBM",
       "name": "Ground",
+      "radioName": "Columbus Ground",
       "callsign": "CBM_GND",
+      "areaId": "01JCYDWZD3HF7E0CM3S2E5GVCW",
+      "tcpId": "01K2NF1D193PWRD6QP7VERYCP9",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 33.645175,
+        "lon": -88.4459194
       },
+      "range": 50,
       "freq": 121.9
     },
     {
       "id": "01GVKV4SMZK9909KK7HWDFX1JY",
+      "physicalFacility": "CBM",
       "name": "Local",
+      "radioName": "Columbus Tower",
       "callsign": "CBM_TWR",
+      "areaId": "01JCYDWZD3HF7E0CM3S2E5GVCW",
+      "tcpId": "01K2NF1D193PWRD6QP7VERYCP9",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 33.645175,
+        "lon": -88.4459194
       },
+      "range": 50,
       "freq": 126.65
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
     }
   ],
   "mapGroups": [

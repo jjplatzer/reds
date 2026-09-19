@@ -4,129 +4,465 @@
   "name": "Portland TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 45.116049633333326,
-    "lon": -122.83189593333333
+    "lat": 45.50206118123637,
+    "lon": -122.6743355967606
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GDR9CTQ7M45AQDPCDCXZZNCW",
-      "name": "North Radar",
-      "callsign": "PDX_N_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+      "id": "01GDR8DZQ3ZBKAFETQX6HBEBMX",
+      "name": "PDX Tower",
+      "visibilityCenter": {
+        "lat": 45.5866141666667,
+        "lon": -122.626812777778
       },
-      "freq": 124.35
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "PDX",
+        "VUO"
+      ],
+      "ssaAirports": [
+        "PDX"
+      ]
     },
     {
-      "id": "01GDR9DYWZCM5WHAPBSW05KB5D",
-      "name": "Hood Radar",
-      "callsign": "PDX_D_APP",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+      "id": "01GDR8ZSPPH7P27B0FGB64XDBA",
+      "name": "P80 TRACON",
+      "visibilityCenter": {
+        "lat": 45.5866141666667,
+        "lon": -122.626812777778
       },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "03S",
+        "04OG",
+        "05S",
+        "17S",
+        "19WA",
+        "1OR1",
+        "1OR3",
+        "1OR4",
+        "1OR7",
+        "1OR9",
+        "1W1",
+        "1WA0",
+        "20OR",
+        "24OR",
+        "28OR",
+        "28WA",
+        "2OG3",
+        "2OR0",
+        "2OR9",
+        "2S6",
+        "30OR",
+        "34OR",
+        "3OR0",
+        "44OR",
+        "4OR6",
+        "4OR9",
+        "4S4",
+        "4S9",
+        "4WA1",
+        "50OG",
+        "53OR",
+        "57OR",
+        "59AS",
+        "5OR1",
+        "5WA9",
+        "67OR",
+        "69OR",
+        "6OR5",
+        "6OR7",
+        "6WA1",
+        "73OR",
+        "7OR5",
+        "7OR9",
+        "7S3",
+        "7S9",
+        "7WA6",
+        "8OR6",
+        "92OR",
+        "98OR",
+        "9OR5",
+        "9OR6",
+        "9OR7",
+        "CZK",
+        "HIO",
+        "MMV",
+        "OG02",
+        "OG11",
+        "OG20",
+        "OG23",
+        "OG29",
+        "OG30",
+        "OG34",
+        "OG38",
+        "OG44",
+        "OG46",
+        "OG55",
+        "OG63",
+        "OL05",
+        "OR00",
+        "OR24",
+        "OR27",
+        "OR28",
+        "OR31",
+        "OR35",
+        "OR40",
+        "OR41",
+        "OR50",
+        "OR59",
+        "OR61",
+        "OR65",
+        "OR66",
+        "OR68",
+        "OR72",
+        "OR76",
+        "OR81",
+        "OR88",
+        "OR90",
+        "PDX",
+        "SPB",
+        "TTD",
+        "UAO",
+        "VUO",
+        "W27",
+        "W52",
+        "W56",
+        "W58",
+        "WA29",
+        "WA46",
+        "WA63",
+        "WA67",
+        "WA78",
+        "WA79",
+        "WA80",
+        "WA87",
+        "WN38",
+        "WN52",
+        "WN67"
+      ],
+      "ssaAirports": [
+        "PDX",
+        "HIO",
+        "TTD",
+        "UAO"
+      ]
+    },
+    {
+      "id": "01HCGD0TDCRXZ8HSQ9FHA0TC5W",
+      "name": "UAO Feed",
+      "visibilityCenter": {
+        "lat": 45.24893,
+        "lon": -122.76793
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "UAO"
+      ],
+      "ssaAirports": [
+        "UAO"
+      ]
+    },
+    {
+      "id": "01HZ07B6KXP27VZ2NQWD7YSCS5",
+      "name": "HIO Feed",
+      "visibilityCenter": {
+        "lat": 45.537547572848446,
+        "lon": -122.95069242824707
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "HIO"
+      ],
+      "ssaAirports": [
+        "HIO"
+      ]
+    },
+    {
+      "id": "01K282A40GG4G8PB64QDY0F6ZM",
+      "name": "TTD Feed",
+      "visibilityCenter": {
+        "lat": 45.5506,
+        "lon": -122.39943
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "TTD"
+      ],
+      "ssaAirports": [
+        "TTD"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DN5NBF6Z1QB2PDW6NH4",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN5PYJGGEY8YQ6Y6CCQ",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1DN510H9PKJY04H3Y286",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN5TXARHHD5BH7PAGZC",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN510H9PKJY04H3Y286",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1DN5NBF6Z1QB2PDW6NH4",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN5K8ZP7TH5ZM2YTGA9",
+      "code": "1O",
+      "subset": 1,
+      "sectorId": "O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN5HRSZ82SEMF69W788",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN51KJFVGTJHKP6TBKE",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN5WEJ8K30KDYPQ6PQB",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN5XPH8FBSBRT2ZAEB6",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1DN5NBF6Z1QB2PDW6NH4",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN5669F99691KCW5NR5",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DN5K8ZP7TH5ZM2YTGA9",
+      "parentTcp": "1O",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN53F9V8ZCE0PSQSZ6E",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DN5WZZP2PWQPPJ8KHQX",
+      "code": "9G",
+      "subset": 9,
+      "sectorId": "G"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GDR9DYWZCM5WHAPBSW05KB5D",
+      "physicalFacility": "P80",
+      "name": "Hood Radar",
+      "radioName": "Portland Approach",
+      "callsign": "PDX_D_APP",
+      "areaId": "01GDR8ZSPPH7P27B0FGB64XDBA",
+      "tcpId": "01K2NF1DN5NBF6Z1QB2PDW6NH4",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 45.5866141666667,
+        "lon": -122.626812777778
+      },
+      "range": 100,
       "freq": 118.1
     },
     {
       "id": "01GDR9FPMFR409GDXJENAQD0WM",
+      "physicalFacility": "P80",
       "name": "Final Radar",
+      "radioName": "Portland Approach",
       "callsign": "PDX_F_APP",
+      "areaId": "01GDR8ZSPPH7P27B0FGB64XDBA",
+      "tcpId": "01K2NF1DN5PYJGGEY8YQ6Y6CCQ",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 45.5866141666667,
+        "lon": -122.626812777778
       },
+      "range": 100,
       "freq": 126.9
     },
     {
-      "id": "01GDR9H6XWRSV4B878F9YFT3Q3",
-      "name": "Newberg Radar",
-      "callsign": "PDX_V_APP",
+      "id": "01K2FTAJ9CXZW0RNNCH9RVBZEA",
+      "physicalFacility": "HIO",
+      "name": "Local Control 2",
+      "radioName": "Hillsboro Tower",
+      "callsign": "HIO_G_TWR",
+      "areaId": "01HZ07B6KXP27VZ2NQWD7YSCS5",
+      "tcpId": "01K2NF1DN5TXARHHD5BH7PAGZC",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 45.537547572848446,
+        "lon": -122.95069242824707
       },
+      "range": 50,
+      "freq": 132.8
+    },
+    {
+      "id": "01H27C6B5VXWYSYZ981KVY26RS",
+      "physicalFacility": "HIO",
+      "name": "Local Control",
+      "radioName": "Hillsboro Tower",
+      "callsign": "HIO_H_TWR",
+      "areaId": "01HZ07B6KXP27VZ2NQWD7YSCS5",
+      "tcpId": "01K2NF1DN5TXARHHD5BH7PAGZC",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 45.537547572848446,
+        "lon": -122.95069242824707
+      },
+      "range": 50,
+      "freq": 119.3
+    },
+    {
+      "id": "01GDR9CTQ7M45AQDPCDCXZZNCW",
+      "physicalFacility": "P80",
+      "name": "North Radar",
+      "radioName": "Portland Approach",
+      "callsign": "PDX_N_APP",
+      "areaId": "01GDR8ZSPPH7P27B0FGB64XDBA",
+      "tcpId": "01K2NF1DN510H9PKJY04H3Y286",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 45.5866141666667,
+        "lon": -122.626812777778
+      },
+      "range": 100,
+      "freq": 124.35
+    },
+    {
+      "id": "01GE0Q5ZVEP6EXG49WQF4P8WG1",
+      "physicalFacility": "PDX",
+      "name": "Local Control 2",
+      "radioName": "Portland Tower",
+      "callsign": "PDX_O_TWR",
+      "areaId": "01GDR8DZQ3ZBKAFETQX6HBEBMX",
+      "tcpId": "01K2NF1DN5K8ZP7TH5ZM2YTGA9",
+      "tcp": "1O",
+      "visualCenter": {
+        "lat": 45.5866141666667,
+        "lon": -122.626812777778
+      },
+      "range": 50,
+      "freq": 123.775
+    },
+    {
+      "id": "01H2MMEWNC7Q052ZJYAGHEQYP9",
+      "physicalFacility": "UAO",
+      "name": "Tower",
+      "radioName": "Aurora Tower",
+      "callsign": "UAO_TWR",
+      "areaId": "01HCGD0TDCRXZ8HSQ9FHA0TC5W",
+      "tcpId": "01K2NF1DN5WEJ8K30KDYPQ6PQB",
+      "tcp": "1U",
+      "visualCenter": {
+        "lat": 45.24893,
+        "lon": -122.76793
+      },
+      "range": 50,
+      "freq": 120.35
+    },
+    {
+      "id": "01GDR9H6XWRSV4B878F9YFT3Q3",
+      "physicalFacility": "P80",
+      "name": "Newberg Radar",
+      "radioName": "Portland Approach",
+      "callsign": "PDX_V_APP",
+      "areaId": "01GDR8ZSPPH7P27B0FGB64XDBA",
+      "tcpId": "01K2NF1DN5XPH8FBSBRT2ZAEB6",
+      "tcp": "1V",
+      "visualCenter": {
+        "lat": 45.5866141666667,
+        "lon": -122.626812777778
+      },
+      "range": 100,
       "freq": 126
     },
     {
-      "id": "01J97MDY7KZS45BQPT1R9DDK6H",
-      "name": "P80 Guard",
-      "callsign": "PDX_G_APP",
+      "id": "01GE0Q5G8169JTF24TX1GQFYM6",
+      "physicalFacility": "PDX",
+      "name": "Local Control 1",
+      "radioName": "Portland Tower",
+      "callsign": "PDX_W_TWR",
+      "areaId": "01GDR8DZQ3ZBKAFETQX6HBEBMX",
+      "tcpId": "01K2NF1DN5669F99691KCW5NR5",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
+        "lat": 45.5866141666667,
+        "lon": -122.626812777778
       },
+      "range": 50,
+      "freq": 118.7
+    },
+    {
+      "id": "01H27CJ8H7D7H4P5WGAAXP7FD9",
+      "physicalFacility": "TTD",
+      "name": "Tower",
+      "radioName": "Troutdale Tower",
+      "callsign": "TTD_TWR",
+      "areaId": "01K282A40GG4G8PB64QDY0F6ZM",
+      "tcpId": "01K2NF1DN53F9V8ZCE0PSQSZ6E",
+      "tcp": "1Y",
+      "visualCenter": {
+        "lat": 45.5506,
+        "lon": -122.39943
+      },
+      "range": 50,
+      "freq": 120.9
+    },
+    {
+      "id": "01J97MDY7KZS45BQPT1R9DDK6H",
+      "physicalFacility": "P80",
+      "name": "P80 Guard",
+      "radioName": "P80 Guard",
+      "callsign": "PDX_G_APP",
+      "areaId": "01GDR8ZSPPH7P27B0FGB64XDBA",
+      "tcpId": "01K2NF1DN5WZZP2PWQPPJ8KHQX",
+      "tcp": "9G",
+      "visualCenter": {
+        "lat": 45.5866141666667,
+        "lon": -122.626812777778
+      },
+      "range": 100,
       "freq": 121.5
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1O",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
-    },
-    {
-      "id": "9G",
-      "visualCenter": {
-        "lat": 45.116049633333326,
-        "lon": -122.83189593333333
-      }
     }
   ],
   "mapGroups": [

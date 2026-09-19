@@ -4,53 +4,69 @@
   "name": "Hilo TRACAB",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 20.9750275,
-    "lon": -157.17449499999998
+    "lat": 19.720263,
+    "lon": -155.0484701
   },
+  "areas": [
+    {
+      "id": "01HCARKZP6APZHNBPNC00QX23P",
+      "name": "Main",
+      "visibilityCenter": {
+        "lat": 19.720263,
+        "lon": -155.0484701
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "ITO"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1ED82DR2ZFVNGPKNFQ4N",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1ED8QFYTQH80GZVXDEMY",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01HCARJVTBSJ2531WHSVJA2553",
+      "physicalFacility": "ITO",
       "name": "Approach Control",
+      "radioName": "Hilo Approach",
       "callsign": "ITO_APP",
+      "areaId": "01HCARKZP6APZHNBPNC00QX23P",
+      "tcpId": "01K2NF1ED82DR2ZFVNGPKNFQ4N",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
+        "lat": 19.720263,
+        "lon": -155.0484701
       },
+      "range": 150,
       "freq": 119.7
     },
     {
       "id": "01HCARP2CQRNNKA7NA5Q83KDF9",
+      "physicalFacility": "ITO",
       "name": "Local Control",
+      "radioName": "Hilo Tower",
       "callsign": "ITO_TWR",
+      "areaId": "01HCARKZP6APZHNBPNC00QX23P",
+      "tcpId": "01K2NF1ED8QFYTQH80GZVXDEMY",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
+        "lat": 19.720263,
+        "lon": -155.0484701
       },
+      "range": 150,
       "freq": 118.1
-    },
-    {
-      "id": "01HCARQ90JM603G2MWBQ5QK5J5",
-      "name": "Ground Control",
-      "callsign": "ITO_GND",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 20.9750275,
-        "lon": -157.17449499999998
-      }
     }
   ],
   "mapGroups": [

@@ -4,73 +4,143 @@
   "name": "Camp Pendleton",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 34.9691453,
-    "lon": -116.63582625
+    "lat": 33.3012583,
+    "lon": -117.3551694
   },
+  "areas": [
+    {
+      "id": "01HBKKKSWSPQRXJ0XWSF7QC740",
+      "name": "NFG",
+      "visibilityCenter": {
+        "lat": 33.3012583,
+        "lon": -117.3551694
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "NFG"
+      ],
+      "ssaAirports": [
+        "NFG"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CRS0RJ1A6JX3PF1QJHR",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRSKQWCC37A7H1369N9",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0FVVE0F8E4YRC1Z37X4BHJ",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0FVXR3JA4SRR15G6N7YATB",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK0FW0Y4AB9ZATK0SN8CAJSA",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01HBKKREXHS3468TYRT0SPJKST",
+      "physicalFacility": "NFG",
       "name": "Arrival GCA",
+      "radioName": "Camp Pendleton Radar",
       "callsign": "NFG_APP",
+      "areaId": "01HBKKKSWSPQRXJ0XWSF7QC740",
+      "tcpId": "01K2NF1CRS0RJ1A6JX3PF1QJHR",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 33.3012583,
+        "lon": -117.3551694
       },
+      "range": 50,
       "freq": 128.45
     },
     {
-      "id": "01HBKKTEGB7C3FKJJ856025233",
-      "name": "Local",
-      "callsign": "NFG_TWR",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 128.775
-    },
-    {
-      "id": "01HBKKVQ95943BCPHCFEX0BS4S",
-      "name": "Ground",
-      "callsign": "NFG_GND",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 134.675
-    },
-    {
       "id": "01KK0FX52T2A4QD4XPDT079GA7",
+      "physicalFacility": "NFG",
       "name": "Longrifle (Departure)",
+      "radioName": "Longrifle",
       "callsign": "NFG_DEP",
+      "areaId": "01HBKKKSWSPQRXJ0XWSF7QC740",
+      "tcpId": "01K2NF1CRSKQWCC37A7H1369N9",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 33.3012583,
+        "lon": -117.3551694
       },
+      "range": 50,
       "freq": 123.2
     },
     {
       "id": "01KK0G0G9D2ES228YHR6NVWE8Q",
+      "physicalFacility": "NFG",
       "name": "Fallbrook GCA",
+      "radioName": "Camp Pendleton Radar",
       "callsign": "NFG_F_APP",
+      "areaId": "01HBKKKSWSPQRXJ0XWSF7QC740",
+      "tcpId": "01KK0FVVE0F8E4YRC1Z37X4BHJ",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 33.3012583,
+        "lon": -117.3551694
       },
+      "range": 50,
       "freq": 128.45
     },
     {
-      "id": "1A",
+      "id": "01HBKKVQ95943BCPHCFEX0BS4S",
+      "physicalFacility": "NFG",
+      "name": "Ground",
+      "radioName": "Camp Pendleton Ground",
+      "callsign": "NFG_GND",
+      "areaId": "01HBKKKSWSPQRXJ0XWSF7QC740",
+      "tcpId": "01KK0FW0Y4AB9ZATK0SN8CAJSA",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 33.3012583,
+        "lon": -117.3551694
+      },
+      "range": 50,
+      "freq": 134.675
     },
     {
-      "id": "1B",
+      "id": "01HBKKTEGB7C3FKJJ856025233",
+      "physicalFacility": "NFG",
+      "name": "Local",
+      "radioName": "Camp Pendleton Tower",
+      "callsign": "NFG_TWR",
+      "areaId": "01HBKKKSWSPQRXJ0XWSF7QC740",
+      "tcpId": "01KK0FW0Y4AB9ZATK0SN8CAJSA",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
+        "lat": 33.3012583,
+        "lon": -117.3551694
+      },
+      "range": 50,
+      "freq": 128.775
     }
   ],
   "mapGroups": [

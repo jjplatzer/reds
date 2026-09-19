@@ -4,179 +4,322 @@
   "name": "Providence ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 42.93753,
-    "lon": -70.70471
+    "lat": 41.72078,
+    "lon": -71.59843
   },
+  "areas": [
+    {
+      "id": "01G9D1PJYN1KG5MFG0YHYZANTT",
+      "name": "PVD",
+      "visibilityCenter": {
+        "lat": 41.72078,
+        "lon": -71.59843
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "08R",
+        "0B8",
+        "1M8",
+        "BID",
+        "GON",
+        "LZD",
+        "MTP",
+        "OQU",
+        "PVD",
+        "SFZ",
+        "TAN",
+        "UUU",
+        "WEB",
+        "WST"
+      ],
+      "ssaAirports": [
+        "PVD",
+        "EWB",
+        "OQU",
+        "GON"
+      ]
+    },
+    {
+      "id": "01GVKQJNRM7Y5DA58E4MHHCXGN",
+      "name": "Providence Tower",
+      "visibilityCenter": {
+        "lat": 41.72078,
+        "lon": -71.59843
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "PVD"
+      ],
+      "ssaAirports": [
+        "PVD"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CGPAE8WY9DRW1CTG017",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1CGP5TBTW7YPBMS170H4",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP5TBTW7YPBMS170H4",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP9AJ0MT9CFDA2RGNS",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPFHG56CE9NM53WN1M",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP3WR01JE38J6NPN9W",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1CGP5TBTW7YPBMS170H4",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPMKDE191C6G8D0D3F",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "parentTcpId": "01K2NF1CGP5TBTW7YPBMS170H4",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPHBNSTRTJ5BBMPBK6",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1CGP5TBTW7YPBMS170H4",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPSCE7FKZ5A9TVSNF8",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPSNTG81RB3CZ8JP57",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1CGP5TBTW7YPBMS170H4",
+      "parentTcp": "1D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP8V0ZEC9N36WPX5M7",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPJ8EBHS3NBZXAYC8F",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G9D1TS3KFK4P4JZSNYKHHZ1D",
-      "name": "Clearance Delivery",
-      "callsign": "PVD_DEL",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 126.65
-    },
-    {
-      "id": "01G9D1ZC4BJ2SK71X89NW0FE7F",
-      "name": "Ground Control",
-      "callsign": "PVD_GND",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01G9D1ZRVCWVJKKZY5YAEFW5G0",
-      "name": "Local Control",
-      "callsign": "PVD_TWR",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 120.7
-    },
-    {
-      "id": "01G9D21HXCFXPCAF18FMXVGY1W",
-      "name": "Departure Radar",
-      "callsign": "PVD_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 123.675
-    },
-    {
       "id": "01G9D2265C3VEE1P2JH0G1W6MG",
+      "physicalFacility": "PVD",
       "name": "Arrival Radar",
+      "radioName": "Providence Approach",
       "callsign": "PVD_APP",
+      "areaId": "01G9D1PJYN1KG5MFG0YHYZANTT",
+      "tcpId": "01K2NF1CGPAE8WY9DRW1CTG017",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 41.72078,
+        "lon": -71.59843
       },
+      "range": 150,
       "freq": 127.9
     },
     {
-      "id": "01G9D34ZYQXEMTBZFPRMPH8E0J",
-      "name": "JUMPR Radar",
+      "id": "01G9D21HXCFXPCAF18FMXVGY1W",
+      "physicalFacility": "PVD",
+      "name": "Departure Radar",
+      "radioName": "Providence Approach",
       "callsign": "PVD_APP",
+      "areaId": "01G9D1PJYN1KG5MFG0YHYZANTT",
+      "tcpId": "01K2NF1CGP5TBTW7YPBMS170H4",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 41.72078,
+        "lon": -71.59843
       },
+      "range": 150,
+      "freq": 123.675
+    },
+    {
+      "id": "01G9GVBDZX6EPQ2AE330458QMF",
+      "physicalFacility": "EWB",
+      "name": "Local Control",
+      "radioName": "New Bedford Tower",
+      "callsign": "EWB_TWR",
+      "areaId": "01G9D1PJYN1KG5MFG0YHYZANTT",
+      "tcpId": "01K2NF1CGP9AJ0MT9CFDA2RGNS",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 41.72078,
+        "lon": -71.59843
+      },
+      "range": 150,
+      "freq": 118.1
+    },
+    {
+      "id": "01G9D1ZC4BJ2SK71X89NW0FE7F",
+      "physicalFacility": "PVD",
+      "name": "Ground Control",
+      "radioName": "Providence Ground",
+      "callsign": "PVD_GND",
+      "areaId": "01GVKQJNRM7Y5DA58E4MHHCXGN",
+      "tcpId": "01K2NF1CGPFHG56CE9NM53WN1M",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 41.72078,
+        "lon": -71.59843
+      },
+      "range": 50,
+      "freq": 121.9
+    },
+    {
+      "id": "01G9D37SP3TEZA3NC5K8496N6W",
+      "physicalFacility": "PVD",
+      "name": "Groton Radar",
+      "radioName": "Providence Approach",
+      "callsign": "PVD_APP",
+      "areaId": "01G9D1PJYN1KG5MFG0YHYZANTT",
+      "tcpId": "01K2NF1CGP3WR01JE38J6NPN9W",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 41.72078,
+        "lon": -71.59843
+      },
+      "range": 150,
+      "freq": 119.45
+    },
+    {
+      "id": "01G9D34ZYQXEMTBZFPRMPH8E0J",
+      "physicalFacility": "PVD",
+      "name": "JUMPR Radar",
+      "radioName": "Providence Approach",
+      "callsign": "PVD_APP",
+      "areaId": "01G9D1PJYN1KG5MFG0YHYZANTT",
+      "tcpId": "01K2NF1CGPMKDE191C6G8D0D3F",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 41.72078,
+        "lon": -71.59843
+      },
+      "range": 150,
       "freq": 125.75
     },
     {
       "id": "01G9D35WEX3PAXE6K3QR19YYQQ",
+      "physicalFacility": "PVD",
       "name": "New Bedford Radar",
+      "radioName": "Providence Approach",
       "callsign": "PVD_APP",
+      "areaId": "01G9D1PJYN1KG5MFG0YHYZANTT",
+      "tcpId": "01K2NF1CGPHBNSTRTJ5BBMPBK6",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 41.72078,
+        "lon": -71.59843
       },
+      "range": 150,
       "freq": 128.7
     },
     {
-      "id": "01G9D37SP3TEZA3NC5K8496N6W",
-      "name": "Groton Radar",
-      "callsign": "PVD_APP",
+      "id": "01G9GV99CEQ6BJYTRC0X9296Q2",
+      "physicalFacility": "OQU",
+      "name": "Local Control",
+      "radioName": "Quonset Tower",
+      "callsign": "OQU_TWR",
+      "areaId": "01G9D1PJYN1KG5MFG0YHYZANTT",
+      "tcpId": "01K2NF1CGPSCE7FKZ5A9TVSNF8",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 41.72078,
+        "lon": -71.59843
       },
-      "freq": 119.45
+      "range": 150,
+      "freq": 126.35
     },
     {
       "id": "01G9D38YFC1FVKXTJPXX4F4Q65",
+      "physicalFacility": "PVD",
       "name": "Rhody Radar",
+      "radioName": "Providence Approach",
       "callsign": "PVD_APP",
+      "areaId": "01G9D1PJYN1KG5MFG0YHYZANTT",
+      "tcpId": "01K2NF1CGPSNTG81RB3CZ8JP57",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 41.72078,
+        "lon": -71.59843
       },
+      "range": 150,
       "freq": 133.85
     },
     {
-      "id": "01KAMCT5X9SQ46K6XVN50G1J8J",
-      "name": "PVD Guard",
-      "callsign": "PVD_EM_APP",
+      "id": "01G9D1ZRVCWVJKKZY5YAEFW5G0",
+      "physicalFacility": "PVD",
+      "name": "Local Control",
+      "radioName": "Providence Tower",
+      "callsign": "PVD_TWR",
+      "areaId": "01GVKQJNRM7Y5DA58E4MHHCXGN",
+      "tcpId": "01K2NF1CGP8V0ZEC9N36WPX5M7",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 41.72078,
+        "lon": -71.59843
       },
-      "freq": 121.5
+      "range": 50,
+      "freq": 120.7
     },
     {
-      "id": "1A",
+      "id": "01G9GV6PDCB30NCTGAKC15ADVK",
+      "physicalFacility": "GON",
+      "name": "Local Control",
+      "radioName": "Groton Tower",
+      "callsign": "GON_TWR",
+      "areaId": "01G9D1PJYN1KG5MFG0YHYZANTT",
+      "tcpId": "01K2NF1CGPJ8EBHS3NBZXAYC8F",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1J",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1Q",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
+        "lat": 41.72078,
+        "lon": -71.59843
+      },
+      "range": 150,
+      "freq": 125.6
     }
   ],
   "mapGroups": [

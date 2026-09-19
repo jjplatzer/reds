@@ -4,60 +4,97 @@
   "name": "Eagle ATCT",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 40.569587575,
-    "lon": -104.96660805
+    "lat": 39.6427880334588,
+    "lon": -106.915833231526
   },
+  "areas": [
+    {
+      "id": "01HHD28G7PH5HTN423SKEQ0NT3",
+      "name": "EGE",
+      "visibilityCenter": {
+        "lat": 39.6427880334588,
+        "lon": -106.915833231526
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "EGE"
+      ],
+      "ssaAirports": [
+        "EGE"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CJT0WD0QBKSF8033AZ0",
+      "code": "4D",
+      "subset": 4,
+      "sectorId": "D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJTVVY1FTGWVAJA9Z81",
+      "code": "4G",
+      "subset": 4,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJTCZAN9MGHRGB4GJTQ",
+      "code": "4T",
+      "subset": 4,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01H581TFAG6YNS5T798TJ0SRVZ",
-      "name": "Local Control",
-      "callsign": "EGE_TWR",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 119.8
-    },
-    {
-      "id": "01H581VEA7K07BBBY21CF5EKDB",
-      "name": "Ground Control",
-      "callsign": "EGE_GND",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 121.8
-    },
-    {
       "id": "01HHNTBQV7N2ZSQ1MMAPRTKDZ7",
+      "physicalFacility": "EGE",
       "name": "Delivery",
+      "radioName": "Eagle Clearance",
       "callsign": "EGE_DEL",
+      "areaId": "01HHD28G7PH5HTN423SKEQ0NT3",
+      "tcpId": "01K2NF1CJT0WD0QBKSF8033AZ0",
+      "tcp": "4D",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 39.6427880334588,
+        "lon": -106.915833231526
       },
+      "range": 30,
       "freq": 124.75
     },
     {
-      "id": "4C",
+      "id": "01H581VEA7K07BBBY21CF5EKDB",
+      "physicalFacility": "EGE",
+      "name": "Ground Control",
+      "radioName": "Eagle Ground",
+      "callsign": "EGE_GND",
+      "areaId": "01HHD28G7PH5HTN423SKEQ0NT3",
+      "tcpId": "01K2NF1CJTVVY1FTGWVAJA9Z81",
+      "tcp": "4G",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
+        "lat": 39.6427880334588,
+        "lon": -106.915833231526
+      },
+      "range": 30,
+      "freq": 121.8
     },
     {
-      "id": "4G",
+      "id": "01H581TFAG6YNS5T798TJ0SRVZ",
+      "physicalFacility": "EGE",
+      "name": "Local Control",
+      "radioName": "Eagle Tower",
+      "callsign": "EGE_TWR",
+      "areaId": "01HHD28G7PH5HTN423SKEQ0NT3",
+      "tcpId": "01K2NF1CJTCZAN9MGHRGB4GJTQ",
+      "tcp": "4T",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "4T",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
+        "lat": 39.6427880334588,
+        "lon": -106.915833231526
+      },
+      "range": 30,
+      "freq": 119.8
     }
   ],
   "mapGroups": [

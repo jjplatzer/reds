@@ -4,60 +4,99 @@
   "name": "Minot ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 45.084575,
-    "lon": -93.9971125
+    "lat": 48.4157678,
+    "lon": -101.3580409
   },
+  "areas": [
+    {
+      "id": "01GFEXY8FDZHSV2X8FBAX6AAZ3",
+      "name": "MIB",
+      "visibilityCenter": {
+        "lat": 48.4157678,
+        "lon": -101.3580409
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "HBC",
+        "MIB",
+        "MOT"
+      ],
+      "ssaAirports": [
+        "MOT",
+        "MIB"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D3MSRFF4XRA27V6FZ84",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B"
+    },
+    {
+      "id": "01K2NF1D3M6PBF7N0VPKTB93T3",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M"
+    },
+    {
+      "id": "01K2NF1D3MMNAYD12VWXF358MF",
+      "code": "2M",
+      "subset": 2,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1D3M6PBF7N0VPKTB93T3",
+      "parentTcp": "1M"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GFEXZ3ZP2VZ0AEBP51VHJ528",
+      "physicalFacility": "MIB",
       "name": "Approach Control",
+      "radioName": "Minot Approach",
       "callsign": "MIB_APP",
+      "areaId": "01GFEXY8FDZHSV2X8FBAX6AAZ3",
+      "tcpId": "01K2NF1D3MSRFF4XRA27V6FZ84",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 48.4157678,
+        "lon": -101.3580409
       },
+      "range": 150,
       "freq": 119.6
     },
     {
       "id": "01GFEY0Z579KGQA701ER6FMVCE",
+      "physicalFacility": "MIB",
       "name": "Local Control",
+      "radioName": "Minot",
       "callsign": "MIB_TWR",
+      "areaId": "01GFEXY8FDZHSV2X8FBAX6AAZ3",
+      "tcpId": "01K2NF1D3M6PBF7N0VPKTB93T3",
+      "tcp": "1M",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 48.4157678,
+        "lon": -101.3580409
       },
+      "range": 150,
       "freq": 120.65
     },
     {
       "id": "01GFEY46G4RE4J0R42ED6XGTSZ",
+      "physicalFacility": "MIB",
       "name": "Ground Control",
+      "radioName": "Minot Ground",
       "callsign": "MIB_GND",
+      "areaId": "01GFEXY8FDZHSV2X8FBAX6AAZ3",
+      "tcpId": "01K2NF1D3MMNAYD12VWXF358MF",
+      "tcp": "2M",
       "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
+        "lat": 48.4157678,
+        "lon": -101.3580409
       },
+      "range": 150,
       "freq": 134
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
-    },
-    {
-      "id": "2M",
-      "visualCenter": {
-        "lat": 45.084575,
-        "lon": -93.9971125
-      }
     }
   ],
   "mapGroups": [

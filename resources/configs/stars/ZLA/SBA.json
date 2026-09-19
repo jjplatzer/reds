@@ -4,184 +4,377 @@
   "name": "Santa Barbara",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 34.9691453,
-    "lon": -116.63582625
+    "lat": 34.74129629666667,
+    "lon": -120.25888887406666
   },
+  "areas": [
+    {
+      "id": "01G90MFTN2XEVMX5EHZAD0Y6A2",
+      "name": "SBA",
+      "visibilityCenter": {
+        "lat": 34.42388889,
+        "lon": -119.8422222
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "SBA",
+        "SBP",
+        "SMX",
+        "VBG"
+      ],
+      "ssaAirports": [
+        "SBA",
+        "SBP",
+        "SMX",
+        "VBG"
+      ]
+    },
+    {
+      "id": "01H4020CNPFQX17JWVHWQKGXDN",
+      "name": "Satellite Towers",
+      "visibilityCenter": {
+        "lat": 34.9,
+        "lon": -120.4672222222
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "SBP",
+        "SMX",
+        "VBG"
+      ]
+    },
+    {
+      "id": "01KKAH1HXJ3P4JN3SKYC289KFR",
+      "name": "North",
+      "visibilityCenter": {
+        "lat": 34.9,
+        "lon": -120.4672222
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "SMX",
+        "SBP",
+        "VBG",
+        "LPC",
+        "L52",
+        "IZA"
+      ],
+      "ssaAirports": [
+        "SBP",
+        "SMX",
+        "VBG"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CRRQHABKN2B850HT7NC",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1CRR98P4X60R0EHMQ88Q",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRZQCAWY914Z00FPG3",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRF5GDFSY8ZA1EXDXS",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRT58GT5SH2YTG16TT",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1CRR4WY30WWQMZ7KXGDP",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRRN6D40XCRFAA6D4Z",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR4WY30WWQMZ7KXGDP",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR8QYANVCHSSV2KT6C",
+      "code": "1I",
+      "subset": 1,
+      "sectorId": "I",
+      "parentTcpId": "01K2NF1CRR3Y55T0454050D8YQ",
+      "parentTcp": "1R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR6R5ZXG2FTDZTQ8Q8",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR47M5TJ4VEGSMYTKC",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRDVWWJR890BYAVBF9",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRHFCGBDS4Y754TNCD",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR3Y55T0454050D8YQ",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1CRR4WY30WWQMZ7KXGDP",
+      "parentTcp": "1H",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR98P4X60R0EHMQ88Q",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRR24ANYMEJ8WVNNMBM",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CRRM21RJSBNY5A06QS5",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1CRR98P4X60R0EHMQ88Q",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G90MGR3A52WC4FMZK9D2XS57",
-      "name": "Clearance Delivery",
-      "callsign": "SBA_DEL",
+      "id": "01G90NBZR4MVRXZE61WY3D5ZTF",
+      "physicalFacility": "VBG",
+      "name": "Local Control",
+      "radioName": "Vandenberg Tower",
+      "callsign": "VBG_TWR",
+      "areaId": "01H4020CNPFQX17JWVHWQKGXDN",
+      "tcpId": "01K2NF1CRRZQCAWY914Z00FPG3",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 34.9,
+        "lon": -120.4672222222
       },
+      "range": 150,
+      "freq": 124.95
+    },
+    {
+      "id": "01G90MP49NGYBM625S2X0D963Z",
+      "physicalFacility": "SBA",
+      "name": "Elcap",
+      "radioName": "Santa Barbara Approach",
+      "callsign": "SBA_E_APP",
+      "areaId": "01G90MFTN2XEVMX5EHZAD0Y6A2",
+      "tcpId": "01K2NF1CRRT58GT5SH2YTG16TT",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 34.42388889,
+        "lon": -119.8422222
+      },
+      "range": 150,
+      "freq": 120.55
+    },
+    {
+      "id": "01G90MN6R8MGE3BEE4S951JPSJ",
+      "physicalFacility": "SBA",
+      "name": "Harbor",
+      "radioName": "Santa Barbara Approach",
+      "callsign": "SBA_H_APP",
+      "areaId": "01G90MFTN2XEVMX5EHZAD0Y6A2",
+      "tcpId": "01K2NF1CRR4WY30WWQMZ7KXGDP",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 34.42388889,
+        "lon": -119.8422222
+      },
+      "range": 150,
+      "freq": 125.4
+    },
+    {
+      "id": "01G90MPYD3C664KC34DYQK9454",
+      "physicalFacility": "SBA",
+      "name": "Pismo",
+      "radioName": "Santa Barbara Approach",
+      "callsign": "SBA_I_APP",
+      "areaId": "01KKAH1HXJ3P4JN3SKYC289KFR",
+      "tcpId": "01K2NF1CRR8QYANVCHSSV2KT6C",
+      "tcp": "1I",
+      "visualCenter": {
+        "lat": 34.9,
+        "lon": -120.4672222
+      },
+      "range": 150,
+      "freq": 127.725
+    },
+    {
+      "id": "01G90NGAMC4W2V9NZ9ZTDT6RBA",
+      "physicalFacility": "SBP",
+      "name": "Ground Control",
+      "radioName": "San Luis Ground",
+      "callsign": "SBP_GND",
+      "areaId": "01H4020CNPFQX17JWVHWQKGXDN",
+      "tcpId": "01K2NF1CRRHFCGBDS4Y754TNCD",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 34.9,
+        "lon": -120.4672222222
+      },
+      "range": 150,
+      "freq": 121.6
+    },
+    {
+      "id": "01G90NGN5JQXD37P1VYC60QDGF",
+      "physicalFacility": "SBP",
+      "name": "Local Control",
+      "radioName": "San Luis Tower",
+      "callsign": "SBP_TWR",
+      "areaId": "01H4020CNPFQX17JWVHWQKGXDN",
+      "tcpId": "01K2NF1CRRHFCGBDS4Y754TNCD",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 34.9,
+        "lon": -120.4672222222
+      },
+      "range": 150,
+      "freq": 124
+    },
+    {
+      "id": "01G90MNJ19RC2CH9RJX94Z6V9T",
+      "physicalFacility": "SBA",
+      "name": "Orcut",
+      "radioName": "Santa Barbara Approach",
+      "callsign": "SBA_R_APP",
+      "areaId": "01KKAH1HXJ3P4JN3SKYC289KFR",
+      "tcpId": "01K2NF1CRR3Y55T0454050D8YQ",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 34.9,
+        "lon": -120.4672222
+      },
+      "range": 150,
+      "freq": 124.15
+    },
+    {
+      "id": "01G90MKTD7TTCT9NZ3S285FFDD",
+      "physicalFacility": "SBA",
+      "name": "Local Control",
+      "radioName": "Santa Barbara Tower",
+      "callsign": "SBA_TWR",
+      "areaId": "01G90MFTN2XEVMX5EHZAD0Y6A2",
+      "tcpId": "01K2NF1CRR98P4X60R0EHMQ88Q",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 34.42388889,
+        "lon": -119.8422222
+      },
+      "range": 150,
+      "freq": 119.7
+    },
+    {
+      "id": "01G90NDQ966G7MHS995ADPWQCY",
+      "physicalFacility": "SMX",
+      "name": "Ground Control",
+      "radioName": "Santa Maria Ground",
+      "callsign": "SMX_GND",
+      "areaId": "01H4020CNPFQX17JWVHWQKGXDN",
+      "tcpId": "01K2NF1CRR24ANYMEJ8WVNNMBM",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 34.9,
+        "lon": -120.4672222222
+      },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
+      "id": "01G90NECFHQ7NS6FBEV96BG9MN",
+      "physicalFacility": "SMX",
+      "name": "Local Control",
+      "radioName": "Santa Maria Tower",
+      "callsign": "SMX_TWR",
+      "areaId": "01H4020CNPFQX17JWVHWQKGXDN",
+      "tcpId": "01K2NF1CRR24ANYMEJ8WVNNMBM",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 34.9,
+        "lon": -120.4672222222
+      },
+      "range": 150,
+      "freq": 118.3
+    },
+    {
+      "id": "01G90MGR3A52WC4FMZK9D2XS57",
+      "physicalFacility": "SBA",
+      "name": "Clearance Delivery",
+      "radioName": "Santa Barbara Clearance",
+      "callsign": "SBA_DEL",
+      "areaId": "01G90MFTN2XEVMX5EHZAD0Y6A2",
+      "tcpId": "01K2NF1CRRM21RJSBNY5A06QS5",
+      "tcp": "1Y",
+      "visualCenter": {
+        "lat": 34.42388889,
+        "lon": -119.8422222
+      },
+      "range": 150,
       "freq": 132.9
     },
     {
       "id": "01G90MK52V6FE7HF2Y9Y69CA0X",
+      "physicalFacility": "SBA",
       "name": "Ground Control",
+      "radioName": "Santa Barbara Ground",
       "callsign": "SBA_GND",
+      "areaId": "01G90MFTN2XEVMX5EHZAD0Y6A2",
+      "tcpId": "01K2NF1CRRM21RJSBNY5A06QS5",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
+        "lat": 34.42388889,
+        "lon": -119.8422222
       },
+      "range": 150,
       "freq": 121.7
-    },
-    {
-      "id": "01G90MKTD7TTCT9NZ3S285FFDD",
-      "name": "Local Control",
-      "callsign": "SBA_TWR",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 119.7
-    },
-    {
-      "id": "01G90MN6R8MGE3BEE4S951JPSJ",
-      "name": "Harbor",
-      "callsign": "SBA_H_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 125.4
-    },
-    {
-      "id": "01G90MNJ19RC2CH9RJX94Z6V9T",
-      "name": "Orcut",
-      "callsign": "SBA_R_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 124.15
-    },
-    {
-      "id": "01G90MP49NGYBM625S2X0D963Z",
-      "name": "Elcap",
-      "callsign": "SBA_E_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 120.55
-    },
-    {
-      "id": "01G90MPYD3C664KC34DYQK9454",
-      "name": "Pismo",
-      "callsign": "SBA_I_APP",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      },
-      "freq": 127.725
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1I",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 34.9691453,
-        "lon": -116.63582625
-      }
     }
   ],
   "mapGroups": [

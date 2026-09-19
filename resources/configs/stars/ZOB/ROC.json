@@ -4,107 +4,189 @@
   "name": "Rochester ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 41.65805,
-    "lon": -81.181585
+    "lat": 43.11593,
+    "lon": -77.66233
   },
+  "areas": [
+    {
+      "id": "01G92SE0773B35CABPV3992QSY",
+      "name": "Rochester TRACON",
+      "visibilityCenter": {
+        "lat": 43.11593,
+        "lon": -77.66233
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "ROC"
+      ],
+      "ssaAirports": [
+        "ROC"
+      ]
+    },
+    {
+      "id": "01HE772PCBJMA00PBEAQ5XZMDN",
+      "name": "Rochester ATCT",
+      "visibilityCenter": {
+        "lat": 43.11593,
+        "lon": -77.66233
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "ROC"
+      ],
+      "ssaAirports": [
+        "ROC"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E620CTXKAYXJD20Z0A5",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E62BESN9FAMPRM9YC29",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1E62FB1WA5E7YCKTMG17",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1E62BESN9FAMPRM9YC29",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1E62QV8KKP03CEJ9AP9C",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L"
+    },
+    {
+      "id": "01K2NF1E62BESN9FAMPRM9YC29",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1E62BW943PXE6M1TKR2T",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G92SXP7MY2X5JRKT28TVZP3K",
+      "physicalFacility": "ROC",
       "name": "East",
+      "radioName": "Rochester Approach",
       "callsign": "ROC_E_APP",
+      "areaId": "01G92SE0773B35CABPV3992QSY",
+      "tcpId": "01K2NF1E620CTXKAYXJD20Z0A5",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 43.11593,
+        "lon": -77.66233
       },
+      "range": 150,
       "freq": 119.55
     },
     {
-      "id": "01G92SYCX08F7BC2008RCDFJ6D",
-      "name": "West",
-      "callsign": "ROC_W_APP",
+      "id": "01HMPTV91HYVS7K1B16TN0E192",
+      "physicalFacility": "ROC",
+      "name": "Final Radar",
+      "radioName": "Rochester Approach",
+      "callsign": "ROC_F_APP",
+      "areaId": "01G92SE0773B35CABPV3992QSY",
+      "tcpId": "01K2NF1E62FB1WA5E7YCKTMG17",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 43.11593,
+        "lon": -77.66233
       },
-      "freq": 123.7
+      "range": 150,
+      "freq": 120.7
     },
     {
       "id": "01G92SZ0QTXW5DBBDMGM7S3JMA",
+      "physicalFacility": "ROC",
       "name": "Clearance Delivery",
+      "radioName": "Rochester Clearance",
       "callsign": "ROC_DEL",
+      "areaId": "01HE772PCBJMA00PBEAQ5XZMDN",
+      "tcpId": "01K2NF1E62QV8KKP03CEJ9AP9C",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 43.11593,
+        "lon": -77.66233
       },
+      "range": 50,
       "freq": 118.8
     },
     {
       "id": "01G92SZNFJH0B8PKA05N331EMZ",
+      "physicalFacility": "ROC",
       "name": "Ground",
+      "radioName": "Rochester Ground",
       "callsign": "ROC_GND",
+      "areaId": "01HE772PCBJMA00PBEAQ5XZMDN",
+      "tcpId": "01K2NF1E62QV8KKP03CEJ9AP9C",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 43.11593,
+        "lon": -77.66233
       },
+      "range": 50,
       "freq": 121.7
     },
     {
       "id": "01G92T03YYV1JV55Q68E9TQ41T",
+      "physicalFacility": "ROC",
       "name": "Local Control",
+      "radioName": "Rochester Tower",
       "callsign": "ROC_TWR",
+      "areaId": "01HE772PCBJMA00PBEAQ5XZMDN",
+      "tcpId": "01K2NF1E62QV8KKP03CEJ9AP9C",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 43.11593,
+        "lon": -77.66233
       },
+      "range": 50,
       "freq": 118.3
     },
     {
+      "id": "01G92SYCX08F7BC2008RCDFJ6D",
+      "physicalFacility": "ROC",
+      "name": "West",
+      "radioName": "Rochester Approach",
+      "callsign": "ROC_W_APP",
+      "areaId": "01G92SE0773B35CABPV3992QSY",
+      "tcpId": "01K2NF1E62BESN9FAMPRM9YC29",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 43.11593,
+        "lon": -77.66233
+      },
+      "range": 150,
+      "freq": 123.7
+    },
+    {
       "id": "01HDWY2GP2W9HQ60N31HB6JGCN",
+      "physicalFacility": "ROC",
       "name": "TMU/OTHER",
+      "radioName": "Rochester Approach",
       "callsign": "ROC_T_APP",
+      "areaId": "01G92SE0773B35CABPV3992QSY",
+      "tcpId": "01K2NF1E62BW943PXE6M1TKR2T",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
+        "lat": 43.11593,
+        "lon": -77.66233
       },
+      "range": 150,
       "freq": 123.45
-    },
-    {
-      "id": "01HMPTV91HYVS7K1B16TN0E192",
-      "name": "Final Radar",
-      "callsign": "ROC_F_APP",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      },
-      "freq": 120.7
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 41.65805,
-        "lon": -81.181585
-      }
     }
   ],
   "mapGroups": [

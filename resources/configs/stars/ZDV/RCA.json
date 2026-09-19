@@ -4,53 +4,81 @@
   "name": "Ellsworth RAPCON/ATCT",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 40.569587575,
-    "lon": -104.96660805
+    "lat": 44.08816,
+    "lon": -103.08699
   },
+  "areas": [
+    {
+      "id": "01H5AYMCP536ZWZTPAT04Q2WCD",
+      "name": "RCA",
+      "visibilityCenter": {
+        "lat": 44.08816,
+        "lon": -103.08699
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "RAP",
+        "RCA",
+        "49B",
+        "SPF",
+        "CUT",
+        "6V4",
+        "3SD2"
+      ],
+      "ssaAirports": [
+        "RCA",
+        "RAP"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CJT42TV5F369DF9CCY9",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CJTR3WWSHBBWPQ0ZBHR",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01H58GEK54H98KV4HSXBZT637V",
+      "physicalFacility": "RCA",
       "name": "Approach Control",
+      "radioName": "Ellsworth Approach",
       "callsign": "RCA_APP",
+      "areaId": "01H5AYMCP536ZWZTPAT04Q2WCD",
+      "tcpId": "01K2NF1CJT42TV5F369DF9CCY9",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 44.08816,
+        "lon": -103.08699
       },
+      "range": 60,
       "freq": 119.5
     },
     {
-      "id": "01H58GFW830987W2SNASDAMPQ4",
-      "name": "Ground Control",
-      "callsign": "RCA_GND",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      },
-      "freq": 121.8
-    },
-    {
       "id": "01H58GGKDMA6XG95S8BJFM6V4N",
+      "physicalFacility": "RCA",
       "name": "Local  Control",
+      "radioName": "Ellsworth Tower",
       "callsign": "RCA_TWR",
+      "areaId": "01H5AYMCP536ZWZTPAT04Q2WCD",
+      "tcpId": "01K2NF1CJTR3WWSHBBWPQ0ZBHR",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
+        "lat": 44.08816,
+        "lon": -103.08699
       },
+      "range": 60,
       "freq": 126.05
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 40.569587575,
-        "lon": -104.96660805
-      }
     }
   ],
   "mapGroups": [

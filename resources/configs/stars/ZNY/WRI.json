@@ -4,56 +4,181 @@
   "name": "McGuire ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 35.914982499999994,
-    "lon": -73.0446825
+    "lat": 40.01518,
+    "lon": -74.593727
   },
+  "areas": [
+    {
+      "id": "01H2BC920KV1AC5M0K7DCE8HCT",
+      "name": "RAPCON",
+      "visibilityCenter": {
+        "lat": 40.01518,
+        "lon": -74.593727
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "19N",
+        "2N6",
+        "3N6",
+        "3NJ1",
+        "3NJ6",
+        "BLM",
+        "JY73",
+        "MJX",
+        "N12",
+        "N14",
+        "N81",
+        "N87",
+        "NEL",
+        "NJ20",
+        "NJ24",
+        "NJ46",
+        "NJ59",
+        "NJ60",
+        "NJ72",
+        "VAY",
+        "WRI"
+      ],
+      "ssaAirports": [
+        "WRI",
+        "NEL"
+      ]
+    },
+    {
+      "id": "01H9VF4YV40AM69YB0110D65QJ",
+      "name": "Cab",
+      "visibilityCenter": {
+        "lat": 40.01518,
+        "lon": -74.593727
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "WRI"
+      ],
+      "ssaAirports": [
+        "WRI"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01KK2HQMMVHQTVS5TSNJ33V4YB",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DSG2WA9G0BG5X7Z4HTB",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KK2HQXXNMG2DJWR1DT77CNDZ",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GAPQ01XE7EV48JE82CW78XX6",
-      "name": "Clearance Delivery",
-      "callsign": "WRI_DEL",
+      "id": "01H2BCF764G4E7RMQMF5X3D5XF",
+      "physicalFacility": "WRI",
+      "name": "RAPCON",
+      "radioName": "McGuire Approach",
+      "callsign": "WRI_APP",
+      "areaId": "01H2BC920KV1AC5M0K7DCE8HCT",
+      "tcpId": "01KK2HQMMVHQTVS5TSNJ33V4YB",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 40.01518,
+        "lon": -74.593727
       },
+      "range": 150,
+      "freq": 126.475
+    },
+    {
+      "id": "01GAPQTNTNZAF6T227BJ3NM8YY",
+      "physicalFacility": "NEL",
+      "name": "Ground",
+      "radioName": "Lakehurst Ground",
+      "callsign": "NEL_GND",
+      "areaId": "01H9VF4YV40AM69YB0110D65QJ",
+      "tcpId": "01K2NF1DSG2WA9G0BG5X7Z4HTB",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 40.01518,
+        "lon": -74.593727
+      },
+      "range": 50,
+      "freq": 118.375
+    },
+    {
+      "id": "01GAPQV9DBA8B7WPBJXZZXA8NM",
+      "physicalFacility": "NEL",
+      "name": "Local",
+      "radioName": "Lakehurst Tower",
+      "callsign": "NEL_TWR",
+      "areaId": "01H9VF4YV40AM69YB0110D65QJ",
+      "tcpId": "01K2NF1DSG2WA9G0BG5X7Z4HTB",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 40.01518,
+        "lon": -74.593727
+      },
+      "range": 50,
+      "freq": 127.775
+    },
+    {
+      "id": "01GAPQ01XE7EV48JE82CW78XX6",
+      "physicalFacility": "WRI",
+      "name": "Clearance Delivery",
+      "radioName": "McGuire Clearance Delivery",
+      "callsign": "WRI_DEL",
+      "areaId": "01H9VF4YV40AM69YB0110D65QJ",
+      "tcpId": "01KK2HQXXNMG2DJWR1DT77CNDZ",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 40.01518,
+        "lon": -74.593727
+      },
+      "range": 50,
       "freq": 135.2
     },
     {
       "id": "01GAPQ0TQ5K01NH7M4KCD4683J",
+      "physicalFacility": "WRI",
       "name": "Ground",
+      "radioName": "McGuire Ground",
       "callsign": "WRI_GND",
+      "areaId": "01H9VF4YV40AM69YB0110D65QJ",
+      "tcpId": "01KK2HQXXNMG2DJWR1DT77CNDZ",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 40.01518,
+        "lon": -74.593727
       },
+      "range": 50,
       "freq": 121.8
     },
     {
       "id": "01GAPQ1CCR5D4BFE8MNF3RRMZ9",
+      "physicalFacility": "WRI",
       "name": "Local",
+      "radioName": "McGuire Tower",
       "callsign": "WRI_TWR",
+      "areaId": "01H9VF4YV40AM69YB0110D65QJ",
+      "tcpId": "01KK2HQXXNMG2DJWR1DT77CNDZ",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
+        "lat": 40.01518,
+        "lon": -74.593727
       },
+      "range": 50,
       "freq": 118.65
-    },
-    {
-      "id": "01H2BCF764G4E7RMQMF5X3D5XF",
-      "name": "RAPCON",
-      "callsign": "WRI_APP",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      },
-      "freq": 126.475
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 35.914982499999994,
-        "lon": -73.0446825
-      }
     }
   ],
   "mapGroups": [

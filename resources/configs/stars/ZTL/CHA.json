@@ -4,107 +4,127 @@
   "name": "Chattanooga ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.90558406666667,
-    "lon": -83.96840666666667
+    "lat": 35.0374,
+    "lon": -85.197
   },
+  "areas": [
+    {
+      "id": "01GYBYD8WRACCTD9VSZBQPQ3N5",
+      "name": "Approach",
+      "visibilityCenter": {
+        "lat": 35.0374,
+        "lon": -85.197
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "CHA"
+      ]
+    },
+    {
+      "id": "01GYBYKBKEMZGMJC1YX95MGGBF",
+      "name": "Tower",
+      "visibilityCenter": {
+        "lat": 35.0374,
+        "lon": -85.197
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "CHA"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E989K4QP0S5W0RAJ5N1",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1E98MKP7QAXN0KQX7QR1",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F"
+    },
+    {
+      "id": "01K2NF1E98Y0KDZW6VDA5YZEEE",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E98J0736ND3BDNNHJCH",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E989K4QP0S5W0RAJ5N1",
+      "parentTcp": "1E"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GYBYMMXNQVD3W4DJ1WTXV2EV",
+      "physicalFacility": "CHA",
       "name": "Radar East",
+      "radioName": "Chattanooga Approach",
       "callsign": "CHA_APP",
+      "areaId": "01GYBYD8WRACCTD9VSZBQPQ3N5",
+      "tcpId": "01K2NF1E989K4QP0S5W0RAJ5N1",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.0374,
+        "lon": -85.197
       },
+      "range": 150,
       "freq": 125.1
     },
     {
-      "id": "01GYBYVV8B1AZ38QH7FAB02GDX",
-      "name": "Radar West",
-      "callsign": "CHA_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 119.2
-    },
-    {
-      "id": "01GYBYX56TD4WHQ7VQA3HM368C",
-      "name": "Local Control",
-      "callsign": "CHA_TWR",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 118.3
-    },
-    {
-      "id": "01H2H34XP8VZ2SKVB7V7K8MXSB",
-      "name": "Ground Control",
-      "callsign": "CHA_GND",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.7
-    },
-    {
-      "id": "01H2H390W50YPX8KZPG2Y14AXD",
-      "name": "Clearance Delivery",
-      "callsign": "CHA_DEL",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 120.95
-    },
-    {
       "id": "01H4Q46GNMEEPVYP10KC6H9KZM",
+      "physicalFacility": "CHA",
       "name": "Radar Final ",
+      "radioName": "Chattanooga Approach",
       "callsign": "CHA_APP",
+      "areaId": "01GYBYD8WRACCTD9VSZBQPQ3N5",
+      "tcpId": "01K2NF1E98MKP7QAXN0KQX7QR1",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.0374,
+        "lon": -85.197
       },
+      "range": 150,
       "freq": 126.5
     },
     {
-      "id": "01J9W9DEEDQC08WCDRZ6VGF6DR",
-      "name": "CHA GUARD",
-      "callsign": "CHA_G_APP",
+      "id": "01GYBYX56TD4WHQ7VQA3HM368C",
+      "physicalFacility": "CHA",
+      "name": "Local Control",
+      "radioName": "Chattanooga Tower",
+      "callsign": "CHA_TWR",
+      "areaId": "01GYBYKBKEMZGMJC1YX95MGGBF",
+      "tcpId": "01K2NF1E98Y0KDZW6VDA5YZEEE",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.0374,
+        "lon": -85.197
       },
-      "freq": 121.5
+      "range": 50,
+      "freq": 118.3
     },
     {
-      "id": "1E",
+      "id": "01GYBYVV8B1AZ38QH7FAB02GDX",
+      "physicalFacility": "CHA",
+      "name": "Radar West",
+      "radioName": "Chattanooga Approach",
+      "callsign": "CHA_APP",
+      "areaId": "01GYBYD8WRACCTD9VSZBQPQ3N5",
+      "tcpId": "01K2NF1E98J0736ND3BDNNHJCH",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
+        "lat": 35.0374,
+        "lon": -85.197
+      },
+      "range": 150,
+      "freq": 119.2
     }
   ],
   "mapGroups": [

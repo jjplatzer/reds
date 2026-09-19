@@ -4,273 +4,395 @@
   "name": "Cincinnati ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 38.6494889,
-    "lon": -84.3106305555556
+    "lat": 39.06556363333333,
+    "lon": -84.58320256666666
   },
+  "areas": [
+    {
+      "id": "01GPWFGYMDHR17BJYE0N56FB0E",
+      "name": "Cincinnati TRACON",
+      "visibilityCenter": {
+        "lat": 39.0488375,
+        "lon": -84.6678208
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "CVG",
+        "HAO",
+        "HLB",
+        "I67",
+        "I69",
+        "K62",
+        "LUK",
+        "OXD"
+      ],
+      "ssaAirports": [
+        "CVG",
+        "LUK",
+        "OXD"
+      ]
+    },
+    {
+      "id": "01GPWFPVZND4FGA7C29QP5KMN5",
+      "name": "Cincinnati Tower",
+      "visibilityCenter": {
+        "lat": 39.0405894,
+        "lon": -84.6587992
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "CVG"
+      ],
+      "ssaAirports": [
+        "CVG"
+      ]
+    },
+    {
+      "id": "01HH5J5FD632S200F0SN7XJKWY",
+      "name": "Lunken Tower",
+      "visibilityCenter": {
+        "lat": 39.107264,
+        "lon": -84.4229877
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "LUK"
+      ],
+      "ssaAirports": [
+        "LUK"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CN2JJ4VA42CC4W1EYSQ",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1CN292GWN8YK4SZNXKX7",
+      "parentTcp": "1U"
+    },
+    {
+      "id": "01K2NF1CN223ME12DV4V37696G",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1CN2GKTSY5W5RE0E39JH",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1CN2BK3AHE2SQ9ERJKFW",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1CN292GWN8YK4SZNXKX7",
+      "parentTcp": "1U"
+    },
+    {
+      "id": "01K2NF1CN2BTQ9WKC1DN6R10D8",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1CN2GKTSY5W5RE0E39JH",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1CN2BW8G10HDH04YK3ZJ",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    },
+    {
+      "id": "01K2NF1CN287T2PE3DH8RGKPS5",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1CN2GKTSY5W5RE0E39JH",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1CN27NANGJCD3S7N53PN",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1CN2GKTSY5W5RE0E39JH",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1CN2NBRKGPN056NWB7T5",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1CN2GKTSY5W5RE0E39JH",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1CN2KE0FV5EYFKZ64S4P",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1CN292GWN8YK4SZNXKX7",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U"
+    },
+    {
+      "id": "01K2NF1CN2X73Q1M6KXFFRPP30",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "parentTcpId": "01K2NF1CN2GKTSY5W5RE0E39JH",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1CN2GKTSY5W5RE0E39JH",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GPWFDQ4CMTRW05XF3ZEMTF2M",
-      "name": "Arrival South",
-      "callsign": "CVG_S_APP",
+      "id": "01GPWG1N12KPG1CG7SAG2T8MHG",
+      "physicalFacility": "CVG",
+      "name": "Local Control West",
+      "radioName": "Cincinnati  Tower",
+      "callsign": "CVG_W_TWR",
+      "areaId": "01GPWFPVZND4FGA7C29QP5KMN5",
+      "tcpId": "01K2NF1CN2JJ4VA42CC4W1EYSQ",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.0405894,
+        "lon": -84.6587992
       },
-      "freq": 119.7
-    },
-    {
-      "id": "01GPWFRCNXV41XA8TMJM7H8TD8",
-      "name": "Arrival North",
-      "callsign": "CVG_N_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 123.875
-    },
-    {
-      "id": "01GPWFSACKVVTQM233ES45VRF2",
-      "name": "Final Radar F",
-      "callsign": "CVG_F_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 124.7
-    },
-    {
-      "id": "01GPWFTA3YBV0K90SXG71RWGM6",
-      "name": "Final Radar V",
-      "callsign": "CVG_V_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 127.725
-    },
-    {
-      "id": "01GPWFVEDARVGH6HDDQQVMX93X",
-      "name": "Satellite Radar",
-      "callsign": "CVG_L_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 121
-    },
-    {
-      "id": "01GPWFWCZJMA886E29D0KHE30C",
-      "name": "Wildcat Departure Radar",
-      "callsign": "CVG_W_APP",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      },
-      "freq": 126.65
+      "range": 50,
+      "freq": 133.325
     },
     {
       "id": "01GPWFXE017TMK2J073MTTM43P",
+      "physicalFacility": "CVG",
       "name": "Bearcat Departure Radar",
+      "radioName": "Cincinnati Approach",
       "callsign": "CVG_B_APP",
+      "areaId": "01GPWFGYMDHR17BJYE0N56FB0E",
+      "tcpId": "01K2NF1CN223ME12DV4V37696G",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.0488375,
+        "lon": -84.6678208
       },
+      "range": 150,
       "freq": 128.7
     },
     {
       "id": "01GPWFYQ6XMSFZTQ4D9PZZE3TC",
+      "physicalFacility": "CVG",
       "name": "Local Control East",
+      "radioName": "Cincinnati  Tower",
       "callsign": "CVG_E_TWR",
+      "areaId": "01GPWFPVZND4FGA7C29QP5KMN5",
+      "tcpId": "01K2NF1CN2BK3AHE2SQ9ERJKFW",
+      "tcp": "1D",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.0405894,
+        "lon": -84.6587992
       },
+      "range": 50,
       "freq": 118.975
     },
     {
-      "id": "01GPWG1N12KPG1CG7SAG2T8MHG",
-      "name": "Local Control West",
-      "callsign": "CVG_W_TWR",
+      "id": "01GPWFSACKVVTQM233ES45VRF2",
+      "physicalFacility": "CVG",
+      "name": "Final Radar F",
+      "radioName": "Cincinnati Approach",
+      "callsign": "CVG_F_APP",
+      "areaId": "01GPWFGYMDHR17BJYE0N56FB0E",
+      "tcpId": "01K2NF1CN2BTQ9WKC1DN6R10D8",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.0488375,
+        "lon": -84.6678208
       },
-      "freq": 133.325
+      "range": 150,
+      "freq": 124.7
     },
     {
-      "id": "01GPWG2CX4HZ5ES11N362NDGKX",
-      "name": "Local Control Center",
-      "callsign": "CVG_C_TWR",
+      "id": "01GXNXBZ2RZT92W8TWB7K3AP7D",
+      "physicalFacility": "LUK",
+      "name": "Ground Control",
+      "radioName": "Lunken Ground",
+      "callsign": "LUK_GND",
+      "areaId": "01HH5J5FD632S200F0SN7XJKWY",
+      "tcpId": "01K2NF1CN2BW8G10HDH04YK3ZJ",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.107264,
+        "lon": -84.4229877
       },
-      "freq": 118.3
+      "range": 30,
+      "freq": 121.9
     },
     {
-      "id": "01GPWG3DVZKCBGJ3WF4KC91TYC",
-      "name": "Ground Control West",
-      "callsign": "CVG_W_GND",
+      "id": "01GXNXCTHRJJTN7W9JXP4GB0JJ",
+      "physicalFacility": "LUK",
+      "name": "Local Control",
+      "radioName": "Lunken Tower",
+      "callsign": "LUK_TWR",
+      "areaId": "01HH5J5FD632S200F0SN7XJKWY",
+      "tcpId": "01K2NF1CN2BW8G10HDH04YK3ZJ",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.107264,
+        "lon": -84.4229877
       },
-      "freq": 121.7
+      "range": 30,
+      "freq": 118.7
     },
     {
-      "id": "01GPWG4DB262K0XQC6K69P1QTE",
-      "name": "Ground Control East",
-      "callsign": "CVG_E_GND",
+      "id": "01GPWFVEDARVGH6HDDQQVMX93X",
+      "physicalFacility": "CVG",
+      "name": "Satellite Radar",
+      "radioName": "Cincinnati Approach",
+      "callsign": "CVG_L_APP",
+      "areaId": "01GPWFGYMDHR17BJYE0N56FB0E",
+      "tcpId": "01K2NF1CN287T2PE3DH8RGKPS5",
+      "tcp": "1L",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.0488375,
+        "lon": -84.6678208
       },
-      "freq": 121.3
+      "range": 150,
+      "freq": 121
+    },
+    {
+      "id": "01GPWFRCNXV41XA8TMJM7H8TD8",
+      "physicalFacility": "CVG",
+      "name": "Arrival North",
+      "radioName": "Cincinnati Approach",
+      "callsign": "CVG_N_APP",
+      "areaId": "01GPWFGYMDHR17BJYE0N56FB0E",
+      "tcpId": "01K2NF1CN27NANGJCD3S7N53PN",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 39.0488375,
+        "lon": -84.6678208
+      },
+      "range": 150,
+      "freq": 123.875
+    },
+    {
+      "id": "01GPWFDQ4CMTRW05XF3ZEMTF2M",
+      "physicalFacility": "CVG",
+      "name": "Arrival South",
+      "radioName": "Cincinnati Approach",
+      "callsign": "CVG_S_APP",
+      "areaId": "01GPWFGYMDHR17BJYE0N56FB0E",
+      "tcpId": "01K2NF1CN2NBRKGPN056NWB7T5",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 39.0488375,
+        "lon": -84.6678208
+      },
+      "range": 150,
+      "freq": 119.7
     },
     {
       "id": "01GPWG61SSQ4GDRF1FW342AHCF",
+      "physicalFacility": "CVG",
       "name": "Clearance Delivery",
+      "radioName": "Cincinnati Clearance",
       "callsign": "CVG_DEL",
+      "areaId": "01GPWFPVZND4FGA7C29QP5KMN5",
+      "tcpId": "01K2NF1CN2KE0FV5EYFKZ64S4P",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.0405894,
+        "lon": -84.6587992
       },
+      "range": 50,
       "freq": 120.4
     },
     {
-      "id": "01JA39NVSXVJXX1YZXPANSSDDP",
-      "name": "CVG GUARD",
-      "callsign": "CVG_EM_APP",
+      "id": "01GPWG4DB262K0XQC6K69P1QTE",
+      "physicalFacility": "CVG",
+      "name": "Ground Control East",
+      "radioName": "Cincinnati Ground",
+      "callsign": "CVG_E_GND",
+      "areaId": "01GPWFPVZND4FGA7C29QP5KMN5",
+      "tcpId": "01K2NF1CN2KE0FV5EYFKZ64S4P",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.0405894,
+        "lon": -84.6587992
       },
-      "freq": 121.5
+      "range": 50,
+      "freq": 121.3
     },
     {
-      "id": "01JRKD24S5HMTHK8FWB1CQXYFC",
-      "name": "Terminal Ramp Control",
-      "callsign": "CVG_1_RMP",
+      "id": "01GPWG3DVZKCBGJ3WF4KC91TYC",
+      "physicalFacility": "CVG",
+      "name": "Ground Control West",
+      "radioName": "Cincinnati Ground ",
+      "callsign": "CVG_W_GND",
+      "areaId": "01GPWFPVZND4FGA7C29QP5KMN5",
+      "tcpId": "01K2NF1CN2KE0FV5EYFKZ64S4P",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.0405894,
+        "lon": -84.6587992
       },
-      "freq": 130.9
+      "range": 50,
+      "freq": 121.7
     },
     {
-      "id": "01JRKD37A8Y3ZAAFBJYZK60SY7",
-      "name": "Amazon Ramp Control",
-      "callsign": "CVG_A_RMP",
+      "id": "01GPWG2CX4HZ5ES11N362NDGKX",
+      "physicalFacility": "CVG",
+      "name": "Local Control Center",
+      "radioName": "Cincinnati  Tower",
+      "callsign": "CVG_C_TWR",
+      "areaId": "01GPWFPVZND4FGA7C29QP5KMN5",
+      "tcpId": "01K2NF1CN292GWN8YK4SZNXKX7",
+      "tcp": "1U",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.0405894,
+        "lon": -84.6587992
       },
-      "freq": 130.5
+      "range": 50,
+      "freq": 118.3
     },
     {
-      "id": "01KESGRX3EDBEKRMM2RZHDY856",
-      "name": "DHL Ramp Control",
-      "callsign": "CVG_D_RMP",
+      "id": "01GPWFTA3YBV0K90SXG71RWGM6",
+      "physicalFacility": "CVG",
+      "name": "Final Radar V",
+      "radioName": "Cincinnati Approach",
+      "callsign": "CVG_V_APP",
+      "areaId": "01GPWFGYMDHR17BJYE0N56FB0E",
+      "tcpId": "01K2NF1CN2X73Q1M6KXFFRPP30",
+      "tcp": "1V",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.0488375,
+        "lon": -84.6678208
       },
-      "freq": 129.475
+      "range": 150,
+      "freq": 127.725
     },
     {
-      "id": "01KR059A9Q9CHER9D90K2V8EZ3",
-      "name": "Taxilane N Ramp Control",
-      "callsign": "CVG_N_RMP",
+      "id": "01GPWFWCZJMA886E29D0KHE30C",
+      "physicalFacility": "CVG",
+      "name": "Wildcat Departure Radar",
+      "radioName": "Cincinnati  Approach",
+      "callsign": "CVG_W_APP",
+      "areaId": "01GPWFGYMDHR17BJYE0N56FB0E",
+      "tcpId": "01K2NF1CN2GKTSY5W5RE0E39JH",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
+        "lat": 39.0488375,
+        "lon": -84.6678208
       },
-      "freq": 130.375
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1K",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 38.6494889,
-        "lon": -84.3106305555556
-      }
+      "range": 150,
+      "freq": 126.65
     }
   ],
   "mapGroups": [

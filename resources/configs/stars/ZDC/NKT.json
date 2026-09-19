@@ -4,96 +4,197 @@
   "name": "Cherry Point ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 37,
-    "lon": -77
+    "lat": 34.9031717,
+    "lon": -76.8807747
   },
+  "areas": [
+    {
+      "id": "01HAAMH0QNQ8TBH7S0H8QA2PYG",
+      "name": "RAPCON",
+      "visibilityCenter": {
+        "lat": 34.9031717,
+        "lon": -76.8807747
+      },
+      "surveillanceRange": 120,
+      "underlyingAirports": [
+        "NCA",
+        "EWN",
+        "NJM",
+        "NKT"
+      ],
+      "ssaAirports": [
+        "NKT",
+        "EWN",
+        "NJM"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E0V22KRE23Q7YX7TGTJ",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0VM8S96DYFG4P938WH",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1E0V22KRE23Q7YX7TGTJ",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0VDKA9T93WC0JTSR35",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1E0V22KRE23Q7YX7TGTJ",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0V51EWSZJN2J06FYVB",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "parentTcpId": "01K2NF1E0V22KRE23Q7YX7TGTJ",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0VG36GD923PC9RX2CQ",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1E0V22KRE23Q7YX7TGTJ",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0VTQQXFWQJ0B01Z1Z0",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1E0V22KRE23Q7YX7TGTJ",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01HAAMZQXEWJB5EQE5CGMCHM6X",
-      "name": "Clearance",
-      "callsign": "NKT_DEL",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 125.95
-    },
-    {
-      "id": "01HAAN0W1KMTXVPY6T7XG95BTW",
-      "name": "Ground",
-      "callsign": "NKT_GND",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 128.625
-    },
-    {
-      "id": "01HAAN1D8XW13WK2CG9KXHCTDK",
-      "name": "Local",
-      "callsign": "NKT_TWR",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 121.3
-    },
-    {
-      "id": "01HAAN25KVABBFPNKKP2ZXAEF5",
-      "name": "West Approach",
-      "callsign": "NKT_W_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 119.35
-    },
-    {
-      "id": "01HAAN32XQ5HAK3Q200K8X366H",
-      "name": "North Approach",
-      "callsign": "NKT_H_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 124.1
-    },
-    {
       "id": "01HAQBMHEN12251RMVBDA0SF0W",
+      "physicalFacility": "NKT",
       "name": "East Approach",
+      "radioName": "Cherry Point Approach",
       "callsign": "NKT_E_APP",
+      "areaId": "01HAAMH0QNQ8TBH7S0H8QA2PYG",
+      "tcpId": "01K2NF1E0V22KRE23Q7YX7TGTJ",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 34.9031717,
+        "lon": -76.8807747
       },
+      "range": 120,
       "freq": 119.75
     },
     {
       "id": "01HAQBNCMTJ743WS3YPZ2WENA8",
+      "physicalFacility": "NKT",
       "name": "Final",
+      "radioName": "Cherry Point Approach",
       "callsign": "NKT_F_APP",
+      "areaId": "01HAAMH0QNQ8TBH7S0H8QA2PYG",
+      "tcpId": "01K2NF1E0VM8S96DYFG4P938WH",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 34.9031717,
+        "lon": -76.8807747
       },
+      "range": 120,
       "freq": 132.575
     },
     {
-      "id": "01KTCJR3E5CXK0EEGVBN3AJG5D",
-      "name": "New River",
-      "callsign": "NCA_APP",
+      "id": "01HAAN32XQ5HAK3Q200K8X366H",
+      "physicalFacility": "NKT",
+      "name": "North Approach",
+      "radioName": "Cherry Point High",
+      "callsign": "NKT_H_APP",
+      "areaId": "01HAAMH0QNQ8TBH7S0H8QA2PYG",
+      "tcpId": "01K2NF1E0VDKA9T93WC0JTSR35",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 34.9031717,
+        "lon": -76.8807747
       },
+      "range": 120,
+      "freq": 124.1
+    },
+    {
+      "id": "01KTCJR3E5CXK0EEGVBN3AJG5D",
+      "physicalFacility": "NKT",
+      "name": "New River",
+      "radioName": "New River Radar",
+      "callsign": "NCA_APP",
+      "areaId": "01HAAMH0QNQ8TBH7S0H8QA2PYG",
+      "tcpId": "01K2NF1E0V51EWSZJN2J06FYVB",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 34.9031717,
+        "lon": -76.8807747
+      },
+      "range": 120,
       "freq": 124.85
     },
     {
-      "id": "1N",
+      "id": "01HAPSHXMDEMTCX733FJ2XEEF8",
+      "physicalFacility": "NCA",
+      "name": "Local",
+      "radioName": "New River Tower",
+      "callsign": "NCA_TWR",
+      "areaId": "01HAAMH0QNQ8TBH7S0H8QA2PYG",
+      "tcpId": "01K2NF1E0V51EWSZJN2J06FYVB",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 34.9031717,
+        "lon": -76.8807747
+      },
+      "range": 120,
+      "freq": 134.95
+    },
+    {
+      "id": "01HAAN25KVABBFPNKKP2ZXAEF5",
+      "physicalFacility": "NKT",
+      "name": "West Approach",
+      "radioName": "Cherry Point Approach",
+      "callsign": "NKT_W_APP",
+      "areaId": "01HAAMH0QNQ8TBH7S0H8QA2PYG",
+      "tcpId": "01K2NF1E0VG36GD923PC9RX2CQ",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 34.9031717,
+        "lon": -76.8807747
+      },
+      "range": 120,
+      "freq": 119.35
+    },
+    {
+      "id": "01HAAN1D8XW13WK2CG9KXHCTDK",
+      "physicalFacility": "NKT",
+      "name": "Local",
+      "radioName": "Cherry Point Tower",
+      "callsign": "NKT_TWR",
+      "areaId": "01HAAMH0QNQ8TBH7S0H8QA2PYG",
+      "tcpId": "01K2NF1E0VTQQXFWQJ0B01Z1Z0",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 34.9031717,
+        "lon": -76.8807747
+      },
+      "range": 120,
+      "freq": 121.3
     }
   ],
   "mapGroups": [

@@ -4,141 +4,201 @@
   "name": "Roanoke ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 37,
-    "lon": -77
+    "lat": 37.32699,
+    "lon": -79.982381
   },
+  "areas": [
+    {
+      "id": "01GS5K9KP81H1FXZD84F557Y9K",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 37.32699,
+        "lon": -79.982381
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "ROA",
+        "0V4",
+        "BCB",
+        "FVX",
+        "LYH",
+        "PSK",
+        "W24",
+        "W90",
+        "W91"
+      ],
+      "ssaAirports": [
+        "ROA",
+        "LYH"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E0TN2KH2F8HA88SMW5B",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E0T9FS20EQG5VMATXM9",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0TYCTSBAWQZH6ZSDHP",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1E0T9FS20EQG5VMATXM9",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0T4Q04SVN8ER0J3A4J",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1E0TYCTSBAWQZH6ZSDHP",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1E0T9FS20EQG5VMATXM9",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KEWFNXGE3D83G92G4VPDV059",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1E0T9FS20EQG5VMATXM9",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01KEWG0CWWXQRFHT85XYEBEZMT",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1E0T9FS20EQG5VMATXM9",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GS5KB5WQB5MXZSY7NSTFATFG",
+      "physicalFacility": "ROA",
       "name": "East Radar",
+      "radioName": "Roanoke Approach",
       "callsign": "ROA_E_APP",
+      "areaId": "01GS5K9KP81H1FXZD84F557Y9K",
+      "tcpId": "01K2NF1E0TN2KH2F8HA88SMW5B",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 37.32699,
+        "lon": -79.982381
       },
+      "range": 100,
       "freq": 118.15
     },
     {
-      "id": "01GS5KCQ64M68DW9ND6X5T3ZVR",
-      "name": "Lynchburg North",
-      "callsign": "ROA_N_APP",
+      "id": "01GS5M9XE47FF31PGC8THPN69D",
+      "physicalFacility": "LYH",
+      "name": "Local",
+      "radioName": "Lynchburg Tower",
+      "callsign": "LYH_TWR",
+      "areaId": "01GS5K9KP81H1FXZD84F557Y9K",
+      "tcpId": "01K2NF1E0TYCTSBAWQZH6ZSDHP",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 37.32699,
+        "lon": -79.982381
       },
+      "range": 100,
+      "freq": 127.65
+    },
+    {
+      "id": "01GS5KCQ64M68DW9ND6X5T3ZVR",
+      "physicalFacility": "ROA",
+      "name": "Lynchburg North",
+      "radioName": "Roanoke Approach",
+      "callsign": "ROA_N_APP",
+      "areaId": "01GS5K9KP81H1FXZD84F557Y9K",
+      "tcpId": "01K2NF1E0TYCTSBAWQZH6ZSDHP",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 37.32699,
+        "lon": -79.982381
+      },
+      "range": 100,
       "freq": 135
     },
     {
-      "id": "01GS5M4A9RY7JTKQV4NKG8VS5M",
-      "name": "Local",
-      "callsign": "ROA_TWR",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 118.3
-    },
-    {
-      "id": "01GS5M5JR69SHWPJJV69A631GM",
-      "name": "Ground",
-      "callsign": "ROA_GND",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GS5M6FXJESR4S3H41GDS8G49",
-      "name": "Clearance",
-      "callsign": "ROA_DEL",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 119.7
-    },
-    {
-      "id": "01JB5DTT5FM7Q36N7R3GJ80K96",
-      "name": "121.5 GUARD",
-      "callsign": "ROA_GG_APP",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      },
-      "freq": 121.5
-    },
-    {
       "id": "01KEWF4S22GG9RH12ND28PDJE9",
+      "physicalFacility": "ROA",
       "name": "Lynchburg South",
+      "radioName": "Roanoke Approach",
       "callsign": "ROA_S_APP",
+      "areaId": "01GS5K9KP81H1FXZD84F557Y9K",
+      "tcpId": "01K2NF1E0T4Q04SVN8ER0J3A4J",
+      "tcp": "1S",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 37.32699,
+        "lon": -79.982381
       },
+      "range": 100,
       "freq": 125.475
     },
     {
       "id": "01KEWFWW2SNY4KB88KSF0T99H9",
+      "physicalFacility": "ROA",
       "name": "West Radar",
+      "radioName": "Roanoke Approach",
       "callsign": "ROA_W_APP",
+      "areaId": "01GS5K9KP81H1FXZD84F557Y9K",
+      "tcpId": "01K2NF1E0T9FS20EQG5VMATXM9",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 37.32699,
+        "lon": -79.982381
       },
+      "range": 100,
       "freq": 126.9
     },
     {
       "id": "01KEWG2TZXBXSP25EJ4N1Y5PVW",
+      "physicalFacility": "ROA",
       "name": "Satellite Radar",
+      "radioName": "Roanoke Approach",
       "callsign": "ROA_Y_APP",
+      "areaId": "01GS5K9KP81H1FXZD84F557Y9K",
+      "tcpId": "01KEWFNXGE3D83G92G4VPDV059",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
+        "lat": 37.32699,
+        "lon": -79.982381
       },
+      "range": 100,
       "freq": 126
     },
     {
-      "id": "1E",
+      "id": "01GS5M4A9RY7JTKQV4NKG8VS5M",
+      "physicalFacility": "ROA",
+      "name": "Local",
+      "radioName": "Roanoke Tower",
+      "callsign": "ROA_TWR",
+      "areaId": "01GS5K9KP81H1FXZD84F557Y9K",
+      "tcpId": "01KEWG0CWWXQRFHT85XYEBEZMT",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "1N",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 37,
-        "lon": -77
-      }
+        "lat": 37.32699,
+        "lon": -79.982381
+      },
+      "range": 100,
+      "freq": 118.3
     }
   ],
   "mapGroups": [

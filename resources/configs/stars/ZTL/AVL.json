@@ -4,80 +4,105 @@
   "name": "Asheville ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 33.90558406666667,
-    "lon": -83.96840666666667
+    "lat": 35.44194,
+    "lon": -82.53974
   },
+  "areas": [
+    {
+      "id": "01H4KQ71AQBKS1Q9K80QJ1NKGC",
+      "name": "Approach",
+      "visibilityCenter": {
+        "lat": 35.44194,
+        "lon": -82.53974
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "AVL"
+      ]
+    },
+    {
+      "id": "01H4KQ8QHZ6TVZNK85JV208XJ4",
+      "name": "Tower",
+      "visibilityCenter": {
+        "lat": 35.44194,
+        "lon": -82.53974
+      },
+      "surveillanceRange": 50,
+      "ssaAirports": [
+        "AVL"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E982D2QBTB65PXESWFJ",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1E98A6EWQTVVB2Q9RAH9",
+      "parentTcp": "1W"
+    },
+    {
+      "id": "01K2NF1E98VHDCCK639TA0AKNB",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1E98A6EWQTVVB2Q9RAH9",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GYBXYKCQS1PSQXDTNKTSSWGH",
+      "physicalFacility": "AVL",
       "name": "Radar East ",
+      "radioName": "Asheville Approach",
       "callsign": "AVL_APP",
+      "areaId": "01H4KQ71AQBKS1Q9K80QJ1NKGC",
+      "tcpId": "01K2NF1E982D2QBTB65PXESWFJ",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.44194,
+        "lon": -82.53974
       },
+      "range": 150,
       "freq": 125.8
     },
     {
-      "id": "01H4KPNDB2AN82SMG5FPDKMT49",
-      "name": "Ground Control / Clearance Delivery",
-      "callsign": "AVL_GND",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.9
-    },
-    {
       "id": "01H4KPNZ1KME4XTJR558ZEJX9Z",
+      "physicalFacility": "AVL",
       "name": "Local Control ",
+      "radioName": "Ashville Tower",
       "callsign": "AVL_TWR",
+      "areaId": "01H4KQ8QHZ6TVZNK85JV208XJ4",
+      "tcpId": "01K2NF1E98VHDCCK639TA0AKNB",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.44194,
+        "lon": -82.53974
       },
+      "range": 50,
       "freq": 121.1
     },
     {
       "id": "01H4KPQKZZF9GSQKNFA8ZWA9AC",
+      "physicalFacility": "AVL",
       "name": "Radar West",
+      "radioName": "Ashville Approach",
       "callsign": "AVL_APP",
+      "areaId": "01H4KQ71AQBKS1Q9K80QJ1NKGC",
+      "tcpId": "01K2NF1E98A6EWQTVVB2Q9RAH9",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
+        "lat": 35.44194,
+        "lon": -82.53974
       },
+      "range": 150,
       "freq": 124.65
-    },
-    {
-      "id": "01JNCRGC74AD9W7H94H41Q822P",
-      "name": "AVL GUARD",
-      "callsign": "AVL_G_APP",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 33.90558406666667,
-        "lon": -83.96840666666667
-      }
     }
   ],
   "mapGroups": [

@@ -4,60 +4,108 @@
   "name": "Great Falls ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 44.1394906,
-    "lon": -111.3092792325
+    "lat": 47.4804624404795,
+    "lon": -111.367443272852
   },
+  "areas": [
+    {
+      "id": "01G9BP7N30VYM0YHS92DPQN1KN",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 47.4804624404795,
+        "lon": -111.367443272852
+      },
+      "surveillanceRange": 75,
+      "ssaAirports": [
+        "GTF"
+      ]
+    },
+    {
+      "id": "01G9BPD05RS61YTETJNCD2HYS2",
+      "name": "GTF CTRD",
+      "visibilityCenter": {
+        "lat": 47.4804624404795,
+        "lon": -111.367443272852
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "GFA"
+      ],
+      "ssaAirports": [
+        "GTF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1E413QAK1SQJQX4ZF1AK",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A"
+    },
+    {
+      "id": "01K2NF1E4132VCASBPCEBV1234",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K8HJ3QQJQ0KM3MPJ4NCPYWQD",
+      "parentTcp": "1K"
+    },
+    {
+      "id": "01K8HJ3QQJQ0KM3MPJ4NCPYWQD",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G9BPB6V1YCNXB48WDGKT6D21",
+      "physicalFacility": "GTF",
       "name": "Approach",
+      "radioName": "Great Falls Approach",
       "callsign": "GTF_APP",
+      "areaId": "01G9BP7N30VYM0YHS92DPQN1KN",
+      "tcpId": "01K2NF1E413QAK1SQJQX4ZF1AK",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 47.4804624404795,
+        "lon": -111.367443272852
       },
+      "range": 75,
       "freq": 128.6
     },
     {
-      "id": "01G9BPDC3K2RAFE6Y45VW1YW7A",
-      "name": "Local Control",
-      "callsign": "GTF_TWR",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      },
-      "freq": 118.7
-    },
-    {
       "id": "01HXT4XAFW78K251R8YJP1NGHJ",
+      "physicalFacility": "GTF",
       "name": "Ground Control",
+      "radioName": "Great Fall Ground",
       "callsign": "GTF_GND",
+      "areaId": "01G9BPD05RS61YTETJNCD2HYS2",
+      "tcpId": "01K2NF1E4132VCASBPCEBV1234",
+      "tcp": "1G",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
+        "lat": 47.4804624404795,
+        "lon": -111.367443272852
       },
+      "range": 50,
       "freq": 121.7
     },
     {
-      "id": "1A",
+      "id": "01G9BPDC3K2RAFE6Y45VW1YW7A",
+      "physicalFacility": "GTF",
+      "name": "Local Control",
+      "radioName": "Great Falls Tower",
+      "callsign": "GTF_TWR",
+      "areaId": "01G9BPD05RS61YTETJNCD2HYS2",
+      "tcpId": "01K8HJ3QQJQ0KM3MPJ4NCPYWQD",
+      "tcp": "1K",
       "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 44.1394906,
-        "lon": -111.3092792325
-      }
+        "lat": 47.4804624404795,
+        "lon": -111.367443272852
+      },
+      "range": 50,
+      "freq": 118.7
     }
   ],
   "mapGroups": [

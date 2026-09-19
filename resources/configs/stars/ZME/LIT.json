@@ -4,138 +4,337 @@
   "name": "Little Rock ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 35.0424167,
-    "lon": -89.9766667
+    "lat": 34.79213363333333,
+    "lon": -92.19818553333334
   },
+  "areas": [
+    {
+      "id": "01GAQ57SYNZKQQ973MH6P9V39X",
+      "name": "LIT TRACON",
+      "visibilityCenter": {
+        "lat": 34.7294444,
+        "lon": -92.2247778
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "04AR",
+        "10AR",
+        "12A",
+        "12XS",
+        "13AR",
+        "16AR",
+        "17AR",
+        "19AR",
+        "1AR1",
+        "1AR2",
+        "1AR3",
+        "1AR8",
+        "1AR9",
+        "20AR",
+        "21AR",
+        "26AR",
+        "29AR",
+        "2AR0",
+        "32AR",
+        "35AR",
+        "39AR",
+        "3AR3",
+        "3AR5",
+        "3AR6",
+        "4AR1",
+        "4AR2",
+        "4AR3",
+        "4M3",
+        "52AR",
+        "56AR",
+        "5AR5",
+        "5AR6",
+        "6AR0",
+        "6AR3",
+        "6AR7",
+        "6M0",
+        "73AR",
+        "79AR",
+        "99A",
+        "9AR4",
+        "9M8",
+        "AR06",
+        "AR10",
+        "AR13",
+        "AR22",
+        "AR29",
+        "AR33",
+        "AR34",
+        "AR45",
+        "AR55",
+        "AR62",
+        "AR78",
+        "AR88",
+        "CXW",
+        "LIT",
+        "LRF",
+        "M73",
+        "M74",
+        "ORK",
+        "PBF",
+        "RBM",
+        "SGT",
+        "SRC",
+        "SUZ"
+      ],
+      "ssaAirports": [
+        "LIT",
+        "LRF"
+      ]
+    },
+    {
+      "id": "01H3FHJMX97ZAYD62AFA1M218R",
+      "name": "LRF TOWER",
+      "visibilityCenter": {
+        "lat": 34.9175121,
+        "lon": -92.145001
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "LRF"
+      ],
+      "ssaAirports": [
+        "LRF"
+      ]
+    },
+    {
+      "id": "01JCYDTR70KWFAPQ0BWWZXMSW3",
+      "name": "LIT TOWER",
+      "visibilityCenter": {
+        "lat": 34.7294444,
+        "lon": -92.2247778
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "LIT"
+      ],
+      "ssaAirports": [
+        "LIT"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D1938A9DQTBJVH96Y8M",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1D19TQCMSQ2T7QSNNG9R",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19KK3DGHSJ5H82N13T",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D191MHXYT4KPNC3T5VY",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1D1938A9DQTBJVH96Y8M",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19VGA63CXB5DPBRKXC",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1D19TQCMSQ2T7QSNNG9R",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19W0XCAGPJX99YDHB1",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D19TQCMSQ2T7QSNNG9R",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1D1967GCVFH0XWX8WXKR",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GKFNA2W7G8RKMWW9R98JW8SF",
-      "name": "Clearance",
-      "callsign": "LIT_DEL",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 118.95
-    },
-    {
-      "id": "01GKFNBQMREPZX8CQZY8JYYRFH",
-      "name": "Ground",
-      "callsign": "LIT_GND",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 121.9
-    },
-    {
-      "id": "01GKFNCBXNPM3Q81X9FDVQYGBF",
-      "name": "Local",
-      "callsign": "LIT_TWR",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 118.7
-    },
-    {
-      "id": "01GKFNCT0F8ZTZA8TWEFJJC294",
-      "name": "Radar West",
-      "callsign": "LIT_W_APP",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 119.5
-    },
-    {
       "id": "01GKFNEKXD31NKMFCRG4E70RHF",
+      "physicalFacility": "LIT",
       "name": "Radar East",
+      "radioName": "Little Rock Approach",
       "callsign": "LIT_E_APP",
+      "areaId": "01GAQ57SYNZKQQ973MH6P9V39X",
+      "tcpId": "01K2NF1D1938A9DQTBJVH96Y8M",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 34.7294444,
+        "lon": -92.2247778
       },
+      "range": 150,
       "freq": 135.4
     },
     {
-      "id": "01GKFNFCFDBNYFDZKK1D8NF1GJ",
-      "name": "Radar North",
-      "callsign": "LIT_N_APP",
-      "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      },
-      "freq": 119.75
-    },
-    {
       "id": "01GKFNHTCHVQYYBNE01MRYGK0Q",
+      "physicalFacility": "LIT",
       "name": "Arrival Radar",
+      "radioName": "Little Rock Approach",
       "callsign": "LIT_F_APP",
+      "areaId": "01GAQ57SYNZKQQ973MH6P9V39X",
+      "tcpId": "01K2NF1D19KK3DGHSJ5H82N13T",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 34.7294444,
+        "lon": -92.2247778
       },
+      "range": 150,
       "freq": 135.35
     },
     {
       "id": "01GKFNJXXJFW1RM7QDW0AS6HTV",
+      "physicalFacility": "LIT",
       "name": "Radar Hunt",
+      "radioName": "Little Rock Approach",
       "callsign": "LIT_H_APP",
+      "areaId": "01GAQ57SYNZKQQ973MH6P9V39X",
+      "tcpId": "01K2NF1D191MHXYT4KPNC3T5VY",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
+        "lat": 34.7294444,
+        "lon": -92.2247778
       },
+      "range": 150,
       "freq": 119.85
     },
     {
-      "id": "1E",
+      "id": "01GKFNFCFDBNYFDZKK1D8NF1GJ",
+      "physicalFacility": "LIT",
+      "name": "Radar North",
+      "radioName": "Little Rock Approach",
+      "callsign": "LIT_N_APP",
+      "areaId": "01GAQ57SYNZKQQ973MH6P9V39X",
+      "tcpId": "01K2NF1D19VGA63CXB5DPBRKXC",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.7294444,
+        "lon": -92.2247778
+      },
+      "range": 150,
+      "freq": 119.75
     },
     {
-      "id": "1F",
+      "id": "01GKFNA2W7G8RKMWW9R98JW8SF",
+      "physicalFacility": "LIT",
+      "name": "Clearance",
+      "radioName": "Adams Clearance",
+      "callsign": "LIT_DEL",
+      "areaId": "01JCYDTR70KWFAPQ0BWWZXMSW3",
+      "tcpId": "01K2NF1D19W0XCAGPJX99YDHB1",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.7294444,
+        "lon": -92.2247778
+      },
+      "range": 50,
+      "freq": 118.95
     },
     {
-      "id": "1H",
+      "id": "01GKFNBQMREPZX8CQZY8JYYRFH",
+      "physicalFacility": "LIT",
+      "name": "Ground",
+      "radioName": "Adams Ground",
+      "callsign": "LIT_GND",
+      "areaId": "01JCYDTR70KWFAPQ0BWWZXMSW3",
+      "tcpId": "01K2NF1D19W0XCAGPJX99YDHB1",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.7294444,
+        "lon": -92.2247778
+      },
+      "range": 50,
+      "freq": 121.9
     },
     {
-      "id": "1N",
+      "id": "01GKFNCBXNPM3Q81X9FDVQYGBF",
+      "physicalFacility": "LIT",
+      "name": "Local",
+      "radioName": "Adams Tower",
+      "callsign": "LIT_TWR",
+      "areaId": "01JCYDTR70KWFAPQ0BWWZXMSW3",
+      "tcpId": "01K2NF1D19W0XCAGPJX99YDHB1",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.7294444,
+        "lon": -92.2247778
+      },
+      "range": 50,
+      "freq": 118.7
     },
     {
-      "id": "1T",
+      "id": "01GKFNCT0F8ZTZA8TWEFJJC294",
+      "physicalFacility": "LIT",
+      "name": "Radar West",
+      "radioName": "Little Rock Approach",
+      "callsign": "LIT_W_APP",
+      "areaId": "01GAQ57SYNZKQQ973MH6P9V39X",
+      "tcpId": "01K2NF1D19TQCMSQ2T7QSNNG9R",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.7294444,
+        "lon": -92.2247778
+      },
+      "range": 150,
+      "freq": 119.5
     },
     {
-      "id": "1W",
+      "id": "01GNZ4YFSXSYNH76J65QE7N6RF",
+      "physicalFacility": "LRF",
+      "name": "Ground",
+      "radioName": "Little Rock Ground",
+      "callsign": "LRF_GND",
+      "areaId": "01H3FHJMX97ZAYD62AFA1M218R",
+      "tcpId": "01K2NF1D1967GCVFH0XWX8WXKR",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.9175121,
+        "lon": -92.145001
+      },
+      "range": 50,
+      "freq": 132.8
     },
     {
-      "id": "1Z",
+      "id": "01GNZ4WPYW4QAQGJSQBBZR4GSH",
+      "physicalFacility": "LRF",
+      "name": "Local",
+      "radioName": "Little Rock Tower",
+      "callsign": "LRF_TWR",
+      "areaId": "01H3FHJMX97ZAYD62AFA1M218R",
+      "tcpId": "01K2NF1D1967GCVFH0XWX8WXKR",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 35.0424167,
-        "lon": -89.9766667
-      }
+        "lat": 34.9175121,
+        "lon": -92.145001
+      },
+      "range": 50,
+      "freq": 120.6
     }
   ],
   "mapGroups": [

@@ -4,60 +4,117 @@
   "name": "Polk ATCT/ARAC",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 31.099582,
+    "lon": -93.179105
   },
+  "areas": [
+    {
+      "id": "01GB5ZD8P9F2VEPYWMCDWN7JVB",
+      "name": "POE ARAC",
+      "visibilityCenter": {
+        "lat": 31.099582,
+        "lon": -93.179105
+      },
+      "surveillanceRange": 115,
+      "underlyingAirports": [
+        "3R4",
+        "ACP",
+        "AEX",
+        "DRI",
+        "ESF",
+        "IER",
+        "MKV",
+        "POE"
+      ],
+      "ssaAirports": [
+        "AEX",
+        "POE"
+      ]
+    },
+    {
+      "id": "01JCPP8Y12X4D4HSPDD9BS9M2F",
+      "name": "POE TOWER",
+      "visibilityCenter": {
+        "lat": 31.099582,
+        "lon": -93.179105
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "POE"
+      ],
+      "ssaAirports": [
+        "POE"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDR5Z8CRNXJNTAVRDCD",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P"
+    },
+    {
+      "id": "01K2NF1CDR2HYPY6CF1TYJZ4Q7",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1CDR70QP2TYKJC0VFY37",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01GB5Z24T81SHWPT3A37V84T2A",
-      "name": "Local",
-      "callsign": "POE_TWR",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 119
-    },
-    {
-      "id": "01GB5Z2H6KJ1XE27QGNY7XDB05",
-      "name": "Ground",
-      "callsign": "POE_GND",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 121.8
-    },
-    {
       "id": "01GB5Z2Z8N2ZF8Z0QDR8KPGT5D",
+      "physicalFacility": "POE",
       "name": "Approach",
+      "radioName": "Polk Approach",
       "callsign": "POE_APP",
+      "areaId": "01GB5ZD8P9F2VEPYWMCDWN7JVB",
+      "tcpId": "01K2NF1CDR5Z8CRNXJNTAVRDCD",
+      "tcp": "1P",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 31.099582,
+        "lon": -93.179105
       },
+      "range": 115,
       "freq": 123.7
     },
     {
-      "id": "1P",
+      "id": "01GB5Z24T81SHWPT3A37V84T2A",
+      "physicalFacility": "POE",
+      "name": "Local",
+      "radioName": "Polk Tower",
+      "callsign": "POE_TWR",
+      "areaId": "01GB5ZD8P9F2VEPYWMCDWN7JVB",
+      "tcpId": "01K2NF1CDR2HYPY6CF1TYJZ4Q7",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 31.099582,
+        "lon": -93.179105
+      },
+      "range": 115,
+      "freq": 119
     },
     {
-      "id": "1T",
+      "id": "01GB5YZSYSWGHJ954HXPRGWMXX",
+      "physicalFacility": "AEX",
+      "name": "Local",
+      "radioName": "Alexandria Tower",
+      "callsign": "AEX_TWR",
+      "areaId": "01GB5ZD8P9F2VEPYWMCDWN7JVB",
+      "tcpId": "01K2NF1CDR70QP2TYKJC0VFY37",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 31.099582,
+        "lon": -93.179105
+      },
+      "range": 115,
+      "freq": 127.35
     }
   ],
   "mapGroups": [

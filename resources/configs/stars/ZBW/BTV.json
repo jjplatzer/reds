@@ -4,107 +4,131 @@
   "name": "Burlington ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 42.93753,
-    "lon": -70.70471
+    "lat": 44.46729,
+    "lon": -73.15054
   },
+  "areas": [
+    {
+      "id": "01G9BQW0CP75VV1CAGXVCN9CT9",
+      "name": "BTV",
+      "visibilityCenter": {
+        "lat": 44.46729,
+        "lon": -73.15054
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "0B7",
+        "1I1",
+        "6B0",
+        "B06",
+        "BTV",
+        "FSO",
+        "PBG",
+        "VT8"
+      ],
+      "ssaAirports": [
+        "BTV"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CGPKN5NZ34154JSSN8B",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP1R08T7G7FXSCVG2M",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1CGPKN5NZ34154JSSN8B",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP44EAFC08NHACQ6KA",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPAV5YDM1MF12HDJYH",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1CGPKN5NZ34154JSSN8B",
+      "parentTcp": "1E",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G9BQWM59DRD71Q0C2RPQWQYQ",
-      "name": "Clearance Delivery",
-      "callsign": "BTV_DEL",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 119.15
-    },
-    {
-      "id": "01G9BQXJ8VVVN1P5QH33T4N7NW",
-      "name": "Local Control",
-      "callsign": "BTV_TWR",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 118.3
-    },
-    {
       "id": "01G9BQY8DQ5VJX8JVXM9V4DHEF",
+      "physicalFacility": "BTV",
       "name": "East Radar",
+      "radioName": "Burlington Approach",
       "callsign": "BTV_APP",
+      "areaId": "01G9BQW0CP75VV1CAGXVCN9CT9",
+      "tcpId": "01K2NF1CGPKN5NZ34154JSSN8B",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 44.46729,
+        "lon": -73.15054
       },
+      "range": 150,
       "freq": 121.1
     },
     {
-      "id": "01G9BQZ8K3WYBYXJR2AEC6JV01",
-      "name": "West Radar",
-      "callsign": "BTV_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 124.55
-    },
-    {
-      "id": "01G9BR04PMHM294CSYEKHQ6DRC",
-      "name": "Ground Control",
-      "callsign": "BTV_GND",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 126.3
-    },
-    {
       "id": "01HBXRQEFC0G9PMPD9NQ07Y7X1",
+      "physicalFacility": "BTV",
       "name": "Final",
+      "radioName": "Burlington Approach",
       "callsign": "BTV_F_APP",
+      "areaId": "01G9BQW0CP75VV1CAGXVCN9CT9",
+      "tcpId": "01K2NF1CGP1R08T7G7FXSCVG2M",
+      "tcp": "1F",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 44.46729,
+        "lon": -73.15054
       },
+      "range": 150,
       "freq": 120.35
     },
     {
-      "id": "01KAMCRVA1YV7EVZG2TEMJW805",
-      "name": "BTV Guard",
-      "callsign": "BTV_EM_APP",
+      "id": "01G9BQXJ8VVVN1P5QH33T4N7NW",
+      "physicalFacility": "BTV",
+      "name": "Local Control",
+      "radioName": "Burlington Tower",
+      "callsign": "BTV_TWR",
+      "areaId": "01G9BQW0CP75VV1CAGXVCN9CT9",
+      "tcpId": "01K2NF1CGP44EAFC08NHACQ6KA",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 44.46729,
+        "lon": -73.15054
       },
-      "freq": 121.5
+      "range": 150,
+      "freq": 118.3
     },
     {
-      "id": "1E",
+      "id": "01G9BQZ8K3WYBYXJR2AEC6JV01",
+      "physicalFacility": "BTV",
+      "name": "West Radar",
+      "radioName": "Burlington Approach",
+      "callsign": "BTV_APP",
+      "areaId": "01G9BQW0CP75VV1CAGXVCN9CT9",
+      "tcpId": "01K2NF1CGPAV5YDM1MF12HDJYH",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
+        "lat": 44.46729,
+        "lon": -73.15054
+      },
+      "range": 150,
+      "freq": 124.55
     }
   ],
   "mapGroups": [

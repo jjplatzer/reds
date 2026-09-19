@@ -4,63 +4,75 @@
   "name": "Henry Post AAF RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 33.55328401,
-    "lon": -97.43688567000001
+    "lat": 34.64942,
+    "lon": -98.40199
   },
+  "areas": [
+    {
+      "id": "01H185NY7CKH4CY24J85A7WAWB",
+      "name": "Fort Sill",
+      "visibilityCenter": {
+        "lat": 34.64942,
+        "lon": -98.40199
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "DUC",
+        "FSI",
+        "LAW"
+      ],
+      "ssaAirports": [
+        "FSI",
+        "LAW"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1D8SHSKXW4HD9RRQ9XK2",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R"
+    },
+    {
+      "id": "01K2NF1D8SW0QGY43MGD21HYFS",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01H185FDZWQCNNA5G86EBDYJ3N",
+      "physicalFacility": "FSI",
       "name": "Radar",
+      "radioName": "Fort Sill Approach",
       "callsign": "FSI_APP",
+      "areaId": "01H185NY7CKH4CY24J85A7WAWB",
+      "tcpId": "01K2NF1D8SHSKXW4HD9RRQ9XK2",
+      "tcp": "1R",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 34.64942,
+        "lon": -98.40199
       },
+      "range": 150,
       "freq": 120.55
     },
     {
       "id": "01H1865162JXWQBT3GFN5C0HAE",
+      "physicalFacility": "FSI",
       "name": "Local",
+      "radioName": "Post Tower",
       "callsign": "FSI_TWR",
+      "areaId": "01H185NY7CKH4CY24J85A7WAWB",
+      "tcpId": "01K2NF1D8SW0QGY43MGD21HYFS",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
+        "lat": 34.64942,
+        "lon": -98.40199
       },
+      "range": 150,
       "freq": 124.95
-    },
-    {
-      "id": "01H1866W3Z1EVCHD1J6BQVMS9J",
-      "name": "Ground",
-      "callsign": "FSI_GND",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.7
-    },
-    {
-      "id": "01J9YHZHETJ0B635Z42JYJYY05",
-      "name": "Guard",
-      "callsign": "FSI_EM_APP",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      },
-      "freq": 121.5
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 33.55328401,
-        "lon": -97.43688567000001
-      }
     }
   ],
   "mapGroups": [

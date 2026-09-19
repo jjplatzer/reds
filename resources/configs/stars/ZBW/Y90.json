@@ -4,132 +4,326 @@
   "name": "Bradley TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 42.93753,
-    "lon": -70.70471
+    "lat": 41.9390322,
+    "lon": -72.6843158
   },
+  "areas": [
+    {
+      "id": "01G9BE1PJJPRMTZ6MWVHH4EYRY",
+      "name": "Y90",
+      "visibilityCenter": {
+        "lat": 41.9390322,
+        "lon": -72.6843158
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "1B6",
+        "3B0",
+        "3B3",
+        "4B8",
+        "4B9",
+        "60M",
+        "7B2",
+        "7B6",
+        "7B9",
+        "9B8",
+        "BAF",
+        "BDL",
+        "C44",
+        "CEF",
+        "HFD",
+        "IJD",
+        "MMK",
+        "N41",
+        "ORH"
+      ],
+      "ssaAirports": [
+        "BAF",
+        "BDL",
+        "CEF",
+        "HFD",
+        "ORH"
+      ]
+    },
+    {
+      "id": "01HBS22FNQ11RMJ1W9R1RR8Y4P",
+      "name": "Bradley Tower",
+      "visibilityCenter": {
+        "lat": 41.9390322,
+        "lon": -72.6843158
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "BDL"
+      ],
+      "ssaAirports": [
+        "BDL"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CGPKQRC4RCWJE80ZXRP",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPG9B0J0SH84SSW7PE",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1CGPKQRC4RCWJE80ZXRP",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPS9FHF0VCJ8DN92JS",
+      "code": "1Q",
+      "subset": 1,
+      "sectorId": "Q",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP2CF9GVW9KTHG77ZB",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGPS6YAA7KF7KE6WWS2",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP0EY5V85QWEV1YHZZ",
+      "code": "1V",
+      "subset": 1,
+      "sectorId": "V",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP3AYR48KPM9RJK89F",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1CGPKQRC4RCWJE80ZXRP",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP6F85FA5DFA9SGRJT",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1CGPKQRC4RCWJE80ZXRP",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1CGP2TZGRV1PG4MKKJZ6",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "parentTcpId": "01K2NF1CGPKQRC4RCWJE80ZXRP",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01G9BMY6WSD9QEVEHBZRQS22NN",
+      "physicalFacility": "Y90",
       "name": "Bristol Radar",
+      "radioName": "Bradley Approach",
       "callsign": "BDL_APP",
+      "areaId": "01G9BE1PJJPRMTZ6MWVHH4EYRY",
+      "tcpId": "01K2NF1CGPKQRC4RCWJE80ZXRP",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 41.9390322,
+        "lon": -72.6843158
       },
+      "range": 100,
       "freq": 123.95
     },
     {
-      "id": "01G9BMZ54NJ4YV2FPF9K3G899X",
-      "name": "Final Vector",
-      "callsign": "BDL_APP",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      },
-      "freq": 127.225
-    },
-    {
       "id": "01G9BN55G20EPTRD8VPANKEHE7",
+      "physicalFacility": "Y90",
       "name": "Hartford Radar",
+      "radioName": "Bradley Approach",
       "callsign": "BDL_APP",
+      "areaId": "01G9BE1PJJPRMTZ6MWVHH4EYRY",
+      "tcpId": "01K2NF1CGPG9B0J0SH84SSW7PE",
+      "tcp": "1H",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 41.9390322,
+        "lon": -72.6843158
       },
+      "range": 100,
       "freq": 127.8
     },
     {
-      "id": "01G9BN5RZEPHJA83H4Y54N1PJ4",
-      "name": "West Departure Radar",
-      "callsign": "BDL_APP",
+      "id": "01G9GTFJ758KP49DEGSJWM3H3A",
+      "physicalFacility": "BAF",
+      "name": "Local Control",
+      "radioName": "Westfield Tower",
+      "callsign": "BAF_TWR",
+      "areaId": "01G9BE1PJJPRMTZ6MWVHH4EYRY",
+      "tcpId": "01K2NF1CGPS9FHF0VCJ8DN92JS",
+      "tcp": "1Q",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 41.9390322,
+        "lon": -72.6843158
       },
-      "freq": 125.35
+      "range": 100,
+      "freq": 125.075
+    },
+    {
+      "id": "01G9GTWJH4K8HJGJB8FA48GXCF",
+      "physicalFacility": "HFD",
+      "name": "Local Control",
+      "radioName": "Brainard Tower",
+      "callsign": "HFD_TWR",
+      "areaId": "01G9BE1PJJPRMTZ6MWVHH4EYRY",
+      "tcpId": "01K2NF1CGP2CF9GVW9KTHG77ZB",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 41.9390322,
+        "lon": -72.6843158
+      },
+      "range": 100,
+      "freq": 119.6
+    },
+    {
+      "id": "01G9GVMVB6XFR9RCH36JF9APR2",
+      "physicalFacility": "BDL",
+      "name": "Clearance Delivery",
+      "radioName": "Bradley Clearance",
+      "callsign": "BDL_DEL",
+      "areaId": "01HBS22FNQ11RMJ1W9R1RR8Y4P",
+      "tcpId": "01K2NF1CGPS6YAA7KF7KE6WWS2",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.9390322,
+        "lon": -72.6843158
+      },
+      "range": 50,
+      "freq": 121.75
+    },
+    {
+      "id": "01G9GVNQ0Y29B2XDH5FJE5PM25",
+      "physicalFacility": "BDL",
+      "name": "Ground Control",
+      "radioName": "Bradley Ground",
+      "callsign": "BDL_GND",
+      "areaId": "01HBS22FNQ11RMJ1W9R1RR8Y4P",
+      "tcpId": "01K2NF1CGPS6YAA7KF7KE6WWS2",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.9390322,
+        "lon": -72.6843158
+      },
+      "range": 50,
+      "freq": 121.9
+    },
+    {
+      "id": "01G9GVK5Y5G261G087BH0ZHTPZ",
+      "physicalFacility": "BDL",
+      "name": "Local Control",
+      "radioName": "Bradley Tower",
+      "callsign": "BDL_TWR",
+      "areaId": "01HBS22FNQ11RMJ1W9R1RR8Y4P",
+      "tcpId": "01K2NF1CGPS6YAA7KF7KE6WWS2",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.9390322,
+        "lon": -72.6843158
+      },
+      "range": 50,
+      "freq": 120.3
+    },
+    {
+      "id": "01G9GTSB0VN2NXKQP7972811S1",
+      "physicalFacility": "CEF",
+      "name": "Local Control",
+      "radioName": "Westover Tower",
+      "callsign": "CEF_TWR",
+      "areaId": "01G9BE1PJJPRMTZ6MWVHH4EYRY",
+      "tcpId": "01K2NF1CGP0EY5V85QWEV1YHZZ",
+      "tcp": "1V",
+      "visualCenter": {
+        "lat": 41.9390322,
+        "lon": -72.6843158
+      },
+      "range": 100,
+      "freq": 134.85
     },
     {
       "id": "01G9BN6FBEBDVWZKK7SHWF4371",
+      "physicalFacility": "Y90",
       "name": "Worcester Radar",
+      "radioName": "Bradley Approach",
       "callsign": "BDL_APP",
+      "areaId": "01G9BE1PJJPRMTZ6MWVHH4EYRY",
+      "tcpId": "01K2NF1CGP3AYR48KPM9RJK89F",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 41.9390322,
+        "lon": -72.6843158
       },
+      "range": 100,
       "freq": 119
     },
     {
-      "id": "01KAEWBZDVTQ2FKETVBFAC3YTK",
-      "name": "BDL Guard",
-      "callsign": "BDL_EM_APP",
+      "id": "01G9BMZ54NJ4YV2FPF9K3G899X",
+      "physicalFacility": "Y90",
+      "name": "Final Vector",
+      "radioName": "Bradley Approach",
+      "callsign": "BDL_APP",
+      "areaId": "01G9BE1PJJPRMTZ6MWVHH4EYRY",
+      "tcpId": "01K2NF1CGP6F85FA5DFA9SGRJT",
+      "tcp": "1X",
       "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
+        "lat": 41.9390322,
+        "lon": -72.6843158
       },
+      "range": 100,
+      "freq": 127.225
+    },
+    {
+      "id": "01G9BN5RZEPHJA83H4Y54N1PJ4",
+      "physicalFacility": "Y90",
+      "name": "West Departure Radar",
+      "radioName": "Bradley Approach",
+      "callsign": "BDL_APP",
+      "areaId": "01G9BE1PJJPRMTZ6MWVHH4EYRY",
+      "tcpId": "01K2NF1CGP2TZGRV1PG4MKKJZ6",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 41.9390322,
+        "lon": -72.6843158
+      },
+      "range": 100,
+      "freq": 125.35
+    },
+    {
+      "id": "01KAEWBZDVTQ2FKETVBFAC3YTK",
+      "physicalFacility": "Y90",
+      "name": "BDL Guard",
+      "radioName": "Guard",
+      "callsign": "BDL_EM_APP",
+      "areaId": "01G9BE1PJJPRMTZ6MWVHH4EYRY",
+      "visualCenter": {
+        "lat": 41.9390322,
+        "lon": -72.6843158
+      },
+      "range": 100,
       "freq": 121.5
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1Q",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1V",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 42.93753,
-        "lon": -70.70471
-      }
     }
   ],
   "mapGroups": [

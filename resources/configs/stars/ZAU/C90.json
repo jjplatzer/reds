@@ -4,378 +4,937 @@
   "name": "Chicago TRACON",
   "type": "Tracon",
   "defaultCenter": {
-    "lat": 41.879166749999996,
-    "lon": -88.975
+    "lat": 41.94369743333333,
+    "lon": -87.92147324444444
   },
+  "areas": [
+    {
+      "id": "01GFKX4F4T3BQHQAFP21VZRVBA",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "68IS",
+        "82IS",
+        "06C",
+        "DPA",
+        "ARR",
+        "DKB",
+        "LL10",
+        "1C5",
+        "LL22",
+        "KLOT",
+        "C09",
+        "JOT",
+        "IGQ",
+        "GYY",
+        "3HO",
+        "05C",
+        "MDW",
+        "PWK",
+        "3CK",
+        "C81",
+        "10C",
+        "UGN",
+        "ORD"
+      ],
+      "ssaAirports": [
+        "ORD",
+        "MDW",
+        "ARR",
+        "DPA",
+        "GYY",
+        "LOT",
+        "PWK",
+        "UGN"
+      ]
+    },
+    {
+      "id": "01GFRQ220FP86RY3EZTHZ12VQ2",
+      "name": "Final",
+      "visibilityCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "surveillanceRange": 100,
+      "ssaAirports": [
+        "ORD"
+      ]
+    },
+    {
+      "id": "01GFRQ37A21W8CCF41PWWQ9Z7J",
+      "name": "Feeder",
+      "visibilityCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "surveillanceRange": 150,
+      "ssaAirports": [
+        "ORD"
+      ]
+    },
+    {
+      "id": "01GFRQ4CFQG4QT10BKXPXBS3T1",
+      "name": "Departure",
+      "visibilityCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "68IS",
+        "82IS",
+        "06C",
+        "DPA",
+        "ARR",
+        "DKB",
+        "LL10",
+        "1C5",
+        "LL22",
+        "KLOT",
+        "C09",
+        "JOT",
+        "IGQ",
+        "GYY",
+        "3HO",
+        "05C",
+        "MDW",
+        "PWK",
+        "3CK",
+        "C81",
+        "10C",
+        "UGN",
+        "ORD"
+      ],
+      "ssaAirports": [
+        "ORD",
+        "MDW",
+        "ARR",
+        "DPA",
+        "GYY",
+        "LOT",
+        "PWK",
+        "UGN"
+      ]
+    },
+    {
+      "id": "01GFRQ5S0B6SZXGWY48RBYATKZ",
+      "name": "South Satellite",
+      "visibilityCenter": {
+        "lat": 41.7859722,
+        "lon": -87.7524167
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "68IS",
+        "82IS",
+        "06C",
+        "DPA",
+        "ARR",
+        "DKB",
+        "LL10",
+        "1C5",
+        "LL22",
+        "KLOT",
+        "C09",
+        "JOT",
+        "IGQ",
+        "GYY",
+        "3HO",
+        "05C",
+        "MDW"
+      ],
+      "ssaAirports": [
+        "MDW",
+        "ARR",
+        "DPA",
+        "GYY",
+        "LOT"
+      ]
+    },
+    {
+      "id": "01GFRQ81RQCH4CD4DSFJ9VX5B8",
+      "name": "North Satellite",
+      "visibilityCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "surveillanceRange": 150,
+      "underlyingAirports": [
+        "10C",
+        "C81",
+        "UGN",
+        "3CK",
+        "PWK"
+      ],
+      "ssaAirports": [
+        "PWK",
+        "UGN"
+      ]
+    },
+    {
+      "id": "01H73BBCJ6RSHJ6HFHT5KJCT87",
+      "name": "Midway Tower",
+      "visibilityCenter": {
+        "lat": 41.7859722,
+        "lon": -87.7524167
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "MDW"
+      ],
+      "ssaAirports": [
+        "MDW"
+      ]
+    },
+    {
+      "id": "01H978KD62Z990JJZ6MCJVS0E6",
+      "name": "Dupage Tower",
+      "visibilityCenter": {
+        "lat": 41.9070531,
+        "lon": -88.247995
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "DPA"
+      ],
+      "ssaAirports": [
+        "DPA"
+      ]
+    },
+    {
+      "id": "01H9791G1J1PM01TE3WHVPJ5PF",
+      "name": "Chicago Executive Tower",
+      "visibilityCenter": {
+        "lat": 42.1142794,
+        "lon": -87.9015408
+      },
+      "surveillanceRange": 30,
+      "underlyingAirports": [
+        "PWK"
+      ],
+      "ssaAirports": [
+        "PWK"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1DXNTQ4W8KCSSTEM1048",
+      "code": "14",
+      "subset": 1,
+      "sectorId": "4",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXN2ERCZAH6A491BFNA",
+      "code": "16",
+      "subset": 1,
+      "sectorId": "6",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNN7T7K563BEJGNS0J",
+      "code": "17",
+      "subset": 1,
+      "sectorId": "7",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXN5PPF1EY8X535GG88",
+      "code": "18",
+      "subset": 1,
+      "sectorId": "8",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNA64M32NSZYGFANAM",
+      "code": "19",
+      "subset": 1,
+      "sectorId": "9",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNJGA3PVDTXW0G1CHP",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "parentTcpId": "01K2NF1DXNREV2GW0FX91SCFXD",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNREV2GW0FX91SCFXD",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "parentTcpId": "01K2NF1DXNFS3G4XBHW11ZTXKH",
+      "parentTcp": "1Z",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNKAZT6Z9NXQNKWAA4",
+      "code": "1D",
+      "subset": 1,
+      "sectorId": "D",
+      "parentTcpId": "01K2NF1DXNREV2GW0FX91SCFXD",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNYNMKR49M8D1CF68Z",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E",
+      "parentTcpId": "01K2NF1DXN9S17RXJ8N93WAJYS",
+      "parentTcp": "1X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNFC8TVG4R28EGSMTT",
+      "code": "1F",
+      "subset": 1,
+      "sectorId": "F",
+      "parentTcpId": "01K2NF1DXNFS3G4XBHW11ZTXKH",
+      "parentTcp": "1Z",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNCVN0MJ4X6372WMMN",
+      "code": "1G",
+      "subset": 1,
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1DXNBB3AYJRP76HT4QJB",
+      "parentTcp": "1M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNNH8YZ415198JBSGH",
+      "code": "1H",
+      "subset": 1,
+      "sectorId": "H",
+      "parentTcpId": "01K2NF1DXN8X7F31XSMTC9V8S2",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNKJ8K6JZ8YZT02BN0",
+      "code": "1J",
+      "subset": 1,
+      "sectorId": "J",
+      "parentTcpId": "01K2NF1DXNV1RSC6S27K9TA59Q",
+      "parentTcp": "1Y",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNB8T5CCH758DF9H8D",
+      "code": "1L",
+      "subset": 1,
+      "sectorId": "L",
+      "parentTcpId": "01K2NF1DXNW62NP8E460DX9TPT",
+      "parentTcp": "1P",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNBB3AYJRP76HT4QJB",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "parentTcpId": "01K2NF1DXNREV2GW0FX91SCFXD",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNW62NP8E460DX9TPT",
+      "code": "1P",
+      "subset": 1,
+      "sectorId": "P",
+      "parentTcpId": "01K2NF1DXN5JE6KSJQ8SA830HA",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNKQK4JVWR7V8W6YA4",
+      "code": "1R",
+      "subset": 1,
+      "sectorId": "R",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXN5JE6KSJQ8SA830HA",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1DXNREV2GW0FX91SCFXD",
+      "parentTcp": "1B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNG00A1JFXBDTF4PMG",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXN5JATT0XQT2X6ZM03",
+      "code": "1U",
+      "subset": 1,
+      "sectorId": "U",
+      "parentTcpId": "01K2NF1DXN5JE6KSJQ8SA830HA",
+      "parentTcp": "1S",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXN8X7F31XSMTC9V8S2",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W",
+      "parentTcpId": "01K2NF1DXNFS3G4XBHW11ZTXKH",
+      "parentTcp": "1Z",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXN9S17RXJ8N93WAJYS",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "parentTcpId": "01K2NF1DXN8X7F31XSMTC9V8S2",
+      "parentTcp": "1W",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNV1RSC6S27K9TA59Q",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y",
+      "parentTcpId": "01K2NF1DXNFC8TVG4R28EGSMTT",
+      "parentTcp": "1F",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1DXNFS3G4XBHW11ZTXKH",
+      "code": "1Z",
+      "subset": 1,
+      "sectorId": "Z",
+      "terminalSector": "A"
+    }
+  ],
   "controlPositions": [
     {
-      "id": "01G9FPDWKE852Q42K6NA2PV6E1",
-      "name": "Z Final",
-      "callsign": "CHI_Z_APP",
+      "id": "01GFPPF8WZFRR41NAACW7KF5PC",
+      "physicalFacility": "UGN",
+      "name": "Local",
+      "radioName": "Waukegan Tower",
+      "callsign": "UGN_TWR",
+      "areaId": "01GFKX4F4T3BQHQAFP21VZRVBA",
+      "tcpId": "01K2NF1DXNTQ4W8KCSSTEM1048",
+      "tcp": "14",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 41.98,
+        "lon": -87.927778
       },
-      "freq": 119
+      "range": 150,
+      "freq": 120.05
     },
     {
-      "id": "01GFKXBTVFPTF74VG2K8X630MS",
-      "name": "F Final",
-      "callsign": "CHI_F_APP",
+      "id": "01GFPFEC9FEK4KD78EMG6DG4BQ",
+      "physicalFacility": "PWK",
+      "name": "Local",
+      "radioName": "Executive Tower",
+      "callsign": "PWK_TWR",
+      "areaId": "01H9791G1J1PM01TE3WHVPJ5PF",
+      "tcpId": "01K2NF1DXN2ERCZAH6A491BFNA",
+      "tcp": "16",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 42.1142794,
+        "lon": -87.9015408
       },
-      "freq": 124.35
+      "range": 30,
+      "freq": 119.9
     },
     {
-      "id": "01GFKXCDPNDVC097037SRB9KST",
-      "name": "W Final",
-      "callsign": "CHI_W_APP",
+      "id": "01GFMTXZBTZ7CDSGFZKXBETFYV",
+      "physicalFacility": "DPA",
+      "name": "Local",
+      "radioName": "Dupage Tower",
+      "callsign": "DPA_TWR",
+      "areaId": "01H978KD62Z990JJZ6MCJVS0E6",
+      "tcpId": "01K2NF1DXNN7T7K563BEJGNS0J",
+      "tcp": "17",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 41.9070531,
+        "lon": -88.247995
       },
-      "freq": 133.625
+      "range": 30,
+      "freq": 120.9
     },
     {
-      "id": "01GFKXCXWDE53X4EQH96XXNMYR",
-      "name": "H Final",
-      "callsign": "CHI_H_APP",
+      "id": "01GFMKJ1BCJWV17QDCAXGK74CF",
+      "physicalFacility": "ARR",
+      "name": "Local",
+      "radioName": "Aurora Tower",
+      "callsign": "ARR_TWR",
+      "areaId": "01GFRQ5S0B6SZXGWY48RBYATKZ",
+      "tcpId": "01K2NF1DXN5PPF1EY8X535GG88",
+      "tcp": "18",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 41.7859722,
+        "lon": -87.7524167
       },
-      "freq": 132.175
+      "range": 150,
+      "freq": 120.6
     },
     {
-      "id": "01GFKXDH98JH45D6JV14XAHTQ5",
-      "name": "PLANO Feeder",
-      "callsign": "CHI_X_APP",
+      "id": "01GFP09ZY5JK1GB578YG9HAG9H",
+      "physicalFacility": "GYY",
+      "name": "Local",
+      "radioName": "Gary Tower",
+      "callsign": "GYY_TWR",
+      "areaId": "01GFRQ5S0B6SZXGWY48RBYATKZ",
+      "tcpId": "01K2NF1DXNA64M32NSZYGFANAM",
+      "tcp": "19",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 41.7859722,
+        "lon": -87.7524167
       },
-      "freq": 135.075
-    },
-    {
-      "id": "01GFKXE71JXNJXKT4FAGQGMPG0",
-      "name": "KUBBS Feeder",
-      "callsign": "CHI_J_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 125.7
-    },
-    {
-      "id": "01GFKXRRWVCT4X5NKVYT8M0X6G",
-      "name": "OKK Feeder",
-      "callsign": "CHI_E_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 118.925
-    },
-    {
-      "id": "01GFKXSFDSEMBTDNYY01VX57FT",
-      "name": "FARMM Feeder",
-      "callsign": "CHI_Y_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 135.025
-    },
-    {
-      "id": "01GFKXTHJ17QEPFGJM9ST857JF",
-      "name": "SSat Sector 1",
-      "callsign": "CHI_S_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 128.2
-    },
-    {
-      "id": "01GFKXV90MYF7QET77M35WTH0S",
-      "name": "SSat Sector 2",
-      "callsign": "CHI_P_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 119.35
-    },
-    {
-      "id": "01GFKXVR6RMNRNH3PF1NHNBSEZ",
-      "name": "SSat Sector 3",
-      "callsign": "CHI_L_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 133.5
-    },
-    {
-      "id": "01GFKXWHCP2GQ6NMXTC3MGA48W",
-      "name": "SSat Sector 4",
-      "callsign": "CHI_U_APP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 133.9
-    },
-    {
-      "id": "01GFKXX20G5M312RZBNMFH5MKY",
-      "name": "East Departure",
-      "callsign": "CHI_B_DEP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 128.575
-    },
-    {
-      "id": "01GFKXY1QNMHDCSTYFQ3B7ZMJJ",
-      "name": "South Departure",
-      "callsign": "CHI_M_DEP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 126.625
-    },
-    {
-      "id": "01GFKXYNS7ABKK3GA5P3RFH0RK",
-      "name": "West Departure",
-      "callsign": "CHI_G_DEP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 135.275
-    },
-    {
-      "id": "01GFKXZEH4XGCB91QKJBK65VQ5",
-      "name": "North Departure",
-      "callsign": "CHI_D_DEP",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      },
-      "freq": 134.4
+      "range": 150,
+      "freq": 125.6
     },
     {
       "id": "01GFKY0JXS89D0C8AFJ46HW23P",
+      "physicalFacility": "C90",
       "name": "North Satellite",
+      "radioName": "Chicago Approach",
       "callsign": "CHI_A_APP",
+      "areaId": "01GFRQ81RQCH4CD4DSFJ9VX5B8",
+      "tcpId": "01K2NF1DXNJGA3PVDTXW0G1CHP",
+      "tcp": "1A",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 41.98,
+        "lon": -87.927778
       },
+      "range": 150,
       "freq": 120.55
     },
     {
-      "id": "01GFKY1WMT50BB80B4T18TZVSD",
-      "name": "Z Final (Combined)",
-      "callsign": "CHI_Z_APP",
+      "id": "01GFKXX20G5M312RZBNMFH5MKY",
+      "physicalFacility": "C90",
+      "name": "East Departure",
+      "radioName": "Chicago Departure",
+      "callsign": "CHI_B_DEP",
+      "areaId": "01GFRQ4CFQG4QT10BKXPXBS3T1",
+      "tcpId": "01K2NF1DXNREV2GW0FX91SCFXD",
+      "tcp": "1B",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
+        "lat": 41.98,
+        "lon": -87.927778
       },
+      "range": 100,
+      "freq": 128.575
+    },
+    {
+      "id": "01GFKXZEH4XGCB91QKJBK65VQ5",
+      "physicalFacility": "C90",
+      "name": "North Departure",
+      "radioName": "Chicago Departure",
+      "callsign": "CHI_D_DEP",
+      "areaId": "01GFRQ4CFQG4QT10BKXPXBS3T1",
+      "tcpId": "01K2NF1DXNKAZT6Z9NXQNKWAA4",
+      "tcp": "1D",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 134.4
+    },
+    {
+      "id": "01GFKXRRWVCT4X5NKVYT8M0X6G",
+      "physicalFacility": "C90",
+      "name": "OKK Feeder",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_E_APP",
+      "areaId": "01GFRQ37A21W8CCF41PWWQ9Z7J",
+      "tcpId": "01K2NF1DXNYNMKR49M8D1CF68Z",
+      "tcp": "1E",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 150,
+      "freq": 118.925
+    },
+    {
+      "id": "01GFKXBTVFPTF74VG2K8X630MS",
+      "physicalFacility": "C90",
+      "name": "F Final",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_F_APP",
+      "areaId": "01GFRQ220FP86RY3EZTHZ12VQ2",
+      "tcpId": "01K2NF1DXNFC8TVG4R28EGSMTT",
+      "tcp": "1F",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 124.35
+    },
+    {
+      "id": "01GFKXYNS7ABKK3GA5P3RFH0RK",
+      "physicalFacility": "C90",
+      "name": "West Departure",
+      "radioName": "Chicago Departure",
+      "callsign": "CHI_G_DEP",
+      "areaId": "01GFRQ4CFQG4QT10BKXPXBS3T1",
+      "tcpId": "01K2NF1DXNCVN0MJ4X6372WMMN",
+      "tcp": "1G",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 135.275
+    },
+    {
+      "id": "01GFKXCXWDE53X4EQH96XXNMYR",
+      "physicalFacility": "C90",
+      "name": "H Final",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_H_APP",
+      "areaId": "01GFRQ220FP86RY3EZTHZ12VQ2",
+      "tcpId": "01K2NF1DXNNH8YZ415198JBSGH",
+      "tcp": "1H",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 132.175
+    },
+    {
+      "id": "01GFKXE71JXNJXKT4FAGQGMPG0",
+      "physicalFacility": "C90",
+      "name": "KUBBS Feeder",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_J_APP",
+      "areaId": "01GFRQ37A21W8CCF41PWWQ9Z7J",
+      "tcpId": "01K2NF1DXNKJ8K6JZ8YZT02BN0",
+      "tcp": "1J",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 150,
+      "freq": 125.7
+    },
+    {
+      "id": "01GFKXVR6RMNRNH3PF1NHNBSEZ",
+      "physicalFacility": "C90",
+      "name": "SSat Sector 3",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_L_APP",
+      "areaId": "01GFRQ5S0B6SZXGWY48RBYATKZ",
+      "tcpId": "01K2NF1DXNB8T5CCH758DF9H8D",
+      "tcp": "1L",
+      "visualCenter": {
+        "lat": 41.7859722,
+        "lon": -87.7524167
+      },
+      "range": 150,
+      "freq": 133.5
+    },
+    {
+      "id": "01GFKXY1QNMHDCSTYFQ3B7ZMJJ",
+      "physicalFacility": "C90",
+      "name": "South Departure",
+      "radioName": "Chicago Departure",
+      "callsign": "CHI_M_DEP",
+      "areaId": "01GFRQ4CFQG4QT10BKXPXBS3T1",
+      "tcpId": "01K2NF1DXNBB3AYJRP76HT4QJB",
+      "tcp": "1M",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 126.625
+    },
+    {
+      "id": "01GFKXV90MYF7QET77M35WTH0S",
+      "physicalFacility": "C90",
+      "name": "SSat Sector 2",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_P_APP",
+      "areaId": "01GFRQ5S0B6SZXGWY48RBYATKZ",
+      "tcpId": "01K2NF1DXNW62NP8E460DX9TPT",
+      "tcp": "1P",
+      "visualCenter": {
+        "lat": 41.7859722,
+        "lon": -87.7524167
+      },
+      "range": 150,
+      "freq": 119.35
+    },
+    {
+      "id": "01H53TKMR17G5BR3V7V4VN32RZ",
+      "physicalFacility": "MDW",
+      "name": "Ground",
+      "radioName": "Midway Ground",
+      "callsign": "MDW_GND",
+      "areaId": "01H73BBCJ6RSHJ6HFHT5KJCT87",
+      "tcpId": "01K2NF1DXNKQK4JVWR7V8W6YA4",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 41.7859722,
+        "lon": -87.7524167
+      },
+      "range": 30,
+      "freq": 118.075
+    },
+    {
+      "id": "01GP7S0Y60RKF4ZCAJW4FGHHD0",
+      "physicalFacility": "MDW",
+      "name": "Local",
+      "radioName": "Midway Tower",
+      "callsign": "MDW_TWR",
+      "areaId": "01H73BBCJ6RSHJ6HFHT5KJCT87",
+      "tcpId": "01K2NF1DXNKQK4JVWR7V8W6YA4",
+      "tcp": "1R",
+      "visualCenter": {
+        "lat": 41.7859722,
+        "lon": -87.7524167
+      },
+      "range": 30,
+      "freq": 135.2
+    },
+    {
+      "id": "01GFKXTHJ17QEPFGJM9ST857JF",
+      "physicalFacility": "C90",
+      "name": "SSat Sector 1",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_S_APP",
+      "areaId": "01GFRQ5S0B6SZXGWY48RBYATKZ",
+      "tcpId": "01K2NF1DXN5JE6KSJQ8SA830HA",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 41.7859722,
+        "lon": -87.7524167
+      },
+      "range": 150,
+      "freq": 128.2
+    },
+    {
+      "id": "01HCQYV5YX0X0ZMN2ZABHDYF9Z",
+      "physicalFacility": "ORD",
+      "name": "Third Local Control",
+      "radioName": "O'Hare Tower",
+      "callsign": "ORD_C_TWR",
+      "areaId": "01GFRQ220FP86RY3EZTHZ12VQ2",
+      "tcpId": "01K2NF1DXNG00A1JFXBDTF4PMG",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 132.7
+    },
+    {
+      "id": "01GFYNNM5TD6XVD4GPAWEP8K8E",
+      "physicalFacility": "ORD",
+      "name": "Inbound Ground",
+      "radioName": "O'Hare Ground",
+      "callsign": "ORD_I_GND",
+      "areaId": "01GFRQ220FP86RY3EZTHZ12VQ2",
+      "tcpId": "01K2NF1DXNG00A1JFXBDTF4PMG",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 121.9
+    },
+    {
+      "id": "01H53RXCB0TBYT6P6AH566CEPZ",
+      "physicalFacility": "ORD",
+      "name": "Local Control North",
+      "radioName": "O'Hare Tower",
+      "callsign": "ORD_NN_TWR",
+      "areaId": "01GFRQ220FP86RY3EZTHZ12VQ2",
+      "tcpId": "01K2NF1DXNG00A1JFXBDTF4PMG",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 128.15
+    },
+    {
+      "id": "01H53RW9NVMXWJNQ9A7RPZSYPS",
+      "physicalFacility": "ORD",
+      "name": "North Local Control",
+      "radioName": "O'Hare Tower",
+      "callsign": "ORD_N_TWR",
+      "areaId": "01GFRQ220FP86RY3EZTHZ12VQ2",
+      "tcpId": "01K2NF1DXNG00A1JFXBDTF4PMG",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 126.9
+    },
+    {
+      "id": "01H53S01ZX7N4N59WXQSNX96GA",
+      "physicalFacility": "ORD",
+      "name": "Outbound Ground",
+      "radioName": "O'Hare Ground",
+      "callsign": "ORD_O_GND",
+      "areaId": "01GFRQ220FP86RY3EZTHZ12VQ2",
+      "tcpId": "01K2NF1DXNG00A1JFXBDTF4PMG",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 121.75
+    },
+    {
+      "id": "01H53RYZ5E9QF50REJW5VEWC6X",
+      "physicalFacility": "ORD",
+      "name": "Local Control South",
+      "radioName": "O'Hare Tower",
+      "callsign": "ORD_SS_TWR",
+      "areaId": "01GFRQ220FP86RY3EZTHZ12VQ2",
+      "tcpId": "01K2NF1DXNG00A1JFXBDTF4PMG",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 133
+    },
+    {
+      "id": "01GFYNCSNKHFZR19X4SCFPSEBN",
+      "physicalFacility": "ORD",
+      "name": "South Local Control",
+      "radioName": "O'Hare Tower",
+      "callsign": "ORD_S_TWR",
+      "areaId": "01GFRQ220FP86RY3EZTHZ12VQ2",
+      "tcpId": "01K2NF1DXNG00A1JFXBDTF4PMG",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 120.75
+    },
+    {
+      "id": "01GFKXWHCP2GQ6NMXTC3MGA48W",
+      "physicalFacility": "C90",
+      "name": "SSat Sector 4",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_U_APP",
+      "areaId": "01GFRQ5S0B6SZXGWY48RBYATKZ",
+      "tcpId": "01K2NF1DXN5JATT0XQT2X6ZM03",
+      "tcp": "1U",
+      "visualCenter": {
+        "lat": 41.7859722,
+        "lon": -87.7524167
+      },
+      "range": 150,
+      "freq": 133.9
+    },
+    {
+      "id": "01GFKXCDPNDVC097037SRB9KST",
+      "physicalFacility": "C90",
+      "name": "W Final",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_W_APP",
+      "areaId": "01GFRQ220FP86RY3EZTHZ12VQ2",
+      "tcpId": "01K2NF1DXN8X7F31XSMTC9V8S2",
+      "tcp": "1W",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
+      "freq": 133.625
+    },
+    {
+      "id": "01GFKXDH98JH45D6JV14XAHTQ5",
+      "physicalFacility": "C90",
+      "name": "PLANO Feeder",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_X_APP",
+      "areaId": "01GFRQ37A21W8CCF41PWWQ9Z7J",
+      "tcpId": "01K2NF1DXN9S17RXJ8N93WAJYS",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 150,
+      "freq": 135.075
+    },
+    {
+      "id": "01GFKXSFDSEMBTDNYY01VX57FT",
+      "physicalFacility": "C90",
+      "name": "FARMM Feeder",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_Y_APP",
+      "areaId": "01GFRQ37A21W8CCF41PWWQ9Z7J",
+      "tcpId": "01K2NF1DXNV1RSC6S27K9TA59Q",
+      "tcp": "1Y",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 150,
+      "freq": 135.025
+    },
+    {
+      "id": "01G9FPDWKE852Q42K6NA2PV6E1",
+      "physicalFacility": "C90",
+      "name": "Z Final",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_Z_APP",
+      "areaId": "01GFRQ220FP86RY3EZTHZ12VQ2",
+      "tcpId": "01K2NF1DXNFS3G4XBHW11ZTXKH",
+      "tcp": "1Z",
+      "visualCenter": {
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 100,
       "freq": 119
     },
     {
-      "id": "14",
+      "id": "01GFKY1WMT50BB80B4T18TZVSD",
+      "physicalFacility": "C90",
+      "name": "Z Final (Combined)",
+      "radioName": "Chicago Approach",
+      "callsign": "CHI_Z_APP",
+      "areaId": "01GFKX4F4T3BQHQAFP21VZRVBA",
+      "tcpId": "01K2NF1DXNFS3G4XBHW11ZTXKH",
+      "tcp": "1Z",
       "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "16",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "17",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "18",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "19",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1A",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1B",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1D",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1E",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1F",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1G",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1H",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1J",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1L",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1M",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1P",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1R",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1T",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1U",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1X",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1Y",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "1Z",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "3T",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
-    },
-    {
-      "id": "4T",
-      "visualCenter": {
-        "lat": 41.879166749999996,
-        "lon": -88.975
-      }
+        "lat": 41.98,
+        "lon": -87.927778
+      },
+      "range": 150,
+      "freq": 119
     }
   ],
   "mapGroups": [

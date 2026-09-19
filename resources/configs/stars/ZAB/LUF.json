@@ -4,97 +4,223 @@
   "name": "Luke ATCT/RAPCON",
   "type": "AtctRapcon",
   "defaultCenter": {
-    "lat": 34.19564814666666,
-    "lon": -107.50666666666666
+    "lat": 33.5349605,
+    "lon": -112.3892052
   },
-  "controlPositions": [
+  "areas": [
     {
-      "id": "01GRARC0JKQRW7S5C4256WBVQD",
-      "name": "North Approach Control",
-      "callsign": "LUF_N_APP",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+      "id": "01GRAQFBV607VK1MF34YV6TZGN",
+      "name": "Combined",
+      "visibilityCenter": {
+        "lat": 33.5349605,
+        "lon": -112.3892052
       },
-      "freq": 118.15
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "GEU",
+        "GXF",
+        "GYR",
+        "LUF"
+      ],
+      "ssaAirports": [
+        "GEU",
+        "GXF",
+        "GYR",
+        "LUF"
+      ]
     },
     {
-      "id": "01GRAREPFEKTP1N3RR5E0SFSJY",
-      "name": "Snakeye Tactical",
-      "callsign": "LUF_SN_APP",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+      "id": "01GRAQT5YMZR98G50MV8QJ1PGD",
+      "name": "TAC",
+      "visibilityCenter": {
+        "lat": 33.5349605,
+        "lon": -112.3892052
       },
+      "surveillanceRange": 75,
+      "underlyingAirports": [
+        "LUF",
+        "GXF"
+      ],
+      "ssaAirports": [
+        "LUF"
+      ]
+    },
+    {
+      "id": "01GRAQWX488K1FV9HKPJHPNXRM",
+      "name": "LUF Deltas",
+      "visibilityCenter": {
+        "lat": 33.5349605,
+        "lon": -112.3892052
+      },
+      "surveillanceRange": 50,
+      "underlyingAirports": [
+        "GEU",
+        "GXF",
+        "GYR"
+      ],
+      "ssaAirports": [
+        "GEU",
+        "GYR",
+        "GXF"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1BHTWM4SH5D867E7WHS3",
+      "code": "1A",
+      "subset": 1,
+      "sectorId": "A",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHTPJMCT4331254VR6W",
+      "code": "1B",
+      "subset": 1,
+      "sectorId": "B",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHTYT1WNRXMFXS7S5Z4",
+      "code": "1K",
+      "subset": 1,
+      "sectorId": "K",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHT97J2KCN1QXYJT7GG",
+      "code": "1M",
+      "subset": 1,
+      "sectorId": "M",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHTZ8DCK1MEGD2T9GMW",
+      "code": "1N",
+      "subset": 1,
+      "sectorId": "N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHTQ2258KGNTF94KK0A",
+      "code": "1S",
+      "subset": 1,
+      "sectorId": "S",
+      "parentTcpId": "01K2NF1BHTZ8DCK1MEGD2T9GMW",
+      "parentTcp": "1N",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHTCTYP3BP5QWWQQD83",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X",
+      "terminalSector": "A"
+    },
+    {
+      "id": "01K2NF1BHTNRBMXPVF26B06R3B",
+      "code": "2T",
+      "subset": 2,
+      "sectorId": "T",
+      "terminalSector": "A"
+    }
+  ],
+  "controlPositions": [
+    {
+      "id": "01GRAREPFEKTP1N3RR5E0SFSJY",
+      "physicalFacility": "LUF",
+      "name": "Snakeye Tactical",
+      "radioName": "Snakeye",
+      "callsign": "LUF_SN_APP",
+      "areaId": "01GRAQFBV607VK1MF34YV6TZGN",
+      "tcpId": "01K2NF1BHTYT1WNRXMFXS7S5Z4",
+      "tcp": "1K",
+      "visualCenter": {
+        "lat": 33.5349605,
+        "lon": -112.3892052
+      },
+      "range": 75,
       "freq": 122.775
     },
     {
-      "id": "01GRARH7BNYDC6NHPCBXJZ9NVS",
-      "name": "South Approach Control",
-      "callsign": "LUF_S_APP",
+      "id": "01GRARC0JKQRW7S5C4256WBVQD",
+      "physicalFacility": "LUF",
+      "name": "North Approach Control",
+      "radioName": "Luke Approach",
+      "callsign": "LUF_N_APP",
+      "areaId": "01GRAQFBV607VK1MF34YV6TZGN",
+      "tcpId": "01K2NF1BHTZ8DCK1MEGD2T9GMW",
+      "tcp": "1N",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 33.5349605,
+        "lon": -112.3892052
       },
+      "range": 75,
+      "freq": 118.15
+    },
+    {
+      "id": "01GRARH7BNYDC6NHPCBXJZ9NVS",
+      "physicalFacility": "LUF",
+      "name": "South Approach Control",
+      "radioName": "Luke approach",
+      "callsign": "LUF_S_APP",
+      "areaId": "01GRAQFBV607VK1MF34YV6TZGN",
+      "tcpId": "01K2NF1BHTQ2258KGNTF94KK0A",
+      "tcp": "1S",
+      "visualCenter": {
+        "lat": 33.5349605,
+        "lon": -112.3892052
+      },
+      "range": 75,
       "freq": 125.45
     },
     {
-      "id": "01GRARKDAKA0WXM7603RE70MNP",
-      "name": "Local Control",
-      "callsign": "LUF_TWR",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 119.1
-    },
-    {
-      "id": "01GRARN8QBH4EK8M4WA33A8M6B",
-      "name": "Ground",
-      "callsign": "LUF_GND",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      },
-      "freq": 133.175
-    },
-    {
       "id": "01GRARPHHS037JXGHW1REBHHVG",
+      "physicalFacility": "LUF",
       "name": "Luke Clearance",
+      "radioName": "Luke Clearance Delivery",
       "callsign": "LUF_DEL",
+      "areaId": "01GRAQFBV607VK1MF34YV6TZGN",
+      "tcpId": "01K2NF1BHTNRBMXPVF26B06R3B",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
+        "lat": 33.5349605,
+        "lon": -112.3892052
       },
+      "range": 75,
       "freq": 126.255
     },
     {
-      "id": "1K",
+      "id": "01GRARN8QBH4EK8M4WA33A8M6B",
+      "physicalFacility": "LUF",
+      "name": "Ground",
+      "radioName": "Luke Ground",
+      "callsign": "LUF_GND",
+      "areaId": "01GRAQFBV607VK1MF34YV6TZGN",
+      "tcpId": "01K2NF1BHTNRBMXPVF26B06R3B",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 33.5349605,
+        "lon": -112.3892052
+      },
+      "range": 75,
+      "freq": 133.175
     },
     {
-      "id": "1N",
+      "id": "01GRARKDAKA0WXM7603RE70MNP",
+      "physicalFacility": "LUF",
+      "name": "Local Control",
+      "radioName": "Luke Tower",
+      "callsign": "LUF_TWR",
+      "areaId": "01GRAQFBV607VK1MF34YV6TZGN",
+      "tcpId": "01K2NF1BHTNRBMXPVF26B06R3B",
+      "tcp": "2T",
       "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
-    },
-    {
-      "id": "1S",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
-    },
-    {
-      "id": "2T",
-      "visualCenter": {
-        "lat": 34.19564814666666,
-        "lon": -107.50666666666666
-      }
+        "lat": 33.5349605,
+        "lon": -112.3892052
+      },
+      "range": 75,
+      "freq": 119.1
     }
   ],
   "mapGroups": [

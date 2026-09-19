@@ -4,80 +4,137 @@
   "name": "Lake Charles ATCT/TRACON",
   "type": "AtctTracon",
   "defaultCenter": {
-    "lat": 28.71396075,
-    "lon": -90.5088095
+    "lat": 30.138698,
+    "lon": -93.227198
   },
+  "areas": [
+    {
+      "id": "01GZMZFMQAQHDBKRF48J9PC449",
+      "name": "TRACON",
+      "visibilityCenter": {
+        "lat": 30.138698,
+        "lon": -93.227198
+      },
+      "surveillanceRange": 100,
+      "underlyingAirports": [
+        "3R7",
+        "5R8",
+        "6R1",
+        "CWF",
+        "LCH",
+        "UXL"
+      ],
+      "ssaAirports": [
+        "LCH",
+        "CWF"
+      ]
+    },
+    {
+      "id": "01JCPP5MSVXC3R3ZM3MGXKRFB3",
+      "name": "LCH TOWER",
+      "visibilityCenter": {
+        "lat": 30.138698,
+        "lon": -93.227198
+      },
+      "surveillanceRange": 60,
+      "underlyingAirports": [
+        "LCH"
+      ],
+      "ssaAirports": [
+        "LCH"
+      ]
+    }
+  ],
+  "tcps": [
+    {
+      "id": "01K2NF1CDRF0F6JT7AEYYMA1T4",
+      "code": "1E",
+      "subset": 1,
+      "sectorId": "E"
+    },
+    {
+      "id": "01K2NF1CDRRWSJZMZ1XCEZVR44",
+      "code": "1T",
+      "subset": 1,
+      "sectorId": "T"
+    },
+    {
+      "id": "01K2NF1CDRHQ0CWX6KFR62KEC6",
+      "code": "1W",
+      "subset": 1,
+      "sectorId": "W"
+    },
+    {
+      "id": "01K2NF1CDR8YKMBQ2E5T34ARFT",
+      "code": "1Y",
+      "subset": 1,
+      "sectorId": "Y"
+    }
+  ],
   "controlPositions": [
     {
       "id": "01GSJ100YNV2E8ZX2GPDSKFRJQ",
+      "physicalFacility": "LCH",
       "name": "East Approach",
+      "radioName": "Lake Charles Approach",
       "callsign": "LCH_E_APP",
+      "areaId": "01GZMZFMQAQHDBKRF48J9PC449",
+      "tcpId": "01K2NF1CDRF0F6JT7AEYYMA1T4",
+      "tcp": "1E",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.138698,
+        "lon": -93.227198
       },
+      "range": 100,
       "freq": 119.8
     },
     {
-      "id": "01GSJ1431CD87W0BT6CHHAXZ3S",
-      "name": "West Approach",
-      "callsign": "LCH_W_APP",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 119.35
-    },
-    {
-      "id": "01GSJ16P1BY8YGK50H58WX6SP0",
-      "name": "Clearance Delivery",
-      "callsign": "LCH_DEL",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 126.25
-    },
-    {
-      "id": "01GSJ19CC9YMHTWD1BZA9116EK",
-      "name": "Ground",
-      "callsign": "LCH_GND",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      },
-      "freq": 121.8
-    },
-    {
       "id": "01GSJ1CWPRKMJDWZ5GF48VBQNZ",
+      "physicalFacility": "LCH",
       "name": "Tower",
+      "radioName": "Lake Charles Tower",
       "callsign": "LCH_TWR",
+      "areaId": "01GZMZFMQAQHDBKRF48J9PC449",
+      "tcpId": "01K2NF1CDRRWSJZMZ1XCEZVR44",
+      "tcp": "1T",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
+        "lat": 30.138698,
+        "lon": -93.227198
       },
+      "range": 100,
       "freq": 120.7
     },
     {
-      "id": "1E",
+      "id": "01GSJ1431CD87W0BT6CHHAXZ3S",
+      "physicalFacility": "LCH",
+      "name": "West Approach",
+      "radioName": "Lake Charles Approach",
+      "callsign": "LCH_W_APP",
+      "areaId": "01GZMZFMQAQHDBKRF48J9PC449",
+      "tcpId": "01K2NF1CDRHQ0CWX6KFR62KEC6",
+      "tcp": "1W",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 30.138698,
+        "lon": -93.227198
+      },
+      "range": 100,
+      "freq": 119.35
     },
     {
-      "id": "1T",
+      "id": "01H5MSS416E88BZ6M5DF4G0YTV",
+      "physicalFacility": "CWF",
+      "name": "Local",
+      "radioName": "Chennault  Tower",
+      "callsign": "CWF_TWR",
+      "areaId": "01GZMZFMQAQHDBKRF48J9PC449",
+      "tcpId": "01K2NF1CDR8YKMBQ2E5T34ARFT",
+      "tcp": "1Y",
       "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
-    },
-    {
-      "id": "1W",
-      "visualCenter": {
-        "lat": 28.71396075,
-        "lon": -90.5088095
-      }
+        "lat": 30.138698,
+        "lon": -93.227198
+      },
+      "range": 100,
+      "freq": 124.2
     }
   ],
   "mapGroups": [
