@@ -100,6 +100,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	p.drawNexrad(ctx, zcb, transforms)
 	p.drawDCBBackground(ctx, zcb)
+	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
 	p.applyCursor(ctx)
 	p.renderCursor(ctx, zcb)

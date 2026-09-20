@@ -1,7 +1,6 @@
 package stars
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/juliusplatzer/reds/panes"
@@ -15,10 +14,44 @@ const (
 	CommandModeRange
 )
 
+// PreviewString returns the command entry prompt shown in the Preview Area.
+// TI 6191.409 4.9.2 explicitly identifies command entry prompts and echoed
+// input as Preview Area contents; these prompt strings follow VICE/STARS.
+func (m CommandMode) PreviewString() string {
+	switch m {
+	case CommandModeRange:
+		return "RANGE"
+	default:
+		return ""
+	}
+}
+
+// CommandClear specifies how command state is cleared after execution. The
+// zero value deliberately matches VICE: a successful command normally clears
+// all command state unless a handler requests otherwise.
+type CommandClear int
+
 const (
-	starsCommandFormatError = "FORMAT"
-	starsRangeLimitError    = "RANGE LIMIT"
+	ClearAll CommandClear = iota
+	ClearInput
+	ClearNone
 )
+
+// CommandStatus is the reusable result returned by STARS command handlers.
+// Output is displayed in the Preview Area.
+type CommandStatus struct {
+	Clear  CommandClear
+	Output string
+}
+
+func init() {
+	// TI 6191.409 Rev. 30, 4.4.1 Change display range.
+	// [RANGE] is a reusable typed command matcher implemented in parsecmd.go.
+	registerCommand(CommandModeRange, "[RANGE]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().Range = args[0].(float32)
+		return CommandStatus{}, nil
+	})
+}
 
 func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	if p == nil || ctx == nil || ctx.Keyboard == nil {
@@ -33,7 +66,7 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		return
 	}
 
-	if p.commandMode != CommandModeRange {
+	if p.commandMode == CommandModeNone {
 		return
 	}
 
@@ -41,25 +74,22 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		p.resetCommand()
 		return
 	}
-	if keyboard.WasPressed(platform.KeyBackspace) {
-		if n := len(p.commandInput); n != 0 {
-			p.commandInput = p.commandInput[:n-1]
-		}
+	if keyboard.WasPressed(platform.KeyBackspace) && len(p.commandInput) != 0 {
+		r := []rune(p.commandInput)
+		p.commandInput = string(r[:len(r)-1])
 	}
 
+	// Echo printable operator input exactly into the Preview Area. Validation
+	// belongs to typed command matchers (for example [RANGE]) and therefore
+	// occurs on <ENTER>, just as VICE's generic command path does.
 	for _, r := range keyboard.Text {
-		if r >= '0' && r <= '9' {
-			p.commandInput += string(r)
-		} else if !strings.ContainsRune(" \t\r\n", r) {
-			p.commandResponse = starsCommandFormatError
-			p.commandMode = CommandModeNone
-			p.commandInput = ""
-			return
+		if r >= ' ' && r != 0x7f {
+			p.commandInput += strings.ToUpper(string(r))
 		}
 	}
 
 	if keyboard.WasPressed(platform.KeyEnter) || keyboard.WasPressed(platform.KeyKeypadEnter) {
-		p.commitRangeCommand()
+		p.commitCommand()
 	}
 }
 
@@ -67,9 +97,8 @@ func (p *STARSPane) setCommandMode(mode CommandMode) {
 	if p == nil {
 		return
 	}
+	p.resetCommand()
 	p.commandMode = mode
-	p.commandInput = ""
-	p.commandResponse = ""
 }
 
 func (p *STARSPane) resetCommand() {
@@ -81,29 +110,26 @@ func (p *STARSPane) resetCommand() {
 	p.commandResponse = ""
 }
 
-// commitRangeCommand implements TI 6191.409 Rev. 30, 4.4.1 Change display
-// range: <RANGE>, the desired range using the numeric keypad, then <ENTER>.
-func (p *STARSPane) commitRangeCommand() {
-	if p == nil {
+func (p *STARSPane) commitCommand() {
+	if p == nil || p.commandMode == CommandModeNone {
 		return
 	}
 
-	rangeNM, err := strconv.Atoi(p.commandInput)
-	if err != nil || p.commandInput == "" {
-		p.commandResponse = starsCommandFormatError
-		p.commandMode = CommandModeNone
-		p.commandInput = ""
-		return
-	}
-	if rangeNM < int(minimumSTARSRange) || rangeNM > int(maximumTCWRange) {
-		p.commandResponse = starsRangeLimitError
-		p.commandMode = CommandModeNone
-		p.commandInput = ""
+	status, err := p.executeCommand(p.commandMode, p.commandInput)
+	if err != nil {
+		// Match VICE/STARS command-entry behavior: keep the prompt and echoed
+		// input visible so the operator can correct/re-enter the command, and
+		// place the official response/error message above them.
+		p.commandResponse = err.Error()
 		return
 	}
 
-	p.currentPrefs().Range = float32(rangeNM)
-	p.commandResponse = ""
-	p.commandMode = CommandModeNone
-	p.commandInput = ""
+	switch status.Clear {
+	case ClearAll:
+		p.resetCommand()
+	case ClearInput:
+		p.commandInput = ""
+	case ClearNone:
+	}
+	p.commandResponse = status.Output
 }

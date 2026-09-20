@@ -26,6 +26,7 @@ type Preferences struct {
 	UseUserCenter       bool
 	Range               float32
 	DisplayWeatherLevel [6]bool
+	PreviewAreaPosition [2]float32
 }
 
 func newPreferences(cfg selectedConfig) Preferences {
@@ -34,6 +35,11 @@ func newPreferences(cfg selectedConfig) Preferences {
 		DefaultCenter: center,
 		UserCenter:    center,
 		Range:         initialSTARSRange(cfg),
+
+		// VICE's STARS default is (0.05, 0.75) in bottom-left-origin pane
+		// coordinates. REDS draws in top-left-origin screen coordinates, so
+		// the equivalent Preview Area position is (0.05, 0.25).
+		PreviewAreaPosition: [2]float32{0.05, 0.25},
 	}
 	for i := range prefs.DisplayWeatherLevel {
 		prefs.DisplayWeatherLevel[i] = true

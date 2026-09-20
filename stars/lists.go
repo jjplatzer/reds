@@ -1,6 +1,7 @@
 package stars
 
 import (
+	"strings"
 	"time"
 
 	redsmath "github.com/juliusplatzer/reds/math"
@@ -130,6 +131,59 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		td.GenerateCommands(cb, texture)
 		renderer.ReturnTextDrawBuilder(td)
 	}
+
+	cb.DisableScissor()
+}
+
+// drawPreviewArea draws the STARS Preview Area. TI 6191.409 4.9.2 identifies
+// command entry prompts, echoed input, and response/error messages as Preview
+// Area contents. VICE reserves the first line for response/output, followed by
+// the command prompt and then echoed input; spaces in echoed input start a new
+// display line.
+func (p *STARSPane) drawPreviewArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
+		return
+	}
+	if p.commandResponse == "" && p.commandMode == CommandModeNone && p.commandInput == "" {
+		return
+	}
+
+	var text strings.Builder
+	text.WriteString(p.commandResponse)
+	text.WriteByte('\n')
+
+	if prompt := p.commandMode.PreviewString(); prompt != "" {
+		text.WriteString(prompt)
+		text.WriteByte('\n')
+	}
+	text.WriteString(strings.Join(strings.Fields(p.commandInput), "\n"))
+
+	fontSize := p.listFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
+	if texture == 0 {
+		return
+	}
+
+	ps := p.currentPrefs()
+	position := redsmath.Vec2{
+		X: ps.PreviewAreaPosition[0] * ctx.PaneRect.Width(),
+		Y: ps.PreviewAreaPosition[1] * ctx.PaneRect.Height(),
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zLists)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+
+	td := renderer.GetTextDrawBuilder()
+	td.SetFont(p.systemFont)
+	td.AddText(text.String(), position, renderer.TextStyle{
+		Size:  fontSize,
+		Color: p.colors.PreviewList.ToRGBA(),
+	})
+	td.GenerateCommands(cb, texture)
+	renderer.ReturnTextDrawBuilder(td)
 
 	cb.DisableScissor()
 }
