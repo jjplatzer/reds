@@ -21,12 +21,18 @@ const (
 // be saved/restored by STARS preference sets. The names mirror VICE's STARS
 // Preferences so DCB commands and saved preference sets can use the same state.
 type Preferences struct {
-	DefaultCenter       configPoint
-	UserCenter          configPoint
-	UseUserCenter       bool
-	Range               float32
-	DisplayWeatherLevel [6]bool
-	PreviewAreaPosition [2]float32
+	DefaultCenter           configPoint
+	UserCenter              configPoint
+	UseUserCenter           bool
+	Range                   float32
+	RangeRingRadius         float32
+	UseUserRangeRingsCenter bool
+	LeaderLineDirection     string
+	LeaderLineLength        int
+	DCBBrightness           int
+	DisplayWeatherLevel     [6]bool
+	VideoMapVisible         map[int]bool
+	PreviewAreaPosition     [2]float32
 }
 
 func newPreferences(cfg selectedConfig) Preferences {

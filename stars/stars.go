@@ -28,6 +28,7 @@ type STARSPane struct {
 	longitudeScaleFactor float64
 	colors               MonitorColors
 	cursorTexture        renderer.TextureID
+	dcbScroll            float32
 	useFontSetB          bool
 	systemFont           *renderer.BitmapFont
 	systemFontTextures   map[int]renderer.TextureID
@@ -99,7 +100,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.consumeMouseEvents(ctx, transforms)
 
 	p.drawNexrad(ctx, zcb, transforms)
-	p.drawDCBBackground(ctx, zcb)
+	p.drawDCB(ctx, zcb)
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
 	p.applyCursor(ctx)
