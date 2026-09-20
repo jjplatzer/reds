@@ -259,7 +259,7 @@ func (d *dcbDrawer) drawAuxPage() {
 	d.button("DCB\nBOTTOM", buttonHalfVertical, false, nil)
 
 	// Predicted track line and dwell controls.
-	d.button("PTL LNTH\n1.5", buttonFull, false, nil)
+	d.button("PTL\nLNTH\n1.5", buttonFull, false, nil)
 	d.button("PTL OWN", buttonHalfVertical, false, nil)
 	d.button("PTL ALL", buttonHalfVertical, false, nil)
 	d.button("DWELL\nON", buttonFull, false, nil)
