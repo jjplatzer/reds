@@ -33,13 +33,11 @@ const (
 	asdexWindowWidth  = 1280
 	asdexWindowHeight = 800
 
-	// TI 6191.409 Rev. 30 distinguishes the square high-resolution (2K)
-	// TCW/TDW display from the low-resolution (1K) display. Keep REDS' STARS
-	// pane square, and choose the smallest logical side that fits the
-	// 19-column Main DCB at VICE's pixel-exact 72-unit button size.
-	starsPaneSize     = 19 * 72
-	starsWindowWidth  = starsPaneSize
-	starsWindowHeight = starsPaneSize + scopeTitleBarHeight
+	// Keep the STARS window wide enough for the 19-column Main DCB at VICE's
+	// pixel-exact 72-unit button size. Use the same practical desktop height
+	// as ERAM and ASDE-X so the full window fits on smaller laptop displays.
+	starsWindowWidth  = 19 * 72
+	starsWindowHeight = 800
 
 	eramWindowWidth  = 1280
 	eramWindowHeight = 800
