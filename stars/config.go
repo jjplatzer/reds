@@ -24,6 +24,8 @@ type facilityConfig struct {
 	DefaultCenter    configPoint             `json:"defaultCenter"`
 	Areas            []areaConfig            `json:"areas"`
 	ControlPositions []controlPositionConfig `json:"controlPositions"`
+	MapGroups        []mapGroupConfig        `json:"mapGroups"`
+	VideoMaps        []videoMapConfig        `json:"videoMaps"`
 }
 
 type areaConfig struct {
@@ -47,6 +49,20 @@ type controlPositionConfig struct {
 	VisualCenter     configPoint `json:"visualCenter"`
 	Range            float32     `json:"range"`
 	Freq             float32     `json:"freq"`
+}
+
+type mapGroupConfig struct {
+	TCPs          []string `json:"tcps"`
+	MainMapIDs    []*int   `json:"mainMapIds"`
+	SubmenuMapIDs []*int   `json:"submenuMapIds"`
+}
+
+type videoMapConfig struct {
+	ID                 string `json:"id"`
+	Name               string `json:"name"`
+	ShortName          string `json:"shortName"`
+	STARSID            int    `json:"starsId"`
+	BrightnessCategory string `json:"brightnessCategory"`
 }
 
 type selectedConfig struct {
@@ -147,4 +163,52 @@ func normalizedSTARSResourceCode(kind, code string) (string, error) {
 		return "", fmt.Errorf("STARS: invalid %s %q", kind, code)
 	}
 	return code, nil
+}
+
+// mainDCBMaps returns the six position-adapted video-map buttons in the
+// row-major order stored by crc2reds. drawDCB applies STARS' top/bottom button
+// traversal when laying the six entries into three half-height columns.
+func (cfg selectedConfig) mainDCBMaps() [6]videoMapConfig {
+	var out [6]videoMapConfig
+	tcp := strings.TrimSpace(cfg.ControlPosition.TCP)
+	if tcp == "" {
+		return out
+	}
+
+	var ids []*int
+	for _, group := range cfg.Facility.MapGroups {
+		for _, candidate := range group.TCPs {
+			if strings.EqualFold(strings.TrimSpace(candidate), tcp) {
+				ids = group.MainMapIDs
+				break
+			}
+		}
+		if ids != nil {
+			break
+		}
+	}
+	if ids == nil {
+		return out
+	}
+
+	byID := make(map[int]videoMapConfig, len(cfg.Facility.VideoMaps))
+	for _, vm := range cfg.Facility.VideoMaps {
+		if vm.STARSID != 0 {
+			byID[vm.STARSID] = vm
+		}
+	}
+	for i := 0; i < len(out) && i < len(ids); i++ {
+		if ids[i] == nil {
+			continue
+		}
+		out[i] = byID[*ids[i]]
+	}
+	return out
+}
+
+func (p *STARSPane) mainDCBMaps() [6]videoMapConfig {
+	if p == nil {
+		return [6]videoMapConfig{}
+	}
+	return p.config.mainDCBMaps()
 }

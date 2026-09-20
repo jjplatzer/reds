@@ -32,10 +32,15 @@ const (
 
 	asdexWindowWidth  = 1280
 	asdexWindowHeight = 800
-	starsWindowWidth  = 1280
+
+	// Keep the STARS window wide enough for the 19-column Main DCB at VICE's
+	// pixel-exact 72-unit button size. Use the same practical desktop height
+	// as ERAM and ASDE-X so the full window fits on smaller laptop displays.
+	starsWindowWidth  = 19 * 72
 	starsWindowHeight = 800
-	eramWindowWidth   = 1280
-	eramWindowHeight  = 800
+
+	eramWindowWidth  = 1280
+	eramWindowHeight = 800
 )
 
 var (
@@ -238,6 +243,8 @@ func run(logger *redslog.Logger) error {
 			if starsPane, ok := active.(*stars.STARSPane); ok {
 				menuOptions.ShowStarsFontSetB = true
 				menuOptions.UseStarsFontSetB = starsPane.UseFontSetB()
+				menuOptions.ShowStarsFAAHFSTD010APalette = true
+				menuOptions.UseStarsFAAHFSTD010APalette = starsPane.UseFAAHFSTD010APalette()
 			}
 
 			titlebarCaptured, titlebarAction := drawScopeTitleBar(
@@ -264,6 +271,10 @@ func run(logger *redslog.Logger) error {
 			case titleBarActionToggleStarsFontSetB:
 				if starsPane, ok := active.(*stars.STARSPane); ok {
 					starsPane.ToggleFontSetB(r)
+				}
+			case titleBarActionToggleStarsFAAHFSTD010APalette:
+				if starsPane, ok := active.(*stars.STARSPane); ok {
+					starsPane.ToggleFAAHFSTD010APalette()
 				}
 			}
 		}
@@ -347,6 +358,7 @@ func launchScope(
 		}
 		plat.SetWindowTitle(sel.ScopeTitle())
 		plat.SetWindowDecorated(false)
+		plat.SetWindowMinSize(starsWindowWidth, starsWindowHeight)
 		plat.SetWindowSizeCentered(starsWindowWidth, starsWindowHeight)
 		scopeLogger.Info("STARS scope launched")
 		return pane, nil
@@ -402,6 +414,7 @@ func switchToMenu(
 		plat.ClearCursorOverride()
 		plat.SetWindowDecorated(true)
 		plat.SetWindowTitle("REDS")
+		plat.SetWindowMinSize(200, 200)
 		plat.SetWindowSizeCentered(275, 475)
 		plat.ShowSystemCursor()
 	}

@@ -22,16 +22,20 @@ const (
 // its preference/view state; maps, targets, data blocks, and DCB controls all
 // share the same geographic scope transformation as they are added.
 type STARSPane struct {
-	logger               *redslog.Logger
-	config               selectedConfig
-	prefs                Preferences
-	longitudeScaleFactor float64
-	colors               MonitorColors
-	cursorTexture        renderer.TextureID
-	useFontSetB          bool
-	systemFont           *renderer.BitmapFont
-	systemFontTextures   map[int]renderer.TextureID
-	systemAltimeter      systemAltimeterState
+	logger                       *redslog.Logger
+	config                       selectedConfig
+	prefs                        Preferences
+	longitudeScaleFactor         float64
+	colors                       MonitorColors
+	cursorTexture                renderer.TextureID
+	dcbScroll                    float32
+	dcbShowAux                   bool
+	dcbSuppressPressUntilRelease bool
+	useFontSetB                  bool
+	useFAAHFSTD010APalette       bool
+	systemFont                   *renderer.BitmapFont
+	systemFontTextures           map[int]renderer.TextureID
+	systemAltimeter              systemAltimeterState
 
 	wxDomain              wx.Domain
 	wxLogger              *redslog.Logger
@@ -43,9 +47,13 @@ type STARSPane struct {
 	nexradBuiltGeneration uint64
 	nexrad                [6]starsNexradLevelCmdBuffers
 
-	commandMode     CommandMode
-	commandInput    string
-	commandResponse string
+	videoMaps map[int]*starsVideoMap
+
+	commandMode             CommandMode
+	commandInput            string
+	commandResponse         string
+	activeBrightnessControl string
+	brightnessDragAccumY    float32
 }
 
 // NewPane creates a STARS TCW pane for the selected controller position.
@@ -59,20 +67,27 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 		return nil, err
 	}
 
-	const useFontSetB = true
+	const (
+		useFontSetB            = false
+		useFAAHFSTD010APalette = false
+	)
 	pane := &STARSPane{
-		logger:      logger,
-		config:      cfg,
-		prefs:       newPreferences(cfg),
-		colors:      defaultTCWColors,
-		useFontSetB: useFontSetB,
-		systemFont:  newSystemFont(useFontSetB),
+		logger:                 logger,
+		config:                 cfg,
+		prefs:                  newPreferences(cfg),
+		colors:                 defaultTCWColors,
+		useFontSetB:            useFontSetB,
+		useFAAHFSTD010APalette: useFAAHFSTD010APalette,
+		systemFont:             newSystemFont(useFontSetB),
 	}
 	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()
 	pane.initializeSystemAltimeter(cfg.systemAltimeterAirport())
 	pane.wxDomain = wx.DomainForARTCC(cfg.Facility.ARTCC)
 	pane.wxLogger = logger.With(slog.String("component", "wx"))
 	pane.restartNexradStream(starsInitialNexradRadiusNM)
+	if err := pane.loadMainVideoMaps(); err != nil {
+		logger.Warn("Unable to load STARS Main DCB video maps", slog.Any("error", err))
+	}
 	return pane, nil
 }
 
@@ -99,7 +114,8 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.consumeMouseEvents(ctx, transforms)
 
 	p.drawNexrad(ctx, zcb, transforms)
-	p.drawDCBBackground(ctx, zcb)
+	p.drawVideoMaps(ctx, zcb, transforms)
+	p.drawDCB(ctx, zcb)
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
 	p.applyCursor(ctx)
@@ -115,6 +131,7 @@ func (p *STARSPane) Dispose() {
 		p.wxStream = nil
 	}
 	p.releaseNexradCmdBuffers()
+	p.releaseVideoMaps()
 	p.wxGrid = nil
 }
 

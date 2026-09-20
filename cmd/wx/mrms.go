@@ -129,7 +129,14 @@ func (s *Stream) run(
 	var lastObserved time.Time
 
 	for {
+		if ctx.Err() != nil {
+			return
+		}
 		grid, nextETag, nextModified, notModified, err := fetchLatest(ctx, client, domain, bounds, etag, lastModified, lastObserved)
+		// Closing or replacing the stream intentionally cancels an in-flight fetch.
+		if ctx.Err() != nil {
+			return
+		}
 		if err != nil {
 			if logger != nil {
 				logger.Warn("MRMS update failed", slog.Any("error", err))

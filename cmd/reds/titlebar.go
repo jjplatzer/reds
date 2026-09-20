@@ -70,11 +70,14 @@ const (
 	titleBarActionNone titleBarAction = iota
 	titleBarActionSwitchFacility
 	titleBarActionToggleStarsFontSetB
+	titleBarActionToggleStarsFAAHFSTD010APalette
 )
 
 type titleBarMenuOptions struct {
-	ShowStarsFontSetB bool
-	UseStarsFontSetB  bool
+	ShowStarsFontSetB            bool
+	UseStarsFontSetB             bool
+	ShowStarsFAAHFSTD010APalette bool
+	UseStarsFAAHFSTD010APalette  bool
 }
 
 type titleBarButtonType int
@@ -224,6 +227,11 @@ func drawTitleBarMenuPopup(
 	popupWidth := float32(titleBarMenuPopupWidth)
 	if menuOptions.ShowStarsFontSetB {
 		menuHeight += float32(titleBarMenuItemHeight)
+	}
+	if menuOptions.ShowStarsFAAHFSTD010APalette {
+		menuHeight += float32(titleBarMenuItemHeight)
+	}
+	if menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
 		popupWidth = titleBarStarsMenuPopupWidth
 	}
 	imgui.SetNextWindowSizeV(
@@ -266,8 +274,8 @@ func drawTitleBarMenuPopup(
 		}
 
 		textPadX := float32(titleBarMenuTextPadX)
-		if menuOptions.ShowStarsFontSetB {
-			// Reserve the same check gutter as the STARS font row so both
+		if menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+			// Reserve the same check gutter as the STARS checked rows so all
 			// labels start on the same vertical axis.
 			textPadX = titleBarMenuCheckedTextPadX
 		}
@@ -285,8 +293,9 @@ func drawTitleBarMenuPopup(
 			imgui.CloseCurrentPopup()
 		}
 
+		rowY := float32(titleBarMenuItemHeight)
 		if menuOptions.ShowStarsFontSetB {
-			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: titleBarMenuItemHeight})
+			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
 			fontClicked := imgui.InvisibleButtonV(
 				"##stars-font-set-b-menu-item",
 				imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
@@ -319,6 +328,44 @@ func drawTitleBarMenuPopup(
 
 			if fontClicked {
 				action = titleBarActionToggleStarsFontSetB
+			}
+			rowY += float32(titleBarMenuItemHeight)
+		}
+
+		if menuOptions.ShowStarsFAAHFSTD010APalette {
+			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
+			wxClicked := imgui.InvisibleButtonV(
+				"##stars-legacy-wx-colors-menu-item",
+				imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
+				imgui.ButtonFlagsMouseButtonLeft,
+			)
+
+			wxRowMin := imgui.ItemRectMin()
+			wxRowMax := imgui.ItemRectMax()
+			if imgui.IsItemHovered() {
+				imgui.WindowDrawList().AddRectFilledV(
+					wxRowMin,
+					wxRowMax,
+					imgui.ColorU32Vec4(titleBarMenuHover),
+					titleBarMenuPopupRounding,
+					imgui.DrawFlagsRoundCornersAll,
+				)
+			}
+
+			if menuOptions.UseStarsFAAHFSTD010APalette {
+				drawTitleBarMenuCheck(wxRowMin, titleBarMenuItemHeight)
+			}
+			drawTitleBarMenuItemTextWithPad(
+				wxRowMin,
+				titleBarMenuItemHeight,
+				popupWidth,
+				titleBarMenuCheckedTextPadX,
+				"Use FAA-HF-STD010A Palette",
+				titleBarFAAHFSTD010APaletteShortcutParts(),
+			)
+
+			if wxClicked {
+				action = titleBarActionToggleStarsFAAHFSTD010APalette
 			}
 		}
 
@@ -422,6 +469,24 @@ func titleBarFontSetBShortcutParts() []titleBarShortcutPart {
 		{Text: "+"},
 		{Text: shortcutShiftSymbol},
 		{Text: "+S"},
+	}
+}
+
+func titleBarFAAHFSTD010APaletteShortcutParts() []titleBarShortcutPart {
+	if runtime.GOOS == "darwin" {
+		return []titleBarShortcutPart{
+			{Text: shortcutCommandSymbol},
+			{Text: "+"},
+			{Text: shortcutShiftSymbol},
+			{Text: "+W"},
+		}
+	}
+
+	return []titleBarShortcutPart{
+		{Text: shortcutControlSymbol},
+		{Text: "+"},
+		{Text: shortcutShiftSymbol},
+		{Text: "+W"},
 	}
 }
 
@@ -531,6 +596,9 @@ func titleBarShortcutAction(
 	}
 	if menuOptions.ShowStarsFontSetB && keyboard.WasPressed(platform.KeyS) {
 		return titleBarActionToggleStarsFontSetB
+	}
+	if menuOptions.ShowStarsFAAHFSTD010APalette && keyboard.WasPressed(platform.KeyW) {
+		return titleBarActionToggleStarsFAAHFSTD010APalette
 	}
 
 	return titleBarActionNone

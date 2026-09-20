@@ -26,6 +26,75 @@ var starsMRMSHTTPClient = &http.Client{Timeout: 20 * time.Second}
 // numbers, so numeric MRMS dBZ is translated into these six STARS bands.
 var starsNexradThresholds = [6]uint8{18, 30, 41, 46, 50, 57}
 
+type starsWXPresentation struct {
+	colors  [6]renderer.RGB
+	pattern renderer.RGB
+	stipple [6]int // 0=none, 1=light, 2=dense
+}
+
+// The newer three-color WX presentation pairs the six weather levels into
+// green, olive, and purple groups. The operator manual's Appendix B defines
+// the legacy blue/mustard presentation, so REDS exposes that manual palette as
+// an explicit "Use Legacy WX Colors" preference and keeps it enabled by
+// default.
+//
+// Source for the newer daytime palette:
+// Post, David L., Nicole Racine, Eve Perchanok, and Randy Sollenberger.
+// "Adapting the FAA-HF-STD-010A Standard Color Palette to Daytime
+// Illumination." DOT/FAA/TC-23/56, FAA William J. Hughes Technical Center,
+// 2024. https://doi.org/10.21949/1528261
+//
+// In the newer presentation levels 1/3/5 are solid and levels 2/4/6 add only
+// the light stipple; dense stipple is not used.
+var starsThreeColorWXColors = [6]renderer.RGB{
+	renderer.RGB8(23, 57, 40),
+	renderer.RGB8(23, 57, 40),
+	renderer.RGB8(90, 74, 20),
+	renderer.RGB8(90, 74, 20),
+	renderer.RGB8(93, 46, 89),
+	renderer.RGB8(93, 46, 89),
+}
+
+var (
+	starsThreeColorWXLevelStipple = [6]int{0, 1, 0, 1, 0, 1}
+	starsThreeColorWXPattern      = renderer.RGB8(0, 0, 0)
+)
+
+func (p *STARSPane) wxPresentation() starsWXPresentation {
+	if p == nil {
+		return starsWXPresentation{}
+	}
+	if p.useFAAHFSTD010APalette {
+		return starsWXPresentation{
+			colors:  starsThreeColorWXColors,
+			pattern: starsThreeColorWXPattern,
+			stipple: starsThreeColorWXLevelStipple,
+		}
+	}
+	return starsWXPresentation{
+		colors:  p.colors.WX,
+		pattern: p.colors.WXPattern,
+		stipple: p.colors.WXLevelStipple,
+	}
+}
+
+// UseFAAHFSTD010APalette reports whether the FAA-HF-STD010A palette is enabled.
+func (p *STARSPane) UseFAAHFSTD010APalette() bool {
+	return p != nil && p.useFAAHFSTD010APalette
+}
+
+// ToggleFAAHFSTD010APalette switches between the legacy operator-manual WX
+// presentation and the optional FAA-HF-STD010A-derived three-color presentation. The stipple
+// draw mode is baked into the per-level command buffers, so force those
+// buffers to rebuild on the next frame.
+func (p *STARSPane) ToggleFAAHFSTD010APalette() {
+	if p == nil {
+		return
+	}
+	p.useFAAHFSTD010APalette = !p.useFAAHFSTD010APalette
+	p.releaseNexradCmdBuffers()
+}
+
 type starsNexradLevelCmdBuffers struct {
 	fill    *renderer.CmdBuffer
 	stipple *renderer.CmdBuffer
@@ -126,7 +195,7 @@ func (p *STARSPane) rebuildNexradIfNeeded() {
 	}
 	p.releaseNexradCmdBuffers()
 	if p.wxGrid != nil {
-		p.nexrad = buildStarsNexradCmdBuffers(p.wxGrid, p.colors.WXLevelStipple)
+		p.nexrad = buildStarsNexradCmdBuffers(p.wxGrid, p.wxPresentation().stipple)
 	}
 	p.nexradBuiltGeneration = p.nexradGeneration
 }
@@ -201,15 +270,17 @@ func (p *STARSPane) drawNexrad(ctx *panes.Context, zcb *renderer.ZCmdBuffer, tra
 	cb.Scissor(x, y, width, height)
 	transforms.LoadGeoViewingMatrices(cb)
 
-	active := p.currentPrefs().DisplayWeatherLevel
+	ps := p.currentPrefs()
+	presentation := p.wxPresentation()
+	active := ps.DisplayWeatherLevel
 	for i := range p.nexrad {
 		if !active[i] || p.nexrad[i].fill == nil {
 			continue
 		}
-		cb.SetRGB(p.colors.WX[i])
+		cb.SetRGB(ps.Brightness.Weather.ScaleRGB(presentation.colors[i]))
 		cb.Call(p.nexrad[i].fill)
 		if p.nexrad[i].stipple != nil {
-			cb.SetRGB(p.colors.WXPattern)
+			cb.SetRGB(ps.Brightness.WxContrast.ScaleRGB(presentation.pattern))
 			cb.Call(p.nexrad[i].stipple)
 		}
 	}
