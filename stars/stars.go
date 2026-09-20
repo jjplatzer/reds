@@ -67,7 +67,7 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	}
 
 	const (
-		useFontSetB       = true
+		useFontSetB       = false
 		useLegacyWXColors = true
 	)
 	pane := &STARSPane{

@@ -49,7 +49,10 @@ var starsThreeColorWXColors = [6]renderer.RGB{
 	renderer.RGB8(93, 46, 89),
 }
 
-var starsThreeColorWXLevelStipple = [6]int{0, 1, 0, 1, 0, 1}
+var (
+	starsThreeColorWXLevelStipple = [6]int{0, 1, 0, 1, 0, 1}
+	starsThreeColorWXPattern      = renderer.RGB8(0, 0, 0)
+)
 
 func (p *STARSPane) wxPresentation() starsWXPresentation {
 	if p == nil {
@@ -64,7 +67,7 @@ func (p *STARSPane) wxPresentation() starsWXPresentation {
 	}
 	return starsWXPresentation{
 		colors:  starsThreeColorWXColors,
-		pattern: p.colors.WXPattern,
+		pattern: starsThreeColorWXPattern,
 		stipple: starsThreeColorWXLevelStipple,
 	}
 }

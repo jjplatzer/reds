@@ -314,7 +314,7 @@ func drawTitleBarMenuPopup(
 				)
 			}
 
-			if menuOptions.UseStarsFontSetB {
+			if !menuOptions.UseStarsFontSetB {
 				drawTitleBarMenuCheck(fontRowMin, titleBarMenuItemHeight)
 			}
 			drawTitleBarMenuItemTextWithPad(
@@ -322,7 +322,7 @@ func drawTitleBarMenuPopup(
 				titleBarMenuItemHeight,
 				popupWidth,
 				titleBarMenuCheckedTextPadX,
-				"Use Font Set B",
+				"Use Font Set A",
 				titleBarFontSetBShortcutParts(),
 			)
 
@@ -360,7 +360,7 @@ func drawTitleBarMenuPopup(
 				titleBarMenuItemHeight,
 				popupWidth,
 				titleBarMenuCheckedTextPadX,
-				"Use Legacy WX colors",
+				"Use Legacy WX Colors",
 				nil,
 			)
 
