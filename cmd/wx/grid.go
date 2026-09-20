@@ -177,15 +177,15 @@ func MergeLevelRectangles(grid *Grid, level Level) []GridRect {
 	})
 }
 
-// MergeDBZRectangles merges cells in one STARS-style reflectivity interval.
-// lowerExclusive follows STARS/VICE's threshold convention; upperInclusive is
-// nil for the highest/open-ended interval.
-func MergeDBZRectangles(grid *Grid, lowerExclusive uint8, upperInclusive *uint8) []GridRect {
+// MergeDBZRange merges cells whose retained MRMS reflectivity is in
+// [lowerInclusive, upperExclusive). A nil upper bound leaves the interval
+// open-ended.
+func MergeDBZRange(grid *Grid, lowerInclusive uint8, upperExclusive *uint8) []GridRect {
 	return mergeRectangles(grid, func(dbz uint8) bool {
-		if dbz == MissingDBZ || dbz <= lowerExclusive {
+		if dbz == MissingDBZ || dbz < lowerInclusive {
 			return false
 		}
-		return upperInclusive == nil || dbz <= *upperInclusive
+		return upperExclusive == nil || dbz < *upperExclusive
 	})
 }
 

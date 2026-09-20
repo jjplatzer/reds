@@ -33,15 +33,15 @@ type STARSPane struct {
 	systemFontTextures   map[int]renderer.TextureID
 	systemAltimeter      systemAltimeterState
 
-	wxDomain          wx.Domain
-	wxLogger          *redslog.Logger
-	wxCenter          configPoint
-	wxRadiusNM        float64
-	wxStream          *wx.Stream
-	wxGrid            *wx.Grid
-	wxGeneration      uint64
-	wxBuiltGeneration uint64
-	wxLevels          [6]starsWXLevelCmdBuffers
+	wxDomain              wx.Domain
+	wxLogger              *redslog.Logger
+	wxCenter              configPoint
+	wxRadiusNM            float64
+	wxStream              *wx.Stream
+	wxGrid                *wx.Grid
+	nexradGeneration      uint64
+	nexradBuiltGeneration uint64
+	nexrad                [6]starsNexradLevelCmdBuffers
 
 	commandMode     CommandMode
 	commandInput    string
@@ -72,7 +72,7 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	pane.initializeSystemAltimeter(cfg.systemAltimeterAirport())
 	pane.wxDomain = wx.DomainForARTCC(cfg.Facility.ARTCC)
 	pane.wxLogger = logger.With(slog.String("component", "wx"))
-	pane.restartWxStream(starsInitialWxRadiusNM)
+	pane.restartNexradStream(starsInitialNexradRadiusNM)
 	return pane, nil
 }
 
@@ -90,15 +90,15 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	p.consumeSystemAltimeterUpdates()
 	p.refreshSystemAltimeter()
-	p.consumeWxUpdates()
-	p.ensureWxCoverage(ctx)
-	p.rebuildWxIfNeeded()
+	p.consumeNexradUpdates()
+	p.ensureNexradCoverage(ctx)
+	p.rebuildNexradIfNeeded()
 
 	p.processKeyboardInput(ctx)
 	transforms := p.scopeTransformations(ctx)
 	p.consumeMouseEvents(ctx, transforms)
 
-	p.drawWX(ctx, zcb, transforms)
+	p.drawNexrad(ctx, zcb, transforms)
 	p.drawDCBBackground(ctx, zcb)
 	p.drawSSA(ctx, zcb)
 	p.applyCursor(ctx)
@@ -113,7 +113,7 @@ func (p *STARSPane) Dispose() {
 		p.wxStream.Close()
 		p.wxStream = nil
 	}
-	p.releaseWxCmdBuffers()
+	p.releaseNexradCmdBuffers()
 	p.wxGrid = nil
 }
 
@@ -160,10 +160,11 @@ func (p *STARSPane) consumeMouseEvents(ctx *panes.Context, transforms radar.LatL
 		return
 	}
 
-	// Match VICE's STARS wheel units exactly: the raw vertical wheel delta is
-	// one nautical mile of RANGE per unit, and Control triples that delta.
-	// Positive wheel delta increases RANGE; negative delta decreases it.
-	deltaRange := mouse.Wheel.Y
+	// Match VICE's STARS wheel units: one wheel unit changes RANGE by one
+	// nautical mile and Control triples the change. VICE negates the platform
+	// wheel Y value when it builds pane-local mouse state; REDS does not, so
+	// invert it here to preserve the same user-facing scroll direction.
+	deltaRange := -mouse.Wheel.Y
 	if ctx.Keyboard != nil && ctx.Keyboard.IsDown(platform.KeyControl) {
 		deltaRange *= 3
 	}

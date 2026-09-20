@@ -13,24 +13,25 @@ import (
 )
 
 const (
-	starsInitialWxRadiusNM  = 150
-	starsWxPrefetchMarginNM = 100
-	starsWxRefreshMarginNM  = 50
+	starsInitialNexradRadiusNM  = 150
+	starsNexradPrefetchMarginNM = 100
+	starsNexradRefreshMarginNM  = 50
 )
 
 var starsMRMSHTTPClient = &http.Client{Timeout: 20 * time.Second}
 
-// STARS uses six weather levels. These dBZ thresholds match VICE's mapping of
-// NEXRAD/MRMS reflectivity to STARS levels: (20,30], (30,40], (40,45],
-// (45,50], (50,55], and >55 dBZ.
-var starsWxThresholds = [6]uint8{20, 30, 40, 45, 50, 55}
+// STARS uses six weather levels. FAA/NWS reflectivity bands are 18-29,
+// 30-40, 41-45, 46-49, 50-56, and 57+ dBZ. MRMS has its own much finer
+// color-ramp bins; those are source-product legend bins, not STARS level
+// numbers, so numeric MRMS dBZ is translated into these six STARS bands.
+var starsNexradThresholds = [6]uint8{18, 30, 41, 46, 50, 57}
 
-type starsWXLevelCmdBuffers struct {
+type starsNexradLevelCmdBuffers struct {
 	fill    *renderer.CmdBuffer
 	stipple *renderer.CmdBuffer
 }
 
-func (p *STARSPane) consumeWxUpdates() {
+func (p *STARSPane) consumeNexradUpdates() {
 	if p == nil || p.wxStream == nil {
 		return
 	}
@@ -45,36 +46,36 @@ func (p *STARSPane) consumeWxUpdates() {
 		default:
 			if latest != nil {
 				p.wxGrid = latest
-				p.wxGeneration++
+				p.nexradGeneration++
 			}
 			return
 		}
 	}
 }
 
-func (p *STARSPane) ensureWxCoverage(ctx *panes.Context) {
+func (p *STARSPane) ensureNexradCoverage(ctx *panes.Context) {
 	if p == nil || ctx == nil {
 		return
 	}
-	visibleRadius := p.visibleWeatherRadiusNM(ctx)
+	visibleRadius := p.visibleNexradRadiusNM(ctx)
 	if visibleRadius <= 0 {
 		return
 	}
 
-	desiredRadius := visibleRadius + starsWxPrefetchMarginNM
-	if desiredRadius < starsInitialWxRadiusNM {
-		desiredRadius = starsInitialWxRadiusNM
+	desiredRadius := visibleRadius + starsNexradPrefetchMarginNM
+	if desiredRadius < starsInitialNexradRadiusNM {
+		desiredRadius = starsInitialNexradRadiusNM
 	}
 
 	distanceFromCropCenter := p.centerDistanceNM(p.wxCenter)
 	if p.wxStream == nil || p.wxRadiusNM <= 0 ||
-		desiredRadius > p.wxRadiusNM+starsWxRefreshMarginNM ||
-		distanceFromCropCenter+visibleRadius > p.wxRadiusNM-starsWxRefreshMarginNM {
-		p.restartWxStream(desiredRadius)
+		desiredRadius > p.wxRadiusNM+starsNexradRefreshMarginNM ||
+		distanceFromCropCenter+visibleRadius > p.wxRadiusNM-starsNexradRefreshMarginNM {
+		p.restartNexradStream(desiredRadius)
 	}
 }
 
-func (p *STARSPane) restartWxStream(radiusNM float64) {
+func (p *STARSPane) restartNexradStream(radiusNM float64) {
 	if p == nil || radiusNM <= 0 {
 		return
 	}
@@ -94,7 +95,7 @@ func (p *STARSPane) restartWxStream(radiusNM float64) {
 	)
 }
 
-func (p *STARSPane) visibleWeatherRadiusNM(ctx *panes.Context) float64 {
+func (p *STARSPane) visibleNexradRadiusNM(ctx *panes.Context) float64 {
 	if p == nil || ctx == nil {
 		return 0
 	}
@@ -119,58 +120,58 @@ func (p *STARSPane) centerDistanceNM(other configPoint) float64 {
 	return stdmath.Hypot(dLon, dLat)
 }
 
-func (p *STARSPane) rebuildWxIfNeeded() {
-	if p == nil || p.wxBuiltGeneration == p.wxGeneration {
+func (p *STARSPane) rebuildNexradIfNeeded() {
+	if p == nil || p.nexradBuiltGeneration == p.nexradGeneration {
 		return
 	}
-	p.releaseWxCmdBuffers()
+	p.releaseNexradCmdBuffers()
 	if p.wxGrid != nil {
-		p.wxLevels = buildStarsWxCmdBuffers(p.wxGrid, p.colors.WXLevelStipple)
+		p.nexrad = buildStarsNexradCmdBuffers(p.wxGrid, p.colors.WXLevelStipple)
 	}
-	p.wxBuiltGeneration = p.wxGeneration
+	p.nexradBuiltGeneration = p.nexradGeneration
 }
 
-func (p *STARSPane) releaseWxCmdBuffers() {
+func (p *STARSPane) releaseNexradCmdBuffers() {
 	if p == nil {
 		return
 	}
-	for i := range p.wxLevels {
-		renderer.ReturnCmdBuffer(p.wxLevels[i].fill)
-		renderer.ReturnCmdBuffer(p.wxLevels[i].stipple)
-		p.wxLevels[i] = starsWXLevelCmdBuffers{}
+	for i := range p.nexrad {
+		renderer.ReturnCmdBuffer(p.nexrad[i].fill)
+		renderer.ReturnCmdBuffer(p.nexrad[i].stipple)
+		p.nexrad[i] = starsNexradLevelCmdBuffers{}
 	}
-	p.wxBuiltGeneration = 0
+	p.nexradBuiltGeneration = 0
 }
 
-func buildStarsWxCmdBuffers(grid *wx.Grid, stipple [6]int) [6]starsWXLevelCmdBuffers {
-	var out [6]starsWXLevelCmdBuffers
+func buildStarsNexradCmdBuffers(grid *wx.Grid, stipple [6]int) [6]starsNexradLevelCmdBuffers {
+	var out [6]starsNexradLevelCmdBuffers
 	if grid == nil {
 		return out
 	}
 
 	for level := range out {
-		lower := starsWxThresholds[level]
+		lower := starsNexradThresholds[level]
 		var upper *uint8
-		if level+1 < len(starsWxThresholds) {
-			v := starsWxThresholds[level+1]
+		if level+1 < len(starsNexradThresholds) {
+			v := starsNexradThresholds[level+1]
 			upper = &v
 		}
-		rects := wx.MergeDBZRectangles(grid, lower, upper)
+		rects := wx.MergeDBZRange(grid, lower, upper)
 		if len(rects) == 0 {
 			continue
 		}
-		out[level].fill = buildStarsWxRectBuffer(rects, renderer.DrawSolid)
+		out[level].fill = buildStarsNexradRectBuffer(rects, renderer.DrawSolid)
 		switch stipple[level] {
 		case 1:
-			out[level].stipple = buildStarsWxRectBuffer(rects, renderer.DrawStippleLight)
+			out[level].stipple = buildStarsNexradRectBuffer(rects, renderer.DrawStippleLight)
 		case 2:
-			out[level].stipple = buildStarsWxRectBuffer(rects, renderer.DrawStippleDense)
+			out[level].stipple = buildStarsNexradRectBuffer(rects, renderer.DrawStippleDense)
 		}
 	}
 	return out
 }
 
-func buildStarsWxRectBuffer(rects []wx.GridRect, mode renderer.DrawMode) *renderer.CmdBuffer {
+func buildStarsNexradRectBuffer(rects []wx.GridRect, mode renderer.DrawMode) *renderer.CmdBuffer {
 	if len(rects) == 0 {
 		return nil
 	}
@@ -189,7 +190,7 @@ func buildStarsWxRectBuffer(rects []wx.GridRect, mode renderer.DrawMode) *render
 	return cb
 }
 
-func (p *STARSPane) drawWX(ctx *panes.Context, zcb *renderer.ZCmdBuffer, transforms radar.LatLonTransformations) {
+func (p *STARSPane) drawNexrad(ctx *panes.Context, zcb *renderer.ZCmdBuffer, transforms radar.LatLonTransformations) {
 	if p == nil || ctx == nil || zcb == nil || p.wxGrid == nil {
 		return
 	}
@@ -201,15 +202,15 @@ func (p *STARSPane) drawWX(ctx *panes.Context, zcb *renderer.ZCmdBuffer, transfo
 	transforms.LoadGeoViewingMatrices(cb)
 
 	active := p.currentPrefs().DisplayWeatherLevel
-	for i := range p.wxLevels {
-		if !active[i] || p.wxLevels[i].fill == nil {
+	for i := range p.nexrad {
+		if !active[i] || p.nexrad[i].fill == nil {
 			continue
 		}
 		cb.SetRGB(p.colors.WX[i])
-		cb.Call(p.wxLevels[i].fill)
-		if p.wxLevels[i].stipple != nil {
+		cb.Call(p.nexrad[i].fill)
+		if p.nexrad[i].stipple != nil {
 			cb.SetRGB(p.colors.WXPattern)
-			cb.Call(p.wxLevels[i].stipple)
+			cb.Call(p.nexrad[i].stipple)
 		}
 	}
 	cb.DisableScissor()
