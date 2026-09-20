@@ -18,14 +18,18 @@ type configPoint struct {
 // Keep the JSON-facing types here so scope, list, map, and target rendering do
 // not each decode the generated CRC facility config independently.
 type facilityConfig struct {
-	ARTCC            string                  `json:"artcc"`
-	Facility         string                  `json:"facility"`
-	Name             string                  `json:"name"`
-	DefaultCenter    configPoint             `json:"defaultCenter"`
-	Areas            []areaConfig            `json:"areas"`
-	ControlPositions []controlPositionConfig `json:"controlPositions"`
-	MapGroups        []mapGroupConfig        `json:"mapGroups"`
-	VideoMaps        []videoMapConfig        `json:"videoMaps"`
+	ARTCC         string      `json:"artcc"`
+	Facility      string      `json:"facility"`
+	Name          string      `json:"name"`
+	DefaultCenter configPoint `json:"defaultCenter"`
+	// MagneticVariation is optional site adaptation, in degrees west-positive.
+	// Current crc2reds output does not yet populate it; STARS falls back to
+	// the same NOAA/WMM facility-center lookup used by VICE when it is absent.
+	MagneticVariation *float64                `json:"magneticVariation,omitempty"`
+	Areas             []areaConfig            `json:"areas"`
+	ControlPositions  []controlPositionConfig `json:"controlPositions"`
+	MapGroups         []mapGroupConfig        `json:"mapGroups"`
+	VideoMaps         []videoMapConfig        `json:"videoMaps"`
 }
 
 type areaConfig struct {

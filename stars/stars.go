@@ -26,6 +26,7 @@ type STARSPane struct {
 	config                       selectedConfig
 	prefs                        Preferences
 	longitudeScaleFactor         float64
+	magneticVariation            float64 // degrees, positive west
 	colors                       MonitorColors
 	cursorTexture                renderer.TextureID
 	dcbScroll                    float32
@@ -81,6 +82,26 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 		systemFont:             newSystemFont(useFontSetB),
 	}
 	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()
+	if cfg.Facility.MagneticVariation != nil {
+		pane.magneticVariation = *cfg.Facility.MagneticVariation
+	} else {
+		// VICE samples one facility-wide WMM value at the TRACON center. The
+		// real system uses site magnetic-variation adaptation (including the
+		// Magnetic Variance Tile Set described by FAA JO 6191.3). Until those
+		// tiles are carried by crc2reds, use the same deterministic fallback.
+		center := cfg.Facility.DefaultCenter
+		if !validConfigPoint(center) {
+			center = pane.currentCenter()
+		}
+		if variation, lookupErr := radar.MagneticVariationAt(center.Lat, center.Lon); lookupErr != nil {
+			logger.Warn("Unable to resolve STARS magnetic variation; using true-north orientation",
+				slog.Float64("lat", center.Lat),
+				slog.Float64("lon", center.Lon),
+				slog.Any("error", lookupErr))
+		} else {
+			pane.magneticVariation = variation
+		}
+	}
 	pane.initializeSystemAltimeter(cfg.systemAltimeterAirport())
 	pane.wxDomain = wx.DomainForARTCC(cfg.Facility.ARTCC)
 	pane.wxLogger = logger.With(slog.String("component", "wx"))
@@ -143,15 +164,18 @@ func (p *STARSPane) scopeTransformations(ctx *panes.Context) radar.LatLonTransfo
 	paneExtent := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
 
 	// TI 6191.409 Rev. 30, 4.4.1 defines display range as the distance from
-	// the display center to the nearest screen edge. GetLatLonTransformations
-	// uses the pane's shorter dimension as the range reference, matching that
-	// definition and VICE's STARS scope transformation convention.
+	// the display center to the nearest screen edge. FAA JO 6191.3 §§522-523
+	// and §556 describe STARS map alignment to site magnetic variation and
+	// note that maps themselves are built to true north. Rotate the geographic
+	// world by the adapted/fallback variation so magnetic north is screen-up;
+	// this matches VICE's STARS scope transform. ERAM intentionally passes 0.
 	return radar.GetLatLonTransformations(
 		paneExtent,
 		center.Lat,
 		center.Lon,
 		p.longitudeScaleFactor,
 		float64(p.currentPrefs().Range),
+		p.magneticVariation,
 	)
 }
 
