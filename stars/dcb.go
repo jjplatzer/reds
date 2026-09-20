@@ -55,9 +55,10 @@ func (p *STARSPane) mouseOverDCB(ctx *panes.Context) bool {
 }
 
 // drawDCB draws the High Resolution (2K) Display Control Bar. The Main DCB
-// follows TI 6191.409 Rev. 30, Figure 2-10 / Table 2-6; the BRITE submenu
-// follows Figure 4-13 / Table 4-1. Geometry and button rendering mirror VICE
-// so additional STARS submenus can reuse the same helpers.
+// follows TI 6191.409 Rev. 30, Figure 2-10; the Auxiliary DCB uses the
+// TSAS-adapted layout in Figure 2-12; and the BRITE submenu follows Figure
+// 4-13 / Table 4-1. Geometry and button rendering mirror VICE so additional
+// STARS submenus can reuse the same helpers.
 func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
 		return
@@ -120,7 +121,11 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 
 	briteActive := p.commandMode == CommandModeBrite || p.commandMode == CommandModeBriteSpinner
-	d.drawMainPage(briteActive)
+	if p.dcbShowAux && !briteActive {
+		d.drawAuxPage()
+	} else {
+		d.drawMainPage(briteActive)
+	}
 	if briteActive {
 		// As in VICE, the submenu is drawn over the right-hand portion of the
 		// disabled Main DCB. Revision 30 Figure 4-13 has nine full columns.
@@ -217,7 +222,59 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 	d.button("PREF", mainFlags(buttonFull), false, nil)
 	d.button("SSA\nFILTER", mainFlags(buttonHalfVertical), false, nil)
 	d.button("GI TEXT\nFILTER", mainFlags(buttonHalfVertical), false, nil)
-	d.button("SHIFT", mainFlags(buttonFull), false, nil)
+	d.button("SHIFT", mainFlags(buttonFull), false, func() {
+		p.dcbShowAux = true
+	})
+}
+
+// drawAuxPage draws the High Resolution (2K) Auxiliary Display Control Bar
+// using the TSAS-adapted layout in TI 6191.409 Rev. 30, Figure 2-12 / Table
+// 2-6. For this first implementation only <SHIFT> is operational. TSAS and
+// TIME LINE are deliberately shown as unsupported until REDS has TSAS state;
+// the remaining controls retain their normal appearance so functionality can
+// be added later without changing the page geometry.
+func (d *dcbDrawer) drawAuxPage() {
+	p := d.pane
+
+	// <VOL n>.
+	d.button("VOL\n2", buttonFull, false, nil)
+
+	// <HISTORY n> / <H_RATE n.n>.
+	d.button("HISTORY\n5", buttonHalfVertical, false, nil)
+	d.button("H_RATE\n4.5", buttonHalfVertical, false, nil)
+
+	// Cursor controls and uncorrelated-target presentation.
+	d.button("CURSOR\nHOME", buttonFull, false, nil)
+	d.button("CSR SPD\n5", buttonFull, false, nil)
+	d.button("MAP\nUNCOR", buttonFull, false, nil)
+	d.button("UNCOR", buttonFull, false, nil)
+	d.button("BEACON\nMODE-2", buttonFull, false, nil)
+	d.button("RTQC", buttonFull, false, nil)
+	d.button("MCP", buttonFull, false, nil)
+
+	// DCB position radio-button group. These are intentionally inert for now.
+	d.button("DCB\nTOP", buttonHalfVertical, true, nil)
+	d.button("DCB\nLEFT", buttonHalfVertical, false, nil)
+	d.button("DCB\nRIGHT", buttonHalfVertical, false, nil)
+	d.button("DCB\nBOTTOM", buttonHalfVertical, false, nil)
+
+	// Predicted track line and dwell controls.
+	d.button("PTL LNTH\n1.5", buttonFull, false, nil)
+	d.button("PTL OWN", buttonHalfVertical, false, nil)
+	d.button("PTL ALL", buttonHalfVertical, false, nil)
+	d.button("DWELL\nON", buttonFull, false, nil)
+	d.button("TPA /\nATPA", buttonFull, false, nil)
+
+	// Figure 2-12 TSAS-adapted controls. Table 2-6 says these appear grayed
+	// when TSAS is adapted but unavailable to the current TCW/TDW; REDS does
+	// not have TSAS integration yet, so keep both controls in that state.
+	d.button("TSAS", buttonHalfVertical|buttonUnsupported, false, nil)
+	d.button("TIME\nLINE", buttonHalfVertical|buttonUnsupported, false, nil)
+
+	// <SHIFT> toggles the Main and Auxiliary DCBs (Table 2-6).
+	d.button("SHIFT", buttonFull, false, func() {
+		p.dcbShowAux = false
+	})
 }
 
 // brightnessControl is one adjustment button in the standard BRITE submenu.

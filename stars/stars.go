@@ -29,6 +29,7 @@ type STARSPane struct {
 	colors               MonitorColors
 	cursorTexture        renderer.TextureID
 	dcbScroll            float32
+	dcbShowAux           bool
 	useFontSetB          bool
 	systemFont           *renderer.BitmapFont
 	systemFontTextures   map[int]renderer.TextureID
