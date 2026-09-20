@@ -24,12 +24,20 @@ var starsMRMSHTTPClient = &http.Client{Timeout: 20 * time.Second}
 // 30-40, 41-45, 46-49, 50-56, and 57+ dBZ. MRMS has its own much finer
 // color-ramp bins; those are source-product legend bins, not STARS level
 // numbers, so numeric MRMS dBZ is translated into these six STARS bands.
+//
+// Sources for the six-level precipitation discretization:
+//   - FAA Technical Instruction Book (TIB) 6310.24, Section 10.
+//   - U.S. Department of Transportation, Federal Aviation Administration,
+//     Aviation Weather Demonstration and Evaluation (AWDE), et al.,
+//     "AWDE Precipitation on the Glass (PoG) Table Top Demonstration Summary,"
+//     DOT/FAA/TCTN-23-21, William J. Hughes Technical Center, 2020.
+//     https://rosap.ntl.bts.gov/view/dot/66579
 var starsNexradThresholds = [6]uint8{18, 30, 41, 46, 50, 57}
 
 type starsWXPresentation struct {
 	colors  [6]renderer.RGB
 	pattern renderer.RGB
-	stipple [6]int // 0=none, 1=light, 2=dense
+	stipple [6]int // 0=none, 1=legacy light, 2=legacy dense, 3=FAA-HF-STD010A
 }
 
 // The newer three-color WX presentation pairs the six weather levels into
@@ -44,8 +52,8 @@ type starsWXPresentation struct {
 // Illumination." DOT/FAA/TC-23/56, FAA William J. Hughes Technical Center,
 // 2024. https://doi.org/10.21949/1528261
 //
-// In the newer presentation levels 1/3/5 are solid and levels 2/4/6 add only
-// the light stipple; dense stipple is not used.
+// In the newer presentation levels 1/3/5 use the custom black stipple and
+// levels 2/4/6 remain solid.
 var starsThreeColorWXColors = [6]renderer.RGB{
 	renderer.RGB8(23, 57, 40),
 	renderer.RGB8(23, 57, 40),
@@ -56,7 +64,7 @@ var starsThreeColorWXColors = [6]renderer.RGB{
 }
 
 var (
-	starsThreeColorWXLevelStipple = [6]int{0, 1, 0, 1, 0, 1}
+	starsThreeColorWXLevelStipple = [6]int{3, 0, 3, 0, 3, 0}
 	starsThreeColorWXPattern      = renderer.RGB8(0, 0, 0)
 )
 
@@ -235,6 +243,8 @@ func buildStarsNexradCmdBuffers(grid *wx.Grid, stipple [6]int) [6]starsNexradLev
 			out[level].stipple = buildStarsNexradRectBuffer(rects, renderer.DrawStippleLight)
 		case 2:
 			out[level].stipple = buildStarsNexradRectBuffer(rects, renderer.DrawStippleDense)
+		case 3:
+			out[level].stipple = buildStarsNexradRectBuffer(rects, renderer.DrawStippleFAAHFSTD010A)
 		}
 	}
 	return out
