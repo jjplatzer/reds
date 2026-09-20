@@ -64,34 +64,34 @@ func (p *STARSPane) wxPresentation() starsWXPresentation {
 	if p == nil {
 		return starsWXPresentation{}
 	}
-	if p.useLegacyWXColors {
+	if p.useFAAHFSTD010APalette {
 		return starsWXPresentation{
-			colors:  p.colors.WX,
-			pattern: p.colors.WXPattern,
-			stipple: p.colors.WXLevelStipple,
+			colors:  starsThreeColorWXColors,
+			pattern: starsThreeColorWXPattern,
+			stipple: starsThreeColorWXLevelStipple,
 		}
 	}
 	return starsWXPresentation{
-		colors:  starsThreeColorWXColors,
-		pattern: starsThreeColorWXPattern,
-		stipple: starsThreeColorWXLevelStipple,
+		colors:  p.colors.WX,
+		pattern: p.colors.WXPattern,
+		stipple: p.colors.WXLevelStipple,
 	}
 }
 
-// UseLegacyWXColors reports the STARS-only title-bar presentation setting.
-func (p *STARSPane) UseLegacyWXColors() bool {
-	return p != nil && p.useLegacyWXColors
+// UseFAAHFSTD010APalette reports whether the FAA-HF-STD010A palette is enabled.
+func (p *STARSPane) UseFAAHFSTD010APalette() bool {
+	return p != nil && p.useFAAHFSTD010APalette
 }
 
-// ToggleLegacyWXColors switches between the operator-manual legacy WX
-// presentation and the optional newer three-color presentation. The stipple
+// ToggleFAAHFSTD010APalette switches between the legacy operator-manual WX
+// presentation and the optional FAA-HF-STD010A-derived three-color presentation. The stipple
 // draw mode is baked into the per-level command buffers, so force those
 // buffers to rebuild on the next frame.
-func (p *STARSPane) ToggleLegacyWXColors() {
+func (p *STARSPane) ToggleFAAHFSTD010APalette() {
 	if p == nil {
 		return
 	}
-	p.useLegacyWXColors = !p.useLegacyWXColors
+	p.useFAAHFSTD010APalette = !p.useFAAHFSTD010APalette
 	p.releaseNexradCmdBuffers()
 }
 

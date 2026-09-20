@@ -32,7 +32,7 @@ type STARSPane struct {
 	dcbShowAux                   bool
 	dcbSuppressPressUntilRelease bool
 	useFontSetB                  bool
-	useLegacyWXColors            bool
+	useFAAHFSTD010APalette       bool
 	systemFont                   *renderer.BitmapFont
 	systemFontTextures           map[int]renderer.TextureID
 	systemAltimeter              systemAltimeterState
@@ -68,17 +68,17 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	}
 
 	const (
-		useFontSetB       = false
-		useLegacyWXColors = true
+		useFontSetB            = false
+		useFAAHFSTD010APalette = false
 	)
 	pane := &STARSPane{
-		logger:            logger,
-		config:            cfg,
-		prefs:             newPreferences(cfg),
-		colors:            defaultTCWColors,
-		useFontSetB:       useFontSetB,
-		useLegacyWXColors: useLegacyWXColors,
-		systemFont:        newSystemFont(useFontSetB),
+		logger:                 logger,
+		config:                 cfg,
+		prefs:                  newPreferences(cfg),
+		colors:                 defaultTCWColors,
+		useFontSetB:            useFontSetB,
+		useFAAHFSTD010APalette: useFAAHFSTD010APalette,
+		systemFont:             newSystemFont(useFontSetB),
 	}
 	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()
 	pane.initializeSystemAltimeter(cfg.systemAltimeterAirport())
