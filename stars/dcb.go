@@ -64,6 +64,14 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		return
 	}
 
+	// A DCB layout change must not let the still-held click visually depress
+	// the button that happens to occupy the same coordinates on the new page.
+	// Keep suppressing held-button feedback until the SHIFT click is released.
+	if p.dcbSuppressPressUntilRelease &&
+		(ctx.Mouse == nil || !ctx.Mouse.IsDown(platform.MouseButtonLeft)) {
+		p.dcbSuppressPressUntilRelease = false
+	}
+
 	fontSize := p.listFontSize() // DCB character size 1 uses the same STARS font as list size 1.
 	texture := p.systemFontTexture(ctx.Renderer, fontSize)
 	if texture == 0 {
@@ -224,6 +232,7 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 	d.button("GI TEXT\nFILTER", mainFlags(buttonHalfVertical), false, nil)
 	d.button("SHIFT", mainFlags(buttonFull), false, func() {
 		p.dcbShowAux = true
+		p.dcbSuppressPressUntilRelease = true
 	})
 }
 
@@ -274,6 +283,7 @@ func (d *dcbDrawer) drawAuxPage() {
 	// <SHIFT> toggles the Main and Auxiliary DCBs (Table 2-6).
 	d.button("SHIFT", buttonFull, false, func() {
 		p.dcbShowAux = false
+		p.dcbSuppressPressUntilRelease = true
 	})
 }
 
@@ -428,7 +438,9 @@ func (d *dcbDrawer) button(text string, flags dcbFlags, selected bool, onClick f
 	rect := redsmath.NewRect(d.cursor.X, d.cursor.Y, d.cursor.X+sz.X, d.cursor.Y+sz.Y)
 	visible := intersectDCBRect(rect, d.bar)
 	mouseInside := d.ctx.Mouse != nil && !visible.Empty() && visible.Contains(d.ctx.Mouse.Pos)
-	pressed := mouseInside && d.ctx.Mouse != nil && d.ctx.Mouse.IsDown(platform.MouseButtonLeft)
+	pressed := mouseInside && d.ctx.Mouse != nil &&
+		d.ctx.Mouse.IsDown(platform.MouseButtonLeft) &&
+		!d.pane.dcbSuppressPressUntilRelease
 	clicked := mouseInside && d.ctx.Mouse != nil && d.ctx.Mouse.WasPressed(platform.MouseButtonLeft)
 
 	disabled := flags&buttonDisabled != 0

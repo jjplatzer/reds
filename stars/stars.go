@@ -22,19 +22,20 @@ const (
 // its preference/view state; maps, targets, data blocks, and DCB controls all
 // share the same geographic scope transformation as they are added.
 type STARSPane struct {
-	logger               *redslog.Logger
-	config               selectedConfig
-	prefs                Preferences
-	longitudeScaleFactor float64
-	colors               MonitorColors
-	cursorTexture        renderer.TextureID
-	dcbScroll            float32
-	dcbShowAux           bool
-	useFontSetB          bool
-	useLegacyWXColors    bool
-	systemFont           *renderer.BitmapFont
-	systemFontTextures   map[int]renderer.TextureID
-	systemAltimeter      systemAltimeterState
+	logger                       *redslog.Logger
+	config                       selectedConfig
+	prefs                        Preferences
+	longitudeScaleFactor         float64
+	colors                       MonitorColors
+	cursorTexture                renderer.TextureID
+	dcbScroll                    float32
+	dcbShowAux                   bool
+	dcbSuppressPressUntilRelease bool
+	useFontSetB                  bool
+	useLegacyWXColors            bool
+	systemFont                   *renderer.BitmapFont
+	systemFontTextures           map[int]renderer.TextureID
+	systemAltimeter              systemAltimeterState
 
 	wxDomain              wx.Domain
 	wxLogger              *redslog.Logger

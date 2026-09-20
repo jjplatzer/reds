@@ -35,8 +35,14 @@ type starsWXPresentation struct {
 // The newer three-color WX presentation pairs the six weather levels into
 // green, olive, and purple groups. The operator manual's Appendix B defines
 // the legacy blue/mustard presentation, so REDS exposes that manual palette as
-// an explicit "Use Legacy WX colors" preference and keeps it enabled by
+// an explicit "Use Legacy WX Colors" preference and keeps it enabled by
 // default.
+//
+// Source for the newer daytime palette:
+// Post, David L., Nicole Racine, Eve Perchanok, and Randy Sollenberger.
+// "Adapting the FAA-HF-STD-010A Standard Color Palette to Daytime
+// Illumination." DOT/FAA/TC-23/56, FAA William J. Hughes Technical Center,
+// 2024. https://doi.org/10.21949/1528261
 //
 // In the newer presentation levels 1/3/5 are solid and levels 2/4/6 add only
 // the light stipple; dense stipple is not used.
