@@ -24,7 +24,7 @@ func main() {
 
 func run(args []string) error {
 	fs := flag.NewFlagSet("wmm2reds", flag.ContinueOnError)
-	inPath := fs.String("in", "resources/nav/magnetic_grid.txt.zst", "input WMM declination grid (.txt or .txt.zst)")
+	inPath := fs.String("in", "cmd/wmm2reds/grid.txt.zst", "input WMM declination grid (.txt or .txt.zst)")
 	outPath := fs.String("out", "resources/nav/tiles.json.zst", "output REDS magnetic tile set (.json or .json.zst)")
 	epsilon := fs.Float64("eps", defaultEpsilonDegrees, "maximum allowed WMM deviation inside one generated tile, in degrees")
 	minLat := fs.Float64("min-lat", radar.DefaultWMMGridSpec.MinLatitude, "input grid minimum latitude")

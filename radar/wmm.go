@@ -7,16 +7,12 @@ import (
 	"math"
 	"strconv"
 	"strings"
-	"sync"
-
-	"github.com/juliusplatzer/reds/util"
 )
 
-const defaultWMMGridResource = "resources/nav/magnetic_grid.txt.zst"
-
-// WMMGridSpec describes the regular NOAA WMM grid retained by REDS. The
-// bundled grid was generated at sea level for the 2024 epoch and stores
-// east-positive geomagnetic declination samples.
+// WMMGridSpec describes the regular NOAA WMM grid used by cmd/wmm2reds.
+// The generation-time grid was sampled at sea level for the 2024 epoch and
+// stores east-positive geomagnetic declination samples. It is not loaded by
+// the REDS runtime.
 type WMMGridSpec struct {
 	MinLatitude, MaxLatitude   float64
 	MinLongitude, MaxLongitude float64
@@ -45,12 +41,6 @@ type WMMGrid struct {
 	nLon    int
 	samples []float64
 }
-
-var loadDefaultWMMGrid = sync.OnceValues(func() (*WMMGrid, error) {
-	r := util.LoadResource(defaultWMMGridResource)
-	defer r.Close()
-	return ParseWMMGrid(r, DefaultWMMGridSpec)
-})
 
 // ParseWMMGrid parses one declination sample per line in row-major order:
 // latitude first (south to north), then longitude (west to east).
@@ -116,18 +106,6 @@ func (g *WMMGrid) Bounds() MagneticVariationBounds {
 		West:  g.spec.MinLongitude,
 		East:  g.spec.MaxLongitude,
 	}
-}
-
-// WMMVariationAt returns bilinearly interpolated magnetic variation in
-// degrees, positive west. The old VICE-compatible fallback rounded to the
-// nearest 0.25-degree sample; interpolation is preferable here because the
-// tile generator needs a continuous source field to bound intra-tile error.
-func WMMVariationAt(lat, lon float64) (float64, error) {
-	grid, err := loadDefaultWMMGrid()
-	if err != nil {
-		return 0, err
-	}
-	return grid.VariationAt(lat, lon)
 }
 
 func (g *WMMGrid) VariationAt(lat, lon float64) (float64, error) {
