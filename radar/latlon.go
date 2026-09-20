@@ -122,6 +122,27 @@ func (st LatLonTransformations) LatLonFromWindow(pos redsmath.Vec2) (lat, lon fl
 	return lat, lon
 }
 
+// LatLonFromWindowV converts a pane-local window vector to a geographic
+// latitude/longitude delta. Window y increases downward, so a positive y
+// vector produces a negative latitude delta.
+func (st LatLonTransformations) LatLonFromWindowV(v redsmath.Vec2) (deltaLat, deltaLon float64) {
+	if st.paneExtent.Empty() || st.rangeNM <= 0 {
+		return 0, 0
+	}
+
+	width := st.paneExtent.Width()
+	height := st.paneExtent.Height()
+	halfW, halfH := LatLonHalfExtentsNM(width, height, st.rangeNM)
+	scale := st.longitudeScaleFactor
+	if scale == 0 {
+		scale = LongitudeScaleFactorForLat(st.centerLat)
+	}
+
+	xNM := float64(v.X) / (float64(width) * 0.5) * halfW
+	yNM := -float64(v.Y) / (float64(height) * 0.5) * halfH
+	return yNM / 60, xNM / (60 * scale)
+}
+
 func LatLonHalfExtentsNM(width, height float32, rangeNM float64) (halfW, halfH float64) {
 	if width <= 0 || height <= 0 || rangeNM <= 0 {
 		return 0, 0

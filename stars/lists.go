@@ -1,6 +1,7 @@
 package stars
 
 import (
+	"strings"
 	"time"
 
 	redsmath "github.com/juliusplatzer/reds/math"
@@ -25,9 +26,9 @@ const (
 	zLists renderer.Z = 0
 )
 
-// drawSSA draws the System Status Area. For now this intentionally contains
-// only the mandatory Red Check symbol and UTC time from TI 6191.409 Rev. 30,
-// Table 2-15; the remaining SSA fields are added separately.
+// drawSSA draws the System Status Area in the field order defined by
+// TI 6191.409 Rev. 30, Table 2-15. Empty fields do not consume a line, so the
+// area automatically shortens or lengthens as status information is added.
 func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if p == nil || ctx == nil || zcb == nil {
 		return
@@ -49,8 +50,16 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.Scissor(x, y, width, height)
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 
-	// Green outlined 10x10 box. Table B-1 defines normal list text/graphics
-	// as green; Table 2-15 explicitly requires a green outline here.
+	// Field A - TCW/TDW Failure Alert, EFSL / DSF indicator.
+	// A healthy TCW/TDW leaves this field empty (Table 2-15).
+
+	// Field B - System Overload Alert.
+	// A TCW/TDW that is not overloaded leaves this field empty (Table 2-15).
+
+	// Field C - Sensor Failure Alert.
+	// The Red Check symbol is always displayed. Table 2-15 defines it as a
+	// solid inverted delta centered in a green outlined box; failed sensor
+	// names, when available, will be rendered on this field after the symbol.
 	cb.SetRGB(p.colors.List)
 	cb.LineWidth(1)
 	box := renderer.GetLinesBuilder()
@@ -63,9 +72,9 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	box.GenerateCommands(cb)
 	renderer.ReturnLinesBuilder(box)
 
-	// Solid inverted equilateral delta, centered in the box. For an
-	// equilateral triangle of height h, the centroid lies h/3 from the base.
-	// REDS' y axis increases downward, so the tip has the larger y value.
+	// For an equilateral triangle of height h, the centroid lies h/3 from
+	// the base. REDS' y axis increases downward, so the inverted delta's tip
+	// has the larger y value.
 	const invSqrt3 = float32(0.5773502691896258)
 	halfBase := ssaCheckTriangleH * invSqrt3
 	baseY := centerY - ssaCheckTriangleH/3
@@ -81,25 +90,100 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	triangle.GenerateCommands(cb)
 	renderer.ReturnColoredTrianglesBuilder(triangle)
 
-	// TI 6191.409 Rev. 30, Table 2-15 field E displays UTC as HHMM/SS.
-	// VICE places the first SSA text line 10 display units below the Red Check
-	// anchor, with its left edge aligned to the check box's left edge.
+	// Field C1 - ADS Ground Station Alert.
+	// With no failing/offline ADS-B Ground Stations this field is empty.
+
 	fontSize := p.listFontSize()
 	texture := p.systemFontTexture(ctx.Renderer, fontSize)
 	if texture != 0 && p.systemFont != nil {
 		td := renderer.GetTextDrawBuilder()
 		td.SetFont(p.systemFont)
-		td.AddText(
-			time.Now().UTC().Format("1504/05"),
-			redsmath.Vec2{X: ssaDefaultX * w, Y: centerY + 10},
-			renderer.TextStyle{
-				Size:  fontSize,
-				Color: p.colors.List.ToRGBA(),
-			},
-		)
+
+		textX := ssaDefaultX * w
+		textY := centerY + 10
+		addLine := func(text string, color renderer.RGB) {
+			if text == "" {
+				return
+			}
+			td.AddText(
+				text,
+				redsmath.Vec2{X: textX, Y: textY},
+				renderer.TextStyle{Size: fontSize, Color: color.ToRGBA()},
+			)
+			textY += float32(fontSize)
+		}
+
+		// Field D - Weather Level Status.
+		// This field is omitted until STARS weather-receipt/display state exists.
+
+		// Field E - UTC Time, System Altimeter Setting.
+		// Hours and minutes / seconds are followed by the system altimeter
+		// setting used for altitude correction in this Terminal control area.
+		addLine(p.ssaFieldEText(time.Now()), p.colors.List)
+
+		// Fields E1 through N are omitted until their corresponding facility,
+		// surveillance, flow-management, or controller preference state exists.
+
+		// Field O - Mode of Operation.
+		// The initial REDS STARS TCW/TDW runs in operational / normal mode.
+		addLine("MODE: NORMAL", p.colors.List)
+
 		td.GenerateCommands(cb, texture)
 		renderer.ReturnTextDrawBuilder(td)
 	}
+
+	cb.DisableScissor()
+}
+
+// drawPreviewArea draws the STARS Preview Area. TI 6191.409 4.9.2 identifies
+// command entry prompts, echoed input, and response/error messages as Preview
+// Area contents. VICE reserves the first line for response/output, followed by
+// the command prompt and then echoed input; spaces in echoed input start a new
+// display line.
+func (p *STARSPane) drawPreviewArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
+		return
+	}
+	if p.commandResponse == "" && p.commandMode == CommandModeNone && p.commandInput == "" {
+		return
+	}
+
+	var text strings.Builder
+	text.WriteString(p.commandResponse)
+	text.WriteByte('\n')
+
+	if prompt := p.commandMode.PreviewString(); prompt != "" {
+		text.WriteString(prompt)
+		text.WriteByte('\n')
+	}
+	text.WriteString(strings.Join(strings.Fields(p.commandInput), "\n"))
+
+	fontSize := p.listFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
+	if texture == 0 {
+		return
+	}
+
+	ps := p.currentPrefs()
+	position := redsmath.Vec2{
+		X: ps.PreviewAreaPosition[0] * ctx.PaneRect.Width(),
+		Y: ps.PreviewAreaPosition[1] * ctx.PaneRect.Height(),
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zLists)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+
+	td := renderer.GetTextDrawBuilder()
+	td.SetFont(p.systemFont)
+	td.AddText(text.String(), position, renderer.TextStyle{
+		Size:  fontSize,
+		Color: p.colors.PreviewList.ToRGBA(),
+	})
+	td.GenerateCommands(cb, texture)
+	renderer.ReturnTextDrawBuilder(td)
 
 	cb.DisableScissor()
 }

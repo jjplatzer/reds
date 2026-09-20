@@ -51,6 +51,7 @@ type OpenGLRenderer struct {
 	solidShader    shaderProgram
 	hatchShader    shaderProgram
 	checkerShader  shaderProgram
+	stippleShader  shaderProgram
 	coloredShader  shaderProgram
 	texturedShader shaderProgram
 	fontShader     shaderProgram
@@ -99,6 +100,10 @@ func (r *OpenGLRenderer) Init() error {
 		r.Dispose()
 		return err
 	}
+	if r.stippleShader, err = compileProgram("stipple", "solid.vert", "stipple.frag"); err != nil {
+		r.Dispose()
+		return err
+	}
 	if r.coloredShader, err = compileProgram("colored", "colored.vert", "colored.frag"); err != nil {
 		r.Dispose()
 		return err
@@ -141,6 +146,7 @@ func (r *OpenGLRenderer) Dispose() {
 	r.solidShader.dispose()
 	r.hatchShader.dispose()
 	r.checkerShader.dispose()
+	r.stippleShader.dispose()
 	r.coloredShader.dispose()
 	r.texturedShader.dispose()
 	r.fontShader.dispose()
@@ -339,6 +345,8 @@ func (r *OpenGLRenderer) drawPoints(vertices []PointVertex, indices []uint32, tr
 		shader = r.hatchShader
 	} else if triangles && mode == DrawCheckered {
 		shader = r.checkerShader
+	} else if triangles && (mode == DrawStippleLight || mode == DrawStippleDense) {
+		shader = r.stippleShader
 	}
 	shader.use()
 	shader.setMat4("u_projection", r.projection)
@@ -347,6 +355,12 @@ func (r *OpenGLRenderer) drawPoints(vertices []PointVertex, indices []uint32, tr
 		shader.setFloat("u_offset", hatchOffset)
 	} else if triangles && mode == DrawCheckered {
 		shader.setVec2("u_offset", r.checkerX, r.checkerY)
+	} else if triangles && (mode == DrawStippleLight || mode == DrawStippleDense) {
+		pattern := int32(1)
+		if mode == DrawStippleDense {
+			pattern = 2
+		}
+		shader.setInt("u_pattern", pattern)
 	}
 
 	r.bindIndexedBuffers(len(vertices)*int(unsafe.Sizeof(PointVertex{})), unsafe.Pointer(&vertices[0]), indices)

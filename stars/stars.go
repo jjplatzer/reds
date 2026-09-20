@@ -1,32 +1,79 @@
 package stars
 
 import (
+	"log/slog"
+	"time"
+
+	"github.com/juliusplatzer/reds/cmd/wx"
+	redslog "github.com/juliusplatzer/reds/log"
+	redsmath "github.com/juliusplatzer/reds/math"
 	"github.com/juliusplatzer/reds/panes"
+	"github.com/juliusplatzer/reds/platform"
+	"github.com/juliusplatzer/reds/radar"
 	"github.com/juliusplatzer/reds/renderer"
 )
 
-const zBackground renderer.Z = -1000
+const (
+	zBackground renderer.Z = -1000
+	zWeather    renderer.Z = -950
+)
 
-// STARSPane is the STARS TCW/TDW display surface. The initial implementation
-// intentionally renders only the official STARS monitor background; maps, DCB,
-// lists, targets, and other display elements are added separately.
+// STARSPane is the STARS TCW/TDW display surface. Facility adaptation feeds
+// its preference/view state; maps, targets, data blocks, and DCB controls all
+// share the same geographic scope transformation as they are added.
 type STARSPane struct {
-	colors             MonitorColors
-	cursorTexture      renderer.TextureID
-	useFontSetB        bool
-	systemFont         *renderer.BitmapFont
-	systemFontTextures map[int]renderer.TextureID
+	logger               *redslog.Logger
+	config               selectedConfig
+	prefs                Preferences
+	longitudeScaleFactor float64
+	colors               MonitorColors
+	cursorTexture        renderer.TextureID
+	useFontSetB          bool
+	systemFont           *renderer.BitmapFont
+	systemFontTextures   map[int]renderer.TextureID
+	systemAltimeter      systemAltimeterState
+
+	wxDomain              wx.Domain
+	wxLogger              *redslog.Logger
+	wxCenter              configPoint
+	wxRadiusNM            float64
+	wxStream              *wx.Stream
+	wxGrid                *wx.Grid
+	nexradGeneration      uint64
+	nexradBuiltGeneration uint64
+	nexrad                [6]starsNexradLevelCmdBuffers
+
+	commandMode     CommandMode
+	commandInput    string
+	commandResponse string
 }
 
-// NewPane creates the initial STARS TCW pane using the official TCW default
-// palette from TI 6191.409 Rev. 30, Appendix B.
-func NewPane() *STARSPane {
+// NewPane creates a STARS TCW pane for the selected controller position.
+func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPane, error) {
+	if logger == nil {
+		logger = &redslog.Logger{Logger: slog.Default(), Start: time.Now()}
+	}
+
+	cfg, err := loadSelectedConfig(artcc, tracon, positionID)
+	if err != nil {
+		return nil, err
+	}
+
 	const useFontSetB = true
-	return &STARSPane{
+	pane := &STARSPane{
+		logger:      logger,
+		config:      cfg,
+		prefs:       newPreferences(cfg),
 		colors:      defaultTCWColors,
 		useFontSetB: useFontSetB,
 		systemFont:  newSystemFont(useFontSetB),
 	}
+	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()
+	pane.initializeSystemAltimeter(cfg.systemAltimeterAirport())
+	pane.wxDomain = wx.DomainForARTCC(cfg.Facility.ARTCC)
+	pane.wxLogger = logger.With(slog.String("component", "wx"))
+	pane.restartNexradStream(starsInitialNexradRadiusNM)
+	return pane, nil
 }
 
 func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
@@ -41,10 +88,104 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	backgroundCB.ClearRGB(p.colors.Background)
 	backgroundCB.DisableScissor()
 
+	p.consumeSystemAltimeterUpdates()
+	p.refreshSystemAltimeter()
+	p.consumeNexradUpdates()
+	p.ensureNexradCoverage(ctx)
+	p.rebuildNexradIfNeeded()
+
+	p.processKeyboardInput(ctx)
+	transforms := p.scopeTransformations(ctx)
+	p.consumeMouseEvents(ctx, transforms)
+
+	p.drawNexrad(ctx, zcb, transforms)
 	p.drawDCBBackground(ctx, zcb)
+	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
 	p.applyCursor(ctx)
 	p.renderCursor(ctx, zcb)
+}
+
+func (p *STARSPane) Dispose() {
+	if p == nil {
+		return
+	}
+	if p.wxStream != nil {
+		p.wxStream.Close()
+		p.wxStream = nil
+	}
+	p.releaseNexradCmdBuffers()
+	p.wxGrid = nil
+}
+
+func (p *STARSPane) scopeTransformations(ctx *panes.Context) radar.LatLonTransformations {
+	if p == nil || ctx == nil {
+		return radar.LatLonTransformations{}
+	}
+	center := p.currentCenter()
+	paneExtent := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
+
+	// TI 6191.409 Rev. 30, 4.4.1 defines display range as the distance from
+	// the display center to the nearest screen edge. GetLatLonTransformations
+	// uses the pane's shorter dimension as the range reference, matching that
+	// definition and VICE's STARS scope transformation convention.
+	return radar.GetLatLonTransformations(
+		paneExtent,
+		center.Lat,
+		center.Lon,
+		p.longitudeScaleFactor,
+		float64(p.currentPrefs().Range),
+	)
+}
+
+func (p *STARSPane) consumeMouseEvents(ctx *panes.Context, transforms radar.LatLonTransformations) {
+	if p == nil || ctx == nil || ctx.Mouse == nil || p.mouseOverDCB(ctx) {
+		return
+	}
+
+	mouse := ctx.Mouse
+	ps := p.currentPrefs()
+
+	// TI 6191.409 Rev. 30, 4.4.2 Re-center display (pan) and define
+	// user-specified center: VICE maps the STARS trackball pan to a secondary
+	// mouse-button drag. Move the user center by the exact geographic vector
+	// represented by this frame's drag delta.
+	if mouse.IsDown(platform.MouseButtonRight) && (mouse.Delta.X != 0 || mouse.Delta.Y != 0) {
+		deltaLat, deltaLon := transforms.LatLonFromWindowV(mouse.Delta)
+		ps.UserCenter.Lat -= deltaLat
+		ps.UserCenter.Lon = normalizeLongitude(ps.UserCenter.Lon - deltaLon)
+		ps.UseUserCenter = true
+	}
+
+	if mouse.Wheel.Y == 0 {
+		return
+	}
+
+	// Match VICE's STARS wheel units: one wheel unit changes RANGE by one
+	// nautical mile and Control triples the change. VICE negates the platform
+	// wheel Y value when it builds pane-local mouse state; REDS does not, so
+	// invert it here to preserve the same user-facing scroll direction.
+	deltaRange := -mouse.Wheel.Y
+	if ctx.Keyboard != nil && ctx.Keyboard.IsDown(platform.KeyControl) {
+		deltaRange *= 3
+	}
+
+	oldRange := ps.Range
+	newRange := clampSTARSRange(oldRange + deltaRange)
+	if newRange == oldRange {
+		return
+	}
+
+	// VICE keeps the lat/lon beneath the mouse fixed while wheel-zooming. The
+	// affine update below is the same operation expressed directly in lat/lon.
+	mouseLat, mouseLon := transforms.LatLonFromWindow(mouse.Pos)
+	scale := float64(newRange / oldRange)
+	ps.UserCenter.Lat = mouseLat + scale*(ps.UserCenter.Lat-mouseLat)
+	ps.UserCenter.Lon = normalizeLongitude(
+		mouseLon + scale*longitudeDelta(ps.UserCenter.Lon, mouseLon),
+	)
+	ps.Range = newRange
+	ps.UseUserCenter = true
 }
 
 // MonitorColors contains the STARS TCW/TDW display colors.
@@ -100,9 +241,12 @@ type MonitorColors struct {
 	RestrictionAreaText renderer.RGB
 	RestrictionAreaGeom [8]renderer.RGB
 
-	// Weather.
-	WX        [6]renderer.RGB
-	WXPattern renderer.RGB
+	// Weather. TI 6191.409 Table B-1 defines the two base colors and white
+	// weather pattern; the level-to-pattern mapping follows the STARS stipple
+	// masks used by VICE (0=solid, 1=light, 2=dense).
+	WX             [6]renderer.RGB
+	WXPattern      renderer.RGB
+	WXLevelStipple [6]int
 
 	// FMA display colors. FMA is not available at TDWs; the TDW palette leaves
 	// these at their zero value.
@@ -261,7 +405,8 @@ var defaultTCWColors = MonitorColors{
 		starsDarkMustard,
 		starsDarkMustard,
 	},
-	WXPattern: starsWhite,
+	WXPattern:      starsWhite,
+	WXLevelStipple: [6]int{0, 1, 2, 0, 1, 2},
 
 	FMARunway:         starsGray,
 	FMANTZNormal:      starsWhite,

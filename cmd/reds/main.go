@@ -341,7 +341,10 @@ func launchScope(
 		)
 		scopeLogger.Info("Launching scope")
 
-		pane := stars.NewPane()
+		pane, err := stars.NewPane(sel.Facility, sel.TRACON, sel.Position.ID, scopeLogger)
+		if err != nil {
+			return nil, err
+		}
 		plat.SetWindowTitle(sel.ScopeTitle())
 		plat.SetWindowDecorated(false)
 		plat.SetWindowSizeCentered(starsWindowWidth, starsWindowHeight)

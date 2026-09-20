@@ -28,8 +28,28 @@ func newSystemFont(useFontSetB bool) *renderer.BitmapFont {
 		return nil
 	}
 	return renderer.NewBitmapFontFromMono(map[int]*renderer.MonoBitmapFont{
-		size: font,
+		size: starsFontForRenderer(font),
 	})
+}
+
+// starsFontForRenderer converts the STARS/VICE bitmap-font Y offsets into the
+// top-origin convention expected by REDS' BitmapFont renderer. In the source
+// fonts Offset[1] is measured upward from the bottom of the character cell;
+// REDS expects the glyph's top offset. Font Set B mostly masks this difference
+// because its glyphs occupy complete cells, while Font Set A punctuation does
+// not (for example the period would otherwise be drawn near the top).
+func starsFontForRenderer(src *renderer.MonoBitmapFont) *renderer.MonoBitmapFont {
+	if src == nil {
+		return nil
+	}
+
+	font := *src
+	font.Glyphs = append([]renderer.MonoBitmapGlyph(nil), src.Glyphs...)
+	for i := range font.Glyphs {
+		glyph := &font.Glyphs[i]
+		glyph.Offset[1] = font.Height - glyph.Offset[1] - glyph.Bounds[1]
+	}
+	return &font
 }
 
 func (p *STARSPane) listFontSize() int {

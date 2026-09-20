@@ -34,9 +34,14 @@ type Grid struct {
 	DLat float64
 	DLon float64
 
-	// One byte per retained MRMS cell.
-	Levels []Level
+	// One byte per retained MRMS cell. Keeping raw dBZ here lets each display
+	// apply its own operational thresholds (ERAM has three levels; STARS has
+	// six) without retaining a second per-cell array in memory. Missing samples
+	// use MissingDBZ.
+	DBZ []uint8
 }
+
+const MissingDBZ uint8 = 255
 
 type GridMetadata struct {
 	NX int
@@ -161,10 +166,31 @@ func CropIndices(metadata GridMetadata, bounds Bounds) Crop {
 }
 
 func MergeLevelRectangles(grid *Grid, level Level) []GridRect {
-	if grid == nil || grid.NX <= 0 || grid.NY <= 0 || len(grid.Levels) < grid.NX*grid.NY {
+	if level == LevelNone || level == LevelMissing {
 		return nil
 	}
-	if level == LevelNone || level == LevelMissing {
+	return mergeRectangles(grid, func(dbz uint8) bool {
+		if dbz == MissingDBZ {
+			return false
+		}
+		return LevelForDBZ(float32(dbz), false) == level
+	})
+}
+
+// MergeDBZRange merges cells whose retained MRMS reflectivity is in
+// [lowerInclusive, upperExclusive). A nil upper bound leaves the interval
+// open-ended.
+func MergeDBZRange(grid *Grid, lowerInclusive uint8, upperExclusive *uint8) []GridRect {
+	return mergeRectangles(grid, func(dbz uint8) bool {
+		if dbz == MissingDBZ || dbz < lowerInclusive {
+			return false
+		}
+		return upperExclusive == nil || dbz < *upperExclusive
+	})
+}
+
+func mergeRectangles(grid *Grid, matches func(uint8) bool) []GridRect {
+	if grid == nil || grid.NX <= 0 || grid.NY <= 0 || len(grid.DBZ) < grid.NX*grid.NY || matches == nil {
 		return nil
 	}
 
@@ -186,16 +212,16 @@ func MergeLevelRectangles(grid *Grid, level Level) []GridRect {
 
 	for y := 0; y < grid.NY; y++ {
 		next := make(map[runKey]GridRect, len(active))
-		row := grid.Levels[y*grid.NX : (y+1)*grid.NX]
+		row := grid.DBZ[y*grid.NX : (y+1)*grid.NX]
 
 		for x := 0; x < grid.NX; {
-			if row[x] != level {
+			if !matches(row[x]) {
 				x++
 				continue
 			}
 
 			x0 := x
-			for x < grid.NX && row[x] == level {
+			for x < grid.NX && matches(row[x]) {
 				x++
 			}
 			key := runKey{x0: x0, x1: x}
@@ -204,12 +230,7 @@ func MergeLevelRectangles(grid *Grid, level Level) []GridRect {
 				rect.Y1 = y + 1
 				next[key] = rect
 			} else {
-				next[key] = GridRect{
-					X0: x0,
-					X1: x,
-					Y0: y,
-					Y1: y + 1,
-				}
+				next[key] = GridRect{X0: x0, X1: x, Y0: y, Y1: y + 1}
 			}
 		}
 
@@ -220,7 +241,6 @@ func MergeLevelRectangles(grid *Grid, level Level) []GridRect {
 	for _, rect := range active {
 		out = append(out, gridRectWithBounds(grid, rect))
 	}
-
 	return out
 }
 
