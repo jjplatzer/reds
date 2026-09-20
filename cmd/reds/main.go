@@ -243,8 +243,8 @@ func run(logger *redslog.Logger) error {
 			if starsPane, ok := active.(*stars.STARSPane); ok {
 				menuOptions.ShowStarsFontSetB = true
 				menuOptions.UseStarsFontSetB = starsPane.UseFontSetB()
-				menuOptions.ShowStarsMDMWXColors = true
-				menuOptions.UseStarsMDMWXColors = starsPane.UseMDMWXColors()
+				menuOptions.ShowStarsLegacyWXColors = true
+				menuOptions.UseStarsLegacyWXColors = starsPane.UseLegacyWXColors()
 			}
 
 			titlebarCaptured, titlebarAction := drawScopeTitleBar(
@@ -272,9 +272,9 @@ func run(logger *redslog.Logger) error {
 				if starsPane, ok := active.(*stars.STARSPane); ok {
 					starsPane.ToggleFontSetB(r)
 				}
-			case titleBarActionToggleStarsMDMWXColors:
+			case titleBarActionToggleStarsLegacyWXColors:
 				if starsPane, ok := active.(*stars.STARSPane); ok {
-					starsPane.ToggleMDMWXColors()
+					starsPane.ToggleLegacyWXColors()
 				}
 			}
 		}

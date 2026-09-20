@@ -70,14 +70,14 @@ const (
 	titleBarActionNone titleBarAction = iota
 	titleBarActionSwitchFacility
 	titleBarActionToggleStarsFontSetB
-	titleBarActionToggleStarsMDMWXColors
+	titleBarActionToggleStarsLegacyWXColors
 )
 
 type titleBarMenuOptions struct {
-	ShowStarsFontSetB    bool
-	UseStarsFontSetB     bool
-	ShowStarsMDMWXColors bool
-	UseStarsMDMWXColors  bool
+	ShowStarsFontSetB       bool
+	UseStarsFontSetB        bool
+	ShowStarsLegacyWXColors bool
+	UseStarsLegacyWXColors  bool
 }
 
 type titleBarButtonType int
@@ -228,10 +228,10 @@ func drawTitleBarMenuPopup(
 	if menuOptions.ShowStarsFontSetB {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
-	if menuOptions.ShowStarsMDMWXColors {
+	if menuOptions.ShowStarsLegacyWXColors {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
-	if menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsMDMWXColors {
+	if menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsLegacyWXColors {
 		popupWidth = titleBarStarsMenuPopupWidth
 	}
 	imgui.SetNextWindowSizeV(
@@ -274,7 +274,7 @@ func drawTitleBarMenuPopup(
 		}
 
 		textPadX := float32(titleBarMenuTextPadX)
-		if menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsMDMWXColors {
+		if menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsLegacyWXColors {
 			// Reserve the same check gutter as the STARS checked rows so all
 			// labels start on the same vertical axis.
 			textPadX = titleBarMenuCheckedTextPadX
@@ -332,10 +332,10 @@ func drawTitleBarMenuPopup(
 			rowY += float32(titleBarMenuItemHeight)
 		}
 
-		if menuOptions.ShowStarsMDMWXColors {
+		if menuOptions.ShowStarsLegacyWXColors {
 			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
 			wxClicked := imgui.InvisibleButtonV(
-				"##stars-mdm-wx-colors-menu-item",
+				"##stars-legacy-wx-colors-menu-item",
 				imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
 				imgui.ButtonFlagsMouseButtonLeft,
 			)
@@ -352,7 +352,7 @@ func drawTitleBarMenuPopup(
 				)
 			}
 
-			if menuOptions.UseStarsMDMWXColors {
+			if menuOptions.UseStarsLegacyWXColors {
 				drawTitleBarMenuCheck(wxRowMin, titleBarMenuItemHeight)
 			}
 			drawTitleBarMenuItemTextWithPad(
@@ -360,12 +360,12 @@ func drawTitleBarMenuPopup(
 				titleBarMenuItemHeight,
 				popupWidth,
 				titleBarMenuCheckedTextPadX,
-				"Use MDM3/MDM4 WX Colors",
+				"Use Legacy WX colors",
 				nil,
 			)
 
 			if wxClicked {
-				action = titleBarActionToggleStarsMDMWXColors
+				action = titleBarActionToggleStarsLegacyWXColors
 			}
 		}
 
