@@ -26,6 +26,65 @@ var starsMRMSHTTPClient = &http.Client{Timeout: 20 * time.Second}
 // numbers, so numeric MRMS dBZ is translated into these six STARS bands.
 var starsNexradThresholds = [6]uint8{18, 30, 41, 46, 50, 57}
 
+type starsWXPresentation struct {
+	colors  [6]renderer.RGB
+	pattern renderer.RGB
+	stipple [6]int // 0=none, 1=light, 2=dense
+}
+
+// MDM-3 and MDM-4 use the same three paired WX base colors in VICE. The
+// operator manual's Appendix B does not define this newer monitor-specific
+// palette, so REDS keeps the official palette as the default and exposes this
+// presentation only as an optional display setting.
+//
+// REDS intentionally uses light stipple on the even levels for this optional
+// presentation: levels 1/3/5 are solid and 2/4/6 add the light stipple.
+var starsMDM34WXColors = [6]renderer.RGB{
+	renderer.RGB8(57, 73, 51),
+	renderer.RGB8(57, 73, 51),
+	renderer.RGB8(107, 86, 19),
+	renderer.RGB8(107, 86, 19),
+	renderer.RGB8(107, 67, 84),
+	renderer.RGB8(107, 67, 84),
+}
+
+var starsMDM34WXLevelStipple = [6]int{0, 1, 0, 1, 0, 1}
+
+func (p *STARSPane) wxPresentation() starsWXPresentation {
+	if p != nil && p.useMDMWXColors {
+		return starsWXPresentation{
+			colors:  starsMDM34WXColors,
+			pattern: p.colors.WXPattern,
+			stipple: starsMDM34WXLevelStipple,
+		}
+	}
+	if p == nil {
+		return starsWXPresentation{}
+	}
+	return starsWXPresentation{
+		colors:  p.colors.WX,
+		pattern: p.colors.WXPattern,
+		stipple: p.colors.WXLevelStipple,
+	}
+}
+
+// UseMDMWXColors reports the STARS-only title-bar presentation setting.
+func (p *STARSPane) UseMDMWXColors() bool {
+	return p != nil && p.useMDMWXColors
+}
+
+// ToggleMDMWXColors switches between the operator-manual WX presentation and
+// the optional three-color MDM-3/MDM-4 presentation. The stipple draw mode is
+// baked into the per-level command buffers, so force those buffers to rebuild
+// on the next frame.
+func (p *STARSPane) ToggleMDMWXColors() {
+	if p == nil {
+		return
+	}
+	p.useMDMWXColors = !p.useMDMWXColors
+	p.releaseNexradCmdBuffers()
+}
+
 type starsNexradLevelCmdBuffers struct {
 	fill    *renderer.CmdBuffer
 	stipple *renderer.CmdBuffer
@@ -126,7 +185,7 @@ func (p *STARSPane) rebuildNexradIfNeeded() {
 	}
 	p.releaseNexradCmdBuffers()
 	if p.wxGrid != nil {
-		p.nexrad = buildStarsNexradCmdBuffers(p.wxGrid, p.colors.WXLevelStipple)
+		p.nexrad = buildStarsNexradCmdBuffers(p.wxGrid, p.wxPresentation().stipple)
 	}
 	p.nexradBuiltGeneration = p.nexradGeneration
 }
@@ -202,15 +261,16 @@ func (p *STARSPane) drawNexrad(ctx *panes.Context, zcb *renderer.ZCmdBuffer, tra
 	transforms.LoadGeoViewingMatrices(cb)
 
 	ps := p.currentPrefs()
+	presentation := p.wxPresentation()
 	active := ps.DisplayWeatherLevel
 	for i := range p.nexrad {
 		if !active[i] || p.nexrad[i].fill == nil {
 			continue
 		}
-		cb.SetRGB(ps.Brightness.Weather.ScaleRGB(p.colors.WX[i]))
+		cb.SetRGB(ps.Brightness.Weather.ScaleRGB(presentation.colors[i]))
 		cb.Call(p.nexrad[i].fill)
 		if p.nexrad[i].stipple != nil {
-			cb.SetRGB(ps.Brightness.WxContrast.ScaleRGB(p.colors.WXPattern))
+			cb.SetRGB(ps.Brightness.WxContrast.ScaleRGB(presentation.pattern))
 			cb.Call(p.nexrad[i].stipple)
 		}
 	}

@@ -31,6 +31,7 @@ type STARSPane struct {
 	dcbScroll            float32
 	dcbShowAux           bool
 	useFontSetB          bool
+	useMDMWXColors       bool
 	systemFont           *renderer.BitmapFont
 	systemFontTextures   map[int]renderer.TextureID
 	systemAltimeter      systemAltimeterState
