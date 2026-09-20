@@ -32,10 +32,17 @@ const (
 
 	asdexWindowWidth  = 1280
 	asdexWindowHeight = 800
-	starsWindowWidth  = 1280
-	starsWindowHeight = 800
-	eramWindowWidth   = 1280
-	eramWindowHeight  = 800
+
+	// TI 6191.409 Rev. 30 distinguishes the square high-resolution (2K)
+	// TCW/TDW display from the low-resolution (1K) display. Keep REDS' STARS
+	// pane square, and choose the smallest logical side that fits the
+	// 19-column Main DCB at VICE's pixel-exact 72-unit button size.
+	starsPaneSize     = 19 * 72
+	starsWindowWidth  = starsPaneSize
+	starsWindowHeight = starsPaneSize + scopeTitleBarHeight
+
+	eramWindowWidth  = 1280
+	eramWindowHeight = 800
 )
 
 var (
@@ -347,6 +354,7 @@ func launchScope(
 		}
 		plat.SetWindowTitle(sel.ScopeTitle())
 		plat.SetWindowDecorated(false)
+		plat.SetWindowMinSize(starsWindowWidth, starsWindowHeight)
 		plat.SetWindowSizeCentered(starsWindowWidth, starsWindowHeight)
 		scopeLogger.Info("STARS scope launched")
 		return pane, nil
@@ -402,6 +410,7 @@ func switchToMenu(
 		plat.ClearCursorOverride()
 		plat.SetWindowDecorated(true)
 		plat.SetWindowTitle("REDS")
+		plat.SetWindowMinSize(200, 200)
 		plat.SetWindowSizeCentered(275, 475)
 		plat.ShowSystemCursor()
 	}

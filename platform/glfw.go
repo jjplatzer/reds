@@ -209,6 +209,22 @@ func (g *glfwPlatform) SetWindowSizeCentered(width, height int) {
 	g.updateInput()
 }
 
+func (g *glfwPlatform) SetWindowMinSize(width, height int) {
+	if g == nil || g.window == nil {
+		return
+	}
+
+	minWidth := glfw.DontCare
+	minHeight := glfw.DontCare
+	if width > 0 {
+		minWidth = width
+	}
+	if height > 0 {
+		minHeight = height
+	}
+	g.window.SetSizeLimits(minWidth, minHeight, glfw.DontCare, glfw.DontCare)
+}
+
 func (g *glfwPlatform) SetWindowDecorated(decorated bool) {
 	if g == nil || g.window == nil {
 		return

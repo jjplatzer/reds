@@ -46,6 +46,10 @@ type Platform interface {
 	// center point fixed.
 	SetWindowSizeCentered(width, height int)
 
+	// SetWindowMinSize changes the native window's minimum client-area size.
+	// Passing non-positive values removes the corresponding minimum.
+	SetWindowMinSize(width, height int)
+
 	// Native window controls used by undecorated scope windows.
 	SetWindowDecorated(decorated bool)
 	MinimizeWindow()
