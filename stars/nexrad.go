@@ -201,15 +201,16 @@ func (p *STARSPane) drawNexrad(ctx *panes.Context, zcb *renderer.ZCmdBuffer, tra
 	cb.Scissor(x, y, width, height)
 	transforms.LoadGeoViewingMatrices(cb)
 
-	active := p.currentPrefs().DisplayWeatherLevel
+	ps := p.currentPrefs()
+	active := ps.DisplayWeatherLevel
 	for i := range p.nexrad {
 		if !active[i] || p.nexrad[i].fill == nil {
 			continue
 		}
-		cb.SetRGB(p.colors.WX[i])
+		cb.SetRGB(ps.Brightness.Weather.ScaleRGB(p.colors.WX[i]))
 		cb.Call(p.nexrad[i].fill)
 		if p.nexrad[i].stipple != nil {
-			cb.SetRGB(p.colors.WXPattern)
+			cb.SetRGB(ps.Brightness.WxContrast.ScaleRGB(p.colors.WXPattern))
 			cb.Call(p.nexrad[i].stipple)
 		}
 	}

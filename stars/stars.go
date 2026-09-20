@@ -44,9 +44,11 @@ type STARSPane struct {
 	nexradBuiltGeneration uint64
 	nexrad                [6]starsNexradLevelCmdBuffers
 
-	commandMode     CommandMode
-	commandInput    string
-	commandResponse string
+	commandMode             CommandMode
+	commandInput            string
+	commandResponse         string
+	activeBrightnessControl string
+	brightnessDragAccumY    float32
 }
 
 // NewPane creates a STARS TCW pane for the selected controller position.

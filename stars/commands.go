@@ -12,6 +12,8 @@ type CommandMode int
 const (
 	CommandModeNone CommandMode = iota
 	CommandModeRange
+	CommandModeBrite
+	CommandModeBriteSpinner
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -21,6 +23,10 @@ func (m CommandMode) PreviewString() string {
 	switch m {
 	case CommandModeRange:
 		return "RANGE"
+	case CommandModeBrite:
+		return ""
+	case CommandModeBriteSpinner:
+		return "BRT"
 	default:
 		return ""
 	}
@@ -51,6 +57,19 @@ func init() {
 		p.currentPrefs().Range = args[0].(float32)
 		return CommandStatus{}, nil
 	})
+
+	// TI 6191.409 Rev. 30, 4.10 Change brightness of display objects.
+	// Once a BRITE submenu control is selected, a numeric value may be entered
+	// from the keyboard and committed with <ENTER>.
+	registerCommand(CommandModeBriteSpinner, "[BRIGHTNESS]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		if err := p.setActiveBrightness(Brightness(args[0].(int))); err != nil {
+			return CommandStatus{}, err
+		}
+		p.commandMode = CommandModeBrite
+		p.activeBrightnessControl = ""
+		p.brightnessDragAccumY = 0
+		return CommandStatus{Clear: ClearInput}, nil
+	})
 }
 
 func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
@@ -59,10 +78,14 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	}
 	keyboard := ctx.Keyboard
 
-	// VICE maps the physical STARS <RANGE> key to Ctrl+F11 while the DCB is
-	// displayed. REDS currently always displays the STARS DCB strip.
+	// VICE maps physical STARS function keys to desktop shortcuts while the
+	// DCB is displayed. REDS currently always displays the STARS DCB strip.
 	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF11) {
 		p.setCommandMode(CommandModeRange)
+		return
+	}
+	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF5) {
+		p.setCommandMode(CommandModeBrite)
 		return
 	}
 
@@ -108,6 +131,8 @@ func (p *STARSPane) resetCommand() {
 	p.commandMode = CommandModeNone
 	p.commandInput = ""
 	p.commandResponse = ""
+	p.activeBrightnessControl = ""
+	p.brightnessDragAccumY = 0
 }
 
 func (p *STARSPane) commitCommand() {

@@ -8,4 +8,5 @@ import "errors"
 var (
 	ErrSTARSCommandFormat = errors.New("FORMAT")
 	ErrSTARSRangeLimit    = errors.New("RANGE LIMIT")
+	ErrSTARSIllegalValue  = errors.New("ILL VALUE")
 )

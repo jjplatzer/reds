@@ -50,6 +50,8 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.Scissor(x, y, width, height)
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 
+	listBrightness := p.currentPrefs().Brightness.Lists
+
 	// Field A - TCW/TDW Failure Alert, EFSL / DSF indicator.
 	// A healthy TCW/TDW leaves this field empty (Table 2-15).
 
@@ -60,7 +62,7 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	// The Red Check symbol is always displayed. Table 2-15 defines it as a
 	// solid inverted delta centered in a green outlined box; failed sensor
 	// names, when available, will be rendered on this field after the symbol.
-	cb.SetRGB(p.colors.List)
+	cb.SetRGB(listBrightness.ScaleRGB(p.colors.List))
 	cb.LineWidth(1)
 	box := renderer.GetLinesBuilder()
 	box.AddLineLoop([]renderer.PointVertex{
@@ -85,7 +87,7 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		renderer.PointVertex{X: centerX - halfBase, Y: baseY},
 		renderer.PointVertex{X: centerX + halfBase, Y: baseY},
 		renderer.PointVertex{X: centerX, Y: tipY},
-		p.colors.TextAlert,
+		listBrightness.ScaleRGB(p.colors.TextAlert),
 	)
 	triangle.GenerateCommands(cb)
 	renderer.ReturnColoredTrianglesBuilder(triangle)
@@ -108,7 +110,7 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			td.AddText(
 				text,
 				redsmath.Vec2{X: textX, Y: textY},
-				renderer.TextStyle{Size: fontSize, Color: color.ToRGBA()},
+				renderer.TextStyle{Size: fontSize, Color: listBrightness.ScaleRGB(color).ToRGBA()},
 			)
 			textY += float32(fontSize)
 		}
@@ -180,7 +182,7 @@ func (p *STARSPane) drawPreviewArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer
 	td.SetFont(p.systemFont)
 	td.AddText(text.String(), position, renderer.TextStyle{
 		Size:  fontSize,
-		Color: p.colors.PreviewList.ToRGBA(),
+		Color: ps.Brightness.FullDatablocks.ScaleRGB(p.colors.PreviewList).ToRGBA(),
 	})
 	td.GenerateCommands(cb, texture)
 	renderer.ReturnTextDrawBuilder(td)

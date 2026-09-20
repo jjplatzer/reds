@@ -4,6 +4,7 @@ import (
 	stdmath "math"
 
 	"github.com/juliusplatzer/reds/radar"
+	"github.com/juliusplatzer/reds/renderer"
 )
 
 const (
@@ -17,6 +18,38 @@ const (
 	maximumTCWRange = float32(512)
 )
 
+// Brightness is the STARS 0-100 illumination factor used by the BRITE
+// submenu. TI 6191.409 Rev. 30, 4.10 defines brightness as an illumination
+// factor; VICE applies it as a linear scale to the base display color.
+type Brightness int
+
+func (b Brightness) ScaleRGB(c renderer.RGB) renderer.RGB {
+	s := float32(b) / 100
+	return renderer.RGB{R: c.R * s, G: c.G * s, B: c.B * s}
+}
+
+// BrightnessPreferences mirrors the standard BRITE submenu categories in
+// TI 6191.409 Rev. 30, Figure 4-13 / Table 4-1.
+type BrightnessPreferences struct {
+	DCB                Brightness
+	BackgroundContrast Brightness
+	VideoGroupA        Brightness
+	VideoGroupB        Brightness
+	FullDatablocks     Brightness
+	Lists              Brightness
+	Positions          Brightness
+	LimitedDatablocks  Brightness
+	OtherTracks        Brightness
+	Lines              Brightness
+	RangeRings         Brightness
+	Compass            Brightness
+	BeaconSymbols      Brightness
+	PrimarySymbols     Brightness
+	History            Brightness
+	Weather            Brightness
+	WxContrast         Brightness
+}
+
 // Preferences contains the per-position STARS display state that will later
 // be saved/restored by STARS preference sets. The names mirror VICE's STARS
 // Preferences so DCB commands and saved preference sets can use the same state.
@@ -29,7 +62,7 @@ type Preferences struct {
 	UseUserRangeRingsCenter bool
 	LeaderLineDirection     string
 	LeaderLineLength        int
-	DCBBrightness           int
+	Brightness              BrightnessPreferences
 	DisplayWeatherLevel     [6]bool
 	VideoMapVisible         map[int]bool
 	PreviewAreaPosition     [2]float32
@@ -41,6 +74,28 @@ func newPreferences(cfg selectedConfig) Preferences {
 		DefaultCenter: center,
 		UserCenter:    center,
 		Range:         initialSTARSRange(cfg),
+		Brightness: BrightnessPreferences{
+			// The operator manual defines the allowable ranges but not startup
+			// values. Use VICE's STARS defaults so the initial presentation and
+			// future saved preference sets match the established implementation.
+			DCB:                60,
+			BackgroundContrast: 0,
+			VideoGroupA:        50,
+			VideoGroupB:        40,
+			FullDatablocks:     80,
+			Lists:              80,
+			Positions:          80,
+			LimitedDatablocks:  80,
+			OtherTracks:        80,
+			Lines:              40,
+			RangeRings:         20,
+			Compass:            40,
+			BeaconSymbols:      55,
+			PrimarySymbols:     80,
+			History:            60,
+			Weather:            30,
+			WxContrast:         30,
+		},
 
 		// VICE's STARS default is (0.05, 0.75) in bottom-left-origin pane
 		// coordinates. REDS draws in top-left-origin screen coordinates, so

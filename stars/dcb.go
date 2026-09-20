@@ -19,6 +19,7 @@ const dcbButtonSize = float32(72)
 const (
 	mainDCBColumns    = 19
 	mainDCBMapColumns = 3
+	briteDCBColumns   = 9 // TI 6191.409 Rev. 30, Figure 4-13.
 )
 
 const zDCB renderer.Z = 100
@@ -53,10 +54,10 @@ func (p *STARSPane) mouseOverDCB(ctx *panes.Context) bool {
 	return redsmath.NewRect(0, 0, ctx.PaneRect.Width(), dcbButtonSize).Contains(ctx.Mouse.Pos)
 }
 
-// drawDCB draws the High Resolution (2K) Main Display Control Bar from
-// TI 6191.409 Rev. 30, Figure 2-10 / Table 2-6. Submenus deliberately are not
-// drawn yet; the button helpers and main-page composition mirror VICE so the
-// submenu pages can be added without changing the button renderer.
+// drawDCB draws the High Resolution (2K) Display Control Bar. The Main DCB
+// follows TI 6191.409 Rev. 30, Figure 2-10 / Table 2-6; the BRITE submenu
+// follows Figure 4-13 / Table 4-1. Geometry and button rendering mirror VICE
+// so additional STARS submenus can reuse the same helpers.
 func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
 		return
@@ -74,9 +75,11 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 
 	// VICE keeps 72-unit buttons pixel-exact and scrolls overflowing DCB
-	// content instead of shrinking it. One wheel notch advances one full slot.
+	// content instead of shrinking it. One wheel notch advances one full slot
+	// unless a BRITE spinner is active, in which case the wheel adjusts it.
 	maxScroll := max(float32(0), mainDCBColumns*dcbButtonSize-w)
-	if ctx.Mouse != nil && p.mouseOverDCB(ctx) && ctx.Mouse.Wheel.Y != 0 && maxScroll > 0 {
+	if ctx.Mouse != nil && p.mouseOverDCB(ctx) && ctx.Mouse.Wheel.Y != 0 &&
+		p.commandMode != CommandModeBriteSpinner && maxScroll > 0 {
 		if ctx.Mouse.Wheel.Y > 0 {
 			p.dcbScroll += dcbButtonSize
 		} else {
@@ -115,36 +118,55 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		cursor:     redsmath.Vec2{X: -p.dcbScroll, Y: 0},
 		bar:        bar,
 	}
-	d.drawMainPage()
+
+	briteActive := p.commandMode == CommandModeBrite || p.commandMode == CommandModeBriteSpinner
+	d.drawMainPage(briteActive)
+	if briteActive {
+		// As in VICE, the submenu is drawn over the right-hand portion of the
+		// disabled Main DCB. Revision 30 Figure 4-13 has nine full columns.
+		d.cursor = redsmath.Vec2{
+			X: -p.dcbScroll + float32(mainDCBColumns-briteDCBColumns)*d.buttonSize,
+			Y: 0,
+		}
+		p.adjustActiveBrightness(ctx)
+		d.drawBritePage()
+	}
 	cb.DisableScissor()
 }
 
-func (d *dcbDrawer) drawMainPage() {
+func (d *dcbDrawer) drawMainPage(disabled bool) {
 	p := d.pane
 	ps := p.currentPrefs()
+	mainFlags := func(flags dcbFlags) dcbFlags {
+		if disabled {
+			return flags | buttonDisabled
+		}
+		return flags
+	}
 
 	// <RANGE n> — Table 2-6: current display range is displayed in the label.
-	d.button("RANGE\n"+strconv.Itoa(int(ps.Range+0.5)), buttonFull, p.commandMode == CommandModeRange, func() {
-		p.setCommandMode(CommandModeRange)
-	})
+	d.button("RANGE\n"+strconv.Itoa(int(ps.Range+0.5)), mainFlags(buttonFull),
+		p.commandMode == CommandModeRange, func() {
+			p.setCommandMode(CommandModeRange)
+		})
 
 	// <PLACE CNTR> / <OFF CNTR>.
-	d.button("PLACE\nCNTR", buttonHalfVertical, false, nil)
-	d.button("OFF\nCNTR", buttonHalfVertical, ps.UseUserCenter, func() {
+	d.button("PLACE\nCNTR", mainFlags(buttonHalfVertical), false, nil)
+	d.button("OFF\nCNTR", mainFlags(buttonHalfVertical), ps.UseUserCenter, func() {
 		ps.UseUserCenter = !ps.UseUserCenter
 	})
 
 	// <RR n> / <PLACE RR> / <RR CNTR>.
-	d.button("RR\n"+strconv.Itoa(int(ps.RangeRingRadius+0.5)), buttonFull, false, nil)
-	d.button("PLACE\nRR", buttonHalfVertical, false, nil)
-	d.button("RR\nCNTR", buttonHalfVertical, ps.UseUserRangeRingsCenter, func() {
+	d.button("RR\n"+strconv.Itoa(int(ps.RangeRingRadius+0.5)), mainFlags(buttonFull), false, nil)
+	d.button("PLACE\nRR", mainFlags(buttonHalfVertical), false, nil)
+	d.button("RR\nCNTR", mainFlags(buttonHalfVertical), ps.UseUserRangeRingsCenter, func() {
 		ps.UseUserRangeRingsCenter = !ps.UseUserRangeRingsCenter
 	})
 
 	// <MAPS> and the six position-adapted Main DCB map buttons. The facility
 	// map group is already transposed row-major by crc2reds; VICE's index helper
 	// restores top/bottom drawing order while filling three columns.
-	d.button("MAPS", buttonFull, false, nil)
+	d.button("MAPS", mainFlags(buttonFull), false, nil)
 	maps := p.mainDCBMaps()
 	for i := range 6 {
 		idx := videoMapButtonIndex(0, mainDCBMapColumns, i)
@@ -160,7 +182,7 @@ func (d *dcbDrawer) drawMainPage() {
 		text := fmt.Sprintf("%d\n%s", m.STARSID, label)
 		selected := ps.VideoMapVisible[m.STARSID]
 		mapID := m.STARSID
-		d.button(text, buttonHalfVertical, selected, func() {
+		d.button(text, mainFlags(buttonHalfVertical), selected, func() {
 			if ps.VideoMapVisible[mapID] {
 				delete(ps.VideoMapVisible, mapID)
 			} else {
@@ -178,23 +200,163 @@ func (d *dcbDrawer) drawMainPage() {
 			flags |= buttonWXAVL
 		}
 		level := i
-		d.button(label, flags, ps.DisplayWeatherLevel[i], func() {
+		d.button(label, mainFlags(flags), ps.DisplayWeatherLevel[i], func() {
 			ps.DisplayWeatherLevel[level] = !ps.DisplayWeatherLevel[level]
 		})
 	}
 
-	// Remaining Main DCB buttons from Figure 2-10 / Table 2-6. Submenu pages
-	// are intentionally deferred; their buttons already use the shared renderer.
-	d.button("BRITE", buttonFull, false, nil)
-	d.button("LDR DIR\n"+ps.LeaderLineDirection, buttonHalfVertical, false, nil)
-	d.button("LDR LEN\n"+strconv.Itoa(ps.LeaderLineLength), buttonHalfVertical, false, nil)
-	d.button("CHAR\nSIZE", buttonFull, false, nil)
-	d.button("MODE\nFSL", buttonFull|buttonUnsupported, false, nil)
-	d.button("SITE\nMULTI", buttonFull, false, nil)
-	d.button("PREF", buttonFull, false, nil)
-	d.button("SSA\nFILTER", buttonHalfVertical, false, nil)
-	d.button("GI TEXT\nFILTER", buttonHalfVertical, false, nil)
-	d.button("SHIFT", buttonFull, false, nil)
+	// <BRITE> — Table 2-6 / 4.10: displays the brightness submenu.
+	d.button("BRITE", mainFlags(buttonFull), false, func() {
+		p.setCommandMode(CommandModeBrite)
+	})
+	d.button("LDR DIR\n"+ps.LeaderLineDirection, mainFlags(buttonHalfVertical), false, nil)
+	d.button("LDR LEN\n"+strconv.Itoa(ps.LeaderLineLength), mainFlags(buttonHalfVertical), false, nil)
+	d.button("CHAR\nSIZE", mainFlags(buttonFull), false, nil)
+	d.button("MODE\nFSL", mainFlags(buttonFull)|buttonUnsupported, false, nil)
+	d.button("SITE\nMULTI", mainFlags(buttonFull), false, nil)
+	d.button("PREF", mainFlags(buttonFull), false, nil)
+	d.button("SSA\nFILTER", mainFlags(buttonHalfVertical), false, nil)
+	d.button("GI TEXT\nFILTER", mainFlags(buttonHalfVertical), false, nil)
+	d.button("SHIFT", mainFlags(buttonFull), false, nil)
+}
+
+// brightnessControl is one adjustment button in the standard BRITE submenu.
+// min/allowOff come from TI 6191.409 Rev. 30, Table 4-1.
+type brightnessControl struct {
+	id       string
+	label    string
+	value    *Brightness
+	min      Brightness
+	allowOff bool
+}
+
+func (p *STARSPane) briteControls() []brightnessControl {
+	b := &p.currentPrefs().Brightness
+	return []brightnessControl{
+		{id: "DCB", label: "DCB", value: &b.DCB, min: 25},
+		{id: "BKC", label: "BKC", value: &b.BackgroundContrast, min: 0},
+		{id: "MPA", label: "MPA", value: &b.VideoGroupA, min: 5},
+		{id: "MPB", label: "MPB", value: &b.VideoGroupB, min: 5},
+		{id: "FDB", label: "FDB", value: &b.FullDatablocks, min: 5, allowOff: true},
+		{id: "LST", label: "LST", value: &b.Lists, min: 25},
+		{id: "POS", label: "POS", value: &b.Positions, min: 5, allowOff: true},
+		{id: "LDB", label: "LDB", value: &b.LimitedDatablocks, min: 5, allowOff: true},
+		{id: "OTH", label: "OTH", value: &b.OtherTracks, min: 5, allowOff: true},
+		{id: "TLS", label: "TLS", value: &b.Lines, min: 5, allowOff: true},
+		{id: "RR", label: "RR", value: &b.RangeRings, min: 5, allowOff: true},
+		{id: "CMP", label: "CMP", value: &b.Compass, min: 5, allowOff: true},
+		{id: "BCN", label: "BCN", value: &b.BeaconSymbols, min: 5, allowOff: true},
+		{id: "PRI", label: "PRI", value: &b.PrimarySymbols, min: 5, allowOff: true},
+		{id: "HST", label: "HST", value: &b.History, min: 5, allowOff: true},
+		{id: "WX", label: "WX", value: &b.Weather, min: 5},
+		{id: "WXC", label: "WXC", value: &b.WxContrast, min: 5},
+	}
+}
+
+func (p *STARSPane) activeBriteControl() *brightnessControl {
+	if p == nil || p.activeBrightnessControl == "" {
+		return nil
+	}
+	controls := p.briteControls()
+	for i := range controls {
+		if controls[i].id == p.activeBrightnessControl {
+			return &controls[i]
+		}
+	}
+	return nil
+}
+
+func (p *STARSPane) setActiveBrightness(value Brightness) error {
+	control := p.activeBriteControl()
+	if control == nil {
+		return ErrSTARSCommandFormat
+	}
+	if value > 100 || value < 0 ||
+		(value < control.min && !(value == 0 && control.allowOff)) {
+		return ErrSTARSIllegalValue
+	}
+	*control.value = value
+	return nil
+}
+
+func (p *STARSPane) stepBrightness(control *brightnessControl, delta int) {
+	if control == nil || delta == 0 {
+		return
+	}
+	value := int(*control.value) + 5*delta
+	if value > 100 {
+		value = 100
+	}
+	if value < int(control.min) {
+		if control.allowOff {
+			value = 0
+		} else {
+			value = int(control.min)
+		}
+	}
+	*control.value = Brightness(value)
+}
+
+func (p *STARSPane) adjustActiveBrightness(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Mouse == nil || p.commandMode != CommandModeBriteSpinner {
+		return
+	}
+	control := p.activeBriteControl()
+	if control == nil {
+		return
+	}
+
+	// TI 6191.409 4.10 changes brightness in 5% increments with the trackball:
+	// upward increases, downward decreases. On REDS' top-left-origin mouse,
+	// upward motion has negative Y. The wheel follows the same user-facing
+	// convention: scroll up increases, scroll down decreases.
+	if ctx.Mouse.Wheel.Y != 0 {
+		if ctx.Mouse.Wheel.Y > 0 {
+			p.stepBrightness(control, 1)
+		} else {
+			p.stepBrightness(control, -1)
+		}
+		return
+	}
+
+	p.brightnessDragAccumY += ctx.Mouse.Delta.Y
+	for p.brightnessDragAccumY <= -5 {
+		p.stepBrightness(control, 1)
+		p.brightnessDragAccumY += 5
+	}
+	for p.brightnessDragAccumY >= 5 {
+		p.stepBrightness(control, -1)
+		p.brightnessDragAccumY -= 5
+	}
+}
+
+func (d *dcbDrawer) drawBritePage() {
+	p := d.pane
+	for _, control := range p.briteControls() {
+		control := control
+		valueText := strconv.Itoa(int(*control.value))
+		if *control.value == 0 {
+			valueText = "OFF"
+		}
+		selected := p.commandMode == CommandModeBriteSpinner &&
+			p.activeBrightnessControl == control.id
+		d.button(control.label+" "+valueText, buttonHalfVertical, selected, func() {
+			if selected {
+				p.commandMode = CommandModeBrite
+				p.activeBrightnessControl = ""
+				p.brightnessDragAccumY = 0
+				p.commandInput = ""
+				p.commandResponse = ""
+				return
+			}
+			p.setCommandMode(CommandModeBriteSpinner)
+			p.activeBrightnessControl = control.id
+		})
+	}
+
+	d.button("DONE", buttonHalfVertical, false, func() {
+		p.setCommandMode(CommandModeNone)
+	})
 }
 
 func videoMapButtonIndex(base, columns, i int) int {
@@ -243,10 +405,10 @@ func (d *dcbDrawer) button(text string, flags dcbFlags, selected bool, onClick f
 		}
 	}
 
-	// Match VICE's default DCB brightness treatment: button fills are scaled
-	// directly; text is halfway between raw and brightness-scaled color.
-	buttonColor = scaleDCBColor(buttonColor, d.pane.currentPrefs().DCBBrightness)
-	textColor = lerpDCBColor(textColor, scaleDCBColor(textColor, d.pane.currentPrefs().DCBBrightness), 0.5)
+	// VICE scales the button fill by DCB brightness but leaves DCB text at
+	// its palette color. This also matches the CRC appearance much better than
+	// dimming the labels together with the button slab.
+	buttonColor = d.pane.currentPrefs().Brightness.DCB.ScaleRGB(buttonColor)
 
 	if !visible.Empty() {
 		setDCBScissor(d.ctx, d.cb, visible)
@@ -381,19 +543,6 @@ func dcbTextWidth(fs *renderer.BitmapFontSize, text string) float32 {
 		}
 	}
 	return float32(width)
-}
-
-func scaleDCBColor(c renderer.RGB, brightness int) renderer.RGB {
-	s := float32(brightness) / 100
-	return renderer.RGB{R: c.R * s, G: c.G * s, B: c.B * s}
-}
-
-func lerpDCBColor(a, b renderer.RGB, t float32) renderer.RGB {
-	return renderer.RGB{
-		R: a.R + (b.R-a.R)*t,
-		G: a.G + (b.G-a.G)*t,
-		B: a.B + (b.B-a.B)*t,
-	}
 }
 
 func intersectDCBRect(a, b redsmath.Rect) redsmath.Rect {
