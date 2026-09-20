@@ -44,6 +44,8 @@ type STARSPane struct {
 	nexradBuiltGeneration uint64
 	nexrad                [6]starsNexradLevelCmdBuffers
 
+	videoMaps map[int]*starsVideoMap
+
 	commandMode             CommandMode
 	commandInput            string
 	commandResponse         string
@@ -76,6 +78,9 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	pane.wxDomain = wx.DomainForARTCC(cfg.Facility.ARTCC)
 	pane.wxLogger = logger.With(slog.String("component", "wx"))
 	pane.restartNexradStream(starsInitialNexradRadiusNM)
+	if err := pane.loadMainVideoMaps(); err != nil {
+		logger.Warn("Unable to load STARS Main DCB video maps", slog.Any("error", err))
+	}
 	return pane, nil
 }
 
@@ -102,6 +107,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.consumeMouseEvents(ctx, transforms)
 
 	p.drawNexrad(ctx, zcb, transforms)
+	p.drawVideoMaps(ctx, zcb, transforms)
 	p.drawDCB(ctx, zcb)
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
@@ -118,6 +124,7 @@ func (p *STARSPane) Dispose() {
 		p.wxStream = nil
 	}
 	p.releaseNexradCmdBuffers()
+	p.releaseVideoMaps()
 	p.wxGrid = nil
 }
 
