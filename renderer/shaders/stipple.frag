@@ -29,11 +29,13 @@ const uint densePattern[32] = uint[32](
     0x00000000u, 0x00200020u, 0x00200020u, 0xC000C000u
 );
 
-// REDS FAA-HF-STD010A weather stipple. This is deliberately separate
-// from the legacy STARS light/dense masks above. gl_FragCoord's Y axis
-// makes the row order appear vertically flipped on screen, so the source
-// mask uses top-right + bottom-left 4x4 blocks to display visually as
-// top-left + bottom-right in each repeating 32x32 tile.
+// Retained REDS black-weather-stipple prototype from the earlier new-palette
+// implementation. The current three-color STARS presentation uses the legacy
+// light/sparse mask instead, following the later 2023 operational-usability
+// assessment. Keep this mask available for reference/comparison. gl_FragCoord's
+// Y axis makes the row order appear vertically flipped on screen, so the source
+// mask uses top-right + bottom-left 4x4 blocks to display visually as top-left +
+// bottom-right in each repeating 32x32 tile.
 const uint faaHFSTD010APattern[32] = uint[32](
     0x0000000Fu, 0x0000000Fu, 0x0000000Fu, 0x0000000Fu,
     0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u,
