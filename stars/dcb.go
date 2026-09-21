@@ -88,7 +88,8 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	// unless a BRITE spinner is active, in which case the wheel adjusts it.
 	maxScroll := max(float32(0), mainDCBColumns*dcbButtonSize-w)
 	if ctx.Mouse != nil && p.mouseOverDCB(ctx) && ctx.Mouse.Wheel.Y != 0 &&
-		p.commandMode != CommandModeBriteSpinner && maxScroll > 0 {
+		p.commandMode != CommandModeBriteSpinner &&
+		p.commandMode != CommandModeRangeRings && maxScroll > 0 {
 		if ctx.Mouse.Wheel.Y > 0 {
 			p.dcbScroll += dcbButtonSize
 		} else {
@@ -169,10 +170,21 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 		ps.UseUserCenter = !ps.UseUserCenter
 	})
 
-	// <RR n> / <PLACE RR> / <RR CNTR>.
-	d.button("RR\n"+strconv.Itoa(int(ps.RangeRingRadius+0.5)), mainFlags(buttonFull), false, nil)
+	// <RR n> / <PLACE RR> / <RR CNTR>. Table 2-6 identifies <RR nn> as an
+	// adjustment button whose label always shows the current spacing.
+	rrSelected := p.commandMode == CommandModeRangeRings
+	d.button("RR\n"+strconv.Itoa(int(ps.RangeRingRadius+0.5)), mainFlags(buttonFull), rrSelected, func() {
+		if rrSelected {
+			p.setCommandMode(CommandModeNone)
+		} else {
+			p.setCommandMode(CommandModeRangeRings)
+		}
+	})
 	d.button("PLACE\nRR", mainFlags(buttonHalfVertical), false, nil)
-	d.button("RR\nCNTR", mainFlags(buttonHalfVertical), ps.UseUserRangeRingsCenter, func() {
+	// TI 6191.409 Rev. 30, 6.1.3: RR CNTR is highlighted when the system
+	// default center is in use and is off when the user-specified center is in
+	// use. This is intentionally the inverse of UseUserRangeRingsCenter.
+	d.button("RR\nCNTR", mainFlags(buttonHalfVertical), !ps.UseUserRangeRingsCenter, func() {
 		ps.UseUserRangeRingsCenter = !ps.UseUserRangeRingsCenter
 	})
 
@@ -285,6 +297,72 @@ func (d *dcbDrawer) drawAuxPage() {
 		p.dcbShowAux = false
 		p.dcbSuppressPressUntilRelease = true
 	})
+}
+
+const starsRangeRingMouseDelta = float32(10)
+
+// stepRangeRingSpacing follows the STARS RR spinner ordering used by VICE:
+// 2 <-> 5 <-> 10 <-> 20 NM. Positive delta moves toward the smaller value;
+// negative delta moves toward the larger value.
+func stepRangeRingSpacing(radius float32, delta int) float32 {
+	if delta > 0 {
+		switch radius {
+		case 5:
+			return 2
+		case 10:
+			return 5
+		case 20:
+			return 10
+		}
+		return radius
+	}
+	if delta < 0 {
+		switch radius {
+		case 2:
+			return 5
+		case 5:
+			return 10
+		case 10:
+			return 20
+		}
+	}
+	return radius
+}
+
+// adjustRangeRingSpacing implements the selected <RR nn> DCB spinner. Keep
+// this input handling in dcb.go, matching VICE, where the RR spinner belongs
+// to the DCB implementation while the actual ring drawing lives in tools.go.
+func (p *STARSPane) adjustRangeRingSpacing(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Mouse == nil || p.commandMode != CommandModeRangeRings {
+		return
+	}
+
+	mouse := ctx.Mouse
+	ps := p.currentPrefs()
+
+	if mouse.WasPressed(platform.MouseButtonLeft) {
+		p.setCommandMode(CommandModeNone)
+		return
+	}
+
+	if mouse.Wheel.Y != 0 {
+		if mouse.Wheel.Y > 0 {
+			ps.RangeRingRadius = stepRangeRingSpacing(ps.RangeRingRadius, 1)
+		} else {
+			ps.RangeRingRadius = stepRangeRingSpacing(ps.RangeRingRadius, -1)
+		}
+		p.rangeRingDragAccumY = 0
+		return
+	}
+
+	p.rangeRingDragAccumY += mouse.Delta.Y
+	if p.rangeRingDragAccumY > starsRangeRingMouseDelta {
+		ps.RangeRingRadius = stepRangeRingSpacing(ps.RangeRingRadius, -1)
+		p.rangeRingDragAccumY = 0
+	} else if p.rangeRingDragAccumY < -starsRangeRingMouseDelta {
+		ps.RangeRingRadius = stepRangeRingSpacing(ps.RangeRingRadius, 1)
+		p.rangeRingDragAccumY = 0
+	}
 }
 
 // brightnessControl is one adjustment button in the standard BRITE submenu.

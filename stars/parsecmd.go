@@ -42,6 +42,32 @@ func (rangeCommandParser) Parse(text string) (any, string, bool, error) {
 	return float32(value), "", true, nil
 }
 
+type rangeRingSpacingCommandParser struct{}
+
+func (rangeRingSpacingCommandParser) Identifier() string { return "RANGE_RING_SPACING" }
+
+func (rangeRingSpacingCommandParser) Parse(text string) (any, string, bool, error) {
+	if text == "" {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	for _, r := range text {
+		if r < '0' || r > '9' {
+			return nil, text, true, ErrSTARSCommandFormat
+		}
+	}
+
+	value, err := strconv.Atoi(text)
+	if err != nil {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	switch value {
+	case 2, 5, 10, 20:
+		return float32(value), "", true, nil
+	default:
+		return nil, "", true, ErrSTARSIllegalValue
+	}
+}
+
 type brightnessCommandParser struct{}
 
 func (brightnessCommandParser) Identifier() string { return "BRIGHTNESS" }
@@ -66,8 +92,9 @@ func (brightnessCommandParser) Parse(text string) (any, string, bool, error) {
 }
 
 var commandTypeParsers = map[string]commandTypeParser{
-	"RANGE":      rangeCommandParser{},
-	"BRIGHTNESS": brightnessCommandParser{},
+	"RANGE":              rangeCommandParser{},
+	"RANGE_RING_SPACING": rangeRingSpacingCommandParser{},
+	"BRIGHTNESS":         brightnessCommandParser{},
 }
 
 type commandMatcher interface {

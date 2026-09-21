@@ -16,6 +16,7 @@ import (
 const (
 	zBackground renderer.Z = -1000
 	zWeather    renderer.Z = -950
+	zRangeRings renderer.Z = -925
 )
 
 // STARSPane is the STARS TCW/TDW display surface. Facility adaptation feeds
@@ -54,6 +55,7 @@ type STARSPane struct {
 	commandResponse         string
 	activeBrightnessControl string
 	brightnessDragAccumY    float32
+	rangeRingDragAccumY     float32
 }
 
 // NewPane creates a STARS TCW pane for the selected controller position.
@@ -126,6 +128,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.consumeMouseEvents(ctx, transforms)
 
 	p.drawNexrad(ctx, zcb, transforms)
+	p.drawRangeRings(ctx, zcb, transforms)
 	p.drawVideoMaps(ctx, zcb, transforms)
 	p.drawDCB(ctx, zcb)
 	p.drawPreviewArea(ctx, zcb)
@@ -175,7 +178,18 @@ func (p *STARSPane) scopeTransformations(ctx *panes.Context) radar.LatLonTransfo
 }
 
 func (p *STARSPane) consumeMouseEvents(ctx *panes.Context, transforms radar.LatLonTransformations) {
-	if p == nil || ctx == nil || ctx.Mouse == nil || p.mouseOverDCB(ctx) {
+	if p == nil || ctx == nil || ctx.Mouse == nil {
+		return
+	}
+
+	// An active STARS spinner captures the trackball. While RR is selected,
+	// vertical motion / wheel input changes only the range-ring spacing; it
+	// must not also pan or zoom the radar scope.
+	if p.commandMode == CommandModeRangeRings {
+		p.adjustRangeRingSpacing(ctx)
+		return
+	}
+	if p.mouseOverDCB(ctx) {
 		return
 	}
 
