@@ -12,6 +12,8 @@ type CommandMode int
 const (
 	CommandModeNone CommandMode = iota
 	CommandModeRange
+	CommandModeRangeRings
+	CommandModePlaceRangeRings
 	CommandModeBrite
 	CommandModeBriteSpinner
 )
@@ -23,6 +25,8 @@ func (m CommandMode) PreviewString() string {
 	switch m {
 	case CommandModeRange:
 		return "RANGE"
+	case CommandModeRangeRings:
+		return "RR"
 	case CommandModeBrite:
 		return ""
 	case CommandModeBriteSpinner:
@@ -58,6 +62,14 @@ func init() {
 		return CommandStatus{}, nil
 	})
 
+	// TI 6191.409 Rev. 30, 6.1.1 Change range ring spacing. The operator
+	// manual permits exactly 2, 5, 10, or 20 NM and specifies FORMAT for
+	// non-numeric input and ILL VALUE for any other numeric value.
+	registerCommand(CommandModeRangeRings, "[RANGE_RING_SPACING]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().RangeRingRadius = args[0].(float32)
+		return CommandStatus{}, nil
+	})
+
 	// TI 6191.409 Rev. 30, 4.10 Change brightness of display objects.
 	// Once a BRITE submenu control is selected, a numeric value may be entered
 	// from the keyboard and committed with <ENTER>.
@@ -90,6 +102,17 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	}
 
 	if p.commandMode == CommandModeNone {
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 6.1.2 defines PLACE RR as a Main-DCB-only
+	// command: after selecting the button, the operator positions the cursor
+	// and clicks the left trackball button. It has no keyboard form and the
+	// manual specifies no Preview Area response.
+	if p.commandMode == CommandModePlaceRangeRings {
+		if keyboard.WasPressed(platform.KeyEscape) {
+			p.resetCommand()
+		}
 		return
 	}
 
@@ -133,6 +156,7 @@ func (p *STARSPane) resetCommand() {
 	p.commandResponse = ""
 	p.activeBrightnessControl = ""
 	p.brightnessDragAccumY = 0
+	p.rangeRingDragAccumY = 0
 }
 
 func (p *STARSPane) commitCommand() {

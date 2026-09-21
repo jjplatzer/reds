@@ -59,6 +59,7 @@ type Preferences struct {
 	UseUserCenter           bool
 	Range                   float32
 	RangeRingRadius         float32
+	RangeRingsUserCenter    configPoint
 	UseUserRangeRingsCenter bool
 	LeaderLineDirection     string
 	LeaderLineLength        int
@@ -71,9 +72,11 @@ type Preferences struct {
 func newPreferences(cfg selectedConfig) Preferences {
 	center := initialSTARSCenter(cfg)
 	prefs := Preferences{
-		DefaultCenter: center,
-		UserCenter:    center,
-		Range:         initialSTARSRange(cfg),
+		DefaultCenter:        center,
+		UserCenter:           center,
+		Range:                initialSTARSRange(cfg),
+		RangeRingRadius:      5,
+		RangeRingsUserCenter: center,
 		Brightness: BrightnessPreferences{
 			// The operator manual defines the allowable ranges but not startup
 			// values. Use VICE's STARS defaults so the initial presentation and
