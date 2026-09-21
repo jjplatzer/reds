@@ -14,6 +14,7 @@ const (
 	CommandModeRange
 	CommandModeRangeRings
 	CommandModePlaceRangeRings
+	CommandModeMaps
 	CommandModeBrite
 	CommandModeBriteSpinner
 )
@@ -96,6 +97,10 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		p.setCommandMode(CommandModeRange)
 		return
 	}
+	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF3) {
+		p.setCommandMode(CommandModeMaps)
+		return
+	}
 	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF5) {
 		p.setCommandMode(CommandModeBrite)
 		return
@@ -110,6 +115,17 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	// and clicks the left trackball button. It has no keyboard form and the
 	// manual specifies no Preview Area response.
 	if p.commandMode == CommandModePlaceRangeRings {
+		if keyboard.WasPressed(platform.KeyEscape) {
+			p.resetCommand()
+		}
+		return
+	}
+
+	// The first MAPS implementation is the Main-DCB submenu from 4.5.1.
+	// Selecting map buttons, CLR ALL, and DONE is mouse/trackball-driven; the
+	// separate keyboard MAPS command can be added without changing submenu
+	// state. Escape is the desktop equivalent of removing the submenu.
+	if p.commandMode == CommandModeMaps {
 		if keyboard.WasPressed(platform.KeyEscape) {
 			p.resetCommand()
 		}

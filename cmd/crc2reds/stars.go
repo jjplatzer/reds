@@ -867,7 +867,7 @@ func buildSTARSFacilityConfig(
 			TCPs:          append([]string(nil), mg.TCPs...),
 			MapIDs:        starsCloneMapIDs(mg.MapIDs),
 			MainMapIDs:    starsTransposeMapIDs(mg.MapIDs, 0, 3),
-			SubmenuMapIDs: starsTransposeMapIDs(mg.MapIDs, 6, 15),
+			SubmenuMapIDs: starsTransposeMapIDs(mg.MapIDs, 6, 16),
 		})
 	}
 

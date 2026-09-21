@@ -53,6 +53,7 @@ type controlPositionConfig struct {
 
 type mapGroupConfig struct {
 	TCPs          []string `json:"tcps"`
+	MapIDs        []*int   `json:"mapIds"`
 	MainMapIDs    []*int   `json:"mainMapIds"`
 	SubmenuMapIDs []*int   `json:"submenuMapIds"`
 }
@@ -211,4 +212,70 @@ func (p *STARSPane) mainDCBMaps() [6]videoMapConfig {
 		return [6]videoMapConfig{}
 	}
 	return p.config.mainDCBMaps()
+}
+
+// submenuDCBMaps returns the position-adapted MAPS-submenu video-map buttons.
+// TI 6191.409 Rev. 30, Table 2-6 permits up to 32 map buttons. CRC's map-group
+// adaptation stores the six Main-DCB map slots first, followed by those 32
+// submenu slots in top/bottom column order. Older generated REDS configs only
+// carried 30 transposed submenu IDs; keep that as a compatibility fallback.
+func (cfg selectedConfig) submenuDCBMaps() [32]videoMapConfig {
+	var out [32]videoMapConfig
+	tcp := strings.TrimSpace(cfg.ControlPosition.TCP)
+	if tcp == "" {
+		return out
+	}
+
+	var group *mapGroupConfig
+	for i := range cfg.Facility.MapGroups {
+		g := &cfg.Facility.MapGroups[i]
+		for _, candidate := range g.TCPs {
+			if strings.EqualFold(strings.TrimSpace(candidate), tcp) {
+				group = g
+				break
+			}
+		}
+		if group != nil {
+			break
+		}
+	}
+	if group == nil {
+		return out
+	}
+
+	byID := make(map[int]videoMapConfig, len(cfg.Facility.VideoMaps))
+	for _, vm := range cfg.Facility.VideoMaps {
+		if vm.STARSID != 0 {
+			byID[vm.STARSID] = vm
+		}
+	}
+
+	// Prefer CRC's raw 38-slot adaptation (6 Main + 32 submenu) so current
+	// configs retain the two slots that older crc2reds versions dropped.
+	if len(group.MapIDs) > 6 {
+		for col := 0; col < 16; col++ {
+			for row := 0; row < 2; row++ {
+				src := 6 + 2*col + row
+				if src >= len(group.MapIDs) || group.MapIDs[src] == nil {
+					continue
+				}
+				out[row*16+col] = byID[*group.MapIDs[src]]
+			}
+		}
+		return out
+	}
+
+	for i := 0; i < len(out) && i < len(group.SubmenuMapIDs); i++ {
+		if group.SubmenuMapIDs[i] != nil {
+			out[i] = byID[*group.SubmenuMapIDs[i]]
+		}
+	}
+	return out
+}
+
+func (p *STARSPane) submenuDCBMaps() [32]videoMapConfig {
+	if p == nil {
+		return [32]videoMapConfig{}
+	}
+	return p.config.submenuDCBMaps()
 }
