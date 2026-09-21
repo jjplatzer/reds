@@ -345,7 +345,8 @@ func (r *OpenGLRenderer) drawPoints(vertices []PointVertex, indices []uint32, tr
 		shader = r.hatchShader
 	} else if triangles && mode == DrawCheckered {
 		shader = r.checkerShader
-	} else if triangles && (mode == DrawStippleLight || mode == DrawStippleDense) {
+	} else if triangles && (mode == DrawStippleLight || mode == DrawStippleDense ||
+		mode == DrawStippleFAAHFSTD010A) {
 		shader = r.stippleShader
 	}
 	shader.use()
@@ -355,10 +356,14 @@ func (r *OpenGLRenderer) drawPoints(vertices []PointVertex, indices []uint32, tr
 		shader.setFloat("u_offset", hatchOffset)
 	} else if triangles && mode == DrawCheckered {
 		shader.setVec2("u_offset", r.checkerX, r.checkerY)
-	} else if triangles && (mode == DrawStippleLight || mode == DrawStippleDense) {
+	} else if triangles && (mode == DrawStippleLight || mode == DrawStippleDense ||
+		mode == DrawStippleFAAHFSTD010A) {
 		pattern := int32(1)
-		if mode == DrawStippleDense {
+		switch mode {
+		case DrawStippleDense:
 			pattern = 2
+		case DrawStippleFAAHFSTD010A:
+			pattern = 3
 		}
 		shader.setInt("u_pattern", pattern)
 	}

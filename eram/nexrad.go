@@ -109,6 +109,7 @@ func (p *ERAMPane) drawNexrad(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		p.center.Lon,
 		p.longitudeScaleFactor,
 		p.rangeNM,
+		0, // ERAM is true-north-up; STARS alone applies magnetic rotation.
 	)
 
 	x, y, width, height := ctx.PaneFramebufferRect()

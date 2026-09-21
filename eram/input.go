@@ -197,6 +197,7 @@ func (p *ERAMPane) applyZoom(ctx *panes.Context, zoomIn, fast, aboutPointer bool
 			p.center.Lon,
 			p.longitudeScaleFactor,
 			oldRange,
+			0, // ERAM is true-north-up; STARS alone applies magnetic rotation.
 		)
 		pointerLat, pointerLon := transforms.LatLonFromWindow(mouse)
 		factor := newRange / oldRange

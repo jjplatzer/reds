@@ -14,6 +14,7 @@ const (
 	DrawCheckered
 	DrawStippleLight
 	DrawStippleDense
+	DrawStippleFAAHFSTD010A
 )
 
 // Mat4 is a column-major 4x4 matrix, matching OpenGL's uniform matrix layout.

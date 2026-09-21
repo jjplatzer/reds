@@ -9,7 +9,8 @@ import (
 
 // LatLonTransformations renders geographic vertices whose X is longitude and
 // Y is latitude. The projection is a local equirectangular transform centered
-// on the selected ERAM sector, with world units in nautical miles.
+// on the selected scope center. Longitude is first scaled into local nautical
+// miles and scope rotation is then applied in that isotropic east/north plane.
 type LatLonTransformations struct {
 	paneExtent redsmath.Rect
 
@@ -17,6 +18,7 @@ type LatLonTransformations struct {
 	centerLon            float64
 	longitudeScaleFactor float64
 	rangeNM              float64
+	rotationDegrees      float64
 
 	worldProjection renderer.Mat4
 }
@@ -29,12 +31,17 @@ func LongitudeScaleFactorForLat(lat float64) float64 {
 	return scale
 }
 
+// GetLatLonTransformations constructs the geographic scope transform.
+// rotationDegrees is the clockwise rotation of true north relative to screen
+// up. REDS follows VICE's FAA display convention here: magnetic variation is
+// positive west, so STARS passes its site magnetic variation and ERAM passes 0.
 func GetLatLonTransformations(
 	paneExtent redsmath.Rect,
 	centerLat float64,
 	centerLon float64,
 	longitudeScaleFactor float64,
 	rangeNM float64,
+	rotationDegrees float64,
 ) LatLonTransformations {
 	if paneExtent.Empty() || rangeNM <= 0 {
 		return LatLonTransformations{
@@ -43,6 +50,7 @@ func GetLatLonTransformations(
 			centerLon:            centerLon,
 			longitudeScaleFactor: longitudeScaleFactor,
 			rangeNM:              rangeNM,
+			rotationDegrees:      rotationDegrees,
 			worldProjection:      renderer.Identity(),
 		}
 	}
@@ -54,8 +62,24 @@ func GetLatLonTransformations(
 		longitudeScaleFactor = LongitudeScaleFactorForLat(centerLat)
 	}
 
-	sx := float32(60*longitudeScaleFactor) / float32(halfW)
-	sy := float32(60) / float32(halfH)
+	// Geographic vertices arrive as longitude/latitude degrees. Convert their
+	// deltas from the display center to local east/north NM, then rotate the
+	// NM plane clockwise by rotationDegrees. Rotating after longitude scaling
+	// is essential; rotating raw degrees would distort angles away from the
+	// equator. This is algebraically equivalent to VICE's
+	// Scale(...).Rotate(-magVar) scope transform.
+	theta := rotationDegrees * stdmath.Pi / 180
+	c, sin := stdmath.Cos(theta), stdmath.Sin(theta)
+
+	// Column-major affine projection from [lon, lat, 0, 1] to NDC. The x and
+	// y denominators differ for a non-square pane, so expand the rotated-NM
+	// equations directly instead of composing a rotation in degree space.
+	mLonX := c * 60 * longitudeScaleFactor / halfW
+	mLatX := sin * 60 / halfW
+	mLonY := -sin * 60 * longitudeScaleFactor / halfH
+	mLatY := c * 60 / halfH
+	tx := -(mLonX*centerLon + mLatX*centerLat)
+	ty := -(mLonY*centerLon + mLatY*centerLat)
 
 	return LatLonTransformations{
 		paneExtent:           paneExtent,
@@ -63,11 +87,12 @@ func GetLatLonTransformations(
 		centerLon:            centerLon,
 		longitudeScaleFactor: longitudeScaleFactor,
 		rangeNM:              rangeNM,
+		rotationDegrees:      rotationDegrees,
 		worldProjection: renderer.Mat4{
-			sx, 0, 0, 0,
-			0, sy, 0, 0,
+			float32(mLonX), float32(mLonY), 0, 0,
+			float32(mLatX), float32(mLatY), 0, 0,
 			0, 0, -1, 0,
-			-float32(centerLon) * sx, -float32(centerLat) * sy, 0, 1,
+			float32(tx), float32(ty), 0, 1,
 		},
 	}
 }
@@ -92,12 +117,16 @@ func (st LatLonTransformations) WindowFromLatLon(lat, lon float64) redsmath.Vec2
 		scale = LongitudeScaleFactorForLat(st.centerLat)
 	}
 
-	x := (lon - st.centerLon) * 60 * scale
-	y := (lat - st.centerLat) * 60
+	eastNM := (lon - st.centerLon) * 60 * scale
+	northNM := (lat - st.centerLat) * 60
+	theta := st.rotationDegrees * stdmath.Pi / 180
+	c, sin := stdmath.Cos(theta), stdmath.Sin(theta)
+	rotatedEastNM := c*eastNM + sin*northNM
+	rotatedNorthNM := -sin*eastNM + c*northNM
 
 	return redsmath.Vec2{
-		X: width*0.5 + float32(x/halfW)*width*0.5,
-		Y: height*0.5 - float32(y/halfH)*height*0.5,
+		X: width*0.5 + float32(rotatedEastNM/halfW)*width*0.5,
+		Y: height*0.5 - float32(rotatedNorthNM/halfH)*height*0.5,
 	}
 }
 
@@ -114,11 +143,17 @@ func (st LatLonTransformations) LatLonFromWindow(pos redsmath.Vec2) (lat, lon fl
 		scale = LongitudeScaleFactorForLat(st.centerLat)
 	}
 
-	xNM := (float64(pos.X) - float64(width)*0.5) / (float64(width) * 0.5) * halfW
-	yNM := (float64(height)*0.5 - float64(pos.Y)) / (float64(height) * 0.5) * halfH
+	rotatedEastNM := (float64(pos.X) - float64(width)*0.5) / (float64(width) * 0.5) * halfW
+	rotatedNorthNM := (float64(height)*0.5 - float64(pos.Y)) / (float64(height) * 0.5) * halfH
 
-	lat = st.centerLat + yNM/60
-	lon = normalizeLon(st.centerLon + xNM/(60*scale))
+	// Invert the clockwise world-to-screen rotation.
+	theta := st.rotationDegrees * stdmath.Pi / 180
+	c, sin := stdmath.Cos(theta), stdmath.Sin(theta)
+	eastNM := c*rotatedEastNM - sin*rotatedNorthNM
+	northNM := sin*rotatedEastNM + c*rotatedNorthNM
+
+	lat = st.centerLat + northNM/60
+	lon = normalizeLon(st.centerLon + eastNM/(60*scale))
 	return lat, lon
 }
 
@@ -138,9 +173,13 @@ func (st LatLonTransformations) LatLonFromWindowV(v redsmath.Vec2) (deltaLat, de
 		scale = LongitudeScaleFactorForLat(st.centerLat)
 	}
 
-	xNM := float64(v.X) / (float64(width) * 0.5) * halfW
-	yNM := -float64(v.Y) / (float64(height) * 0.5) * halfH
-	return yNM / 60, xNM / (60 * scale)
+	rotatedEastNM := float64(v.X) / (float64(width) * 0.5) * halfW
+	rotatedNorthNM := -float64(v.Y) / (float64(height) * 0.5) * halfH
+	theta := st.rotationDegrees * stdmath.Pi / 180
+	c, sin := stdmath.Cos(theta), stdmath.Sin(theta)
+	eastNM := c*rotatedEastNM - sin*rotatedNorthNM
+	northNM := sin*rotatedEastNM + c*rotatedNorthNM
+	return northNM / 60, eastNM / (60 * scale)
 }
 
 func LatLonHalfExtentsNM(width, height float32, rangeNM float64) (halfW, halfH float64) {

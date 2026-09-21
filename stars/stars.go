@@ -81,6 +81,18 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 		systemFont:             newSystemFont(useFontSetB),
 	}
 	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()
+	// Validate the magnetic-adaptation resource once at startup. The actual
+	// value is selected from the tile containing the current display center in
+	// scopeTransformations(), so OFF CNTR can cross a tile boundary exactly as
+	// the FAA maintenance procedure's "display center Magnetic Variation Tile"
+	// wording implies.
+	center := pane.currentCenter()
+	if _, lookupErr := radar.MagneticVariationAt(center.Lat, center.Lon); lookupErr != nil {
+		logger.Warn("Unable to resolve STARS magnetic variation; true-north orientation will be used where lookup fails",
+			slog.Float64("lat", center.Lat),
+			slog.Float64("lon", center.Lon),
+			slog.Any("error", lookupErr))
+	}
 	pane.initializeSystemAltimeter(cfg.systemAltimeterAirport())
 	pane.wxDomain = wx.DomainForARTCC(cfg.Facility.ARTCC)
 	pane.wxLogger = logger.With(slog.String("component", "wx"))
@@ -143,15 +155,22 @@ func (p *STARSPane) scopeTransformations(ctx *panes.Context) radar.LatLonTransfo
 	paneExtent := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
 
 	// TI 6191.409 Rev. 30, 4.4.1 defines display range as the distance from
-	// the display center to the nearest screen edge. GetLatLonTransformations
-	// uses the pane's shorter dimension as the range reference, matching that
-	// definition and VICE's STARS scope transformation convention.
+	// the display center to the nearest screen edge. FAA JO 6191.3 §§522-523
+	// and §556 describe STARS map alignment to site magnetic variation, with
+	// maps themselves built to true north. Select the piecewise-constant value
+	// of the REDS magnetic tile containing the current display center. The tile
+	// geometry is WMM-derived approximation data, not an FAA/OSF tile listing.
+	magneticVariation := 0.0
+	if variation, err := radar.MagneticVariationAt(center.Lat, center.Lon); err == nil {
+		magneticVariation = variation
+	}
 	return radar.GetLatLonTransformations(
 		paneExtent,
 		center.Lat,
 		center.Lon,
 		p.longitudeScaleFactor,
 		float64(p.currentPrefs().Range),
+		magneticVariation,
 	)
 }
 

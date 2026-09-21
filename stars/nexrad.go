@@ -24,12 +24,20 @@ var starsMRMSHTTPClient = &http.Client{Timeout: 20 * time.Second}
 // 30-40, 41-45, 46-49, 50-56, and 57+ dBZ. MRMS has its own much finer
 // color-ramp bins; those are source-product legend bins, not STARS level
 // numbers, so numeric MRMS dBZ is translated into these six STARS bands.
+//
+// Sources for the six-level precipitation discretization:
+//   - FAA Technical Instruction Book (TIB) 6310.24, Section 10.
+//   - U.S. Department of Transportation, Federal Aviation Administration,
+//     Aviation Weather Demonstration and Evaluation (AWDE), et al.,
+//     "AWDE Precipitation on the Glass (PoG) Table Top Demonstration Summary,"
+//     DOT/FAA/TCTN-23-21, William J. Hughes Technical Center, 2020.
+//     https://rosap.ntl.bts.gov/view/dot/66579
 var starsNexradThresholds = [6]uint8{18, 30, 41, 46, 50, 57}
 
 type starsWXPresentation struct {
 	colors  [6]renderer.RGB
 	pattern renderer.RGB
-	stipple [6]int // 0=none, 1=light, 2=dense
+	stipple [6]int // 0=none, 1=legacy light/sparse, 2=legacy dense, 3=retained 2020 black-stipple prototype
 }
 
 // The newer three-color WX presentation pairs the six weather levels into
@@ -38,14 +46,36 @@ type starsWXPresentation struct {
 // an explicit "Use Legacy WX Colors" preference and keeps it enabled by
 // default.
 //
-// Source for the newer daytime palette:
+// The first FAA evaluation of the new color palette used the three standard
+// weather colors and added black stippling to levels 2, 4, and 6. It also
+// explicitly identified the choice of texture, size, and density as an item for
+// further study:
+//
+//	DOT, 2020. Evaluation of a New Color Palette for Air Traffic Control
+//	Displays. United States Department of Transportation, Federal Aviation
+//	Administration, Office of Aviation, Civil Aerospace Medical Institute.
+//	Retrieved 21 Sep 2026 from https://coilink.org/20.500.12592/3r4ja5b.
+//	COI: 20.500.12592/3r4ja5b.
+//
+// The 2023 operational-usability follow-up retained the three weather colors
+// but represented the six levels with only two texture states: none and sparse.
+// It used gray from the new color standard for the sparse weather stipple. REDS
+// therefore reuses the legacy STARS light/sparse stipple mask for levels 2, 4,
+// and 6, while levels 1, 3, and 5 remain solid. The older custom black-stipple
+// mask is intentionally retained in the renderer for reference, but is not used
+// by this presentation.
+//
+//	Truitt, Todd R., and Brion Woroch. Operational Usability Assessment of the
+//	New Color Standard for Primary Terminal Air Traffic Control Displays.
+//	United States Department of Transportation, Federal Aviation Administration,
+//	William J. Hughes Technical Center, 2023. Report DOT/FAA/TC-23/66, ROSA P.
+//	https://doi.org/10.21949/1528258
+//
+// Source for the newer daytime palette RGB values:
 // Post, David L., Nicole Racine, Eve Perchanok, and Randy Sollenberger.
 // "Adapting the FAA-HF-STD-010A Standard Color Palette to Daytime
 // Illumination." DOT/FAA/TC-23/56, FAA William J. Hughes Technical Center,
 // 2024. https://doi.org/10.21949/1528261
-//
-// In the newer presentation levels 1/3/5 are solid and levels 2/4/6 add only
-// the light stipple; dense stipple is not used.
 var starsThreeColorWXColors = [6]renderer.RGB{
 	renderer.RGB8(23, 57, 40),
 	renderer.RGB8(23, 57, 40),
@@ -57,7 +87,7 @@ var starsThreeColorWXColors = [6]renderer.RGB{
 
 var (
 	starsThreeColorWXLevelStipple = [6]int{0, 1, 0, 1, 0, 1}
-	starsThreeColorWXPattern      = renderer.RGB8(0, 0, 0)
+	starsThreeColorWXPattern      = starsGray
 )
 
 func (p *STARSPane) wxPresentation() starsWXPresentation {
@@ -235,6 +265,8 @@ func buildStarsNexradCmdBuffers(grid *wx.Grid, stipple [6]int) [6]starsNexradLev
 			out[level].stipple = buildStarsNexradRectBuffer(rects, renderer.DrawStippleLight)
 		case 2:
 			out[level].stipple = buildStarsNexradRectBuffer(rects, renderer.DrawStippleDense)
+		case 3:
+			out[level].stipple = buildStarsNexradRectBuffer(rects, renderer.DrawStippleFAAHFSTD010A)
 		}
 	}
 	return out
