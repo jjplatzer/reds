@@ -26,6 +26,57 @@ const (
 	zLists renderer.Z = 0
 )
 
+func formatSSAWeatherLevelStatus(available, displayed [6]bool) string {
+	// TI 6191.409 Rev. 30, Figure 2-24 and Table 2-15, field D:
+	// weather levels occupy fixed three-character positions. A received level
+	// is parenthesized when enabled for on-screen display, shown as a bare
+	// digit when inhibited, and left blank when that level is not being
+	// received. If no levels are being received, the field is absent.
+	var b strings.Builder
+	b.Grow(3 * len(available))
+
+	anyAvailable := false
+	for i, have := range available {
+		if !have {
+			b.WriteString("   ")
+			continue
+		}
+
+		anyAvailable = true
+		digit := byte('1' + i)
+		if displayed[i] {
+			b.WriteByte('(')
+			b.WriteByte(digit)
+			b.WriteByte(')')
+		} else {
+			b.WriteByte(' ')
+			b.WriteByte(digit)
+			b.WriteByte(' ')
+		}
+	}
+
+	if !anyAvailable {
+		return ""
+	}
+	return strings.TrimRight(b.String(), " ")
+}
+
+func (p *STARSPane) ssaWeatherLevelStatusText() string {
+	if p == nil {
+		return ""
+	}
+
+	var available [6]bool
+	for i := range available {
+		// The same per-level availability state drives the DCB's AVL indication.
+		// A non-nil fill buffer means the current weather product contains at
+		// least one cell in this STARS reflectivity band.
+		available[i] = p.nexrad[i].fill != nil
+	}
+
+	return formatSSAWeatherLevelStatus(available, p.currentPrefs().DisplayWeatherLevel)
+}
+
 // drawSSA draws the System Status Area in the field order defined by
 // TI 6191.409 Rev. 30, Table 2-15. Empty fields do not consume a line, so the
 // area automatically shortens or lengthens as status information is added.
@@ -115,8 +166,13 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			textY += float32(fontSize)
 		}
 
-		// Field D - Weather Level Status.
-		// This field is omitted until STARS weather-receipt/display state exists.
+		// Field D - Weather Level Status. TI 6191.409 Rev. 30, Figure 2-24
+		// and Table 2-15 place this immediately before field E and specify cyan;
+		// Appendix B, Table B-1 defines System Status Wx Text as RGB 0,255,255.
+		// VICE uses the same parenthesized-enabled / bare-inhibited modality, but
+		// renders it with the generic list style; the operator manual takes
+		// precedence here, so REDS uses the dedicated SystemStatusWX color.
+		addLine(p.ssaWeatherLevelStatusText(), p.colors.SystemStatusWX)
 
 		// Field E - UTC Time, System Altimeter Setting.
 		// Hours and minutes / seconds are followed by the system altimeter
