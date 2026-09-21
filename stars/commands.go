@@ -13,6 +13,7 @@ const (
 	CommandModeNone CommandMode = iota
 	CommandModeRange
 	CommandModeRangeRings
+	CommandModePlaceRangeRings
 	CommandModeBrite
 	CommandModeBriteSpinner
 )
@@ -101,6 +102,17 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	}
 
 	if p.commandMode == CommandModeNone {
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 6.1.2 defines PLACE RR as a Main-DCB-only
+	// command: after selecting the button, the operator positions the cursor
+	// and clicks the left trackball button. It has no keyboard form and the
+	// manual specifies no Preview Area response.
+	if p.commandMode == CommandModePlaceRangeRings {
+		if keyboard.WasPressed(platform.KeyEscape) {
+			p.resetCommand()
+		}
 		return
 	}
 

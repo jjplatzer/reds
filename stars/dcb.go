@@ -180,7 +180,18 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 			p.setCommandMode(CommandModeRangeRings)
 		}
 	})
-	d.button("PLACE\nRR", mainFlags(buttonHalfVertical), false, nil)
+	// TI 6191.409 Rev. 30, 6.1.2: PLACE RR is a Main-DCB-only
+	// command. While selected, the next left scope click defines the
+	// user-specified range-ring center; selecting PLACE RR again cancels.
+	// VICE models the selected/pushed-in modality this same way.
+	placeRRSelected := p.commandMode == CommandModePlaceRangeRings
+	d.button("PLACE\nRR", mainFlags(buttonHalfVertical), placeRRSelected, func() {
+		if placeRRSelected {
+			p.setCommandMode(CommandModeNone)
+		} else {
+			p.setCommandMode(CommandModePlaceRangeRings)
+		}
+	})
 	// TI 6191.409 Rev. 30, 6.1.3: RR CNTR is highlighted when the system
 	// default center is in use and is off when the user-specified center is in
 	// use. This is intentionally the inverse of UseUserRangeRingsCenter.

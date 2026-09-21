@@ -196,6 +196,24 @@ func (p *STARSPane) consumeMouseEvents(ctx *panes.Context, transforms radar.LatL
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
 
+	// TI 6191.409 Rev. 30, 6.1.2 Define user-specified range ring
+	// center. PLACE RR captures scope input until the operator clicks the
+	// desired point. The result is immediately displayed about that point and
+	// RR CNTR becomes off (not highlighted), i.e. the user center is active.
+	// The manual specifies no response or error message for this command.
+	if p.commandMode == CommandModePlaceRangeRings {
+		if mouse.WasPressed(platform.MouseButtonLeft) {
+			lat, lon := transforms.LatLonFromWindow(mouse.Pos)
+			ps.RangeRingsUserCenter = configPoint{
+				Lat: lat,
+				Lon: normalizeLongitude(lon),
+			}
+			ps.UseUserRangeRingsCenter = true
+			p.setCommandMode(CommandModeNone)
+		}
+		return
+	}
+
 	// TI 6191.409 Rev. 30, 4.4.2 Re-center display (pan) and define
 	// user-specified center: VICE maps the STARS trackball pan to a secondary
 	// mouse-button drag. Move the user center by the exact geographic vector
