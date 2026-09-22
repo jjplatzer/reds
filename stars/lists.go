@@ -1,6 +1,8 @@
 package stars
 
 import (
+	"fmt"
+	"sort"
 	"strings"
 	"time"
 
@@ -25,6 +27,138 @@ const (
 
 	zLists renderer.Z = 0
 )
+
+func (p *STARSPane) toggleVideoMapsList(selection videoMapsListSelection) {
+	if p == nil {
+		return
+	}
+	list := &p.currentPrefs().VideoMapsList
+	if list.Visible && list.Selection == selection {
+		list.Visible = false
+		return
+	}
+	list.Selection = selection
+	list.Visible = true
+}
+
+func mapsListLabel(s string) string {
+	s = strings.TrimSpace(s)
+	if len(s) > 8 {
+		s = s[:8]
+	}
+	return strings.ReplaceAll(strings.ToUpper(s), " ", "_")
+}
+
+func (p *STARSPane) videoMapsListText() string {
+	if p == nil {
+		return ""
+	}
+
+	ps := p.currentPrefs()
+	if !ps.VideoMapsList.Visible {
+		return ""
+	}
+
+	// TI 6191.409 Rev. 30, 4.5.2 / Figure 4-5: a category list is
+	// reference-only, begins with the category title, is ordered by map
+	// number, and prefixes an on-screen map with ">". VICE caps the rendered
+	// list at 50 entries, matching STARS' 50-map display capacity.
+	maps := make([]videoMapConfig, 0, len(p.config.Facility.VideoMaps))
+	for _, vm := range p.config.Facility.VideoMaps {
+		if vm.STARSID <= 0 || strings.TrimSpace(vm.ShortName) == "" {
+			continue
+		}
+		if ps.VideoMapsList.Selection == videoMapsListCurrent && !ps.VideoMapVisible[vm.STARSID] {
+			continue
+		}
+		maps = append(maps, vm)
+	}
+
+	sort.SliceStable(maps, func(i, j int) bool {
+		return maps[i].STARSID < maps[j].STARSID
+	})
+	if len(maps) > 50 {
+		maps = maps[:50]
+	}
+
+	var text strings.Builder
+	switch ps.VideoMapsList.Selection {
+	case videoMapsListCurrent:
+		// VICE uses "MAPS" for the CURRENT list heading; Figure 4-5 shows
+		// category names as list titles (for example AERODROMES).
+		text.WriteString("MAPS\n")
+	default:
+		text.WriteString("GEOGRAPHIC MAPS\n")
+	}
+
+	for _, vm := range maps {
+		indicator := ' '
+		if ps.VideoMapVisible[vm.STARSID] {
+			indicator = '>'
+		}
+		fmt.Fprintf(
+			&text,
+			"%c%3d %-8s %s\n",
+			indicator,
+			vm.STARSID,
+			mapsListLabel(vm.ShortName),
+			strings.ToUpper(strings.TrimSpace(vm.Name)),
+		)
+	}
+
+	return strings.TrimRight(text.String(), "\n")
+}
+
+// drawVideoMapsList renders the reference-only map category list selected by
+// GEO MAPS or CURRENT. TI 6191.409 Rev. 30 Appendix B, Table B-1 specifies
+// both Normal List Text and List Title as green; therefore the complete list
+// uses the standard List color and LISTS brightness control. The operator
+// manual leaves the initial list position site-adaptable; Preferences carries
+// VICE's established default until REDS imports that adaptation.
+func (p *STARSPane) drawVideoMapsList(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
+		return
+	}
+
+	text := p.videoMapsListText()
+	if text == "" {
+		return
+	}
+
+	w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+	if w <= 0 || h <= 0 {
+		return
+	}
+
+	fontSize := p.listFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
+	if texture == 0 {
+		return
+	}
+
+	ps := p.currentPrefs()
+	position := redsmath.Vec2{
+		X: ps.VideoMapsList.Position[0] * w,
+		Y: ps.VideoMapsList.Position[1] * h,
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zLists)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+
+	td := renderer.GetTextDrawBuilder()
+	td.SetFont(p.systemFont)
+	td.AddText(text, position, renderer.TextStyle{
+		Size:  fontSize,
+		Color: ps.Brightness.Lists.ScaleRGB(p.colors.List).ToRGBA(),
+	})
+	td.GenerateCommands(cb, texture)
+	renderer.ReturnTextDrawBuilder(td)
+
+	cb.DisableScissor()
+}
 
 func formatSSAWeatherLevelStatus(available, displayed [6]bool) string {
 	// TI 6191.409 Rev. 30, Figure 2-24 and Table 2-15, field D:

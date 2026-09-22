@@ -50,6 +50,25 @@ type BrightnessPreferences struct {
 	WxContrast         Brightness
 }
 
+// videoMapsListSelection identifies the reference-only map category list
+// selected from the MAPS submenu. TI 6191.409 Rev. 30, 4.5.2 defines GEO MAPS,
+// SYS PROC, AIRPORT, and CURRENT as site-adaptable category-list buttons. REDS
+// currently implements the two categories that can be derived without extra
+// adaptation metadata: all geographic video maps and the currently displayed
+// maps.
+type videoMapsListSelection uint8
+
+const (
+	videoMapsListGeographic videoMapsListSelection = iota
+	videoMapsListCurrent
+)
+
+type videoMapsListPreferences struct {
+	Position  [2]float32
+	Visible   bool
+	Selection videoMapsListSelection
+}
+
 // Preferences contains the per-position STARS display state that will later
 // be saved/restored by STARS preference sets. The names mirror VICE's STARS
 // Preferences so DCB commands and saved preference sets can use the same state.
@@ -66,6 +85,7 @@ type Preferences struct {
 	Brightness              BrightnessPreferences
 	DisplayWeatherLevel     [6]bool
 	VideoMapVisible         map[int]bool
+	VideoMapsList           videoMapsListPreferences
 	PreviewAreaPosition     [2]float32
 }
 
@@ -103,7 +123,14 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// VICE's STARS default is (0.05, 0.75) in bottom-left-origin pane
 		// coordinates. REDS draws in top-left-origin screen coordinates, so
 		// the equivalent Preview Area position is (0.05, 0.25).
-		VideoMapVisible:     make(map[int]bool),
+		VideoMapVisible: make(map[int]bool),
+		VideoMapsList: videoMapsListPreferences{
+			// VICE's STARS default is (.85, .5). TI 6191.409 defines the list
+			// contents/modality but leaves the initial adapted position to the
+			// site, so retain VICE's established default until list-position
+			// adaptation is carried by crc2reds.
+			Position: [2]float32{0.85, 0.5},
+		},
 		PreviewAreaPosition: [2]float32{0.05, 0.25},
 	}
 	for i := range prefs.DisplayWeatherLevel {

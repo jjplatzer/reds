@@ -21,9 +21,14 @@ const (
 	mainDCBMapColumns      = 3
 	mapsMainDCBColumns     = 5
 	mapsSubmenuControlCols = 1
-	mapsSubmenuMapColumns  = 16 // Table 2-6: up to 32 map buttons.
-	mapsDCBColumns         = mapsMainDCBColumns + mapsSubmenuControlCols + mapsSubmenuMapColumns
-	briteDCBColumns        = 9 // TI 6191.409 Rev. 30, Figure 4-13.
+	// TI 6191.409 Rev. 30, Table 2-6 permits up to 32 MAPS-submenu
+	// buttons total, including map-category buttons such as GEO MAPS and
+	// CURRENT. Figure 4-4 shows the four adapted category buttons occupying
+	// the final two top/bottom columns, leaving 28 direct-map buttons.
+	mapsSubmenuMapColumns       = 16
+	mapsSubmenuDirectMapColumns = 14
+	mapsDCBColumns              = mapsMainDCBColumns + mapsSubmenuControlCols + mapsSubmenuMapColumns
+	briteDCBColumns             = 9 // TI 6191.409 Rev. 30, Figure 4-13.
 )
 
 const zDCB renderer.Z = 100
@@ -336,12 +341,17 @@ func (d *dcbDrawer) drawAuxPage() {
 	})
 }
 
-// drawMapsPage draws the MAPS submenu from TI 6191.409 Rev. 30 4.5.1.
-// DONE and CLR ALL occupy the first half-height column, followed by up to 32
-// site/position-adapted map buttons. Map-category list buttons (for example
-// CURRENT, GEO MAPS, AIRPORT) are site adaptable; CRC's map-group payload does
-// not expose that separate category-button adaptation, so REDS deliberately
-// does not invent category controls here.
+// drawMapsPage draws the MAPS submenu from TI 6191.409 Rev. 30 4.5.1 and
+// Figure 4-4. DONE/CLR ALL occupy the first half-height column. REDS currently
+// adapts the four example category-list buttons from Figure 4-4, so 28 direct
+// map buttons occupy the next 14 columns and the final two columns are:
+//
+//	GEO MAPS | SYS PROC
+//	AIRPORT  | CURRENT
+//
+// GEO MAPS and CURRENT implement 4.5.2. SYS PROC and AIRPORT are retained as
+// inert adaptation placeholders until their corresponding map categories are
+// carried by REDS' CRC-derived map metadata.
 func (d *dcbDrawer) drawMapsPage() {
 	p := d.pane
 	ps := p.currentPrefs()
@@ -354,38 +364,66 @@ func (d *dcbDrawer) drawMapsPage() {
 	})
 
 	maps := p.submenuDCBMaps()
-	for i := range 2 * mapsSubmenuMapColumns {
-		idx := videoMapButtonIndex(0, mapsSubmenuMapColumns, i)
-		m := maps[idx]
-		if m.STARSID == 0 {
-			// Keep the adapted slot geometry without presenting an operable map
-			// button. VICE likewise leaves unadapted MAPS slots blank.
-			d.button("", buttonHalfVertical, false, nil)
-			continue
-		}
+	for col := 0; col < mapsSubmenuDirectMapColumns; col++ {
+		for row := 0; row < 2; row++ {
+			// submenuDCBMaps is row-major with 16 columns because the raw CRC
+			// adaptation carries all 32 possible submenu slots. Reserve the
+			// final two columns for the four category buttons below.
+			m := maps[row*mapsSubmenuMapColumns+col]
+			if m.STARSID == 0 {
+				// Keep the adapted slot geometry without presenting an operable map
+				// button. VICE likewise leaves unadapted MAPS slots blank.
+				d.button("", buttonHalfVertical, false, nil)
+				continue
+			}
 
-		label := strings.TrimSpace(m.ShortName)
-		if label == "" {
-			label = strings.TrimSpace(m.Name)
+			label := strings.TrimSpace(m.ShortName)
+			if label == "" {
+				label = strings.TrimSpace(m.Name)
+			}
+			text := fmt.Sprintf("%d\n%s", m.STARSID, label)
+			selected := ps.VideoMapVisible[m.STARSID]
+			vm := m
+			d.button(text, buttonHalfVertical, selected, func() {
+				if ps.VideoMapVisible[vm.STARSID] {
+					delete(ps.VideoMapVisible, vm.STARSID)
+					return
+				}
+				if err := p.loadVideoMaps([]videoMapConfig{vm}); err != nil {
+					p.logger.Warn("Unable to load STARS video map from MAPS submenu",
+						"stars_id", vm.STARSID,
+						"name", vm.Name,
+						"error", err)
+					return
+				}
+				ps.VideoMapVisible[vm.STARSID] = true
+			})
 		}
-		text := fmt.Sprintf("%d\n%s", m.STARSID, label)
-		selected := ps.VideoMapVisible[m.STARSID]
-		vm := m
-		d.button(text, buttonHalfVertical, selected, func() {
-			if ps.VideoMapVisible[vm.STARSID] {
-				delete(ps.VideoMapVisible, vm.STARSID)
-				return
-			}
-			if err := p.loadVideoMaps([]videoMapConfig{vm}); err != nil {
-				p.logger.Warn("Unable to load STARS video map from MAPS submenu",
-					"stars_id", vm.STARSID,
-					"name", vm.Name,
-					"error", err)
-				return
-			}
-			ps.VideoMapVisible[vm.STARSID] = true
-		})
 	}
+
+	// TI 6191.409 Rev. 30, Figure 4-4 / 4.5.2. Category buttons are toggles:
+	// selecting one displays its reference-only map list; selecting the same
+	// button again removes the list. VICE keeps one category list selected at
+	// a time, which matches the single map-category-list presentation in the
+	// operator manual.
+	geoSelected := ps.VideoMapsList.Visible && ps.VideoMapsList.Selection == videoMapsListGeographic
+	d.button("GEO\nMAPS", buttonHalfVertical, geoSelected, func() {
+		p.toggleVideoMapsList(videoMapsListGeographic)
+	})
+
+	// AIRPORT is adapted in the Figure 4-4 position but is intentionally inert
+	// until REDS carries the Aerodromes category from adaptation data.
+	d.button("AIRPORT", buttonHalfVertical, false, nil)
+
+	// SYS PROC is likewise present but not yet operable. Keep the normal adapted
+	// DCB appearance rather than inventing a disabled modality not specified by
+	// the operator manual for a configured category button.
+	d.button("SYS\nPROC", buttonHalfVertical, false, nil)
+
+	currentSelected := ps.VideoMapsList.Visible && ps.VideoMapsList.Selection == videoMapsListCurrent
+	d.button("CURRENT", buttonHalfVertical, currentSelected, func() {
+		p.toggleVideoMapsList(videoMapsListCurrent)
+	})
 }
 
 const starsRangeRingMouseDelta = float32(10)
