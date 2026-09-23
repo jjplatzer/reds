@@ -346,6 +346,9 @@ func (p *STARSPane) drawPreviewArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer
 
 	if prompt := p.commandMode.PreviewString(); prompt != "" {
 		text.WriteString(prompt)
+		if p.commandMode == CommandModeMultiFunc {
+			text.WriteString(p.multiFuncPrefix)
+		}
 		text.WriteByte('\n')
 	}
 	text.WriteString(strings.Join(strings.Fields(p.commandInput), "\n"))

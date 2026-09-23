@@ -11,6 +11,7 @@ type CommandMode int
 
 const (
 	CommandModeNone CommandMode = iota
+	CommandModeMultiFunc
 	CommandModeRange
 	CommandModeRangeRings
 	CommandModePlaceRangeRings
@@ -24,6 +25,8 @@ const (
 // input as Preview Area contents; these prompt strings follow VICE/STARS.
 func (m CommandMode) PreviewString() string {
 	switch m {
+	case CommandModeMultiFunc:
+		return "F"
 	case CommandModeRange:
 		return "RANGE"
 	case CommandModeRangeRings:
@@ -56,6 +59,15 @@ type CommandStatus struct {
 }
 
 func init() {
+	// TI 6191.409 Rev. 30, 4.5.4 Hide / show Map category list.
+	// <MULTI FUNC>, <T>, <X>, <ENTER> toggles the currently selected list.
+	// The manual specifies no response or error message. VICE implements the
+	// same command as Multi Func "TX".
+	registerCommand(CommandModeMultiFunc, "TX", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().VideoMapsList.Visible = !p.currentPrefs().VideoMapsList.Visible
+		return CommandStatus{}, nil
+	})
+
 	// TI 6191.409 Rev. 30, 4.4.1 Change display range.
 	// [RANGE] is a reusable typed command matcher implemented in parsecmd.go.
 	registerCommand(CommandModeRange, "[RANGE]", func(p *STARSPane, args []any) (CommandStatus, error) {
@@ -90,6 +102,13 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		return
 	}
 	keyboard := ctx.Keyboard
+
+	// VICE maps the physical STARS <MULTI FUNC> key to F7. TI 6191.409
+	// 4.5.3-4.5.4 specify these commands as keyboard-only.
+	if !keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF7) {
+		p.setCommandMode(CommandModeMultiFunc)
+		return
+	}
 
 	// VICE maps physical STARS function keys to desktop shortcuts while the
 	// DCB is displayed. REDS currently always displays the STARS DCB strip.
@@ -136,18 +155,30 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		p.resetCommand()
 		return
 	}
-	if keyboard.WasPressed(platform.KeyBackspace) && len(p.commandInput) != 0 {
-		r := []rune(p.commandInput)
-		p.commandInput = string(r[:len(r)-1])
+	if keyboard.WasPressed(platform.KeyBackspace) {
+		if len(p.commandInput) != 0 {
+			r := []rune(p.commandInput)
+			p.commandInput = string(r[:len(r)-1])
+		} else if p.commandMode == CommandModeMultiFunc && p.multiFuncPrefix != "" {
+			p.multiFuncPrefix = ""
+		}
 	}
 
-	// Echo printable operator input exactly into the Preview Area. Validation
+	// Echo printable operator input exactly into the Preview Area. VICE/STARS
+	// treats the first Multi Func character as a prefix displayed beside the
+	// "F" mode indicator (so <MULTI FUNC>, T, X displays "FT" then "X").
 	// belongs to typed command matchers (for example [RANGE]) and therefore
 	// occurs on <ENTER>, just as VICE's generic command path does.
 	for _, r := range keyboard.Text {
-		if r >= ' ' && r != 0x7f {
-			p.commandInput += strings.ToUpper(string(r))
+		if r < ' ' || r == 0x7f {
+			continue
 		}
+		s := strings.ToUpper(string(r))
+		if p.commandMode == CommandModeMultiFunc && p.multiFuncPrefix == "" {
+			p.multiFuncPrefix = s
+			continue
+		}
+		p.commandInput += s
 	}
 
 	if keyboard.WasPressed(platform.KeyEnter) || keyboard.WasPressed(platform.KeyKeypadEnter) {
@@ -170,6 +201,7 @@ func (p *STARSPane) resetCommand() {
 	p.commandMode = CommandModeNone
 	p.commandInput = ""
 	p.commandResponse = ""
+	p.multiFuncPrefix = ""
 	p.activeBrightnessControl = ""
 	p.brightnessDragAccumY = 0
 	p.rangeRingDragAccumY = 0
@@ -180,7 +212,11 @@ func (p *STARSPane) commitCommand() {
 		return
 	}
 
-	status, err := p.executeCommand(p.commandMode, p.commandInput)
+	input := p.commandInput
+	if p.commandMode == CommandModeMultiFunc {
+		input = p.multiFuncPrefix + input
+	}
+	status, err := p.executeCommand(p.commandMode, input)
 	if err != nil {
 		// Match VICE/STARS command-entry behavior: keep the prompt and echoed
 		// input visible so the operator can correct/re-enter the command, and
