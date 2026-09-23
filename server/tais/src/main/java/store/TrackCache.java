@@ -111,6 +111,39 @@ public final class TrackCache {
         return state == null ? null : state.current;
     }
 
+    /** Remove a dropped STARS track from current state and its raw history. */
+    public boolean remove(String targetKey) {
+        return tracks.remove(targetKey) != null;
+    }
+
+    /**
+     * Immutable point-in-time copy used by a newly connected WebSocket client.
+     * The mutable cache itself never crosses Vert.x event-loop ownership.
+     */
+    public List<SnapshotTarget> snapshot() {
+        List<SnapshotTarget> out = new ArrayList<>(tracks.size());
+
+        for (State state : tracks.values()) {
+            if (state.current == null) continue;
+            out.add(new SnapshotTarget(
+                    state.current,
+                    List.copyOf(new ArrayList<>(state.history))
+            ));
+        }
+
+        out.sort((a, b) -> a.target().targetKey().compareTo(b.target().targetKey()));
+        return List.copyOf(out);
+    }
+
+    public record SnapshotTarget(
+            TaisObservation target,
+            List<HistoryPosition> history
+    ) {
+        public SnapshotTarget {
+            history = List.copyOf(history);
+        }
+    }
+
     public record Stats(
             int tracks,
             long cachedHistorySamples,

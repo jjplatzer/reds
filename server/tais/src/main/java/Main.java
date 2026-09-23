@@ -2,17 +2,20 @@ import ingest.PassThroughCodec;
 import ingest.TaisBatch;
 import ingest.TaisConsumer;
 import io.vertx.core.Vertx;
+import live.WebSocketPush;
 import store.TrackStore;
 
 /**
- * Local TAIS service entry point.
+ * TAIS service entry point.
  *
- * For now this deliberately stops at the ingest/cache boundary:
+ *   FAA SWIM / STDDS TAIS
+ *       -> TaisConsumer
+ *       -> EventBus
+ *       -> TrackStore
+ *       -> WebSocketPush
  *
- *   FAA SWIM / STDDS TAIS -> TaisConsumer -> EventBus -> TrackStore
- *
- * The future ADS-B fusion layer should consume the same normalized TAIS
- * observations rather than being mixed into the XML/JMS code.
+ * The future ADS-B fusion layer should consume the normalized TAIS state
+ * downstream of ingest rather than being mixed into the XML/JMS code.
  */
 public final class Main {
 
@@ -28,9 +31,11 @@ public final class Main {
                 new PassThroughCodec<>("TaisBatch")
         );
 
-        // Store first so no observations can arrive before the history cache is
-        // listening. The consumer owns a dedicated blocking JMS thread.
+        // Store first so snapshots always have an authoritative owner. Start
+        // the WebSocket listener before the JMS consumer, then no live update
+        // can arrive before the push layer is subscribed.
         vertx.deployVerticle(new TrackStore())
+                .compose(ignored -> vertx.deployVerticle(new WebSocketPush()))
                 .compose(ignored -> vertx.deployVerticle(new TaisConsumer()))
                 .onSuccess(ignored -> System.out.println("[TAIS] Service started"))
                 .onFailure(err -> {

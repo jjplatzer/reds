@@ -5,7 +5,7 @@ This service is the airborne STARS/TAIS ingest boundary for REDS. It currently d
 1. consumes STDDS TAIS `TATrackAndFlightPlan` SimpleXML from the SCDS Solace queue;
 2. normalizes the records and keeps current state plus a short raw position history per `(facility, trackNum)`.
 
-It intentionally does **not** perform ADS-B fusion or expose a client WebSocket yet. Those layers can consume the normalized `TaisObservation` stream later without coupling surveillance logic to JMS/XML.
+It intentionally does **not** perform ADS-B fusion. The WebSocket layer exposes normalized TAIS state without coupling surveillance logic to JMS/XML.
 
 ## Why SimpleXML
 
