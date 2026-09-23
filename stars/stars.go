@@ -53,6 +53,7 @@ type STARSPane struct {
 	commandMode             CommandMode
 	commandInput            string
 	commandResponse         string
+	multiFuncPrefix         string
 	activeBrightnessControl string
 	brightnessDragAccumY    float32
 	rangeRingDragAccumY     float32
@@ -133,6 +134,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawDCB(ctx, zcb)
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
+	p.drawVideoMapsList(ctx, zcb)
 	p.applyCursor(ctx)
 	p.renderCursor(ctx, zcb)
 }
@@ -195,6 +197,26 @@ func (p *STARSPane) consumeMouseEvents(ctx *panes.Context, transforms radar.LatL
 
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
+
+	// TI 6191.409 Rev. 30, 4.5.3 Move Map category list. After
+	// <MULTI FUNC>, <T>, <X>, a left trackball click relocates the top-left
+	// corner of the currently selected Map category list. If the list was
+	// hidden, the same command makes it visible at the selected location.
+	// VICE implements this as the Multi Func command TX[POS_NORM].
+	if p.commandMode == CommandModeMultiFunc && p.multiFuncPrefix+p.commandInput == "TX" {
+		if mouse.WasPressed(platform.MouseButtonLeft) {
+			w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+			if w > 0 && h > 0 {
+				ps.VideoMapsList.Position = [2]float32{
+					mouse.Pos.X / w,
+					mouse.Pos.Y / h,
+				}
+				ps.VideoMapsList.Visible = true
+			}
+			p.resetCommand()
+		}
+		return
+	}
 
 	// TI 6191.409 Rev. 30, 6.1.2 Define user-specified range ring
 	// center. PLACE RR captures scope input until the operator clicks the

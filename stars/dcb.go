@@ -17,9 +17,18 @@ import (
 const dcbButtonSize = float32(72)
 
 const (
-	mainDCBColumns    = 19
-	mainDCBMapColumns = 3
-	briteDCBColumns   = 9 // TI 6191.409 Rev. 30, Figure 4-13.
+	mainDCBColumns         = 19
+	mainDCBMapColumns      = 3
+	mapsMainDCBColumns     = 5
+	mapsSubmenuControlCols = 1
+	// TI 6191.409 Rev. 30, Table 2-6 permits up to 32 MAPS-submenu
+	// buttons total, including map-category buttons such as GEO MAPS and
+	// CURRENT. Figure 4-4 shows the four adapted category buttons occupying
+	// the final two top/bottom columns, leaving 28 direct-map buttons.
+	mapsSubmenuMapColumns       = 16
+	mapsSubmenuDirectMapColumns = 14
+	mapsDCBColumns              = mapsMainDCBColumns + mapsSubmenuControlCols + mapsSubmenuMapColumns
+	briteDCBColumns             = 9 // TI 6191.409 Rev. 30, Figure 4-13.
 )
 
 const zDCB renderer.Z = 100
@@ -84,9 +93,14 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 
 	// VICE keeps 72-unit buttons pixel-exact and scrolls overflowing DCB
-	// content instead of shrinking it. One wheel notch advances one full slot
-	// unless a BRITE spinner is active, in which case the wheel adjusts it.
-	maxScroll := max(float32(0), mainDCBColumns*dcbButtonSize-w)
+	// content instead of shrinking it. The operator manual allows 32 MAPS
+	// submenu map buttons, making that page wider than the 19-column Main DCB.
+	// One wheel notch advances one full slot unless a spinner is active.
+	dcbColumns := mainDCBColumns
+	if p.commandMode == CommandModeMaps {
+		dcbColumns = mapsDCBColumns
+	}
+	maxScroll := max(float32(0), float32(dcbColumns)*dcbButtonSize-w)
 	if ctx.Mouse != nil && p.mouseOverDCB(ctx) && ctx.Mouse.Wheel.Y != 0 &&
 		p.commandMode != CommandModeBriteSpinner &&
 		p.commandMode != CommandModeRangeRings && maxScroll > 0 {
@@ -95,8 +109,11 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		} else {
 			p.dcbScroll -= dcbButtonSize
 		}
-		p.dcbScroll = min(max(p.dcbScroll, 0), maxScroll)
 	}
+	// A wider submenu can leave the DCB scrolled when DONE returns to the
+	// narrower Main page; clamp every frame so that transition snaps back into
+	// the legal range even when there is no new wheel event.
+	p.dcbScroll = min(max(p.dcbScroll, 0), maxScroll)
 
 	x, y, width, height := ctx.PaneFramebufferRect()
 	cb := zcb.At(zDCB)
@@ -129,11 +146,23 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		bar:        bar,
 	}
 
+	mapsActive := p.commandMode == CommandModeMaps
 	briteActive := p.commandMode == CommandModeBrite || p.commandMode == CommandModeBriteSpinner
-	if p.dcbShowAux && !briteActive {
+	submenuActive := mapsActive || briteActive
+	if p.dcbShowAux && !submenuActive {
 		d.drawAuxPage()
 	} else {
-		d.drawMainPage(briteActive)
+		d.drawMainPage(submenuActive)
+	}
+	if mapsActive {
+		// TI 6191.409 Rev. 30, Figure 4-4: the MAPS submenu begins immediately
+		// after the first five Main-DCB columns. VICE uses the same overlay
+		// model, but only allocates 30 map slots; the manual permits 32.
+		d.cursor = redsmath.Vec2{
+			X: -p.dcbScroll + float32(mapsMainDCBColumns)*d.buttonSize,
+			Y: 0,
+		}
+		d.drawMapsPage()
 	}
 	if briteActive {
 		// As in VICE, the submenu is drawn over the right-hand portion of the
@@ -202,7 +231,9 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 	// <MAPS> and the six position-adapted Main DCB map buttons. The facility
 	// map group is already transposed row-major by crc2reds; VICE's index helper
 	// restores top/bottom drawing order while filling three columns.
-	d.button("MAPS", mainFlags(buttonFull), false, nil)
+	d.button("MAPS", mainFlags(buttonFull), false, func() {
+		p.setCommandMode(CommandModeMaps)
+	})
 	maps := p.mainDCBMaps()
 	for i := range 6 {
 		idx := videoMapButtonIndex(0, mainDCBMapColumns, i)
@@ -307,6 +338,91 @@ func (d *dcbDrawer) drawAuxPage() {
 	d.button("SHIFT", buttonFull, false, func() {
 		p.dcbShowAux = false
 		p.dcbSuppressPressUntilRelease = true
+	})
+}
+
+// drawMapsPage draws the MAPS submenu from TI 6191.409 Rev. 30 4.5.1 and
+// Figure 4-4. DONE/CLR ALL occupy the first half-height column. REDS currently
+// adapts the four example category-list buttons from Figure 4-4, so 28 direct
+// map buttons occupy the next 14 columns and the final two columns are:
+//
+//	GEO MAPS | SYS PROC
+//	AIRPORT  | CURRENT
+//
+// GEO MAPS and CURRENT implement 4.5.2. SYS PROC and AIRPORT are retained as
+// inert adaptation placeholders until their corresponding map categories are
+// carried by REDS' CRC-derived map metadata.
+func (d *dcbDrawer) drawMapsPage() {
+	p := d.pane
+	ps := p.currentPrefs()
+
+	d.button("DONE", buttonHalfVertical, false, func() {
+		p.setCommandMode(CommandModeNone)
+	})
+	d.button("CLR ALL", buttonHalfVertical, false, func() {
+		clear(ps.VideoMapVisible)
+	})
+
+	maps := p.submenuDCBMaps()
+	for col := 0; col < mapsSubmenuDirectMapColumns; col++ {
+		for row := 0; row < 2; row++ {
+			// submenuDCBMaps is row-major with 16 columns because the raw CRC
+			// adaptation carries all 32 possible submenu slots. Reserve the
+			// final two columns for the four category buttons below.
+			m := maps[row*mapsSubmenuMapColumns+col]
+			if m.STARSID == 0 {
+				// Keep the adapted slot geometry without presenting an operable map
+				// button. VICE likewise leaves unadapted MAPS slots blank.
+				d.button("", buttonHalfVertical, false, nil)
+				continue
+			}
+
+			label := strings.TrimSpace(m.ShortName)
+			if label == "" {
+				label = strings.TrimSpace(m.Name)
+			}
+			text := fmt.Sprintf("%d\n%s", m.STARSID, label)
+			selected := ps.VideoMapVisible[m.STARSID]
+			vm := m
+			d.button(text, buttonHalfVertical, selected, func() {
+				if ps.VideoMapVisible[vm.STARSID] {
+					delete(ps.VideoMapVisible, vm.STARSID)
+					return
+				}
+				if err := p.loadVideoMaps([]videoMapConfig{vm}); err != nil {
+					p.logger.Warn("Unable to load STARS video map from MAPS submenu",
+						"stars_id", vm.STARSID,
+						"name", vm.Name,
+						"error", err)
+					return
+				}
+				ps.VideoMapVisible[vm.STARSID] = true
+			})
+		}
+	}
+
+	// TI 6191.409 Rev. 30, Figure 4-4 / 4.5.2. Category buttons are toggles:
+	// selecting one displays its reference-only map list; selecting the same
+	// button again removes the list. VICE keeps one category list selected at
+	// a time, which matches the single map-category-list presentation in the
+	// operator manual.
+	geoSelected := ps.VideoMapsList.Visible && ps.VideoMapsList.Selection == videoMapsListGeographic
+	d.button("GEO\nMAPS", buttonHalfVertical, geoSelected, func() {
+		p.toggleVideoMapsList(videoMapsListGeographic)
+	})
+
+	// AIRPORT is adapted in the Figure 4-4 position but is intentionally inert
+	// until REDS carries the Aerodromes category from adaptation data.
+	d.button("AIRPORT", buttonHalfVertical, false, nil)
+
+	// SYS PROC is likewise present but not yet operable. Keep the normal adapted
+	// DCB appearance rather than inventing a disabled modality not specified by
+	// the operator manual for a configured category button.
+	d.button("SYS\nPROC", buttonHalfVertical, false, nil)
+
+	currentSelected := ps.VideoMapsList.Visible && ps.VideoMapsList.Selection == videoMapsListCurrent
+	d.button("CURRENT", buttonHalfVertical, currentSelected, func() {
+		p.toggleVideoMapsList(videoMapsListCurrent)
 	})
 }
 

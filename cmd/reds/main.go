@@ -33,11 +33,14 @@ const (
 	asdexWindowWidth  = 1280
 	asdexWindowHeight = 800
 
-	// Keep the STARS window wide enough for the 19-column Main DCB at VICE's
-	// pixel-exact 72-unit button size. Use the same practical desktop height
-	// as ERAM and ASDE-X so the full window fits on smaller laptop displays.
-	starsWindowWidth  = 19 * 72
-	starsWindowHeight = 800
+	// The Main DCB is 19 columns wide, but TI 6191.409 Rev. 30 permits up to
+	// 32 map buttons in the MAPS submenu. With the five Main-DCB columns that
+	// remain visible plus DONE/CLR ALL, the full map submenu spans 22 slots.
+	// Start STARS at that width while still allowing the window to be shrunk
+	// back to the normal 19-column DCB width.
+	starsWindowMinWidth = 19 * 72
+	starsWindowWidth    = 22 * 72
+	starsWindowHeight   = 800
 
 	eramWindowWidth  = 1280
 	eramWindowHeight = 800
@@ -358,7 +361,7 @@ func launchScope(
 		}
 		plat.SetWindowTitle(sel.ScopeTitle())
 		plat.SetWindowDecorated(false)
-		plat.SetWindowMinSize(starsWindowWidth, starsWindowHeight)
+		plat.SetWindowMinSize(starsWindowMinWidth, starsWindowHeight)
 		plat.SetWindowSizeCentered(starsWindowWidth, starsWindowHeight)
 		scopeLogger.Info("STARS scope launched")
 		return pane, nil
