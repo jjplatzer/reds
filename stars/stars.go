@@ -7,6 +7,7 @@ import (
 	"github.com/juliusplatzer/reds/cmd/wx"
 	redslog "github.com/juliusplatzer/reds/log"
 	redsmath "github.com/juliusplatzer/reds/math"
+	redsnet "github.com/juliusplatzer/reds/net"
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/platform"
 	"github.com/juliusplatzer/reds/radar"
@@ -37,6 +38,7 @@ type STARSPane struct {
 	systemFont                   *renderer.BitmapFont
 	systemFontTextures           map[int]renderer.TextureID
 	systemAltimeter              systemAltimeterState
+	tais                         *redsnet.TaisClient
 
 	wxDomain              wx.Domain
 	wxLogger              *redslog.Logger
@@ -103,6 +105,16 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	if err := pane.loadMainVideoMaps(); err != nil {
 		logger.Warn("Unable to load STARS Main DCB video maps", slog.Any("error", err))
 	}
+
+	// Keep transport/state ownership in net.TaisClient. The STARS pane only
+	// owns the client's lifetime; the later fusion layer can consume detached
+	// snapshots without coupling display code to WebSocket/revision handling.
+	pane.tais = redsnet.NewTaisClient(
+		redsnet.TaisWebSocketURL(),
+		logger.With(slog.String("component", "tais")),
+	)
+	pane.tais.Start()
+
 	return pane, nil
 }
 
@@ -142,6 +154,10 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 func (p *STARSPane) Dispose() {
 	if p == nil {
 		return
+	}
+	if p.tais != nil {
+		p.tais.Close()
+		p.tais = nil
 	}
 	if p.wxStream != nil {
 		p.wxStream.Close()
