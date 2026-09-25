@@ -17,6 +17,7 @@ const (
 	// surveillance targets/history remain visible over them; operator UI is
 	// always on top.
 	zTargetHistory   renderer.Z = -100
+	zTargetPTL       renderer.Z = -95
 	zTargetGeometry  renderer.Z = -90
 	zTargetLeader    renderer.Z = -85
 	zTargetPosition  renderer.Z = -80
@@ -30,6 +31,10 @@ const (
 	starsTargetHistoryCount = 5
 	starsTargetHistoryRate  = 4500 * time.Millisecond
 
+	// TI 6191.409 Rev. 30, 6.13.2 specifies a five-second beacon readout
+	// after an unassociated track is slewed and the left trackball selected.
+	starsLDBBeaconReadoutDuration = 5 * time.Second
+
 	// The operator material defines current target geometry and target history
 	// as distinct display elements but does not specify their raster dimensions.
 	// Use the VICE STARS dimensions as the fallback: a nominal 13-pixel current
@@ -42,6 +47,11 @@ const (
 	// raw positions in the per-frame snapshot to select five 4.5-second history
 	// marks without copying the full 64-position client trail every frame.
 	starsTargetHistorySourcePoints = 32
+
+	// VICE/STARS accepts a slew to the nearest surveillance track within 20
+	// display pixels. Use the same screen-space radius for implied target-click
+	// commands such as TI 6191.409 6.13.4 single-track quick look.
+	starsTargetSlewRadiusPixels = float32(20)
 )
 
 // VICE's STARS implementation uses these fixed display lengths for the eight
@@ -62,6 +72,197 @@ func (p *STARSPane) targetSnapshot() redsnet.TaisSnapshot {
 		p.config.Facility.Facility,
 		starsTargetHistorySourcePoints,
 	)
+}
+
+// closestSlewTarget mirrors VICE's 20-pixel target slew tolerance. Only
+// surveillance positions are considered; data-block text itself is not a separate
+// hit target for this implied command.
+func closestSlewTarget(
+	snapshot redsnet.TaisSnapshot,
+	mouse redsmath.Vec2,
+	transforms radar.LatLonTransformations,
+) *redsnet.TaisTarget {
+	if !snapshot.Ready {
+		return nil
+	}
+
+	limit2 := starsTargetSlewRadiusPixels * starsTargetSlewRadiusPixels
+	best2 := limit2
+	best := -1
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if !taisTargetHasPosition(target) {
+			continue
+		}
+		center := transforms.WindowFromLatLon(target.Track.Lat, target.Track.Lon)
+		dx := center.X - mouse.X
+		dy := center.Y - mouse.Y
+		d2 := dx*dx + dy*dy
+		if d2 < best2 {
+			best2 = d2
+			best = i
+		}
+	}
+	if best < 0 {
+		return nil
+	}
+	return &snapshot.Targets[best]
+}
+
+func targetDisplayStateKey(target *redsnet.TaisTarget) string {
+	if target == nil {
+		return ""
+	}
+	if key := strings.TrimSpace(target.Key); key != "" {
+		return key
+	}
+	track := strings.TrimSpace(target.Track.TrackNum)
+	if track == "" {
+		return ""
+	}
+	return strings.TrimSpace(target.Facility) + ":T" + track
+}
+
+func (p *STARSPane) targetOwnedByCurrentTCP(target *redsnet.TaisTarget) bool {
+	if p == nil || target == nil {
+		return false
+	}
+	_, cps, ok := taisCPSPositionSymbol(target)
+	if !ok {
+		return false
+	}
+	ownTCP := strings.TrimSpace(p.config.ControlPosition.TCP)
+	return ownTCP != "" && strings.EqualFold(cps, ownTCP)
+}
+
+// targetSupportsSingleTrackQuickLook is the state predicate for TI 6191.409
+// 6.13.4: the implied command applies to an associated track owned by another
+// controller. LDB/unassociated tracks use a different implied command.
+func (p *STARSPane) targetSupportsSingleTrackQuickLook(target *redsnet.TaisTarget) bool {
+	if p == nil || target == nil || target.FlightPlan == nil || target.FlightPlan.Suspended {
+		return false
+	}
+	if _, _, ok := taisCPSPositionSymbol(target); !ok {
+		return false
+	}
+	return !p.targetOwnedByCurrentTCP(target)
+}
+
+func (p *STARSPane) targetSingleTrackQuickLooked(target *redsnet.TaisTarget) bool {
+	if p == nil || len(p.singleTrackQuickLook) == 0 {
+		return false
+	}
+	key := targetDisplayStateKey(target)
+	if key == "" {
+		return false
+	}
+	_, ok := p.singleTrackQuickLook[key]
+	return ok
+}
+
+func (p *STARSPane) toggleSingleTrackQuickLook(target *redsnet.TaisTarget) {
+	if p == nil || !p.targetSupportsSingleTrackQuickLook(target) {
+		return
+	}
+	key := targetDisplayStateKey(target)
+	if key == "" {
+		return
+	}
+	if p.singleTrackQuickLook == nil {
+		p.singleTrackQuickLook = make(map[string]struct{})
+	}
+	if _, ok := p.singleTrackQuickLook[key]; ok {
+		delete(p.singleTrackQuickLook, key)
+	} else {
+		p.singleTrackQuickLook[key] = struct{}{}
+	}
+}
+
+// pruneSingleTrackQuickLook prevents a reused TAIS track number from
+// inheriting stale local quick-look state. Preserve state across a temporary
+// transport disconnect by pruning only from an authoritative ready snapshot.
+func (p *STARSPane) pruneSingleTrackQuickLook(snapshot redsnet.TaisSnapshot) {
+	if p == nil || !snapshot.Ready || len(p.singleTrackQuickLook) == 0 {
+		return
+	}
+	live := make(map[string]struct{}, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if !p.targetSupportsSingleTrackQuickLook(target) {
+			continue
+		}
+		if key := targetDisplayStateKey(target); key != "" {
+			live[key] = struct{}{}
+		}
+	}
+	for key := range p.singleTrackQuickLook {
+		if _, ok := live[key]; !ok {
+			delete(p.singleTrackQuickLook, key)
+		}
+	}
+}
+
+// targetSupportsLDBBeaconReadout is the state predicate for TI 6191.409
+// 6.13.2: the implied beacon readout applies to an unassociated track. REDS
+// currently represents that state as a surveillance target with no associated
+// TAIS flight plan.
+func (p *STARSPane) targetSupportsLDBBeaconReadout(target *redsnet.TaisTarget) bool {
+	return p != nil && target != nil && target.FlightPlan == nil
+}
+
+func (p *STARSPane) startLDBBeaconReadout(target *redsnet.TaisTarget, now time.Time) {
+	if p == nil || !p.targetSupportsLDBBeaconReadout(target) {
+		return
+	}
+	key := targetDisplayStateKey(target)
+	if key == "" {
+		return
+	}
+	if p.ldbBeaconReadoutUntil == nil {
+		p.ldbBeaconReadoutUntil = make(map[string]time.Time)
+	}
+	p.ldbBeaconReadoutUntil[key] = now.Add(starsLDBBeaconReadoutDuration)
+}
+
+func (p *STARSPane) targetLDBBeaconReadoutActive(target *redsnet.TaisTarget, now time.Time) bool {
+	if p == nil || len(p.ldbBeaconReadoutUntil) == 0 || !p.targetSupportsLDBBeaconReadout(target) {
+		return false
+	}
+	key := targetDisplayStateKey(target)
+	if key == "" {
+		return false
+	}
+	until, ok := p.ldbBeaconReadoutUntil[key]
+	return ok && now.Before(until)
+}
+
+// pruneLDBBeaconReadouts drops expired entries and prevents a reused TAIS
+// track number from inheriting an old five-second readout. As with quick-look
+// state, preserve it across a temporary transport disconnect by pruning only
+// from an authoritative ready snapshot.
+func (p *STARSPane) pruneLDBBeaconReadouts(snapshot redsnet.TaisSnapshot, now time.Time) {
+	if p == nil || !snapshot.Ready || len(p.ldbBeaconReadoutUntil) == 0 {
+		return
+	}
+	live := make(map[string]struct{}, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if !p.targetSupportsLDBBeaconReadout(target) {
+			continue
+		}
+		if key := targetDisplayStateKey(target); key != "" {
+			live[key] = struct{}{}
+		}
+	}
+	for key, until := range p.ldbBeaconReadoutUntil {
+		if !now.Before(until) {
+			delete(p.ldbBeaconReadoutUntil, key)
+			continue
+		}
+		if _, ok := live[key]; !ok {
+			delete(p.ldbBeaconReadoutUntil, key)
+		}
+	}
 }
 
 // drawTargetPositionSymbols draws the STARS position symbol centered at the
@@ -164,13 +365,19 @@ func (p *STARSPane) targetPositionSymbol(target *redsnet.TaisTarget) (string, re
 	}
 
 	ps := p.currentPrefs()
-	if symbol, cps, ok := taisCPSPositionSymbol(target); ok {
-		if ownTCP := strings.TrimSpace(p.config.ControlPosition.TCP); ownTCP != "" && strings.EqualFold(cps, ownTCP) {
+	if symbol, _, ok := taisCPSPositionSymbol(target); ok {
+		if p.targetOwnedByCurrentTCP(target) {
 			return symbol, p.colors.PositionSymbolOwned, ps.Brightness.Positions
+		}
+		if p.targetSingleTrackQuickLooked(target) {
+			// TI 6191.409 Table 4-1: an unowned FDB and its position
+			// symbol are controlled by OTH brightness. Appendix B keeps
+			// the TCW unowned color green.
+			return symbol, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 		}
 		// An ordinary associated track owned by another TCP is a Partial
 		// data block. TI 6191.409 Table 4-1 assigns PDBs and their position
-		// symbols to LDB brightness; OTH is reserved for unowned FDBs.
+		// symbols to LDB brightness.
 		return symbol, p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 	}
 
@@ -353,6 +560,83 @@ func (p *STARSPane) drawTargetHistory(
 	cb.DisableScissor()
 }
 
+// drawPredictedTrackLines renders the PTLs selected by the Auxiliary DCB.
+// TI 6191.409 Rev. 30, 6.3.2-6.3.4 defines PTL ALL for all associated
+// tracks, PTL OWN for tracks owned by the entering position (plus pending /
+// previous-owner handoffs), and a prediction interval of 0.0-5.0 minutes in
+// half-minute increments. The current TAIS wire exposes CPS ownership but not
+// the pending/previous-owner controller identifier, so REDS can determine the
+// owned subset exactly and does not guess the unavailable handoff relation.
+//
+// TAIS VX/VY are the horizontal velocity components already used to compute
+// STARS ground speed. Treat them as east/north knots, project them for the
+// selected number of minutes, and let the geographic scope transform apply the
+// display's magnetic rotation. PTLs use the LIN brightness category and the
+// Appendix-B PTL color, matching VICE.
+func (p *STARSPane) drawPredictedTrackLines(
+	ctx *panes.Context,
+	zcb *renderer.ZCmdBuffer,
+	transforms radar.LatLonTransformations,
+	snapshot redsnet.TaisSnapshot,
+) {
+	if p == nil || ctx == nil || zcb == nil || !snapshot.Ready {
+		return
+	}
+
+	ps := p.currentPrefs()
+	if ps.PTLLength <= 0 || (!ps.PTLAll && !ps.PTLOwn) || ps.Brightness.Lines == 0 {
+		return
+	}
+
+	builder := renderer.GetColoredLinesBuilder()
+	defer renderer.ReturnColoredLinesBuilder(builder)
+	color := ps.Brightness.Lines.ScaleRGB(p.colors.PTL)
+
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if !taisTargetHasPosition(target) || target.FlightPlan == nil {
+			continue
+		}
+		if !ps.PTLAll && !(ps.PTLOwn && p.targetOwnedByCurrentTCP(target)) {
+			continue
+		}
+		if target.Track.VX == 0 && target.Track.VY == 0 {
+			continue
+		}
+
+		start := transforms.WindowFromLatLon(target.Track.Lat, target.Track.Lon)
+		if !targetCenterNearPane(ctx, start, starsTargetDiameterPixels) {
+			continue
+		}
+
+		minutes := float64(ps.PTLLength)
+		eastNM := float64(target.Track.VX) * minutes / 60
+		northNM := float64(target.Track.VY) * minutes / 60
+		lonScale := radar.LongitudeScaleFactorForLat(target.Track.Lat)
+		if lonScale == 0 {
+			continue
+		}
+		endLat := target.Track.Lat + northNM/60
+		endLon := normalizeLongitude(target.Track.Lon + eastNM/(60*lonScale))
+		end := transforms.WindowFromLatLon(endLat, endLon)
+
+		builder.AddLineRGB(
+			renderer.PointVertex{X: start.X, Y: start.Y},
+			renderer.PointVertex{X: end.X, Y: end.Y},
+			color,
+		)
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zTargetPTL)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.LineWidth(max(float32(1), ctx.DPIScale))
+	builder.GenerateCommands(cb)
+	cb.DisableScissor()
+}
+
 // drawTargets draws the current STARS target geometry only. Position symbols,
 // leader lines and FDB/MDB/LDB presentation are separate operator-display
 // layers. PRI controls target-geometry brightness; POS must not affect it.
@@ -500,9 +784,15 @@ func (p *STARSPane) targetLeaderPresentation(target *redsnet.TaisTarget) (render
 	}
 
 	ps := p.currentPrefs()
-	if _, cps, ok := taisCPSPositionSymbol(target); ok {
-		if ownTCP := strings.TrimSpace(p.config.ControlPosition.TCP); ownTCP != "" && strings.EqualFold(cps, ownTCP) {
+	if _, _, ok := taisCPSPositionSymbol(target); ok {
+		if p.targetOwnedByCurrentTCP(target) {
 			return p.colors.OwnedDatablock, ps.Brightness.FullDatablocks
+		}
+		if p.targetSingleTrackQuickLooked(target) {
+			// VICE draws the leader using the same unowned-FDB brightness as
+			// the data block. This makes the entire quick-look presentation
+			// respond to the OTH control.
+			return p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 		}
 		// Other-owner associated tracks normally carry a Partial data block,
 		// whose line/position presentation is controlled by LDB brightness.
@@ -522,10 +812,8 @@ func (p *STARSPane) targetLeaderLineDirection(target *redsnet.TaisTarget) leader
 		return leaderLineDirectionNorth
 	}
 
-	if _, cps, ok := taisCPSPositionSymbol(target); ok {
-		if ownTCP := strings.TrimSpace(p.config.ControlPosition.TCP); ownTCP != "" && strings.EqualFold(cps, ownTCP) {
-			return p.currentPrefs().LeaderLineDirection
-		}
+	if p.targetOwnedByCurrentTCP(target) {
+		return p.currentPrefs().LeaderLineDirection
 	}
 
 	if target.FlightPlan != nil {

@@ -63,6 +63,18 @@ type STARSPane struct {
 	rangeRingDragAccumY       float32
 	leaderDirectionDragAccumY float32
 	leaderLengthDragAccumY    float32
+	ptlLengthDragAccumY       float32
+
+	// singleTrackQuickLook records TI 6191.409 6.13.4 implied-command
+	// quick looks. An unowned associated track normally presents a PDB; a
+	// left-trackball slew toggles that track to an unowned FDB until it is
+	// reselected. This is transient display state, not a saved preference.
+	singleTrackQuickLook map[string]struct{}
+
+	// ldbBeaconReadoutUntil records TI 6191.409 6.13.2 implied-command
+	// beacon readouts. Slew + left trackball on an unassociated track forces
+	// its reported beacon code into LDB field 1 for five seconds.
+	ldbBeaconReadoutUntil map[string]time.Time
 }
 
 // NewPane creates a STARS TCW pane for the selected controller position.
@@ -143,14 +155,17 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	p.processKeyboardInput(ctx)
 	transforms := p.scopeTransformations(ctx)
-	p.consumeMouseEvents(ctx, transforms)
+	targets := p.targetSnapshot()
+	p.pruneSingleTrackQuickLook(targets)
+	p.pruneLDBBeaconReadouts(targets, time.Now())
+	p.consumeMouseEvents(ctx, transforms, targets)
 
 	p.drawNexrad(ctx, zcb, transforms)
 	p.drawRangeRings(ctx, zcb, transforms)
 	p.drawVideoMaps(ctx, zcb, transforms)
 
-	targets := p.targetSnapshot()
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
+	p.drawPredictedTrackLines(ctx, zcb, transforms, targets)
 	p.drawTargets(ctx, zcb, transforms, targets)
 	p.drawTargetLeaderLines(ctx, zcb, transforms, targets)
 	p.drawTargetPositionSymbols(ctx, zcb, transforms, targets)
@@ -208,7 +223,11 @@ func (p *STARSPane) scopeTransformations(ctx *panes.Context) radar.LatLonTransfo
 	)
 }
 
-func (p *STARSPane) consumeMouseEvents(ctx *panes.Context, transforms radar.LatLonTransformations) {
+func (p *STARSPane) consumeMouseEvents(
+	ctx *panes.Context,
+	transforms radar.LatLonTransformations,
+	targets redsnet.TaisSnapshot,
+) {
 	if p == nil || ctx == nil || ctx.Mouse == nil {
 		return
 	}
@@ -226,6 +245,10 @@ func (p *STARSPane) consumeMouseEvents(ctx *panes.Context, transforms radar.LatL
 	}
 	if p.commandMode == CommandModeLDRLen {
 		p.adjustLeaderLineLength(ctx)
+		return
+	}
+	if p.commandMode == CommandModePTLLength {
+		p.adjustPTLLength(ctx)
 		return
 	}
 	if p.mouseOverDCB(ctx) {
@@ -271,6 +294,25 @@ func (p *STARSPane) consumeMouseEvents(ctx *panes.Context, transforms radar.LatL
 			p.setCommandMode(CommandModeNone)
 		}
 		return
+	}
+
+	// TI 6191.409 Rev. 30, 6.13.2 and 6.13.4 implied commands share the
+	// same slew + left-trackball modality. On an unassociated/LDB track the
+	// click forces its reported beacon code into LDB field 1 for five seconds.
+	// On an associated track owned by another controller it toggles PDB/FDB
+	// single-track quick look until the track is selected again. VICE uses a
+	// 20-pixel target slew radius for these implied commands; retain that here.
+	if p.commandMode == CommandModeNone && mouse.WasReleased(platform.MouseButtonLeft) {
+		if target := closestSlewTarget(targets, mouse.Pos, transforms); target != nil {
+			if p.targetSupportsSingleTrackQuickLook(target) {
+				p.toggleSingleTrackQuickLook(target)
+				return
+			}
+			if p.targetSupportsLDBBeaconReadout(target) {
+				p.startLDBBeaconReadout(target, time.Now())
+				return
+			}
+		}
 	}
 
 	// TI 6191.409 Rev. 30, 4.4.2 Re-center display (pan) and define

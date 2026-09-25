@@ -15,10 +15,9 @@ import (
 
 // targetDatablockType is the subset of the STARS data-block presentation that
 // REDS can determine directly from TAIS today. TI 6191.409 Rev. 30 section
-// 2.12 defines Full, Partial, and Limited data blocks. Special cases that force
-// an otherwise unowned associated track to a Full data block (quick look,
-// pointout, alerts, handoff attention, etc.) are intentionally deferred until
-// REDS carries the corresponding operator/display state.
+// 2.12 defines Full, Partial, and Limited data blocks. Single-track quick look
+// (6.13.4) is modeled as transient local display state; pointout, alerts, handoff
+// attention, and the other force-FDB cases remain future additions.
 type targetDatablockType uint8
 
 const (
@@ -72,8 +71,10 @@ func (p *STARSPane) drawDatablocks(
 	// STARS timeshared fields use one facility-wide clock phase. TI 6191.409
 	// defines the field contents but leaves the clock timing to adaptation.
 	// Use VICE's STARS fallback adaptation until crc2reds carries the site's
-	// clock-phase sequence and intervals.
-	clockPhase := defaultSTARSDataBlockClockPhase(time.Now())
+	// clock-phase sequence and intervals. Use the same frame timestamp for
+	// temporary 6.13.2 LDB beacon readouts.
+	now := time.Now()
+	clockPhase := defaultSTARSDataBlockClockPhase(now)
 
 	for i := range snapshot.Targets {
 		target := &snapshot.Targets[i]
@@ -124,10 +125,16 @@ func (p *STARSPane) drawDatablocks(
 
 		case targetDatablockLimited:
 			// Figure 2-23: the leader aligns with the altitude/ground-speed
-			// line; the beacon-code line is immediately above it.
-			line1 := normalizeBeaconCode(target.Track.ReportedBeaconCode)
+			// line. Section 6.13.9 controls whether the reported beacon code
+			// is normally shown in field 1 for all LDBs. Independently, 6.13.2
+			// requires slew + left trackball on one unassociated track to force
+			// that code into field 1 for five seconds. When neither condition
+			// applies, no empty raster row is reserved.
+			if p.currentPrefs().DisplayLDBBeaconCodes || p.targetLDBBeaconReadoutActive(target, now) {
+				line1 := normalizeBeaconCode(target.Track.ReportedBeaconCode)
+				p.addDatablockLine(td, line1, anchor, direction, 0, 1, lineHeight, style)
+			}
 			line2 := targetDatablockAltitudeGroundSpeed(target)
-			p.addDatablockLine(td, line1, anchor, direction, 0, 1, lineHeight, style)
 			p.addDatablockLine(td, line2, anchor, direction, 1, 1, lineHeight, style)
 		}
 	}
@@ -141,16 +148,18 @@ func (p *STARSPane) drawDatablocks(
 	cb.DisableScissor()
 }
 
-// targetDatablockPresentation maps the basic TAIS association/ownership state
-// to the operator-manual data-block categories. With no force-FDB state yet,
-// the normal presentation is:
+// targetDatablockPresentation maps the TAIS association/ownership state plus
+// local 6.13.4 quick-look state to the operator-manual data-block categories:
 //
-//	own associated track      -> Full data block, white, FDB brightness
-//	other associated track    -> Partial data block, green, LDB brightness
-//	unassociated track        -> Limited data block, green, LDB brightness
+//	own associated track          -> Full data block, white, FDB brightness
+//	other associated track        -> Partial data block, green, LDB brightness
+//	quick-looked other track      -> Full data block, green, OTH brightness
+//	unassociated track            -> Limited data block, green, LDB brightness
 //
 // TI 6191.409 Table 4-1 explicitly assigns Partial and Limited data blocks to
-// the LDB brightness control; OTH is for unowned Full data blocks.
+// LDB brightness and all unowned FDBs (including their position symbols) to
+// OTH brightness. Appendix B defines both unowned FDB and non-FDB TCW text as
+// green.
 func (p *STARSPane) targetDatablockPresentation(target *redsnet.TaisTarget) (targetDatablockType, renderer.RGB, Brightness) {
 	if p == nil || target == nil {
 		return targetDatablockLimited, renderer.RGB{}, 0
@@ -161,10 +170,11 @@ func (p *STARSPane) targetDatablockPresentation(target *redsnet.TaisTarget) (tar
 		return targetDatablockLimited, p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 	}
 
-	if _, cps, ok := taisCPSPositionSymbol(target); ok {
-		if ownTCP := strings.TrimSpace(p.config.ControlPosition.TCP); ownTCP != "" && strings.EqualFold(cps, ownTCP) {
-			return targetDatablockFull, p.colors.OwnedDatablock, ps.Brightness.FullDatablocks
-		}
+	if p.targetOwnedByCurrentTCP(target) {
+		return targetDatablockFull, p.colors.OwnedDatablock, ps.Brightness.FullDatablocks
+	}
+	if p.targetSingleTrackQuickLooked(target) {
+		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 	}
 	return targetDatablockPartial, p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 }

@@ -156,11 +156,19 @@ type Preferences struct {
 	UseUserRangeRingsCenter bool
 	LeaderLineDirection     leaderLineDirection
 	LeaderLineLength        int
+	PTLLength               float32
+	PTLOwn                  bool
+	PTLAll                  bool
 	Brightness              BrightnessPreferences
 	DisplayWeatherLevel     [6]bool
 	VideoMapVisible         map[int]bool
 	VideoMapsList           videoMapsListPreferences
 	PreviewAreaPosition     [2]float32
+
+	// DisplayLDBBeaconCodes is the per-position state controlled by TI 6191.409
+	// Rev. 30 section 6.13.9. It controls whether the reported Mode 3/A code is
+	// shown in all Limited Data Blocks for unassociated tracks.
+	DisplayLDBBeaconCodes bool
 
 	// SelectedBeacons contains Mode 3/A codes or two-digit beacon-code banks
 	// selected for enhanced unassociated-track presentation. TI 6191.409
@@ -184,6 +192,10 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// TI 6191.409 4.14.3 defines eight selectable values (0-7), but not
 		// a startup value. Match VICE's STARS default of 1.
 		LeaderLineLength: 1,
+		// TI 6191.409 6.3.4 permits 0.0-5.0 minutes in 0.5-minute
+		// increments but does not prescribe a startup value. Match VICE's
+		// established STARS default of 1.0 minute.
+		PTLLength: 1.0,
 		Brightness: BrightnessPreferences{
 			// The operator manual defines the allowable ranges but not startup
 			// values. Use VICE's STARS defaults so the initial presentation and
@@ -219,7 +231,12 @@ func newPreferences(cfg selectedConfig) Preferences {
 			Position: [2]float32{0.85, 0.5},
 		},
 		PreviewAreaPosition: [2]float32{0.05, 0.25},
-		SelectedBeacons:     []string{"1200"},
+		// The operator manual defines how this state is changed but does not
+		// prescribe a startup value. Preserve REDS's existing presentation,
+		// which showed the beacon code in every LDB, until preference-set
+		// persistence/site adaptation supplies an initial value.
+		DisplayLDBBeaconCodes: true,
+		SelectedBeacons:       []string{"1200"},
 	}
 	for i := range prefs.DisplayWeatherLevel {
 		prefs.DisplayWeatherLevel[i] = true

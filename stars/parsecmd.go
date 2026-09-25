@@ -112,6 +112,33 @@ func (leaderLengthCommandParser) Parse(text string) (any, string, bool, error) {
 	return value, "", true, nil
 }
 
+type ptlLengthCommandParser struct{}
+
+func (ptlLengthCommandParser) Identifier() string { return "PTL_LENGTH" }
+
+func (ptlLengthCommandParser) Parse(text string) (any, string, bool, error) {
+	// TI 6191.409 Rev. 30, 6.3.4 accepts 0.0 through 5.0 minutes in
+	// half-minute increments. Both an out-of-range value and incorrect
+	// formatting produce FORMAT. VICE applies the same validation.
+	if text == "" {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	for _, r := range text {
+		if (r < '0' || r > '9') && r != '.' {
+			return nil, text, true, ErrSTARSCommandFormat
+		}
+	}
+	value, err := strconv.ParseFloat(text, 32)
+	if err != nil || value < 0 || value > 5 {
+		return nil, "", true, ErrSTARSCommandFormat
+	}
+	twice := value * 2
+	if twice != float64(int(twice)) {
+		return nil, "", true, ErrSTARSCommandFormat
+	}
+	return float32(value), "", true, nil
+}
+
 type brightnessCommandParser struct{}
 
 func (brightnessCommandParser) Identifier() string { return "BRIGHTNESS" }
@@ -140,6 +167,7 @@ var commandTypeParsers = map[string]commandTypeParser{
 	"RANGE_RING_SPACING": rangeRingSpacingCommandParser{},
 	"LEADER_DIRECTION":   leaderDirectionCommandParser{},
 	"LEADER_LENGTH":      leaderLengthCommandParser{},
+	"PTL_LENGTH":         ptlLengthCommandParser{},
 	"BRIGHTNESS":         brightnessCommandParser{},
 }
 
