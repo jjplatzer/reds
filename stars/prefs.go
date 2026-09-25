@@ -69,6 +69,80 @@ type videoMapsListPreferences struct {
 	Selection videoMapsListSelection
 }
 
+// leaderLineDirection uses the clockwise ordering shown by the LDR DIR
+// adjustment procedure in TI 6191.409 Rev. 30, 4.14.5.
+type leaderLineDirection uint8
+
+const (
+	leaderLineDirectionNorth leaderLineDirection = iota
+	leaderLineDirectionNorthEast
+	leaderLineDirectionEast
+	leaderLineDirectionSouthEast
+	leaderLineDirectionSouth
+	leaderLineDirectionSouthWest
+	leaderLineDirectionWest
+	leaderLineDirectionNorthWest
+)
+
+func (d leaderLineDirection) String() string {
+	switch d {
+	case leaderLineDirectionNorth:
+		return "N"
+	case leaderLineDirectionNorthEast:
+		return "NE"
+	case leaderLineDirectionEast:
+		return "E"
+	case leaderLineDirectionSouthEast:
+		return "SE"
+	case leaderLineDirectionSouth:
+		return "S"
+	case leaderLineDirectionSouthWest:
+		return "SW"
+	case leaderLineDirectionWest:
+		return "W"
+	case leaderLineDirectionNorthWest:
+		return "NW"
+	default:
+		return "N"
+	}
+}
+
+// step returns the adjacent orientation. Positive steps move clockwise, which
+// is the trackball-forward ordering specified by TI 6191.409 Rev. 30, 4.14.5:
+// N, NE, E, SE, S, SW, W, NW.
+func (d leaderLineDirection) step(delta int) leaderLineDirection {
+	if delta > 0 {
+		return leaderLineDirection((int(d) + 1) % 8)
+	}
+	if delta < 0 {
+		return leaderLineDirection((int(d) + 7) % 8)
+	}
+	return d
+}
+
+func leaderLineDirectionFromKeypad(key int) (leaderLineDirection, bool) {
+	switch key {
+	case 8:
+		return leaderLineDirectionNorth, true
+	case 9:
+		return leaderLineDirectionNorthEast, true
+	case 6:
+		return leaderLineDirectionEast, true
+	case 3:
+		return leaderLineDirectionSouthEast, true
+	case 2:
+		return leaderLineDirectionSouth, true
+	case 1:
+		return leaderLineDirectionSouthWest, true
+	case 4:
+		return leaderLineDirectionWest, true
+	case 7:
+		return leaderLineDirectionNorthWest, true
+	default:
+		return leaderLineDirectionNorth, false
+	}
+}
+
 // Preferences contains the per-position STARS display state that will later
 // be saved/restored by STARS preference sets. The names mirror VICE's STARS
 // Preferences so DCB commands and saved preference sets can use the same state.
@@ -80,13 +154,20 @@ type Preferences struct {
 	RangeRingRadius         float32
 	RangeRingsUserCenter    configPoint
 	UseUserRangeRingsCenter bool
-	LeaderLineDirection     string
+	LeaderLineDirection     leaderLineDirection
 	LeaderLineLength        int
 	Brightness              BrightnessPreferences
 	DisplayWeatherLevel     [6]bool
 	VideoMapVisible         map[int]bool
 	VideoMapsList           videoMapsListPreferences
 	PreviewAreaPosition     [2]float32
+
+	// SelectedBeacons contains Mode 3/A codes or two-digit beacon-code banks
+	// selected for enhanced unassociated-track presentation. TI 6191.409
+	// section 6.13.11 defines this as an operator selection. Until REDS exposes
+	// that command, start with 1200 selected so unassociated valid-Mode-C
+	// tracks squawking 1200 get the selected-code position-symbol presentation.
+	SelectedBeacons []string
 }
 
 func newPreferences(cfg selectedConfig) Preferences {
@@ -97,6 +178,12 @@ func newPreferences(cfg selectedConfig) Preferences {
 		Range:                initialSTARSRange(cfg),
 		RangeRingRadius:      5,
 		RangeRingsUserCenter: center,
+		// TI 6191.409 4.14.5 defines the eight legal orientations but does
+		// not prescribe a startup value. VICE/STARS defaults to north.
+		LeaderLineDirection: leaderLineDirectionNorth,
+		// TI 6191.409 4.14.3 defines eight selectable values (0-7), but not
+		// a startup value. Match VICE's STARS default of 1.
+		LeaderLineLength: 1,
 		Brightness: BrightnessPreferences{
 			// The operator manual defines the allowable ranges but not startup
 			// values. Use VICE's STARS defaults so the initial presentation and
@@ -132,6 +219,7 @@ func newPreferences(cfg selectedConfig) Preferences {
 			Position: [2]float32{0.85, 0.5},
 		},
 		PreviewAreaPosition: [2]float32{0.05, 0.25},
+		SelectedBeacons:     []string{"1200"},
 	}
 	for i := range prefs.DisplayWeatherLevel {
 		prefs.DisplayWeatherLevel[i] = true

@@ -37,6 +37,8 @@ type STARSPane struct {
 	useFAAHFSTD010APalette       bool
 	systemFont                   *renderer.BitmapFont
 	systemFontTextures           map[int]renderer.TextureID
+	systemOutlineFont            *renderer.BitmapFont
+	systemOutlineFontTextures    map[int]renderer.TextureID
 	systemAltimeter              systemAltimeterState
 	tais                         *redsnet.TaisClient
 
@@ -52,13 +54,15 @@ type STARSPane struct {
 
 	videoMaps map[int]*starsVideoMap
 
-	commandMode             CommandMode
-	commandInput            string
-	commandResponse         string
-	multiFuncPrefix         string
-	activeBrightnessControl string
-	brightnessDragAccumY    float32
-	rangeRingDragAccumY     float32
+	commandMode               CommandMode
+	commandInput              string
+	commandResponse           string
+	multiFuncPrefix           string
+	activeBrightnessControl   string
+	brightnessDragAccumY      float32
+	rangeRingDragAccumY       float32
+	leaderDirectionDragAccumY float32
+	leaderLengthDragAccumY    float32
 }
 
 // NewPane creates a STARS TCW pane for the selected controller position.
@@ -84,6 +88,7 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 		useFontSetB:            useFontSetB,
 		useFAAHFSTD010APalette: useFAAHFSTD010APalette,
 		systemFont:             newSystemFont(useFontSetB),
+		systemOutlineFont:      newSystemOutlineFont(useFontSetB),
 	}
 	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()
 	// Validate the magnetic-adaptation resource once at startup. The actual
@@ -143,6 +148,14 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawNexrad(ctx, zcb, transforms)
 	p.drawRangeRings(ctx, zcb, transforms)
 	p.drawVideoMaps(ctx, zcb, transforms)
+
+	targets := p.targetSnapshot()
+	p.drawTargetHistory(ctx, zcb, transforms, targets)
+	p.drawTargets(ctx, zcb, transforms, targets)
+	p.drawTargetLeaderLines(ctx, zcb, transforms, targets)
+	p.drawTargetPositionSymbols(ctx, zcb, transforms, targets)
+	p.drawDatablocks(ctx, zcb, transforms, targets)
+
 	p.drawDCB(ctx, zcb)
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
@@ -200,11 +213,19 @@ func (p *STARSPane) consumeMouseEvents(ctx *panes.Context, transforms radar.LatL
 		return
 	}
 
-	// An active STARS spinner captures the trackball. While RR is selected,
-	// vertical motion / wheel input changes only the range-ring spacing; it
-	// must not also pan or zoom the radar scope.
+	// Active STARS adjustment buttons capture trackball motion. RR changes
+	// range-ring spacing; LDR DIR changes the owned-data-block orientation.
+	// Neither adjustment may also pan or zoom the radar scope.
 	if p.commandMode == CommandModeRangeRings {
 		p.adjustRangeRingSpacing(ctx)
+		return
+	}
+	if p.commandMode == CommandModeLDRDir {
+		p.adjustLeaderLineDirection(ctx)
+		return
+	}
+	if p.commandMode == CommandModeLDRLen {
+		p.adjustLeaderLineLength(ctx)
 		return
 	}
 	if p.mouseOverDCB(ctx) {

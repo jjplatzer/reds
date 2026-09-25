@@ -18,6 +18,8 @@ const (
 	CommandModeMaps
 	CommandModeBrite
 	CommandModeBriteSpinner
+	CommandModeLDRDir
+	CommandModeLDRLen
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -35,6 +37,10 @@ func (m CommandMode) PreviewString() string {
 		return ""
 	case CommandModeBriteSpinner:
 		return "BRT"
+	case CommandModeLDRDir:
+		return "LDR"
+	case CommandModeLDRLen:
+		return "LDR"
 	default:
 		return ""
 	}
@@ -80,6 +86,20 @@ func init() {
 	// non-numeric input and ILL VALUE for any other numeric value.
 	registerCommand(CommandModeRangeRings, "[RANGE_RING_SPACING]", func(p *STARSPane, args []any) (CommandStatus, error) {
 		p.currentPrefs().RangeRingRadius = args[0].(float32)
+		return CommandStatus{}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 4.14.5. After selecting <LDR DIR xx>, the
+	// operator may enter one of the numeric-keypad directions and press ENTER.
+	registerCommand(CommandModeLDRDir, "[LEADER_DIRECTION]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().LeaderLineDirection = args[0].(leaderLineDirection)
+		return CommandStatus{}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 4.14.3. After selecting <LDR LEN n>, the
+	// operator may enter any integer from 0 through 7 and press ENTER.
+	registerCommand(CommandModeLDRLen, "[LEADER_LENGTH]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().LeaderLineLength = args[0].(int)
 		return CommandStatus{}, nil
 	})
 
@@ -205,6 +225,8 @@ func (p *STARSPane) resetCommand() {
 	p.activeBrightnessControl = ""
 	p.brightnessDragAccumY = 0
 	p.rangeRingDragAccumY = 0
+	p.leaderDirectionDragAccumY = 0
+	p.leaderLengthDragAccumY = 0
 }
 
 func (p *STARSPane) commitCommand() {

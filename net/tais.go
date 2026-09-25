@@ -109,6 +109,17 @@ func (c *TaisClient) SnapshotFacility(facility string) TaisSnapshot {
 	return c.state.snapshot(facility)
 }
 
+// SnapshotFacilityHistory returns a detached facility snapshot while copying at
+// most maxHistory of each target's newest raw history positions. A negative
+// limit keeps the complete history; zero omits it. Rendering uses this to avoid
+// copying the client's full 64-position trail on every frame.
+func (c *TaisClient) SnapshotFacilityHistory(facility string, maxHistory int) TaisSnapshot {
+	if c == nil || c.state == nil {
+		return TaisSnapshot{}
+	}
+	return c.state.snapshotHistory(facility, maxHistory)
+}
+
 func (c *TaisClient) Target(key string) (TaisTarget, bool) {
 	if c == nil || c.state == nil {
 		return TaisTarget{}, false
@@ -462,6 +473,10 @@ func updatedTaisHistory(previous TaisTarget, hadPrevious bool, target TaisTarget
 }
 
 func (s *taisState) snapshot(facility string) TaisSnapshot {
+	return s.snapshotHistory(facility, -1)
+}
+
+func (s *taisState) snapshotHistory(facility string, maxHistory int) TaisSnapshot {
 	if s == nil {
 		return TaisSnapshot{}
 	}
@@ -478,7 +493,7 @@ func (s *taisState) snapshot(facility string) TaisSnapshot {
 		if facility != "" && !strings.EqualFold(target.Facility, facility) {
 			continue
 		}
-		out.Targets = append(out.Targets, cloneTaisTarget(target))
+		out.Targets = append(out.Targets, cloneTaisTargetHistory(target, maxHistory))
 	}
 	s.mu.RUnlock()
 
@@ -511,6 +526,10 @@ func (s *taisState) status() (ready bool, revision uint64, targetCount int) {
 }
 
 func cloneTaisTarget(target TaisTarget) TaisTarget {
+	return cloneTaisTargetHistory(target, -1)
+}
+
+func cloneTaisTargetHistory(target TaisTarget, maxHistory int) TaisTarget {
 	out := target
 	if target.RecordMeta != nil {
 		value := *target.RecordMeta
@@ -524,8 +543,14 @@ func cloneTaisTarget(target TaisTarget) TaisTarget {
 		value := *target.EnhancedData
 		out.EnhancedData = &value
 	}
-	if target.History != nil {
-		out.History = append([]TaisHistory(nil), target.History...)
+	if target.History != nil && maxHistory != 0 {
+		history := target.History
+		if maxHistory > 0 && len(history) > maxHistory {
+			history = history[len(history)-maxHistory:]
+		}
+		out.History = append([]TaisHistory(nil), history...)
+	} else if maxHistory == 0 {
+		out.History = nil
 	}
 	return out
 }

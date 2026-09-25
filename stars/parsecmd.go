@@ -68,6 +68,50 @@ func (rangeRingSpacingCommandParser) Parse(text string) (any, string, bool, erro
 	}
 }
 
+type leaderDirectionCommandParser struct{}
+
+func (leaderDirectionCommandParser) Identifier() string { return "LEADER_DIRECTION" }
+
+func (leaderDirectionCommandParser) Parse(text string) (any, string, bool, error) {
+	// TI 6191.409 Rev. 30, 4.14.5 permits exactly one numeric-keypad
+	// direction: 1/2/3/4/6/7/8/9. The manual specifies FORMAT for 5 and
+	// all other invalid direction entries.
+	if len(text) != 1 || text[0] < '0' || text[0] > '9' {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	direction, ok := leaderLineDirectionFromKeypad(int(text[0] - '0'))
+	if !ok {
+		return nil, "", true, ErrSTARSCommandFormat
+	}
+	return direction, "", true, nil
+}
+
+type leaderLengthCommandParser struct{}
+
+func (leaderLengthCommandParser) Identifier() string { return "LEADER_LENGTH" }
+
+func (leaderLengthCommandParser) Parse(text string) (any, string, bool, error) {
+	// TI 6191.409 Rev. 30, 4.14.3 permits exactly the eight selectable
+	// leader-line lengths 0 through 7. Non-numeric input is FORMAT; a numeric
+	// value outside the range is RANGE LIMIT.
+	if text == "" {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	for _, r := range text {
+		if r < '0' || r > '9' {
+			return nil, text, true, ErrSTARSCommandFormat
+		}
+	}
+	value, err := strconv.Atoi(text)
+	if err != nil {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	if value < 0 || value > 7 {
+		return nil, "", true, ErrSTARSRangeLimit
+	}
+	return value, "", true, nil
+}
+
 type brightnessCommandParser struct{}
 
 func (brightnessCommandParser) Identifier() string { return "BRIGHTNESS" }
@@ -94,6 +138,8 @@ func (brightnessCommandParser) Parse(text string) (any, string, bool, error) {
 var commandTypeParsers = map[string]commandTypeParser{
 	"RANGE":              rangeCommandParser{},
 	"RANGE_RING_SPACING": rangeRingSpacingCommandParser{},
+	"LEADER_DIRECTION":   leaderDirectionCommandParser{},
+	"LEADER_LENGTH":      leaderLengthCommandParser{},
 	"BRIGHTNESS":         brightnessCommandParser{},
 }
 
