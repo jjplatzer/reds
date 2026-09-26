@@ -18,6 +18,7 @@ const (
 	zBackground renderer.Z = -1000
 	zWeather    renderer.Z = -950
 	zRangeRings renderer.Z = -925
+	zCompass    renderer.Z = -850
 )
 
 // STARSPane is the STARS TCW/TDW display surface. Facility adaptation feeds
@@ -163,6 +164,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawNexrad(ctx, zcb, transforms)
 	p.drawRangeRings(ctx, zcb, transforms)
 	p.drawVideoMaps(ctx, zcb, transforms)
+	p.drawCompass(ctx, zcb, transforms)
 
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
 	p.drawPredictedTrackLines(ctx, zcb, transforms, targets)
