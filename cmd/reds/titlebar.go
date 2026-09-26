@@ -68,6 +68,7 @@ type titleBarAction int
 
 const (
 	titleBarActionNone titleBarAction = iota
+	titleBarActionAddNewWindow
 	titleBarActionSwitchFacility
 	titleBarActionToggleStarsFontSetB
 	titleBarActionToggleStarsFAAHFSTD010APalette
@@ -223,7 +224,7 @@ func drawTitleBarMenuPopup(
 		imgui.CondAlways,
 		imgui.Vec2{},
 	)
-	menuHeight := float32(titleBarMenuItemHeight)
+	menuHeight := float32(2 * titleBarMenuItemHeight)
 	popupWidth := float32(titleBarMenuPopupWidth)
 	if menuOptions.ShowStarsFontSetB {
 		menuHeight += float32(titleBarMenuItemHeight)
@@ -254,33 +255,68 @@ func drawTitleBarMenuPopup(
 
 	action := titleBarActionNone
 	if imgui.BeginPopupV("##titlebar-menu-popup", flags) {
-		imgui.SetCursorPos(imgui.Vec2{X: 0, Y: 0})
-		clicked := imgui.InvisibleButtonV(
-			"##switch-facility-menu-item",
-			imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
-			imgui.ButtonFlagsMouseButtonLeft,
-		)
-
-		rowMin := imgui.ItemRectMin()
-		rowMax := imgui.ItemRectMax()
-		if imgui.IsItemHovered() {
-			imgui.WindowDrawList().AddRectFilledV(
-				rowMin,
-				rowMax,
-				imgui.ColorU32Vec4(titleBarMenuHover),
-				titleBarMenuPopupRounding,
-				imgui.DrawFlagsRoundCornersAll,
-			)
-		}
-
 		textPadX := float32(titleBarMenuTextPadX)
 		if menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
 			// Reserve the same check gutter as the STARS checked rows so all
 			// labels start on the same vertical axis.
 			textPadX = titleBarMenuCheckedTextPadX
 		}
+
+		imgui.SetCursorPos(imgui.Vec2{X: 0, Y: 0})
+		newWindowClicked := imgui.InvisibleButtonV(
+			"##add-new-window-menu-item",
+			imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
+			imgui.ButtonFlagsMouseButtonLeft,
+		)
+
+		newWindowRowMin := imgui.ItemRectMin()
+		newWindowRowMax := imgui.ItemRectMax()
+		if imgui.IsItemHovered() {
+			imgui.WindowDrawList().AddRectFilledV(
+				newWindowRowMin,
+				newWindowRowMax,
+				imgui.ColorU32Vec4(titleBarMenuHover),
+				titleBarMenuPopupRounding,
+				imgui.DrawFlagsRoundCornersAll,
+			)
+		}
+
 		drawTitleBarMenuItemTextWithPad(
-			rowMin,
+			newWindowRowMin,
+			titleBarMenuItemHeight,
+			popupWidth,
+			textPadX,
+			"Add New Window",
+			titleBarAddNewWindowShortcutParts(),
+		)
+
+		if newWindowClicked {
+			action = titleBarActionAddNewWindow
+			imgui.CloseCurrentPopup()
+		}
+
+		rowY := float32(titleBarMenuItemHeight)
+		imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
+		switchFacilityClicked := imgui.InvisibleButtonV(
+			"##switch-facility-menu-item",
+			imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
+			imgui.ButtonFlagsMouseButtonLeft,
+		)
+
+		switchFacilityRowMin := imgui.ItemRectMin()
+		switchFacilityRowMax := imgui.ItemRectMax()
+		if imgui.IsItemHovered() {
+			imgui.WindowDrawList().AddRectFilledV(
+				switchFacilityRowMin,
+				switchFacilityRowMax,
+				imgui.ColorU32Vec4(titleBarMenuHover),
+				titleBarMenuPopupRounding,
+				imgui.DrawFlagsRoundCornersAll,
+			)
+		}
+
+		drawTitleBarMenuItemTextWithPad(
+			switchFacilityRowMin,
 			titleBarMenuItemHeight,
 			popupWidth,
 			textPadX,
@@ -288,12 +324,12 @@ func drawTitleBarMenuPopup(
 			titleBarSwitchFacilityShortcutParts(),
 		)
 
-		if clicked {
+		if switchFacilityClicked {
 			action = titleBarActionSwitchFacility
 			imgui.CloseCurrentPopup()
 		}
 
-		rowY := float32(titleBarMenuItemHeight)
+		rowY += float32(titleBarMenuItemHeight)
 		if menuOptions.ShowStarsFontSetB {
 			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
 			fontClicked := imgui.InvisibleButtonV(
@@ -436,6 +472,24 @@ func drawTitleBarMenuItemText(
 	drawTitleBarShortcutParts(rowMin, itemHeight, popupWidth, shortcut)
 }
 
+func titleBarAddNewWindowShortcutParts() []titleBarShortcutPart {
+	if runtime.GOOS == "darwin" {
+		return []titleBarShortcutPart{
+			{Text: shortcutCommandSymbol},
+			{Text: "+"},
+			{Text: shortcutShiftSymbol},
+			{Text: "+W"},
+		}
+	}
+
+	return []titleBarShortcutPart{
+		{Text: shortcutControlSymbol},
+		{Text: "+"},
+		{Text: shortcutShiftSymbol},
+		{Text: "+W"},
+	}
+}
+
 func titleBarSwitchFacilityShortcutParts() []titleBarShortcutPart {
 	if runtime.GOOS == "darwin" {
 		return []titleBarShortcutPart{
@@ -478,7 +532,7 @@ func titleBarFAAHFSTD010APaletteShortcutParts() []titleBarShortcutPart {
 			{Text: shortcutCommandSymbol},
 			{Text: "+"},
 			{Text: shortcutShiftSymbol},
-			{Text: "+W"},
+			{Text: "+P"},
 		}
 	}
 
@@ -486,7 +540,7 @@ func titleBarFAAHFSTD010APaletteShortcutParts() []titleBarShortcutPart {
 		{Text: shortcutControlSymbol},
 		{Text: "+"},
 		{Text: shortcutShiftSymbol},
-		{Text: "+W"},
+		{Text: "+P"},
 	}
 }
 
@@ -591,13 +645,16 @@ func titleBarShortcutAction(
 		return titleBarActionNone
 	}
 
+	if keyboard.WasPressed(platform.KeyW) {
+		return titleBarActionAddNewWindow
+	}
 	if keyboard.WasPressed(platform.KeyF) {
 		return titleBarActionSwitchFacility
 	}
 	if menuOptions.ShowStarsFontSetB && keyboard.WasPressed(platform.KeyS) {
 		return titleBarActionToggleStarsFontSetB
 	}
-	if menuOptions.ShowStarsFAAHFSTD010APalette && keyboard.WasPressed(platform.KeyW) {
+	if menuOptions.ShowStarsFAAHFSTD010APalette && keyboard.WasPressed(platform.KeyP) {
 		return titleBarActionToggleStarsFAAHFSTD010APalette
 	}
 

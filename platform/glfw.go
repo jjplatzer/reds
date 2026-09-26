@@ -384,6 +384,7 @@ var trackedKeys = []trackedKey{
 	{KeyCommand, glfw.KeyLeftSuper},
 	{KeyC, glfw.KeyC},
 	{KeyF, glfw.KeyF},
+	{KeyP, glfw.KeyP},
 	{KeyS, glfw.KeyS},
 	{KeyW, glfw.KeyW},
 }

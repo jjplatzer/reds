@@ -79,6 +79,7 @@ const (
 	KeyCommand
 	KeyC
 	KeyF
+	KeyP
 	KeyS
 	KeyW
 )

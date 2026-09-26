@@ -269,6 +269,19 @@ func run(logger *redslog.Logger) error {
 			plat.PostRender()
 
 			switch titlebarAction {
+			case titleBarActionAddNewWindow:
+				pid, err := launchNewWindow()
+				if err != nil {
+					logger.Error(
+						"Unable to add new window",
+						slog.Any("error", err),
+					)
+				} else {
+					logger.Info(
+						"New REDS window opened",
+						slog.Int("pid", pid),
+					)
+				}
 			case titleBarActionSwitchFacility:
 				switchToMenu(&mode, &active, &scopeTitle, plat, consumer, m)
 			case titleBarActionToggleStarsFontSetB:
