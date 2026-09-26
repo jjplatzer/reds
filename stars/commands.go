@@ -18,6 +18,9 @@ const (
 	CommandModeMaps
 	CommandModeBrite
 	CommandModeBriteSpinner
+	CommandModeLDRDir
+	CommandModeLDRLen
+	CommandModePTLLength
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -35,6 +38,12 @@ func (m CommandMode) PreviewString() string {
 		return ""
 	case CommandModeBriteSpinner:
 		return "BRT"
+	case CommandModeLDRDir:
+		return "LDR"
+	case CommandModeLDRLen:
+		return "LDR"
+	case CommandModePTLLength:
+		return "PTL"
 	default:
 		return ""
 	}
@@ -68,6 +77,25 @@ func init() {
 		return CommandStatus{}, nil
 	})
 
+	// TI 6191.409 Rev. 30, 6.13.9 Toggle beacon code display for
+	// Limited data blocks. This command is keyboard-only:
+	//   <MULTI FUNC>, <B>, <ENTER>     toggle the current state
+	//   <MULTI FUNC>, <B>, <E>, <ENTER> enable/show beacon codes
+	//   <MULTI FUNC>, <B>, <I>, <ENTER> inhibit/remove beacon codes
+	// The selected state remains in effect until the command is reissued.
+	registerCommand(CommandModeMultiFunc, "B", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().DisplayLDBBeaconCodes = !p.currentPrefs().DisplayLDBBeaconCodes
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "BE", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().DisplayLDBBeaconCodes = true
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "BI", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().DisplayLDBBeaconCodes = false
+		return CommandStatus{}, nil
+	})
+
 	// TI 6191.409 Rev. 30, 4.4.1 Change display range.
 	// [RANGE] is a reusable typed command matcher implemented in parsecmd.go.
 	registerCommand(CommandModeRange, "[RANGE]", func(p *STARSPane, args []any) (CommandStatus, error) {
@@ -80,6 +108,28 @@ func init() {
 	// non-numeric input and ILL VALUE for any other numeric value.
 	registerCommand(CommandModeRangeRings, "[RANGE_RING_SPACING]", func(p *STARSPane, args []any) (CommandStatus, error) {
 		p.currentPrefs().RangeRingRadius = args[0].(float32)
+		return CommandStatus{}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 4.14.5. After selecting <LDR DIR xx>, the
+	// operator may enter one of the numeric-keypad directions and press ENTER.
+	registerCommand(CommandModeLDRDir, "[LEADER_DIRECTION]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().LeaderLineDirection = args[0].(leaderLineDirection)
+		return CommandStatus{}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 4.14.3. After selecting <LDR LEN n>, the
+	// operator may enter any integer from 0 through 7 and press ENTER.
+	registerCommand(CommandModeLDRLen, "[LEADER_LENGTH]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().LeaderLineLength = args[0].(int)
+		return CommandStatus{}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 6.3.4 Change Predicted Track Line value.
+	// After selecting <PTL LNTH>, the operator may enter a value from 0.0
+	// through 5.0 minutes in 0.5-minute increments and press ENTER.
+	registerCommand(CommandModePTLLength, "[PTL_LENGTH]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().PTLLength = args[0].(float32)
 		return CommandStatus{}, nil
 	})
 
@@ -205,6 +255,9 @@ func (p *STARSPane) resetCommand() {
 	p.activeBrightnessControl = ""
 	p.brightnessDragAccumY = 0
 	p.rangeRingDragAccumY = 0
+	p.leaderDirectionDragAccumY = 0
+	p.leaderLengthDragAccumY = 0
+	p.ptlLengthDragAccumY = 0
 }
 
 func (p *STARSPane) commitCommand() {

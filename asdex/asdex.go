@@ -405,7 +405,7 @@ func NewPane(airport string, logger *redslog.Logger) (*ASDEXPane, error) {
 	configAirport := loadConfigAirportCode(airport)
 
 	client := redsnet.NewSmesClient(
-		redsnet.TargetWebSocketURL(),
+		redsnet.SmesWebSocketURL(),
 		logger.With(slog.String("component", "smes")),
 	)
 	client.SetAirport(airport)

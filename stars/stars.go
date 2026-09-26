@@ -7,6 +7,7 @@ import (
 	"github.com/juliusplatzer/reds/cmd/wx"
 	redslog "github.com/juliusplatzer/reds/log"
 	redsmath "github.com/juliusplatzer/reds/math"
+	redsnet "github.com/juliusplatzer/reds/net"
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/platform"
 	"github.com/juliusplatzer/reds/radar"
@@ -17,6 +18,7 @@ const (
 	zBackground renderer.Z = -1000
 	zWeather    renderer.Z = -950
 	zRangeRings renderer.Z = -925
+	zCompass    renderer.Z = -850
 )
 
 // STARSPane is the STARS TCW/TDW display surface. Facility adaptation feeds
@@ -36,7 +38,10 @@ type STARSPane struct {
 	useFAAHFSTD010APalette       bool
 	systemFont                   *renderer.BitmapFont
 	systemFontTextures           map[int]renderer.TextureID
+	systemOutlineFont            *renderer.BitmapFont
+	systemOutlineFontTextures    map[int]renderer.TextureID
 	systemAltimeter              systemAltimeterState
+	tais                         *redsnet.TaisClient
 
 	wxDomain              wx.Domain
 	wxLogger              *redslog.Logger
@@ -50,13 +55,27 @@ type STARSPane struct {
 
 	videoMaps map[int]*starsVideoMap
 
-	commandMode             CommandMode
-	commandInput            string
-	commandResponse         string
-	multiFuncPrefix         string
-	activeBrightnessControl string
-	brightnessDragAccumY    float32
-	rangeRingDragAccumY     float32
+	commandMode               CommandMode
+	commandInput              string
+	commandResponse           string
+	multiFuncPrefix           string
+	activeBrightnessControl   string
+	brightnessDragAccumY      float32
+	rangeRingDragAccumY       float32
+	leaderDirectionDragAccumY float32
+	leaderLengthDragAccumY    float32
+	ptlLengthDragAccumY       float32
+
+	// singleTrackQuickLook records TI 6191.409 6.13.4 implied-command
+	// quick looks. An unowned associated track normally presents a PDB; a
+	// left-trackball slew toggles that track to an unowned FDB until it is
+	// reselected. This is transient display state, not a saved preference.
+	singleTrackQuickLook map[string]struct{}
+
+	// ldbBeaconReadoutUntil records TI 6191.409 6.13.2 implied-command
+	// beacon readouts. Slew + left trackball on an unassociated track forces
+	// its reported beacon code into LDB field 1 for five seconds.
+	ldbBeaconReadoutUntil map[string]time.Time
 }
 
 // NewPane creates a STARS TCW pane for the selected controller position.
@@ -82,6 +101,7 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 		useFontSetB:            useFontSetB,
 		useFAAHFSTD010APalette: useFAAHFSTD010APalette,
 		systemFont:             newSystemFont(useFontSetB),
+		systemOutlineFont:      newSystemOutlineFont(useFontSetB),
 	}
 	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()
 	// Validate the magnetic-adaptation resource once at startup. The actual
@@ -103,6 +123,16 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	if err := pane.loadMainVideoMaps(); err != nil {
 		logger.Warn("Unable to load STARS Main DCB video maps", slog.Any("error", err))
 	}
+
+	// Keep transport/state ownership in net.TaisClient. The STARS pane only
+	// owns the client's lifetime; the later fusion layer can consume detached
+	// snapshots without coupling display code to WebSocket/revision handling.
+	pane.tais = redsnet.NewTaisClient(
+		redsnet.TaisWebSocketURL(),
+		logger.With(slog.String("component", "tais")),
+	)
+	pane.tais.Start()
+
 	return pane, nil
 }
 
@@ -126,11 +156,23 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	p.processKeyboardInput(ctx)
 	transforms := p.scopeTransformations(ctx)
-	p.consumeMouseEvents(ctx, transforms)
+	targets := p.targetSnapshot()
+	p.pruneSingleTrackQuickLook(targets)
+	p.pruneLDBBeaconReadouts(targets, time.Now())
+	p.consumeMouseEvents(ctx, transforms, targets)
 
 	p.drawNexrad(ctx, zcb, transforms)
 	p.drawRangeRings(ctx, zcb, transforms)
 	p.drawVideoMaps(ctx, zcb, transforms)
+	p.drawCompass(ctx, zcb, transforms)
+
+	p.drawTargetHistory(ctx, zcb, transforms, targets)
+	p.drawPredictedTrackLines(ctx, zcb, transforms, targets)
+	p.drawTargets(ctx, zcb, transforms, targets)
+	p.drawTargetLeaderLines(ctx, zcb, transforms, targets)
+	p.drawTargetPositionSymbols(ctx, zcb, transforms, targets)
+	p.drawDatablocks(ctx, zcb, transforms, targets)
+
 	p.drawDCB(ctx, zcb)
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
@@ -142,6 +184,10 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 func (p *STARSPane) Dispose() {
 	if p == nil {
 		return
+	}
+	if p.tais != nil {
+		p.tais.Close()
+		p.tais = nil
 	}
 	if p.wxStream != nil {
 		p.wxStream.Close()
@@ -179,16 +225,32 @@ func (p *STARSPane) scopeTransformations(ctx *panes.Context) radar.LatLonTransfo
 	)
 }
 
-func (p *STARSPane) consumeMouseEvents(ctx *panes.Context, transforms radar.LatLonTransformations) {
+func (p *STARSPane) consumeMouseEvents(
+	ctx *panes.Context,
+	transforms radar.LatLonTransformations,
+	targets redsnet.TaisSnapshot,
+) {
 	if p == nil || ctx == nil || ctx.Mouse == nil {
 		return
 	}
 
-	// An active STARS spinner captures the trackball. While RR is selected,
-	// vertical motion / wheel input changes only the range-ring spacing; it
-	// must not also pan or zoom the radar scope.
+	// Active STARS adjustment buttons capture trackball motion. RR changes
+	// range-ring spacing; LDR DIR changes the owned-data-block orientation.
+	// Neither adjustment may also pan or zoom the radar scope.
 	if p.commandMode == CommandModeRangeRings {
 		p.adjustRangeRingSpacing(ctx)
+		return
+	}
+	if p.commandMode == CommandModeLDRDir {
+		p.adjustLeaderLineDirection(ctx)
+		return
+	}
+	if p.commandMode == CommandModeLDRLen {
+		p.adjustLeaderLineLength(ctx)
+		return
+	}
+	if p.commandMode == CommandModePTLLength {
+		p.adjustPTLLength(ctx)
 		return
 	}
 	if p.mouseOverDCB(ctx) {
@@ -234,6 +296,25 @@ func (p *STARSPane) consumeMouseEvents(ctx *panes.Context, transforms radar.LatL
 			p.setCommandMode(CommandModeNone)
 		}
 		return
+	}
+
+	// TI 6191.409 Rev. 30, 6.13.2 and 6.13.4 implied commands share the
+	// same slew + left-trackball modality. On an unassociated/LDB track the
+	// click forces its reported beacon code into LDB field 1 for five seconds.
+	// On an associated track owned by another controller it toggles PDB/FDB
+	// single-track quick look until the track is selected again. VICE uses a
+	// 20-pixel target slew radius for these implied commands; retain that here.
+	if p.commandMode == CommandModeNone && mouse.WasReleased(platform.MouseButtonLeft) {
+		if target := closestSlewTarget(targets, mouse.Pos, transforms); target != nil {
+			if p.targetSupportsSingleTrackQuickLook(target) {
+				p.toggleSingleTrackQuickLook(target)
+				return
+			}
+			if p.targetSupportsLDBBeaconReadout(target) {
+				p.startLDBBeaconReadout(target, time.Now())
+				return
+			}
+		}
 	}
 
 	// TI 6191.409 Rev. 30, 4.4.2 Re-center display (pan) and define

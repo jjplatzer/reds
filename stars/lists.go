@@ -313,6 +313,14 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		// setting used for altitude correction in this Terminal control area.
 		addLine(p.ssaFieldEText(time.Now()), p.colors.List)
 
+		// TI 6191.409 Rev. 30, 6.3.4 says a non-zero PTL value is reflected
+		// in the System Status Area and is removed when the value is zero. The
+		// manual does not prescribe the exact text formatting; VICE renders the
+		// value as "PTL: x.x", so use that established fallback.
+		if p.currentPrefs().PTLLength > 0 {
+			addLine(fmt.Sprintf("PTL: %.1f", p.currentPrefs().PTLLength), p.colors.List)
+		}
+
 		// Fields E1 through N are omitted until their corresponding facility,
 		// surveillance, flow-management, or controller preference state exists.
 

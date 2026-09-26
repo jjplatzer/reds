@@ -276,8 +276,24 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 	d.button("BRITE", mainFlags(buttonFull), false, func() {
 		p.setCommandMode(CommandModeBrite)
 	})
-	d.button("LDR DIR\n"+ps.LeaderLineDirection, mainFlags(buttonHalfVertical), false, nil)
-	d.button("LDR LEN\n"+strconv.Itoa(ps.LeaderLineLength), mainFlags(buttonHalfVertical), false, nil)
+	// TI 6191.409 Rev. 30, Table 2-6 / 4.14.5: LDR DIR is an adjustment
+	// button and its second line always displays the current orientation.
+	ldrDirSelected := p.commandMode == CommandModeLDRDir
+	d.button("LDR DIR\n"+ps.LeaderLineDirection.String(), mainFlags(buttonHalfVertical), ldrDirSelected, func() {
+		if ldrDirSelected {
+			p.resetCommand()
+			return
+		}
+		p.setCommandMode(CommandModeLDRDir)
+	})
+	ldrLenSelected := p.commandMode == CommandModeLDRLen
+	d.button("LDR LEN\n"+strconv.Itoa(ps.LeaderLineLength), mainFlags(buttonHalfVertical), ldrLenSelected, func() {
+		if ldrLenSelected {
+			p.resetCommand()
+			return
+		}
+		p.setCommandMode(CommandModeLDRLen)
+	})
 	d.button("CHAR\nSIZE", mainFlags(buttonFull), false, nil)
 	d.button("MODE\nFSL", mainFlags(buttonFull)|buttonUnsupported, false, nil)
 	d.button("SITE\nMULTI", mainFlags(buttonFull), false, nil)
@@ -298,6 +314,7 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 // be added later without changing the page geometry.
 func (d *dcbDrawer) drawAuxPage() {
 	p := d.pane
+	ps := p.currentPrefs()
 
 	// <VOL n>.
 	d.button("VOL\n2", buttonFull, false, nil)
@@ -321,10 +338,33 @@ func (d *dcbDrawer) drawAuxPage() {
 	d.button("DCB\nRIGHT", buttonHalfVertical, false, nil)
 	d.button("DCB\nBOTTOM", buttonHalfVertical, false, nil)
 
-	// Predicted track line and dwell controls.
-	d.button("PTL\nLNTH\n1.5", buttonFull, false, nil)
-	d.button("PTL OWN", buttonHalfVertical, false, nil)
-	d.button("PTL ALL", buttonHalfVertical, false, nil)
+	// Predicted Track Line controls, TI 6191.409 Rev. 30, 6.3.2-6.3.4.
+	// PTL LNTH is an adjustment button; PTL OWN and PTL ALL are mutually
+	// exclusive toggles and are unavailable when the PTL value is zero.
+	ptlLengthSelected := p.commandMode == CommandModePTLLength
+	d.button(fmt.Sprintf("PTL\nLNTH\n%.1f", ps.PTLLength), buttonFull, ptlLengthSelected, func() {
+		if ptlLengthSelected {
+			p.resetCommand()
+			return
+		}
+		p.setCommandMode(CommandModePTLLength)
+	})
+	ptlFlags := buttonHalfVertical
+	if ps.PTLLength == 0 {
+		ptlFlags |= buttonDisabled
+	}
+	d.button("PTL OWN", ptlFlags, ps.PTLOwn, func() {
+		ps.PTLOwn = !ps.PTLOwn
+		if ps.PTLOwn {
+			ps.PTLAll = false
+		}
+	})
+	d.button("PTL ALL", ptlFlags, ps.PTLAll, func() {
+		ps.PTLAll = !ps.PTLAll
+		if ps.PTLAll {
+			ps.PTLOwn = false
+		}
+	})
 	d.button("DWELL\nON", buttonFull, false, nil)
 	d.button("TPA /\nATPA", buttonFull, false, nil)
 
@@ -424,6 +464,104 @@ func (d *dcbDrawer) drawMapsPage() {
 	d.button("CURRENT", buttonHalfVertical, currentSelected, func() {
 		p.toggleVideoMapsList(videoMapsListCurrent)
 	})
+}
+
+const starsLeaderDirectionMouseDelta = float32(10)
+
+// adjustLeaderLineDirection implements TI 6191.409 Rev. 30, 4.14.5 for the
+// Main DCB <LDR DIR xx> adjustment button. Trackball motion forward (up on
+// REDS' top-left-origin display) advances clockwise N -> NE -> E -> ...; motion
+// toward the controller advances counterclockwise. A left click freezes the
+// displayed orientation and exits the command.
+func (p *STARSPane) adjustLeaderLineDirection(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Mouse == nil || p.commandMode != CommandModeLDRDir {
+		return
+	}
+
+	mouse := ctx.Mouse
+	// Let the active DCB button process a click on itself so it can deselect
+	// cleanly. A left click elsewhere is the manual's freeze/escape action.
+	if mouse.WasPressed(platform.MouseButtonLeft) && !p.mouseOverDCB(ctx) {
+		p.resetCommand()
+		return
+	}
+
+	p.leaderDirectionDragAccumY += mouse.Delta.Y
+	for p.leaderDirectionDragAccumY <= -starsLeaderDirectionMouseDelta {
+		p.currentPrefs().LeaderLineDirection = p.currentPrefs().LeaderLineDirection.step(1)
+		p.leaderDirectionDragAccumY += starsLeaderDirectionMouseDelta
+	}
+	for p.leaderDirectionDragAccumY >= starsLeaderDirectionMouseDelta {
+		p.currentPrefs().LeaderLineDirection = p.currentPrefs().LeaderLineDirection.step(-1)
+		p.leaderDirectionDragAccumY -= starsLeaderDirectionMouseDelta
+	}
+}
+
+const starsLeaderLengthMouseDelta = float32(10)
+
+// adjustLeaderLineLength implements TI 6191.409 Rev. 30, 4.14.3 for the
+// Main DCB <LDR LEN n> adjustment button. The manual defines eight selectable
+// values, 0 through 7, and requires the displayed value/leader geometry to
+// update dynamically while the trackball is moved. VICE's STARS spinner uses
+// forward motion to increase the value and motion toward the controller to
+// decrease it; REDS keeps the same modality. A left click freezes the value.
+func (p *STARSPane) adjustLeaderLineLength(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Mouse == nil || p.commandMode != CommandModeLDRLen {
+		return
+	}
+
+	mouse := ctx.Mouse
+	if mouse.WasPressed(platform.MouseButtonLeft) && !p.mouseOverDCB(ctx) {
+		p.resetCommand()
+		return
+	}
+
+	p.leaderLengthDragAccumY += mouse.Delta.Y
+	for p.leaderLengthDragAccumY <= -starsLeaderLengthMouseDelta {
+		if p.currentPrefs().LeaderLineLength < 7 {
+			p.currentPrefs().LeaderLineLength++
+		}
+		p.leaderLengthDragAccumY += starsLeaderLengthMouseDelta
+	}
+	for p.leaderLengthDragAccumY >= starsLeaderLengthMouseDelta {
+		if p.currentPrefs().LeaderLineLength > 0 {
+			p.currentPrefs().LeaderLineLength--
+		}
+		p.leaderLengthDragAccumY -= starsLeaderLengthMouseDelta
+	}
+}
+
+const starsPTLLengthMouseDelta = float32(10)
+
+// adjustPTLLength implements TI 6191.409 Rev. 30, 6.3.4. Moving the
+// trackball up increases the prediction interval and moving it down decreases
+// it, in 0.5-minute increments from 0.0 through 5.0. The displayed PTLs update
+// dynamically because rendering reads the current preference every frame. A
+// left trackball click off the DCB freezes the current value and exits.
+func (p *STARSPane) adjustPTLLength(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Mouse == nil || p.commandMode != CommandModePTLLength {
+		return
+	}
+
+	mouse := ctx.Mouse
+	if mouse.WasPressed(platform.MouseButtonLeft) && !p.mouseOverDCB(ctx) {
+		p.resetCommand()
+		return
+	}
+
+	p.ptlLengthDragAccumY += mouse.Delta.Y
+	for p.ptlLengthDragAccumY <= -starsPTLLengthMouseDelta {
+		if p.currentPrefs().PTLLength < 5 {
+			p.currentPrefs().PTLLength = min(p.currentPrefs().PTLLength+0.5, 5)
+		}
+		p.ptlLengthDragAccumY += starsPTLLengthMouseDelta
+	}
+	for p.ptlLengthDragAccumY >= starsPTLLengthMouseDelta {
+		if p.currentPrefs().PTLLength > 0 {
+			p.currentPrefs().PTLLength = max(p.currentPrefs().PTLLength-0.5, 0)
+		}
+		p.ptlLengthDragAccumY -= starsPTLLengthMouseDelta
+	}
 }
 
 const starsRangeRingMouseDelta = float32(10)
