@@ -6,6 +6,7 @@ import ingest.TaisObservation;
 import io.vertx.core.AbstractVerticle;
 import wire.TaisWire;
 
+import java.time.Duration;
 import java.time.Instant;
 
 /**
@@ -19,9 +20,14 @@ public final class TrackStore extends AbstractVerticle {
     public static final String EVENT_ADDRESS = "tais.store.event";
     public static final String SNAPSHOT_ADDRESS = "tais.store.snapshot";
 
+    private static final int DEFAULT_TOTAL_COAST_TIME_MS = 30_000;
+    private static final int DEFAULT_COAST_SWEEP_INTERVAL_MS = 1_000;
+
     private TrackCache cache;
+    private Duration totalCoastTime;
     private long revision;
     private long removals;
+    private long coastRemovals;
 
     @Override
     public void start() {
@@ -30,7 +36,17 @@ public final class TrackStore extends AbstractVerticle {
                 intEnv("TAIS_HISTORY_RAW_CAPACITY", TrackCache.DEFAULT_RAW_HISTORY_CAPACITY)
         );
         int statsIntervalMs = Math.max(5_000, intEnv("TAIS_STORE_STATS_INTERVAL_MS", 30_000));
+        int totalCoastTimeMs = Math.max(1_000, intEnv(
+                "TAIS_COAST_TIMEOUT_MS",
+                DEFAULT_TOTAL_COAST_TIME_MS
+        ));
+        int coastSweepIntervalMs = Math.max(250, intEnv(
+                "TAIS_COAST_SWEEP_INTERVAL_MS",
+                DEFAULT_COAST_SWEEP_INTERVAL_MS
+        ));
+
         cache = new TrackCache(historyCapacity);
+        totalCoastTime = Duration.ofMillis(totalCoastTimeMs);
 
         // WebSocketPush asks the store for a point-in-time snapshot on each
         // connection. The revision lets the connection discard buffered live
@@ -48,8 +64,9 @@ public final class TrackStore extends AbstractVerticle {
                 String key = obs.targetKey();
 
                 // TAIS distinguishes a dropped track from a coasting track.
-                // Dropped tracks must disappear from both current state and all
-                // future connection snapshots.
+                // Dropped tracks disappear immediately. Coasting tracks are
+                // retained through the STARS Total Coast Time and are removed
+                // by the periodic sweep below.
                 if (isDrop(obs.track().status())) {
                     if (cache.remove(key)) {
                         removals++;
@@ -58,6 +75,13 @@ public final class TrackStore extends AbstractVerticle {
                                 TaisWire.remove(++revision, key)
                         );
                     }
+                    continue;
+                }
+
+                // Do not resurrect already-coasted-out radar positions from a
+                // delayed/backlogged TAIS message. Flight-plan-only records are
+                // exempt because they are not radar tracks.
+                if (isAlreadyCoastedOut(obs, Instant.now())) {
                     continue;
                 }
 
@@ -75,8 +99,28 @@ public final class TrackStore extends AbstractVerticle {
             }
         });
 
+        vertx.setPeriodic(coastSweepIntervalMs, ignored -> evictCoastedOutTracks());
         vertx.setPeriodic(statsIntervalMs, ignored -> printStats());
-        System.out.println("[TAIS store] Raw history capacity=" + historyCapacity + " positions/track");
+        System.out.println("[TAIS store] Raw history capacity=" + historyCapacity + " positions/track" +
+                " totalCoastTime=" + totalCoastTimeMs + "ms" +
+                " coastSweep=" + coastSweepIntervalMs + "ms");
+    }
+
+    private void evictCoastedOutTracks() {
+        for (String key : cache.removeCoastedOutTracks(Instant.now(), totalCoastTime)) {
+            removals++;
+            coastRemovals++;
+            vertx.eventBus().publish(
+                    EVENT_ADDRESS,
+                    TaisWire.remove(++revision, key)
+            );
+        }
+    }
+
+    private boolean isAlreadyCoastedOut(TaisObservation obs, Instant now) {
+        if (!obs.track().hasPosition()) return false;
+        Instant mrtTime = obs.track().mrtTime();
+        return mrtTime != null && !mrtTime.isAfter(now.minus(totalCoastTime));
     }
 
     private void printStats() {
@@ -88,6 +132,7 @@ public final class TrackStore extends AbstractVerticle {
                 " outOfOrder=" + stats.outOfOrderPositions() +
                 " resets=" + stats.historyResets() +
                 " removed=" + removals +
+                " coastRemoved=" + coastRemovals +
                 " revision=" + revision);
     }
 
