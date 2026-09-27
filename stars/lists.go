@@ -361,6 +361,17 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		// Remaining fields between E1 and N are omitted until their corresponding
 		// facility, surveillance, flow-management, or controller state exists.
 
+		// Field N - Airport with Altimeter. Table 2-15 allows up to six airports
+		// when only one pressure unit is displayed. REDS currently receives the
+		// area's adapted SSA airport list from CRC and uses AviationWeather METARs,
+		// so each available value is an automatically updated (A) inHg reading.
+		// Match VICE's presentation of three airports per line.
+		if filter.All || filter.AirportWeather {
+			for _, line := range p.ssaAirportWeatherLines() {
+				addLine(line, p.colors.List)
+			}
+		}
+
 		// Field O - Mode of Operation.
 		// The initial REDS STARS TCW/TDW runs in operational / normal mode.
 		if filter.All || filter.OperationMode {

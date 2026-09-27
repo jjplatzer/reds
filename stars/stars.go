@@ -43,6 +43,7 @@ type STARSPane struct {
 	systemOutlineFont            *renderer.BitmapFont
 	systemOutlineFontTextures    map[int]renderer.TextureID
 	systemAltimeter              systemAltimeterState
+	ssaAirportWeather            ssaAirportWeatherState
 	tais                         *redsnet.TaisClient
 
 	wxDomain              wx.Domain
@@ -330,6 +331,7 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 			slog.Any("error", lookupErr))
 	}
 	pane.initializeSystemAltimeter(cfg.systemAltimeterAirport())
+	pane.initializeSSAAirportWeather(cfg.Area.SSAAirports)
 	pane.wxDomain = wx.DomainForARTCC(cfg.Facility.ARTCC)
 	pane.wxLogger = logger.With(slog.String("component", "wx"))
 	pane.restartNexradStream(starsInitialNexradRadiusNM)
@@ -363,6 +365,8 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	p.consumeSystemAltimeterUpdates()
 	p.refreshSystemAltimeter()
+	p.consumeSSAAirportWeatherUpdates()
+	p.refreshSSAAirportWeather()
 	p.consumeNexradUpdates()
 	p.ensureNexradCoverage(ctx)
 	p.rebuildNexradIfNeeded()
