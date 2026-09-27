@@ -263,6 +263,34 @@ func (p *STARSPane) quickLookDisplayStatus() string {
 	return p.qlPositionsString()
 }
 
+// ssaConsolidationCouplingLines returns fields S-U from TI 6191.409 Rev. 30,
+// Table 2-15. A normal keyboard with its own airspace is represented as
+//
+//	1R CON: 1R
+//
+// while a keyboard coupled to another TCP would use CPL instead. REDS does
+// not currently receive STARS keyboard/SISO consolidation or coupling state
+// from TAIS, and each live pane is created for one selected control position.
+// Therefore the only state that can be stated faithfully today is the selected
+// keyboard's primary TCP assignment. Do not infer additional consolidation
+// from flight-plan CPS values: CPS describes track ownership, not the keyboard
+// consolidation topology.
+//
+// Keeping this behind a dedicated helper mirrors VICE's separation between
+// SSA rendering and simulator consolidation state, and gives the future SISO
+// integration a single place to replace the default line with real CON/CPL
+// membership (including *, /, and the ten-TCP '+' truncation rules).
+func (p *STARSPane) ssaConsolidationCouplingLines() []string {
+	if p == nil {
+		return nil
+	}
+	tcp := p.ownTCP()
+	if tcp == "" {
+		return nil
+	}
+	return []string{tcp + " CON: " + tcp}
+}
+
 // NewPane creates a STARS TCW pane for the selected controller position.
 func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPane, error) {
 	if logger == nil {

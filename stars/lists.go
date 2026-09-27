@@ -381,6 +381,20 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			}
 		}
 
+		// Fields S-U - Keyboard Consolidation/Coupling status. Table 2-15
+		// assigns these fields to the three TCW/TDW keyboards and makes all
+		// of them subject to the single SSA FILTER <CON/CPL> selection. REDS'
+		// current live STARS pane represents one operational keyboard/control
+		// position, so render that keyboard's current assignment here. The
+		// helper is intentionally isolated so a future live SISO/consolidation
+		// feed can supply secondary TCPs and CPL state without changing SSA
+		// layout/filter behavior.
+		if filter.All || filter.Consolidation {
+			for _, line := range p.ssaConsolidationCouplingLines() {
+				addLine(line, p.colors.List)
+			}
+		}
+
 		td.GenerateCommands(cb, texture)
 		renderer.ReturnTextDrawBuilder(td)
 	}
