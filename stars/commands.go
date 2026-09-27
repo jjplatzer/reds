@@ -21,6 +21,7 @@ const (
 	CommandModeLDRDir
 	CommandModeLDRLen
 	CommandModePTLLength
+	CommandModeSSAFilter
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -44,6 +45,8 @@ func (m CommandMode) PreviewString() string {
 		return "LDR"
 	case CommandModePTLLength:
 		return "PTL"
+	case CommandModeSSAFilter:
+		return ""
 	default:
 		return ""
 	}
@@ -94,6 +97,111 @@ func init() {
 	registerCommand(CommandModeMultiFunc, "BI", func(p *STARSPane, args []any) (CommandStatus, error) {
 		p.currentPrefs().DisplayLDBBeaconCodes = false
 		return CommandStatus{}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 4.11.1-4.11.3 Altitude Filter Commands.
+	//
+	//   <MULTI FUNC> F <ENTER>
+	//       displays the unassociated limits on line 1 and associated limits
+	//       on line 2 of the Preview Area.
+	//
+	//   <MULTI FUNC> F uuuUUU [SPACE aaaAAA] <ENTER>
+	//       changes the unassociated range and, when the optional second
+	//       six-digit field is supplied, the associated range as well.
+	//
+	//   <MULTI FUNC> F C aaaAAA <ENTER>
+	//       changes the associated range only.
+	//
+	// Within each six-digit range the two three-digit values may be entered
+	// in either order; the lower/higher assignment is handled by the parser.
+	registerCommand(CommandModeMultiFunc, "F", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{Output: p.currentPrefs().AltitudeFilters.previewText()}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "FC[ALT_FILTER_6]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().AltitudeFilters.Associated = args[0].([2]int)
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "F[ALT_FILTER_6] [ALT_FILTER_6]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().AltitudeFilters.Unassociated = args[0].([2]int)
+		p.currentPrefs().AltitudeFilters.Associated = args[1].([2]int)
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "F[ALT_FILTER_6]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().AltitudeFilters.Unassociated = args[0].([2]int)
+		return CommandStatus{}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 6.13.5-6.13.6 and 6.13.13-6.13.16
+	// Quick Look commands. REDS' facility config carries explicit TCPs, so the
+	// operator may enter either a full two-character TCP (e.g. 1D) or omit the
+	// subset and enter its one-character symbol (e.g. D). Quicklook Group IDs
+	// require adaptation not yet exported by crc2reds and therefore return ILL POS.
+	applyQuickLookPositions := func(p *STARSPane, positions []quickLookPositionSpec) (CommandStatus, error) {
+		// Resolve and validate the complete list before changing any state. STARS
+		// rejects the command with ILL POS when any entered TCP is invalid; an
+		// earlier valid TCP in the same entry must not be toggled as a side effect.
+		resolved := make([]quickLookPositionSpec, len(positions))
+		for i, position := range positions {
+			tcp, ok := p.resolvedQuickLookTCP(position.TCP)
+			if !ok {
+				return CommandStatus{}, ErrSTARSIllegalPosition
+			}
+			resolved[i] = quickLookPositionSpec{TCP: tcp, Plus: position.Plus}
+		}
+
+		if len(resolved) == 1 && !resolved[0].Plus && resolved[0].TCP == p.ownTCP() {
+			// 6.13.6 / 6.13.16: entering a TCP assigned to this TCW/TDW
+			// displays the currently enabled quick looks in the Preview Area.
+			return CommandStatus{Output: p.quickLookDisplayStatus()}, nil
+		}
+		for _, position := range resolved {
+			if position.TCP == p.ownTCP() {
+				return CommandStatus{}, ErrSTARSIllegalPosition
+			}
+		}
+
+		for _, position := range resolved {
+			p.toggleQuickLookTCP(position.TCP, position.Plus)
+		}
+		return CommandStatus{Output: p.qlPositionsString()}, nil
+	}
+
+	// 6.13.5 implied form: enter another owner's TCP directly, optionally with +.
+	registerCommand(CommandModeNone, "[QL_POSITION]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return applyQuickLookPositions(p, []quickLookPositionSpec{args[0].(quickLookPositionSpec)})
+	})
+
+	// 6.13.14 Quick look all other owners' tracks. QL+ changes only the
+	// presentation color; brightness remains the OTH category because ownership
+	// itself has not changed.
+	registerCommand(CommandModeMultiFunc, "QALL+", func(p *STARSPane, args []any) (CommandStatus, error) {
+		ps := p.currentPrefs()
+		ps.QuickLookAll = true
+		ps.QuickLookAllIsPlus = true
+		return CommandStatus{Output: "QL ALL+"}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "QALL", func(p *STARSPane, args []any) (CommandStatus, error) {
+		ps := p.currentPrefs()
+		ps.QuickLookAll = true
+		ps.QuickLookAllIsPlus = false
+		return CommandStatus{Output: "QL ALL"}, nil
+	})
+
+	// 6.13.15 Disable quick look for all tracks. The optional + selects which
+	// class is disabled: ordinary QL or QL+.
+	registerCommand(CommandModeMultiFunc, "Q+", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.disableQuickLooks(true)
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "Q", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.disableQuickLooks(false)
+		return CommandStatus{}, nil
+	})
+
+	// 6.13.13 toggles up to ten explicit TCPs; 6.13.16 is the special case
+	// where the sole entered TCP belongs to the entering TCW/TDW.
+	registerCommand(CommandModeMultiFunc, "Q[QL_POSITIONS]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return applyQuickLookPositions(p, args[0].([]quickLookPositionSpec))
 	})
 
 	// TI 6191.409 Rev. 30, 4.4.1 Change display range.
@@ -175,9 +283,9 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		return
 	}
 
-	if p.commandMode == CommandModeNone {
-		return
-	}
+	// CommandModeNone is also the real STARS implied-command entry state.
+	// Ordinary typed text is therefore accumulated even without selecting a
+	// DCB/function-key mode; <ENTER> dispatches it to CommandModeNone handlers.
 
 	// TI 6191.409 Rev. 30, 6.1.2 defines PLACE RR as a Main-DCB-only
 	// command: after selecting the button, the operator positions the cursor
@@ -195,6 +303,16 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	// separate keyboard MAPS command can be added without changing submenu
 	// state. Escape is the desktop equivalent of removing the submenu.
 	if p.commandMode == CommandModeMaps {
+		if keyboard.WasPressed(platform.KeyEscape) {
+			p.resetCommand()
+		}
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 4.7 explicitly makes SSA FILTER a Main-DCB-only
+	// command; it has no keyboard entry form and no Preview Area response.
+	// Escape is retained as REDS' desktop equivalent of leaving the submenu.
+	if p.commandMode == CommandModeSSAFilter {
 		if keyboard.WasPressed(platform.KeyEscape) {
 			p.resetCommand()
 		}
@@ -222,6 +340,9 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	for _, r := range keyboard.Text {
 		if r < ' ' || r == 0x7f {
 			continue
+		}
+		if p.commandMode == CommandModeNone && p.commandInput == "" {
+			p.commandResponse = ""
 		}
 		s := strings.ToUpper(string(r))
 		if p.commandMode == CommandModeMultiFunc && p.multiFuncPrefix == "" {
@@ -261,7 +382,7 @@ func (p *STARSPane) resetCommand() {
 }
 
 func (p *STARSPane) commitCommand() {
-	if p == nil || p.commandMode == CommandModeNone {
+	if p == nil || (p.commandMode == CommandModeNone && p.commandInput == "") {
 		return
 	}
 

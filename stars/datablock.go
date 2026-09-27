@@ -86,6 +86,9 @@ func (p *STARSPane) drawDatablocks(
 		if target.FlightPlan != nil && target.FlightPlan.Suspended {
 			continue
 		}
+		if !p.targetAltitudeFilterAllowsDatablock(target, now) {
+			continue
+		}
 
 		dbType, color, brightness := p.targetDatablockPresentation(target)
 		if brightness == 0 {
@@ -148,12 +151,61 @@ func (p *STARSPane) drawDatablocks(
 	cb.DisableScissor()
 }
 
-// targetDatablockPresentation maps the TAIS association/ownership state plus
-// local 6.13.4 quick-look state to the operator-manual data-block categories:
+func altitudeWithinFilter(altitudeFeet int, filter [2]int) bool {
+	return altitudeFeet >= filter[0] && altitudeFeet <= filter[1]
+}
+
+// targetHasAltitudeFilterSPC covers the universal emergency Mode 3/A codes
+// that STARS treats as special-purpose-code conditions. Facility-adapted SPCs
+// can be added when REDS carries that adaptation data.
+func targetHasAltitudeFilterSPC(target *redsnet.TaisTarget) bool {
+	if target == nil {
+		return false
+	}
+	switch strings.TrimSpace(target.Track.ReportedBeaconCode) {
+	case "7500", "7600", "7700":
+		return true
+	default:
+		return false
+	}
+}
+
+// targetAltitudeFilterAllowsDatablock mirrors VICE's placement of altitude
+// filtering in datablock presentation rather than in a standalone subsystem.
+// The target symbol remains visible outside the filter; the ordinary data
+// block, leader and history presentation are suppressed. FDB modalities,
+// emergency/SPC tracks, and the five-second LDB beacon readout bypass it.
+func (p *STARSPane) targetAltitudeFilterAllowsDatablock(target *redsnet.TaisTarget, now time.Time) bool {
+	if p == nil || target == nil {
+		return false
+	}
+
+	if target.FlightPlan == nil && p.targetLDBBeaconReadoutActive(target, now) {
+		return true
+	}
+	if targetHasAltitudeFilterSPC(target) {
+		return true
+	}
+
+	ps := p.currentPrefs()
+	if target.FlightPlan != nil {
+		dbType, _, _ := p.targetDatablockPresentation(target)
+		if dbType == targetDatablockFull {
+			return true
+		}
+		return altitudeWithinFilter(target.Track.ReportedAltitude, ps.AltitudeFilters.Associated)
+	}
+
+	return altitudeWithinFilter(target.Track.ReportedAltitude, ps.AltitudeFilters.Unassociated)
+}
+
+// targetDatablockPresentation maps TAIS association/ownership plus the local
+// quick-look state to the operator-manual data-block categories:
 //
 //	own associated track          -> Full data block, white, FDB brightness
 //	other associated track        -> Partial data block, green, LDB brightness
 //	quick-looked other track      -> Full data block, green, OTH brightness
+//	quick-look-plus other track   -> Full data block, white, OTH brightness
 //	unassociated track            -> Limited data block, green, LDB brightness
 //
 // TI 6191.409 Table 4-1 explicitly assigns Partial and Limited data blocks to
@@ -173,8 +225,12 @@ func (p *STARSPane) targetDatablockPresentation(target *redsnet.TaisTarget) (tar
 	if p.targetOwnedByCurrentTCP(target) {
 		return targetDatablockFull, p.colors.OwnedDatablock, ps.Brightness.FullDatablocks
 	}
-	if p.targetSingleTrackQuickLooked(target) {
-		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
+	if quickLooked, plus := p.targetQuickLookState(target); quickLooked {
+		color := p.colors.UnownedDatablock
+		if plus {
+			color = p.colors.OwnedDatablock
+		}
+		return targetDatablockFull, color, ps.Brightness.OtherTracks
 	}
 	return targetDatablockPartial, p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 }

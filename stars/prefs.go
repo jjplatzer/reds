@@ -1,6 +1,7 @@
 package stars
 
 import (
+	"fmt"
 	stdmath "math"
 
 	"github.com/juliusplatzer/reds/radar"
@@ -17,6 +18,50 @@ const (
 	// TCW maximum until TDW selection/adaptation is introduced.
 	maximumTCWRange = float32(512)
 )
+
+const starsNegativeAltitudeFilterLimitFeet = -9900
+
+// altitudeFilterPreferences mirrors VICE's STARS Preferences altitude-filter
+// state. TI 6191.409 Rev. 30 section 4.11 maintains independent limits for
+// unassociated and associated tracks.
+type altitudeFilterPreferences struct {
+	Unassociated [2]int // low, high, feet
+	Associated   [2]int // low, high, feet
+}
+
+func defaultAltitudeFilterPreferences() altitudeFilterPreferences {
+	// The manual defines the command modality but not the power-up value.
+	// Match VICE's established STARS defaults.
+	return altitudeFilterPreferences{
+		Unassociated: [2]int{100, 60000},
+		Associated:   [2]int{100, 60000},
+	}
+}
+
+func formatAltitudeFilterLimit(feet int) string {
+	if feet == starsNegativeAltitudeFilterLimitFeet {
+		return "N99"
+	}
+	return fmt.Sprintf("%03d", feet/100)
+}
+
+func (af altitudeFilterPreferences) previewText() string {
+	return fmt.Sprintf("%s %s\n%s %s",
+		formatAltitudeFilterLimit(af.Unassociated[0]),
+		formatAltitudeFilterLimit(af.Unassociated[1]),
+		formatAltitudeFilterLimit(af.Associated[0]),
+		formatAltitudeFilterLimit(af.Associated[1]),
+	)
+}
+
+func (af altitudeFilterPreferences) ssaText() string {
+	return fmt.Sprintf("%s %s U %s %s A",
+		formatAltitudeFilterLimit(af.Unassociated[0]),
+		formatAltitudeFilterLimit(af.Unassociated[1]),
+		formatAltitudeFilterLimit(af.Associated[0]),
+		formatAltitudeFilterLimit(af.Associated[1]),
+	)
+}
 
 // Brightness is the STARS 0-100 illumination factor used by the BRITE
 // submenu. TI 6191.409 Rev. 30, 4.10 defines brightness as an illumination
@@ -67,6 +112,43 @@ type videoMapsListPreferences struct {
 	Position  [2]float32
 	Visible   bool
 	Selection videoMapsListSelection
+}
+
+// ssaFilterPreferences is the per-position state controlled by the Main DCB
+// <SSA FILTER> submenu in TI 6191.409 Rev. 30, 4.7 / Figure 4-7. The ALL
+// bit is intentionally independent of the individual bits: while ALL is on,
+// every SSA field is displayed; turning ALL off restores the individual
+// selection that was in effect before ALL was selected. This mirrors STARS'
+// documented modality and VICE's implementation.
+type ssaFilterPreferences struct {
+	All                 bool
+	Wx                  bool
+	Time                bool
+	Altimeter           bool
+	Status              bool
+	ConfigPlan          bool
+	Radar               bool
+	Codes               bool
+	SpecialPurposeCodes bool
+	SysOff              bool
+	Range               bool
+	PredictedTrackLines bool
+	AltitudeFilters     bool
+	NASInterface        bool
+	Intrail             bool
+	Intrail25           bool
+	AirportWeather      bool
+	OperationMode       bool
+	TestTarget          bool
+	WxHistory           bool
+	QuickLookPositions  bool
+	DisabledTerminal    bool
+	Consolidation       bool
+	TCPOff              bool
+	ActiveCRDAPairs     bool
+	Flow                bool
+	AMZ                 bool
+	TBFM                bool
 }
 
 // leaderLineDirection uses the clockwise ordering shown by the LDR DIR
@@ -164,6 +246,11 @@ type Preferences struct {
 	VideoMapVisible         map[int]bool
 	VideoMapsList           videoMapsListPreferences
 	PreviewAreaPosition     [2]float32
+	SSAFilter               ssaFilterPreferences
+	AltitudeFilters         altitudeFilterPreferences
+	QuickLookAll            bool
+	QuickLookAllIsPlus      bool
+	QuickLookTCPs           map[string]bool // TCP -> quick-look-plus
 
 	// DisplayLDBBeaconCodes is the per-position state controlled by TI 6191.409
 	// Rev. 30 section 6.13.9. It controls whether the reported Mode 3/A code is
@@ -231,6 +318,11 @@ func newPreferences(cfg selectedConfig) Preferences {
 			Position: [2]float32{0.85, 0.5},
 		},
 		PreviewAreaPosition: [2]float32{0.05, 0.25},
+		// TI 6191.409 does not prescribe a power-up filter state. VICE starts
+		// with ALL selected, which also preserves REDS' pre-filter behavior of
+		// showing every SSA field it currently knows how to render.
+		SSAFilter:       ssaFilterPreferences{All: true},
+		AltitudeFilters: defaultAltitudeFilterPreferences(),
 		// The operator manual defines how this state is changed but does not
 		// prescribe a startup value. Preserve REDS's existing presentation,
 		// which showed the beacon code in every LDB, until preference-set

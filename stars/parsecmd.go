@@ -139,6 +139,156 @@ func (ptlLengthCommandParser) Parse(text string) (any, string, bool, error) {
 	return float32(value), "", true, nil
 }
 
+func decodeAltitudeFilterLimit(hundreds int) int {
+	if hundreds == 0 {
+		return starsNegativeAltitudeFilterLimitFeet
+	}
+	return hundreds * 100
+}
+
+func sortedAltitudeFilterRange(v [2]int) [2]int {
+	if v[0] <= v[1] {
+		return v
+	}
+	return [2]int{v[1], v[0]}
+}
+
+type altitudeFilter6CommandParser struct{}
+
+func (altitudeFilter6CommandParser) Identifier() string { return "ALT_FILTER_6" }
+
+func (altitudeFilter6CommandParser) Parse(text string) (any, string, bool, error) {
+	// TI 6191.409 Rev. 30, 4.11.2-4.11.3: each altitude-filter
+	// range is entered as exactly six digits, two three-digit values in
+	// hundreds of feet. The two values may be entered in either order.
+	if len(text) < 6 {
+		return nil, text, false, nil
+	}
+	for _, r := range text[:6] {
+		if r < '0' || r > '9' {
+			return nil, text, true, ErrSTARSCommandFormat
+		}
+	}
+
+	first, err := strconv.Atoi(text[:3])
+	if err != nil {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	second, err := strconv.Atoi(text[3:6])
+	if err != nil {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+
+	filter := sortedAltitudeFilterRange([2]int{
+		decodeAltitudeFilterLimit(first),
+		decodeAltitudeFilterLimit(second),
+	})
+	return filter, text[6:], true, nil
+}
+
+type quickLookPositionSpec struct {
+	TCP  string
+	Plus bool
+}
+
+func parseQuickLookPositionToken(token string) (quickLookPositionSpec, bool) {
+	token = strings.ToUpper(strings.TrimSpace(token))
+	if token == "" {
+		return quickLookPositionSpec{}, false
+	}
+	plus := strings.HasSuffix(token, "+")
+	if plus {
+		token = strings.TrimSuffix(token, "+")
+	}
+	if len(token) < 1 || len(token) > 2 {
+		return quickLookPositionSpec{}, false
+	}
+	for _, r := range token {
+		if (r < '0' || r > '9') && (r < 'A' || r > 'Z') {
+			return quickLookPositionSpec{}, false
+		}
+	}
+	return quickLookPositionSpec{TCP: token, Plus: plus}, true
+}
+
+type quickLookPositionCommandParser struct{}
+
+func (quickLookPositionCommandParser) Identifier() string { return "QL_POSITION" }
+
+func (quickLookPositionCommandParser) Parse(text string) (any, string, bool, error) {
+	if text == "" || strings.ContainsAny(text, " \t\r\n") {
+		return nil, text, false, nil
+	}
+	position, ok := parseQuickLookPositionToken(text)
+	if !ok {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	return position, "", true, nil
+}
+
+type quickLookPositionsCommandParser struct{}
+
+func (quickLookPositionsCommandParser) Identifier() string { return "QL_POSITIONS" }
+
+func (quickLookPositionsCommandParser) Parse(text string) (any, string, bool, error) {
+	text = strings.TrimSpace(text)
+	if text == "" {
+		return nil, text, false, nil
+	}
+
+	// 6.13.13 places the optional '+' after the TCP list; it applies to every
+	// TCP entered by that command. VICE accepts per-token '+' as well, but the
+	// operator manual's modality takes precedence here.
+	plus := strings.HasSuffix(text, "+")
+	if plus {
+		text = strings.TrimSpace(strings.TrimSuffix(text, "+"))
+	}
+	if text == "" || strings.Contains(text, "+") {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+
+	var positions []quickLookPositionSpec
+	for _, field := range strings.Fields(text) {
+		field = strings.ToUpper(field)
+		if field == "" {
+			continue
+		}
+
+		// Explicit two-character TCPs may be entered consecutively. If the
+		// subset is omitted, the one-character symbol must be space-delimited;
+		// two alphabetic characters are kept together so a future adapted Group
+		// TCP ID can be validated by the handler.
+		if field[0] >= '0' && field[0] <= '9' {
+			if len(field)%2 != 0 {
+				return nil, text, true, ErrSTARSCommandFormat
+			}
+			for i := 0; i < len(field); i += 2 {
+				token := field[i : i+2]
+				position, ok := parseQuickLookPositionToken(token)
+				if !ok || token[0] < '0' || token[0] > '9' {
+					return nil, text, true, ErrSTARSCommandFormat
+				}
+				position.Plus = plus
+				positions = append(positions, position)
+			}
+		} else {
+			if len(field) > 2 {
+				return nil, text, true, ErrSTARSCommandFormat
+			}
+			position, ok := parseQuickLookPositionToken(field)
+			if !ok {
+				return nil, text, true, ErrSTARSCommandFormat
+			}
+			position.Plus = plus
+			positions = append(positions, position)
+		}
+	}
+	if len(positions) == 0 || len(positions) > 10 {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	return positions, "", true, nil
+}
+
 type brightnessCommandParser struct{}
 
 func (brightnessCommandParser) Identifier() string { return "BRIGHTNESS" }
@@ -169,6 +319,9 @@ var commandTypeParsers = map[string]commandTypeParser{
 	"LEADER_LENGTH":      leaderLengthCommandParser{},
 	"PTL_LENGTH":         ptlLengthCommandParser{},
 	"BRIGHTNESS":         brightnessCommandParser{},
+	"ALT_FILTER_6":       altitudeFilter6CommandParser{},
+	"QL_POSITION":        quickLookPositionCommandParser{},
+	"QL_POSITIONS":       quickLookPositionsCommandParser{},
 }
 
 type commandMatcher interface {

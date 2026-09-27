@@ -2,6 +2,8 @@ package stars
 
 import (
 	"log/slog"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/juliusplatzer/reds/cmd/wx"
@@ -76,6 +78,189 @@ type STARSPane struct {
 	// beacon readouts. Slew + left trackball on an unassociated track forces
 	// its reported beacon code into LDB field 1 for five seconds.
 	ldbBeaconReadoutUntil map[string]time.Time
+}
+
+// resolvedQuickLookTCP expands the one-character controller-symbol shorthand
+// documented by TI 6191.409 section 6.13 using the entering position's
+// controller subset, then validates the resulting TCP against facility
+// adaptation. REDS' generated STARS configs currently carry explicit TCPs but
+// not Quicklook Group IDs, so group IDs remain invalid until that adaptation is
+// exported by crc2reds.
+func (p *STARSPane) resolvedQuickLookTCP(input string) (string, bool) {
+	if p == nil {
+		return "", false
+	}
+	input = strings.ToUpper(strings.TrimSpace(input))
+	own := strings.ToUpper(strings.TrimSpace(p.config.ControlPosition.TCP))
+	if len(input) == 1 && len(own) == 2 {
+		input = own[:1] + input
+	}
+	if len(input) != 2 {
+		return "", false
+	}
+	for _, position := range p.config.Facility.ControlPositions {
+		if strings.EqualFold(strings.TrimSpace(position.TCP), input) {
+			return strings.ToUpper(strings.TrimSpace(position.TCP)), true
+		}
+	}
+	return "", false
+}
+
+func (p *STARSPane) ownTCP() string {
+	if p == nil {
+		return ""
+	}
+	return strings.ToUpper(strings.TrimSpace(p.config.ControlPosition.TCP))
+}
+
+// toggleQuickLookTCP implements the per-owner toggle in TI 6191.409 6.13.5
+// and 6.13.13. tcp is already resolved/validated by the command handler. The
+// bool stored in QuickLookTCPs is the manual's quick-look-plus state: false =
+// Full DB in Unowned color, true = Full DB in Owned color.
+func (p *STARSPane) toggleQuickLookTCP(tcp string, plus bool) {
+	ps := p.currentPrefs()
+	if ps.QuickLookTCPs == nil {
+		ps.QuickLookTCPs = make(map[string]bool)
+	}
+	// Selecting an individual TCP leaves the ALL modality, matching VICE.
+	ps.QuickLookAll = false
+	ps.QuickLookAllIsPlus = false
+	if currentPlus, enabled := ps.QuickLookTCPs[tcp]; enabled && currentPlus == plus {
+		delete(ps.QuickLookTCPs, tcp)
+	} else {
+		ps.QuickLookTCPs[tcp] = plus
+	}
+}
+
+// disableQuickLooks implements 6.13.15's distinction between Q and Q+:
+// without +, ordinary quick looks are removed while QL+ entries remain;
+// with +, quick-look-plus entries are removed while ordinary entries remain.
+func (p *STARSPane) disableQuickLooks(plus bool) {
+	if p == nil {
+		return
+	}
+	ps := p.currentPrefs()
+	for tcp, isPlus := range ps.QuickLookTCPs {
+		if isPlus == plus {
+			delete(ps.QuickLookTCPs, tcp)
+		}
+	}
+	if ps.QuickLookAll && ps.QuickLookAllIsPlus == plus {
+		ps.QuickLookAll = false
+		ps.QuickLookAllIsPlus = false
+	}
+}
+
+func (p *STARSPane) hasQuickLookStatus() bool {
+	if p == nil {
+		return false
+	}
+	ps := p.currentPrefs()
+	return ps.QuickLookAll || len(ps.QuickLookTCPs) != 0
+}
+
+// qlPositionsString follows VICE's ordering and two-line width: quick-look-plus
+// TCPs first, then normal TCPs, each group lexicographically sorted. Table 2-15
+// permits up to two SSA lines and uses a trailing spaced '+' when additional
+// TCPs cannot be shown.
+func (p *STARSPane) qlPositionsString() string {
+	if p == nil {
+		return ""
+	}
+	ps := p.currentPrefs()
+	var entries []string
+	if ps.QuickLookAll {
+		if ps.QuickLookAllIsPlus {
+			entries = append(entries, "ALL+")
+		} else {
+			entries = append(entries, "ALL")
+		}
+	}
+
+	tcps := make([]string, 0, len(ps.QuickLookTCPs))
+	for tcp := range ps.QuickLookTCPs {
+		tcps = append(tcps, tcp)
+	}
+	sort.Slice(tcps, func(i, j int) bool {
+		iPlus, jPlus := ps.QuickLookTCPs[tcps[i]], ps.QuickLookTCPs[tcps[j]]
+		if iPlus != jPlus {
+			return iPlus
+		}
+		return tcps[i] < tcps[j]
+	})
+	for _, tcp := range tcps {
+		if ps.QuickLookTCPs[tcp] {
+			tcp += "+"
+		}
+		entries = append(entries, tcp)
+	}
+
+	if len(entries) == 0 {
+		return ""
+	}
+
+	// Wrap at 32 characters, at most two lines. If more TCPs remain, Table
+	// 2-15 specifies a spaced '+' at the end of line two.
+	lines := make([]string, 0, 2)
+	idx := 0
+	for len(lines) < 2 && idx < len(entries) {
+		line := entries[idx]
+		idx++
+		for idx < len(entries) && len(line)+1+len(entries[idx]) <= 32 {
+			line += " " + entries[idx]
+			idx++
+		}
+		lines = append(lines, line)
+	}
+	if idx < len(entries) && len(lines) == 2 {
+		line := lines[1]
+		for len(line)+2 > 32 {
+			cut := strings.LastIndexByte(line, ' ')
+			if cut < 0 {
+				line = line[:min(len(line), 30)]
+				break
+			}
+			line = line[:cut]
+		}
+		lines[1] = strings.TrimSpace(line) + " +"
+	}
+	return strings.Join(lines, "\n")
+}
+
+// targetQuickLookState combines the existing single-track implied quick look
+// with the owner-wide quick-look state. The second result is QL+ and therefore
+// controls Owned-vs-Unowned color; brightness remains OTH because ownership
+// itself has not changed.
+func (p *STARSPane) targetQuickLookState(target *redsnet.TaisTarget) (bool, bool) {
+	if p == nil || target == nil || target.FlightPlan == nil || p.targetOwnedByCurrentTCP(target) {
+		return false, false
+	}
+
+	enabled := p.targetSingleTrackQuickLooked(target)
+	plus := false
+	ps := p.currentPrefs()
+	if ps.QuickLookAll {
+		enabled = true
+		plus = ps.QuickLookAllIsPlus
+	}
+	owner := strings.ToUpper(strings.TrimSpace(target.FlightPlan.CPS))
+	if owner != "" {
+		if ownerPlus, ok := ps.QuickLookTCPs[owner]; ok {
+			// 6.13.14 keeps pre-existing individual QL states as exceptions
+			// when QL ALL/ALL+ is selected: ordinary QL stays Unowned color
+			// under ALL+, and QL+ stays Owned color under ordinary ALL.
+			enabled = true
+			plus = ownerPlus
+		}
+	}
+	return enabled, plus
+}
+
+// quickLookDisplayStatus is the subset of 6.13.6/6.13.16 REDS can currently
+// display. Quicklook-region adaptation is not yet exported by crc2reds, so the
+// Preview Area contains the enabled TCPs/ALL state only.
+func (p *STARSPane) quickLookDisplayStatus() string {
+	return p.qlPositionsString()
 }
 
 // NewPane creates a STARS TCW pane for the selected controller position.

@@ -369,10 +369,13 @@ func (p *STARSPane) targetPositionSymbol(target *redsnet.TaisTarget) (string, re
 		if p.targetOwnedByCurrentTCP(target) {
 			return symbol, p.colors.PositionSymbolOwned, ps.Brightness.Positions
 		}
-		if p.targetSingleTrackQuickLooked(target) {
-			// TI 6191.409 Table 4-1: an unowned FDB and its position
-			// symbol are controlled by OTH brightness. Appendix B keeps
-			// the TCW unowned color green.
+		if quickLooked, plus := p.targetQuickLookState(target); quickLooked {
+			// Table 4-1 assigns any unowned FDB and its position symbol to
+			// OTH brightness. QL+ changes the presentation to the Owned color
+			// without changing actual ownership.
+			if plus {
+				return symbol, p.colors.PositionSymbolOwned, ps.Brightness.OtherTracks
+			}
 			return symbol, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 		}
 		// An ordinary associated track owned by another TCP is a Partial
@@ -520,12 +523,19 @@ func (p *STARSPane) drawTargetHistory(
 		builders[i] = renderer.GetTrianglesBuilder()
 		defer renderer.ReturnTrianglesBuilder(builders[i])
 	}
+	now := time.Now()
 
 	// Sample each target once per frame, then batch geometry by age/color. This
 	// avoids allocating/re-scanning the same history five times per target.
 	for i := range snapshot.Targets {
 		target := &snapshot.Targets[i]
 		if !taisTargetHasPosition(target) {
+			continue
+		}
+		// VICE suppresses history whenever the ordinary data-block
+		// presentation is removed by the altitude filter. The current target
+		// and its position symbol remain visible.
+		if !p.targetAltitudeFilterAllowsDatablock(target, now) {
 			continue
 		}
 
@@ -720,6 +730,7 @@ func (p *STARSPane) drawTargetLeaderLines(
 
 	builder := renderer.GetColoredLinesBuilder()
 	defer renderer.ReturnColoredLinesBuilder(builder)
+	now := time.Now()
 
 	for i := range snapshot.Targets {
 		target := &snapshot.Targets[i]
@@ -727,6 +738,9 @@ func (p *STARSPane) drawTargetLeaderLines(
 			continue
 		}
 		if target.FlightPlan != nil && target.FlightPlan.Suspended {
+			continue
+		}
+		if !p.targetAltitudeFilterAllowsDatablock(target, now) {
 			continue
 		}
 
@@ -788,10 +802,12 @@ func (p *STARSPane) targetLeaderPresentation(target *redsnet.TaisTarget) (render
 		if p.targetOwnedByCurrentTCP(target) {
 			return p.colors.OwnedDatablock, ps.Brightness.FullDatablocks
 		}
-		if p.targetSingleTrackQuickLooked(target) {
-			// VICE draws the leader using the same unowned-FDB brightness as
-			// the data block. This makes the entire quick-look presentation
-			// respond to the OTH control.
+		if quickLooked, plus := p.targetQuickLookState(target); quickLooked {
+			// VICE draws all quick-look FDB components with OTH brightness.
+			// QL+ changes their color to Owned/white.
+			if plus {
+				return p.colors.OwnedDatablock, ps.Brightness.OtherTracks
+			}
 			return p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 		}
 		// Other-owner associated tracks normally carry a Partial data block,

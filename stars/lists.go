@@ -236,6 +236,7 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 
 	listBrightness := p.currentPrefs().Brightness.Lists
+	filter := p.currentPrefs().SSAFilter
 
 	// Field A - TCW/TDW Failure Alert, EFSL / DSF indicator.
 	// A healthy TCW/TDW leaves this field empty (Table 2-15).
@@ -306,27 +307,79 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		// VICE uses the same parenthesized-enabled / bare-inhibited modality, but
 		// renders it with the generic list style; the operator manual takes
 		// precedence here, so REDS uses the dedicated SystemStatusWX color.
-		addLine(p.ssaWeatherLevelStatusText(), p.colors.SystemStatusWX)
+		if filter.All || filter.Wx {
+			addLine(p.ssaWeatherLevelStatusText(), p.colors.SystemStatusWX)
+		}
 
 		// Field E - UTC Time, System Altimeter Setting.
 		// Hours and minutes / seconds are followed by the system altimeter
 		// setting used for altitude correction in this Terminal control area.
-		addLine(p.ssaFieldEText(time.Now()), p.colors.List)
-
-		// TI 6191.409 Rev. 30, 6.3.4 says a non-zero PTL value is reflected
-		// in the System Status Area and is removed when the value is zero. The
-		// manual does not prescribe the exact text formatting; VICE renders the
-		// value as "PTL: x.x", so use that established fallback.
-		if p.currentPrefs().PTLLength > 0 {
-			addLine(fmt.Sprintf("PTL: %.1f", p.currentPrefs().PTLLength), p.colors.List)
+		// Figure 4-7 exposes TIME and ALTSTG as independent filter buttons even
+		// though Table 2-15 places them on one SSA line.
+		if filter.All || filter.Time || filter.Altimeter {
+			addLine(
+				p.ssaFieldEText(time.Now(), filter.All || filter.Time, filter.All || filter.Altimeter),
+				p.colors.List,
+			)
 		}
 
-		// Fields E1 through N are omitted until their corresponding facility,
-		// surveillance, flow-management, or controller preference state exists.
+		// Field H - Selected beacon codes / code blocks. REDS already carries
+		// the selected-code preference used by unassociated-track presentation,
+		// so expose the same state in the SSA when CODES is enabled. Table 2-15
+		// permits up to ten entries; VICE lays them out five per line.
+		if (filter.All || filter.Codes) && len(p.currentPrefs().SelectedBeacons) > 0 {
+			codes := p.currentPrefs().SelectedBeacons
+			for i := 0; i < len(codes) && i < 10; i += 5 {
+				end := min(i+5, len(codes), 10)
+				addLine(strings.Join(codes[i:end], " "), p.colors.List)
+			}
+		}
+
+		// Field K - Display Range / PTL value. RANGE and PTL are independently
+		// filterable but share one SSA line. Table 2-15 shows the range as nNM;
+		// VICE supplies the exact PTL text formatting used here.
+		if filter.All || filter.Range || filter.PredictedTrackLines {
+			var parts []string
+			if filter.All || filter.Range {
+				parts = append(parts, fmt.Sprintf("%dNM", int(p.currentPrefs().Range+0.5)))
+			}
+			if (filter.All || filter.PredictedTrackLines) && p.currentPrefs().PTLLength > 0 {
+				parts = append(parts, fmt.Sprintf("PTL: %.1f", p.currentPrefs().PTLLength))
+			}
+			addLine(strings.Join(parts, " "), p.colors.List)
+		}
+
+		// Field L - Altitude Filters. Table 2-15 displays the unassociated
+		// range first, followed by U, then the associated range and A. The
+		// SSA FILTER <ALT FIL> button controls only this status line; the
+		// altitude filters themselves remain active regardless of whether the
+		// line is selected for display.
+		if filter.All || filter.AltitudeFilters {
+			addLine(p.currentPrefs().AltitudeFilters.ssaText(), p.colors.List)
+		}
+
+		// Remaining fields between E1 and N are omitted until their corresponding
+		// facility, surveillance, flow-management, or controller state exists.
 
 		// Field O - Mode of Operation.
 		// The initial REDS STARS TCW/TDW runs in operational / normal mode.
-		addLine("MODE: NORMAL", p.colors.List)
+		if filter.All || filter.OperationMode {
+			addLine("MODE: NORMAL", p.colors.List)
+		}
+
+		// Field Q - Quick Look TCPs. Table 2-15 permits up to two lines,
+		// with QL+ positions first and a spaced trailing '+' when more TCPs
+		// are enabled than can be displayed. The SSA FILTER <QL> button only
+		// controls visibility of this status field; it does not alter QL state.
+		if (filter.All || filter.QuickLookPositions) && p.hasQuickLookStatus() {
+			ql := strings.Split(p.qlPositionsString(), "\n")
+			for i, line := range ql {
+				if i == 0 {
+					line = "QL: " + line
+				}
+				addLine(line, p.colors.List)
+			}
+		}
 
 		td.GenerateCommands(cb, texture)
 		renderer.ReturnTextDrawBuilder(td)

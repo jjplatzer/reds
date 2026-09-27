@@ -216,16 +216,18 @@ func (p *STARSPane) consumeSystemAltimeterUpdates() {
 	}
 }
 
-func (p *STARSPane) ssaFieldEText(now time.Time) string {
-	text := now.UTC().Format("1504/05")
-	if p == nil || !p.systemAltimeter.hasMETAR {
-		return text
+func (p *STARSPane) ssaFieldEText(now time.Time, showTime, showAltimeter bool) string {
+	var parts []string
+	if showTime {
+		parts = append(parts, now.UTC().Format("1504/05"))
 	}
-	metar := p.systemAltimeter.metar
-	if !metar.HasAltimeter {
-		return text
+	if showAltimeter && p != nil && p.systemAltimeter.hasMETAR {
+		metar := p.systemAltimeter.metar
+		if metar.HasAltimeter {
+			parts = append(parts, fmt.Sprintf("%02d.%02d", metar.Altimeter/100, metar.Altimeter%100))
+		}
 	}
-	return fmt.Sprintf("%s %02d.%02d", text, metar.Altimeter/100, metar.Altimeter%100)
+	return strings.Join(parts, " ")
 }
 
 func fetchSTARSAWCMETAR(ctx context.Context, icao string) (starsMETAR, error) {

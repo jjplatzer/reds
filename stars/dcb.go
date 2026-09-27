@@ -29,6 +29,7 @@ const (
 	mapsSubmenuDirectMapColumns = 14
 	mapsDCBColumns              = mapsMainDCBColumns + mapsSubmenuControlCols + mapsSubmenuMapColumns
 	briteDCBColumns             = 9 // TI 6191.409 Rev. 30, Figure 4-13.
+	ssaFilterStartColumn        = 2 // VICE / Figure 4-7: overlay starts after two Main-DCB columns.
 )
 
 const zDCB renderer.Z = 100
@@ -148,7 +149,8 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	mapsActive := p.commandMode == CommandModeMaps
 	briteActive := p.commandMode == CommandModeBrite || p.commandMode == CommandModeBriteSpinner
-	submenuActive := mapsActive || briteActive
+	ssaFilterActive := p.commandMode == CommandModeSSAFilter
+	submenuActive := mapsActive || briteActive || ssaFilterActive
 	if p.dcbShowAux && !submenuActive {
 		d.drawAuxPage()
 	} else {
@@ -173,6 +175,16 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		}
 		p.adjustActiveBrightness(ctx)
 		d.drawBritePage()
+	}
+	if ssaFilterActive {
+		// TI 6191.409 Rev. 30, Figure 4-7 overlays the SSA FILTER submenu on
+		// the disabled Main DCB. VICE rewinds 17 slots from the 19-column Main
+		// DCB, so the submenu begins at column 2 and occupies 15 columns.
+		d.cursor = redsmath.Vec2{
+			X: -p.dcbScroll + float32(ssaFilterStartColumn)*d.buttonSize,
+			Y: 0,
+		}
+		d.drawSSAFilterPage()
 	}
 	cb.DisableScissor()
 }
@@ -298,7 +310,9 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 	d.button("MODE\nFSL", mainFlags(buttonFull)|buttonUnsupported, false, nil)
 	d.button("SITE\nMULTI", mainFlags(buttonFull), false, nil)
 	d.button("PREF", mainFlags(buttonFull), false, nil)
-	d.button("SSA\nFILTER", mainFlags(buttonHalfVertical), false, nil)
+	d.button("SSA\nFILTER", mainFlags(buttonHalfVertical), false, func() {
+		p.setCommandMode(CommandModeSSAFilter)
+	})
 	d.button("GI TEXT\nFILTER", mainFlags(buttonHalfVertical), false, nil)
 	d.button("SHIFT", mainFlags(buttonFull), false, func() {
 		p.dcbShowAux = true
@@ -765,6 +779,71 @@ func (d *dcbDrawer) drawBritePage() {
 	}
 
 	d.button("DONE", buttonHalfVertical, false, func() {
+		p.setCommandMode(CommandModeNone)
+	})
+}
+
+// drawSSAFilterPage implements TI 6191.409 Rev. 30, 4.7 / Figure 4-7.
+// The command is DCB-only: each field button immediately toggles the
+// corresponding System Status Area field and DONE returns to the Main DCB.
+//
+// ALL is not a destructive "set every bit" operation. The operator manual
+// says it toggles between showing all SSA fields and the previously enabled
+// individual fields. Keep the individual bits untouched while ALL is active;
+// when a field button is selected during ALL, mirror VICE/STARS by leaving
+// ALL and inhibiting that field in the restored individual selection.
+func (d *dcbDrawer) drawSSAFilterPage() {
+	p := d.pane
+	f := &p.currentPrefs().SSAFilter
+
+	fieldButton := func(label string, value *bool) {
+		if f.All {
+			// Every field button is presented selected while ALL is active.
+			// Clicking one exits ALL and inhibits that field; all other
+			// individual selections retain their pre-ALL state.
+			d.button(label, buttonHalfVertical, true, func() {
+				f.All = false
+				*value = false
+			})
+			return
+		}
+		d.button(label, buttonHalfVertical, *value, func() {
+			*value = !*value
+		})
+	}
+
+	// Figure 4-7, first block (nine columns, top/bottom order).
+	d.button("ALL", buttonHalfVertical, f.All, func() { f.All = !f.All })
+	fieldButton("WX", &f.Wx)
+	fieldButton("TIME", &f.Time)
+	fieldButton("ALTSTG", &f.Altimeter)
+	fieldButton("STATUS", &f.Status)
+	fieldButton("PLAN", &f.ConfigPlan)
+	fieldButton("RADAR", &f.Radar)
+	fieldButton("CODES", &f.Codes)
+	fieldButton("SPC", &f.SpecialPurposeCodes)
+	fieldButton("SYS OFF", &f.SysOff)
+	fieldButton("RANGE", &f.Range)
+	fieldButton("PTL", &f.PredictedTrackLines)
+	fieldButton("ALT FIL", &f.AltitudeFilters)
+	fieldButton("NAS I/F", &f.NASInterface)
+	fieldButton("INTRAIL", &f.Intrail)
+	fieldButton("2.5", &f.Intrail25)
+	fieldButton("AIRPORT", &f.AirportWeather)
+	fieldButton("OP MODE", &f.OperationMode)
+
+	// Figure 4-7, second block (five columns plus DONE).
+	fieldButton("TT", &f.TestTarget)
+	fieldButton("WX HIST", &f.WxHistory)
+	fieldButton("QL", &f.QuickLookPositions)
+	fieldButton("TW OFF", &f.DisabledTerminal)
+	fieldButton("CON/CPL", &f.Consolidation)
+	fieldButton("OFF IND", &f.TCPOff)
+	fieldButton("CRDA", &f.ActiveCRDAPairs)
+	fieldButton("FLOW", &f.Flow)
+	fieldButton("AMZ", &f.AMZ)
+	fieldButton("TBFM", &f.TBFM)
+	d.button("DONE", buttonFull, false, func() {
 		p.setCommandMode(CommandModeNone)
 	})
 }
