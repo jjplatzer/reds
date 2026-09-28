@@ -214,21 +214,17 @@ func (p *STARSPane) ssaWeatherLevelStatusText() string {
 
 // ssaRadarModeText returns the sensor-mode portion of SSA field G.
 //
-// TI 6191.409 Rev. 30, Table 2-16 calls the multi-sensor presentation
-// "SYS". VICE models the same state as RadarModeMulti (and labels it MULTI
-// in its simulator UI), with the SSA renderer sourcing the value from
-// radarSiteId(). REDS does not yet expose SITE/single-sensor or FUSED
-// selection: the Main DCB currently presents SITE MULTI and TAIS does not
-// provide per-display sensor-selection state. Therefore the only truthful
-// STARS field-G indicator REDS can presently render is the real-system
-// multi-sensor label, SYS. Keep this behind a helper so SITE support can
-// later return the selected sensor short name or FUSED without changing
-// SSA layout/filter logic.
+// TI 6191.409 Rev. 30, Table 2-16 distinguishes SYS (multi-sensor mode)
+// from FUSED (fused mode). REDS currently consumes the already-processed
+// STARS/TAIS track stream and does not model individual adapted radar sites
+// or per-display sensor selection, so advertise the presentation as FUSED.
+// If true SITE/MULTI support is added later, this helper can return SYS or
+// the selected sensor identifier without changing the SSA layout/filter logic.
 func (p *STARSPane) ssaRadarModeText() string {
 	if p == nil {
 		return ""
 	}
-	return "SYS"
+	return "FUSED"
 }
 
 // ssaSystemStatusText returns the STATUS portion of SSA field G.
