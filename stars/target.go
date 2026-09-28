@@ -269,8 +269,8 @@ func (p *STARSPane) pruneLDBBeaconReadouts(snapshot redsnet.TaisSnapshot, now ti
 // target location, independently of the fused target geometry. TI 6191.409
 // Rev. 30 §2.11 defines the position symbol as the controlling TCP identifier
 // for associated tracks and requires a dark outline for readability. REDS
-// uses the configured/default position-symbol character size (currently size
-// 1) and, like VICE, draws the outline mask first and the colored glyph second.
+// uses the configured position-symbol character size and, like VICE, draws the
+// outline mask first and the colored glyph second.
 func (p *STARSPane) drawTargetPositionSymbols(
 	ctx *panes.Context,
 	zcb *renderer.ZCmdBuffer,

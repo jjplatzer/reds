@@ -33,6 +33,7 @@ type STARSPane struct {
 	longitudeScaleFactor         float64
 	colors                       MonitorColors
 	cursorTexture                renderer.TextureID
+	cursorTextureAsset           string
 	dcbScroll                    float32
 	dcbShowAux                   bool
 	dcbSuppressPressUntilRelease bool
@@ -64,6 +65,8 @@ type STARSPane struct {
 	multiFuncPrefix           string
 	activeBrightnessControl   string
 	brightnessDragAccumY      float32
+	activeCharSizeControl     string
+	charSizeDragAccumY        float32
 	rangeRingDragAccumY       float32
 	leaderDirectionDragAccumY float32
 	leaderLengthDragAccumY    float32
@@ -390,7 +393,9 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawTargetPositionSymbols(ctx, zcb, transforms, targets)
 	p.drawDatablocks(ctx, zcb, transforms, targets)
 
-	p.drawDCB(ctx, zcb)
+	if p.currentPrefs().DisplayDCB {
+		p.drawDCB(ctx, zcb)
+	}
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
 	p.drawVideoMapsList(ctx, zcb)
@@ -454,6 +459,20 @@ func (p *STARSPane) consumeMouseEvents(
 	// Active STARS adjustment buttons capture trackball motion. RR changes
 	// range-ring spacing; LDR DIR changes the owned-data-block orientation.
 	// Neither adjustment may also pan or zoom the radar scope.
+	if p.commandMode == CommandModeCharSizeSpinner {
+		// TI 6191.409 Rev. 30, 4.9.1 completes a trackball CHAR SIZE
+		// adjustment with the left trackball button. Clicking back in the DCB
+		// is handled by the submenu itself; a scope click simply returns to the
+		// CHAR SIZE submenu without changing the selected value.
+		if ctx.Mouse.WasPressed(platform.MouseButtonLeft) && !p.mouseOverDCB(ctx) {
+			p.commandMode = CommandModeCharSize
+			p.activeCharSizeControl = ""
+			p.charSizeDragAccumY = 0
+			p.commandInput = ""
+			p.commandResponse = ""
+		}
+		return
+	}
 	if p.commandMode == CommandModeRangeRings {
 		p.adjustRangeRingSpacing(ctx)
 		return

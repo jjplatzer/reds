@@ -6,46 +6,70 @@ import (
 )
 
 const (
-	// TI 6191.409 describes position-symbol presentation and the POS character-
-	// size control, but does not prescribe size 0 as the startup value. Use size
-	// 1 as REDS' default position-symbol size. Keep the actual bitmap dimensions
-	// here rather than teaching target rendering about font-set-specific pixels.
-	fontSetAPositionSymbolFontSize  = 14
-	fontSetAPositionSymbolFontName  = "sddCharFontSetASize1"
-	fontSetAPositionOutlineFontName = "sddCharOutlineFontSetASize1"
-	fontSetBPositionSymbolFontSize  = 12
-	fontSetBPositionSymbolFontName  = "sddCharFontSetBSize1"
-	fontSetBPositionOutlineFontName = "sddCharOutlineFontSetBSize1"
-
-	// VICE maps STARS list character size 1 to these renderer sizes. Font Set
-	// B is the non-legacy/ARTS face and is REDS' default; Font Set A is the
-	// legacy face selected when "Use Font Set B" is disabled.
-	fontSetAListFontSize = 14
-	fontSetAListFontName = "sddCharFontSetASize1"
-	fontSetBListFontSize = 12
-	fontSetBListFontName = "sddCharFontSetBSize1"
+	starsCharacterSizeCount = 6
 )
 
-// newSystemFont builds the character size currently used by REDS for both
-// position symbols and list/data-entry text. Additional sizes can be added
-// lazily when the full STARS character-size controls are implemented.
+var (
+	// TI 6191.409 Rev. 30 section 4.9.1 exposes character sizes 0-5 for all
+	// display groups except the DCB, which is limited to 0-2. These are the
+	// exact bitmap-font sizes used by VICE for the two STARS font sets.
+	fontSetASizes = [starsCharacterSizeCount]int{9, 14, 17, 20, 21, 23}
+	fontSetBSizes = [starsCharacterSizeCount]int{11, 12, 15, 16, 18, 19}
+
+	fontSetAFontNames = [starsCharacterSizeCount]string{
+		"sddCharFontSetASize0",
+		"sddCharFontSetASize1",
+		"sddCharFontSetASize2",
+		"sddCharFontSetASize3",
+		"sddCharFontSetASize4",
+		"sddCharFontSetASize5",
+	}
+	fontSetBFontNames = [starsCharacterSizeCount]string{
+		"sddCharFontSetBSize0",
+		"sddCharFontSetBSize1",
+		"sddCharFontSetBSize2",
+		"sddCharFontSetBSize3",
+		"sddCharFontSetBSize4",
+		"sddCharFontSetBSize5",
+	}
+	fontSetAOutlineFontNames = [starsCharacterSizeCount]string{
+		"sddCharOutlineFontSetASize0",
+		"sddCharOutlineFontSetASize1",
+		"sddCharOutlineFontSetASize2",
+		"sddCharOutlineFontSetASize3",
+		"sddCharOutlineFontSetASize4",
+		"sddCharOutlineFontSetASize5",
+	}
+	fontSetBOutlineFontNames = [starsCharacterSizeCount]string{
+		"sddCharOutlineFontSetBSize0",
+		"sddCharOutlineFontSetBSize1",
+		"sddCharOutlineFontSetBSize2",
+		"sddCharOutlineFontSetBSize3",
+		"sddCharOutlineFontSetBSize4",
+		"sddCharOutlineFontSetBSize5",
+	}
+)
+
+// newSystemFont builds all six selectable STARS character sizes into one
+// bitmap-font atlas wrapper. Rendering code still addresses a concrete pixel
+// size, while CHAR SIZE preferences remain the operator-visible 0-5 values.
 func newSystemFont(useFontSetB bool) *renderer.BitmapFont {
-	positionName, positionSize := fontSetAPositionSymbolFontName, fontSetAPositionSymbolFontSize
-	listName, listSize := fontSetAListFontName, fontSetAListFontSize
+	names := fontSetAFontNames
+	sizes := fontSetASizes
 	if useFontSetB {
-		positionName, positionSize = fontSetBPositionSymbolFontName, fontSetBPositionSymbolFontSize
-		listName, listSize = fontSetBListFontName, fontSetBListFontSize
+		names = fontSetBFontNames
+		sizes = fontSetBSizes
 	}
 
-	positionFont := starsassets.StarsFonts[positionName]
-	listFont := starsassets.StarsFonts[listName]
-	if positionFont == nil || listFont == nil {
-		return nil
+	fonts := make(map[int]*renderer.MonoBitmapFont, starsCharacterSizeCount)
+	for i := range names {
+		font := starsassets.StarsFonts[names[i]]
+		if font == nil {
+			return nil
+		}
+		fonts[sizes[i]] = starsFontForRenderer(font)
 	}
-	return renderer.NewBitmapFontFromMono(map[int]*renderer.MonoBitmapFont{
-		positionSize: starsFontForRenderer(positionFont),
-		listSize:     starsFontForRenderer(listFont),
-	})
+	return renderer.NewBitmapFontFromMono(fonts)
 }
 
 // newSystemOutlineFont is the dark mask used behind STARS position symbols.
@@ -53,18 +77,22 @@ func newSystemFont(useFontSetB bool) *renderer.BitmapFont {
 // have a dark outline; Appendix B defines that outline as black. The outline
 // glyphs are the same PCF-derived masks used by VICE.
 func newSystemOutlineFont(useFontSetB bool) *renderer.BitmapFont {
-	name, size := fontSetAPositionOutlineFontName, fontSetAPositionSymbolFontSize
+	names := fontSetAOutlineFontNames
+	sizes := fontSetASizes
 	if useFontSetB {
-		name, size = fontSetBPositionOutlineFontName, fontSetBPositionSymbolFontSize
+		names = fontSetBOutlineFontNames
+		sizes = fontSetBSizes
 	}
 
-	font := starsassets.StarsFonts[name]
-	if font == nil {
-		return nil
+	fonts := make(map[int]*renderer.MonoBitmapFont, starsCharacterSizeCount)
+	for i := range names {
+		font := starsassets.StarsFonts[names[i]]
+		if font == nil {
+			return nil
+		}
+		fonts[sizes[i]] = starsFontForRenderer(font)
 	}
-	return renderer.NewBitmapFontFromMono(map[int]*renderer.MonoBitmapFont{
-		size: starsFontForRenderer(font),
-	})
+	return renderer.NewBitmapFontFromMono(fonts)
 }
 
 // starsFontForRenderer converts the STARS/VICE bitmap-font Y offsets into the
@@ -87,26 +115,47 @@ func starsFontForRenderer(src *renderer.MonoBitmapFont) *renderer.MonoBitmapFont
 	return &font
 }
 
-func (p *STARSPane) listFontSize() int {
+func (p *STARSPane) characterFontSize(index int) int {
+	index = max(0, min(index, starsCharacterSizeCount-1))
 	if p != nil && p.useFontSetB {
-		return fontSetBListFontSize
+		return fontSetBSizes[index]
 	}
-	return fontSetAListFontSize
+	return fontSetASizes[index]
+}
+
+func (p *STARSPane) dcbFontSize() int {
+	if p == nil {
+		return fontSetASizes[1]
+	}
+	return p.characterFontSize(max(0, min(p.currentPrefs().CharSize.DCB, 2)))
+}
+
+func (p *STARSPane) listFontSize() int {
+	if p == nil {
+		return fontSetASizes[1]
+	}
+	return p.characterFontSize(p.currentPrefs().CharSize.Lists)
+}
+
+func (p *STARSPane) datablockFontSize() int {
+	if p == nil {
+		return fontSetASizes[1]
+	}
+	return p.characterFontSize(p.currentPrefs().CharSize.Datablocks)
+}
+
+func (p *STARSPane) toolsFontSize() int {
+	if p == nil {
+		return fontSetASizes[1]
+	}
+	return p.characterFontSize(p.currentPrefs().CharSize.Tools)
 }
 
 func (p *STARSPane) positionSymbolFontSize() int {
-	if p != nil && p.useFontSetB {
-		return fontSetBPositionSymbolFontSize
+	if p == nil {
+		return fontSetASizes[0]
 	}
-	return fontSetAPositionSymbolFontSize
-}
-
-// datablockFontSize returns STARS character size 1, matching VICE's default
-// DATA BLOCKS character-size preference. REDS does not yet expose the full
-// datablock character-size control, so keep this in one helper for the later
-// CHAR SIZE wiring rather than baking pixel sizes into datablock rendering.
-func (p *STARSPane) datablockFontSize() int {
-	return p.listFontSize()
+	return p.characterFontSize(p.currentPrefs().CharSize.PositionSymbols)
 }
 
 // UseFontSetB reports the state shown by the STARS-only title-bar menu item.

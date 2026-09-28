@@ -26,18 +26,20 @@ const (
 	targetDatablockLimited
 )
 
-// drawDatablocks renders the first, deliberately small STARS data-block
-// implementation. The field layout follows TI 6191.409 Rev. 30 figures 2-20,
-// 2-22, and 2-23, while limiting the contents to the basic surveillance fields
-// requested for the first pass:
+// drawDatablocks renders the STARS data-block subset REDS can derive from
+// TAIS today. The field layout follows TI 6191.409 Rev. 30 figures 2-20, 2-22,
+// and 2-23. In addition to the surveillance fields, TAIS supplies both
+// scratchpads and the assigned altitude, so the corresponding FDB/PDB fields
+// participate in the normal STARS clock-phase timesharing:
 //
-//	Full (owned associated):     ACID
-//	                             altitude ground-speed
+//	Full (owned associated):      ACID
+//	                              altitude/scratchpad  ground-speed/type
+//	                                      Axxx
 //
-//	Partial (unowned associated): altitude ground-speed
+//	Partial (unowned associated): altitude/scratchpad  ground-speed
 //
-//	Limited (unassociated):      beacon code
-//	                             altitude ground-speed
+//	Limited (unassociated):       beacon code
+//	                              altitude ground-speed
 //
 // Ground speed is displayed in tens of knots, as specified by the manual.
 // VICE's placement modality is retained: the leader endpoint anchors the data
@@ -111,19 +113,21 @@ func (p *STARSPane) drawDatablocks(
 		case targetDatablockFull:
 			// Figure 2-20: the leader is aligned with the ACID line. The
 			// omitted alert line remains conceptually above it; it does not need
-			// an empty raster row in this reduced first implementation. Field 5
-			// on line 2 now follows the STARS clock phase: GS + flight-rules /
-			// category timeshares with aircraft type.
+			// an empty raster row. Fields 3/4 and 5 on line 2 follow the STARS
+			// clock phase, while field 7 on line 3 carries assigned altitude.
 			line1 := targetDatablockACID(target)
 			line2 := targetFullDatablockLine2(target, clockPhase)
+			line3 := targetFullDatablockLine3(target, direction)
 			p.addDatablockLine(td, line1, anchor, direction, 0, 0, lineHeight, style)
 			p.addDatablockLine(td, line2, anchor, direction, 1, 0, lineHeight, style)
+			p.addDatablockLine(td, line3, anchor, direction, 2, 0, lineHeight, style)
 
 		case targetDatablockPartial:
 			// Figure 2-22: an ordinary unowned associated track does not show
-			// ACID in its PDB. For this first pass retain the core altitude + GS
-			// fields and omit category/handoff/alert fields.
-			line := targetDatablockAltitudeGroundSpeed(target)
+			// ACID in its PDB. Field 1 timeshares Mode-C altitude and primary
+			// scratchpad; the secondary scratchpad is a site-adapted PDB option
+			// and stays disabled until REDS carries that adaptation.
+			line := targetPartialDatablockLine1(target, clockPhase)
 			p.addDatablockLine(td, line, anchor, direction, 0, 0, lineHeight, style)
 
 		case targetDatablockLimited:
@@ -344,49 +348,148 @@ func defaultSTARSDataBlockClockPhase(now time.Time) int {
 	}
 }
 
-// targetFullDatablockLine2 formats Figure 2-20's line 2. The manual allows
-// field 3 to show an exit fix for departure flights when enabled by adaptation.
-// REDS enables that presentation by default: a departure with a usable TAIS
-// exitFix shows it on the left; otherwise the normal Mode-C altitude is used.
-// Field 4 is not populated yet, so keep a single visible blank between the
-// field-3 value and field 5, matching VICE's chopped field34 presentation.
+// normalizeDatablockScratchpad returns the default three-character STARS
+// scratchpad presentation. TI 6191.409 allows four characters only when that
+// site adaptation is enabled; REDS does not carry that adaptation yet, so use
+// VICE's normal/default three-character width.
+func normalizeDatablockScratchpad(s string) string {
+	s = strings.ToUpper(strings.TrimSpace(s))
+	if s == "" {
+		return ""
+	}
+	runes := []rune(s)
+	if len(runes) > 3 {
+		runes = runes[:3]
+	}
+	return string(runes)
+}
+
+func padDatablockField(s string, width int) string {
+	runes := []rune(s)
+	if len(runes) > width {
+		runes = runes[:width]
+	}
+	for len(runes) < width {
+		runes = append(runes, ' ')
+	}
+	return string(runes)
+}
+
+// targetPrimaryScratchpad mirrors VICE's priority: a live STARS scratchpad
+// wins; when none is present, REDS keeps its current exit-fix fallback for
+// departures. Treating the fallback as scratchpad content makes it timeshare
+// with Mode-C altitude rather than replacing altitude in every phase.
+func targetPrimaryScratchpad(target *redsnet.TaisTarget) string {
+	if target == nil || target.FlightPlan == nil {
+		return ""
+	}
+	if sp := normalizeDatablockScratchpad(target.FlightPlan.ScratchPad1); sp != "" {
+		return sp
+	}
+	if taisFlightPlanIsDeparture(target) {
+		return normalizeDatablockScratchpad(targetDatablockExitFix(target.FlightPlan.ExitFix))
+	}
+	return ""
+}
+
+func targetSecondaryScratchpad(target *redsnet.TaisTarget) string {
+	if target == nil || target.FlightPlan == nil {
+		return ""
+	}
+	return normalizeDatablockScratchpad(target.FlightPlan.ScratchPad2)
+}
+
+// targetFullDatablockField34 implements Figure 2-20 fields 3 and 4 using the
+// same default phase priority as VICE:
 //
-// Field 5 implements the basic VICE/STARS timeshare supported by current TAIS:
+//	phase 1: Mode-C altitude
+//	phase 2: primary scratchpad -> secondary scratchpad -> altitude
+//	phase 3: secondary scratchpad -> primary scratchpad -> altitude
+//	phase 4: blank
 //
-//	phase 1: ground speed + flight-rules indicator + STARS category/CWT
-//	phase 2: aircraft type (plus RNAV caret when applicable)
-//	phase 3: aircraft type (requested-altitude display is adaptation-dependent)
-//
-// Phase 4 is not in VICE's default clock sequence; use the same presentation
-// as phase 2 if a future site adaptation selects it.
+// Handoff TCP takes priority in phase 3 in real STARS/VICE; REDS does not yet
+// carry live handoff state, so that slot begins with the secondary scratchpad.
+// A displayed secondary scratchpad is followed by '+' in field 4, exactly as
+// described by the operator manual.
+func targetFullDatablockField34(target *redsnet.TaisTarget, clockPhase int) string {
+	if target == nil {
+		return ""
+	}
+
+	altitude := targetDatablockAltitude(target.Track.ReportedAltitude)
+	sp1 := targetPrimaryScratchpad(target)
+	sp2 := targetSecondaryScratchpad(target)
+	alt := func() string { return padDatablockField(altitude, 3) + " " }
+	primary := func() string { return padDatablockField(sp1, 3) + " " }
+	secondary := func() string { return padDatablockField(sp2, 3) + "+" }
+
+	switch clockPhase {
+	case 2:
+		if sp1 != "" {
+			return primary()
+		}
+		if sp2 != "" {
+			return secondary()
+		}
+		return alt()
+	case 3:
+		if sp2 != "" {
+			return secondary()
+		}
+		if sp1 != "" {
+			return primary()
+		}
+		return alt()
+	case 4:
+		return ""
+	default:
+		return alt()
+	}
+}
+
+// targetFullDatablockLine2 formats Figure 2-20 line 2. Fields 3/4 already
+// include their separator/indicator cell, so field 5 follows immediately.
 func targetFullDatablockLine2(target *redsnet.TaisTarget, clockPhase int) string {
 	if target == nil {
 		return ""
 	}
-
-	left := targetFullDatablockField3(target)
-	right := targetFullDatablockField5(target, clockPhase)
-	if right == "" {
-		return left
-	}
-	return left + " " + right
+	return targetFullDatablockField34(target, clockPhase) + targetFullDatablockField5(target, clockPhase)
 }
 
-// targetFullDatablockField3 implements the default departure exit-fix
-// presentation described for Figure 2-20 field 3. VICE exposes this through
-// the DisplayExitFix adaptation; REDS currently has no per-facility equivalent,
-// so this first implementation treats it as enabled by default.
-func targetFullDatablockField3(target *redsnet.TaisTarget) string {
+// targetPartialDatablockLine1 formats Figure 2-22's single visible data row.
+// VICE's default PDB presentation uses Mode-C altitude in phase 1/4 and primary
+// scratchpad in phases 2/3 when present. PDB display of scratchpad #2 is a site
+// adaptation and is intentionally not guessed here.
+func targetPartialDatablockLine1(target *redsnet.TaisTarget, clockPhase int) string {
 	if target == nil {
 		return ""
 	}
 
-	if target.FlightPlan != nil && taisFlightPlanIsDeparture(target) {
-		if exitFix := targetDatablockExitFix(target.FlightPlan.ExitFix); exitFix != "" {
-			return exitFix
+	left := targetDatablockAltitude(target.Track.ReportedAltitude)
+	if clockPhase == 2 || clockPhase == 3 {
+		if sp1 := targetPrimaryScratchpad(target); sp1 != "" {
+			left = sp1
 		}
 	}
-	return targetDatablockAltitude(target.Track.ReportedAltitude)
+	return padDatablockField(left, 3) + " " + targetDatablockGroundSpeed(target.Track.VX, target.Track.VY)
+}
+
+// targetFullDatablockLine3 implements the assigned-altitude portion of Figure
+// 2-20 field 7. STARS prefixes the value with 'A' and displays hundreds of
+// feet. The leading columns reproduce VICE's field-6/field-7 placement: for
+// N-through-SE leaders field 7 is indented one extra character; for the
+// right-justified S-through-NW leaders it is not.
+func targetFullDatablockLine3(target *redsnet.TaisTarget, direction leaderLineDirection) string {
+	if target == nil || target.FlightPlan == nil || target.FlightPlan.AssignedAltitude == 0 {
+		return ""
+	}
+
+	text := fmt.Sprintf("A%03d", target.FlightPlan.AssignedAltitude/100)
+	leading := 5 // field 6
+	if !datablockRightJustified(direction) {
+		leading++
+	}
+	return strings.Repeat(" ", leading) + text
 }
 
 // TAIS flightPlan.type maps to the STARS flight-status field. Current SimpleXML

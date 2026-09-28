@@ -18,6 +18,8 @@ const (
 	CommandModeMaps
 	CommandModeBrite
 	CommandModeBriteSpinner
+	CommandModeCharSize
+	CommandModeCharSizeSpinner
 	CommandModeLDRDir
 	CommandModeLDRLen
 	CommandModePTLLength
@@ -39,6 +41,10 @@ func (m CommandMode) PreviewString() string {
 		return ""
 	case CommandModeBriteSpinner:
 		return "BRT"
+	case CommandModeCharSize:
+		return ""
+	case CommandModeCharSizeSpinner:
+		return "CHAR"
 	case CommandModeLDRDir:
 		return "LDR"
 	case CommandModeLDRLen:
@@ -253,6 +259,20 @@ func init() {
 		p.brightnessDragAccumY = 0
 		return CommandStatus{Clear: ClearInput}, nil
 	})
+
+	// TI 6191.409 Rev. 30, 4.9.1 Change character font size. After the
+	// operator selects one of the CHAR SIZE submenu groups, a numeric value
+	// may be entered and committed with <ENTER>. All groups accept 0-5 except
+	// DCB, which accepts 0-2.
+	registerCommand(CommandModeCharSizeSpinner, "[CHAR_SIZE]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		if err := p.setActiveCharSize(args[0].(int)); err != nil {
+			return CommandStatus{}, err
+		}
+		p.commandMode = CommandModeCharSize
+		p.activeCharSizeControl = ""
+		p.charSizeDragAccumY = 0
+		return CommandStatus{Clear: ClearInput}, nil
+	})
 }
 
 func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
@@ -268,9 +288,18 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		return
 	}
 
-	// VICE maps physical STARS function keys to desktop shortcuts while the
-	// DCB is displayed. REDS currently always displays the STARS DCB strip.
-	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF11) {
+	// TI 6191.409 Rev. 30 section 2.5 defines the physical <DCB> key as an
+	// on/off toggle for the Display Control Bar. VICE maps that key to Ctrl+F9
+	// and clears any in-progress command before changing visibility.
+	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF9) {
+		p.resetCommand()
+		p.currentPrefs().DisplayDCB = !p.currentPrefs().DisplayDCB
+		return
+	}
+
+	// VICE maps the remaining physical STARS function keys to desktop shortcuts.
+	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF11) &&
+		p.currentPrefs().DisplayDCB {
 		p.setCommandMode(CommandModeRange)
 		return
 	}
@@ -280,6 +309,13 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	}
 	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF5) {
 		p.setCommandMode(CommandModeBrite)
+		return
+	}
+	// VICE maps the physical STARS <CHAR SIZE> key to Ctrl+F7 while the DCB
+	// is displayed.
+	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF7) &&
+		p.currentPrefs().DisplayDCB {
+		p.setCommandMode(CommandModeCharSize)
 		return
 	}
 
@@ -316,6 +352,26 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		if keyboard.WasPressed(platform.KeyEscape) {
 			p.resetCommand()
 		}
+		return
+	}
+
+	// With no individual CHAR SIZE adjustment selected, the submenu itself is
+	// mouse/DCB driven. Numeric keyboard entry is accepted only after selecting
+	// DATA BLOCKS, LISTS, DCB, TOOLS, or POS, matching the manual and VICE.
+	if p.commandMode == CommandModeCharSize {
+		if keyboard.WasPressed(platform.KeyEscape) {
+			p.resetCommand()
+		}
+		return
+	}
+	if p.commandMode == CommandModeCharSizeSpinner && keyboard.WasPressed(platform.KeyEscape) {
+		// VICE's dcbCharSizeSpinner.ModeAfter() returns to the CHAR SIZE
+		// submenu rather than closing the submenu entirely.
+		p.commandMode = CommandModeCharSize
+		p.activeCharSizeControl = ""
+		p.charSizeDragAccumY = 0
+		p.commandInput = ""
+		p.commandResponse = ""
 		return
 	}
 
@@ -375,6 +431,8 @@ func (p *STARSPane) resetCommand() {
 	p.multiFuncPrefix = ""
 	p.activeBrightnessControl = ""
 	p.brightnessDragAccumY = 0
+	p.activeCharSizeControl = ""
+	p.charSizeDragAccumY = 0
 	p.rangeRingDragAccumY = 0
 	p.leaderDirectionDragAccumY = 0
 	p.leaderLengthDragAccumY = 0

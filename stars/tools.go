@@ -30,9 +30,9 @@ const (
 // degrees, 10 display-pixel tick length, and label origins 14 display pixels
 // inboard from the scope edge. VICE also uses STARS Tools character size 1.
 //
-// The high-resolution DCB occupies the top 72 display units in REDS. The
-// compass therefore treats the DCB's lower edge as the top of the radar scope,
-// rather than drawing underneath the application/window edge.
+// While displayed, the high-resolution DCB occupies the top 72 display
+// units. When the operator toggles the DCB off with <DCB>, the radar scope
+// immediately regains that area, matching VICE's DisplayDCB scope extent.
 func (p *STARSPane) drawCompass(
 	ctx *panes.Context,
 	zcb *renderer.ZCmdBuffer,
@@ -48,19 +48,25 @@ func (p *STARSPane) drawCompass(
 	}
 
 	w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
-	if w <= 0 || h <= dcbButtonSize {
+	if w <= 0 || h <= 0 {
 		return
 	}
 
-	// REDS currently presents the STARS DCB at the top of the pane. This is
-	// intentionally only the *compass* boundary: scope transformations remain
-	// based on the complete pane just as in VICE, whose drawDCB returns a
-	// reduced scope extent specifically for edge-oriented graphics.
-	scope := redsmath.NewRect(0, dcbButtonSize, w, h)
+	// Scope transformations remain based on the complete pane. Only the top
+	// edge available to edge-oriented graphics changes with DCB visibility, as
+	// in VICE's drawDCB/scopeExtent handling.
+	top := float32(0)
+	if ps.DisplayDCB {
+		top = dcbButtonSize
+	}
+	if h <= top {
+		return
+	}
+	scope := redsmath.NewRect(0, top, w, h)
 	center := p.currentCenter()
 	centerWindow := transforms.WindowFromLatLon(center.Lat, center.Lon)
 
-	fontSize := p.listFontSize() // VICE: CharSize.Tools defaults to STARS size 1.
+	fontSize := p.toolsFontSize()
 	texture := p.systemFontTexture(ctx.Renderer, fontSize)
 	fs := p.systemFont.Size(fontSize)
 	if texture == 0 || fs == nil {

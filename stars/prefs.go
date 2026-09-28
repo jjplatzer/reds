@@ -95,6 +95,17 @@ type BrightnessPreferences struct {
 	WxContrast         Brightness
 }
 
+// CharacterSizePreferences is the operator-visible CHAR SIZE state from
+// TI 6191.409 Rev. 30 section 4.9.1 / Figure 4-9. All groups permit sizes
+// 0-5 except the DCB, which permits only 0-2.
+type CharacterSizePreferences struct {
+	DCB             int
+	Datablocks      int
+	Lists           int
+	Tools           int
+	PositionSymbols int
+}
+
 // videoMapsListSelection identifies the reference-only map category list
 // selected from the MAPS submenu. TI 6191.409 Rev. 30, 4.5.2 defines GEO MAPS,
 // SYS PROC, AIRPORT, and CURRENT as site-adaptable category-list buttons. REDS
@@ -229,6 +240,11 @@ func leaderLineDirectionFromKeypad(key int) (leaderLineDirection, bool) {
 // be saved/restored by STARS preference sets. The names mirror VICE's STARS
 // Preferences so DCB commands and saved preference sets can use the same state.
 type Preferences struct {
+	// DisplayDCB is controlled by the physical STARS <DCB> key. TI 6191.409
+	// Rev. 30 section 2.5 defines it as a toggle of the Display Control Bar.
+	// VICE maps that key to Ctrl+F9 on a desktop keyboard.
+	DisplayDCB bool
+
 	DefaultCenter           configPoint
 	UserCenter              configPoint
 	UseUserCenter           bool
@@ -242,6 +258,7 @@ type Preferences struct {
 	PTLOwn                  bool
 	PTLAll                  bool
 	Brightness              BrightnessPreferences
+	CharSize                CharacterSizePreferences
 	DisplayWeatherLevel     [6]bool
 	VideoMapVisible         map[int]bool
 	VideoMapsList           videoMapsListPreferences
@@ -268,6 +285,8 @@ type Preferences struct {
 func newPreferences(cfg selectedConfig) Preferences {
 	center := initialSTARSCenter(cfg)
 	prefs := Preferences{
+		// STARS presents the DCB initially; VICE uses the same default.
+		DisplayDCB:           true,
 		DefaultCenter:        center,
 		UserCenter:           center,
 		Range:                initialSTARSRange(cfg),
@@ -304,6 +323,15 @@ func newPreferences(cfg selectedConfig) Preferences {
 			History:            60,
 			Weather:            30,
 			WxContrast:         30,
+		},
+		// The operator manual defines the selectable ranges but not power-up
+		// values. Match VICE's established STARS defaults.
+		CharSize: CharacterSizePreferences{
+			DCB:             1,
+			Datablocks:      1,
+			Lists:           1,
+			Tools:           1,
+			PositionSymbols: 0,
 		},
 
 		// VICE's STARS default is (0.05, 0.75) in bottom-left-origin pane

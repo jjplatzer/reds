@@ -439,7 +439,9 @@ func (p *STARSPane) drawPreviewArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer
 	}
 	text.WriteString(strings.Join(strings.Fields(p.commandInput), "\n"))
 
-	fontSize := p.listFontSize()
+	// TI 6191.409 Rev. 30, 4.9.1 places the Preview Area in the DATA BLOCKS
+	// character-size group rather than the LISTS group.
+	fontSize := p.datablockFontSize()
 	texture := p.systemFontTexture(ctx.Renderer, fontSize)
 	if texture == 0 {
 		return
