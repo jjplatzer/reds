@@ -19,11 +19,12 @@ const (
 	ssaDefaultY = float32(0.10)
 
 	// TI 6191.409 Rev. 30, Table 2-15 describes the Red Check symbol as a
-	// solid inverted delta centered in a green outlined box. The manual does
-	// not prescribe pixel dimensions; these dimensions match VICE's STARS
-	// implementation: a 10x10 box around a 7-unit-high equilateral triangle.
-	ssaCheckBoxHalfSize = float32(5)
-	ssaCheckTriangleH   = float32(7)
+	// solid inverted delta centered in a green outlined box. The source FAA
+	// raster shows the delta as a 7x7 stepped bitmap: row widths 7,7,5,5,3,3,1.
+	// That keeps VICE's 7-unit dimension while matching the actual STARS
+	// pixel structure instead of relying on rasterization of a vector triangle.
+	ssaCheckBoxHalfSize  = float32(5)
+	ssaCheckTriangleSize = float32(7)
 
 	zLists renderer.Z = 0
 )
@@ -211,6 +212,53 @@ func (p *STARSPane) ssaWeatherLevelStatusText() string {
 	return formatSSAWeatherLevelStatus(available, p.currentPrefs().DisplayWeatherLevel)
 }
 
+// ssaRadarModeText returns the sensor-mode portion of SSA field G.
+//
+// TI 6191.409 Rev. 30, Table 2-16 calls the multi-sensor presentation
+// "SYS". VICE models the same state as RadarModeMulti (and labels it MULTI
+// in its simulator UI), with the SSA renderer sourcing the value from
+// radarSiteId(). REDS does not yet expose SITE/single-sensor or FUSED
+// selection: the Main DCB currently presents SITE MULTI and TAIS does not
+// provide per-display sensor-selection state. Therefore the only truthful
+// STARS field-G indicator REDS can presently render is the real-system
+// multi-sensor label, SYS. Keep this behind a helper so SITE support can
+// later return the selected sensor short name or FUSED without changing
+// SSA layout/filter logic.
+func (p *STARSPane) ssaRadarModeText() string {
+	if p == nil {
+		return ""
+	}
+	return "SYS"
+}
+
+// ssaSystemStatusText returns the STATUS portion of SSA field G.
+//
+// Table 2-15 permits FSL/EFSL/DSF status values such as OK, NA, TR, and NR.
+// VICE uses the display client's connection state as the simulator proxy and
+// presents OK/OK/NA while connected and NA/NA/NA in alert red otherwise.
+// REDS has the equivalent live-state boundary at the TAIS client, so mirror
+// that behavior rather than inventing facility-health information TAIS does
+// not provide.
+func (p *STARSPane) ssaSystemStatusText() (string, bool) {
+	if p != nil && p.tais != nil && p.tais.Status().Connected {
+		return "OK/OK/NA", false
+	}
+	return "NA/NA/NA", true
+}
+
+// ssaSystemOffText returns SSA field J (System OFF Indicators).
+//
+// TI 6191.409 Rev. 30, Table 2-18 defines this field as system-wide inhibited
+// processing capabilities (CA, MCI, MSAW, CRDA, HOP, INTRAIL, etc.). VICE
+// builds the line only from actual simulator inhibit state and omits it when
+// nothing is disabled. REDS does not yet receive those site-wide inhibit
+// states from TAIS, so an empty field is the only truthful current result.
+// Keep the decision isolated here so those states can be wired in later
+// without changing the SSA FILTER or renderer layout.
+func (p *STARSPane) ssaSystemOffText() string {
+	return ""
+}
+
 // drawSSA draws the System Status Area in the field order defined by
 // TI 6191.409 Rev. 30, Table 2-15. Empty fields do not consume a line, so the
 // area automatically shortens or lengthens as status information is added.
@@ -224,10 +272,12 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		return
 	}
 
-	// VICE stores the SSA's default anchor at normalized (0.05, 0.90) with
-	// a bottom-left origin. Convert that to REDS' top-left screen coordinates.
-	centerX := ssaDefaultX*w + ssaCheckBoxHalfSize
-	centerY := ssaDefaultY * h
+	// SSAListPosition is the operator-selected anchor. TI 6191.409 Rev. 30,
+	// 4.9.4 defines this as the location selected for the System status area's
+	// top-left corner. VICE stores the same state as ps.SSAList.Position.
+	ssaPos := p.currentPrefs().SSAListPosition
+	centerX := ssaPos[0]*w + ssaCheckBoxHalfSize
+	centerY := ssaPos[1] * h
 
 	x, y, width, height := ctx.PaneFramebufferRect()
 	cb := zcb.At(zLists)
@@ -260,21 +310,35 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	box.GenerateCommands(cb)
 	renderer.ReturnLinesBuilder(box)
 
-	// For an equilateral triangle of height h, the centroid lies h/3 from
-	// the base. REDS' y axis increases downward, so the inverted delta's tip
-	// has the larger y value.
-	const invSqrt3 = float32(0.5773502691896258)
-	halfBase := ssaCheckTriangleH * invSqrt3
-	baseY := centerY - ssaCheckTriangleH/3
-	tipY := centerY + 2*ssaCheckTriangleH/3
-
+	// Match the FAA raster exactly rather than drawing a mathematically smooth
+	// equilateral triangle. At native size the red pixels are arranged as:
+	//
+	//   #######
+	//   #######
+	//    #####
+	//    #####
+	//     ###
+	//     ###
+	//      #
+	//
+	// Four quads reproduce those 7x7 pixel tiers with no extra geometry.
 	triangle := renderer.GetColoredTrianglesBuilder()
-	triangle.AddTriangleRGB(
-		renderer.PointVertex{X: centerX - halfBase, Y: baseY},
-		renderer.PointVertex{X: centerX + halfBase, Y: baseY},
-		renderer.PointVertex{X: centerX, Y: tipY},
-		listBrightness.ScaleRGB(p.colors.TextAlert),
-	)
+	triangleColor := listBrightness.ScaleRGB(p.colors.TextAlert)
+	half := ssaCheckTriangleSize / 2
+	addTier := func(width, y0, y1 float32) {
+		halfWidth := width / 2
+		triangle.AddQuad(
+			renderer.PointVertex{X: centerX - halfWidth, Y: centerY - half + y0},
+			renderer.PointVertex{X: centerX + halfWidth, Y: centerY - half + y0},
+			renderer.PointVertex{X: centerX + halfWidth, Y: centerY - half + y1},
+			renderer.PointVertex{X: centerX - halfWidth, Y: centerY - half + y1},
+			triangleColor,
+		)
+	}
+	addTier(7, 0, 2)
+	addTier(5, 2, 4)
+	addTier(3, 4, 6)
+	addTier(1, 6, 7)
 	triangle.GenerateCommands(cb)
 	renderer.ReturnColoredTrianglesBuilder(triangle)
 
@@ -287,7 +351,7 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		td := renderer.GetTextDrawBuilder()
 		td.SetFont(p.systemFont)
 
-		textX := ssaDefaultX * w
+		textX := ssaPos[0] * w
 		textY := centerY + 10
 		addLine := func(text string, color renderer.RGB) {
 			if text == "" {
@@ -299,6 +363,34 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				renderer.TextStyle{Size: fontSize, Color: listBrightness.ScaleRGB(color).ToRGBA()},
 			)
 			textY += float32(fontSize)
+		}
+		type textSegment struct {
+			text  string
+			color renderer.RGB
+		}
+		addSegments := func(segments ...textSegment) {
+			x := textX
+			wrote := false
+			for _, segment := range segments {
+				if segment.text == "" {
+					continue
+				}
+				td.AddText(
+					segment.text,
+					redsmath.Vec2{X: x, Y: textY},
+					renderer.TextStyle{Size: fontSize, Color: listBrightness.ScaleRGB(segment.color).ToRGBA()},
+				)
+				// MeasureText returns the visible glyph bounds, so a trailing space
+				// contributes no width. Append a sentinel space while measuring to
+				// get the actual pen advance, including any intentional trailing
+				// space already present in the segment (e.g. STATUS before RADAR).
+				width, _ := p.systemFont.MeasureText(segment.text+" ", fontSize)
+				x += float32(width)
+				wrote = true
+			}
+			if wrote {
+				textY += float32(fontSize)
+			}
 		}
 
 		// Field D - Weather Level Status. TI 6191.409 Rev. 30, Figure 2-24
@@ -323,6 +415,35 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			)
 		}
 
+		// Field G - FSL / EFSL / DSF status, Configuration Plan, Sensor Modes.
+		// STATUS, PLAN, and RADAR independently filter portions of this one line.
+		// Match VICE's composition: status first, then plan, then radar. REDS has
+		// no live configuration-plan identifier yet, so PLAN contributes no text.
+		// STATUS uses the TAIS connection as the same kind of simulator-health
+		// proxy VICE uses for its client connection; RADAR is currently SYS.
+		if filter.All || filter.Status || filter.ConfigPlan || filter.Radar {
+			statusText := ""
+			statusColor := p.colors.List
+			if filter.All || filter.Status {
+				var alert bool
+				statusText, alert = p.ssaSystemStatusText()
+				statusText += " "
+				if alert {
+					statusColor = p.colors.TextAlert
+				}
+			}
+
+			radarText := ""
+			if filter.All || filter.Radar {
+				radarText = p.ssaRadarModeText()
+			}
+
+			addSegments(
+				textSegment{statusText, statusColor},
+				textSegment{radarText, p.colors.List},
+			)
+		}
+
 		// Field H - Selected beacon codes / code blocks. REDS already carries
 		// the selected-code preference used by unassociated-track presentation,
 		// so expose the same state in the SSA when CODES is enabled. Table 2-15
@@ -333,6 +454,14 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 				end := min(i+5, len(codes), 10)
 				addLine(strings.Join(codes[i:end], " "), p.colors.List)
 			}
+		}
+
+		// Field J - System OFF Indicators. Table 2-18 lists capabilities that
+		// have been inhibited system-wide. As in VICE, the line is omitted when
+		// there are no active indicators; the SYS OFF filter controls visibility
+		// only and does not change the underlying system state.
+		if filter.All || filter.SysOff {
+			addLine(p.ssaSystemOffText(), p.colors.List)
 		}
 
 		// Field K - Display Range / PTL value. RANGE and PTL are independently

@@ -263,6 +263,7 @@ type Preferences struct {
 	VideoMapVisible         map[int]bool
 	VideoMapsList           videoMapsListPreferences
 	PreviewAreaPosition     [2]float32
+	SSAListPosition         [2]float32
 	SSAFilter               ssaFilterPreferences
 	AltitudeFilters         altitudeFilterPreferences
 	QuickLookAll            bool
@@ -346,6 +347,11 @@ func newPreferences(cfg selectedConfig) Preferences {
 			Position: [2]float32{0.85, 0.5},
 		},
 		PreviewAreaPosition: [2]float32{0.05, 0.25},
+		// VICE stores the SSA at (.05, .90) in bottom-left-origin normalized
+		// coordinates. REDS screen coordinates use a top-left origin, so the
+		// equivalent default is (.05, .10). TI 6191.409 4.9.4 allows the
+		// entering keyboard to relocate this position independently.
+		SSAListPosition: [2]float32{ssaDefaultX, ssaDefaultY},
 		// TI 6191.409 does not prescribe a power-up filter state. VICE starts
 		// with ALL selected, which also preserves REDS' pre-filter behavior of
 		// showing every SSA field it currently knows how to render.

@@ -496,6 +496,25 @@ func (p *STARSPane) consumeMouseEvents(
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
 
+	// TI 6191.409 Rev. 30, 4.9.4 Move System status area. The command is
+	// keyboard-only until its final slew: <MULTI FUNC>, S, then position the
+	// screen cursor at the desired top-left corner and click the left trackball
+	// button. Pressing ENTER instead is FORMAT. VICE implements this as the
+	// Multi Func command S[POS_NORM].
+	if p.commandMode == CommandModeMultiFunc && p.multiFuncPrefix+p.commandInput == "S" {
+		if mouse.WasPressed(platform.MouseButtonLeft) {
+			w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+			if w > 0 && h > 0 {
+				ps.SSAListPosition = [2]float32{
+					mouse.Pos.X / w,
+					mouse.Pos.Y / h,
+				}
+			}
+			p.resetCommand()
+		}
+		return
+	}
+
 	// TI 6191.409 Rev. 30, 4.5.3 Move Map category list. After
 	// <MULTI FUNC>, <T>, <X>, a left trackball click relocates the top-left
 	// corner of the currently selected Map category list. If the list was
