@@ -593,10 +593,9 @@ func (p *STARSPane) drawRangeBearingLines(
 
 		// VICE places the RBL label at endpoint 2 and lets the subsequently
 		// rendered target/leader/datablock presentation remain visually on top.
-		// Do not apply REDS' old unconditional vertical shift: it could move the
-		// label directly into the attached track's datablock. Figure 6-6 of the
-		// operator manual likewise shows the label near the endpoint, separate
-		// from the datablock.
+		// TI 6191.409 6.7 / Figure 6-6 specifies the endpoint placement (and
+		// screen-edge retention) but no data-block collision avoidance, so overlap
+		// with some leader/data-block geometries is possible and intentional here.
 		pos := redsmath.Vec2{X: p1.X, Y: p1.Y}
 		offsetRight := pos.X > paneW-labelWidth
 		startAboveEnd := p0.Y < p1.Y

@@ -79,6 +79,12 @@ type STARSPane struct {
 	// reselected. This is transient display state, not a saved preference.
 	singleTrackQuickLook map[string]struct{}
 
+	// singleTrackLeaderDirections records TI 6191.409 6.13.1 / 6.13.17
+	// manual data-block orientations. These overrides are local to this
+	// TCW/TDW and apply only to the selected associated track. Entering 5
+	// removes the override and returns the track to its applicable default.
+	singleTrackLeaderDirections map[string]leaderLineDirection
+
 	// ldbBeaconReadoutUntil records TI 6191.409 6.13.2 implied-command
 	// beacon readouts. Slew + left trackball on an unassociated track forces
 	// its reported beacon code into LDB field 1 for five seconds.
@@ -396,6 +402,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	now := time.Now()
 	p.updateTaisOwnership(targets, now)
 	p.pruneSingleTrackQuickLook(targets)
+	p.pruneSingleTrackLeaderDirections(targets)
 	p.pruneLDBBeaconReadouts(targets, now)
 	p.consumeMouseEvents(ctx, transforms, targets)
 
@@ -514,6 +521,47 @@ func (p *STARSPane) consumeMouseEvents(
 
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
+
+	// TI 6191.409 Rev. 30, 6.13.1 / 6.13.17 Specify data block
+	// position for a single associated track. The implied form is simply
+	// <direction>, slew, left trackball. The explicit keyboard form is
+	// <MULTI FUNC>, L, <direction>, slew, left trackball. Both echo the
+	// direction in the Preview Area while waiting for the slew. Direction 5
+	// removes the manual per-track setting. The explicit form is repetitive.
+	if mouse.WasReleased(platform.MouseButtonLeft) {
+		directionInput := ""
+		repetitive := false
+		if p.commandMode == CommandModeNone {
+			directionInput = p.commandInput
+		} else if p.commandMode == CommandModeMultiFunc && strings.EqualFold(p.multiFuncPrefix, "L") {
+			directionInput = p.commandInput
+			repetitive = true
+		}
+
+		if direction, recognized, err := singleTrackLeaderDirectionCommand(directionInput); recognized {
+			if err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+			target := closestSlewTarget(targets, mouse.Pos, transforms)
+			if target == nil {
+				if repetitive {
+					p.commandResponse = ErrSTARSNoTrack.Error()
+				}
+				return
+			}
+			if !p.targetSupportsSingleTrackLeaderDirection(target) {
+				p.commandResponse = ErrSTARSIllegalTrack.Error()
+				return
+			}
+			p.setSingleTrackLeaderDirection(target, direction)
+			p.commandResponse = ""
+			if !repetitive {
+				p.resetCommand()
+			}
+			return
+		}
+	}
 
 	// TI 6191.409 Rev. 30, 6.7 Create Range Bearing Line. Once *T has
 	// been entered, the left trackball may designate either a track or an

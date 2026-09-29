@@ -370,6 +370,80 @@ func (p *STARSPane) targetSingleTrackQuickLooked(target *redsnet.TaisTarget) boo
 	return ok
 }
 
+// targetSupportsSingleTrackLeaderDirection implements the track eligibility
+// from TI 6191.409 Rev. 30 6.13.1 / 6.13.17: the command is valid for any
+// associated track at the entering TCW/TDW.
+func (p *STARSPane) targetSupportsSingleTrackLeaderDirection(target *redsnet.TaisTarget) bool {
+	return p != nil && target != nil && target.FlightPlan != nil
+}
+
+// singleTrackLeaderDirectionCommand parses the numpad orientation used by the
+// single-track leader-direction commands. Direction 5 is special: it removes
+// a previously selected manual orientation rather than naming a direction.
+func singleTrackLeaderDirectionCommand(input string) (*leaderLineDirection, bool, error) {
+	if len(input) != 1 || input[0] < '0' || input[0] > '9' {
+		return nil, false, nil
+	}
+	if input[0] == '5' {
+		return nil, true, nil
+	}
+	direction, ok := leaderLineDirectionFromKeypad(int(input[0] - '0'))
+	if !ok {
+		return nil, true, ErrSTARSCommandFormat
+	}
+	return &direction, true, nil
+}
+
+func (p *STARSPane) setSingleTrackLeaderDirection(target *redsnet.TaisTarget, direction *leaderLineDirection) {
+	if p == nil || !p.targetSupportsSingleTrackLeaderDirection(target) {
+		return
+	}
+	key := targetDisplayStateKey(target)
+	if key == "" {
+		return
+	}
+	if direction == nil {
+		delete(p.singleTrackLeaderDirections, key)
+		return
+	}
+	if p.singleTrackLeaderDirections == nil {
+		p.singleTrackLeaderDirections = make(map[string]leaderLineDirection)
+	}
+	p.singleTrackLeaderDirections[key] = *direction
+}
+
+func (p *STARSPane) targetSingleTrackLeaderDirection(target *redsnet.TaisTarget) (leaderLineDirection, bool) {
+	if p == nil || len(p.singleTrackLeaderDirections) == 0 || !p.targetSupportsSingleTrackLeaderDirection(target) {
+		return leaderLineDirectionNorth, false
+	}
+	direction, ok := p.singleTrackLeaderDirections[targetDisplayStateKey(target)]
+	return direction, ok
+}
+
+// pruneSingleTrackLeaderDirections prevents a later flight reusing a TAIS key
+// from inheriting a local manual leader direction. Preserve overrides across a
+// temporary transport disconnect, just like the other transient track state.
+func (p *STARSPane) pruneSingleTrackLeaderDirections(snapshot redsnet.TaisSnapshot) {
+	if p == nil || !snapshot.Ready || len(p.singleTrackLeaderDirections) == 0 {
+		return
+	}
+	live := make(map[string]struct{}, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if !p.targetSupportsSingleTrackLeaderDirection(target) {
+			continue
+		}
+		if key := targetDisplayStateKey(target); key != "" {
+			live[key] = struct{}{}
+		}
+	}
+	for key := range p.singleTrackLeaderDirections {
+		if _, ok := live[key]; !ok {
+			delete(p.singleTrackLeaderDirections, key)
+		}
+	}
+}
+
 func (p *STARSPane) toggleSingleTrackQuickLook(target *redsnet.TaisTarget) {
 	if p == nil || !p.targetSupportsSingleTrackQuickLook(target) {
 		return
@@ -1034,6 +1108,13 @@ func (p *STARSPane) targetLeaderPresentation(target *redsnet.TaisTarget) (render
 func (p *STARSPane) targetLeaderLineDirection(target *redsnet.TaisTarget) leaderLineDirection {
 	if p == nil || target == nil {
 		return leaderLineDirectionNorth
+	}
+
+	// TI 6191.409 6.13.1 / 6.13.17 manual single-track positioning
+	// overrides the owner/other-owner defaults. VICE applies TrackState's
+	// per-aircraft LeaderLineDirection at the same precedence.
+	if direction, ok := p.targetSingleTrackLeaderDirection(target); ok {
+		return direction
 	}
 
 	if p.targetOwnedByCurrentTCP(target) {

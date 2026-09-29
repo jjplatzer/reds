@@ -10,6 +10,8 @@ var (
 	ErrSTARSRangeLimit      = errors.New("RANGE LIMIT")
 	ErrSTARSIllegalValue    = errors.New("ILL VALUE")
 	ErrSTARSIllegalPosition = errors.New("ILL POS")
+	ErrSTARSIllegalTrack    = errors.New("ILL TRK")
+	ErrSTARSNoTrack         = errors.New("NO TRK")
 	ErrSTARSCapacity        = errors.New("CAPACITY")
 	ErrSTARSRBLID           = errors.New("RBL ID")
 	ErrSTARSNoFlight        = errors.New("NO FLIGHT")
