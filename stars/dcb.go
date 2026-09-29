@@ -28,7 +28,10 @@ const (
 	mapsSubmenuMapColumns       = 16
 	mapsSubmenuDirectMapColumns = 14
 	mapsDCBColumns              = mapsMainDCBColumns + mapsSubmenuControlCols + mapsSubmenuMapColumns
-	briteDCBColumns             = 9 // TI 6191.409 Rev. 30, Figure 4-13.
+	briteDCBColumns             = 9                  // TI 6191.409 Rev. 30, Figure 4-13.
+	charSizeStartColumn         = mainDCBColumns - 5 // VICE / Figure 4-9: submenu follows CHAR SIZE.
+	charSizeDCBColumns          = mainDCBColumns + 1 // six full buttons from column 14 through 19.
+	ssaFilterStartColumn        = 2                  // VICE / Figure 4-7: overlay starts after two Main-DCB columns.
 )
 
 const zDCB renderer.Z = 100
@@ -57,7 +60,7 @@ type dcbDrawer struct {
 }
 
 func (p *STARSPane) mouseOverDCB(ctx *panes.Context) bool {
-	if p == nil || ctx == nil || ctx.Mouse == nil {
+	if p == nil || ctx == nil || ctx.Mouse == nil || !p.currentPrefs().DisplayDCB {
 		return false
 	}
 	return redsmath.NewRect(0, 0, ctx.PaneRect.Width(), dcbButtonSize).Contains(ctx.Mouse.Pos)
@@ -81,7 +84,7 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		p.dcbSuppressPressUntilRelease = false
 	}
 
-	fontSize := p.listFontSize() // DCB character size 1 uses the same STARS font as list size 1.
+	fontSize := p.dcbFontSize()
 	texture := p.systemFontTexture(ctx.Renderer, fontSize)
 	if texture == 0 {
 		return
@@ -99,10 +102,13 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	dcbColumns := mainDCBColumns
 	if p.commandMode == CommandModeMaps {
 		dcbColumns = mapsDCBColumns
+	} else if p.commandMode == CommandModeCharSize || p.commandMode == CommandModeCharSizeSpinner {
+		dcbColumns = charSizeDCBColumns
 	}
 	maxScroll := max(float32(0), float32(dcbColumns)*dcbButtonSize-w)
 	if ctx.Mouse != nil && p.mouseOverDCB(ctx) && ctx.Mouse.Wheel.Y != 0 &&
 		p.commandMode != CommandModeBriteSpinner &&
+		p.commandMode != CommandModeCharSizeSpinner &&
 		p.commandMode != CommandModeRangeRings && maxScroll > 0 {
 		if ctx.Mouse.Wheel.Y > 0 {
 			p.dcbScroll += dcbButtonSize
@@ -148,7 +154,9 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	mapsActive := p.commandMode == CommandModeMaps
 	briteActive := p.commandMode == CommandModeBrite || p.commandMode == CommandModeBriteSpinner
-	submenuActive := mapsActive || briteActive
+	charSizeActive := p.commandMode == CommandModeCharSize || p.commandMode == CommandModeCharSizeSpinner
+	ssaFilterActive := p.commandMode == CommandModeSSAFilter
+	submenuActive := mapsActive || briteActive || charSizeActive || ssaFilterActive
 	if p.dcbShowAux && !submenuActive {
 		d.drawAuxPage()
 	} else {
@@ -173,6 +181,28 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		}
 		p.adjustActiveBrightness(ctx)
 		d.drawBritePage()
+	}
+	if charSizeActive {
+		// TI 6191.409 Rev. 30, Figure 4-9 and VICE both leave the CHAR SIZE
+		// Main-DCB button visible and overlay the controls beginning with the
+		// following column. The six full-height buttons are DATA BLOCKS, LISTS,
+		// DCB, TOOLS, POS, and DONE.
+		d.cursor = redsmath.Vec2{
+			X: -p.dcbScroll + float32(charSizeStartColumn)*d.buttonSize,
+			Y: 0,
+		}
+		p.adjustActiveCharSize(ctx)
+		d.drawCharSizePage()
+	}
+	if ssaFilterActive {
+		// TI 6191.409 Rev. 30, Figure 4-7 overlays the SSA FILTER submenu on
+		// the disabled Main DCB. VICE rewinds 17 slots from the 19-column Main
+		// DCB, so the submenu begins at column 2 and occupies 15 columns.
+		d.cursor = redsmath.Vec2{
+			X: -p.dcbScroll + float32(ssaFilterStartColumn)*d.buttonSize,
+			Y: 0,
+		}
+		d.drawSSAFilterPage()
 	}
 	cb.DisableScissor()
 }
@@ -294,11 +324,15 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 		}
 		p.setCommandMode(CommandModeLDRLen)
 	})
-	d.button("CHAR\nSIZE", mainFlags(buttonFull), false, nil)
+	d.button("CHAR\nSIZE", mainFlags(buttonFull), false, func() {
+		p.setCommandMode(CommandModeCharSize)
+	})
 	d.button("MODE\nFSL", mainFlags(buttonFull)|buttonUnsupported, false, nil)
 	d.button("SITE\nMULTI", mainFlags(buttonFull), false, nil)
 	d.button("PREF", mainFlags(buttonFull), false, nil)
-	d.button("SSA\nFILTER", mainFlags(buttonHalfVertical), false, nil)
+	d.button("SSA\nFILTER", mainFlags(buttonHalfVertical), false, func() {
+		p.setCommandMode(CommandModeSSAFilter)
+	})
 	d.button("GI TEXT\nFILTER", mainFlags(buttonHalfVertical), false, nil)
 	d.button("SHIFT", mainFlags(buttonFull), false, func() {
 		p.dcbShowAux = true
@@ -765,6 +799,181 @@ func (d *dcbDrawer) drawBritePage() {
 	}
 
 	d.button("DONE", buttonHalfVertical, false, func() {
+		p.setCommandMode(CommandModeNone)
+	})
+}
+
+// charSizeControl is one adjustable group in the CHAR SIZE submenu defined by
+// TI 6191.409 Rev. 30, 4.9.1 / Figure 4-9. VICE models these as integer
+// spinners, with sizes 0-5 for every group except DCB (0-2).
+type charSizeControl struct {
+	id    string
+	label string
+	value *int
+	max   int
+}
+
+func (p *STARSPane) charSizeControls() []charSizeControl {
+	c := &p.currentPrefs().CharSize
+	return []charSizeControl{
+		{id: "DATA BLOCKS", label: "DATA\nBLOCKS\n", value: &c.Datablocks, max: 5},
+		{id: "LISTS", label: "LISTS\n", value: &c.Lists, max: 5},
+		{id: "DCB", label: "DCB\n", value: &c.DCB, max: 2},
+		{id: "TOOLS", label: "TOOLS\n", value: &c.Tools, max: 5},
+		{id: "POS", label: "POS\n", value: &c.PositionSymbols, max: 5},
+	}
+}
+
+func (p *STARSPane) activeCharSizeControlValue() *charSizeControl {
+	if p == nil || p.activeCharSizeControl == "" {
+		return nil
+	}
+	controls := p.charSizeControls()
+	for i := range controls {
+		if controls[i].id == p.activeCharSizeControl {
+			return &controls[i]
+		}
+	}
+	return nil
+}
+
+func (p *STARSPane) setActiveCharSize(value int) error {
+	control := p.activeCharSizeControlValue()
+	if control == nil {
+		return ErrSTARSCommandFormat
+	}
+	if value < 0 || value > control.max {
+		return ErrSTARSIllegalValue
+	}
+	*control.value = value
+	return nil
+}
+
+func (p *STARSPane) stepCharSize(control *charSizeControl, delta int) {
+	if control == nil || delta == 0 {
+		return
+	}
+	*control.value = max(0, min(*control.value+delta, control.max))
+}
+
+func (p *STARSPane) adjustActiveCharSize(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Mouse == nil || p.commandMode != CommandModeCharSizeSpinner {
+		return
+	}
+	control := p.activeCharSizeControlValue()
+	if control == nil {
+		return
+	}
+
+	// Section 4.9.1: trackball upward increases character size and downward
+	// decreases it. REDS uses top-left-origin mouse coordinates, so upward is
+	// negative Y. VICE uses a ten-pixel threshold and the same wheel polarity.
+	if ctx.Mouse.Wheel.Y != 0 {
+		if ctx.Mouse.Wheel.Y > 0 {
+			p.stepCharSize(control, 1)
+		} else {
+			p.stepCharSize(control, -1)
+		}
+		return
+	}
+
+	p.charSizeDragAccumY += ctx.Mouse.Delta.Y
+	for p.charSizeDragAccumY <= -10 {
+		p.stepCharSize(control, 1)
+		p.charSizeDragAccumY += 10
+	}
+	for p.charSizeDragAccumY >= 10 {
+		p.stepCharSize(control, -1)
+		p.charSizeDragAccumY -= 10
+	}
+}
+
+func (d *dcbDrawer) drawCharSizePage() {
+	p := d.pane
+	for _, control := range p.charSizeControls() {
+		control := control
+		selected := p.commandMode == CommandModeCharSizeSpinner &&
+			p.activeCharSizeControl == control.id
+		d.button(control.label+strconv.Itoa(*control.value), buttonFull, selected, func() {
+			if selected {
+				p.commandMode = CommandModeCharSize
+				p.activeCharSizeControl = ""
+				p.charSizeDragAccumY = 0
+				p.commandInput = ""
+				p.commandResponse = ""
+				return
+			}
+			p.setCommandMode(CommandModeCharSizeSpinner)
+			p.activeCharSizeControl = control.id
+		})
+	}
+
+	d.button("DONE", buttonFull, false, func() {
+		p.setCommandMode(CommandModeNone)
+	})
+}
+
+// drawSSAFilterPage implements TI 6191.409 Rev. 30, 4.7 / Figure 4-7.
+// The command is DCB-only: each field button immediately toggles the
+// corresponding System Status Area field and DONE returns to the Main DCB.
+//
+// ALL is not a destructive "set every bit" operation. The operator manual
+// says it toggles between showing all SSA fields and the previously enabled
+// individual fields. Keep the individual bits untouched while ALL is active;
+// when a field button is selected during ALL, mirror VICE/STARS by leaving
+// ALL and inhibiting that field in the restored individual selection.
+func (d *dcbDrawer) drawSSAFilterPage() {
+	p := d.pane
+	f := &p.currentPrefs().SSAFilter
+
+	fieldButton := func(label string, value *bool) {
+		if f.All {
+			// Every field button is presented selected while ALL is active.
+			// Clicking one exits ALL and inhibits that field; all other
+			// individual selections retain their pre-ALL state.
+			d.button(label, buttonHalfVertical, true, func() {
+				f.All = false
+				*value = false
+			})
+			return
+		}
+		d.button(label, buttonHalfVertical, *value, func() {
+			*value = !*value
+		})
+	}
+
+	// Figure 4-7, first block (nine columns, top/bottom order).
+	d.button("ALL", buttonHalfVertical, f.All, func() { f.All = !f.All })
+	fieldButton("WX", &f.Wx)
+	fieldButton("TIME", &f.Time)
+	fieldButton("ALTSTG", &f.Altimeter)
+	fieldButton("STATUS", &f.Status)
+	fieldButton("PLAN", &f.ConfigPlan)
+	fieldButton("RADAR", &f.Radar)
+	fieldButton("CODES", &f.Codes)
+	fieldButton("SPC", &f.SpecialPurposeCodes)
+	fieldButton("SYS OFF", &f.SysOff)
+	fieldButton("RANGE", &f.Range)
+	fieldButton("PTL", &f.PredictedTrackLines)
+	fieldButton("ALT FIL", &f.AltitudeFilters)
+	fieldButton("NAS I/F", &f.NASInterface)
+	fieldButton("INTRAIL", &f.Intrail)
+	fieldButton("2.5", &f.Intrail25)
+	fieldButton("AIRPORT", &f.AirportWeather)
+	fieldButton("OP MODE", &f.OperationMode)
+
+	// Figure 4-7, second block (five columns plus DONE).
+	fieldButton("TT", &f.TestTarget)
+	fieldButton("WX HIST", &f.WxHistory)
+	fieldButton("QL", &f.QuickLookPositions)
+	fieldButton("TW OFF", &f.DisabledTerminal)
+	fieldButton("CON/CPL", &f.Consolidation)
+	fieldButton("OFF IND", &f.TCPOff)
+	fieldButton("CRDA", &f.ActiveCRDAPairs)
+	fieldButton("FLOW", &f.Flow)
+	fieldButton("AMZ", &f.AMZ)
+	fieldButton("TBFM", &f.TBFM)
+	d.button("DONE", buttonFull, false, func() {
 		p.setCommandMode(CommandModeNone)
 	})
 }

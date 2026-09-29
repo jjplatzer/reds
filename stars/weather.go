@@ -11,6 +11,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -33,8 +34,10 @@ var (
 )
 
 type starsAirportDatabase struct {
-	byIATA map[string]string
-	byICAO map[string]string
+	byIATA        map[string]string
+	byICAO        map[string]string
+	displayByICAO map[string]string
+	positionByID  map[string]configPoint
 }
 
 type starsMETAR struct {
@@ -47,6 +50,24 @@ type starsMETAR struct {
 type starsMETARUpdate struct {
 	METAR starsMETAR
 	Err   error
+}
+
+type starsMETARBatchUpdate struct {
+	METARs map[string]starsMETAR
+	Err    error
+}
+
+type ssaAirportWeatherStation struct {
+	display string
+	icao    string
+}
+
+type ssaAirportWeatherState struct {
+	stations    []ssaAirportWeatherStation
+	metars      map[string]starsMETAR
+	updates     chan starsMETARBatchUpdate
+	fetching    bool
+	lastAttempt time.Time
 }
 
 type starsAWCMETAR struct {
@@ -95,8 +116,10 @@ func loadSTARSAirportDatabase() (starsAirportDatabase, error) {
 
 func parseSTARSAirportDatabase(data []byte) (starsAirportDatabase, error) {
 	db := starsAirportDatabase{
-		byIATA: make(map[string]string),
-		byICAO: make(map[string]string),
+		byIATA:        make(map[string]string),
+		byICAO:        make(map[string]string),
+		displayByICAO: make(map[string]string),
+		positionByID:  make(map[string]configPoint),
 	}
 
 	r := csv.NewReader(bytes.NewReader(data))
@@ -110,8 +133,10 @@ func parseSTARSAirportDatabase(data []byte) (starsAirportDatabase, error) {
 	}
 	iataColumn, okIATA := columns["iata_code"]
 	icaoColumn, okICAO := columns["icao_code"]
-	if !okIATA || !okICAO {
-		return starsAirportDatabase{}, fmt.Errorf("airport CSV must contain iata_code and icao_code columns")
+	latColumn, okLat := columns["latitude_deg"]
+	lonColumn, okLon := columns["longitude_deg"]
+	if !okIATA || !okICAO || !okLat || !okLon {
+		return starsAirportDatabase{}, fmt.Errorf("airport CSV must contain iata_code, icao_code, latitude_deg and longitude_deg columns")
 	}
 
 	for {
@@ -122,7 +147,7 @@ func parseSTARSAirportDatabase(data []byte) (starsAirportDatabase, error) {
 		if err != nil {
 			return starsAirportDatabase{}, fmt.Errorf("read airport CSV: %w", err)
 		}
-		if iataColumn >= len(record) || icaoColumn >= len(record) {
+		if iataColumn >= len(record) || icaoColumn >= len(record) || latColumn >= len(record) || lonColumn >= len(record) {
 			continue
 		}
 		iata := strings.ToUpper(strings.TrimSpace(record[iataColumn]))
@@ -131,11 +156,34 @@ func parseSTARSAirportDatabase(data []byte) (starsAirportDatabase, error) {
 			continue
 		}
 		db.byICAO[icao] = icao
+		lat, latErr := strconv.ParseFloat(strings.TrimSpace(record[latColumn]), 64)
+		lon, lonErr := strconv.ParseFloat(strings.TrimSpace(record[lonColumn]), 64)
+		if latErr == nil && lonErr == nil {
+			point := configPoint{Lat: lat, Lon: lon}
+			db.positionByID[icao] = point
+			if iata != "" {
+				db.positionByID[iata] = point
+			}
+		}
 		if iata != "" {
 			db.byIATA[iata] = icao
+			db.displayByICAO[icao] = iata
 		}
 	}
 	return db, nil
+}
+
+func starsAirportDisplayID(code string) string {
+	code = strings.ToUpper(strings.TrimSpace(code))
+	if len(code) != 4 {
+		return code
+	}
+	if db, err := loadSTARSAirportDatabase(); err == nil {
+		if display, ok := db.displayByICAO[code]; ok {
+			return display
+		}
+	}
+	return code[1:]
 }
 
 func resolveSTARSAltimeterAirport(code string) string {
@@ -165,6 +213,42 @@ func (p *STARSPane) initializeSystemAltimeter(airport string) {
 		icao:    resolveSTARSAltimeterAirport(airport),
 		updates: make(chan starsMETARUpdate, 1),
 	}
+}
+
+// initializeSSAAirportWeather selects the adapted airports used by field N of
+// the System Status Area. TI 6191.409 Table 2-15 permits up to six airports
+// when a single pressure unit is displayed. Preserve CRC's adaptation order,
+// de-duplicate by resolved ICAO station, and keep the three-character display
+// identifier separate from the station identifier used by AviationWeather.
+func (p *STARSPane) initializeSSAAirportWeather(airports []string) {
+	if p == nil {
+		return
+	}
+
+	state := ssaAirportWeatherState{
+		metars:  make(map[string]starsMETAR),
+		updates: make(chan starsMETARBatchUpdate, 1),
+	}
+	seen := make(map[string]struct{})
+	for _, airport := range airports {
+		if len(state.stations) == 6 {
+			break
+		}
+		display := starsAirportDisplayID(airport)
+		icao := strings.ToUpper(strings.TrimSpace(resolveSTARSAltimeterAirport(airport)))
+		if display == "" || icao == "" {
+			continue
+		}
+		if _, ok := seen[icao]; ok {
+			continue
+		}
+		seen[icao] = struct{}{}
+		state.stations = append(state.stations, ssaAirportWeatherStation{
+			display: display,
+			icao:    icao,
+		})
+	}
+	p.ssaAirportWeather = state
 }
 
 func (p *STARSPane) refreshSystemAltimeter() {
@@ -216,57 +300,185 @@ func (p *STARSPane) consumeSystemAltimeterUpdates() {
 	}
 }
 
-func (p *STARSPane) ssaFieldEText(now time.Time) string {
-	text := now.UTC().Format("1504/05")
-	if p == nil || !p.systemAltimeter.hasMETAR {
-		return text
+func (p *STARSPane) refreshSSAAirportWeather() {
+	if p == nil || len(p.ssaAirportWeather.stations) == 0 || p.ssaAirportWeather.updates == nil || p.ssaAirportWeather.fetching {
+		return
 	}
-	metar := p.systemAltimeter.metar
-	if !metar.HasAltimeter {
-		return text
+	now := time.Now()
+	if !p.ssaAirportWeather.lastAttempt.IsZero() && now.Sub(p.ssaAirportWeather.lastAttempt) < starsMETARRefreshInterval {
+		return
 	}
-	return fmt.Sprintf("%s %02d.%02d", text, metar.Altimeter/100, metar.Altimeter%100)
+
+	p.ssaAirportWeather.lastAttempt = now
+	p.ssaAirportWeather.fetching = true
+	icaos := make([]string, 0, len(p.ssaAirportWeather.stations))
+	for _, station := range p.ssaAirportWeather.stations {
+		icaos = append(icaos, station.icao)
+	}
+	updates := p.ssaAirportWeather.updates
+	go func() {
+		metars, err := fetchSTARSAWCMETARs(context.Background(), icaos)
+		select {
+		case updates <- starsMETARBatchUpdate{METARs: metars, Err: err}:
+		default:
+		}
+	}()
+}
+
+func (p *STARSPane) consumeSSAAirportWeatherUpdates() {
+	if p == nil || p.ssaAirportWeather.updates == nil {
+		return
+	}
+	for {
+		select {
+		case update := <-p.ssaAirportWeather.updates:
+			p.ssaAirportWeather.fetching = false
+			if update.Err != nil {
+				if p.logger != nil {
+					p.logger.Warn(
+						"STARS SSA airport METAR request failed",
+						slog.Any("error", update.Err),
+					)
+				}
+				continue
+			}
+			// A successful batch replaces the prior snapshot. This avoids
+			// continuing to label an airport "A" if the current response no
+			// longer supplies an altimeter for it.
+			p.ssaAirportWeather.metars = update.METARs
+		default:
+			return
+		}
+	}
+}
+
+func formatSSAAirportWeatherLines(stations []ssaAirportWeatherStation, metars map[string]starsMETAR) []string {
+	entries := make([]string, 0, min(len(stations), 6))
+	for _, station := range stations[:min(len(stations), 6)] {
+		metar, ok := metars[station.icao]
+		if !ok || !metar.HasAltimeter {
+			continue
+		}
+		entries = append(entries, fmt.Sprintf(
+			"%s %02d.%02dA",
+			station.display,
+			metar.Altimeter/100,
+			metar.Altimeter%100,
+		))
+	}
+
+	lines := make([]string, 0, 2)
+	for len(entries) > 0 {
+		n := min(3, len(entries))
+		lines = append(lines, strings.Join(entries[:n], " "))
+		entries = entries[n:]
+	}
+	return lines
+}
+
+func (p *STARSPane) ssaAirportWeatherLines() []string {
+	if p == nil {
+		return nil
+	}
+	return formatSSAAirportWeatherLines(p.ssaAirportWeather.stations, p.ssaAirportWeather.metars)
+}
+
+func (p *STARSPane) ssaFieldEText(now time.Time, showTime, showAltimeter bool) string {
+	var parts []string
+	if showTime {
+		parts = append(parts, now.UTC().Format("1504/05"))
+	}
+	if showAltimeter && p != nil && p.systemAltimeter.hasMETAR {
+		metar := p.systemAltimeter.metar
+		if metar.HasAltimeter {
+			parts = append(parts, fmt.Sprintf("%02d.%02d", metar.Altimeter/100, metar.Altimeter%100))
+		}
+	}
+	return strings.Join(parts, " ")
 }
 
 func fetchSTARSAWCMETAR(ctx context.Context, icao string) (starsMETAR, error) {
+	icao = strings.ToUpper(strings.TrimSpace(icao))
+	metars, err := fetchSTARSAWCMETARs(ctx, []string{icao})
+	if err != nil {
+		return starsMETAR{}, err
+	}
+	metar, ok := metars[icao]
+	if !ok {
+		return starsMETAR{}, fmt.Errorf("no METAR found for %s", icao)
+	}
+	return metar, nil
+}
+
+func fetchSTARSAWCMETARs(ctx context.Context, icaos []string) (map[string]starsMETAR, error) {
+	ids := make([]string, 0, len(icaos))
+	seen := make(map[string]struct{}, len(icaos))
+	for _, icao := range icaos {
+		icao = strings.ToUpper(strings.TrimSpace(icao))
+		if icao == "" {
+			continue
+		}
+		if _, ok := seen[icao]; ok {
+			continue
+		}
+		seen[icao] = struct{}{}
+		ids = append(ids, icao)
+	}
+	if len(ids) == 0 {
+		return map[string]starsMETAR{}, nil
+	}
+
 	q := url.Values{}
-	q.Set("ids", icao)
+	q.Set("ids", strings.Join(ids, ","))
 	q.Set("format", "json")
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, starsAWCMETAREndpoint+"?"+q.Encode(), nil)
 	if err != nil {
-		return starsMETAR{}, err
+		return nil, err
 	}
 	req.Header.Set("User-Agent", "REDS STARS METAR")
 
 	resp, err := starsMETARHTTPClient.Do(req)
 	if err != nil {
-		return starsMETAR{}, err
+		return nil, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return starsMETAR{}, fmt.Errorf("aviationweather METAR: HTTP %s", resp.Status)
+		return nil, fmt.Errorf("aviationweather METAR: HTTP %s", resp.Status)
 	}
 
 	var reports []starsAWCMETAR
 	if err := json.NewDecoder(io.LimitReader(resp.Body, 1<<20)).Decode(&reports); err != nil {
-		return starsMETAR{}, fmt.Errorf("decode aviationweather METAR: %w", err)
+		return nil, fmt.Errorf("decode aviationweather METAR: %w", err)
 	}
-	if len(reports) == 0 || strings.TrimSpace(reports[0].RawOb) == "" {
-		return starsMETAR{}, fmt.Errorf("no METAR found for %s", icao)
+	if len(reports) == 0 {
+		return nil, fmt.Errorf("no METAR found for %s", strings.Join(ids, ","))
 	}
 
-	report := reports[0]
-	observation := time.Unix(report.ObsTime, 0).UTC()
-	if report.ObsTime == 0 {
-		observation = time.Time{}
+	metars := make(map[string]starsMETAR, len(reports))
+	for _, report := range reports {
+		if strings.TrimSpace(report.RawOb) == "" {
+			continue
+		}
+		icao := strings.ToUpper(strings.TrimSpace(report.ICAOID))
+		if icao == "" {
+			continue
+		}
+		observation := time.Unix(report.ObsTime, 0).UTC()
+		if report.ObsTime == 0 {
+			observation = time.Time{}
+		}
+		altimeter, hasAltimeter := parseSTARSAltimeter(report.RawOb, report.Altim)
+		metars[icao] = starsMETAR{
+			ICAO:         icao,
+			Observation:  observation,
+			Altimeter:    altimeter,
+			HasAltimeter: hasAltimeter,
+		}
 	}
-	altimeter, hasAltimeter := parseSTARSAltimeter(report.RawOb, report.Altim)
-	return starsMETAR{
-		ICAO:         strings.ToUpper(strings.TrimSpace(report.ICAOID)),
-		Observation:  observation,
-		Altimeter:    altimeter,
-		HasAltimeter: hasAltimeter,
-	}, nil
+	if len(metars) == 0 {
+		return nil, fmt.Errorf("no usable METAR found for %s", strings.Join(ids, ","))
+	}
+	return metars, nil
 }
 
 func parseSTARSAltimeter(raw string, altimHPA *float64) (int, bool) {

@@ -19,11 +19,12 @@ const (
 	ssaDefaultY = float32(0.10)
 
 	// TI 6191.409 Rev. 30, Table 2-15 describes the Red Check symbol as a
-	// solid inverted delta centered in a green outlined box. The manual does
-	// not prescribe pixel dimensions; these dimensions match VICE's STARS
-	// implementation: a 10x10 box around a 7-unit-high equilateral triangle.
-	ssaCheckBoxHalfSize = float32(5)
-	ssaCheckTriangleH   = float32(7)
+	// solid inverted delta centered in a green outlined box. The source FAA
+	// raster shows the delta as a 7x7 stepped bitmap: row widths 7,7,5,5,3,3,1.
+	// That keeps VICE's 7-unit dimension while matching the actual STARS
+	// pixel structure instead of relying on rasterization of a vector triangle.
+	ssaCheckBoxHalfSize  = float32(5)
+	ssaCheckTriangleSize = float32(7)
 
 	zLists renderer.Z = 0
 )
@@ -211,6 +212,49 @@ func (p *STARSPane) ssaWeatherLevelStatusText() string {
 	return formatSSAWeatherLevelStatus(available, p.currentPrefs().DisplayWeatherLevel)
 }
 
+// ssaRadarModeText returns the sensor-mode portion of SSA field G.
+//
+// TI 6191.409 Rev. 30, Table 2-16 distinguishes SYS (multi-sensor mode)
+// from FUSED (fused mode). REDS currently consumes the already-processed
+// STARS/TAIS track stream and does not model individual adapted radar sites
+// or per-display sensor selection, so advertise the presentation as FUSED.
+// If true SITE/MULTI support is added later, this helper can return SYS or
+// the selected sensor identifier without changing the SSA layout/filter logic.
+func (p *STARSPane) ssaRadarModeText() string {
+	if p == nil {
+		return ""
+	}
+	return "FUSED"
+}
+
+// ssaSystemStatusText returns the STATUS portion of SSA field G.
+//
+// Table 2-15 permits FSL/EFSL/DSF status values such as OK, NA, TR, and NR.
+// VICE uses the display client's connection state as the simulator proxy and
+// presents OK/OK/NA while connected and NA/NA/NA in alert red otherwise.
+// REDS has the equivalent live-state boundary at the TAIS client, so mirror
+// that behavior rather than inventing facility-health information TAIS does
+// not provide.
+func (p *STARSPane) ssaSystemStatusText() (string, bool) {
+	if p != nil && p.tais != nil && p.tais.Status().Connected {
+		return "OK/OK/NA", false
+	}
+	return "NA/NA/NA", true
+}
+
+// ssaSystemOffText returns SSA field J (System OFF Indicators).
+//
+// TI 6191.409 Rev. 30, Table 2-18 defines this field as system-wide inhibited
+// processing capabilities (CA, MCI, MSAW, CRDA, HOP, INTRAIL, etc.). VICE
+// builds the line only from actual simulator inhibit state and omits it when
+// nothing is disabled. REDS does not yet receive those site-wide inhibit
+// states from TAIS, so an empty field is the only truthful current result.
+// Keep the decision isolated here so those states can be wired in later
+// without changing the SSA FILTER or renderer layout.
+func (p *STARSPane) ssaSystemOffText() string {
+	return ""
+}
+
 // drawSSA draws the System Status Area in the field order defined by
 // TI 6191.409 Rev. 30, Table 2-15. Empty fields do not consume a line, so the
 // area automatically shortens or lengthens as status information is added.
@@ -224,10 +268,12 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		return
 	}
 
-	// VICE stores the SSA's default anchor at normalized (0.05, 0.90) with
-	// a bottom-left origin. Convert that to REDS' top-left screen coordinates.
-	centerX := ssaDefaultX*w + ssaCheckBoxHalfSize
-	centerY := ssaDefaultY * h
+	// SSAListPosition is the operator-selected anchor. TI 6191.409 Rev. 30,
+	// 4.9.4 defines this as the location selected for the System status area's
+	// top-left corner. VICE stores the same state as ps.SSAList.Position.
+	ssaPos := p.currentPrefs().SSAListPosition
+	centerX := ssaPos[0]*w + ssaCheckBoxHalfSize
+	centerY := ssaPos[1] * h
 
 	x, y, width, height := ctx.PaneFramebufferRect()
 	cb := zcb.At(zLists)
@@ -236,6 +282,7 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 
 	listBrightness := p.currentPrefs().Brightness.Lists
+	filter := p.currentPrefs().SSAFilter
 
 	// Field A - TCW/TDW Failure Alert, EFSL / DSF indicator.
 	// A healthy TCW/TDW leaves this field empty (Table 2-15).
@@ -259,21 +306,35 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	box.GenerateCommands(cb)
 	renderer.ReturnLinesBuilder(box)
 
-	// For an equilateral triangle of height h, the centroid lies h/3 from
-	// the base. REDS' y axis increases downward, so the inverted delta's tip
-	// has the larger y value.
-	const invSqrt3 = float32(0.5773502691896258)
-	halfBase := ssaCheckTriangleH * invSqrt3
-	baseY := centerY - ssaCheckTriangleH/3
-	tipY := centerY + 2*ssaCheckTriangleH/3
-
+	// Match the FAA raster exactly rather than drawing a mathematically smooth
+	// equilateral triangle. At native size the red pixels are arranged as:
+	//
+	//   #######
+	//   #######
+	//    #####
+	//    #####
+	//     ###
+	//     ###
+	//      #
+	//
+	// Four quads reproduce those 7x7 pixel tiers with no extra geometry.
 	triangle := renderer.GetColoredTrianglesBuilder()
-	triangle.AddTriangleRGB(
-		renderer.PointVertex{X: centerX - halfBase, Y: baseY},
-		renderer.PointVertex{X: centerX + halfBase, Y: baseY},
-		renderer.PointVertex{X: centerX, Y: tipY},
-		listBrightness.ScaleRGB(p.colors.TextAlert),
-	)
+	triangleColor := listBrightness.ScaleRGB(p.colors.TextAlert)
+	half := ssaCheckTriangleSize / 2
+	addTier := func(width, y0, y1 float32) {
+		halfWidth := width / 2
+		triangle.AddQuad(
+			renderer.PointVertex{X: centerX - halfWidth, Y: centerY - half + y0},
+			renderer.PointVertex{X: centerX + halfWidth, Y: centerY - half + y0},
+			renderer.PointVertex{X: centerX + halfWidth, Y: centerY - half + y1},
+			renderer.PointVertex{X: centerX - halfWidth, Y: centerY - half + y1},
+			triangleColor,
+		)
+	}
+	addTier(7, 0, 2)
+	addTier(5, 2, 4)
+	addTier(3, 4, 6)
+	addTier(1, 6, 7)
 	triangle.GenerateCommands(cb)
 	renderer.ReturnColoredTrianglesBuilder(triangle)
 
@@ -286,7 +347,7 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		td := renderer.GetTextDrawBuilder()
 		td.SetFont(p.systemFont)
 
-		textX := ssaDefaultX * w
+		textX := ssaPos[0] * w
 		textY := centerY + 10
 		addLine := func(text string, color renderer.RGB) {
 			if text == "" {
@@ -299,6 +360,34 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			)
 			textY += float32(fontSize)
 		}
+		type textSegment struct {
+			text  string
+			color renderer.RGB
+		}
+		addSegments := func(segments ...textSegment) {
+			x := textX
+			wrote := false
+			for _, segment := range segments {
+				if segment.text == "" {
+					continue
+				}
+				td.AddText(
+					segment.text,
+					redsmath.Vec2{X: x, Y: textY},
+					renderer.TextStyle{Size: fontSize, Color: listBrightness.ScaleRGB(segment.color).ToRGBA()},
+				)
+				// MeasureText returns the visible glyph bounds, so a trailing space
+				// contributes no width. Append a sentinel space while measuring to
+				// get the actual pen advance, including any intentional trailing
+				// space already present in the segment (e.g. STATUS before RADAR).
+				width, _ := p.systemFont.MeasureText(segment.text+" ", fontSize)
+				x += float32(width)
+				wrote = true
+			}
+			if wrote {
+				textY += float32(fontSize)
+			}
+		}
 
 		// Field D - Weather Level Status. TI 6191.409 Rev. 30, Figure 2-24
 		// and Table 2-15 place this immediately before field E and specify cyan;
@@ -306,27 +395,141 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		// VICE uses the same parenthesized-enabled / bare-inhibited modality, but
 		// renders it with the generic list style; the operator manual takes
 		// precedence here, so REDS uses the dedicated SystemStatusWX color.
-		addLine(p.ssaWeatherLevelStatusText(), p.colors.SystemStatusWX)
+		if filter.All || filter.Wx {
+			addLine(p.ssaWeatherLevelStatusText(), p.colors.SystemStatusWX)
+		}
 
 		// Field E - UTC Time, System Altimeter Setting.
 		// Hours and minutes / seconds are followed by the system altimeter
 		// setting used for altitude correction in this Terminal control area.
-		addLine(p.ssaFieldEText(time.Now()), p.colors.List)
-
-		// TI 6191.409 Rev. 30, 6.3.4 says a non-zero PTL value is reflected
-		// in the System Status Area and is removed when the value is zero. The
-		// manual does not prescribe the exact text formatting; VICE renders the
-		// value as "PTL: x.x", so use that established fallback.
-		if p.currentPrefs().PTLLength > 0 {
-			addLine(fmt.Sprintf("PTL: %.1f", p.currentPrefs().PTLLength), p.colors.List)
+		// Figure 4-7 exposes TIME and ALTSTG as independent filter buttons even
+		// though Table 2-15 places them on one SSA line.
+		if filter.All || filter.Time || filter.Altimeter {
+			addLine(
+				p.ssaFieldEText(time.Now(), filter.All || filter.Time, filter.All || filter.Altimeter),
+				p.colors.List,
+			)
 		}
 
-		// Fields E1 through N are omitted until their corresponding facility,
-		// surveillance, flow-management, or controller preference state exists.
+		// Field G - FSL / EFSL / DSF status, Configuration Plan, Sensor Modes.
+		// STATUS, PLAN, and RADAR independently filter portions of this one line.
+		// Match VICE's composition: status first, then plan, then radar. REDS has
+		// no live configuration-plan identifier yet, so PLAN contributes no text.
+		// STATUS uses the TAIS connection as the same kind of simulator-health
+		// proxy VICE uses for its client connection; RADAR is currently SYS.
+		if filter.All || filter.Status || filter.ConfigPlan || filter.Radar {
+			statusText := ""
+			statusColor := p.colors.List
+			if filter.All || filter.Status {
+				var alert bool
+				statusText, alert = p.ssaSystemStatusText()
+				statusText += " "
+				if alert {
+					statusColor = p.colors.TextAlert
+				}
+			}
+
+			radarText := ""
+			if filter.All || filter.Radar {
+				radarText = p.ssaRadarModeText()
+			}
+
+			addSegments(
+				textSegment{statusText, statusColor},
+				textSegment{radarText, p.colors.List},
+			)
+		}
+
+		// Field H - Selected beacon codes / code blocks. REDS already carries
+		// the selected-code preference used by unassociated-track presentation,
+		// so expose the same state in the SSA when CODES is enabled. Table 2-15
+		// permits up to ten entries; VICE lays them out five per line.
+		if (filter.All || filter.Codes) && len(p.currentPrefs().SelectedBeacons) > 0 {
+			codes := p.currentPrefs().SelectedBeacons
+			for i := 0; i < len(codes) && i < 10; i += 5 {
+				end := min(i+5, len(codes), 10)
+				addLine(strings.Join(codes[i:end], " "), p.colors.List)
+			}
+		}
+
+		// Field J - System OFF Indicators. Table 2-18 lists capabilities that
+		// have been inhibited system-wide. As in VICE, the line is omitted when
+		// there are no active indicators; the SYS OFF filter controls visibility
+		// only and does not change the underlying system state.
+		if filter.All || filter.SysOff {
+			addLine(p.ssaSystemOffText(), p.colors.List)
+		}
+
+		// Field K - Display Range / PTL value. RANGE and PTL are independently
+		// filterable but share one SSA line. Table 2-15 shows the range as nNM;
+		// VICE supplies the exact PTL text formatting used here.
+		if filter.All || filter.Range || filter.PredictedTrackLines {
+			var parts []string
+			if filter.All || filter.Range {
+				parts = append(parts, fmt.Sprintf("%dNM", int(p.currentPrefs().Range+0.5)))
+			}
+			if (filter.All || filter.PredictedTrackLines) && p.currentPrefs().PTLLength > 0 {
+				parts = append(parts, fmt.Sprintf("PTL: %.1f", p.currentPrefs().PTLLength))
+			}
+			addLine(strings.Join(parts, " "), p.colors.List)
+		}
+
+		// Field L - Altitude Filters. Table 2-15 displays the unassociated
+		// range first, followed by U, then the associated range and A. The
+		// SSA FILTER <ALT FIL> button controls only this status line; the
+		// altitude filters themselves remain active regardless of whether the
+		// line is selected for display.
+		if filter.All || filter.AltitudeFilters {
+			addLine(p.currentPrefs().AltitudeFilters.ssaText(), p.colors.List)
+		}
+
+		// Remaining fields between E1 and N are omitted until their corresponding
+		// facility, surveillance, flow-management, or controller state exists.
+
+		// Field N - Airport with Altimeter. Table 2-15 allows up to six airports
+		// when only one pressure unit is displayed. REDS currently receives the
+		// area's adapted SSA airport list from CRC and uses AviationWeather METARs,
+		// so each available value is an automatically updated (A) inHg reading.
+		// Match VICE's presentation of three airports per line.
+		if filter.All || filter.AirportWeather {
+			for _, line := range p.ssaAirportWeatherLines() {
+				addLine(line, p.colors.List)
+			}
+		}
 
 		// Field O - Mode of Operation.
 		// The initial REDS STARS TCW/TDW runs in operational / normal mode.
-		addLine("MODE: NORMAL", p.colors.List)
+		if filter.All || filter.OperationMode {
+			addLine("MODE: NORMAL", p.colors.List)
+		}
+
+		// Field Q - Quick Look TCPs. Table 2-15 permits up to two lines,
+		// with QL+ positions first and a spaced trailing '+' when more TCPs
+		// are enabled than can be displayed. The SSA FILTER <QL> button only
+		// controls visibility of this status field; it does not alter QL state.
+		if (filter.All || filter.QuickLookPositions) && p.hasQuickLookStatus() {
+			ql := strings.Split(p.qlPositionsString(), "\n")
+			for i, line := range ql {
+				if i == 0 {
+					line = "QL: " + line
+				}
+				addLine(line, p.colors.List)
+			}
+		}
+
+		// Fields S-U - Keyboard Consolidation/Coupling status. Table 2-15
+		// assigns these fields to the three TCW/TDW keyboards and makes all
+		// of them subject to the single SSA FILTER <CON/CPL> selection. REDS'
+		// current live STARS pane represents one operational keyboard/control
+		// position, so render that keyboard's current assignment here. The
+		// helper is intentionally isolated so a future live SISO/consolidation
+		// feed can supply secondary TCPs and CPL state without changing SSA
+		// layout/filter behavior.
+		if filter.All || filter.Consolidation {
+			for _, line := range p.ssaConsolidationCouplingLines() {
+				addLine(line, p.colors.List)
+			}
+		}
 
 		td.GenerateCommands(cb, texture)
 		renderer.ReturnTextDrawBuilder(td)
@@ -361,7 +564,9 @@ func (p *STARSPane) drawPreviewArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer
 	}
 	text.WriteString(strings.Join(strings.Fields(p.commandInput), "\n"))
 
-	fontSize := p.listFontSize()
+	// TI 6191.409 Rev. 30, 4.9.1 places the Preview Area in the DATA BLOCKS
+	// character-size group rather than the LISTS group.
+	fontSize := p.datablockFontSize()
 	texture := p.systemFontTexture(ctx.Renderer, fontSize)
 	if texture == 0 {
 		return

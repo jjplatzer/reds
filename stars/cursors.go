@@ -2,6 +2,7 @@ package stars
 
 import (
 	stdmath "math"
+	"strconv"
 
 	redsmath "github.com/juliusplatzer/reds/math"
 	"github.com/juliusplatzer/reds/panes"
@@ -9,12 +10,7 @@ import (
 	"github.com/juliusplatzer/reds/stars/assets"
 )
 
-const (
-	// VICE defaults STARS datablock character size to 1 and uses the matching
-	// keyboard_1_1 crosshair glyph for the normal scope cursor.
-	defaultScopeCursorAsset = "keyboard_1_1"
-	zMouseCursor            = renderer.Z(1000)
-)
+const zMouseCursor = renderer.Z(1000)
 
 // applyCursor selects whether the platform cursor or the STARS scope cursor
 // should be visible. VICE leaves the normal OS arrow over the DCB and uses the
@@ -45,7 +41,11 @@ func (p *STARSPane) scopeCursor() *renderer.CursorBitmap {
 	if p == nil {
 		return nil
 	}
-	cursor, _ := assets.StarsCursor(defaultScopeCursorAsset)
+	// TI 6191.409 Rev. 30, 4.9.1 includes the cursor in the DATA BLOCKS
+	// character-size group. VICE caps its STARS crosshair at size 4 even when
+	// DATA BLOCKS is set to 5; mirror that presentation exactly.
+	size := max(0, min(p.currentPrefs().CharSize.Datablocks, 4))
+	cursor, _ := assets.StarsCursor("keyboard_1_" + strconv.Itoa(size))
 	return cursor
 }
 
@@ -53,15 +53,25 @@ func (p *STARSPane) scopeCursorTexture(r renderer.Renderer) renderer.TextureID {
 	if p == nil || r == nil {
 		return 0
 	}
-	if p.cursorTexture != 0 {
+	size := max(0, min(p.currentPrefs().CharSize.Datablocks, 4))
+	assetName := "keyboard_1_" + strconv.Itoa(size)
+	if p.cursorTexture != 0 && p.cursorTextureAsset == assetName {
 		return p.cursorTexture
+	}
+	if p.cursorTexture != 0 {
+		r.DestroyTexture(p.cursorTexture)
+		p.cursorTexture = 0
 	}
 
 	cursor := p.scopeCursor()
 	if cursor == nil {
+		p.cursorTextureAsset = ""
 		return 0
 	}
 	p.cursorTexture = r.CreateTextureRGBA(cursor.Width, cursor.Height, cursor.RGBABytes(), true)
+	if p.cursorTexture != 0 {
+		p.cursorTextureAsset = assetName
+	}
 	return p.cursorTexture
 }
 

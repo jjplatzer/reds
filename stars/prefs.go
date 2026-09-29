@@ -1,6 +1,7 @@
 package stars
 
 import (
+	"fmt"
 	stdmath "math"
 
 	"github.com/juliusplatzer/reds/radar"
@@ -17,6 +18,50 @@ const (
 	// TCW maximum until TDW selection/adaptation is introduced.
 	maximumTCWRange = float32(512)
 )
+
+const starsNegativeAltitudeFilterLimitFeet = -9900
+
+// altitudeFilterPreferences mirrors VICE's STARS Preferences altitude-filter
+// state. TI 6191.409 Rev. 30 section 4.11 maintains independent limits for
+// unassociated and associated tracks.
+type altitudeFilterPreferences struct {
+	Unassociated [2]int // low, high, feet
+	Associated   [2]int // low, high, feet
+}
+
+func defaultAltitudeFilterPreferences() altitudeFilterPreferences {
+	// The manual defines the command modality but not the power-up value.
+	// Match VICE's established STARS defaults.
+	return altitudeFilterPreferences{
+		Unassociated: [2]int{100, 60000},
+		Associated:   [2]int{100, 60000},
+	}
+}
+
+func formatAltitudeFilterLimit(feet int) string {
+	if feet == starsNegativeAltitudeFilterLimitFeet {
+		return "N99"
+	}
+	return fmt.Sprintf("%03d", feet/100)
+}
+
+func (af altitudeFilterPreferences) previewText() string {
+	return fmt.Sprintf("%s %s\n%s %s",
+		formatAltitudeFilterLimit(af.Unassociated[0]),
+		formatAltitudeFilterLimit(af.Unassociated[1]),
+		formatAltitudeFilterLimit(af.Associated[0]),
+		formatAltitudeFilterLimit(af.Associated[1]),
+	)
+}
+
+func (af altitudeFilterPreferences) ssaText() string {
+	return fmt.Sprintf("%s %s U %s %s A",
+		formatAltitudeFilterLimit(af.Unassociated[0]),
+		formatAltitudeFilterLimit(af.Unassociated[1]),
+		formatAltitudeFilterLimit(af.Associated[0]),
+		formatAltitudeFilterLimit(af.Associated[1]),
+	)
+}
 
 // Brightness is the STARS 0-100 illumination factor used by the BRITE
 // submenu. TI 6191.409 Rev. 30, 4.10 defines brightness as an illumination
@@ -50,6 +95,17 @@ type BrightnessPreferences struct {
 	WxContrast         Brightness
 }
 
+// CharacterSizePreferences is the operator-visible CHAR SIZE state from
+// TI 6191.409 Rev. 30 section 4.9.1 / Figure 4-9. All groups permit sizes
+// 0-5 except the DCB, which permits only 0-2.
+type CharacterSizePreferences struct {
+	DCB             int
+	Datablocks      int
+	Lists           int
+	Tools           int
+	PositionSymbols int
+}
+
 // videoMapsListSelection identifies the reference-only map category list
 // selected from the MAPS submenu. TI 6191.409 Rev. 30, 4.5.2 defines GEO MAPS,
 // SYS PROC, AIRPORT, and CURRENT as site-adaptable category-list buttons. REDS
@@ -67,6 +123,43 @@ type videoMapsListPreferences struct {
 	Position  [2]float32
 	Visible   bool
 	Selection videoMapsListSelection
+}
+
+// ssaFilterPreferences is the per-position state controlled by the Main DCB
+// <SSA FILTER> submenu in TI 6191.409 Rev. 30, 4.7 / Figure 4-7. The ALL
+// bit is intentionally independent of the individual bits: while ALL is on,
+// every SSA field is displayed; turning ALL off restores the individual
+// selection that was in effect before ALL was selected. This mirrors STARS'
+// documented modality and VICE's implementation.
+type ssaFilterPreferences struct {
+	All                 bool
+	Wx                  bool
+	Time                bool
+	Altimeter           bool
+	Status              bool
+	ConfigPlan          bool
+	Radar               bool
+	Codes               bool
+	SpecialPurposeCodes bool
+	SysOff              bool
+	Range               bool
+	PredictedTrackLines bool
+	AltitudeFilters     bool
+	NASInterface        bool
+	Intrail             bool
+	Intrail25           bool
+	AirportWeather      bool
+	OperationMode       bool
+	TestTarget          bool
+	WxHistory           bool
+	QuickLookPositions  bool
+	DisabledTerminal    bool
+	Consolidation       bool
+	TCPOff              bool
+	ActiveCRDAPairs     bool
+	Flow                bool
+	AMZ                 bool
+	TBFM                bool
 }
 
 // leaderLineDirection uses the clockwise ordering shown by the LDR DIR
@@ -147,6 +240,11 @@ func leaderLineDirectionFromKeypad(key int) (leaderLineDirection, bool) {
 // be saved/restored by STARS preference sets. The names mirror VICE's STARS
 // Preferences so DCB commands and saved preference sets can use the same state.
 type Preferences struct {
+	// DisplayDCB is controlled by the physical STARS <DCB> key. TI 6191.409
+	// Rev. 30 section 2.5 defines it as a toggle of the Display Control Bar.
+	// VICE maps that key to Ctrl+F9 on a desktop keyboard.
+	DisplayDCB bool
+
 	DefaultCenter           configPoint
 	UserCenter              configPoint
 	UseUserCenter           bool
@@ -160,10 +258,17 @@ type Preferences struct {
 	PTLOwn                  bool
 	PTLAll                  bool
 	Brightness              BrightnessPreferences
+	CharSize                CharacterSizePreferences
 	DisplayWeatherLevel     [6]bool
 	VideoMapVisible         map[int]bool
 	VideoMapsList           videoMapsListPreferences
 	PreviewAreaPosition     [2]float32
+	SSAListPosition         [2]float32
+	SSAFilter               ssaFilterPreferences
+	AltitudeFilters         altitudeFilterPreferences
+	QuickLookAll            bool
+	QuickLookAllIsPlus      bool
+	QuickLookTCPs           map[string]bool // TCP -> quick-look-plus
 
 	// DisplayLDBBeaconCodes is the per-position state controlled by TI 6191.409
 	// Rev. 30 section 6.13.9. It controls whether the reported Mode 3/A code is
@@ -181,6 +286,8 @@ type Preferences struct {
 func newPreferences(cfg selectedConfig) Preferences {
 	center := initialSTARSCenter(cfg)
 	prefs := Preferences{
+		// STARS presents the DCB initially; VICE uses the same default.
+		DisplayDCB:           true,
 		DefaultCenter:        center,
 		UserCenter:           center,
 		Range:                initialSTARSRange(cfg),
@@ -218,6 +325,15 @@ func newPreferences(cfg selectedConfig) Preferences {
 			Weather:            30,
 			WxContrast:         30,
 		},
+		// The operator manual defines the selectable ranges but not power-up
+		// values. Match VICE's established STARS defaults.
+		CharSize: CharacterSizePreferences{
+			DCB:             1,
+			Datablocks:      1,
+			Lists:           1,
+			Tools:           1,
+			PositionSymbols: 0,
+		},
 
 		// VICE's STARS default is (0.05, 0.75) in bottom-left-origin pane
 		// coordinates. REDS draws in top-left-origin screen coordinates, so
@@ -231,6 +347,16 @@ func newPreferences(cfg selectedConfig) Preferences {
 			Position: [2]float32{0.85, 0.5},
 		},
 		PreviewAreaPosition: [2]float32{0.05, 0.25},
+		// VICE stores the SSA at (.05, .90) in bottom-left-origin normalized
+		// coordinates. REDS screen coordinates use a top-left origin, so the
+		// equivalent default is (.05, .10). TI 6191.409 4.9.4 allows the
+		// entering keyboard to relocate this position independently.
+		SSAListPosition: [2]float32{ssaDefaultX, ssaDefaultY},
+		// TI 6191.409 does not prescribe a power-up filter state. VICE starts
+		// with ALL selected, which also preserves REDS' pre-filter behavior of
+		// showing every SSA field it currently knows how to render.
+		SSAFilter:       ssaFilterPreferences{All: true},
+		AltitudeFilters: defaultAltitudeFilterPreferences(),
 		// The operator manual defines how this state is changed but does not
 		// prescribe a startup value. Preserve REDS's existing presentation,
 		// which showed the beacon code in every LDB, until preference-set

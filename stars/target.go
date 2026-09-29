@@ -35,6 +35,11 @@ const (
 	// after an unassociated track is slewed and the left trackball selected.
 	starsLDBBeaconReadoutDuration = 5 * time.Second
 
+	// TI 6191.409 defines a five-second previously-owned flash after a
+	// handoff is accepted. VICE uses the same fallback duration when site
+	// adaptation does not override it.
+	starsHandoffAcceptFlashDuration = 5 * time.Second
+
 	// The operator material defines current target geometry and target history
 	// as distinct display elements but does not specify their raster dimensions.
 	// Use the VICE STARS dimensions as the fallback: a nominal 13-pixel current
@@ -123,26 +128,231 @@ func targetDisplayStateKey(target *redsnet.TaisTarget) string {
 	return strings.TrimSpace(target.Facility) + ":T" + track
 }
 
-func (p *STARSPane) targetOwnedByCurrentTCP(target *redsnet.TaisTarget) bool {
+type taisOwnershipState struct {
+	ownerTCP     string
+	seenRevision uint64
+	pending      bool
+
+	// After a pending handoff is accepted, STARS retains the Full data block
+	// at the former owner in the Owned/Previously-Owned color until that
+	// controller acknowledges it. The initial adapted interval flashes.
+	formerOwnerTCP          string
+	acceptedReceiverTCP     string
+	outboundAccepted        bool
+	outboundHandoffFlashEnd time.Time
+}
+
+// normalizeTaisOCR accepts both the SimpleXML spelling (for example
+// "Normal handoff") and the FIXM-style enum spelling (NORMAL_HANDOFF).
+// AIG200 defines PENDING specially: while it is set, CPS identifies the
+// handoff receiver instead of the controller that still owns the track.
+func normalizeTaisOCR(ocr string) string {
+	ocr = strings.ToUpper(strings.TrimSpace(ocr))
+	ocr = strings.ReplaceAll(ocr, "_", " ")
+	return strings.Join(strings.Fields(ocr), " ")
+}
+
+func taisOwnershipPending(target *redsnet.TaisTarget) bool {
+	return target != nil && target.FlightPlan != nil &&
+		normalizeTaisOCR(target.FlightPlan.OCR) == "PENDING"
+}
+
+func taisCPS(target *redsnet.TaisTarget) (string, bool) {
+	if target == nil || target.FlightPlan == nil {
+		return "", false
+	}
+	cps := strings.ToUpper(strings.TrimSpace(target.FlightPlan.CPS))
+	switch cps {
+	case "", "UNKNOWN", "UNASSIGNED", "UNAVAILABLE", "NONE", "PENDING":
+		return "", false
+	default:
+		return cps, true
+	}
+}
+
+func starsPositionSymbolFromTCP(tcp string) (string, bool) {
+	runes := []rune(strings.ToUpper(strings.TrimSpace(tcp)))
+	if len(runes) == 0 {
+		return "", false
+	}
+	last := runes[len(runes)-1]
+	if !((last >= 'A' && last <= 'Z') || (last >= '0' && last <= '9')) {
+		return "", false
+	}
+	return string(last), true
+}
+
+func (p *STARSPane) localTCP(tcp string) bool {
+	if p == nil {
+		return false
+	}
+	tcp = strings.ToUpper(strings.TrimSpace(tcp))
+	if tcp == "" {
+		return false
+	}
+	for _, position := range p.config.Facility.ControlPositions {
+		if strings.EqualFold(strings.TrimSpace(position.TCP), tcp) {
+			return true
+		}
+	}
+	return false
+}
+
+// updateTaisOwnership remembers the controlling local TCP across OCR=PENDING
+// reports. This is necessary because TAIS deliberately overloads CPS during a
+// pending handoff: CPS becomes the receiving position. A newly associated or
+// re-used track never inherits ownership from an older target with the same
+// key, and stale state is pruned with the authoritative snapshot.
+func (p *STARSPane) updateTaisOwnership(snapshot redsnet.TaisSnapshot, now time.Time) {
+	if p == nil {
+		return
+	}
+	if !snapshot.Ready {
+		clear(p.taisOwnership)
+		return
+	}
+	if p.taisOwnership == nil {
+		p.taisOwnership = make(map[string]taisOwnershipState)
+	}
+
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		key := targetDisplayStateKey(target)
+		if key == "" {
+			continue
+		}
+		if target.Track.NewTrack {
+			delete(p.taisOwnership, key)
+		}
+
+		state := p.taisOwnership[key]
+		state.seenRevision = snapshot.Revision
+		if taisOwnershipPending(target) {
+			state.pending = true
+			p.taisOwnership[key] = state
+			continue
+		}
+
+		// AIG200 makes acceptance observable as OCR leaving PENDING while CPS
+		// changes to the new owner. Remember the old local owner so that its
+		// display can reproduce STARS' five-second accepted-handoff flash and
+		// retained Previously-Owned Full data block.
+		cps, cpsOK := taisCPS(target)
+		if state.pending && state.ownerTCP != "" && cpsOK && !strings.EqualFold(cps, state.ownerTCP) {
+			state.formerOwnerTCP = state.ownerTCP
+			state.acceptedReceiverTCP = cps
+			state.outboundAccepted = true
+			state.outboundHandoffFlashEnd = now.Add(starsHandoffAcceptFlashDuration)
+		}
+		state.pending = false
+
+		if cpsOK && p.localTCP(cps) {
+			state.ownerTCP = cps
+		} else {
+			// For non-local CPS values TAIS may be identifying an ARTCC or
+			// adjacent facility rather than a local owner. Do not manufacture
+			// a local ownership relationship from that value.
+			state.ownerTCP = ""
+		}
+		p.taisOwnership[key] = state
+	}
+
+	for key, state := range p.taisOwnership {
+		if state.seenRevision != snapshot.Revision {
+			delete(p.taisOwnership, key)
+		}
+	}
+}
+
+// targetOwnerTCP returns the controller that still owns the track. During a
+// pending handoff it uses the last non-pending local CPS instead of the current
+// TAIS CPS, because the latter is the handoff receiver by definition.
+func (p *STARSPane) targetOwnerTCP(target *redsnet.TaisTarget) (string, bool) {
 	if p == nil || target == nil {
+		return "", false
+	}
+	if taisOwnershipPending(target) {
+		if state, ok := p.taisOwnership[targetDisplayStateKey(target)]; ok && state.ownerTCP != "" {
+			return state.ownerTCP, true
+		}
+		return "", false
+	}
+	cps, ok := taisCPS(target)
+	return cps, ok
+}
+
+func (p *STARSPane) targetHandoffTCP(target *redsnet.TaisTarget) (string, bool) {
+	if !taisOwnershipPending(target) {
+		return "", false
+	}
+	return taisCPS(target)
+}
+
+func (p *STARSPane) targetInboundHandoff(target *redsnet.TaisTarget) bool {
+	toTCP, ok := p.targetHandoffTCP(target)
+	return ok && p.ownTCP() != "" && strings.EqualFold(toTCP, p.ownTCP())
+}
+
+// targetOutboundHandoffAccepted is the post-acceptance state at the former
+// owner's display. STARS keeps this presentation until the former owner slews
+// the track and selects the left trackball button.
+func (p *STARSPane) targetOutboundHandoffAccepted(target *redsnet.TaisTarget) bool {
+	if p == nil || target == nil || p.ownTCP() == "" {
 		return false
 	}
-	_, cps, ok := taisCPSPositionSymbol(target)
-	if !ok {
+	state, ok := p.taisOwnership[targetDisplayStateKey(target)]
+	return ok && state.outboundAccepted && state.formerOwnerTCP != "" &&
+		strings.EqualFold(state.formerOwnerTCP, p.ownTCP())
+}
+
+func (p *STARSPane) acknowledgeOutboundHandoff(target *redsnet.TaisTarget) bool {
+	if !p.targetOutboundHandoffAccepted(target) {
 		return false
 	}
-	ownTCP := strings.TrimSpace(p.config.ControlPosition.TCP)
-	return ownTCP != "" && strings.EqualFold(cps, ownTCP)
+	key := targetDisplayStateKey(target)
+	state := p.taisOwnership[key]
+	state.outboundAccepted = false
+	state.formerOwnerTCP = ""
+	state.acceptedReceiverTCP = ""
+	state.outboundHandoffFlashEnd = time.Time{}
+	p.taisOwnership[key] = state
+	return true
+}
+
+// targetHandoffAttentionDim follows VICE's 500 ms handoff-attention cadence.
+// An inbound offered handoff alternates normal and half brightness until it is
+// accepted. At the former owner, the accepted handoff flashes for the adapted
+// interval (five seconds here) and then remains steady white until acknowledged.
+func (p *STARSPane) targetHandoffAttentionDim(target *redsnet.TaisTarget, now time.Time) bool {
+	flashing := p.targetInboundHandoff(target)
+	if p.targetOutboundHandoffAccepted(target) {
+		state := p.taisOwnership[targetDisplayStateKey(target)]
+		flashing = flashing || now.Before(state.outboundHandoffFlashEnd)
+	}
+	return flashing && (now.UnixMilli()/500)&1 == 0
+}
+
+func (p *STARSPane) targetHandoffBrightness(target *redsnet.TaisTarget, brightness Brightness, now time.Time) Brightness {
+	if p.targetHandoffAttentionDim(target, now) {
+		return brightness / 2
+	}
+	return brightness
+}
+
+func (p *STARSPane) targetOwnedByCurrentTCP(target *redsnet.TaisTarget) bool {
+	owner, ok := p.targetOwnerTCP(target)
+	return ok && p.ownTCP() != "" && strings.EqualFold(owner, p.ownTCP())
 }
 
 // targetSupportsSingleTrackQuickLook is the state predicate for TI 6191.409
 // 6.13.4: the implied command applies to an associated track owned by another
 // controller. LDB/unassociated tracks use a different implied command.
 func (p *STARSPane) targetSupportsSingleTrackQuickLook(target *redsnet.TaisTarget) bool {
-	if p == nil || target == nil || target.FlightPlan == nil || target.FlightPlan.Suspended {
+	if p == nil || target == nil || target.FlightPlan == nil || target.FlightPlan.Suspended ||
+		p.targetInboundHandoff(target) || p.targetOutboundHandoffAccepted(target) {
 		return false
 	}
-	if _, _, ok := taisCPSPositionSymbol(target); !ok {
+	if _, ok := p.targetOwnerTCP(target); !ok {
 		return false
 	}
 	return !p.targetOwnedByCurrentTCP(target)
@@ -158,6 +368,80 @@ func (p *STARSPane) targetSingleTrackQuickLooked(target *redsnet.TaisTarget) boo
 	}
 	_, ok := p.singleTrackQuickLook[key]
 	return ok
+}
+
+// targetSupportsSingleTrackLeaderDirection implements the track eligibility
+// from TI 6191.409 Rev. 30 6.13.1 / 6.13.17: the command is valid for any
+// associated track at the entering TCW/TDW.
+func (p *STARSPane) targetSupportsSingleTrackLeaderDirection(target *redsnet.TaisTarget) bool {
+	return p != nil && target != nil && target.FlightPlan != nil
+}
+
+// singleTrackLeaderDirectionCommand parses the numpad orientation used by the
+// single-track leader-direction commands. Direction 5 is special: it removes
+// a previously selected manual orientation rather than naming a direction.
+func singleTrackLeaderDirectionCommand(input string) (*leaderLineDirection, bool, error) {
+	if len(input) != 1 || input[0] < '0' || input[0] > '9' {
+		return nil, false, nil
+	}
+	if input[0] == '5' {
+		return nil, true, nil
+	}
+	direction, ok := leaderLineDirectionFromKeypad(int(input[0] - '0'))
+	if !ok {
+		return nil, true, ErrSTARSCommandFormat
+	}
+	return &direction, true, nil
+}
+
+func (p *STARSPane) setSingleTrackLeaderDirection(target *redsnet.TaisTarget, direction *leaderLineDirection) {
+	if p == nil || !p.targetSupportsSingleTrackLeaderDirection(target) {
+		return
+	}
+	key := targetDisplayStateKey(target)
+	if key == "" {
+		return
+	}
+	if direction == nil {
+		delete(p.singleTrackLeaderDirections, key)
+		return
+	}
+	if p.singleTrackLeaderDirections == nil {
+		p.singleTrackLeaderDirections = make(map[string]leaderLineDirection)
+	}
+	p.singleTrackLeaderDirections[key] = *direction
+}
+
+func (p *STARSPane) targetSingleTrackLeaderDirection(target *redsnet.TaisTarget) (leaderLineDirection, bool) {
+	if p == nil || len(p.singleTrackLeaderDirections) == 0 || !p.targetSupportsSingleTrackLeaderDirection(target) {
+		return leaderLineDirectionNorth, false
+	}
+	direction, ok := p.singleTrackLeaderDirections[targetDisplayStateKey(target)]
+	return direction, ok
+}
+
+// pruneSingleTrackLeaderDirections prevents a later flight reusing a TAIS key
+// from inheriting a local manual leader direction. Preserve overrides across a
+// temporary transport disconnect, just like the other transient track state.
+func (p *STARSPane) pruneSingleTrackLeaderDirections(snapshot redsnet.TaisSnapshot) {
+	if p == nil || !snapshot.Ready || len(p.singleTrackLeaderDirections) == 0 {
+		return
+	}
+	live := make(map[string]struct{}, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if !p.targetSupportsSingleTrackLeaderDirection(target) {
+			continue
+		}
+		if key := targetDisplayStateKey(target); key != "" {
+			live[key] = struct{}{}
+		}
+	}
+	for key := range p.singleTrackLeaderDirections {
+		if _, ok := live[key]; !ok {
+			delete(p.singleTrackLeaderDirections, key)
+		}
+	}
 }
 
 func (p *STARSPane) toggleSingleTrackQuickLook(target *redsnet.TaisTarget) {
@@ -269,13 +553,14 @@ func (p *STARSPane) pruneLDBBeaconReadouts(snapshot redsnet.TaisSnapshot, now ti
 // target location, independently of the fused target geometry. TI 6191.409
 // Rev. 30 §2.11 defines the position symbol as the controlling TCP identifier
 // for associated tracks and requires a dark outline for readability. REDS
-// uses the configured/default position-symbol character size (currently size
-// 1) and, like VICE, draws the outline mask first and the colored glyph second.
+// uses the configured position-symbol character size and, like VICE, draws the
+// outline mask first and the colored glyph second.
 func (p *STARSPane) drawTargetPositionSymbols(
 	ctx *panes.Context,
 	zcb *renderer.ZCmdBuffer,
 	transforms radar.LatLonTransformations,
 	snapshot redsnet.TaisSnapshot,
+	now time.Time,
 ) {
 	if p == nil || ctx == nil || zcb == nil || !snapshot.Ready ||
 		p.systemFont == nil || p.systemOutlineFont == nil {
@@ -304,6 +589,7 @@ func (p *STARSPane) drawTargetPositionSymbols(
 		}
 
 		symbol, color, brightness := p.targetPositionSymbol(target)
+		brightness = p.targetHandoffBrightness(target, brightness, now)
 		if symbol == "" || brightness == 0 {
 			continue
 		}
@@ -365,14 +651,17 @@ func (p *STARSPane) targetPositionSymbol(target *redsnet.TaisTarget) (string, re
 	}
 
 	ps := p.currentPrefs()
-	if symbol, _, ok := taisCPSPositionSymbol(target); ok {
-		if p.targetOwnedByCurrentTCP(target) {
+	if symbol, _, ok := p.targetPositionSymbolForOwnership(target); ok {
+		if p.targetOwnedByCurrentTCP(target) || p.targetInboundHandoff(target) || p.targetOutboundHandoffAccepted(target) {
 			return symbol, p.colors.PositionSymbolOwned, ps.Brightness.Positions
 		}
-		if p.targetSingleTrackQuickLooked(target) {
-			// TI 6191.409 Table 4-1: an unowned FDB and its position
-			// symbol are controlled by OTH brightness. Appendix B keeps
-			// the TCW unowned color green.
+		if quickLooked, plus := p.targetQuickLookState(target); quickLooked {
+			// Table 4-1 assigns any unowned FDB and its position symbol to
+			// OTH brightness. QL+ changes the presentation to the Owned color
+			// without changing actual ownership.
+			if plus {
+				return symbol, p.colors.PositionSymbolOwned, ps.Brightness.OtherTracks
+			}
 			return symbol, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 		}
 		// An ordinary associated track owned by another TCP is a Partial
@@ -391,26 +680,20 @@ func (p *STARSPane) targetPositionSymbol(target *redsnet.TaisTarget) (string, re
 	return "*", p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 }
 
-func taisCPSPositionSymbol(target *redsnet.TaisTarget) (symbol, cps string, ok bool) {
-	if target == nil || target.FlightPlan == nil {
+func (p *STARSPane) targetPositionSymbolForOwnership(target *redsnet.TaisTarget) (symbol, owner string, ok bool) {
+	owner, ok = p.targetOwnerTCP(target)
+	if !ok {
+		// If REDS attached in the middle of a pending handoff there may be no
+		// previous CPS to recover. Retain the TAIS position indication rather
+		// than dropping the position symbol completely; subsequent non-pending
+		// reports establish the controlling TCP normally.
+		owner, ok = taisCPS(target)
+	}
+	if !ok {
 		return "", "", false
 	}
-
-	cps = strings.ToUpper(strings.TrimSpace(target.FlightPlan.CPS))
-	switch cps {
-	case "", "UNKNOWN", "UNASSIGNED", "UNAVAILABLE", "NONE", "PENDING":
-		return "", "", false
-	}
-
-	runes := []rune(cps)
-	if len(runes) == 0 {
-		return "", "", false
-	}
-	last := runes[len(runes)-1]
-	if !((last >= 'A' && last <= 'Z') || (last >= '0' && last <= '9')) {
-		return "", "", false
-	}
-	return string(last), cps, true
+	symbol, ok = starsPositionSymbolFromTCP(owner)
+	return symbol, owner, ok
 }
 
 func (p *STARSPane) beaconCodeSelected(code string) bool {
@@ -520,12 +803,19 @@ func (p *STARSPane) drawTargetHistory(
 		builders[i] = renderer.GetTrianglesBuilder()
 		defer renderer.ReturnTrianglesBuilder(builders[i])
 	}
+	now := time.Now()
 
 	// Sample each target once per frame, then batch geometry by age/color. This
 	// avoids allocating/re-scanning the same history five times per target.
 	for i := range snapshot.Targets {
 		target := &snapshot.Targets[i]
 		if !taisTargetHasPosition(target) {
+			continue
+		}
+		// VICE suppresses history whenever the ordinary data-block
+		// presentation is removed by the altitude filter. The current target
+		// and its position symbol remain visible.
+		if !p.targetAltitudeFilterAllowsDatablock(target, now) {
 			continue
 		}
 
@@ -562,11 +852,10 @@ func (p *STARSPane) drawTargetHistory(
 
 // drawPredictedTrackLines renders the PTLs selected by the Auxiliary DCB.
 // TI 6191.409 Rev. 30, 6.3.2-6.3.4 defines PTL ALL for all associated
-// tracks, PTL OWN for tracks owned by the entering position (plus pending /
-// previous-owner handoffs), and a prediction interval of 0.0-5.0 minutes in
-// half-minute increments. The current TAIS wire exposes CPS ownership but not
-// the pending/previous-owner controller identifier, so REDS can determine the
-// owned subset exactly and does not guess the unavailable handoff relation.
+// tracks, PTL OWN for tracks owned by the entering position as well as tracks
+// for which the entering position is the pending controller or previous owner,
+// and a prediction interval of 0.0-5.0 minutes in half-minute increments.
+// OCR-aware ownership state lets REDS identify all three PTL OWN cases.
 //
 // TAIS VX/VY are the horizontal velocity components already used to compute
 // STARS ground speed. Treat them as east/north knots, project them for the
@@ -597,7 +886,9 @@ func (p *STARSPane) drawPredictedTrackLines(
 		if !taisTargetHasPosition(target) || target.FlightPlan == nil {
 			continue
 		}
-		if !ps.PTLAll && !(ps.PTLOwn && p.targetOwnedByCurrentTCP(target)) {
+		if !ps.PTLAll && !(ps.PTLOwn && (p.targetOwnedByCurrentTCP(target) ||
+			p.targetInboundHandoff(target) ||
+			p.targetOutboundHandoffAccepted(target))) {
 			continue
 		}
 		if target.Track.VX == 0 && target.Track.VY == 0 {
@@ -707,6 +998,7 @@ func (p *STARSPane) drawTargetLeaderLines(
 	zcb *renderer.ZCmdBuffer,
 	transforms radar.LatLonTransformations,
 	snapshot redsnet.TaisSnapshot,
+	now time.Time,
 ) {
 	if p == nil || ctx == nil || zcb == nil || !snapshot.Ready {
 		return
@@ -729,8 +1021,12 @@ func (p *STARSPane) drawTargetLeaderLines(
 		if target.FlightPlan != nil && target.FlightPlan.Suspended {
 			continue
 		}
+		if !p.targetAltitudeFilterAllowsDatablock(target, now) {
+			continue
+		}
 
 		color, brightness := p.targetLeaderPresentation(target)
+		brightness = p.targetHandoffBrightness(target, brightness, now)
 		if brightness == 0 {
 			continue
 		}
@@ -784,14 +1080,16 @@ func (p *STARSPane) targetLeaderPresentation(target *redsnet.TaisTarget) (render
 	}
 
 	ps := p.currentPrefs()
-	if _, _, ok := taisCPSPositionSymbol(target); ok {
-		if p.targetOwnedByCurrentTCP(target) {
+	if _, _, ok := p.targetPositionSymbolForOwnership(target); ok {
+		if p.targetOwnedByCurrentTCP(target) || p.targetInboundHandoff(target) || p.targetOutboundHandoffAccepted(target) {
 			return p.colors.OwnedDatablock, ps.Brightness.FullDatablocks
 		}
-		if p.targetSingleTrackQuickLooked(target) {
-			// VICE draws the leader using the same unowned-FDB brightness as
-			// the data block. This makes the entire quick-look presentation
-			// respond to the OTH control.
+		if quickLooked, plus := p.targetQuickLookState(target); quickLooked {
+			// VICE draws all quick-look FDB components with OTH brightness.
+			// QL+ changes their color to Owned/white.
+			if plus {
+				return p.colors.OwnedDatablock, ps.Brightness.OtherTracks
+			}
 			return p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 		}
 		// Other-owner associated tracks normally carry a Partial data block,
@@ -810,6 +1108,13 @@ func (p *STARSPane) targetLeaderPresentation(target *redsnet.TaisTarget) (render
 func (p *STARSPane) targetLeaderLineDirection(target *redsnet.TaisTarget) leaderLineDirection {
 	if p == nil || target == nil {
 		return leaderLineDirectionNorth
+	}
+
+	// TI 6191.409 6.13.1 / 6.13.17 manual single-track positioning
+	// overrides the owner/other-owner defaults. VICE applies TrackState's
+	// per-aircraft LeaderLineDirection at the same precedence.
+	if direction, ok := p.targetSingleTrackLeaderDirection(target); ok {
+		return direction
 	}
 
 	if p.targetOwnedByCurrentTCP(target) {

@@ -2,6 +2,8 @@ package stars
 
 import (
 	"log/slog"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/juliusplatzer/reds/cmd/wx"
@@ -15,10 +17,11 @@ import (
 )
 
 const (
-	zBackground renderer.Z = -1000
-	zWeather    renderer.Z = -950
-	zRangeRings renderer.Z = -925
-	zCompass    renderer.Z = -850
+	zBackground       renderer.Z = -1000
+	zWeather          renderer.Z = -950
+	zRangeRings       renderer.Z = -925
+	zCompass          renderer.Z = -850
+	zRangeBearingLine renderer.Z = -92
 )
 
 // STARSPane is the STARS TCW/TDW display surface. Facility adaptation feeds
@@ -31,6 +34,7 @@ type STARSPane struct {
 	longitudeScaleFactor         float64
 	colors                       MonitorColors
 	cursorTexture                renderer.TextureID
+	cursorTextureAsset           string
 	dcbScroll                    float32
 	dcbShowAux                   bool
 	dcbSuppressPressUntilRelease bool
@@ -41,6 +45,7 @@ type STARSPane struct {
 	systemOutlineFont            *renderer.BitmapFont
 	systemOutlineFontTextures    map[int]renderer.TextureID
 	systemAltimeter              systemAltimeterState
+	ssaAirportWeather            ssaAirportWeatherState
 	tais                         *redsnet.TaisClient
 
 	wxDomain              wx.Domain
@@ -61,6 +66,8 @@ type STARSPane struct {
 	multiFuncPrefix           string
 	activeBrightnessControl   string
 	brightnessDragAccumY      float32
+	activeCharSizeControl     string
+	charSizeDragAccumY        float32
 	rangeRingDragAccumY       float32
 	leaderDirectionDragAccumY float32
 	leaderLengthDragAccumY    float32
@@ -72,10 +79,242 @@ type STARSPane struct {
 	// reselected. This is transient display state, not a saved preference.
 	singleTrackQuickLook map[string]struct{}
 
+	// singleTrackLeaderDirections records TI 6191.409 6.13.1 / 6.13.17
+	// manual data-block orientations. These overrides are local to this
+	// TCW/TDW and apply only to the selected associated track. Entering 5
+	// removes the override and returns the track to its applicable default.
+	singleTrackLeaderDirections map[string]leaderLineDirection
+
 	// ldbBeaconReadoutUntil records TI 6191.409 6.13.2 implied-command
 	// beacon readouts. Slew + left trackball on an unassociated track forces
 	// its reported beacon code into LDB field 1 for five seconds.
 	ldbBeaconReadoutUntil map[string]time.Time
+
+	// rangeBearingLines are the operator-created *T Range Bearing Lines from
+	// TI 6191.409 6.7. wipRBL holds the first endpoint while STARS waits for
+	// the second endpoint. RBL state is intentionally transient display state,
+	// matching VICE rather than a saved preference.
+	rangeBearingLines []starsRangeBearingLine
+	wipRBL            *starsRangeBearingLine
+
+	// taisOwnership retains the last known controlling TCP while TAIS reports
+	// OCR=PENDING. In AIG200, CPS changes meaning in that state: it names the
+	// handoff receiver rather than the current owner. Keeping the last owner
+	// lets REDS reproduce the STARS handoff presentation without treating the
+	// receiving TCP as though it already owned the track.
+	taisOwnership map[string]taisOwnershipState
+}
+
+// resolvedQuickLookTCP expands the one-character controller-symbol shorthand
+// documented by TI 6191.409 section 6.13 using the entering position's
+// controller subset, then validates the resulting TCP against facility
+// adaptation. REDS' generated STARS configs currently carry explicit TCPs but
+// not Quicklook Group IDs, so group IDs remain invalid until that adaptation is
+// exported by crc2reds.
+func (p *STARSPane) resolvedQuickLookTCP(input string) (string, bool) {
+	if p == nil {
+		return "", false
+	}
+	input = strings.ToUpper(strings.TrimSpace(input))
+	own := strings.ToUpper(strings.TrimSpace(p.config.ControlPosition.TCP))
+	if len(input) == 1 && len(own) == 2 {
+		input = own[:1] + input
+	}
+	if len(input) != 2 {
+		return "", false
+	}
+	for _, position := range p.config.Facility.ControlPositions {
+		if strings.EqualFold(strings.TrimSpace(position.TCP), input) {
+			return strings.ToUpper(strings.TrimSpace(position.TCP)), true
+		}
+	}
+	return "", false
+}
+
+func (p *STARSPane) ownTCP() string {
+	if p == nil {
+		return ""
+	}
+	return strings.ToUpper(strings.TrimSpace(p.config.ControlPosition.TCP))
+}
+
+// toggleQuickLookTCP implements the per-owner toggle in TI 6191.409 6.13.5
+// and 6.13.13. tcp is already resolved/validated by the command handler. The
+// bool stored in QuickLookTCPs is the manual's quick-look-plus state: false =
+// Full DB in Unowned color, true = Full DB in Owned color.
+func (p *STARSPane) toggleQuickLookTCP(tcp string, plus bool) {
+	ps := p.currentPrefs()
+	if ps.QuickLookTCPs == nil {
+		ps.QuickLookTCPs = make(map[string]bool)
+	}
+	// Selecting an individual TCP leaves the ALL modality, matching VICE.
+	ps.QuickLookAll = false
+	ps.QuickLookAllIsPlus = false
+	if currentPlus, enabled := ps.QuickLookTCPs[tcp]; enabled && currentPlus == plus {
+		delete(ps.QuickLookTCPs, tcp)
+	} else {
+		ps.QuickLookTCPs[tcp] = plus
+	}
+}
+
+// disableQuickLooks implements 6.13.15's distinction between Q and Q+:
+// without +, ordinary quick looks are removed while QL+ entries remain;
+// with +, quick-look-plus entries are removed while ordinary entries remain.
+func (p *STARSPane) disableQuickLooks(plus bool) {
+	if p == nil {
+		return
+	}
+	ps := p.currentPrefs()
+	for tcp, isPlus := range ps.QuickLookTCPs {
+		if isPlus == plus {
+			delete(ps.QuickLookTCPs, tcp)
+		}
+	}
+	if ps.QuickLookAll && ps.QuickLookAllIsPlus == plus {
+		ps.QuickLookAll = false
+		ps.QuickLookAllIsPlus = false
+	}
+}
+
+func (p *STARSPane) hasQuickLookStatus() bool {
+	if p == nil {
+		return false
+	}
+	ps := p.currentPrefs()
+	return ps.QuickLookAll || len(ps.QuickLookTCPs) != 0
+}
+
+// qlPositionsString follows VICE's ordering and two-line width: quick-look-plus
+// TCPs first, then normal TCPs, each group lexicographically sorted. Table 2-15
+// permits up to two SSA lines and uses a trailing spaced '+' when additional
+// TCPs cannot be shown.
+func (p *STARSPane) qlPositionsString() string {
+	if p == nil {
+		return ""
+	}
+	ps := p.currentPrefs()
+	var entries []string
+	if ps.QuickLookAll {
+		if ps.QuickLookAllIsPlus {
+			entries = append(entries, "ALL+")
+		} else {
+			entries = append(entries, "ALL")
+		}
+	}
+
+	tcps := make([]string, 0, len(ps.QuickLookTCPs))
+	for tcp := range ps.QuickLookTCPs {
+		tcps = append(tcps, tcp)
+	}
+	sort.Slice(tcps, func(i, j int) bool {
+		iPlus, jPlus := ps.QuickLookTCPs[tcps[i]], ps.QuickLookTCPs[tcps[j]]
+		if iPlus != jPlus {
+			return iPlus
+		}
+		return tcps[i] < tcps[j]
+	})
+	for _, tcp := range tcps {
+		if ps.QuickLookTCPs[tcp] {
+			tcp += "+"
+		}
+		entries = append(entries, tcp)
+	}
+
+	if len(entries) == 0 {
+		return ""
+	}
+
+	// Wrap at 32 characters, at most two lines. If more TCPs remain, Table
+	// 2-15 specifies a spaced '+' at the end of line two.
+	lines := make([]string, 0, 2)
+	idx := 0
+	for len(lines) < 2 && idx < len(entries) {
+		line := entries[idx]
+		idx++
+		for idx < len(entries) && len(line)+1+len(entries[idx]) <= 32 {
+			line += " " + entries[idx]
+			idx++
+		}
+		lines = append(lines, line)
+	}
+	if idx < len(entries) && len(lines) == 2 {
+		line := lines[1]
+		for len(line)+2 > 32 {
+			cut := strings.LastIndexByte(line, ' ')
+			if cut < 0 {
+				line = line[:min(len(line), 30)]
+				break
+			}
+			line = line[:cut]
+		}
+		lines[1] = strings.TrimSpace(line) + " +"
+	}
+	return strings.Join(lines, "\n")
+}
+
+// targetQuickLookState combines the existing single-track implied quick look
+// with the owner-wide quick-look state. The second result is QL+ and therefore
+// controls Owned-vs-Unowned color; brightness remains OTH because ownership
+// itself has not changed.
+func (p *STARSPane) targetQuickLookState(target *redsnet.TaisTarget) (bool, bool) {
+	if p == nil || target == nil || target.FlightPlan == nil ||
+		p.targetOwnedByCurrentTCP(target) || p.targetInboundHandoff(target) {
+		return false, false
+	}
+
+	enabled := p.targetSingleTrackQuickLooked(target)
+	plus := false
+	ps := p.currentPrefs()
+	if ps.QuickLookAll {
+		enabled = true
+		plus = ps.QuickLookAllIsPlus
+	}
+	owner, ownerOK := p.targetOwnerTCP(target)
+	if ownerOK {
+		if ownerPlus, ok := ps.QuickLookTCPs[owner]; ok {
+			// 6.13.14 keeps pre-existing individual QL states as exceptions
+			// when QL ALL/ALL+ is selected: ordinary QL stays Unowned color
+			// under ALL+, and QL+ stays Owned color under ordinary ALL.
+			enabled = true
+			plus = ownerPlus
+		}
+	}
+	return enabled, plus
+}
+
+// quickLookDisplayStatus is the subset of 6.13.6/6.13.16 REDS can currently
+// display. Quicklook-region adaptation is not yet exported by crc2reds, so the
+// Preview Area contains the enabled TCPs/ALL state only.
+func (p *STARSPane) quickLookDisplayStatus() string {
+	return p.qlPositionsString()
+}
+
+// ssaConsolidationCouplingLines returns fields S-U from TI 6191.409 Rev. 30,
+// Table 2-15. A normal keyboard with its own airspace is represented as
+//
+//	1R CON: 1R
+//
+// while a keyboard coupled to another TCP would use CPL instead. REDS does
+// not currently receive STARS keyboard/SISO consolidation or coupling state
+// from TAIS, and each live pane is created for one selected control position.
+// Therefore the only state that can be stated faithfully today is the selected
+// keyboard's primary TCP assignment. Do not infer additional consolidation
+// from flight-plan CPS values: CPS describes track ownership, not the keyboard
+// consolidation topology.
+//
+// Keeping this behind a dedicated helper mirrors VICE's separation between
+// SSA rendering and simulator consolidation state, and gives the future SISO
+// integration a single place to replace the default line with real CON/CPL
+// membership (including *, /, and the ten-TCP '+' truncation rules).
+func (p *STARSPane) ssaConsolidationCouplingLines() []string {
+	if p == nil {
+		return nil
+	}
+	tcp := p.ownTCP()
+	if tcp == "" {
+		return nil
+	}
+	return []string{tcp + " CON: " + tcp}
 }
 
 // NewPane creates a STARS TCW pane for the selected controller position.
@@ -117,6 +356,7 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 			slog.Any("error", lookupErr))
 	}
 	pane.initializeSystemAltimeter(cfg.systemAltimeterAirport())
+	pane.initializeSSAAirportWeather(cfg.Area.SSAAirports)
 	pane.wxDomain = wx.DomainForARTCC(cfg.Facility.ARTCC)
 	pane.wxLogger = logger.With(slog.String("component", "wx"))
 	pane.restartNexradStream(starsInitialNexradRadiusNM)
@@ -150,6 +390,8 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	p.consumeSystemAltimeterUpdates()
 	p.refreshSystemAltimeter()
+	p.consumeSSAAirportWeatherUpdates()
+	p.refreshSSAAirportWeather()
 	p.consumeNexradUpdates()
 	p.ensureNexradCoverage(ctx)
 	p.rebuildNexradIfNeeded()
@@ -157,8 +399,11 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.processKeyboardInput(ctx)
 	transforms := p.scopeTransformations(ctx)
 	targets := p.targetSnapshot()
+	now := time.Now()
+	p.updateTaisOwnership(targets, now)
 	p.pruneSingleTrackQuickLook(targets)
-	p.pruneLDBBeaconReadouts(targets, time.Now())
+	p.pruneSingleTrackLeaderDirections(targets)
+	p.pruneLDBBeaconReadouts(targets, now)
 	p.consumeMouseEvents(ctx, transforms, targets)
 
 	p.drawNexrad(ctx, zcb, transforms)
@@ -168,12 +413,15 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
 	p.drawPredictedTrackLines(ctx, zcb, transforms, targets)
+	p.drawRangeBearingLines(ctx, zcb, transforms, targets)
 	p.drawTargets(ctx, zcb, transforms, targets)
-	p.drawTargetLeaderLines(ctx, zcb, transforms, targets)
-	p.drawTargetPositionSymbols(ctx, zcb, transforms, targets)
-	p.drawDatablocks(ctx, zcb, transforms, targets)
+	p.drawTargetLeaderLines(ctx, zcb, transforms, targets, now)
+	p.drawTargetPositionSymbols(ctx, zcb, transforms, targets, now)
+	p.drawDatablocks(ctx, zcb, transforms, targets, now)
 
-	p.drawDCB(ctx, zcb)
+	if p.currentPrefs().DisplayDCB {
+		p.drawDCB(ctx, zcb)
+	}
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
 	p.drawVideoMapsList(ctx, zcb)
@@ -237,6 +485,20 @@ func (p *STARSPane) consumeMouseEvents(
 	// Active STARS adjustment buttons capture trackball motion. RR changes
 	// range-ring spacing; LDR DIR changes the owned-data-block orientation.
 	// Neither adjustment may also pan or zoom the radar scope.
+	if p.commandMode == CommandModeCharSizeSpinner {
+		// TI 6191.409 Rev. 30, 4.9.1 completes a trackball CHAR SIZE
+		// adjustment with the left trackball button. Clicking back in the DCB
+		// is handled by the submenu itself; a scope click simply returns to the
+		// CHAR SIZE submenu without changing the selected value.
+		if ctx.Mouse.WasPressed(platform.MouseButtonLeft) && !p.mouseOverDCB(ctx) {
+			p.commandMode = CommandModeCharSize
+			p.activeCharSizeControl = ""
+			p.charSizeDragAccumY = 0
+			p.commandInput = ""
+			p.commandResponse = ""
+		}
+		return
+	}
 	if p.commandMode == CommandModeRangeRings {
 		p.adjustRangeRingSpacing(ctx)
 		return
@@ -259,6 +521,95 @@ func (p *STARSPane) consumeMouseEvents(
 
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
+
+	// TI 6191.409 Rev. 30, 6.13.1 / 6.13.17 Specify data block
+	// position for a single associated track. The implied form is simply
+	// <direction>, slew, left trackball. The explicit keyboard form is
+	// <MULTI FUNC>, L, <direction>, slew, left trackball. Both echo the
+	// direction in the Preview Area while waiting for the slew. Direction 5
+	// removes the manual per-track setting. The explicit form is repetitive.
+	if mouse.WasReleased(platform.MouseButtonLeft) {
+		directionInput := ""
+		repetitive := false
+		if p.commandMode == CommandModeNone {
+			directionInput = p.commandInput
+		} else if p.commandMode == CommandModeMultiFunc && strings.EqualFold(p.multiFuncPrefix, "L") {
+			directionInput = p.commandInput
+			repetitive = true
+		}
+
+		if direction, recognized, err := singleTrackLeaderDirectionCommand(directionInput); recognized {
+			if err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+			target := closestSlewTarget(targets, mouse.Pos, transforms)
+			if target == nil {
+				if repetitive {
+					p.commandResponse = ErrSTARSNoTrack.Error()
+				}
+				return
+			}
+			if !p.targetSupportsSingleTrackLeaderDirection(target) {
+				p.commandResponse = ErrSTARSIllegalTrack.Error()
+				return
+			}
+			p.setSingleTrackLeaderDirection(target, direction)
+			p.commandResponse = ""
+			if !repetitive {
+				p.resetCommand()
+			}
+			return
+		}
+	}
+
+	// TI 6191.409 Rev. 30, 6.7 Create Range Bearing Line. Once *T has
+	// been entered, the left trackball may designate either a track or an
+	// arbitrary geographic point. The first designation starts the RBL and
+	// the second completes it. As in VICE, a track inside the normal 20-pixel
+	// slew radius takes precedence over the raw cursor location.
+	if p.commandMode == CommandModeNone && strings.EqualFold(p.commandInput, "*T") &&
+		mouse.WasReleased(platform.MouseButtonLeft) {
+		if p.wipRBL == nil && len(p.rangeBearingLines) >= starsMaxRangeBearingLines {
+			p.commandResponse = ErrSTARSCapacity.Error()
+			return
+		}
+
+		endpoint := starsRangeBearingEndpoint{}
+		if target := closestSlewTarget(targets, mouse.Pos, transforms); target != nil {
+			endpoint.TargetKey = targetDisplayStateKey(target)
+		} else {
+			lat, lon := transforms.LatLonFromWindow(mouse.Pos)
+			endpoint.Location = configPoint{Lat: lat, Lon: normalizeLongitude(lon)}
+		}
+
+		if p.wipRBL == nil {
+			p.beginRangeBearingLine(endpoint)
+		} else {
+			p.completeRangeBearingLine(endpoint)
+			p.resetCommand()
+		}
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 4.9.4 Move System status area. The command is
+	// keyboard-only until its final slew: <MULTI FUNC>, S, then position the
+	// screen cursor at the desired top-left corner and click the left trackball
+	// button. Pressing ENTER instead is FORMAT. VICE implements this as the
+	// Multi Func command S[POS_NORM].
+	if p.commandMode == CommandModeMultiFunc && p.multiFuncPrefix+p.commandInput == "S" {
+		if mouse.WasPressed(platform.MouseButtonLeft) {
+			w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+			if w > 0 && h > 0 {
+				ps.SSAListPosition = [2]float32{
+					mouse.Pos.X / w,
+					mouse.Pos.Y / h,
+				}
+			}
+			p.resetCommand()
+		}
+		return
+	}
 
 	// TI 6191.409 Rev. 30, 4.5.3 Move Map category list. After
 	// <MULTI FUNC>, <T>, <X>, a left trackball click relocates the top-left
@@ -306,6 +657,12 @@ func (p *STARSPane) consumeMouseEvents(
 	// 20-pixel target slew radius for these implied commands; retain that here.
 	if p.commandMode == CommandModeNone && mouse.WasReleased(platform.MouseButtonLeft) {
 		if target := closestSlewTarget(targets, mouse.Pos, transforms); target != nil {
+			// After a handoff is accepted, the former owner's white FDB is
+			// retained until that controller slews/selects the track. Consume
+			// the click here so it cannot also become a single-track quick look.
+			if p.acknowledgeOutboundHandoff(target) {
+				return
+			}
 			if p.targetSupportsSingleTrackQuickLook(target) {
 				p.toggleSingleTrackQuickLook(target)
 				return

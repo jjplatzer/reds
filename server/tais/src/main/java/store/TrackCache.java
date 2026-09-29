@@ -2,6 +2,7 @@ package store;
 
 import ingest.TaisObservation;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -114,6 +115,38 @@ public final class TrackCache {
     /** Remove a dropped STARS track from current state and its raw history. */
     public boolean remove(String targetKey) {
         return tracks.remove(targetKey) != null;
+    }
+
+    /**
+     * Remove radar tracks that have not received a newer position for the
+     * configured STARS total-coast interval. Flight-plan-only/pseudo records
+     * have no lastPositionTime and are intentionally not aged out here.
+     *
+     * The operator manual defines Coast Phase 2 as beginning after the Total
+     * Coast Time VSP expires (default 30 seconds), at which point the track is
+     * removed from the radar display. A later newer position may create the
+     * track again, matching STARS redisplay after radar contact returns.
+     */
+    public List<String> removeCoastedOutTracks(Instant now, Duration totalCoastTime) {
+        if (totalCoastTime.isNegative() || totalCoastTime.isZero()) {
+            throw new IllegalArgumentException("total coast time must be positive");
+        }
+
+        Instant cutoff = now.minus(totalCoastTime);
+        List<String> removed = new ArrayList<>();
+
+        var iterator = tracks.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, State> entry = iterator.next();
+            Instant lastPositionTime = entry.getValue().lastPositionTime;
+            if (lastPositionTime != null && !lastPositionTime.isAfter(cutoff)) {
+                removed.add(entry.getKey());
+                iterator.remove();
+            }
+        }
+
+        removed.sort(String::compareTo);
+        return List.copyOf(removed);
     }
 
     /**

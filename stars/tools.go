@@ -1,9 +1,13 @@
 package stars
 
 import (
+	"fmt"
 	stdmath "math"
+	"strings"
 
+	"github.com/juliusplatzer/reds/aviation"
 	redsmath "github.com/juliusplatzer/reds/math"
+	redsnet "github.com/juliusplatzer/reds/net"
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/radar"
 	"github.com/juliusplatzer/reds/renderer"
@@ -30,9 +34,9 @@ const (
 // degrees, 10 display-pixel tick length, and label origins 14 display pixels
 // inboard from the scope edge. VICE also uses STARS Tools character size 1.
 //
-// The high-resolution DCB occupies the top 72 display units in REDS. The
-// compass therefore treats the DCB's lower edge as the top of the radar scope,
-// rather than drawing underneath the application/window edge.
+// While displayed, the high-resolution DCB occupies the top 72 display
+// units. When the operator toggles the DCB off with <DCB>, the radar scope
+// immediately regains that area, matching VICE's DisplayDCB scope extent.
 func (p *STARSPane) drawCompass(
 	ctx *panes.Context,
 	zcb *renderer.ZCmdBuffer,
@@ -48,19 +52,25 @@ func (p *STARSPane) drawCompass(
 	}
 
 	w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
-	if w <= 0 || h <= dcbButtonSize {
+	if w <= 0 || h <= 0 {
 		return
 	}
 
-	// REDS currently presents the STARS DCB at the top of the pane. This is
-	// intentionally only the *compass* boundary: scope transformations remain
-	// based on the complete pane just as in VICE, whose drawDCB returns a
-	// reduced scope extent specifically for edge-oriented graphics.
-	scope := redsmath.NewRect(0, dcbButtonSize, w, h)
+	// Scope transformations remain based on the complete pane. Only the top
+	// edge available to edge-oriented graphics changes with DCB visibility, as
+	// in VICE's drawDCB/scopeExtent handling.
+	top := float32(0)
+	if ps.DisplayDCB {
+		top = dcbButtonSize
+	}
+	if h <= top {
+		return
+	}
+	scope := redsmath.NewRect(0, top, w, h)
 	center := p.currentCenter()
 	centerWindow := transforms.WindowFromLatLon(center.Lat, center.Lon)
 
-	fontSize := p.listFontSize() // VICE: CharSize.Tools defaults to STARS size 1.
+	fontSize := p.toolsFontSize()
 	texture := p.systemFontTexture(ctx.Renderer, fontSize)
 	fs := p.systemFont.Size(fontSize)
 	if texture == 0 || fs == nil {
@@ -273,5 +283,393 @@ func (p *STARSPane) drawRangeRings(ctx *panes.Context, zcb *renderer.ZCmdBuffer,
 	}
 	cb.LineWidth(lineWidth)
 	builder.GenerateCommands(cb)
+	cb.DisableScissor()
+}
+
+// Range bearing line tools ---------------------------------------------------
+//
+// VICE keeps STARS RBL geometry/state/rendering in stars/tools.go. Keep REDS
+// organized the same way rather than maintaining a separate rbl.go.
+
+const starsMaxRangeBearingLines = 9
+
+type starsRangeBearingEndpoint struct {
+	// TargetKey makes the endpoint follow the live surveillance track. When it
+	// is empty, Location is a stationary geographic endpoint.
+	TargetKey string
+	Location  configPoint
+}
+
+type starsRangeBearingLine struct {
+	P [2]starsRangeBearingEndpoint
+}
+
+func (p *STARSPane) beginRangeBearingLine(endpoint starsRangeBearingEndpoint) {
+	if p == nil {
+		return
+	}
+	p.wipRBL = &starsRangeBearingLine{}
+	p.wipRBL.P[0] = endpoint
+	// VICE leaves *T in the Preview Area while waiting for endpoint 2.
+	p.commandMode = CommandModeNone
+	p.commandInput = "*T"
+	p.commandResponse = ""
+}
+
+func (p *STARSPane) completeRangeBearingLine(endpoint starsRangeBearingEndpoint) {
+	if p == nil || p.wipRBL == nil {
+		return
+	}
+	p.wipRBL.P[1] = endpoint
+	p.rangeBearingLines = append(p.rangeBearingLines, *p.wipRBL)
+	p.wipRBL = nil
+}
+
+// starsRBLStationaryPoint resolves *T stationary endpoints through the FAA
+// CIFP navigation database, exactly like VICE's av.DB.LookupWaypoint path.
+// Navaids take priority over fixes when an identifier exists in both maps.
+func starsRBLStationaryPoint(id string) (configPoint, bool) {
+	id = strings.ToUpper(strings.TrimSpace(id))
+	if id == "" {
+		return configPoint{}, false
+	}
+	db, err := aviation.LoadCIFPDatabase()
+	if err != nil {
+		return configPoint{}, false
+	}
+	point, ok := db.LookupWaypoint(id)
+	if !ok {
+		return configPoint{}, false
+	}
+	return configPoint{Lat: point.Lat, Lon: point.Lon}, true
+}
+
+// rangeBearingTargetByReference implements the *T track-reference rules used
+// by VICE: a four-digit beacon code is matched against the assigned code;
+// otherwise the field is treated as an ACID. Only associated active tracks are
+// eligible for keyboard lookup. Slew-to-track does not need this lookup.
+func (p *STARSPane) rangeBearingTargetByReference(ref string) (*redsnet.TaisTarget, error) {
+	if p == nil {
+		return nil, ErrSTARSNoFlight
+	}
+	ref = strings.ToUpper(strings.TrimSpace(ref))
+	if ref == "" {
+		return nil, ErrSTARSCommandFormat
+	}
+
+	snapshot := p.targetSnapshot()
+	if !snapshot.Ready {
+		return nil, ErrSTARSNoFlight
+	}
+
+	isBeacon := len(ref) == 4
+	if isBeacon {
+		for _, r := range ref {
+			if r < '0' || r > '7' {
+				isBeacon = false
+				break
+			}
+		}
+	}
+
+	matches := make([]int, 0, 2)
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if target.FlightPlan == nil || !taisTargetHasPosition(target) {
+			continue
+		}
+		if isBeacon {
+			if normalizeBeaconCode(target.FlightPlan.AssignedBeaconCode) == ref {
+				matches = append(matches, i)
+			}
+			continue
+		}
+		if strings.EqualFold(strings.TrimSpace(target.FlightPlan.ACID), ref) {
+			matches = append(matches, i)
+		}
+	}
+
+	if len(matches) == 0 {
+		return nil, ErrSTARSNoFlight
+	}
+	if len(matches) > 1 {
+		if isBeacon {
+			return nil, ErrSTARSDuplicateBeacon
+		}
+		return nil, fmt.Errorf("DUP ID %s", ref)
+	}
+	return &snapshot.Targets[matches[0]], nil
+}
+
+func rangeBearingTargetByKey(snapshot redsnet.TaisSnapshot, key string) *redsnet.TaisTarget {
+	if key == "" || !snapshot.Ready {
+		return nil
+	}
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if targetDisplayStateKey(target) == key && taisTargetHasPosition(target) {
+			return target
+		}
+	}
+	return nil
+}
+
+func rangeBearingEndpointPoint(snapshot redsnet.TaisSnapshot, endpoint starsRangeBearingEndpoint) (configPoint, *redsnet.TaisTarget, bool) {
+	if endpoint.TargetKey != "" {
+		target := rangeBearingTargetByKey(snapshot, endpoint.TargetKey)
+		if target == nil {
+			return configPoint{}, nil, false
+		}
+		return configPoint{Lat: target.Track.Lat, Lon: target.Track.Lon}, target, true
+	}
+	return endpoint.Location, nil, true
+}
+
+func starsRBLGroundSpeed(target *redsnet.TaisTarget) float64 {
+	if target == nil {
+		return 0
+	}
+	return stdmath.Hypot(float64(target.Track.VX), float64(target.Track.VY))
+}
+
+func starsRBLNMDistance(a, b configPoint) float64 {
+	// Haversine distance, matching VICE's NMDistance2LL implementation.
+	const earthRadiusM = 6371000.0
+	rad := func(deg float64) float64 { return deg * stdmath.Pi / 180 }
+	lat1, lon1 := rad(a.Lat), rad(a.Lon)
+	lat2, lon2 := rad(b.Lat), rad(b.Lon)
+	dLat, dLon := lat2-lat1, lon2-lon1
+	x := stdmath.Sin(dLat/2)*stdmath.Sin(dLat/2) +
+		stdmath.Cos(lat1)*stdmath.Cos(lat2)*stdmath.Sin(dLon/2)*stdmath.Sin(dLon/2)
+	x = stdmath.Max(0, stdmath.Min(1, x))
+	c := 2 * stdmath.Atan2(stdmath.Sqrt(x), stdmath.Sqrt(1-x))
+	return earthRadiusM * c * 0.000539957
+}
+
+func starsRBLMagneticBearing(a, b configPoint, nmPerLongitude, magneticVariation float64) int {
+	east := longitudeDelta(b.Lon, a.Lon) * nmPerLongitude
+	north := (b.Lat - a.Lat) * 60
+	degrees := stdmath.Atan2(east, north) * 180 / stdmath.Pi
+	degrees += magneticVariation
+	for degrees < 0 {
+		degrees += 360
+	}
+	for degrees >= 360 {
+		degrees -= 360
+	}
+	return int(degrees + 0.5)
+}
+
+func starsRBLLabel(a, b configPoint, groundSpeed, nmPerLongitude, magneticVariation float64, id int) string {
+	bearing := starsRBLMagneticBearing(a, b, nmPerLongitude, magneticVariation)
+	distance := starsRBLNMDistance(a, b)
+
+	rangeText := "******"
+	if distance <= 999.99 {
+		rangeText = fmt.Sprintf("%.2f", distance)
+	}
+	text := fmt.Sprintf("%03d/%s", bearing, rangeText)
+	if groundSpeed > 0 {
+		minutes := 60 * distance / groundSpeed
+		if minutes > 99 {
+			text += "/**"
+		} else {
+			text += fmt.Sprintf("/%d", int(minutes+0.5))
+		}
+	}
+	return fmt.Sprintf("%s-%d", text, id)
+}
+
+func starsRBLTextWidth(fs *renderer.BitmapFontSize, text string) float32 {
+	if fs == nil {
+		return 0
+	}
+	var width int
+	for _, r := range text {
+		if glyph, ok := fs.Glyph(r); ok {
+			width += glyph.Advance
+		}
+	}
+	return float32(width)
+}
+
+func starsRBLPointInsidePane(p redsmath.Vec2, width, height float32) bool {
+	return p.X >= 0 && p.X <= width && p.Y >= 0 && p.Y <= height
+}
+
+// starsRBLRayPaneEntry returns the first point where the ray origin+t*dir,
+// t >= 0, enters the pane. It is the REDS equivalent of VICE's pane-bounds
+// IntersectRay call used to pin an off-screen endpoint-2 label to the edge.
+func starsRBLRayPaneEntry(origin, dir redsmath.Vec2, width, height float32) (redsmath.Vec2, bool) {
+	const eps = float32(1e-6)
+	tEnter := float32(0)
+	tExit := float32(1e30)
+
+	clip := func(o, d, lo, hi float32) bool {
+		if d > -eps && d < eps {
+			return o >= lo && o <= hi
+		}
+		t0 := (lo - o) / d
+		t1 := (hi - o) / d
+		if t0 > t1 {
+			t0, t1 = t1, t0
+		}
+		if t0 > tEnter {
+			tEnter = t0
+		}
+		if t1 < tExit {
+			tExit = t1
+		}
+		return tEnter <= tExit
+	}
+
+	if !clip(origin.X, dir.X, 0, width) || !clip(origin.Y, dir.Y, 0, height) || tExit < 0 {
+		return redsmath.Vec2{}, false
+	}
+	if tEnter < 0 {
+		tEnter = 0
+	}
+	return origin.Add(dir.Mul(tEnter)), true
+}
+
+// drawRangeBearingLines renders all complete RBLs and the in-progress line.
+// TI 6191.409 6.7 defines the label as magnetic bearing / range / optional
+// traversal time - RBL ID. The label is attached to the end point and clamped
+// to the display edge. Track endpoints are resolved every frame, so the line,
+// bearing, range and traversal time follow moving aircraft exactly as in VICE.
+func (p *STARSPane) drawRangeBearingLines(
+	ctx *panes.Context,
+	zcb *renderer.ZCmdBuffer,
+	transforms radar.LatLonTransformations,
+	snapshot redsnet.TaisSnapshot,
+) {
+	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
+		return
+	}
+	if len(p.rangeBearingLines) == 0 && p.wipRBL == nil {
+		return
+	}
+
+	ps := p.currentPrefs()
+	if ps.Brightness.Lines == 0 {
+		return
+	}
+
+	fontSize := p.toolsFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
+	fs := p.systemFont.Size(fontSize)
+	if texture == 0 || fs == nil {
+		return
+	}
+
+	color := ps.Brightness.Lines.ScaleRGB(p.colors.RangeBearingLine)
+	lines := renderer.GetColoredLinesBuilder()
+	defer renderer.ReturnColoredLinesBuilder(lines)
+	text := renderer.GetTextDrawBuilder()
+	defer renderer.ReturnTextDrawBuilder(text)
+	text.SetFont(p.systemFont)
+	style := renderer.TextStyle{Size: fontSize, Color: color.ToRGBA()}
+
+	magneticVariation := 0.0
+	center := p.currentCenter()
+	if variation, err := radar.MagneticVariationAt(center.Lat, center.Lon); err == nil {
+		magneticVariation = variation
+	}
+	nmPerLongitude := 60 * p.longitudeScaleFactor
+	paneW, paneH := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+
+	drawOne := func(a, b configPoint, id int, groundSpeed float64) {
+		p0 := transforms.WindowFromLatLon(a.Lat, a.Lon)
+		p1 := transforms.WindowFromLatLon(b.Lat, b.Lon)
+		lines.AddLineRGB(
+			renderer.PointVertex{X: p0.X, Y: p0.Y},
+			renderer.PointVertex{X: p1.X, Y: p1.Y},
+			color,
+		)
+
+		label := " " + starsRBLLabel(a, b, groundSpeed, nmPerLongitude, magneticVariation, id)
+		labelWidth := starsRBLTextWidth(fs, label)
+		lineHeight := float32(fs.LineHeight)
+
+		// VICE places the RBL label at endpoint 2 and lets the subsequently
+		// rendered target/leader/datablock presentation remain visually on top.
+		// TI 6191.409 6.7 / Figure 6-6 specifies the endpoint placement (and
+		// screen-edge retention) but no data-block collision avoidance, so overlap
+		// with some leader/data-block geometries is possible and intentional here.
+		pos := redsmath.Vec2{X: p1.X, Y: p1.Y}
+		offsetRight := pos.X > paneW-labelWidth
+		startAboveEnd := p0.Y < p1.Y
+
+		// TI 6191.409 6.7: if endpoint 2 goes off-screen, retain the label at
+		// the screen edge so the RBL data remains visible. Match VICE by
+		// intersecting the ray from endpoint 2 back toward endpoint 1.
+		if !starsRBLPointInsidePane(pos, paneW, paneH) {
+			if edge, ok := starsRBLRayPaneEntry(pos, p0.Sub(pos), paneW, paneH); ok {
+				pos = edge
+			}
+		}
+
+		// VICE only introduces a vertical offset when the text has to be
+		// shifted left from the right edge; this keeps the label from lying on
+		// top of the RBL itself. REDS uses upper-left text origins, so express
+		// the same visual offset in that coordinate convention.
+		if offsetRight {
+			if startAboveEnd {
+				pos.Y += 4
+			} else {
+				pos.Y -= lineHeight + 4
+			}
+		}
+
+		pos.X = min(max(float32(0), pos.X), max(float32(0), paneW-labelWidth))
+		pos.Y = min(max(float32(0), pos.Y), max(float32(0), paneH-lineHeight))
+		text.AddText(label, pos, style)
+	}
+
+	// Remove completed RBLs whose attached track no longer exists, matching
+	// VICE's stale-RBL filtering. Track-track lines have no traversal time;
+	// exactly one track endpoint contributes its current groundspeed.
+	kept := p.rangeBearingLines[:0]
+	for i := range p.rangeBearingLines {
+		rbl := p.rangeBearingLines[i]
+		a, trackA, okA := rangeBearingEndpointPoint(snapshot, rbl.P[0])
+		b, trackB, okB := rangeBearingEndpointPoint(snapshot, rbl.P[1])
+		if !okA || !okB {
+			continue
+		}
+		kept = append(kept, rbl)
+		groundSpeed := 0.0
+		if trackA != nil && trackB == nil {
+			groundSpeed = starsRBLGroundSpeed(trackA)
+		} else if trackB != nil && trackA == nil {
+			groundSpeed = starsRBLGroundSpeed(trackB)
+		}
+		drawOne(a, b, len(kept), groundSpeed)
+	}
+	p.rangeBearingLines = kept
+
+	// While endpoint 2 is pending, VICE draws a live RBL to the scope cursor.
+	if p.wipRBL != nil && ctx.Mouse != nil {
+		a, trackA, ok := rangeBearingEndpointPoint(snapshot, p.wipRBL.P[0])
+		if !ok {
+			p.wipRBL = nil
+			if strings.EqualFold(p.commandInput, "*T") {
+				p.resetCommand()
+			}
+		} else {
+			lat, lon := transforms.LatLonFromWindow(ctx.Mouse.Pos)
+			b := configPoint{Lat: lat, Lon: normalizeLongitude(lon)}
+			drawOne(a, b, len(p.rangeBearingLines)+1, starsRBLGroundSpeed(trackA))
+		}
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zRangeBearingLine)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.LineWidth(max(float32(1), ctx.DPIScale))
+	lines.GenerateCommands(cb)
+	text.GenerateCommands(cb, texture)
 	cb.DisableScissor()
 }

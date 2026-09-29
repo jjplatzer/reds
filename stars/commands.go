@@ -18,9 +18,12 @@ const (
 	CommandModeMaps
 	CommandModeBrite
 	CommandModeBriteSpinner
+	CommandModeCharSize
+	CommandModeCharSizeSpinner
 	CommandModeLDRDir
 	CommandModeLDRLen
 	CommandModePTLLength
+	CommandModeSSAFilter
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -38,12 +41,18 @@ func (m CommandMode) PreviewString() string {
 		return ""
 	case CommandModeBriteSpinner:
 		return "BRT"
+	case CommandModeCharSize:
+		return ""
+	case CommandModeCharSizeSpinner:
+		return "CHAR"
 	case CommandModeLDRDir:
 		return "LDR"
 	case CommandModeLDRLen:
 		return "LDR"
 	case CommandModePTLLength:
 		return "PTL"
+	case CommandModeSSAFilter:
+		return ""
 	default:
 		return ""
 	}
@@ -68,6 +77,77 @@ type CommandStatus struct {
 }
 
 func init() {
+	// TI 6191.409 Rev. 30, 6.7-6.8 Range Bearing Line (*T).
+	//
+	// Creation is a two-endpoint operation. A stationary start point is entered
+	// as *T<fix>; a track start point is entered as *T <ACID/beacon>. After the
+	// first endpoint REDS leaves *T in the Preview Area while awaiting the second
+	// endpoint, matching VICE. The second endpoint accepts a stationary reference
+	// or an ACID/beacon without the initial-space distinction. Left-trackball
+	// endpoint selection is handled in consumeMouseEvents.
+	//
+	// *T<n><ENTER> removes RBL n; *T<ENTER> removes all displayed RBLs.
+	registerCommand(CommandModeNone, "*T[RBL_ID]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		idx := args[0].(int) - 1
+		if idx < 0 || idx >= len(p.rangeBearingLines) {
+			return CommandStatus{}, ErrSTARSRBLID
+		}
+		p.rangeBearingLines = append(p.rangeBearingLines[:idx], p.rangeBearingLines[idx+1:]...)
+		p.wipRBL = nil
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeNone, "*T", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.rangeBearingLines = nil
+		p.wipRBL = nil
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeNone, "*T [RBL_FIELD]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		// The space form is only the manual's keyboard modality for choosing a
+		// track as endpoint 1. Endpoint 2 does not use the space.
+		if p.wipRBL != nil {
+			return CommandStatus{}, ErrSTARSCommandFormat
+		}
+		if len(p.rangeBearingLines) >= starsMaxRangeBearingLines {
+			return CommandStatus{}, ErrSTARSCapacity
+		}
+		target, err := p.rangeBearingTargetByReference(args[0].(string))
+		if err != nil {
+			return CommandStatus{}, err
+		}
+		p.beginRangeBearingLine(starsRangeBearingEndpoint{TargetKey: targetDisplayStateKey(target)})
+		return CommandStatus{Clear: ClearNone}, nil
+	})
+	registerCommand(CommandModeNone, "*T[RBL_FIELD]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		field := args[0].(string)
+		if p.wipRBL == nil {
+			// The no-space first-point form is reserved for a geographic fix in
+			// the real system. Resolve it through the FAA CIFP database, matching
+			// VICE's LookupWaypoint behavior; unknown identifiers return NO FLIGHT.
+			if len(p.rangeBearingLines) >= starsMaxRangeBearingLines {
+				return CommandStatus{}, ErrSTARSCapacity
+			}
+			point, ok := starsRBLStationaryPoint(field)
+			if !ok {
+				return CommandStatus{}, ErrSTARSNoFlight
+			}
+			p.beginRangeBearingLine(starsRangeBearingEndpoint{Location: point})
+			return CommandStatus{Clear: ClearNone}, nil
+		}
+
+		// For endpoint 2 STARS gives a fix priority over an ACID/beacon.
+		// Mirror VICE's ordering.
+		if point, ok := starsRBLStationaryPoint(field); ok {
+			p.completeRangeBearingLine(starsRangeBearingEndpoint{Location: point})
+			return CommandStatus{}, nil
+		}
+		target, err := p.rangeBearingTargetByReference(field)
+		if err != nil {
+			return CommandStatus{}, err
+		}
+		p.completeRangeBearingLine(starsRangeBearingEndpoint{TargetKey: targetDisplayStateKey(target)})
+		return CommandStatus{}, nil
+	})
+
 	// TI 6191.409 Rev. 30, 4.5.4 Hide / show Map category list.
 	// <MULTI FUNC>, <T>, <X>, <ENTER> toggles the currently selected list.
 	// The manual specifies no response or error message. VICE implements the
@@ -94,6 +174,111 @@ func init() {
 	registerCommand(CommandModeMultiFunc, "BI", func(p *STARSPane, args []any) (CommandStatus, error) {
 		p.currentPrefs().DisplayLDBBeaconCodes = false
 		return CommandStatus{}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 4.11.1-4.11.3 Altitude Filter Commands.
+	//
+	//   <MULTI FUNC> F <ENTER>
+	//       displays the unassociated limits on line 1 and associated limits
+	//       on line 2 of the Preview Area.
+	//
+	//   <MULTI FUNC> F uuuUUU [SPACE aaaAAA] <ENTER>
+	//       changes the unassociated range and, when the optional second
+	//       six-digit field is supplied, the associated range as well.
+	//
+	//   <MULTI FUNC> F C aaaAAA <ENTER>
+	//       changes the associated range only.
+	//
+	// Within each six-digit range the two three-digit values may be entered
+	// in either order; the lower/higher assignment is handled by the parser.
+	registerCommand(CommandModeMultiFunc, "F", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{Output: p.currentPrefs().AltitudeFilters.previewText()}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "FC[ALT_FILTER_6]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().AltitudeFilters.Associated = args[0].([2]int)
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "F[ALT_FILTER_6] [ALT_FILTER_6]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().AltitudeFilters.Unassociated = args[0].([2]int)
+		p.currentPrefs().AltitudeFilters.Associated = args[1].([2]int)
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "F[ALT_FILTER_6]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().AltitudeFilters.Unassociated = args[0].([2]int)
+		return CommandStatus{}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 6.13.5-6.13.6 and 6.13.13-6.13.16
+	// Quick Look commands. REDS' facility config carries explicit TCPs, so the
+	// operator may enter either a full two-character TCP (e.g. 1D) or omit the
+	// subset and enter its one-character symbol (e.g. D). Quicklook Group IDs
+	// require adaptation not yet exported by crc2reds and therefore return ILL POS.
+	applyQuickLookPositions := func(p *STARSPane, positions []quickLookPositionSpec) (CommandStatus, error) {
+		// Resolve and validate the complete list before changing any state. STARS
+		// rejects the command with ILL POS when any entered TCP is invalid; an
+		// earlier valid TCP in the same entry must not be toggled as a side effect.
+		resolved := make([]quickLookPositionSpec, len(positions))
+		for i, position := range positions {
+			tcp, ok := p.resolvedQuickLookTCP(position.TCP)
+			if !ok {
+				return CommandStatus{}, ErrSTARSIllegalPosition
+			}
+			resolved[i] = quickLookPositionSpec{TCP: tcp, Plus: position.Plus}
+		}
+
+		if len(resolved) == 1 && !resolved[0].Plus && resolved[0].TCP == p.ownTCP() {
+			// 6.13.6 / 6.13.16: entering a TCP assigned to this TCW/TDW
+			// displays the currently enabled quick looks in the Preview Area.
+			return CommandStatus{Output: p.quickLookDisplayStatus()}, nil
+		}
+		for _, position := range resolved {
+			if position.TCP == p.ownTCP() {
+				return CommandStatus{}, ErrSTARSIllegalPosition
+			}
+		}
+
+		for _, position := range resolved {
+			p.toggleQuickLookTCP(position.TCP, position.Plus)
+		}
+		return CommandStatus{Output: p.qlPositionsString()}, nil
+	}
+
+	// 6.13.5 implied form: enter another owner's TCP directly, optionally with +.
+	registerCommand(CommandModeNone, "[QL_POSITION]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return applyQuickLookPositions(p, []quickLookPositionSpec{args[0].(quickLookPositionSpec)})
+	})
+
+	// 6.13.14 Quick look all other owners' tracks. QL+ changes only the
+	// presentation color; brightness remains the OTH category because ownership
+	// itself has not changed.
+	registerCommand(CommandModeMultiFunc, "QALL+", func(p *STARSPane, args []any) (CommandStatus, error) {
+		ps := p.currentPrefs()
+		ps.QuickLookAll = true
+		ps.QuickLookAllIsPlus = true
+		return CommandStatus{Output: "QL ALL+"}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "QALL", func(p *STARSPane, args []any) (CommandStatus, error) {
+		ps := p.currentPrefs()
+		ps.QuickLookAll = true
+		ps.QuickLookAllIsPlus = false
+		return CommandStatus{Output: "QL ALL"}, nil
+	})
+
+	// 6.13.15 Disable quick look for all tracks. The optional + selects which
+	// class is disabled: ordinary QL or QL+.
+	registerCommand(CommandModeMultiFunc, "Q+", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.disableQuickLooks(true)
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "Q", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.disableQuickLooks(false)
+		return CommandStatus{}, nil
+	})
+
+	// 6.13.13 toggles up to ten explicit TCPs; 6.13.16 is the special case
+	// where the sole entered TCP belongs to the entering TCW/TDW.
+	registerCommand(CommandModeMultiFunc, "Q[QL_POSITIONS]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return applyQuickLookPositions(p, args[0].([]quickLookPositionSpec))
 	})
 
 	// TI 6191.409 Rev. 30, 4.4.1 Change display range.
@@ -145,6 +330,20 @@ func init() {
 		p.brightnessDragAccumY = 0
 		return CommandStatus{Clear: ClearInput}, nil
 	})
+
+	// TI 6191.409 Rev. 30, 4.9.1 Change character font size. After the
+	// operator selects one of the CHAR SIZE submenu groups, a numeric value
+	// may be entered and committed with <ENTER>. All groups accept 0-5 except
+	// DCB, which accepts 0-2.
+	registerCommand(CommandModeCharSizeSpinner, "[CHAR_SIZE]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		if err := p.setActiveCharSize(args[0].(int)); err != nil {
+			return CommandStatus{}, err
+		}
+		p.commandMode = CommandModeCharSize
+		p.activeCharSizeControl = ""
+		p.charSizeDragAccumY = 0
+		return CommandStatus{Clear: ClearInput}, nil
+	})
 }
 
 func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
@@ -160,9 +359,18 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		return
 	}
 
-	// VICE maps physical STARS function keys to desktop shortcuts while the
-	// DCB is displayed. REDS currently always displays the STARS DCB strip.
-	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF11) {
+	// TI 6191.409 Rev. 30 section 2.5 defines the physical <DCB> key as an
+	// on/off toggle for the Display Control Bar. VICE maps that key to Ctrl+F9
+	// and clears any in-progress command before changing visibility.
+	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF9) {
+		p.resetCommand()
+		p.currentPrefs().DisplayDCB = !p.currentPrefs().DisplayDCB
+		return
+	}
+
+	// VICE maps the remaining physical STARS function keys to desktop shortcuts.
+	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF11) &&
+		p.currentPrefs().DisplayDCB {
 		p.setCommandMode(CommandModeRange)
 		return
 	}
@@ -174,10 +382,17 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		p.setCommandMode(CommandModeBrite)
 		return
 	}
-
-	if p.commandMode == CommandModeNone {
+	// VICE maps the physical STARS <CHAR SIZE> key to Ctrl+F7 while the DCB
+	// is displayed.
+	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF7) &&
+		p.currentPrefs().DisplayDCB {
+		p.setCommandMode(CommandModeCharSize)
 		return
 	}
+
+	// CommandModeNone is also the real STARS implied-command entry state.
+	// Ordinary typed text is therefore accumulated even without selecting a
+	// DCB/function-key mode; <ENTER> dispatches it to CommandModeNone handlers.
 
 	// TI 6191.409 Rev. 30, 6.1.2 defines PLACE RR as a Main-DCB-only
 	// command: after selecting the button, the operator positions the cursor
@@ -198,6 +413,36 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		if keyboard.WasPressed(platform.KeyEscape) {
 			p.resetCommand()
 		}
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 4.7 explicitly makes SSA FILTER a Main-DCB-only
+	// command; it has no keyboard entry form and no Preview Area response.
+	// Escape is retained as REDS' desktop equivalent of leaving the submenu.
+	if p.commandMode == CommandModeSSAFilter {
+		if keyboard.WasPressed(platform.KeyEscape) {
+			p.resetCommand()
+		}
+		return
+	}
+
+	// With no individual CHAR SIZE adjustment selected, the submenu itself is
+	// mouse/DCB driven. Numeric keyboard entry is accepted only after selecting
+	// DATA BLOCKS, LISTS, DCB, TOOLS, or POS, matching the manual and VICE.
+	if p.commandMode == CommandModeCharSize {
+		if keyboard.WasPressed(platform.KeyEscape) {
+			p.resetCommand()
+		}
+		return
+	}
+	if p.commandMode == CommandModeCharSizeSpinner && keyboard.WasPressed(platform.KeyEscape) {
+		// VICE's dcbCharSizeSpinner.ModeAfter() returns to the CHAR SIZE
+		// submenu rather than closing the submenu entirely.
+		p.commandMode = CommandModeCharSize
+		p.activeCharSizeControl = ""
+		p.charSizeDragAccumY = 0
+		p.commandInput = ""
+		p.commandResponse = ""
 		return
 	}
 
@@ -222,6 +467,9 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	for _, r := range keyboard.Text {
 		if r < ' ' || r == 0x7f {
 			continue
+		}
+		if p.commandMode == CommandModeNone && p.commandInput == "" {
+			p.commandResponse = ""
 		}
 		s := strings.ToUpper(string(r))
 		if p.commandMode == CommandModeMultiFunc && p.multiFuncPrefix == "" {
@@ -254,14 +502,17 @@ func (p *STARSPane) resetCommand() {
 	p.multiFuncPrefix = ""
 	p.activeBrightnessControl = ""
 	p.brightnessDragAccumY = 0
+	p.activeCharSizeControl = ""
+	p.charSizeDragAccumY = 0
 	p.rangeRingDragAccumY = 0
 	p.leaderDirectionDragAccumY = 0
 	p.leaderLengthDragAccumY = 0
 	p.ptlLengthDragAccumY = 0
+	p.wipRBL = nil
 }
 
 func (p *STARSPane) commitCommand() {
-	if p == nil || p.commandMode == CommandModeNone {
+	if p == nil || (p.commandMode == CommandModeNone && p.commandInput == "") {
 		return
 	}
 

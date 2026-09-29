@@ -77,4 +77,4 @@ USE_PUBLIC_SERVER=false
 
 ### Documentation
 
-See [Virtual NAS documentation](https://docs.virtualnas.net/crc/asdex/).
+ASDE-X and ERAM are based on [CRC](https://docs.virtualnas.net/crc/) and STARS is based on the TI 6191.409, Rev. 30 and [vice](https://pharr.org/vice/).
