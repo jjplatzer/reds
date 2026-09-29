@@ -121,9 +121,8 @@ func init() {
 		field := args[0].(string)
 		if p.wipRBL == nil {
 			// The no-space first-point form is reserved for a geographic fix in
-			// the real system. REDS currently has no general NAS waypoint DB.
-			// Airport identifiers available in the bundled navigation database
-			// are accepted as stationary fixes; unknown fixes return NO FLIGHT.
+			// the real system. Resolve it through the FAA CIFP database, matching
+			// VICE's LookupWaypoint behavior; unknown identifiers return NO FLIGHT.
 			if len(p.rangeBearingLines) >= starsMaxRangeBearingLines {
 				return CommandStatus{}, ErrSTARSCapacity
 			}

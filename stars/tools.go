@@ -5,6 +5,7 @@ import (
 	stdmath "math"
 	"strings"
 
+	"github.com/juliusplatzer/reds/aviation"
 	redsmath "github.com/juliusplatzer/reds/math"
 	redsnet "github.com/juliusplatzer/reds/net"
 	"github.com/juliusplatzer/reds/panes"
@@ -324,22 +325,23 @@ func (p *STARSPane) completeRangeBearingLine(endpoint starsRangeBearingEndpoint)
 	p.wipRBL = nil
 }
 
-// starsRBLStationaryPoint resolves the stationary identifiers REDS can
-// currently name. The real STARS command accepts any adapted three-to-seven
-// character fix. REDS does not yet carry the NAS waypoint database used by
-// VICE, but its bundled airport navigation table provides real positions for
-// IATA/ICAO airport identifiers, which are valid stationary points.
+// starsRBLStationaryPoint resolves *T stationary endpoints through the FAA
+// CIFP navigation database, exactly like VICE's av.DB.LookupWaypoint path.
+// Navaids take priority over fixes when an identifier exists in both maps.
 func starsRBLStationaryPoint(id string) (configPoint, bool) {
 	id = strings.ToUpper(strings.TrimSpace(id))
 	if id == "" {
 		return configPoint{}, false
 	}
-	db, err := loadSTARSAirportDatabase()
+	db, err := aviation.LoadCIFPDatabase()
 	if err != nil {
 		return configPoint{}, false
 	}
-	point, ok := db.positionByID[id]
-	return point, ok
+	point, ok := db.LookupWaypoint(id)
+	if !ok {
+		return configPoint{}, false
+	}
+	return configPoint{Lat: point.Lat, Lon: point.Lon}, true
 }
 
 // rangeBearingTargetByReference implements the *T track-reference rules used
