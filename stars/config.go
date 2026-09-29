@@ -43,6 +43,7 @@ type controlPositionConfig struct {
 	Name             string      `json:"name"`
 	RadioName        string      `json:"radioName"`
 	Callsign         string      `json:"callsign"`
+	ColorSet         string      `json:"colorSet"`
 	AreaID           string      `json:"areaId"`
 	TCPID            string      `json:"tcpId"`
 	TCP              string      `json:"tcp"`

@@ -376,12 +376,13 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 					redsmath.Vec2{X: x, Y: textY},
 					renderer.TextStyle{Size: fontSize, Color: listBrightness.ScaleRGB(segment.color).ToRGBA()},
 				)
-				// MeasureText returns the visible glyph bounds, so a trailing space
-				// contributes no width. Append a sentinel space while measuring to
-				// get the actual pen advance, including any intentional trailing
-				// space already present in the segment (e.g. STATUS before RADAR).
-				width, _ := p.systemFont.MeasureText(segment.text+" ", fontSize)
-				x += float32(width)
+				// MeasureText reports the visible width of the final glyph rather than
+				// its full advance. Measure with a visible sentinel and subtract that
+				// sentinel's width to recover the exact pen advance of this segment,
+				// including one intentional trailing space between STATUS and RADAR.
+				widthWithSentinel, _ := p.systemFont.MeasureText(segment.text+"X", fontSize)
+				sentinelWidth, _ := p.systemFont.MeasureText("X", fontSize)
+				x += float32(widthWithSentinel - sentinelWidth)
 				wrote = true
 			}
 			if wrote {

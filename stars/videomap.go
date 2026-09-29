@@ -351,18 +351,40 @@ func appendSTARSMapLineGeometry(builder *renderer.LinesBuilder, geometry starsMa
 	return false, nil
 }
 
-func (p *STARSPane) videoMapColor(vm videoMapConfig) renderer.RGB {
-	ps := p.currentPrefs()
-	if strings.EqualFold(strings.TrimSpace(vm.BrightnessCategory), "B") {
-		// TI 6191.409 Rev. 30 Table B-1 defines Category B Maps separately
-		// from its numbered multi-color categories. CRC currently gives REDS
-		// only the A/B brightness category, so use the documented B default
-		// color and MPB brightness rather than guessing a numbered color.
-		return ps.Brightness.VideoGroupB.ScaleRGB(p.colors.MapBDefault)
+func (p *STARSPane) videoMapBaseColor() renderer.RGB {
+	if p == nil {
+		return starsDimGray
 	}
 
-	// Category A is the CRC/default fallback for maps without an explicit B.
-	return ps.Brightness.VideoGroupA.ScaleRGB(p.colors.MapADefault)
+	// CRC's DisplayElementVideoMaps.SetColors() selects one base map hue from
+	// the selected position's StarsPositionConfiguration.ColorSet. MPA/MPB do
+	// not select different hues: they only apply their independent brightness
+	// values to this same base color. The GeoJSON BCG value is not consulted by
+	// CRC's STARS renderer (it is relevant to ERAM instead).
+	switch strings.ToLower(strings.TrimSpace(p.config.ControlPosition.ColorSet)) {
+	case "tdw":
+		return starsYellow
+	case "dod":
+		return starsCyan
+	case "", "tcw":
+		return starsDimGray
+	default:
+		// Generated configs should already contain a normalized value. Retain
+		// the historical TCW presentation if an older/hand-edited config does
+		// not, rather than making its maps disappear or inventing a new hue.
+		return starsDimGray
+	}
+}
+
+func (p *STARSPane) videoMapColor(vm videoMapConfig) renderer.RGB {
+	ps := p.currentPrefs()
+	base := p.videoMapBaseColor()
+	if strings.EqualFold(strings.TrimSpace(vm.BrightnessCategory), "B") {
+		return ps.Brightness.VideoGroupB.ScaleRGB(base)
+	}
+
+	// CRC treats a missing/non-B category as MPA.
+	return ps.Brightness.VideoGroupA.ScaleRGB(base)
 }
 
 func (p *STARSPane) drawVideoMaps(ctx *panes.Context, zcb *renderer.ZCmdBuffer, transforms radar.LatLonTransformations) {

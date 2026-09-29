@@ -986,11 +986,13 @@ var defaultTDWColors = func() MonitorColors {
 	c.UnownedDatablock = starsWhite
 	c.TerminalProximityAlert = starsWhite
 
-	// The default map colors are yellow at TDWs. Brightness Category A Maps
-	// - 1 is also yellow; Brightness Category B Maps - 1 remains dim gray.
+	// CRC uses yellow as the TDW videomap base hue for both MPA and MPB; the
+	// A/B distinction changes brightness only. Keep the indexed defaults
+	// consistent as well even though videomap.go now reads ColorSet directly.
 	c.MapADefault = starsYellow
 	c.MapBDefault = starsYellow
 	c.MapA[0] = starsYellow
+	c.MapB[0] = starsYellow
 
 	// FMA mode is not available at TDWs (Table B-1 note 1).
 	c.FMARunway = renderer.RGB{}

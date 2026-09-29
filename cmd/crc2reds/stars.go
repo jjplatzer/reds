@@ -98,8 +98,9 @@ type crcSTARSTCP struct {
 }
 
 type crcSTARSPositionConfiguration struct {
-	AreaID string `json:"areaId"`
-	TCPID  string `json:"tcpId"`
+	AreaID   string          `json:"areaId"`
+	ColorSet json.RawMessage `json:"colorSet"`
+	TCPID    string          `json:"tcpId"`
 }
 
 type crcSTARSPosition struct {
@@ -132,6 +133,7 @@ type redsSTARSControlPosition struct {
 	Name             string           `json:"name,omitempty"`
 	RadioName        string           `json:"radioName,omitempty"`
 	Callsign         string           `json:"callsign,omitempty"`
+	ColorSet         string           `json:"colorSet,omitempty"`
 	AreaID           string           `json:"areaId"`
 	TCPID            string           `json:"tcpId,omitempty"`
 	TCP              string           `json:"tcp,omitempty"`
@@ -817,6 +819,16 @@ func buildSTARSFacilityConfig(
 			)
 		}
 
+		colorSet, err := starsColorSetName(p.STARSConfiguration.ColorSet)
+		if err != nil {
+			return redsSTARSFacilityConfig{}, fmt.Errorf(
+				"position %q (%s): %w",
+				p.Callsign,
+				positionID,
+				err,
+			)
+		}
+
 		tcpID := strings.TrimSpace(p.STARSConfiguration.TCPID)
 		tcpCode := ""
 		if tcpID != "" {
@@ -839,6 +851,7 @@ func buildSTARSFacilityConfig(
 			Name:             p.Name,
 			RadioName:        p.RadioName,
 			Callsign:         p.Callsign,
+			ColorSet:         colorSet,
 			AreaID:           areaID,
 			TCPID:            tcpID,
 			TCP:              tcpCode,
@@ -955,6 +968,47 @@ func starsPositionsForRadarFacility(f *crcSTARSFacility) []starsFacilityPosition
 	}
 
 	return out
+}
+
+// starsColorSetName normalizes CRC's StarsColorSet enum. Depending on how
+// the CRC ARTCC JSON was exported, enums may be emitted either as their names
+// (Tcw/Tdw/Dod) or as the underlying numeric values (0/1/2). Missing values
+// fall back to TCW, which is also the enum's zero/default value.
+func starsColorSetName(raw json.RawMessage) (string, error) {
+	if len(raw) == 0 || string(raw) == "null" {
+		return "tcw", nil
+	}
+
+	var name string
+	if err := json.Unmarshal(raw, &name); err == nil {
+		name = strings.ToLower(strings.TrimSpace(name))
+		switch name {
+		case "tcw", "0":
+			return "tcw", nil
+		case "tdw", "1":
+			return "tdw", nil
+		case "dod", "2":
+			return "dod", nil
+		default:
+			return "", fmt.Errorf("unsupported STARS color set %q", name)
+		}
+	}
+
+	var value int
+	if err := json.Unmarshal(raw, &value); err == nil {
+		switch value {
+		case 0:
+			return "tcw", nil
+		case 1:
+			return "tdw", nil
+		case 2:
+			return "dod", nil
+		default:
+			return "", fmt.Errorf("unsupported STARS color set %d", value)
+		}
+	}
+
+	return "", fmt.Errorf("invalid STARS color set %s", string(raw))
 }
 
 func starsTCPCode(tcp crcSTARSTCP) string {
