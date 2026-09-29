@@ -16,8 +16,9 @@ import (
 // targetDatablockType is the subset of the STARS data-block presentation that
 // REDS can determine directly from TAIS today. TI 6191.409 Rev. 30 section
 // 2.12 defines Full, Partial, and Limited data blocks. Single-track quick look
-// (6.13.4) is modeled as transient local display state; pointout, alerts, handoff
-// attention, and the other force-FDB cases remain future additions.
+// (6.13.4) is modeled as transient local display state. OCR-backed handoff
+// attention is also modeled; pointouts, alerts, and the remaining force-FDB
+// cases remain future additions.
 type targetDatablockType uint8
 
 const (
@@ -51,6 +52,7 @@ func (p *STARSPane) drawDatablocks(
 	zcb *renderer.ZCmdBuffer,
 	transforms radar.LatLonTransformations,
 	snapshot redsnet.TaisSnapshot,
+	now time.Time,
 ) {
 	if p == nil || ctx == nil || zcb == nil || !snapshot.Ready || p.systemFont == nil {
 		return
@@ -74,8 +76,7 @@ func (p *STARSPane) drawDatablocks(
 	// defines the field contents but leaves the clock timing to adaptation.
 	// Use VICE's STARS fallback adaptation until crc2reds carries the site's
 	// clock-phase sequence and intervals. Use the same frame timestamp for
-	// temporary 6.13.2 LDB beacon readouts.
-	now := time.Now()
+	// temporary 6.13.2 LDB beacon readouts and handoff-attention flashing.
 	clockPhase := defaultSTARSDataBlockClockPhase(now)
 
 	for i := range snapshot.Targets {
@@ -93,6 +94,7 @@ func (p *STARSPane) drawDatablocks(
 		}
 
 		dbType, color, brightness := p.targetDatablockPresentation(target)
+		brightness = p.targetHandoffBrightness(target, brightness, now)
 		if brightness == 0 {
 			continue
 		}
@@ -116,7 +118,7 @@ func (p *STARSPane) drawDatablocks(
 			// an empty raster row. Fields 3/4 and 5 on line 2 follow the STARS
 			// clock phase, while field 7 on line 3 carries assigned altitude.
 			line1 := targetDatablockACID(target)
-			line2 := targetFullDatablockLine2(target, clockPhase)
+			line2 := p.targetFullDatablockLine2(target, clockPhase)
 			line3 := targetFullDatablockLine3(target, direction)
 			p.addDatablockLine(td, line1, anchor, direction, 0, 0, lineHeight, style)
 			p.addDatablockLine(td, line2, anchor, direction, 1, 0, lineHeight, style)
@@ -207,6 +209,8 @@ func (p *STARSPane) targetAltitudeFilterAllowsDatablock(target *redsnet.TaisTarg
 // quick-look state to the operator-manual data-block categories:
 //
 //	own associated track          -> Full data block, white, FDB brightness
+//	inbound pending handoff       -> Full data block, blinking white, FDB brightness
+//	accepted at former owner      -> Full data block, white, FDB brightness
 //	other associated track        -> Partial data block, green, LDB brightness
 //	quick-looked other track      -> Full data block, green, OTH brightness
 //	quick-look-plus other track   -> Full data block, white, OTH brightness
@@ -226,7 +230,7 @@ func (p *STARSPane) targetDatablockPresentation(target *redsnet.TaisTarget) (tar
 		return targetDatablockLimited, p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 	}
 
-	if p.targetOwnedByCurrentTCP(target) {
+	if p.targetOwnedByCurrentTCP(target) || p.targetInboundHandoff(target) || p.targetOutboundHandoffAccepted(target) {
 		return targetDatablockFull, p.colors.OwnedDatablock, ps.Brightness.FullDatablocks
 	}
 	if quickLooked, plus := p.targetQuickLookState(target); quickLooked {
@@ -407,11 +411,12 @@ func targetSecondaryScratchpad(target *redsnet.TaisTarget) string {
 //	phase 3: secondary scratchpad -> primary scratchpad -> altitude
 //	phase 4: blank
 //
-// Handoff TCP takes priority in phase 3 in real STARS/VICE; REDS does not yet
-// carry live handoff state, so that slot begins with the secondary scratchpad.
-// A displayed secondary scratchpad is followed by '+' in field 4, exactly as
-// described by the operator manual.
-func targetFullDatablockField34(target *redsnet.TaisTarget, clockPhase int) string {
+// A pending intrafacility handoff uses field 4 for the receiver position
+// symbol. REDS still cannot populate VICE's phase-3 interfacility handoff TCP
+// because TAIS does not provide the originating facility/sector in a form we
+// can map without guessing. A displayed secondary scratchpad is followed by
+// '+' in field 4, exactly as described by the operator manual.
+func (p *STARSPane) targetFullDatablockField34(target *redsnet.TaisTarget, clockPhase int) string {
 	if target == nil {
 		return ""
 	}
@@ -419,8 +424,9 @@ func targetFullDatablockField34(target *redsnet.TaisTarget, clockPhase int) stri
 	altitude := targetDatablockAltitude(target.Track.ReportedAltitude)
 	sp1 := targetPrimaryScratchpad(target)
 	sp2 := targetSecondaryScratchpad(target)
-	alt := func() string { return padDatablockField(altitude, 3) + " " }
-	primary := func() string { return padDatablockField(sp1, 3) + " " }
+	handoff := p.targetIntrafacilityHandoffIndicator(target)
+	alt := func() string { return padDatablockField(altitude, 3) + handoff }
+	primary := func() string { return padDatablockField(sp1, 3) + handoff }
 	secondary := func() string { return padDatablockField(sp2, 3) + "+" }
 
 	switch clockPhase {
@@ -447,13 +453,53 @@ func targetFullDatablockField34(target *redsnet.TaisTarget, clockPhase int) stri
 	}
 }
 
+// targetIntrafacilityHandoffIndicator implements the portion of Figure 2-20
+// field 4 that TAIS can identify without guessing. During OCR=PENDING, CPS is
+// the receiver. If both the remembered owner and receiver are adapted TCPs in
+// this STARS facility, this is an intrafacility handoff and field 4 shows the
+// receiver's position symbol. After acceptance, STARS keeps that receiver TCP
+// in field 4 at the former owner's display for the five-second acceptance
+// interval. Interfacility handoffs require the adapted originating-facility
+// symbol, which TAIS AIG200 does not provide directly, so REDS intentionally
+// leaves that case blank for now.
+func (p *STARSPane) targetIntrafacilityHandoffIndicator(target *redsnet.TaisTarget) string {
+	if p == nil || target == nil {
+		return " "
+	}
+
+	if taisOwnershipPending(target) {
+		owner, ownerOK := p.targetOwnerTCP(target)
+		receiver, receiverOK := p.targetHandoffTCP(target)
+		if !ownerOK || !receiverOK || !p.localTCP(owner) || !p.localTCP(receiver) || strings.EqualFold(owner, receiver) {
+			return " "
+		}
+		symbol, ok := starsPositionSymbolFromTCP(receiver)
+		if !ok {
+			return " "
+		}
+		return symbol
+	}
+
+	if p.targetOutboundHandoffAccepted(target) {
+		state := p.taisOwnership[targetDisplayStateKey(target)]
+		if time.Now().Before(state.outboundHandoffFlashEnd) && p.localTCP(state.acceptedReceiverTCP) {
+			symbol, ok := starsPositionSymbolFromTCP(state.acceptedReceiverTCP)
+			if ok {
+				return symbol
+			}
+		}
+	}
+
+	return " "
+}
+
 // targetFullDatablockLine2 formats Figure 2-20 line 2. Fields 3/4 already
 // include their separator/indicator cell, so field 5 follows immediately.
-func targetFullDatablockLine2(target *redsnet.TaisTarget, clockPhase int) string {
+func (p *STARSPane) targetFullDatablockLine2(target *redsnet.TaisTarget, clockPhase int) string {
 	if target == nil {
 		return ""
 	}
-	return targetFullDatablockField34(target, clockPhase) + targetFullDatablockField5(target, clockPhase)
+	return p.targetFullDatablockField34(target, clockPhase) + targetFullDatablockField5(target, clockPhase)
 }
 
 // targetPartialDatablockLine1 formats Figure 2-22's single visible data row.

@@ -289,6 +289,43 @@ func (quickLookPositionsCommandParser) Parse(text string) (any, string, bool, er
 	return positions, "", true, nil
 }
 
+type rblIDCommandParser struct{}
+
+func (rblIDCommandParser) Identifier() string { return "RBL_ID" }
+
+func (rblIDCommandParser) Parse(text string) (any, string, bool, error) {
+	if text == "" {
+		return nil, text, false, nil
+	}
+	for _, r := range text {
+		if r < '0' || r > '9' {
+			return nil, text, false, nil
+		}
+	}
+	value, err := strconv.Atoi(text)
+	if err != nil {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	return value, "", true, nil
+}
+
+type rblFieldCommandParser struct{}
+
+func (rblFieldCommandParser) Identifier() string { return "RBL_FIELD" }
+
+func (rblFieldCommandParser) Parse(text string) (any, string, bool, error) {
+	text = strings.ToUpper(strings.TrimSpace(text))
+	if text == "" || len(text) > 8 || strings.ContainsAny(text, " \t\r\n") {
+		return nil, text, false, nil
+	}
+	for _, r := range text {
+		if (r < '0' || r > '9') && (r < 'A' || r > 'Z') {
+			return nil, text, true, ErrSTARSCommandFormat
+		}
+	}
+	return text, "", true, nil
+}
+
 type brightnessCommandParser struct{}
 
 func (brightnessCommandParser) Identifier() string { return "BRIGHTNESS" }
@@ -348,6 +385,8 @@ var commandTypeParsers = map[string]commandTypeParser{
 	"ALT_FILTER_6":       altitudeFilter6CommandParser{},
 	"QL_POSITION":        quickLookPositionCommandParser{},
 	"QL_POSITIONS":       quickLookPositionsCommandParser{},
+	"RBL_ID":             rblIDCommandParser{},
+	"RBL_FIELD":          rblFieldCommandParser{},
 }
 
 type commandMatcher interface {

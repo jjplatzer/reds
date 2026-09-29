@@ -10,4 +10,8 @@ var (
 	ErrSTARSRangeLimit      = errors.New("RANGE LIMIT")
 	ErrSTARSIllegalValue    = errors.New("ILL VALUE")
 	ErrSTARSIllegalPosition = errors.New("ILL POS")
+	ErrSTARSCapacity        = errors.New("CAPACITY")
+	ErrSTARSRBLID           = errors.New("RBL ID")
+	ErrSTARSNoFlight        = errors.New("NO FLIGHT")
+	ErrSTARSDuplicateBeacon = errors.New("DUP BCN")
 )

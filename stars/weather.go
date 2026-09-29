@@ -11,6 +11,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -36,6 +37,7 @@ type starsAirportDatabase struct {
 	byIATA        map[string]string
 	byICAO        map[string]string
 	displayByICAO map[string]string
+	positionByID  map[string]configPoint
 }
 
 type starsMETAR struct {
@@ -117,6 +119,7 @@ func parseSTARSAirportDatabase(data []byte) (starsAirportDatabase, error) {
 		byIATA:        make(map[string]string),
 		byICAO:        make(map[string]string),
 		displayByICAO: make(map[string]string),
+		positionByID:  make(map[string]configPoint),
 	}
 
 	r := csv.NewReader(bytes.NewReader(data))
@@ -130,8 +133,10 @@ func parseSTARSAirportDatabase(data []byte) (starsAirportDatabase, error) {
 	}
 	iataColumn, okIATA := columns["iata_code"]
 	icaoColumn, okICAO := columns["icao_code"]
-	if !okIATA || !okICAO {
-		return starsAirportDatabase{}, fmt.Errorf("airport CSV must contain iata_code and icao_code columns")
+	latColumn, okLat := columns["latitude_deg"]
+	lonColumn, okLon := columns["longitude_deg"]
+	if !okIATA || !okICAO || !okLat || !okLon {
+		return starsAirportDatabase{}, fmt.Errorf("airport CSV must contain iata_code, icao_code, latitude_deg and longitude_deg columns")
 	}
 
 	for {
@@ -142,7 +147,7 @@ func parseSTARSAirportDatabase(data []byte) (starsAirportDatabase, error) {
 		if err != nil {
 			return starsAirportDatabase{}, fmt.Errorf("read airport CSV: %w", err)
 		}
-		if iataColumn >= len(record) || icaoColumn >= len(record) {
+		if iataColumn >= len(record) || icaoColumn >= len(record) || latColumn >= len(record) || lonColumn >= len(record) {
 			continue
 		}
 		iata := strings.ToUpper(strings.TrimSpace(record[iataColumn]))
@@ -151,6 +156,15 @@ func parseSTARSAirportDatabase(data []byte) (starsAirportDatabase, error) {
 			continue
 		}
 		db.byICAO[icao] = icao
+		lat, latErr := strconv.ParseFloat(strings.TrimSpace(record[latColumn]), 64)
+		lon, lonErr := strconv.ParseFloat(strings.TrimSpace(record[lonColumn]), 64)
+		if latErr == nil && lonErr == nil {
+			point := configPoint{Lat: lat, Lon: lon}
+			db.positionByID[icao] = point
+			if iata != "" {
+				db.positionByID[iata] = point
+			}
+		}
 		if iata != "" {
 			db.byIATA[iata] = icao
 			db.displayByICAO[icao] = iata

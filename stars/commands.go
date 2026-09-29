@@ -77,6 +77,78 @@ type CommandStatus struct {
 }
 
 func init() {
+	// TI 6191.409 Rev. 30, 6.7-6.8 Range Bearing Line (*T).
+	//
+	// Creation is a two-endpoint operation. A stationary start point is entered
+	// as *T<fix>; a track start point is entered as *T <ACID/beacon>. After the
+	// first endpoint REDS leaves *T in the Preview Area while awaiting the second
+	// endpoint, matching VICE. The second endpoint accepts a stationary reference
+	// or an ACID/beacon without the initial-space distinction. Left-trackball
+	// endpoint selection is handled in consumeMouseEvents.
+	//
+	// *T<n><ENTER> removes RBL n; *T<ENTER> removes all displayed RBLs.
+	registerCommand(CommandModeNone, "*T[RBL_ID]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		idx := args[0].(int) - 1
+		if idx < 0 || idx >= len(p.rangeBearingLines) {
+			return CommandStatus{}, ErrSTARSRBLID
+		}
+		p.rangeBearingLines = append(p.rangeBearingLines[:idx], p.rangeBearingLines[idx+1:]...)
+		p.wipRBL = nil
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeNone, "*T", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.rangeBearingLines = nil
+		p.wipRBL = nil
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeNone, "*T [RBL_FIELD]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		// The space form is only the manual's keyboard modality for choosing a
+		// track as endpoint 1. Endpoint 2 does not use the space.
+		if p.wipRBL != nil {
+			return CommandStatus{}, ErrSTARSCommandFormat
+		}
+		if len(p.rangeBearingLines) >= starsMaxRangeBearingLines {
+			return CommandStatus{}, ErrSTARSCapacity
+		}
+		target, err := p.rangeBearingTargetByReference(args[0].(string))
+		if err != nil {
+			return CommandStatus{}, err
+		}
+		p.beginRangeBearingLine(starsRangeBearingEndpoint{TargetKey: targetDisplayStateKey(target)})
+		return CommandStatus{Clear: ClearNone}, nil
+	})
+	registerCommand(CommandModeNone, "*T[RBL_FIELD]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		field := args[0].(string)
+		if p.wipRBL == nil {
+			// The no-space first-point form is reserved for a geographic fix in
+			// the real system. REDS currently has no general NAS waypoint DB.
+			// Airport identifiers available in the bundled navigation database
+			// are accepted as stationary fixes; unknown fixes return NO FLIGHT.
+			if len(p.rangeBearingLines) >= starsMaxRangeBearingLines {
+				return CommandStatus{}, ErrSTARSCapacity
+			}
+			point, ok := starsRBLStationaryPoint(field)
+			if !ok {
+				return CommandStatus{}, ErrSTARSNoFlight
+			}
+			p.beginRangeBearingLine(starsRangeBearingEndpoint{Location: point})
+			return CommandStatus{Clear: ClearNone}, nil
+		}
+
+		// For endpoint 2 STARS gives a fix priority over an ACID/beacon.
+		// Mirror VICE's ordering.
+		if point, ok := starsRBLStationaryPoint(field); ok {
+			p.completeRangeBearingLine(starsRangeBearingEndpoint{Location: point})
+			return CommandStatus{}, nil
+		}
+		target, err := p.rangeBearingTargetByReference(field)
+		if err != nil {
+			return CommandStatus{}, err
+		}
+		p.completeRangeBearingLine(starsRangeBearingEndpoint{TargetKey: targetDisplayStateKey(target)})
+		return CommandStatus{}, nil
+	})
+
 	// TI 6191.409 Rev. 30, 4.5.4 Hide / show Map category list.
 	// <MULTI FUNC>, <T>, <X>, <ENTER> toggles the currently selected list.
 	// The manual specifies no response or error message. VICE implements the
@@ -437,6 +509,7 @@ func (p *STARSPane) resetCommand() {
 	p.leaderDirectionDragAccumY = 0
 	p.leaderLengthDragAccumY = 0
 	p.ptlLengthDragAccumY = 0
+	p.wipRBL = nil
 }
 
 func (p *STARSPane) commitCommand() {

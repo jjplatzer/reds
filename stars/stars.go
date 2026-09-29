@@ -17,10 +17,11 @@ import (
 )
 
 const (
-	zBackground renderer.Z = -1000
-	zWeather    renderer.Z = -950
-	zRangeRings renderer.Z = -925
-	zCompass    renderer.Z = -850
+	zBackground       renderer.Z = -1000
+	zWeather          renderer.Z = -950
+	zRangeRings       renderer.Z = -925
+	zCompass          renderer.Z = -850
+	zRangeBearingLine renderer.Z = -92
 )
 
 // STARSPane is the STARS TCW/TDW display surface. Facility adaptation feeds
@@ -82,6 +83,20 @@ type STARSPane struct {
 	// beacon readouts. Slew + left trackball on an unassociated track forces
 	// its reported beacon code into LDB field 1 for five seconds.
 	ldbBeaconReadoutUntil map[string]time.Time
+
+	// rangeBearingLines are the operator-created *T Range Bearing Lines from
+	// TI 6191.409 6.7. wipRBL holds the first endpoint while STARS waits for
+	// the second endpoint. RBL state is intentionally transient display state,
+	// matching VICE rather than a saved preference.
+	rangeBearingLines []starsRangeBearingLine
+	wipRBL            *starsRangeBearingLine
+
+	// taisOwnership retains the last known controlling TCP while TAIS reports
+	// OCR=PENDING. In AIG200, CPS changes meaning in that state: it names the
+	// handoff receiver rather than the current owner. Keeping the last owner
+	// lets REDS reproduce the STARS handoff presentation without treating the
+	// receiving TCP as though it already owned the track.
+	taisOwnership map[string]taisOwnershipState
 }
 
 // resolvedQuickLookTCP expands the one-character controller-symbol shorthand
@@ -236,7 +251,8 @@ func (p *STARSPane) qlPositionsString() string {
 // controls Owned-vs-Unowned color; brightness remains OTH because ownership
 // itself has not changed.
 func (p *STARSPane) targetQuickLookState(target *redsnet.TaisTarget) (bool, bool) {
-	if p == nil || target == nil || target.FlightPlan == nil || p.targetOwnedByCurrentTCP(target) {
+	if p == nil || target == nil || target.FlightPlan == nil ||
+		p.targetOwnedByCurrentTCP(target) || p.targetInboundHandoff(target) {
 		return false, false
 	}
 
@@ -247,8 +263,8 @@ func (p *STARSPane) targetQuickLookState(target *redsnet.TaisTarget) (bool, bool
 		enabled = true
 		plus = ps.QuickLookAllIsPlus
 	}
-	owner := strings.ToUpper(strings.TrimSpace(target.FlightPlan.CPS))
-	if owner != "" {
+	owner, ownerOK := p.targetOwnerTCP(target)
+	if ownerOK {
 		if ownerPlus, ok := ps.QuickLookTCPs[owner]; ok {
 			// 6.13.14 keeps pre-existing individual QL states as exceptions
 			// when QL ALL/ALL+ is selected: ordinary QL stays Unowned color
@@ -377,8 +393,10 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.processKeyboardInput(ctx)
 	transforms := p.scopeTransformations(ctx)
 	targets := p.targetSnapshot()
+	now := time.Now()
+	p.updateTaisOwnership(targets, now)
 	p.pruneSingleTrackQuickLook(targets)
-	p.pruneLDBBeaconReadouts(targets, time.Now())
+	p.pruneLDBBeaconReadouts(targets, now)
 	p.consumeMouseEvents(ctx, transforms, targets)
 
 	p.drawNexrad(ctx, zcb, transforms)
@@ -388,10 +406,11 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
 	p.drawPredictedTrackLines(ctx, zcb, transforms, targets)
+	p.drawRangeBearingLines(ctx, zcb, transforms, targets)
 	p.drawTargets(ctx, zcb, transforms, targets)
-	p.drawTargetLeaderLines(ctx, zcb, transforms, targets)
-	p.drawTargetPositionSymbols(ctx, zcb, transforms, targets)
-	p.drawDatablocks(ctx, zcb, transforms, targets)
+	p.drawTargetLeaderLines(ctx, zcb, transforms, targets, now)
+	p.drawTargetPositionSymbols(ctx, zcb, transforms, targets, now)
+	p.drawDatablocks(ctx, zcb, transforms, targets, now)
 
 	if p.currentPrefs().DisplayDCB {
 		p.drawDCB(ctx, zcb)
@@ -496,6 +515,35 @@ func (p *STARSPane) consumeMouseEvents(
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
 
+	// TI 6191.409 Rev. 30, 6.7 Create Range Bearing Line. Once *T has
+	// been entered, the left trackball may designate either a track or an
+	// arbitrary geographic point. The first designation starts the RBL and
+	// the second completes it. As in VICE, a track inside the normal 20-pixel
+	// slew radius takes precedence over the raw cursor location.
+	if p.commandMode == CommandModeNone && strings.EqualFold(p.commandInput, "*T") &&
+		mouse.WasReleased(platform.MouseButtonLeft) {
+		if p.wipRBL == nil && len(p.rangeBearingLines) >= starsMaxRangeBearingLines {
+			p.commandResponse = ErrSTARSCapacity.Error()
+			return
+		}
+
+		endpoint := starsRangeBearingEndpoint{}
+		if target := closestSlewTarget(targets, mouse.Pos, transforms); target != nil {
+			endpoint.TargetKey = targetDisplayStateKey(target)
+		} else {
+			lat, lon := transforms.LatLonFromWindow(mouse.Pos)
+			endpoint.Location = configPoint{Lat: lat, Lon: normalizeLongitude(lon)}
+		}
+
+		if p.wipRBL == nil {
+			p.beginRangeBearingLine(endpoint)
+		} else {
+			p.completeRangeBearingLine(endpoint)
+			p.resetCommand()
+		}
+		return
+	}
+
 	// TI 6191.409 Rev. 30, 4.9.4 Move System status area. The command is
 	// keyboard-only until its final slew: <MULTI FUNC>, S, then position the
 	// screen cursor at the desired top-left corner and click the left trackball
@@ -561,6 +609,12 @@ func (p *STARSPane) consumeMouseEvents(
 	// 20-pixel target slew radius for these implied commands; retain that here.
 	if p.commandMode == CommandModeNone && mouse.WasReleased(platform.MouseButtonLeft) {
 		if target := closestSlewTarget(targets, mouse.Pos, transforms); target != nil {
+			// After a handoff is accepted, the former owner's white FDB is
+			// retained until that controller slews/selects the track. Consume
+			// the click here so it cannot also become a single-track quick look.
+			if p.acknowledgeOutboundHandoff(target) {
+				return
+			}
 			if p.targetSupportsSingleTrackQuickLook(target) {
 				p.toggleSingleTrackQuickLook(target)
 				return
