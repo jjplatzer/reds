@@ -47,6 +47,7 @@
       "name": "Homestead Approach",
       "radioName": "Homestead Approach",
       "callsign": "HST_APP",
+      "colorSet": "dod",
       "areaId": "01JPVABPK963HYNB3251NHJ5ZC",
       "tcpId": "01K2NF1C5TPZ8K4SMHST8QJ1N0",
       "tcp": "1H",
@@ -63,6 +64,7 @@
       "name": "Homestead Ground",
       "radioName": "Homestead Ground",
       "callsign": "HST_GND",
+      "colorSet": "tdw",
       "areaId": "01JPVABPK963HYNB3251NHJ5ZC",
       "tcpId": "01K2NF1C5T1NQBK0WG2PPMBXGP",
       "tcp": "1T",
@@ -79,6 +81,7 @@
       "name": "Homestead Tower",
       "radioName": "Homestead Tower",
       "callsign": "HST_TWR",
+      "colorSet": "tdw",
       "areaId": "01JPVABPK963HYNB3251NHJ5ZC",
       "tcpId": "01K2NF1C5T1NQBK0WG2PPMBXGP",
       "tcp": "1T",
@@ -160,6 +163,7 @@
         228,
         229,
         10,
+        91,
         2,
         77,
         6,
@@ -174,7 +178,8 @@
         225,
         226,
         222,
-        9
+        9,
+        81
       ]
     }
   ],

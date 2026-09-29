@@ -92,6 +92,7 @@
       "name": "Bozeman Radar",
       "radioName": "Big Sky Approach",
       "callsign": "BZN_APP",
+      "colorSet": "tcw",
       "areaId": "01GE8WA8C0JK4SFFSC142N5EVH",
       "tcpId": "01K2NF1E410CGX6E5RB39VEFX2",
       "tcp": "1B",
@@ -108,6 +109,7 @@
       "name": "Ground",
       "radioName": "Bozeman Ground",
       "callsign": "BZN_GND",
+      "colorSet": "tdw",
       "areaId": "01GE8WC5FP7NP8MDYWEJ2CBS83",
       "tcpId": "01K2NF1E41QEPG6X6PM6JCDQJZ",
       "tcp": "1N",
@@ -124,6 +126,7 @@
       "name": "Tower",
       "radioName": "Bozeman Tower",
       "callsign": "BZN_TWR",
+      "colorSet": "tdw",
       "areaId": "01GE8WC5FP7NP8MDYWEJ2CBS83",
       "tcpId": "01K2NF1E41Q41NDYV2RX6DARE2",
       "tcp": "1T",
@@ -140,6 +143,7 @@
       "name": "Clearance",
       "radioName": "Bozeman Clearance",
       "callsign": "BZN_DEL",
+      "colorSet": "tdw",
       "areaId": "01GE8WC5FP7NP8MDYWEJ2CBS83",
       "tcpId": "01K2NF1E41ZSFJWSCJR1C8KB4B",
       "tcp": "1X",
@@ -220,6 +224,7 @@
         400,
         null,
         null,
+        null,
         541,
         508,
         4,
@@ -233,6 +238,7 @@
         532,
         533,
         401,
+        null,
         null,
         null
       ]
@@ -292,6 +298,8 @@
         6
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

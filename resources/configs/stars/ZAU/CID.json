@@ -86,6 +86,7 @@
       "name": "Local",
       "radioName": "Cedar Rapids Tower",
       "callsign": "CID_TWR",
+      "colorSet": "tdw",
       "areaId": "01H5FRS4KK02XSZX5GGVJMPWQB",
       "tcpId": "01K2NF1DXNT24A0X460J6V37G9",
       "tcp": "1L",
@@ -102,6 +103,7 @@
       "name": "North Approach",
       "radioName": "Cedar Rapids Approach",
       "callsign": "CID_N_APP",
+      "colorSet": "tcw",
       "areaId": "01H5FRS4KK02XSZX5GGVJMPWQB",
       "tcpId": "01K2NF1DXNPBXE6MM5WQ9HJSCM",
       "tcp": "1N",
@@ -118,6 +120,7 @@
       "name": "Ground",
       "radioName": "Dubuque Ground",
       "callsign": "DBQ_GND",
+      "colorSet": "tdw",
       "areaId": "01JJ85B3AAV812K11DX3JVP5QV",
       "tcpId": "01K2NF1DXNEATZ8FGHS4V191FV",
       "tcp": "1Q",
@@ -134,6 +137,7 @@
       "name": "Local",
       "radioName": "Dubuque Tower",
       "callsign": "DBQ_TWR",
+      "colorSet": "tdw",
       "areaId": "01JJ85B3AAV812K11DX3JVP5QV",
       "tcpId": "01K2NF1DXNEATZ8FGHS4V191FV",
       "tcp": "1Q",
@@ -150,6 +154,7 @@
       "name": "South Approach",
       "radioName": "Cedar Rapids Approach",
       "callsign": "CID_S_APP",
+      "colorSet": "tcw",
       "areaId": "01H5FRS4KK02XSZX5GGVJMPWQB",
       "tcpId": "01K2NF1DXNTT1P57SGNZ88K3XG",
       "tcp": "1S",
@@ -247,6 +252,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ]
     },
@@ -303,6 +310,8 @@
         8
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

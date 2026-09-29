@@ -42,8 +42,7 @@
       "subset": 1,
       "sectorId": "T",
       "parentTcpId": "01K2NF1E0VJSA1JD84DTBQ105W",
-      "parentTcp": "1E",
-      "terminalSector": "A"
+      "parentTcp": "1E"
     },
     {
       "id": "01K2NF1E0VP811Z4DVGA1RDZ8F",
@@ -62,6 +61,7 @@
       "name": "East Approach",
       "radioName": "Wilmington Approach",
       "callsign": "ILM_E_APP",
+      "colorSet": "tcw",
       "areaId": "01HA82TV5MZGS3D17XM6H3EJG9",
       "tcpId": "01K2NF1E0VJSA1JD84DTBQ105W",
       "tcp": "1E",
@@ -78,6 +78,7 @@
       "name": "Local",
       "radioName": "Wilmington Tower",
       "callsign": "ILM_TWR",
+      "colorSet": "tdw",
       "areaId": "01HA82TV5MZGS3D17XM6H3EJG9",
       "tcpId": "01K2NF1E0VRPVAZVC714ZG7EMZ",
       "tcp": "1T",
@@ -94,6 +95,7 @@
       "name": "West Approach",
       "radioName": "Wilmington Approach",
       "callsign": "ILM_W_APP",
+      "colorSet": "tcw",
       "areaId": "01HA82TV5MZGS3D17XM6H3EJG9",
       "tcpId": "01K2NF1E0VP811Z4DVGA1RDZ8F",
       "tcp": "1W",
@@ -160,6 +162,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

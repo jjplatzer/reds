@@ -78,6 +78,7 @@
       "name": "East Approach",
       "radioName": "Gulfport Approach",
       "callsign": "GPT_E_APP",
+      "colorSet": "tcw",
       "areaId": "01GZTBCVRVT3C8C5P1PQB80HD1",
       "tcpId": "01K2NF1CDRZG1C4K48QVX9D1KD",
       "tcp": "1E",
@@ -94,6 +95,7 @@
       "name": "Local",
       "radioName": "Keesler Tower",
       "callsign": "BIX_TWR",
+      "colorSet": "tdw",
       "areaId": "01GZTBCVRVT3C8C5P1PQB80HD1",
       "tcpId": "01K2NF1CDRTHXDSSZEMDBCQBF3",
       "tcp": "1K",
@@ -110,6 +112,7 @@
       "name": "Tower",
       "radioName": "Gulfport Tower",
       "callsign": "GPT_TWR",
+      "colorSet": "tdw",
       "areaId": "01GZTBCVRVT3C8C5P1PQB80HD1",
       "tcpId": "01K2NF1CDRB13JV8FJ0BSWEZMW",
       "tcp": "1L",
@@ -126,6 +129,7 @@
       "name": "West Approach",
       "radioName": "Gulfport Approach",
       "callsign": "GPT_W_APP",
+      "colorSet": "tcw",
       "areaId": "01GZTBCVRVT3C8C5P1PQB80HD1",
       "tcpId": "01K2NF1CDRPVKEG2VA5CQMR5G5",
       "tcp": "1W",
@@ -210,6 +214,7 @@
         31,
         33,
         35,
+        36,
         8,
         10,
         12,
@@ -224,7 +229,8 @@
         30,
         32,
         34,
-        36
+        36,
+        37
       ]
     }
   ],

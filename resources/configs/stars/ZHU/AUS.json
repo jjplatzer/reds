@@ -157,6 +157,7 @@
       "name": "East Radar",
       "radioName": "Austin Approach",
       "callsign": "AUS_E_APP",
+      "colorSet": "tcw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDQKK55WM02GW6MGM76",
       "tcp": "1E",
@@ -173,6 +174,7 @@
       "name": "Final Approach",
       "radioName": "Austin Approach",
       "callsign": "AUS_F_APP",
+      "colorSet": "tcw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDRC5NCS536V7CX9JP7",
       "tcp": "1F",
@@ -189,6 +191,7 @@
       "name": "Local",
       "radioName": "Georgetown Tower",
       "callsign": "GTU_TWR",
+      "colorSet": "tdw",
       "areaId": "01H0E7AWC65EGPVF1QKCY626DD",
       "tcpId": "01K2NF1CDRPQJEN2ZNAGZZWY3T",
       "tcp": "1G",
@@ -205,6 +208,7 @@
       "name": "Local",
       "radioName": "San Marcos Tower",
       "callsign": "HYI_TWR",
+      "colorSet": "tdw",
       "areaId": "01H0E7X4RPH2XVNDTWMP63EWEG",
       "tcpId": "01K2NF1CDRTNK571PFZHZZMZTM",
       "tcp": "1H",
@@ -221,6 +225,7 @@
       "name": "Longhorn Sector",
       "radioName": "Austin Approach",
       "callsign": "AUS_L_APP",
+      "colorSet": "tcw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDRGGMQ2G883KT6YVDG",
       "tcp": "1L",
@@ -237,6 +242,7 @@
       "name": "Rodeo Sector",
       "radioName": "Austin Approach",
       "callsign": "AUS_R_APP",
+      "colorSet": "tcw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDRHQPHH0K92R99406A",
       "tcp": "1R",
@@ -253,6 +259,7 @@
       "name": "Local East",
       "radioName": "Austin Tower",
       "callsign": "AUS_E_TWR",
+      "colorSet": "tdw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDRBZDAB7RDECMPR7EW",
       "tcp": "1T",
@@ -269,6 +276,7 @@
       "name": "West Radar",
       "radioName": "Austin Approach",
       "callsign": "AUS_W_APP",
+      "colorSet": "tcw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDR0EPDAPPYV0QN33DK",
       "tcp": "1W",
@@ -285,6 +293,7 @@
       "name": "Local West",
       "radioName": "Austin Tower",
       "callsign": "AUS_W_TWR",
+      "colorSet": "tdw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDRSQ4NM2DDWZMHXJ7T",
       "tcp": "1X",
@@ -371,6 +380,7 @@
         null,
         null,
         28,
+        31,
         54,
         56,
         58,
@@ -385,7 +395,8 @@
         null,
         null,
         null,
-        30
+        30,
+        36
       ]
     },
     {
@@ -441,6 +452,8 @@
         2
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,
@@ -526,6 +539,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

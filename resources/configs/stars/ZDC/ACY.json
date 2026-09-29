@@ -62,6 +62,7 @@
       "name": "North Radar",
       "radioName": "Atlantic City Approach",
       "callsign": "ACY_N_APP",
+      "colorSet": "tcw",
       "areaId": "01GXEJHB6M8E68ARAPPV33Z8VW",
       "tcpId": "01K2NF1E0T1CDM88YA9664KMT9",
       "tcp": "1N",
@@ -78,6 +79,7 @@
       "name": "South Radar",
       "radioName": "Atlantic City Approach",
       "callsign": "ACY_S_APP",
+      "colorSet": "tcw",
       "areaId": "01GXEJHB6M8E68ARAPPV33Z8VW",
       "tcpId": "01K2NF1E0TGKP574Z4TW97V95K",
       "tcp": "1S",
@@ -94,6 +96,7 @@
       "name": "Local",
       "radioName": "Atlantic City Tower",
       "callsign": "ACY_TWR",
+      "colorSet": "tdw",
       "areaId": "01GXEJHB6M8E68ARAPPV33Z8VW",
       "tcpId": "01K2NF1E0T9VPAQBRAR79Y7V5M",
       "tcp": "1Z",
@@ -159,6 +162,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

@@ -45,6 +45,7 @@
       "name": "Approach",
       "radioName": "Selfridge Approach",
       "callsign": "MTC_APP",
+      "colorSet": "dod",
       "areaId": "01JPJJAB67BX76FWX91V5SEP3V",
       "tcpId": "01K2NF1E63A4F4MSZV354VJ7R7",
       "tcp": "1A",
@@ -61,6 +62,7 @@
       "name": "Local Control",
       "radioName": "Selfridge Tower",
       "callsign": "MTC_TWR",
+      "colorSet": "tdw",
       "areaId": "01JPJJAB67BX76FWX91V5SEP3V",
       "tcpId": "01K2NF1E635FK545Z4QXJCAQ6B",
       "tcp": "1T",
@@ -127,6 +129,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

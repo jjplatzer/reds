@@ -78,13 +78,17 @@
       "id": "01K2NF1E638JMM2DQBMYX8K0NF",
       "code": "1T",
       "subset": 1,
-      "sectorId": "T"
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1E63HN4WNYCQR0E582F3",
+      "parentTcp": "1A"
     },
     {
       "id": "01K2NF1E63S8QEYV3BC8XY6R8P",
       "code": "2T",
       "subset": 2,
-      "sectorId": "T"
+      "sectorId": "T",
+      "parentTcpId": "01K2NF1E638JMM2DQBMYX8K0NF",
+      "parentTcp": "1T"
     }
   ],
   "controlPositions": [
@@ -94,6 +98,7 @@
       "name": "Approach",
       "radioName": "Johnstown Approach",
       "callsign": "JST_APP",
+      "colorSet": "dod",
       "areaId": "01JPQA96YNJV0C7FADSX8GMMH7",
       "tcpId": "01K2NF1E63HN4WNYCQR0E582F3",
       "tcp": "1A",
@@ -110,6 +115,7 @@
       "name": "Tower",
       "radioName": "Johnstown Tower",
       "callsign": "JST_TWR",
+      "colorSet": "tdw",
       "areaId": "01JPQB5YS1439ZDJY5CQ9WHHQJ",
       "tcpId": "01K2NF1E638JMM2DQBMYX8K0NF",
       "tcp": "1T",
@@ -126,6 +132,7 @@
       "name": "Ground",
       "radioName": "Palmer Ground",
       "callsign": "LBE_GND",
+      "colorSet": "tdw",
       "areaId": "01K0537A854EEM44R681RC5NMJ",
       "tcpId": "01K2NF1E63S8QEYV3BC8XY6R8P",
       "tcp": "2T",
@@ -142,6 +149,7 @@
       "name": "Local",
       "radioName": "Palmer Tower",
       "callsign": "LBE_TWR",
+      "colorSet": "tdw",
       "areaId": "01K0537A854EEM44R681RC5NMJ",
       "tcpId": "01K2NF1E63S8QEYV3BC8XY6R8P",
       "tcp": "2T",
@@ -207,6 +215,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

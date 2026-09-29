@@ -43,6 +43,7 @@
       "name": "Departure",
       "radioName": "Cairns Departure",
       "callsign": "OZR_DEP",
+      "colorSet": "dod",
       "areaId": "01HAYVPMDZ6JFT6SAZ9WRGCRW2",
       "tcpId": "01K2NF1DFEM6GHJT34SB49623X",
       "tcp": "1O",
@@ -59,6 +60,7 @@
       "name": "Approach",
       "radioName": "Cairns Approach",
       "callsign": "OZR_APP",
+      "colorSet": "dod",
       "areaId": "01HAYVPMDZ6JFT6SAZ9WRGCRW2",
       "tcpId": "01K2NF1DFEND62EQ1PF0QVFSB7",
       "tcp": "1Z",
@@ -124,6 +126,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

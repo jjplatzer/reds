@@ -50,6 +50,7 @@
       "name": "Approach",
       "radioName": "Dover Approach",
       "callsign": "DOV_APP",
+      "colorSet": "dod",
       "areaId": "01H1F24JEJGND780Z6QGF7855P",
       "tcpId": "01K2NF1E0T2H6QFZ8DKC4GEEDN",
       "tcp": "1A",
@@ -66,6 +67,7 @@
       "name": "Local",
       "radioName": "Dover Tower",
       "callsign": "DOV_TWR",
+      "colorSet": "tdw",
       "areaId": "01H1F24JEJGND780Z6QGF7855P",
       "tcpId": "01K2NF1E0TAJZNX1127KT5SZQY",
       "tcp": "1Z",
@@ -131,6 +133,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,
