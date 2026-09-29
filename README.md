@@ -77,4 +77,4 @@ USE_PUBLIC_SERVER=false
 
 ### Documentation
 
-ASDE-X and ERAM are implemented based on [Virtual NAS documentation](https://docs.virtualnas.net/crc/) and STARS is based on the TI 6191.409, Rev. 30.
+ASDE-X and ERAM are based on [CRC](https://docs.virtualnas.net/crc/) and STARS is based on the TI 6191.409, Rev. 30 and [vice](https://pharr.org/vice/).
