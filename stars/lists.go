@@ -7,6 +7,7 @@ import (
 	"time"
 
 	redsmath "github.com/juliusplatzer/reds/math"
+	redsnet "github.com/juliusplatzer/reds/net"
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/renderer"
 )
@@ -536,6 +537,209 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		renderer.ReturnTextDrawBuilder(td)
 	}
 
+	cb.DisableScissor()
+}
+
+// towerListAirports resolves the three tower-list slots REDS can derive from
+// the current CRC-generated adaptation. Real STARS carries an explicit adapted
+// tower-list identifier/airport assignment; crc2reds does not export that
+// field yet. Until it does, use the area's adapted underlying-airport order,
+// restricted to airports for which the facility exposes a Tower position.
+// This preserves a stable per-position assignment and avoids manufacturing
+// tower lists for small non-towered underlying airports. VICE likewise limits
+// the display to three tower lists.
+func (p *STARSPane) towerListAirports() []string {
+	if p == nil {
+		return nil
+	}
+
+	towered := make(map[string]bool)
+	for _, position := range p.config.Facility.ControlPositions {
+		callsign := strings.ToUpper(strings.TrimSpace(position.Callsign))
+		name := strings.ToUpper(strings.TrimSpace(position.Name + " " + position.RadioName))
+		if !strings.Contains(callsign, "_TWR") && !strings.Contains(name, "TOWER") {
+			continue
+		}
+		airport := starsAirportDisplayID(strings.ToUpper(strings.TrimSpace(position.PhysicalFacility)))
+		if airport != "" {
+			towered[airport] = true
+		}
+	}
+
+	db, dbErr := loadSTARSAirportDatabase()
+	seen := make(map[string]bool)
+	var out []string
+	appendAirport := func(raw string, requireTower bool) {
+		if len(out) >= 3 {
+			return
+		}
+		airport := starsAirportDisplayID(strings.ToUpper(strings.TrimSpace(raw)))
+		if airport == "" || seen[airport] || (requireTower && len(towered) != 0 && !towered[airport]) {
+			return
+		}
+		if dbErr == nil {
+			if _, ok := db.positionByID[airport]; !ok {
+				return
+			}
+		}
+		seen[airport] = true
+		out = append(out, airport)
+	}
+
+	for _, airport := range p.config.Area.UnderlyingAirports {
+		appendAirport(airport, true)
+	}
+	// A handful of adaptations do not expose Tower positions in the same child
+	// facility even though the area still has adapted airports. Keep the feature
+	// useful in that case without changing the stable underlying-airport order.
+	if len(out) == 0 {
+		for _, airport := range p.config.Area.UnderlyingAirports {
+			appendAirport(airport, false)
+		}
+	}
+	return out
+}
+
+// towerListIndex maps the operator-entered tower-list identifier to one of the
+// three local list slots. The operator manual makes this a site-adapted 1-3
+// alphanumeric identifier; CRC's explicit identifier is not exported by
+// crc2reds yet. VICE uses 1/2/3 for the three slots, so REDS uses those same
+// identifiers until the real adaptation is available.
+func (p *STARSPane) towerListIndex(identifier string) (int, bool) {
+	identifier = strings.ToUpper(strings.TrimSpace(identifier))
+	airports := p.towerListAirports()
+	if len(identifier) != 1 || identifier[0] < '1' || identifier[0] > '3' {
+		return 0, false
+	}
+	idx := int(identifier[0] - '1')
+	return idx, idx < len(airports)
+}
+
+func towerListArrivalAirport(target *redsnet.TaisTarget) string {
+	if target == nil || target.FlightPlan == nil || target.FlightPlan.Deleted || target.FlightPlan.Suspended {
+		return ""
+	}
+	if taisFlightPlanIsDeparture(target) {
+		return ""
+	}
+	if target.EnhancedData != nil {
+		if airport := starsAirportDisplayID(strings.ToUpper(strings.TrimSpace(target.EnhancedData.DestinationAirport))); airport != "" {
+			return airport
+		}
+	}
+	return starsAirportDisplayID(strings.ToUpper(strings.TrimSpace(target.FlightPlan.Airport)))
+}
+
+type towerListEntry struct {
+	distance float64
+	acid     string
+	acType   string
+}
+
+func (p *STARSPane) towerListEntries(airport string, snapshot redsnet.TaisSnapshot) []towerListEntry {
+	db, err := loadSTARSAirportDatabase()
+	if err != nil {
+		return nil
+	}
+	airport = starsAirportDisplayID(strings.ToUpper(strings.TrimSpace(airport)))
+	airportPos, ok := db.positionByID[airport]
+	if !ok {
+		return nil
+	}
+
+	entries := make([]towerListEntry, 0)
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if towerListArrivalAirport(target) != airport || !validTargetLatLon(target.Track.Lat, target.Track.Lon) {
+			continue
+		}
+		acid := strings.ToUpper(strings.TrimSpace(target.FlightPlan.ACID))
+		if acid == "" {
+			continue
+		}
+		entries = append(entries, towerListEntry{
+			distance: starsRBLNMDistance(airportPos, configPoint{Lat: target.Track.Lat, Lon: target.Track.Lon}),
+			acid:     acid,
+			acType:   strings.ToUpper(strings.TrimSpace(target.FlightPlan.ACType)),
+		})
+	}
+
+	// VICE's STARS implementation orders each Tower list by increasing
+	// distance to the arrival airport. Use ACID as a deterministic tie-breaker;
+	// the real operator manual does not specify a secondary ordering rule.
+	sort.SliceStable(entries, func(i, j int) bool {
+		if entries[i].distance != entries[j].distance {
+			return entries[i].distance < entries[j].distance
+		}
+		return entries[i].acid < entries[j].acid
+	})
+	return entries
+}
+
+func (p *STARSPane) towerListText(airport string, lines int, snapshot redsnet.TaisSnapshot) string {
+	if lines < 1 {
+		return ""
+	}
+	entries := p.towerListEntries(airport, snapshot)
+	var text strings.Builder
+	fmt.Fprintf(&text, "%s TOWER\n", airport)
+	if len(entries) > lines {
+		fmt.Fprintf(&text, "MORE: %d/%d\n", lines, len(entries))
+	}
+	for i := 0; i < len(entries) && i < lines; i++ {
+		// VICE's default Tower-list format is [ACID] [ACTYPE]: ACID occupies
+		// seven columns and aircraft type four, right aligned.
+		fmt.Fprintf(&text, "%-7s %4s\n", entries[i].acid, entries[i].acType)
+	}
+	return strings.TrimRight(text.String(), "\n")
+}
+
+func (p *STARSPane) drawTowerLists(ctx *panes.Context, zcb *renderer.ZCmdBuffer, snapshot redsnet.TaisSnapshot) {
+	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
+		return
+	}
+	airports := p.towerListAirports()
+	if len(airports) == 0 {
+		return
+	}
+
+	w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+	if w <= 0 || h <= 0 {
+		return
+	}
+	fontSize := p.listFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
+	if texture == 0 {
+		return
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zLists)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+
+	ps := p.currentPrefs()
+	td := renderer.GetTextDrawBuilder()
+	td.SetFont(p.systemFont)
+	for i, airport := range airports {
+		if i >= len(ps.TowerLists) || !ps.TowerLists[i].Visible {
+			continue
+		}
+		text := p.towerListText(airport, ps.TowerLists[i].Lines, snapshot)
+		if text == "" {
+			continue
+		}
+		td.AddText(text, redsmath.Vec2{
+			X: ps.TowerLists[i].Position[0] * w,
+			Y: ps.TowerLists[i].Position[1] * h,
+		}, renderer.TextStyle{
+			Size:  fontSize,
+			Color: ps.Brightness.Lists.ScaleRGB(p.colors.List).ToRGBA(),
+		})
+	}
+	td.GenerateCommands(cb, texture)
+	renderer.ReturnTextDrawBuilder(td)
 	cb.DisableScissor()
 }
 

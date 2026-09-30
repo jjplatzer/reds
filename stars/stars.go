@@ -472,6 +472,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
+	p.drawTowerLists(ctx, zcb, targets)
 	p.drawVideoMapsList(ctx, zcb)
 	p.applyCursor(ctx)
 	p.renderCursor(ctx, zcb)
@@ -823,6 +824,43 @@ func (p *STARSPane) consumeMouseEvents(
 			p.resetCommand()
 		}
 		return
+	}
+
+	// TI 6191.409 Rev. 30, 4.9.7 Move Tower list. P<id> remains in
+	// the Preview Area while the operator slews to the desired top-left corner;
+	// a left-trackball click moves the list and also shows it if it was hidden.
+	// Pressing ENTER instead is handled by cmdsetup.go as the 4.9.12
+	// hide/show command.
+	if p.commandMode == CommandModeMultiFunc {
+		command := strings.ToUpper(strings.TrimSpace(p.multiFuncPrefix + p.commandInput))
+		if strings.HasPrefix(command, "P") && len(command) >= 2 && len(command) <= 4 &&
+			!strings.ContainsAny(command, " \t\r\n") {
+			identifier := command[1:]
+			validID := true
+			for _, r := range identifier {
+				if (r < 'A' || r > 'Z') && (r < '0' || r > '9') {
+					validID = false
+					break
+				}
+			}
+			if validID && mouse.WasPressed(platform.MouseButtonLeft) {
+				idx, ok := p.towerListIndex(identifier)
+				if !ok {
+					p.commandResponse = ErrSTARSIllegalFunction.Error()
+					return
+				}
+				w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+				if w > 0 && h > 0 {
+					ps.TowerLists[idx].Position = [2]float32{
+						mouse.Pos.X / w,
+						mouse.Pos.Y / h,
+					}
+					ps.TowerLists[idx].Visible = true
+				}
+				p.resetCommand()
+				return
+			}
+		}
 	}
 
 	// TI 6191.409 Rev. 30, 6.1.2 Define user-specified range ring
