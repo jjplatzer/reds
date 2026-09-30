@@ -97,6 +97,12 @@ type STARSPane struct {
 	spcAcknowledged       map[string]spcAcknowledgement
 	spcSystemAcknowledged map[string]spcSystemAcknowledgement
 
+	// Requested-altitude display state is local to this TCW/TDW. The global
+	// pointer is nil until the controller overrides the site default with RA;
+	// per-track entries implement RA/RAE/RAI followed by a slew.
+	requestedAltitudeDisplayOverride *bool
+	requestedAltitudeTrackOverrides  map[string]requestedAltitudeDisplayOverride
+
 	// rangeBearingLines are the operator-created *T Range Bearing Lines from
 	// TI 6191.409 6.7. wipRBL holds the first endpoint while STARS waits for
 	// the second endpoint. RBL state is intentionally transient display state,
@@ -444,6 +450,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.pruneLDBBeaconReadouts(targets, now)
 	p.pruneTPAState(targets)
 	p.pruneSPCAcknowledgements(targets)
+	p.pruneRequestedAltitudeDisplayOverrides(targets)
 	p.consumeMouseEvents(ctx, transforms, targets)
 
 	p.drawNexrad(ctx, zcb, transforms)
@@ -665,6 +672,23 @@ func (p *STARSPane) consumeMouseEvents(
 		}
 		p.resetCommand()
 		return
+	}
+
+	// TI 6191.409 Rev. 30, 6.13.24: <MULTI FUNC>, <R>, <A>,
+	// optionally <E>/<I>, then slew + left trackball controls requested-altitude
+	// display for one Full data block. The keyboard-only all-FDB forms are
+	// registered in cmdtools.go.
+	if p.commandMode == CommandModeMultiFunc && mouse.WasReleased(platform.MouseButtonLeft) {
+		command := strings.ToUpper(p.multiFuncPrefix + p.commandInput)
+		if command == "RA" || command == "RAE" || command == "RAI" {
+			target := closestSlewTarget(targets, mouse.Pos, transforms)
+			if err := p.applyRequestedAltitudeDisplayCommand(target, command); err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+			p.resetCommand()
+			return
+		}
 	}
 
 	// TI 6191.409 Rev. 30, 6.13.1 / 6.13.17 Specify data block

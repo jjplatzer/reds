@@ -573,7 +573,7 @@ func (p *STARSPane) targetFullDatablockLine2(target *redsnet.TaisTarget, clockPh
 	if target == nil {
 		return ""
 	}
-	return p.targetFullDatablockField34(target, clockPhase) + targetFullDatablockField5(target, clockPhase)
+	return p.targetFullDatablockField34(target, clockPhase) + p.targetFullDatablockField5(target, clockPhase)
 }
 
 // targetPartialDatablockLine1 formats Figure 2-22's single visible data row.
@@ -663,7 +663,7 @@ func normalizeTaisAirport(airport string) string {
 	return airport
 }
 
-func targetFullDatablockField5(target *redsnet.TaisTarget, clockPhase int) string {
+func (p *STARSPane) targetFullDatablockField5(target *redsnet.TaisTarget, clockPhase int) string {
 	if target == nil || target.FlightPlan == nil {
 		return ""
 	}
@@ -675,17 +675,30 @@ func targetFullDatablockField5(target *redsnet.TaisTarget, clockPhase int) strin
 			targetDatablockCategory(target.FlightPlan)
 	}
 
+	actype := func() string {
+		value := strings.ToUpper(strings.TrimSpace(target.FlightPlan.ACType))
+		if target.FlightPlan.RNAV != 0 && value != "" {
+			value += "^"
+		}
+		return value
+	}
+
 	switch clockPhase {
 	case 1:
 		return targetDatablockGroundSpeed(target.Track.VX, target.Track.VY) +
 			targetDatablockFlightRulesIndicator(target.FlightPlan) +
 			targetDatablockCategory(target.FlightPlan)
-	case 2, 3, 4:
-		actype := strings.ToUpper(strings.TrimSpace(target.FlightPlan.ACType))
-		if target.FlightPlan.RNAV != 0 && actype != "" {
-			actype += "^"
+	case 3:
+		// Figure 2-20 and 6.13.23/24: requested altitude timeshares in
+		// field 5 with groundspeed and aircraft type. REDS currently renders
+		// one-character position symbols, so the manual's one-character-TCP
+		// form applies: R followed by the requested altitude in hundreds of feet.
+		if p.displayRequestedAltitudeForTarget(target) {
+			return fmt.Sprintf("R%03d", target.FlightPlan.RequestedAltitude/100)
 		}
-		return actype
+		return actype()
+	case 2, 4:
+		return actype()
 	default:
 		return targetDatablockGroundSpeed(target.Track.VX, target.Track.VY) +
 			targetDatablockFlightRulesIndicator(target.FlightPlan) +
