@@ -187,7 +187,7 @@ func (p *STARSPane) drawDatablocks(
 			}
 			line1 := targetDatablockACID(target)
 			line2 := p.targetFullDatablockLine2(target, clockPhase)
-			line3 := targetFullDatablockLine3(target, direction)
+			line3 := p.targetFullDatablockLine3(target, direction, clockPhase)
 			p.addDatablockLine(td, line1, anchor, direction, 0, 0, lineHeight, style)
 			p.addDatablockLine(td, line2, anchor, direction, 1, 0, lineHeight, style)
 			p.addDatablockLine(td, line3, anchor, direction, 2, 0, lineHeight, style)
@@ -594,22 +594,60 @@ func targetPartialDatablockLine1(target *redsnet.TaisTarget, clockPhase int) str
 	return padDatablockField(left, 3) + " " + targetDatablockGroundSpeed(target.Track.VX, target.Track.VY)
 }
 
-// targetFullDatablockLine3 implements the assigned-altitude portion of Figure
-// 2-20 field 7. STARS prefixes the value with 'A' and displays hundreds of
-// feet. The leading columns reproduce VICE's field-6/field-7 placement: for
-// N-through-SE leaders field 7 is indented one extra character; for the
-// right-justified S-through-NW leaders it is not.
-func targetFullDatablockLine3(target *redsnet.TaisTarget, direction leaderLineDirection) string {
-	if target == nil || target.FlightPlan == nil || target.FlightPlan.AssignedAltitude == 0 {
+// targetFullDatablockATPAField implements the INTRAIL DIST portion of Full
+// Data Block field 6. TI 6191.409 Figure 6-25 displays actual in-trail distance
+// to hundredths of a nautical mile. VICE additionally presents NOWGT when the
+// paired track lacks a CWT/weight category; retain that behavior because STARS
+// cannot establish the corresponding ATPA separation requirement.
+func (p *STARSPane) targetFullDatablockATPAField(target *redsnet.TaisTarget, clockPhase int) string {
+	if p == nil || target == nil || target.FlightPlan == nil || !p.currentPrefs().DisplayATPAInTrailDist {
+		return ""
+	}
+	// VICE mirrors the STARS field-6 phase schedule: ATPA data has priority
+	// in phases 1 and 2, remains available behind beacon data in phase 3,
+	// and field 6 is blank in phase 4. REDS does not yet render the FDB
+	// beacon/mismatch alternatives, so phases 1-3 all resolve to ATPA here.
+	if clockPhase == 4 {
+		return ""
+	}
+	key := targetDisplayStateKey(target)
+	state, ok := p.atpaTrackState(key)
+	if !ok || state.InTrailDistance <= 0 || state.Ineligible {
+		return ""
+	}
+	if p.tpaState(key).InhibitInTrailDistance {
+		return ""
+	}
+	if strings.TrimSpace(target.FlightPlan.Category) == "" {
+		return "NOWGT"
+	}
+	return fmt.Sprintf("%.2f", state.InTrailDistance)
+}
+
+// targetFullDatablockLine3 implements Figure 2-20 fields 6 and 7. Field 6 is
+// ATPA/beacon timeshared data; REDS currently supplies ATPA in-trail distance.
+// Field 7 is assigned altitude. The field-7 indentation follows VICE/STARS:
+// N-through-SE leaders have one separator cell between fields 6 and 7, while
+// right-justified S-through-NW leaders do not.
+func (p *STARSPane) targetFullDatablockLine3(target *redsnet.TaisTarget, direction leaderLineDirection, clockPhase int) string {
+	if target == nil || target.FlightPlan == nil {
 		return ""
 	}
 
-	text := fmt.Sprintf("A%03d", target.FlightPlan.AssignedAltitude/100)
-	leading := 5 // field 6
-	if !datablockRightJustified(direction) {
-		leading++
+	atpa := p.targetFullDatablockATPAField(target, clockPhase)
+	field6 := padDatablockField(atpa, 5)
+	if target.FlightPlan.AssignedAltitude == 0 {
+		if atpa == "" {
+			return ""
+		}
+		return strings.TrimRight(field6, " ")
 	}
-	return strings.Repeat(" ", leading) + text
+
+	assigned := fmt.Sprintf("A%03d", target.FlightPlan.AssignedAltitude/100)
+	if datablockRightJustified(direction) {
+		return field6 + assigned
+	}
+	return field6 + " " + assigned
 }
 
 // TAIS flightPlan.type maps to the STARS flight-status field. Current SimpleXML

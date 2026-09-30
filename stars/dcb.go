@@ -432,8 +432,8 @@ func (d *dcbDrawer) drawAuxPage() {
 }
 
 // drawTPAPage draws the five-button TPA / ATPA submenu from TI 6191.409
-// Rev. 30 Figure 6-27. ATPA processing is deliberately not enabled yet, so
-// only A/TPA MILEAGE and DONE are selectable in this first TPA implementation.
+// Rev. 30 Figure 6-27. REDS currently implements ATPA INTRAIL DIST; alert and
+// monitor cones remain disabled until the warning/alert stage is added.
 func (d *dcbDrawer) drawTPAPage() {
 	p := d.pane
 	ps := p.currentPrefs()
@@ -454,8 +454,16 @@ func (d *dcbDrawer) drawTPAPage() {
 		}
 	})
 
-	// These controls belong to ATPA and become selectable when ATPA is added.
-	d.button("INTRAIL\nDIST\nINHIBTD", buttonFull|buttonDisabled, false, nil)
+	atpaEnabled := p.atpaEnabled()
+	intrailFlags := buttonFull
+	if !atpaEnabled {
+		intrailFlags |= buttonDisabled
+	}
+	d.button("INTRAIL\nDIST\n"+onoff(ps.DisplayATPAInTrailDist), intrailFlags, false, func() {
+		ps.DisplayATPAInTrailDist = !ps.DisplayATPAInTrailDist
+	})
+
+	// Warning/alert and monitor cones are the next ATPA stage.
 	d.button("ALERT\nCONES\nINHIBTD", buttonFull|buttonDisabled, false, nil)
 	d.button("MONITOR\nCONES\nINHIBTD", buttonFull|buttonDisabled, false, nil)
 	d.button("DONE", buttonFull, false, func() {

@@ -1275,9 +1275,10 @@ func targetCenterNearPane(ctx *panes.Context, center redsmath.Vec2, diameter flo
 const starsMaxTPAGraphics = 50
 
 type tpaTrackState struct {
-	JRingRadius float32
-	ConeLength  float32
-	DisplaySize *bool
+	JRingRadius            float32
+	ConeLength             float32
+	DisplaySize            *bool
+	InhibitInTrailDistance bool
 }
 
 func (s tpaTrackState) hasGraphic() bool {
@@ -1298,7 +1299,7 @@ func (p *STARSPane) setTPAState(key string, state tpaTrackState) {
 	if p.tpaTracks == nil {
 		p.tpaTracks = make(map[string]tpaTrackState)
 	}
-	if !state.hasGraphic() && state.DisplaySize == nil {
+	if !state.hasGraphic() && state.DisplaySize == nil && !state.InhibitInTrailDistance {
 		delete(p.tpaTracks, key)
 		return
 	}

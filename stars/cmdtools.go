@@ -177,6 +177,22 @@ func init() {
 		return setAllTPASize(p, false), nil
 	})
 
+	// TI 6191.409 Rev. 30, 6.21.17. The all-track INTRAIL DIST setting
+	// affects current and future qualifying Full Data Blocks at this TCW/TDW.
+	setAllATPAInTrail := func(p *STARSPane, enabled bool) (CommandStatus, error) {
+		if !p.atpaEnabled() {
+			return CommandStatus{}, ErrSTARSIllegalFunction
+		}
+		p.currentPrefs().DisplayATPAInTrailDist = enabled
+		return CommandStatus{}, nil
+	}
+	registerCommand(CommandModeNone, "*DE", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return setAllATPAInTrail(p, true)
+	})
+	registerCommand(CommandModeNone, "*DI", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return setAllATPAInTrail(p, false)
+	})
+
 }
 
 func parseTPAImpliedCommand(input string) (op byte, distance float32, sizeMode byte, recognized bool, err error) {
@@ -185,6 +201,12 @@ func parseTPAImpliedCommand(input string) (op byte, distance float32, sizeMode b
 		return 0, 0, 0, false, nil
 	}
 
+	if input == "*DE" {
+		return 'E', 0, 0, true, nil
+	}
+	if input == "*DI" {
+		return 'I', 0, 0, true, nil
+	}
 	if input == "*D+" {
 		return 'D', 0, 0, true, nil
 	}
@@ -276,6 +298,27 @@ func (p *STARSPane) applyTPAImpliedCommand(target *redsnet.TaisTarget, op byte, 
 			v := !current
 			state.DisplaySize = &v
 		}
+		p.setTPAState(key, state)
+		return nil
+
+	case 'E', 'I':
+		// 6.21.16: ATPA must be enabled, and the selected track must be
+		// associated, currently qualifying inside an ATPA volume, and
+		// displaying a Full Data Block.
+		if !p.atpaEnabled() {
+			return ErrSTARSIllegalFunction
+		}
+		if target.FlightPlan == nil {
+			return ErrSTARSIllegalTrack
+		}
+		if _, ok := p.atpaTrackState(key); !ok {
+			return ErrSTARSIllegalTrack
+		}
+		dbType, _, _ := p.targetDatablockPresentation(target)
+		if dbType != targetDatablockFull {
+			return ErrSTARSIllegalTrack
+		}
+		state.InhibitInTrailDistance = op == 'I'
 		p.setTPAState(key, state)
 		return nil
 	}

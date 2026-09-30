@@ -683,9 +683,6 @@ func (p *STARSPane) towerListText(airport string, lines int, snapshot redsnet.Ta
 	entries := p.towerListEntries(airport, snapshot)
 	var text strings.Builder
 	fmt.Fprintf(&text, "%s TOWER\n", airport)
-	if len(entries) > lines {
-		fmt.Fprintf(&text, "MORE: %d/%d\n", lines, len(entries))
-	}
 	for i := 0; i < len(entries) && i < lines; i++ {
 		// VICE's default Tower-list format is [ACID] [ACTYPE]: ACID occupies
 		// seven columns and aircraft type four, right aligned.

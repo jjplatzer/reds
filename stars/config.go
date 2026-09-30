@@ -24,8 +24,39 @@ type facilityConfig struct {
 	DefaultCenter    configPoint             `json:"defaultCenter"`
 	Areas            []areaConfig            `json:"areas"`
 	ControlPositions []controlPositionConfig `json:"controlPositions"`
+	ATPAVolumes      []atpaVolumeConfig      `json:"atpaVolumes"`
 	MapGroups        []mapGroupConfig        `json:"mapGroups"`
 	VideoMaps        []videoMapConfig        `json:"videoMaps"`
+}
+
+// atpaVolumeConfig is the CRC/vNAS STARS ATPA approach-volume adaptation
+// exported by crc2reds. Widths are feet, Length is nautical miles, and the
+// heading is magnetic, matching the vNAS facility model. Enum-valued fields
+// remain raw JSON so REDS accepts both the string and numeric encodings seen
+// in CRC/vNAS data.
+type atpaVolumeConfig struct {
+	ID                           string                 `json:"id"`
+	AirportID                    string                 `json:"airportId"`
+	VolumeID                     string                 `json:"volumeId"`
+	Name                         string                 `json:"name"`
+	RunwayThreshold              configPoint            `json:"runwayThreshold"`
+	Ceiling                      int                    `json:"ceiling"`
+	Floor                        int                    `json:"floor"`
+	MagneticHeading              int                    `json:"magneticHeading"`
+	MaximumHeadingDeviation      int                    `json:"maximumHeadingDeviation"`
+	Length                       float64                `json:"length"`
+	WidthLeft                    int                    `json:"widthLeft"`
+	WidthRight                   int                    `json:"widthRight"`
+	TwoPointFiveApproachDistance *float64               `json:"twoPointFiveApproachDistance"`
+	TwoPointFiveApproachEnabled  bool                   `json:"twoPointFiveApproachEnabled"`
+	Scratchpads                  []atpaScratchpadConfig `json:"scratchpads"`
+	ExcludedTCPIDs               []string               `json:"excludedTcpIds"`
+}
+
+type atpaScratchpadConfig struct {
+	Entry            string          `json:"entry"`
+	ScratchPadNumber json.RawMessage `json:"scratchPadNumber"`
+	Type             json.RawMessage `json:"type"`
 }
 
 type areaConfig struct {

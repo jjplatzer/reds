@@ -120,6 +120,10 @@ type STARSPane struct {
 	// tpaTracks stores manual TPA J-Ring/Cone state local to this TCW/TDW.
 	tpaTracks map[string]tpaTrackState
 
+	// atpaTracks is rebuilt from the current TAIS snapshot and adapted ATPA
+	// approach volumes. It holds the current in-trail pairing/distance state.
+	atpaTracks map[string]atpaTrackState
+
 	// trackRepositions stores TI 6191.409 5.7.3 TRK RPOS presentation state.
 	// TAIS itself is read-only, so the local TCW/TDW snapshot is rewritten for
 	// display without mutating live feed state.
@@ -440,6 +444,9 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	targets := p.targetSnapshot()
 	now := time.Now()
 	p.updateTaisOwnership(targets, now)
+	// ATPA is system processing derived from the authoritative surveillance
+	// positions, not from any local TRK RPOS display relocation.
+	p.updateATPAInTrail(targets)
 	// TRK RPOS is local display state layered on top of the authoritative TAIS
 	// snapshot. Apply it before pruning other display-keyed state so TPA and
 	// leader-direction state can follow a repositioned Full Data Block.
@@ -733,7 +740,8 @@ func (p *STARSPane) consumeMouseEvents(
 		}
 	}
 
-	// TI 6191.409 Rev. 30, 6.21.2-6.21.10 manual TPA implied commands.
+	// TI 6191.409 Rev. 30, 6.21.2-6.21.10 manual TPA commands and
+	// 6.21.16 single-track ATPA INTRAIL DIST enable/inhibit.
 	// The keyboard portion remains in the Preview Area while the operator slews
 	// to a target and selects the left trackball button. These commands are
 	// repetitive, so a successful selection does not clear the entry.
