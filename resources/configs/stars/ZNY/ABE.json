@@ -160,6 +160,80 @@
       "freq": 120.5
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JYFKP0CRZX80M6EM3YBB88BZ",
+      "airportId": "ABE",
+      "volumeId": "ABE06",
+      "name": "ABE06 ATPA",
+      "runwayThreshold": {
+        "lat": 40.64694444,
+        "lon": -75.45055556
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 63,
+      "maximumHeadingDeviation": 90,
+      "length": 18,
+      "widthLeft": 20000,
+      "widthRight": 20000,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JYFKR1F7QHXXH4TQ1VNBTK3Z",
+      "airportId": "ABE",
+      "volumeId": "ABE13",
+      "name": "ABE13 ATPA",
+      "runwayThreshold": {
+        "lat": 40.655,
+        "lon": -75.44972222
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 135,
+      "maximumHeadingDeviation": 90,
+      "length": 18,
+      "widthLeft": 20000,
+      "widthRight": 20000,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JYFKS23ZWWGK7TCRWAZQ1AXR",
+      "airportId": "ABE",
+      "volumeId": "ABE24",
+      "name": "ABE24 ATPA",
+      "runwayThreshold": {
+        "lat": 40.66,
+        "lon": -75.42916667
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 243,
+      "maximumHeadingDeviation": 90,
+      "length": 18,
+      "widthLeft": 20000,
+      "widthRight": 20000,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JYFKT4DD4EWRYG7R27NF76N0",
+      "airportId": "ABE",
+      "volumeId": "ABE31",
+      "name": "ABE31 ATPA",
+      "runwayThreshold": {
+        "lat": 40.64638889,
+        "lon": -75.43222222
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 315,
+      "maximumHeadingDeviation": 90,
+      "length": 18,
+      "widthLeft": 20000,
+      "widthRight": 20000,
+      "twoPointFiveApproachEnabled": false
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

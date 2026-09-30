@@ -153,6 +153,184 @@
       "freq": 125.8
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JYFGAKMACYVG35QC4E9H0NYP",
+      "airportId": "FSD",
+      "volumeId": "R15",
+      "name": "RWY 15 ATPA",
+      "runwayThreshold": {
+        "lat": 43.59305556,
+        "lon": -96.74611111
+      },
+      "ceiling": 18000,
+      "floor": 0,
+      "magneticHeading": 150,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 24304,
+      "widthRight": 24304,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JYFGBPGXMY41K5X4HB1Z0CM5",
+          "tcpId": "01K2NF1D3MWQAZC55KPSPAP7RT",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGBPNG3KE6X3HTVDWEVF19",
+          "tcpId": "01K2NF1D3M87SPH21YABRKNHQN",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGBPTHFAXFRNSKW21ZKTZS",
+          "tcpId": "01K2NF1D3MFWCTRQ9PHKXFWM2J",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGBPYSQW7X2MRQSK0VMKD1",
+          "tcpId": "01K2NF1D3MX43H16S0HJ60CRBK",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYFGBVWA75NNK08XWRF6XJYG",
+      "airportId": "FSD",
+      "volumeId": "R21",
+      "name": "RWY 21 ATPA",
+      "runwayThreshold": {
+        "lat": 43.59277778,
+        "lon": -96.73416667
+      },
+      "ceiling": 18000,
+      "floor": 0,
+      "magneticHeading": 210,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 24304,
+      "widthRight": 24304,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JYFGCY9V6NHWRV9AXYRBXF2V",
+          "tcpId": "01K2NF1D3MWQAZC55KPSPAP7RT",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGCYEFSH8WG1X5C0440Z2V",
+          "tcpId": "01K2NF1D3M87SPH21YABRKNHQN",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGCYKF3JXSZK9VAS2Y5737",
+          "tcpId": "01K2NF1D3MFWCTRQ9PHKXFWM2J",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGCZ04PCQG650AA2X5H6A8",
+          "tcpId": "01K2NF1D3MX43H16S0HJ60CRBK",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYFG7TVEVPBQWZRDV07QAEBR",
+      "airportId": "FSD",
+      "volumeId": "R3",
+      "name": "RWY 3 ATPA",
+      "runwayThreshold": {
+        "lat": 43.5725,
+        "lon": -96.75361111
+      },
+      "ceiling": 18000,
+      "floor": 0,
+      "magneticHeading": 30,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 24304,
+      "widthRight": 24304,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JYFG91ZW2JKYZSBNE9FYH2RA",
+          "tcpId": "01K2NF1D3MWQAZC55KPSPAP7RT",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFG9259R4X87FTEZE4EDEWK",
+          "tcpId": "01K2NF1D3M87SPH21YABRKNHQN",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFG92AGDB0SAJCAE0B463PF",
+          "tcpId": "01K2NF1D3MFWCTRQ9PHKXFWM2J",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFG92FH0ZTMXHD69FBVSB3A",
+          "tcpId": "01K2NF1D3MX43H16S0HJ60CRBK",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYFG9B63NN2NVXYFGDMNTMWQ",
+      "airportId": "FSD",
+      "volumeId": "R33",
+      "name": "RWY 33 ATPA",
+      "runwayThreshold": {
+        "lat": 43.57333333,
+        "lon": -96.73333333
+      },
+      "ceiling": 18000,
+      "floor": 0,
+      "magneticHeading": 330,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 24304,
+      "widthRight": 24304,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JYFGA9AAC470X6NQGF0JXNW0",
+          "tcpId": "01K2NF1D3MWQAZC55KPSPAP7RT",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGA9FAMT8KEF5GAW9QG57C",
+          "tcpId": "01K2NF1D3M87SPH21YABRKNHQN",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGA9KY2W8NK4ED6374QY2M",
+          "tcpId": "01K2NF1D3MFWCTRQ9PHKXFWM2J",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGA9R549G2K1SWC9YFR7KT",
+          "tcpId": "01K2NF1D3MX43H16S0HJ60CRBK",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

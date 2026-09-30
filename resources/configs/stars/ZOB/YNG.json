@@ -148,6 +148,112 @@
       "freq": 123.45
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JYPXBNRSQE4RXF05N56444A8",
+      "airportId": "YNG",
+      "volumeId": "RWY14",
+      "name": "ATPA14",
+      "runwayThreshold": {
+        "lat": 41.27277778,
+        "lon": -80.69222222
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 143,
+      "maximumHeadingDeviation": 80,
+      "length": 11.5,
+      "widthLeft": 20000,
+      "widthRight": 20000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZ0MVMBQWSZVQB0AZHK665ZA",
+          "entry": "V14",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0MV2CK43FWGPMQXB31T27C",
+          "tcpId": "01K2NF1E631YR59PA4J5JTVCY7",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0MV2JT0AY8Z7K6GHRN86A4",
+          "tcpId": "01K2NF1E63DQKWBW2W2M704T9B",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0MV7W77Q0QBJ6K87X5PVX8",
+          "tcpId": "01K2NF1E631G08ZYNVH2HNTYAC",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYPXCZNK0CP3VT0F3N42TSCQ",
+      "airportId": "YNG",
+      "volumeId": "RWY32",
+      "name": "ATPA32",
+      "runwayThreshold": {
+        "lat": 41.25916667,
+        "lon": -80.66972222
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 323,
+      "maximumHeadingDeviation": 60,
+      "length": 11,
+      "widthLeft": 20000,
+      "widthRight": 20000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZ0MW6H7C1Y5JCJ1AR0A8VR1",
+          "entry": "V32",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JZ0MWANX42EH354Q9TA5EKTC",
+          "entry": "V23",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ0MWQPQBPX2KQMH3ANQTSZC",
+          "entry": "V05",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0MVEAGTFC54M6PP6WF445E",
+          "tcpId": "01K2NF1E631YR59PA4J5JTVCY7",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0MVEF90JF72571KJY1P8AY",
+          "tcpId": "01K2NF1E63DQKWBW2W2M704T9B",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0MVEKQD2MSMFGY26VKDVQ2",
+          "tcpId": "01K2NF1E631G08ZYNVH2HNTYAC",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

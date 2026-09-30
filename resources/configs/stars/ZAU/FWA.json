@@ -120,6 +120,208 @@
       "freq": 132.15
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JZPJGWN3EJD2PNXD4A8KPHGS",
+      "airportId": "FWA",
+      "volumeId": "14",
+      "name": "FWA 14",
+      "runwayThreshold": {
+        "lat": 40.99361111,
+        "lon": -85.20361111
+      },
+      "ceiling": 6000,
+      "floor": 0,
+      "magneticHeading": 141,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 18000,
+      "widthRight": 18000,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZQ41X751JTDJ6ET8FXT8KT3",
+          "tcpId": "01K2NF1DXNJZ251PVJCRWN3EPP",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ41XBNPDV96A3TR197BN9W",
+          "tcpId": "01K2NF1DXN9VKYX11CBRE74FRE",
+          "tcp": "1P",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ41XGE697F6HDPPS39PTKG",
+          "tcpId": "01K2NF1DXN5V7C4Y21NYJXC3Y8",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ41XN5DS055RZ7XT4FJ379",
+          "tcpId": "01K2NF1DXNX5CVY16VTJQV7NJ5",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ41XSNEJHKGPRV1T1XFCFY",
+          "tcpId": "01K2NF1DXN1CH9GBZ3CV0FXV9C",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZPJKK9BVN7V8YXP7S3STEWK",
+      "airportId": "FWA",
+      "volumeId": "23",
+      "name": "FWA 23",
+      "runwayThreshold": {
+        "lat": 40.98611111,
+        "lon": -85.1825
+      },
+      "ceiling": 6000,
+      "floor": 0,
+      "magneticHeading": 230,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 18000,
+      "widthRight": 18000,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZQ42C2EPFZ2MM1GMJ4N2HJ7",
+          "tcpId": "01K2NF1DXNJZ251PVJCRWN3EPP",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ42C5PNYEWP7RHASF0BYAJ",
+          "tcpId": "01K2NF1DXN9VKYX11CBRE74FRE",
+          "tcp": "1P",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ42C9Y5ZE9BED2J5KJR46H",
+          "tcpId": "01K2NF1DXN5V7C4Y21NYJXC3Y8",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ42CEN105KSYA428F2SPSW",
+          "tcpId": "01K2NF1DXNX5CVY16VTJQV7NJ5",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ42CJN2PCS6SRYA359ZECS",
+          "tcpId": "01K2NF1DXN1CH9GBZ3CV0FXV9C",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZPJ0KVMNWA2H4NTSPSFB9HH",
+      "airportId": "FWA",
+      "volumeId": "32",
+      "name": "FWA 32",
+      "runwayThreshold": {
+        "lat": 40.97805556,
+        "lon": -85.18305556
+      },
+      "ceiling": 6000,
+      "floor": 0,
+      "magneticHeading": 321,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 18000,
+      "widthRight": 18000,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZQ41FKDE11RG32GJ38VA8MC",
+          "tcpId": "01K2NF1DXNJZ251PVJCRWN3EPP",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ41FQNCYJFREBXDW1NW9YP",
+          "tcpId": "01K2NF1DXN9VKYX11CBRE74FRE",
+          "tcp": "1P",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ41FWNEXRZJPB52EP4MKNJ",
+          "tcpId": "01K2NF1DXN5V7C4Y21NYJXC3Y8",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ41G1XFTWFGQG1A1KXNR6N",
+          "tcpId": "01K2NF1DXNX5CVY16VTJQV7NJ5",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ41G75ZJB12FTADHZJ67R4",
+          "tcpId": "01K2NF1DXN1CH9GBZ3CV0FXV9C",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZPHZ254RRYX0VZFRGDYHEE0",
+      "airportId": "FWA",
+      "volumeId": "5",
+      "name": "FWA 5",
+      "runwayThreshold": {
+        "lat": 40.96277778,
+        "lon": -85.21277778
+      },
+      "ceiling": 6000,
+      "floor": 0,
+      "magneticHeading": 50,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 18000,
+      "widthRight": 18000,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZQ40M1EZ3K91QF72BJJCN1N",
+          "tcpId": "01K2NF1DXNJZ251PVJCRWN3EPP",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ40M6NJGGMEYG076FW9N4F",
+          "tcpId": "01K2NF1DXN9VKYX11CBRE74FRE",
+          "tcp": "1P",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ40MBEF8CFRTP3BKPJ5R99",
+          "tcpId": "01K2NF1DXN5V7C4Y21NYJXC3Y8",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ40MH5GG8C4503CK3S972H",
+          "tcpId": "01K2NF1DXNX5CVY16VTJQV7NJ5",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZQ40MMEM0BRKRWZ3JRGA3XB",
+          "tcpId": "01K2NF1DXN1CH9GBZ3CV0FXV9C",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

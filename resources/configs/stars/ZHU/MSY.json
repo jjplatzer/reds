@@ -284,6 +284,308 @@
       "freq": 125.3
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01K0CPPZRWMGAJ9H2B4DDKP4EC",
+      "airportId": "MSY",
+      "volumeId": "02",
+      "name": "MSY 02",
+      "runwayThreshold": {
+        "lat": 29.984534233300792,
+        "lon": -90.25141608739938
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 17,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01K0CPRF1NPRDAFT71K7KWJR1R",
+          "entry": "V",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K0CPSB5A0T6THJC976F198VM",
+          "entry": "W",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K0CQ1N0RKYC8EJD46Q7H8TEH",
+          "entry": "29",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K0CQ1TDVRGRJ3GNCMYKH690C",
+          "entry": "11",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01K0CPWS3PG0BKCHSK8JRFZ2W0",
+          "tcpId": "01K2NF1CDRWJ9X9F2CT1EDE8S3",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01K0CPXD12KJTH1FNX6N6E4XAG",
+          "tcpId": "01K2NF1CDRAK5Y87HNV4WBZR17",
+          "tcp": "1W",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01K0CPXXEANK3NPAGKVS59F6WR",
+          "tcpId": "01K2NF1CDR6131Y66038C6QSC2",
+          "tcp": "1N",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01K0CPXXQWJPCBJTJNQHFKSYNY",
+          "tcpId": "01K2NF1CDRJHRMKQXDRYG5PFF4",
+          "tcp": "1S",
+          "coneType": "Alert"
+        }
+      ],
+      "excludedTcpIds": [
+        "01K2NF1CDRQZFKYGXARZS9CRQT",
+        "01K2NF1CDRA6CWK5N3VVQQ0HVD"
+      ]
+    },
+    {
+      "id": "01K0CQ2KJEWX0XKZG8EV93R5X2",
+      "airportId": "MSY",
+      "volumeId": "11",
+      "name": "MSY 11",
+      "runwayThreshold": {
+        "lat": 29.996622376300962,
+        "lon": -90.28170518579711
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 107,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01K0CQ3X2Q5VEHF4WZHPT5PW6E",
+          "entry": "V",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K0CQ3XF781C31SJS1ZYBVKSN",
+          "entry": "W",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K0CQ3XN0NJ1JK3GVSAMDFKJ1",
+          "entry": "2",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K0CQ3XT4XGCK3WXZXDAJKPZC",
+          "entry": "20",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01K0CQ4SVYY0BM56DJ26CRHME8",
+          "tcpId": "01K2NF1CDRWJ9X9F2CT1EDE8S3",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01K0CQ4WBSEH54NSJ6F4785FV2",
+          "tcpId": "01K2NF1CDRAK5Y87HNV4WBZR17",
+          "tcp": "1W",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01K0CQ4WGBMN8Q964PFVJPAW3K",
+          "tcpId": "01K2NF1CDR6131Y66038C6QSC2",
+          "tcp": "1N",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01K0CQ4WKF3E08BV3EA0H3NY7X",
+          "tcpId": "01K2NF1CDRJHRMKQXDRYG5PFF4",
+          "tcp": "1S",
+          "coneType": "Alert"
+        }
+      ],
+      "excludedTcpIds": [
+        "01K2NF1CDRQZFKYGXARZS9CRQT",
+        "01K2NF1CDRA6CWK5N3VVQQ0HVD"
+      ]
+    },
+    {
+      "id": "01K0CQ6563EZBXGFC0FHM8C8WJ",
+      "airportId": "MSY",
+      "volumeId": "20",
+      "name": "MSY 20",
+      "runwayThreshold": {
+        "lat": 30.003031558655692,
+        "lon": -90.24552924303029
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 197,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01K0CQ74VTKAGVTSDXJ0DCS1VB",
+          "entry": "V",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K0CQ750RKFJCY98W1Q1RXEMB",
+          "entry": "W",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K0CQ755J1Z1VS4Q6PS8WEPFV",
+          "entry": "11",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K0CQ759A6Y2RN0106FF2CBCE",
+          "entry": "29",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01K0CQ7K3GQPYE8F11P761KKAW",
+          "tcpId": "01K2NF1CDRWJ9X9F2CT1EDE8S3",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01K0CQ7KC2B0Z1KGW2P8DN296P",
+          "tcpId": "01K2NF1CDRAK5Y87HNV4WBZR17",
+          "tcp": "1W",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01K0CQ7KGF91741NS3HAH007W9",
+          "tcpId": "01K2NF1CDR6131Y66038C6QSC2",
+          "tcp": "1N",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01K0CQ7KM9C28PE4R55EJS8YM4",
+          "tcpId": "01K2NF1CDRJHRMKQXDRYG5PFF4",
+          "tcp": "1S",
+          "coneType": "Alert"
+        }
+      ],
+      "excludedTcpIds": [
+        "01K2NF1CDRQZFKYGXARZS9CRQT",
+        "01K2NF1CDRA6CWK5N3VVQQ0HVD"
+      ]
+    },
+    {
+      "id": "01K0CQ8JN948ADK9XGZCGZR239",
+      "airportId": "MSY",
+      "volumeId": "29",
+      "name": "MSY 29",
+      "runwayThreshold": {
+        "lat": 29.989448000744908,
+        "lon": -90.25193469028287
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 287,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01K0CQ9HT8FWVM1JBG39HX3V41",
+          "entry": "V",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K0CQ9HYRFPTHF1JCDB4KA0R2",
+          "entry": "W",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K0CQ9J2W0K8Y4WVSA419WRD8",
+          "entry": "2",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K0CQ9J6KB1P88NBQAVWQ67D0",
+          "entry": "20",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01K0CQA48ECCEH6DA5SJY8M642",
+          "tcpId": "01K2NF1CDRWJ9X9F2CT1EDE8S3",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01K0CQA4CJ5S840F7FC105M0MX",
+          "tcpId": "01K2NF1CDRAK5Y87HNV4WBZR17",
+          "tcp": "1W",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01K0CQA4NRFHNBZBNQ4JQ1J8T0",
+          "tcpId": "01K2NF1CDR6131Y66038C6QSC2",
+          "tcp": "1N",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01K0CQA4SQYVVPDZAFETV9CXRJ",
+          "tcpId": "01K2NF1CDRJHRMKQXDRYG5PFF4",
+          "tcp": "1S",
+          "coneType": "Alert"
+        }
+      ],
+      "excludedTcpIds": [
+        "01K2NF1CDRQZFKYGXARZS9CRQT",
+        "01K2NF1CDRA6CWK5N3VVQQ0HVD"
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

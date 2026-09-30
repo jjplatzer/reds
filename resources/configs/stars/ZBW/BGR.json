@@ -139,6 +139,94 @@
       "freq": 120.7
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01KKAEK4FVTCG13YHPEBFX728A",
+      "airportId": "BGR",
+      "volumeId": "15",
+      "name": "ATPA BGR 15",
+      "runwayThreshold": {
+        "lat": 44.818333333333335,
+        "lon": -68.84388888888888
+      },
+      "ceiling": 6000,
+      "floor": -9900,
+      "magneticHeading": 150,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01KKAEMAM8YAGQJK00HDWGW7BG",
+          "tcpId": "",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAEMBFB9341ERQ1PGBFXQQH",
+          "tcpId": "01K2NF1CGP3WG0GAVDDFEB0KMB",
+          "tcp": "1H",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAEMBT0EZXAFTQZSKCAJVJK",
+          "tcpId": "01K2NF1CGPBX9J3RSE9FCJ6Z1C",
+          "tcp": "1S",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAEMC3BFZ2SPCXZ55XN7Y33",
+          "tcpId": "01K2NF1CGP31EB07X2DWR3G210",
+          "tcp": "1T",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01KKAEP9FSXT2RCKW6AQ6XB7V5",
+      "airportId": "BGR",
+      "volumeId": "33",
+      "name": "ATPA BGR 33",
+      "runwayThreshold": {
+        "lat": 44.796388888888885,
+        "lon": -68.81222222222222
+      },
+      "ceiling": 6000,
+      "floor": -9900,
+      "magneticHeading": 330,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01KKAEQE2J042GWVBC9VK2X9KE",
+          "tcpId": "",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAEQE7HTMDHAVK82S1J5E5Q",
+          "tcpId": "01K2NF1CGP3WG0GAVDDFEB0KMB",
+          "tcp": "1H",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAEQECNPWHCXXFF7E243NG9",
+          "tcpId": "01K2NF1CGPBX9J3RSE9FCJ6Z1C",
+          "tcp": "1S",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAEQEHK6FNN8BC481A9GR6Y",
+          "tcpId": "01K2NF1CGP31EB07X2DWR3G210",
+          "tcp": "1T",
+          "coneType": "Alert"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

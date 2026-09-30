@@ -165,6 +165,80 @@
       "freq": 134.725
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01KM4HXVT5ABB2GG6M5ZXVH3B1",
+      "airportId": "HUF",
+      "volumeId": "H05",
+      "name": "ATPA HUF 05",
+      "runwayThreshold": {
+        "lat": 39.44027777777777,
+        "lon": -87.32305555555556
+      },
+      "ceiling": 6000,
+      "floor": -9900,
+      "magneticHeading": 48,
+      "maximumHeadingDeviation": 80,
+      "length": 15,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01KM4HZ1F9VHYRM3HQVE5N16B5",
+      "airportId": "HUF",
+      "volumeId": "H14",
+      "name": "ATPA HUF 14",
+      "runwayThreshold": {
+        "lat": 39.459722222222226,
+        "lon": -87.31027777777777
+      },
+      "ceiling": 6000,
+      "floor": -9900,
+      "magneticHeading": 135,
+      "maximumHeadingDeviation": 80,
+      "length": 15,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01KM4HZXR2N24VMPC00H9ZV0JH",
+      "airportId": "HUF",
+      "volumeId": "H23",
+      "name": "ATPA HUF 23",
+      "runwayThreshold": {
+        "lat": 39.45722222222223,
+        "lon": -87.29972222222221
+      },
+      "ceiling": 6000,
+      "floor": -9900,
+      "magneticHeading": 227,
+      "maximumHeadingDeviation": 80,
+      "length": 15,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01KM4J0PBM2HKWS77RA29CHX15",
+      "airportId": "HUF",
+      "volumeId": "H32",
+      "name": "ATPA HUF 32",
+      "runwayThreshold": {
+        "lat": 39.44555555555555,
+        "lon": -87.29222222222222
+      },
+      "ceiling": 6000,
+      "floor": -9900,
+      "magneticHeading": 315,
+      "maximumHeadingDeviation": 80,
+      "length": 15,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

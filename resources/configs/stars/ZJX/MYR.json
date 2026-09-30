@@ -135,6 +135,72 @@
       "freq": 127.4
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JZ7AWWNFD4EG8B9G9DVPTF9B",
+      "airportId": "MYR",
+      "volumeId": "M18",
+      "name": "MYR 18",
+      "runwayThreshold": {
+        "lat": 33.69252,
+        "lon": -78.93152
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 177,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 26500,
+      "widthRight": 26500,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZ7AYJRSCTVYPMX02XYD9VFS",
+          "entry": "MYR",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ7AYQJS9J52Y3C0XYTZ93NN",
+          "entry": "V18",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ]
+    },
+    {
+      "id": "01JZ7AZ9EQAZ1XPYKFVCHPASWB",
+      "airportId": "MYR",
+      "volumeId": "M36",
+      "name": "MYR 36",
+      "runwayThreshold": {
+        "lat": 33.66697,
+        "lon": -78.92513
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 357,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 26500,
+      "widthRight": 26500,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZ7B0YV8QEJ1N2AWBFFX5STA",
+          "entry": "V36",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JZ7B12R1GAXXSWBC0R5EST4P",
+          "entry": "MYR",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

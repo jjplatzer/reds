@@ -391,6 +391,61 @@
       "freq": 124.95
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JYQ668YCVEAGHGQTQDRZ897Y",
+      "airportId": "LSV",
+      "volumeId": "RWY21",
+      "name": "RWY21",
+      "runwayThreshold": {
+        "lat": 36.24555556,
+        "lon": -115.02166667
+      },
+      "ceiling": 10000,
+      "floor": 1850,
+      "magneticHeading": 208,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 9000,
+      "widthRight": 18000,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYQ680G93RJ9TAXYJEBRKYEY",
+          "entry": "33",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYQ68F43BH0SAG1CJ810QE37",
+          "tcpId": "01K2NF1CRS55Z9RNTMAAQQA32P",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYQ68F96H9YS7F98541YQ8YH",
+          "tcpId": "01K2NF1CRSA2K1FHQXNZHV6VAZ",
+          "tcp": "1G",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYQ68FEAPYWGMZBNXP0M9VEZ",
+          "tcpId": "01K2NF1CRSPJW4B94Q2151E5B6",
+          "tcp": "1O",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYQ68FKBT1EV8DNSGV8QRW7C",
+          "tcpId": "01KK00CGMGV4KRCBMVKH9CSNAN",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

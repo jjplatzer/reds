@@ -300,6 +300,80 @@
       "freq": 121.9
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JYFFY32XXB7V5GG3Q11T88WJ",
+      "airportId": "GRB",
+      "volumeId": "18",
+      "name": "GRB RWY 18 ATPA",
+      "runwayThreshold": {
+        "lat": 44.4925,
+        "lon": -88.13361111
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 182,
+      "maximumHeadingDeviation": 90,
+      "length": 41.2,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JYFFZP7KTKWV3S81W3CHF4NC",
+      "airportId": "GRB",
+      "volumeId": "24",
+      "name": "GRB RWY 24 ATPA",
+      "runwayThreshold": {
+        "lat": 44.49277778,
+        "lon": -88.1125
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 242,
+      "maximumHeadingDeviation": 90,
+      "length": 50,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JYFG4438JM26HZ54C4TPZMWB",
+      "airportId": "GRB",
+      "volumeId": "36",
+      "name": "GRB RWY 36 ATPA",
+      "runwayThreshold": {
+        "lat": 44.47,
+        "lon": -88.13361111
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 2,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JYFG59F5Y25VC96WXB9SEP72",
+      "airportId": "GRB",
+      "volumeId": "6",
+      "name": "GRB RWY 6 ATPA",
+      "runwayThreshold": {
+        "lat": 44.4825,
+        "lon": -88.13805556
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 62,
+      "maximumHeadingDeviation": 90,
+      "length": 32.5,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

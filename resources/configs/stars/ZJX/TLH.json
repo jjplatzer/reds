@@ -176,6 +176,628 @@
       "freq": 128.7
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JYH4R5A3AJC94SR9KK14DWWX",
+      "airportId": "TLH",
+      "volumeId": "T09",
+      "name": "TLH 09",
+      "runwayThreshold": {
+        "lat": 30.39132,
+        "lon": -86
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 94,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 26400,
+      "widthRight": 26400,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYH4YN6C02JYXZ9WFK2432ZJ",
+          "entry": "G18",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH4YNBP7WWFKKYPNGEE3R2M",
+          "entry": "V18",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH53PFW19BZ27YJNJ5G8FDZ",
+          "entry": "T1C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5484RY5A5WN7E95D5D62G",
+          "entry": "T18",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH54EQ3XJ4NP3AMES2NT330",
+          "entry": "R18",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH54PEHGRRGXA8GN87Y0KGG",
+          "entry": "G1C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH561J9WNGSTHEAYCQSWF0Z",
+          "entry": "G36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56AB9VRQ28EY32F8V1F9J",
+          "entry": "V36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56M4G8BJWD0VH2RSSKSB8",
+          "entry": "T3C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56MKK8F6PD4NBYBD6MZY5",
+          "entry": "T36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56MT9JKV74ZNGEAD7NJB4",
+          "entry": "R36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56N0FGDHG3KGVD447VSJJ",
+          "entry": "L3C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56N8PBMBA17W7DPDZG4XD",
+          "entry": "L36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56NEXCBHRBYCWBNP8X9Y0",
+          "entry": "I3C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56NN7YY9E5SSPG55XCM16",
+          "entry": "I36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56NTSQPT2DSGM1ATWKZ3G",
+          "entry": "G3C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56P3WGVRXVQB33A2J6BNH",
+          "entry": "G27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56P8HDK7CM639DQ11HEM2",
+          "entry": "V27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56PE3PKM0J2ZXG7MHXM90",
+          "entry": "T2C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56PK61FBMSBY8C4WS02NJ",
+          "entry": "T27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56PRGAGNDYD4W3C928MEV",
+          "entry": "R27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56PXV79M3GH9YT5F2CAQV",
+          "entry": "L2C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH56Q3MWAHYT4RE79M1NPCD",
+          "entry": "L27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH59FXHBSXA0DM4A1G2VCS2",
+          "entry": "I2C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH59G3ZVBPJEZ4S1ZWBRCC7",
+          "entry": "I27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH59G9H4VK1DHESW2GEZ1SJ",
+          "entry": "G2C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ]
+    },
+    {
+      "id": "01JYH5CB98C95HQKYPKXJ6HW62",
+      "airportId": "TLH",
+      "volumeId": "T18",
+      "name": "TLH 18",
+      "runwayThreshold": {
+        "lat": 30.41243,
+        "lon": -84.359
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 184,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 26400,
+      "widthRight": 26400,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYH5EGNAZ5X7MSYM3P21E7CV",
+          "entry": "G09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EGTEX1FMG8JFT13AM38X",
+          "entry": "V09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EGZRAGTKMPW02WWVC8QF",
+          "entry": "R09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EH4DY2WR7HK95N4965HN",
+          "entry": "G9C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EH9AEMXMGVPTMAJ01YCB",
+          "entry": "G36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EHDV9JYDQ7MTN8E7GNEC",
+          "entry": "V36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EHJQQ478YH7VWX49R7V5",
+          "entry": "T3C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EHQM6VW0QCGF7KJN72ZM",
+          "entry": "T36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EHWPWH42MC1KHRDV38R2",
+          "entry": "R36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EJ1TM7QQZ9BC3NPQVYVF",
+          "entry": "L3C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EJ6S050VK78QKNVA41J7",
+          "entry": "L36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EJBTA48EERR8Q83S6T3Y",
+          "entry": "I3C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EJGYM9CG163ZNBF9SMJW",
+          "entry": "I36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EJP1HTD80DY18ZF9GNQ3",
+          "entry": "G3C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EJTX87BC2XFYE2XM9K8J",
+          "entry": "G27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EK00C38GDS5KND3TB2X6",
+          "entry": "V27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EK4X57GTKYN6T86PNM7N",
+          "entry": "T2C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EK9SCFTS4D28EZTMDSH0",
+          "entry": "T27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EKEX5X9EBGDZNG10WVXN",
+          "entry": "R27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EKKKHCA8CPFM8MG3G610",
+          "entry": "L2C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EKRN0AA2BTDG3T7VK980",
+          "entry": "L27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EKXHZA8VRJTMM2K62SPP",
+          "entry": "I2C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5EM2QFX894SPBB56M3YE7",
+          "entry": "I27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH5VGD20D6QKW0X5EJK0GKG",
+          "entry": "G2C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ]
+    },
+    {
+      "id": "01JYH6EXG9CBRAHV8C60ZZTA0M",
+      "airportId": "TLH",
+      "volumeId": "T27",
+      "name": "TLH 27",
+      "runwayThreshold": {
+        "lat": 30.39156,
+        "lon": -84.33115
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 275,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 26400,
+      "widthRight": 26400,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYH6GTQ7KPQAGJ703H94ZD9F",
+          "entry": "G36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GTZPXCEV71T3Q4R58437",
+          "entry": "V36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GV4S9XZ2EXFW5D1BQZZ4",
+          "entry": "T3C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GVKNJMCAVF7BSKP8Y9D5",
+          "entry": "T36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GVRAXD1JE4CX1BFNSCXW",
+          "entry": "R36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GVWSNZZTHQF34KMR8N5Q",
+          "entry": "L3C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GW1DW04PM7YBHZ9SJP0N",
+          "entry": "L36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GW5YZ8E5JEZRYY20SJKE",
+          "entry": "I3C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GWAVFVBD6N337E4TYSQP",
+          "entry": "I36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GWFR7RX3R44JFFT72VRT",
+          "entry": "G3C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GWMVKF56BYKDP0S5JR7B",
+          "entry": "G18",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GWT50XM3YE7Q704D7YTN",
+          "entry": "V18",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GWZCJX4YXJBA5EFX6WFD",
+          "entry": "T1C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6GX4CGWG372VG29X2SX1V",
+          "entry": "T18",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6KH5R0PA3KWKH7MYM13TD",
+          "entry": "R18",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6KHNHYQRKVV1JE5NWV6FT",
+          "entry": "G1C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6KHZ5W57E3P7A672DVF7X",
+          "entry": "G09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6KJ5KDF4847XSTX8Q1V2J",
+          "entry": "V09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6NH0CRVR2ATTEZ84G93JW",
+          "entry": "R09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH6NKF8B8RS7FGDT3H8SS1S",
+          "entry": "G9C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ]
+    },
+    {
+      "id": "01JYH601FW49NW2W3VV18KKK33",
+      "airportId": "TLH",
+      "volumeId": "T36",
+      "name": "TLH 36",
+      "runwayThreshold": {
+        "lat": 30.39325,
+        "lon": -84.35878
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 4,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 26400,
+      "widthRight": 26400,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYH61X7SWPFTYAV53B3A7WVC",
+          "entry": "G09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH61XTHRNTJKHQYSR2B1ZQ1",
+          "entry": "V09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH61XYZRW7ZB61GTMJQ94EJ",
+          "entry": "R09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH61Y3VNK81J6FN4HBWGJ1G",
+          "entry": "G9C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH61Y8RJ41SPMAXM8DPGGZ3",
+          "entry": "G18",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH61YDMG9DE3TAMSHMJD1PF",
+          "entry": "V18",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH61YJGP4PHWVKBHD5RQQ5H",
+          "entry": "T1C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH61YQMHBFNY6SZEV3YMD1H",
+          "entry": "T18",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH61YWGQTS9SKMA76REN4R4",
+          "entry": "R18",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH61Z1CWPJZYRWF9N0KQGE7",
+          "entry": "G1C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH66TKM2FD6A7968DDDGBEV",
+          "entry": "G27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH66VWXP3K6QJ33DCQXP7ZW",
+          "entry": "V27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH66WFWQXK7R192MG5D20TE",
+          "entry": "T2C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH66X36TH2RP94TA7996AZ6",
+          "entry": "T27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH66XNVNSDWKKYCX4SMEH2J",
+          "entry": "R27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH66Y7KSEEK6HDS5ZEBXX19",
+          "entry": "L2C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH66YV62EDFNKQNB5XX0712",
+          "entry": "L27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH66ZFS5JHVG2SE44KCM8R6",
+          "entry": "I2C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH67040ZKH7V1FX00F0ND4S",
+          "entry": "I27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYH670KR7Q3GNVYHESF13RAQ",
+          "entry": "G2C",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

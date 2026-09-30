@@ -424,6 +424,100 @@
       "freq": 123.8
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JYFJRDSHMZRA3N7JRTYYHHV9",
+      "airportId": "GEG",
+      "volumeId": "G03",
+      "name": "GEG_RWY_03",
+      "runwayThreshold": {
+        "lat": 47.61,
+        "lon": -117.55
+      },
+      "ceiling": 9000,
+      "floor": 0,
+      "magneticHeading": 31,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFP9CDM5R1RYGF63JF4D21W",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFP2EGMPAX80G7JMAGV209V",
+          "tcpId": "01K2NF1DN6SF51S9CSAD23JV47",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZKAXQP7T4KAXMBC5PJ1YPDJ",
+          "tcpId": "01K2NF1DN6KWJANZWAEK45TJWR",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZKT529WNDYTS7NB973DKM6D",
+          "tcpId": "01K2NF1DN60A6485DDXWR45GT0",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYFJN6AKWEQ0DQF6TF54FV5D",
+      "airportId": "GEG",
+      "volumeId": "G21",
+      "name": "GEG_RWY_21",
+      "runwayThreshold": {
+        "lat": 47.63119,
+        "lon": -117.51831
+      },
+      "ceiling": 9000,
+      "floor": 0,
+      "magneticHeading": 207,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFP5H0DZWAEG6FF4TQ961CS",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFP1T9KD6V3XJV2HGCS9AZP",
+          "tcpId": "01K2NF1DN6SF51S9CSAD23JV47",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZKAVA5XA0BPP8T32J0MZ4SJ",
+          "tcpId": "01K2NF1DN6KWJANZWAEK45TJWR",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZKQG9323850DCZED1GNQ94W",
+          "tcpId": "01K2NF1DN60A6485DDXWR45GT0",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

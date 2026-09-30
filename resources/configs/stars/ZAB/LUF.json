@@ -229,6 +229,162 @@
       "freq": 119.1
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JYFS46VGV7YZYDKXSZ7M7F2T",
+      "airportId": "LUF",
+      "volumeId": "03",
+      "name": "ATPA RWY03",
+      "runwayThreshold": {
+        "lat": 33.3137,
+        "lon": -112.2324
+      },
+      "ceiling": 7000,
+      "floor": 1100,
+      "magneticHeading": 30,
+      "maximumHeadingDeviation": 90,
+      "length": 40,
+      "widthLeft": 40000,
+      "widthRight": 40000,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFS7KZ856N1H40TP3FZ79Z3",
+          "entry": "SI",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYFS80K25GJE29F2DKSBKMQ5",
+          "entry": "SVI",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYFS80X8XJTJBKVQYZQ2YHGY",
+          "entry": "INB",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFS91JQCYM93GTJE3YYGM5X",
+          "tcpId": "01K2NF1BHTWM4SH5D867E7WHS3",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFS9NYRDXD12JEFEAR7WADW",
+          "tcpId": "01K2NF1BHT97J2KCN1QXYJT7GG",
+          "tcp": "1M",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFS9PG0XQ3YB6AWVSRJTQG6",
+          "tcpId": "01K2NF1BHTPJMCT4331254VR6W",
+          "tcp": "1B",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFS9Q2G37AWMH1W3060PEEH",
+          "tcpId": "01K2NF1BHTZ8DCK1MEGD2T9GMW",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFS9QPGFWHSQ07F0GD793JC",
+          "tcpId": "01K2NF1BHTQ2258KGNTF94KK0A",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFS9RAQWCF3YPTK20286M66",
+          "tcpId": "01K2NF1BHTCTYP3BP5QWWQQD83",
+          "tcp": "1X",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYFSE9QKXWQ07BSCVKKX9ATJ",
+      "airportId": "LUF",
+      "volumeId": "21",
+      "name": "ATPA RWY 21",
+      "runwayThreshold": {
+        "lat": 33.3235,
+        "lon": -112.2234
+      },
+      "ceiling": 6000,
+      "floor": 1100,
+      "magneticHeading": 210,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 11373,
+      "widthRight": 40000,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFSHACZE0DMT1XE4X39REW0",
+          "entry": "SI",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYFSHPER4PTYWF835J5TBN99",
+          "entry": "SVI",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYFSHPVG87D421MDWHPSC8S3",
+          "entry": "INB",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFSJKQRZSM6AEQ5X1Z79DEE",
+          "tcpId": "01K2NF1BHTWM4SH5D867E7WHS3",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFSK1DZK21BJ05SCT95D9T5",
+          "tcpId": "01K2NF1BHT97J2KCN1QXYJT7GG",
+          "tcp": "1M",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFSK1V09FEP7BN5W2GMAD94",
+          "tcpId": "01K2NF1BHTPJMCT4331254VR6W",
+          "tcp": "1B",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFSK2B90BW6MNRWMEHNWB8A",
+          "tcpId": "01K2NF1BHTZ8DCK1MEGD2T9GMW",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFSK2Y0AZJQ5YHNPGCNET2B",
+          "tcpId": "01K2NF1BHTQ2258KGNTF94KK0A",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFSK3G79WKAGF909DWJ35XK",
+          "tcpId": "01K2NF1BHTCTYP3BP5QWWQQD83",
+          "tcp": "1X",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

@@ -79,6 +79,101 @@
       "freq": 126.35
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01KK9QD8ASVE7SJWG7WQBNC2RH",
+      "airportId": "DOV",
+      "volumeId": "DOV01",
+      "name": "ATPA DOV01",
+      "runwayThreshold": {
+        "lat": 39.117222222222225,
+        "lon": -75.46472222222222
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 15,
+      "maximumHeadingDeviation": 80,
+      "length": 15,
+      "widthLeft": 15000,
+      "widthRight": 20000,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01KK9QF3MVQJ5Y76MJS966G2A9",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KK9QF5VRNPD80JXFYHJTJBJR",
+          "tcpId": "01K2NF1E0TAJZNX1127KT5SZQY",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01KK9QFRV717CV7S1XCGG3E8A6",
+      "airportId": "DOV",
+      "volumeId": "DOV19",
+      "name": "ATPA DOV19",
+      "runwayThreshold": {
+        "lat": 39.14361111111111,
+        "lon": -75.46277777777777
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 195,
+      "maximumHeadingDeviation": 80,
+      "length": 15,
+      "widthLeft": 20000,
+      "widthRight": 15000,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01KK9QJ071R256C5QFC58QJK23",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KK9QJ0MA4AG58TZGBZS2VWQ6",
+          "tcpId": "01K2NF1E0TAJZNX1127KT5SZQY",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01KK9QK54NKV4N4CNCAEW9Q8S8",
+      "airportId": "DOV",
+      "volumeId": "DOV32",
+      "name": "ATPA DOV32",
+      "runwayThreshold": {
+        "lat": 39.118611111111115,
+        "lon": -75.44916666666667
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 318,
+      "maximumHeadingDeviation": 80,
+      "length": 16,
+      "widthLeft": 20000,
+      "widthRight": 15000,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01KK9QMD1NFKQCKWC19GD1MNC0",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KK9QMDB77SE3AS3B6GCSAV8P",
+          "tcpId": "01K2NF1E0TAJZNX1127KT5SZQY",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

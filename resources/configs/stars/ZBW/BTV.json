@@ -135,6 +135,102 @@
       "freq": 124.55
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01KKAERCRW4QZRCCKAJ8P9FC7N",
+      "airportId": "BTV",
+      "volumeId": "R15",
+      "name": "ATPA FOR RWY 15",
+      "runwayThreshold": {
+        "lat": 44.480555555555554,
+        "lon": -73.16583333333334
+      },
+      "ceiling": 8000,
+      "floor": 0,
+      "magneticHeading": 146,
+      "maximumHeadingDeviation": 80,
+      "length": 30,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KKAESEY1VVJEABGHAWVKMVS8",
+          "entry": "G03",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAESF2V67Z4B28G0XXMJF2N",
+          "entry": "I03",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAESF8432CQFCVPYTGKK463",
+          "entry": "R01",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAESFDW6J6XKSJRWGMM45X3",
+          "entry": "R03",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAESFKFB3BZ776PDBF1F3WA",
+          "entry": "R09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KKAETBDDJ7WYW05MKYHXJ51M",
+          "tcpId": "",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAEVZZ36H4G80P6HEYH3R5R",
+          "tcpId": "01K2NF1CGPAV5YDM1MF12HDJYH",
+          "tcp": "1W",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01KKAEWKT58HV0BDP56SHSSJV0",
+      "airportId": "BTV",
+      "volumeId": "R33",
+      "name": "ATPA FOR RWY 33",
+      "runwayThreshold": {
+        "lat": 44.46638888888889,
+        "lon": -73.14305555555556
+      },
+      "ceiling": 8000,
+      "floor": 0,
+      "magneticHeading": 326,
+      "maximumHeadingDeviation": 80,
+      "length": 30,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01KKAF41XXS4B39Z1WEVXS7KR6",
+          "tcpId": "",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAF42274YK6772WZGXK0WHR",
+          "tcpId": "01K2NF1CGPAV5YDM1MF12HDJYH",
+          "tcp": "1W",
+          "coneType": "Alert"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

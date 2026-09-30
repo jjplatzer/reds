@@ -96,6 +96,80 @@
       "freq": 133.275
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JZQ46CC60666TC3E33KPA53T",
+      "airportId": "MLI",
+      "volumeId": "13",
+      "name": "MLI 13",
+      "runwayThreshold": {
+        "lat": 41.455,
+        "lon": -90.51555556
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 126,
+      "maximumHeadingDeviation": 35,
+      "length": 20,
+      "widthLeft": 21266,
+      "widthRight": 21266,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JZQ47G2Y791PS6DPHJK3SST9",
+      "airportId": "MLI",
+      "volumeId": "27",
+      "name": "MLI 27",
+      "runwayThreshold": {
+        "lat": 41.44861111,
+        "lon": -90.49055556
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 270,
+      "maximumHeadingDeviation": 35,
+      "length": 20,
+      "widthLeft": 21266,
+      "widthRight": 21266,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JZQ48RBES8NY9TBAQHMJVKRZ",
+      "airportId": "MLI",
+      "volumeId": "31",
+      "name": "MLI 31",
+      "runwayThreshold": {
+        "lat": 41.44361111,
+        "lon": -90.49583333
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 306,
+      "maximumHeadingDeviation": 35,
+      "length": 20,
+      "widthLeft": 21266,
+      "widthRight": 21266,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JZQ44TFERQYTHHK7WBW1A409",
+      "airportId": "MLI",
+      "volumeId": "9",
+      "name": "MLI 9",
+      "runwayThreshold": {
+        "lat": 41.44916667,
+        "lon": -90.52694444
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 90,
+      "maximumHeadingDeviation": 35,
+      "length": 20,
+      "widthLeft": 21266,
+      "widthRight": 21266,
+      "twoPointFiveApproachEnabled": false
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

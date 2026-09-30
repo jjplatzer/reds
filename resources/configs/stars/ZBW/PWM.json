@@ -181,6 +181,80 @@
       "freq": 120.9
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01KK0B2EYXN9A2SW5AER9KPH5D",
+      "airportId": "PWM",
+      "volumeId": "R11",
+      "name": "PWM11",
+      "runwayThreshold": {
+        "lat": 43.64587,
+        "lon": -70.326064
+      },
+      "ceiling": 10000,
+      "floor": -9900,
+      "magneticHeading": 112,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01KK0B6APTA6KNSNF06J4RK033",
+      "airportId": "PWM",
+      "volumeId": "R18",
+      "name": "PWM18",
+      "runwayThreshold": {
+        "lat": 43.65329,
+        "lon": -70.306829
+      },
+      "ceiling": 10000,
+      "floor": -9900,
+      "magneticHeading": 180,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01KK0B7RBDDA3F0JCYSK7KS24P",
+      "airportId": "PWM",
+      "volumeId": "R29",
+      "name": "PWM29",
+      "runwayThreshold": {
+        "lat": 43.644047,
+        "lon": -70.29902
+      },
+      "ceiling": 10000,
+      "floor": -9900,
+      "magneticHeading": 292,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01KK0B8WY53BKWJD90J52Q91PA",
+      "airportId": "PWM",
+      "volumeId": "R36",
+      "name": "PWM36",
+      "runwayThreshold": {
+        "lat": 43.639791,
+        "lon": -70.301223
+      },
+      "ceiling": 10000,
+      "floor": -9900,
+      "magneticHeading": 360,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

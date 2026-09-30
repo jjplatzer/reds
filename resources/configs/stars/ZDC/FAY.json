@@ -172,6 +172,160 @@
       "freq": 118.3
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JZ8QY47T0AF8KBHDAHS1WHQG",
+      "airportId": "FAY",
+      "volumeId": "F04",
+      "name": "FAY 04",
+      "runwayThreshold": {
+        "lat": 34.98575,
+        "lon": -78.885975
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 38,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZ8R126W93B0TSRNFC5FG5H9",
+          "tcpId": "01K2NF1E0T4A9J78TBHVHMKCMF",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZXPMPN1C5Y6SA3GY252133J",
+          "tcpId": "01K2NF1E0TPNE3CCQD17BYX2HE",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZXPMV2TC9RZHXRK8X6ZKX7D",
+          "tcpId": "01K2NF1E0T3JQ4SYHM4Q29M18S",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZ8R17KBPR46QZ1A3F87YV4F",
+      "airportId": "FAY",
+      "volumeId": "F10",
+      "name": "FAY 10",
+      "runwayThreshold": {
+        "lat": 34.9878222222222,
+        "lon": -78.8881694444445
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 98,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZ8R21JD1GMQSDPRXJQT9N5N",
+          "tcpId": "01K2NF1E0T4A9J78TBHVHMKCMF",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZXPN313FF0MNEHTJKYGWA0C",
+          "tcpId": "01K2NF1E0TPNE3CCQD17BYX2HE",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZXPN5V2F6V8FWPC71QSPZSW",
+          "tcpId": "01K2NF1E0T3JQ4SYHM4Q29M18S",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZ8R27SAMWH1TC99E1H8T4CC",
+      "airportId": "FAY",
+      "volumeId": "F22",
+      "name": "FAY 22",
+      "runwayThreshold": {
+        "lat": 35.0017527777778,
+        "lon": -78.8742083333333
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 218,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZ8R32BED4707NAH0SZQ84WE",
+          "tcpId": "01K2NF1E0T4A9J78TBHVHMKCMF",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZXPNDMJJQF4DE0K8HF8695Z",
+          "tcpId": "01K2NF1E0TPNE3CCQD17BYX2HE",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZXPNGQ37VRD9MQZB57D3QEM",
+          "tcpId": "01K2NF1E0T3JQ4SYHM4Q29M18S",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZ8R389WGYS0PREAG3RSBVJV",
+      "airportId": "FAY",
+      "volumeId": "F28",
+      "name": "FAY 28",
+      "runwayThreshold": {
+        "lat": 34.9875555555556,
+        "lon": -78.8721444444444
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 278,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZ8R46E3D5C9WGVGK67EFFX0",
+          "tcpId": "01K2NF1E0T4A9J78TBHVHMKCMF",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZXPNQZEN382FDJ2BKY3JX5N",
+          "tcpId": "01K2NF1E0TPNE3CCQD17BYX2HE",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZXPNTPH1VM7TGVC4RR8PZTM",
+          "tcpId": "01K2NF1E0T3JQ4SYHM4Q29M18S",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

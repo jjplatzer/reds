@@ -159,6 +159,82 @@
       "freq": 118.5
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01KM4HP1K52BS6VAS6YPZR43TA",
+      "airportId": "HTS",
+      "volumeId": "RWY12",
+      "name": "HTS RWY12",
+      "runwayThreshold": {
+        "lat": 38.37222222222222,
+        "lon": -82.57166666666666
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 119,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01KM4HQB6GC119W7RHR9EWZASV",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KM4HQBAVY0BH19NH1R3CAT02",
+          "tcpId": "01K2NF1CN28A71AM3VQH67694R",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KM4HQBFQCJ4D94ZYKQSE4YZA",
+          "tcpId": "01K2NF1CN272SJZ2KAQXQKTSN6",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01KM4HQJK6XAE94VBB01H4X564",
+      "airportId": "HTS",
+      "volumeId": "RWY30",
+      "name": "HTS RWY30",
+      "runwayThreshold": {
+        "lat": 38.36472222222223,
+        "lon": -82.54888888888888
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 299,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01KM4HRCNESTXSV183H2TV2AKB",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KM4HRCT53C5K81XJHXBD5XFD",
+          "tcpId": "01K2NF1CN28A71AM3VQH67694R",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KM4HRCXNVH5JP457RMXNZHP4",
+          "tcpId": "01K2NF1CN272SJZ2KAQXQKTSN6",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

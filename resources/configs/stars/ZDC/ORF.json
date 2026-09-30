@@ -305,6 +305,136 @@
       "freq": 120.8
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JZ8RCH9A2MJ09TECS0PMF9NC",
+      "airportId": "ORF",
+      "volumeId": "O05",
+      "name": "ORF 05",
+      "runwayThreshold": {
+        "lat": 36.8880333333333,
+        "lon": -76.2062
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 47,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZ8RF61NF95D2YDVDH85VSXW",
+          "tcpId": "01K2NF1E0SYJ4MV66C2K8MBZ2P",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZXQ174C3DMTPA93HDT790NK",
+          "tcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZ8RFVZSMP53R6JQF3HS27B2",
+      "airportId": "ORF",
+      "volumeId": "O14",
+      "name": "ORF 14",
+      "runwayThreshold": {
+        "lat": 36.8958583333333,
+        "lon": -76.2106111111111
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 137,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZ8RGN68XVVMDAS581SJH4SV",
+          "tcpId": "01K2NF1E0SYJ4MV66C2K8MBZ2P",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZXQ1GPDHQDKGD6VSSHM7QCW",
+          "tcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZ8RGZSGT0EJ0X46HS6X9ZGJ",
+      "airportId": "ORF",
+      "volumeId": "O23",
+      "name": "ORF 23",
+      "runwayThreshold": {
+        "lat": 36.9054,
+        "lon": -76.1894333333333
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 227,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZ8RHT6RVAP4AGVWZVQZ64PG",
+          "tcpId": "01K2NF1E0SYJ4MV66C2K8MBZ2P",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZXQ1QVP1Q1DBB77M5TN0MD0",
+          "tcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZ8RJ436KVTXP7Q2TE8C1XSP",
+      "airportId": "ORF",
+      "volumeId": "O32",
+      "name": "ORF 32",
+      "runwayThreshold": {
+        "lat": 36.8885861111111,
+        "lon": -76.1990222222222
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 317,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZ8RJS61ZEB38R8KZ1ZK58R6",
+          "tcpId": "01K2NF1E0SYJ4MV66C2K8MBZ2P",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZXQ1XZJWEMM9KXZG68HMT00",
+          "tcpId": "01K2NF1E0SYT6WT8JPXQCS9042",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

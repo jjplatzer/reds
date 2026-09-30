@@ -214,6 +214,228 @@
       "freq": 118.1
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JYSKPX7H42QR96YWYP6K9TYS",
+      "airportId": "BOI",
+      "volumeId": "RY10R",
+      "name": "RWY 10R",
+      "runwayThreshold": {
+        "lat": 43.57,
+        "lon": -116.24277778
+      },
+      "ceiling": 12900,
+      "floor": 2500,
+      "magneticHeading": 100,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 12852,
+      "widthRight": 12152,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZSBYR5C09SM5A6VQ6C99Q86",
+          "entry": "V0R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZSBYZ6MC8WCVX69AMQ4ZVB3",
+          "entry": "V0L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K0YKVNT4MZ77QS8A3K7CSKYP",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYSKPX7MYG57NPJQEJBE51Q2",
+          "tcpId": "01K2NF1E41QNJ21667729PAJB5",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYSKPX7M2PJWS1ZCD6WJ0R9J",
+          "tcpId": "01K2NF1E411SQ3NK2HSPJ3M89F",
+          "tcp": "1G",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYSKPX7M5G446YDBB103JF32",
+          "tcpId": "01K2NF1E4159DWTEKXQC250WXA",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYSKPX7HE0V0CYKR8ZY6F384",
+      "airportId": "BOI",
+      "volumeId": "RY28R",
+      "name": "RWY 28R",
+      "runwayThreshold": {
+        "lat": 43.55861111,
+        "lon": -116.20277778
+      },
+      "ceiling": 12900,
+      "floor": 2500,
+      "magneticHeading": 280,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 12152,
+      "widthRight": 12852,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZSBY079TTFNT9BB302WC3NV",
+          "entry": "V8R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZSBY7ZP1XEPKFN8E09PM1Y2",
+          "entry": "V8L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K0YKVB75FFEACPXYFEMS9ET5",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYSKPX7M08VPDJRQ8ZQ3MWQV",
+          "tcpId": "01K2NF1E41QNJ21667729PAJB5",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYSKPX7MCDZ8ZDV0H4KFMTG5",
+          "tcpId": "01K2NF1E411SQ3NK2HSPJ3M89F",
+          "tcp": "1G",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYSKPX7MWK8HXYXB54JH3DYN",
+          "tcpId": "01K2NF1E4159DWTEKXQC250WXA",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01KKY5WQK3GRKXCXKS0GGG2XTZ",
+      "airportId": "BZN",
+      "volumeId": "RY12",
+      "name": "BZN RWY 12",
+      "runwayThreshold": {
+        "lat": 45.78805556,
+        "lon": -111.16638889
+      },
+      "ceiling": 14000,
+      "floor": 4200,
+      "magneticHeading": 120,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 12152,
+      "widthRight": 12152,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KKY5Y7FANDE034424WQYM1JF",
+          "entry": "V12",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKY5YAJ3D2MY0GFM3Q35CR31",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKY5YHCJ2X0CJK4BSKG728DP",
+          "entry": "V2",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKY5YNY471TW38351MGA669K",
+          "entry": "V1",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KKY5Z6QTR5Y0X4TSKCFARA45",
+          "tcpId": "01KKVNBFWA40DPXV1N1MY948M4",
+          "tcp": "1B",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01KKY5SQFY0BK43V5M3EAXANCV",
+      "airportId": "BZN",
+      "volumeId": "RY30",
+      "name": "BZN RWY 30",
+      "runwayThreshold": {
+        "lat": 45.77027778,
+        "lon": -111.14194444
+      },
+      "ceiling": 14000,
+      "floor": 4200,
+      "magneticHeading": 300,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 12152,
+      "widthRight": 12152,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KKY5VJSV5NS1S12VS9MKPQ1R",
+          "entry": "V30",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKY5VSECC9RDWAR4C1VYY65F",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKY5VXGVJV0Q3T65MKXAH7EW",
+          "entry": "V0",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKY5W12KMY5BR15GKHJB6VHB",
+          "entry": "V3",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KKY5WB3JT8RPBVMXAFWKRPDD",
+          "tcpId": "01KKVNBFWA40DPXV1N1MY948M4",
+          "tcp": "1B",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

@@ -217,6 +217,527 @@
       "freq": 121.7
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01KKADQRVW5FT8TMECYND9ECPE",
+      "airportId": "ALB",
+      "volumeId": "ALB01",
+      "name": "ALB ATPA RWY01",
+      "runwayThreshold": {
+        "lat": 42.73722222222222,
+        "lon": -73.80416666666666
+      },
+      "ceiling": 4200,
+      "floor": -9900,
+      "magneticHeading": 12,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KKADS3D0E3R7YJ841HGDQ51N",
+          "entry": "R28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKADS8QX0BK8EJVJRVSMNRS0",
+          "entry": "R28",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KKADSF8XBGNF7Y08HTGCZHA8",
+          "tcpId": "",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKADSH6SW738SKFNNM63352C",
+          "tcpId": "01K2NF1CGPZY9WK0XZZ33S3Q2Q",
+          "tcp": "1T",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKADSN9VG4MFHVP1GSB7NJKY",
+          "tcpId": "01K2NF1CGPFBC8HHDQ8C1Q7EJX",
+          "tcp": "1V",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKADSWE3ECTZRX5YZWHQ54MR",
+          "tcpId": "01K2NF1CGPQH5QCJ9Q4ND0932G",
+          "tcp": "2T",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01KKADTTMM6R952X8DT87NDPK4",
+      "airportId": "ALB",
+      "volumeId": "ALB19",
+      "name": "ALB ATPA RWY19",
+      "runwayThreshold": {
+        "lat": 42.760555555555555,
+        "lon": -73.80527777777777
+      },
+      "ceiling": 4200,
+      "floor": -9900,
+      "magneticHeading": 191,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KKADW20MM2J8Z1J9ECW2DTSY",
+          "entry": "R01",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKADW58SFKWP5B3HAYHRH0AT",
+          "entry": "G01",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKADWAC39TH72AZYR8R0653A",
+          "entry": "R28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKADWDQXQ4TFZG9H6Z1ENCMG",
+          "entry": "G28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KKADWS7V8DK61KN0Z86WK74R",
+          "tcpId": "",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKADWSD1AF80PWMM1T4VJXHS",
+          "tcpId": "01K2NF1CGPZY9WK0XZZ33S3Q2Q",
+          "tcp": "1T",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKADWSHSYWDFRZQ0WF037A2C",
+          "tcpId": "01K2NF1CGPFBC8HHDQ8C1Q7EJX",
+          "tcp": "1V",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKADWSQ8X3C823VAGTXJHN4Z",
+          "tcpId": "01K2NF1CGPQH5QCJ9Q4ND0932G",
+          "tcp": "2T",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01KKADX6PAMN9HDAP22EVVAD8N",
+      "airportId": "ALB",
+      "volumeId": "ALB28",
+      "name": "ALB ATPA RWY28",
+      "runwayThreshold": {
+        "lat": 42.749722222222225,
+        "lon": -73.78527777777778
+      },
+      "ceiling": 4200,
+      "floor": -9900,
+      "magneticHeading": 281,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KKADY5CHMWVBSCGZ4VV4AFZ6",
+          "entry": "R01",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKADY697W326FR6FKKJK1T5X",
+          "entry": "G01",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKADY8BJEB99SYPV4GHESWY5",
+          "entry": "R19",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKADY8FZC0J0YMKSYXD155SP",
+          "entry": "G19",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KKADYKV6ZRC2T4M1CT6425PN",
+          "tcpId": "",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKADYM2YBWRX0ABWR41W1QGB",
+          "tcpId": "01K2NF1CGPZY9WK0XZZ33S3Q2Q",
+          "tcp": "1T",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKADYM6WR6JWNQQWE99XDM7W",
+          "tcpId": "01K2NF1CGPFBC8HHDQ8C1Q7EJX",
+          "tcp": "1V",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKADYMB8P39G2FTG50KTND5V",
+          "tcpId": "01K2NF1CGPQH5QCJ9Q4ND0932G",
+          "tcp": "2T",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01KKAED9PZXMY4RRQKNCSVT5ST",
+      "airportId": "SCH",
+      "volumeId": "R28",
+      "name": "SCH ATPA RWY28",
+      "runwayThreshold": {
+        "lat": 42.848888888888894,
+        "lon": -73.92277777777778
+      },
+      "ceiling": 4200,
+      "floor": -9900,
+      "magneticHeading": 282,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KKAEEBZA00SFX5BJ45D3553Z",
+          "entry": "R04",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAEEC5PKSFP4GDNX31E0WQ5",
+          "entry": "G04",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAEECH25VDB26KREQXDH6NH",
+          "entry": "R10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAEECP9KFGSC7GMNCQ4P13M",
+          "entry": "G10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAEECYB97AWTG0K6Q03ZBX7",
+          "entry": "R22",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAEED2ZMXWDNNWJD5NS8CQS",
+          "entry": "G22",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KKAEGXVNWFQH3CVP2SS02AAR",
+          "tcpId": "",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAEGY001SJE0P5072JR5SVX",
+          "tcpId": "01K2NF1CGPAR7R8DEJAN31B182",
+          "tcp": "1S",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAEGY4BD1JEMKHEWFC7KWF1",
+          "tcpId": "01K2NF1CGPFBC8HHDQ8C1Q7EJX",
+          "tcp": "1V",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAEGY8SNJRGJ71EP7RDX5V5",
+          "tcpId": "01K2NF1CGP10NNYT9E3AR96TQ1",
+          "tcp": "1W",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01KKADZ39Z6V97VQWR6SZ09TD2",
+      "airportId": "SCH",
+      "volumeId": "SCH04",
+      "name": "SCH ATPA RWY04",
+      "runwayThreshold": {
+        "lat": 42.846944444444446,
+        "lon": -73.93388888888889
+      },
+      "ceiling": 4200,
+      "floor": -9900,
+      "magneticHeading": 40,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KKAE017KS12ZE39MWRCFYTX1",
+          "entry": "R10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAE01BZW9W7SNPGRSRQ2CG6",
+          "entry": "G10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAE01GCB4BJGG1JXVMDC0C4",
+          "entry": "R22",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAE01MYQF69MAPQNHXW5QE9",
+          "entry": "G22",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAE01SXTDVTPVKKDRN6PHWY",
+          "entry": "R28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAE0602XF5JWW1MBEYSCVF7",
+          "entry": "R28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KKAE0Y2XDQZQHJQ2ZBA20KBJ",
+          "tcpId": "",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAE0Y7MR8X5JWYP5EZXG5XF",
+          "tcpId": "01K2NF1CGPAR7R8DEJAN31B182",
+          "tcp": "1S",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAE0YCAMRY8ET7GHHJFJJW6",
+          "tcpId": "01K2NF1CGPFBC8HHDQ8C1Q7EJX",
+          "tcp": "1V",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAE0YHFZ0FMY25KFVZC7NYW",
+          "tcpId": "01K2NF1CGP10NNYT9E3AR96TQ1",
+          "tcp": "1W",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01KKAE1KT0P5K0EW4BXX5X2JGF",
+      "airportId": "SCH",
+      "volumeId": "SCH10",
+      "name": "SCH ATPA RWY10",
+      "runwayThreshold": {
+        "lat": 42.848333333333336,
+        "lon": -73.940003
+      },
+      "ceiling": 4200,
+      "floor": -9900,
+      "magneticHeading": 102,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KKAE48S8ZVDZR6S36Z7GSBR1",
+          "entry": "R04",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAE4932PZ3J115W2Q6CFSXY",
+          "entry": "G04",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAE49DXET6F10Q4FJ62MQY7",
+          "entry": "R22",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAE49PMJCPT3NRBY3647894",
+          "entry": "G22",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAE4A07PWQGCJZQMM53C5TH",
+          "entry": "R28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAE4AAMB57XJCG2QYFMA3X9",
+          "entry": "G28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KKAE4TA08R11FG1MHBGN4FPS",
+          "tcpId": "",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAE4TFGVN15G336GJJZ801A",
+          "tcpId": "01K2NF1CGPAR7R8DEJAN31B182",
+          "tcp": "1S",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAE4TNZY3BK9QH39FBT4TT9",
+          "tcpId": "01K2NF1CGPFBC8HHDQ8C1Q7EJX",
+          "tcp": "1V",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAE4TX5QS4T95CFF3N6E025",
+          "tcpId": "01K2NF1CGP10NNYT9E3AR96TQ1",
+          "tcp": "1W",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01KKAEA9J5678YKCXW56HRNKVP",
+      "airportId": "SCH",
+      "volumeId": "SCH22",
+      "name": "SCH ATPA RWY22",
+      "runwayThreshold": {
+        "lat": 42.86416666666667,
+        "lon": -73.92222222222223
+      },
+      "ceiling": 4200,
+      "floor": -9900,
+      "magneticHeading": 220,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KKAEBQT5RV318YJ8X2VWN393",
+          "entry": "R04",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAEBR2FCSKQ21KWJ0MWBSET",
+          "entry": "G04",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAEBR9FYV27ZQFSX0W4FBXJ",
+          "entry": "R10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAEBREXXQB1PJ8KBZE31V03",
+          "entry": "G10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAEBRNX8MNPWXWZE0NY51XV",
+          "entry": "R28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KKAEBRX33Y7N9A6YSMA6TTD8",
+          "entry": "R28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KKAECGPK9D5YS3QG2685JGVM",
+          "tcpId": "",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAECGVFAHTHRTCMHT5Y3NGB",
+          "tcpId": "01K2NF1CGPAR7R8DEJAN31B182",
+          "tcp": "1S",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAECH0PR6YD23C6K7TS3GM2",
+          "tcpId": "01K2NF1CGPFBC8HHDQ8C1Q7EJX",
+          "tcp": "1V",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01KKAECH7XK51EPGWTDTCAXMP2",
+          "tcpId": "01K2NF1CGP10NNYT9E3AR96TQ1",
+          "tcp": "1W",
+          "coneType": "Alert"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

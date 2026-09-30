@@ -76,6 +76,40 @@
       "freq": 118.85
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JYFM5QFYFSHVG52MJ3EB4QAE",
+      "airportId": "ASE",
+      "volumeId": "15",
+      "name": "ATPA RWY 15",
+      "runwayThreshold": {
+        "lat": 39.23194444,
+        "lon": -106.87305556
+      },
+      "ceiling": 14100,
+      "floor": 7500,
+      "magneticHeading": 151,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30338,
+      "widthRight": 18243,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JYFM85WCW0QY0KEQW62RE3JV",
+          "tcpId": "01K2NF1CJTBNKVKG55F4JNHJ50",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFM8G1JR71TTFDANP4GS40C",
+          "tcpId": "01K2NF1CJTYWZDB0GR93YAQPC7",
+          "tcp": "1T",
+          "coneType": "Alert"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

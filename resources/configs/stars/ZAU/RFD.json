@@ -120,6 +120,80 @@
       "freq": 126
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JZMP45K86FZQMMHF802P1N6Q",
+      "airportId": "RFD",
+      "volumeId": "01",
+      "name": "RFD 01",
+      "runwayThreshold": {
+        "lat": 42.18333333,
+        "lon": -89.09138889
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 5,
+      "maximumHeadingDeviation": 80,
+      "length": 30,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JZMP7ZQFBHB1XWRT6GY50SP5",
+      "airportId": "RFD",
+      "volumeId": "07",
+      "name": "RFD 07",
+      "runwayThreshold": {
+        "lat": 42.19027778,
+        "lon": -89.12
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 65,
+      "maximumHeadingDeviation": 79,
+      "length": 41,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JZMP0CQFX6JY54S90W8XC4FB",
+      "airportId": "RFD",
+      "volumeId": "19",
+      "name": "RFD 19",
+      "runwayThreshold": {
+        "lat": 42.20583333,
+        "lon": -89.08861111
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 185,
+      "maximumHeadingDeviation": 80,
+      "length": 38,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JZMP6EX0989ANP2Y68M0T1CB",
+      "airportId": "RFD",
+      "volumeId": "25",
+      "name": "RFD 25",
+      "runwayThreshold": {
+        "lat": 42.20166667,
+        "lon": -89.08638889
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 245,
+      "maximumHeadingDeviation": 80,
+      "length": 30,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

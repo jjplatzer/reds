@@ -155,6 +155,164 @@
       "freq": 121.9
     }
   ],
+  "atpaVolumes": [
+    {
+      "id": "01JYF6XWAM4K93XJVQQ4N6ZX3T",
+      "airportId": "DLH",
+      "volumeId": "R03",
+      "name": "RWY 03 ATPA",
+      "runwayThreshold": {
+        "lat": 46.83583333,
+        "lon": -92.18833333
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 32,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 18000,
+      "widthRight": 18000,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYF6YT7TYH4A2460ZERCEHCH",
+          "entry": "R21",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYF6YZEHXXMQ57JFRRBF846P",
+          "entry": "R09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYF6Z5AQEBF64VYJH6HDTCZP",
+          "entry": "R27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ]
+    },
+    {
+      "id": "01JYF6TKMZPJ5QZQH5T25NWDVF",
+      "airportId": "DLH",
+      "volumeId": "R09",
+      "name": "RWY 09 ATPA",
+      "runwayThreshold": {
+        "lat": 46.8425,
+        "lon": -92.22027778
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 92,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 12000,
+      "widthRight": 12000,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYF6VVPM2XC3NX0REE4AMQK7",
+          "entry": "R03",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYF6W08CZT2J3VSJ06X6ZMWW",
+          "entry": "R21",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYF6W421E97ZJJXQJZF1MV8M",
+          "entry": "R27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ]
+    },
+    {
+      "id": "01JYF6W875E1GG8PWMJPC64ZGP",
+      "airportId": "DLH",
+      "volumeId": "R21",
+      "name": "RWY 21 ATPA",
+      "runwayThreshold": {
+        "lat": 46.84916667,
+        "lon": -92.17638889
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 212,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 18000,
+      "widthRight": 18000,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYF6XCA1PS6EV4VZ80594AKC",
+          "entry": "R03",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYF6XGH8GZ6E9Y15C2BCG9NY",
+          "entry": "R09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYF6XPR06JKRAPCJTTQVF09Q",
+          "entry": "R27",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ]
+    },
+    {
+      "id": "01JYF6NQEPP778EFC8RP8E0XTF",
+      "airportId": "DLH",
+      "volumeId": "R27",
+      "name": "RWY 27 ATPA",
+      "runwayThreshold": {
+        "lat": 46.84138889,
+        "lon": -92.18
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 272,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 12000,
+      "widthRight": 12000,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYF6QA6HGPN3P50VB0M3AS37",
+          "entry": "R03",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYF6QYPTFV22YFXZK98HTAK1",
+          "entry": "R21",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYF6R4253HKCV69FPSFWYZP4",
+          "entry": "R09",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ]
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [
