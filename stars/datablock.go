@@ -13,6 +13,61 @@ import (
 	"github.com/juliusplatzer/reds/renderer"
 )
 
+type specialConditionClass uint8
+
+const (
+	specialConditionNone specialConditionClass = iota
+	specialConditionPrimary
+	specialConditionSecondary
+)
+
+type specialConditionIndicator struct {
+	Abbreviation string
+	Class        specialConditionClass
+}
+
+// targetSpecialConditionIndicator maps the standard Mode 3/A special-condition
+// beacon codes to the STARS abbreviations in TI 6191.409 Rev. 30, Table 2-25.
+//
+//	7400 -> LL  UAS Lost Link              (primary / alert red)
+//	7500 -> HJ  Hijack Situation           (primary / alert red)
+//	7600 -> RF  Radio Communications Fail  (primary / alert red)
+//	7700 -> EM  General Emergency          (primary / alert red)
+//	7777 -> MI  Military Intercept         (secondary / caution yellow)
+//
+// LL=7400 is specified by JO 7110.65 for STARS/MEARTS. 7777 is reserved for
+// military interceptor operations; Table 2-25 defines MI as the corresponding
+// standard secondary Special Condition abbreviation. Facility-adapted SPC
+// beacon codes are intentionally not guessed here because REDS does not yet
+// carry that STARS adaptation data.
+func targetSpecialConditionIndicator(target *redsnet.TaisTarget) (specialConditionIndicator, bool) {
+	if target == nil {
+		return specialConditionIndicator{}, false
+	}
+
+	switch strings.TrimSpace(target.Track.ReportedBeaconCode) {
+	case "7400":
+		return specialConditionIndicator{Abbreviation: "LL", Class: specialConditionPrimary}, true
+	case "7500":
+		return specialConditionIndicator{Abbreviation: "HJ", Class: specialConditionPrimary}, true
+	case "7600":
+		return specialConditionIndicator{Abbreviation: "RF", Class: specialConditionPrimary}, true
+	case "7700":
+		return specialConditionIndicator{Abbreviation: "EM", Class: specialConditionPrimary}, true
+	case "7777":
+		return specialConditionIndicator{Abbreviation: "MI", Class: specialConditionSecondary}, true
+	default:
+		return specialConditionIndicator{}, false
+	}
+}
+
+// TI 6191.409 2.16.2 uses a half-second cadence while an SPC remains
+// unacknowledged. Once acknowledged, drawDatablocks keeps the abbreviation
+// continuously visible in its alert/caution color.
+func specialConditionBlinkVisible(now time.Time) bool {
+	return (now.UnixMilli()/500)&1 != 0
+}
+
 // targetDatablockType is the subset of the STARS data-block presentation that
 // REDS can determine directly from TAIS today. TI 6191.409 Rev. 30 section
 // 2.12 defines Full, Partial, and Limited data blocks. Single-track quick look
@@ -111,12 +166,25 @@ func (p *STARSPane) drawDatablocks(
 			Color: brightness.ScaleRGB(color).ToRGBA(),
 		}
 
+		spc, hasSPC := targetSpecialConditionIndicator(target)
+		spcAck, spcAcknowledged := p.targetSPCAcknowledgement(target)
+		spcStyle := style
+		if hasSPC {
+			spcColor := p.colors.AlertDatablock
+			if spc.Class == specialConditionSecondary && !(spcAcknowledged && spcAck.ForceAlertColor) {
+				spcColor = p.colors.CautionDatablock
+			}
+			spcStyle.Color = brightness.ScaleRGB(spcColor).ToRGBA()
+		}
+
 		switch dbType {
 		case targetDatablockFull:
-			// Figure 2-20: the leader is aligned with the ACID line. The
-			// omitted alert line remains conceptually above it; it does not need
-			// an empty raster row. Fields 3/4 and 5 on line 2 follow the STARS
-			// clock phase, while field 7 on line 3 carries assigned altitude.
+			// Figure 2-20 / section 2.16.2: line zero is immediately above
+			// the ACID line and carries Special Condition alert/caution text.
+			// The leader remains aligned with the ACID line.
+			if hasSPC && (spcAcknowledged || specialConditionBlinkVisible(now)) {
+				p.addDatablockLine(td, spc.Abbreviation, anchor, direction, -1, 0, lineHeight, spcStyle)
+			}
 			line1 := targetDatablockACID(target)
 			line2 := p.targetFullDatablockLine2(target, clockPhase)
 			line3 := targetFullDatablockLine3(target, direction)
@@ -134,12 +202,13 @@ func (p *STARSPane) drawDatablocks(
 
 		case targetDatablockLimited:
 			// Figure 2-23: the leader aligns with the altitude/ground-speed
-			// line. Section 6.13.9 controls whether the reported beacon code
-			// is normally shown in field 1 for all LDBs. Independently, 6.13.2
-			// requires slew + left trackball on one unassociated track to force
-			// that code into field 1 for five seconds. When neither condition
-			// applies, no empty raster row is reserved.
-			if p.currentPrefs().DisplayLDBBeaconCodes || p.targetLDBBeaconReadoutActive(target, now) {
+			// line. An active Special Condition occupies fixed line zero and,
+			// as in STARS/VICE, also expands the LDB so the current beacon code
+			// is visible in field 1 even when normal LDB beacon display is off.
+			if hasSPC && (spcAcknowledged || specialConditionBlinkVisible(now)) {
+				p.addDatablockLine(td, spc.Abbreviation, anchor, direction, -1, 1, lineHeight, spcStyle)
+			}
+			if hasSPC || p.currentPrefs().DisplayLDBBeaconCodes || p.targetLDBBeaconReadoutActive(target, now) {
 				line1 := normalizeBeaconCode(target.Track.ReportedBeaconCode)
 				p.addDatablockLine(td, line1, anchor, direction, 0, 1, lineHeight, style)
 			}
@@ -165,15 +234,8 @@ func altitudeWithinFilter(altitudeFeet int, filter [2]int) bool {
 // that STARS treats as special-purpose-code conditions. Facility-adapted SPCs
 // can be added when REDS carries that adaptation data.
 func targetHasAltitudeFilterSPC(target *redsnet.TaisTarget) bool {
-	if target == nil {
-		return false
-	}
-	switch strings.TrimSpace(target.Track.ReportedBeaconCode) {
-	case "7500", "7600", "7700":
-		return true
-	default:
-		return false
-	}
+	_, ok := targetSpecialConditionIndicator(target)
+	return ok
 }
 
 // targetAltitudeFilterAllowsDatablock mirrors VICE's placement of altitude
@@ -239,6 +301,13 @@ func (p *STARSPane) targetDatablockPresentation(target *redsnet.TaisTarget) (tar
 			color = p.colors.OwnedDatablock
 		}
 		return targetDatablockFull, color, ps.Brightness.OtherTracks
+	}
+	// TI 6191.409 2.16.2: an associated track with an active Special
+	// Condition is presented as an FDB so its line-zero warning is visible.
+	// If another controller owns it, retain the normal unowned FDB color and
+	// OTH brightness; only the SPC abbreviation itself is alert/caution color.
+	if _, ok := targetSpecialConditionIndicator(target); ok {
+		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 	}
 	return targetDatablockPartial, p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 }
@@ -422,6 +491,11 @@ func (p *STARSPane) targetFullDatablockField34(target *redsnet.TaisTarget, clock
 	}
 
 	altitude := targetDatablockAltitude(target.Track.ReportedAltitude)
+	// An Unsupported FDB has no surveillance altitude. VICE/STARS therefore
+	// leaves the altitude slot empty unless a timeshared scratchpad occupies it.
+	if isRPOSUnsupportedTarget(target) {
+		altitude = ""
+	}
 	sp1 := targetPrimaryScratchpad(target)
 	sp2 := targetSecondaryScratchpad(target)
 	handoff := p.targetIntrafacilityHandoffIndicator(target)
@@ -592,6 +666,13 @@ func normalizeTaisAirport(airport string) string {
 func targetFullDatablockField5(target *redsnet.TaisTarget, clockPhase int) string {
 	if target == nil || target.FlightPlan == nil {
 		return ""
+	}
+
+	// An Unsupported FDB has no radar-derived groundspeed. STARS/VICE use
+	// 00 in the speed slot while retaining the flight-rules/category suffix.
+	if isRPOSUnsupportedTarget(target) && clockPhase == 1 {
+		return "00" + targetDatablockFlightRulesIndicator(target.FlightPlan) +
+			targetDatablockCategory(target.FlightPlan)
 	}
 
 	switch clockPhase {

@@ -24,6 +24,9 @@ const (
 	CommandModeLDRLen
 	CommandModePTLLength
 	CommandModeSSAFilter
+	CommandModeTPA
+	CommandModeTrackReposition
+	CommandModePlaceCenter
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -53,6 +56,10 @@ func (m CommandMode) PreviewString() string {
 		return "PTL"
 	case CommandModeSSAFilter:
 		return ""
+	case CommandModeTrackReposition:
+		return "RP"
+	case CommandModePlaceCenter:
+		return "CNTR"
 	default:
 		return ""
 	}
@@ -352,6 +359,23 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	}
 	keyboard := ctx.Keyboard
 
+	// TI 6191.409 Rev. 30, 4.4.2: PLACE CNTR is a Main-DCB-only
+	// trackball mode. Keyboard entry is not applicable; Escape abandons the
+	// in-progress display-center operation.
+	if p.commandMode == CommandModePlaceCenter {
+		if keyboard.WasPressed(platform.KeyEscape) {
+			p.resetCommand()
+		}
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 5.7.3: TRK RPOS is the F2 function and is
+	// repetitive until another function is selected. VICE uses the same mapping.
+	if !keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF2) {
+		p.setCommandMode(CommandModeTrackReposition)
+		return
+	}
+
 	// VICE maps the physical STARS <MULTI FUNC> key to F7. TI 6191.409
 	// 4.5.3-4.5.4 specify these commands as keyboard-only.
 	if !keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF7) {
@@ -420,6 +444,35 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	// command; it has no keyboard entry form and no Preview Area response.
 	// Escape is retained as REDS' desktop equivalent of leaving the submenu.
 	if p.commandMode == CommandModeSSAFilter {
+		if keyboard.WasPressed(platform.KeyEscape) {
+			p.resetCommand()
+		}
+		return
+	}
+
+	// TRK RPOS completes on the final slew/left-trackball designation rather
+	// than ENTER. Typed ACID/beacon text therefore remains in the Preview Area
+	// until the scope selection.
+	if p.commandMode == CommandModeTrackReposition {
+		if keyboard.WasPressed(platform.KeyEscape) {
+			p.resetCommand()
+		}
+		if keyboard.WasPressed(platform.KeyBackspace) && len(p.commandInput) != 0 {
+			r := []rune(p.commandInput)
+			p.commandInput = string(r[:len(r)-1])
+		}
+		for _, r := range keyboard.Text {
+			if r >= ' ' && r != 0x7f {
+				p.commandInput += strings.ToUpper(string(r))
+				p.commandResponse = ""
+			}
+		}
+		return
+	}
+
+	// The TPA / ATPA submenu is DCB-driven. TPA implied keyboard commands are
+	// entered after leaving the submenu, as in VICE's mode split.
+	if p.commandMode == CommandModeTPA {
 		if keyboard.WasPressed(platform.KeyEscape) {
 			p.resetCommand()
 		}
@@ -509,6 +562,7 @@ func (p *STARSPane) resetCommand() {
 	p.leaderLengthDragAccumY = 0
 	p.ptlLengthDragAccumY = 0
 	p.wipRBL = nil
+	p.rposPendingSourceKey = ""
 }
 
 func (p *STARSPane) commitCommand() {

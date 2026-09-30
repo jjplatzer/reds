@@ -22,6 +22,7 @@ const (
 	zRangeRings       renderer.Z = -925
 	zCompass          renderer.Z = -850
 	zRangeBearingLine renderer.Z = -92
+	zTargetTPA        renderer.Z = -91
 )
 
 // STARSPane is the STARS TCW/TDW display surface. Facility adaptation feeds
@@ -90,6 +91,12 @@ type STARSPane struct {
 	// its reported beacon code into LDB field 1 for five seconds.
 	ldbBeaconReadoutUntil map[string]time.Time
 
+	// SPC acknowledgement is TCW/TDW-local unless the manual calls for
+	// system-wide propagation. The value records the active beacon code and any
+	// acknowledgement-specific color override.
+	spcAcknowledged       map[string]spcAcknowledgement
+	spcSystemAcknowledged map[string]spcSystemAcknowledgement
+
 	// rangeBearingLines are the operator-created *T Range Bearing Lines from
 	// TI 6191.409 6.7. wipRBL holds the first endpoint while STARS waits for
 	// the second endpoint. RBL state is intentionally transient display state,
@@ -103,6 +110,15 @@ type STARSPane struct {
 	// lets REDS reproduce the STARS handoff presentation without treating the
 	// receiving TCP as though it already owned the track.
 	taisOwnership map[string]taisOwnershipState
+
+	// tpaTracks stores manual TPA J-Ring/Cone state local to this TCW/TDW.
+	tpaTracks map[string]tpaTrackState
+
+	// trackRepositions stores TI 6191.409 5.7.3 TRK RPOS presentation state.
+	// TAIS itself is read-only, so the local TCW/TDW snapshot is rewritten for
+	// display without mutating live feed state.
+	trackRepositions     map[string]trackRepositionState
+	rposPendingSourceKey string
 }
 
 // resolvedQuickLookTCP expands the one-character controller-symbol shorthand
@@ -317,6 +333,21 @@ func (p *STARSPane) ssaConsolidationCouplingLines() []string {
 	return []string{tcp + " CON: " + tcp}
 }
 
+// monitorColorsForPosition selects the monitor palette adapted for the
+// controller position. CRC emits lower-case "tcw", "tdw", and "dod" color
+// sets. DoD STARS uses a separate palette that REDS does not model yet, so keep
+// its existing TCW fallback until that palette is implemented.
+func monitorColorsForPosition(colorSet string) MonitorColors {
+	switch strings.ToLower(strings.TrimSpace(colorSet)) {
+	case "tdw":
+		return defaultTDWColors
+	case "", "tcw", "dod":
+		return defaultTCWColors
+	default:
+		return defaultTCWColors
+	}
+}
+
 // NewPane creates a STARS TCW pane for the selected controller position.
 func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPane, error) {
 	if logger == nil {
@@ -332,11 +363,13 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 		useFontSetB            = false
 		useFAAHFSTD010APalette = false
 	)
+
+	colors := monitorColorsForPosition(cfg.ControlPosition.ColorSet)
 	pane := &STARSPane{
 		logger:                 logger,
 		config:                 cfg,
 		prefs:                  newPreferences(cfg),
-		colors:                 defaultTCWColors,
+		colors:                 colors,
 		useFontSetB:            useFontSetB,
 		useFAAHFSTD010APalette: useFAAHFSTD010APalette,
 		systemFont:             newSystemFont(useFontSetB),
@@ -401,9 +434,16 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	targets := p.targetSnapshot()
 	now := time.Now()
 	p.updateTaisOwnership(targets, now)
+	// TRK RPOS is local display state layered on top of the authoritative TAIS
+	// snapshot. Apply it before pruning other display-keyed state so TPA and
+	// leader-direction state can follow a repositioned Full Data Block.
+	p.pruneTrackRepositions(targets)
+	targets = p.applyTrackRepositions(targets)
 	p.pruneSingleTrackQuickLook(targets)
 	p.pruneSingleTrackLeaderDirections(targets)
 	p.pruneLDBBeaconReadouts(targets, now)
+	p.pruneTPAState(targets)
+	p.pruneSPCAcknowledgements(targets)
 	p.consumeMouseEvents(ctx, transforms, targets)
 
 	p.drawNexrad(ctx, zcb, transforms)
@@ -414,6 +454,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
 	p.drawPredictedTrackLines(ctx, zcb, transforms, targets)
 	p.drawRangeBearingLines(ctx, zcb, transforms, targets)
+	p.drawTPA(ctx, zcb, transforms, targets)
 	p.drawTargets(ctx, zcb, transforms, targets)
 	p.drawTargetLeaderLines(ctx, zcb, transforms, targets, now)
 	p.drawTargetPositionSymbols(ctx, zcb, transforms, targets, now)
@@ -522,6 +563,110 @@ func (p *STARSPane) consumeMouseEvents(
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
 
+	// TI 6191.409 Rev. 30, 4.4.2 PLACE CNTR. After the Main DCB
+	// selection, ordinary trackball/cursor motion pans the radar picture; the
+	// left trackball button fixes the new user-defined center and exits. Unlike
+	// right-button desktop panning, no mouse button is held while moving.
+	if p.commandMode == CommandModePlaceCenter {
+		if mouse.Delta.X != 0 || mouse.Delta.Y != 0 {
+			deltaLat, deltaLon := transforms.LatLonFromWindowV(mouse.Delta)
+			ps.UserCenter.Lat -= deltaLat
+			ps.UserCenter.Lon = normalizeLongitude(ps.UserCenter.Lon - deltaLon)
+			ps.UseUserCenter = true
+		}
+		if mouse.WasReleased(platform.MouseButtonLeft) {
+			p.setCommandMode(CommandModeNone)
+		}
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 5.7.3 TRK RPOS. F2 enters a repetitive
+	// two-designation command. The source may be selected by slew or identified
+	// by ACID/discrete beacon code; the destination is either an unassociated
+	// track or an empty scope position, which creates an Unsupported FDB.
+	if p.commandMode == CommandModeTrackReposition && mouse.WasReleased(platform.MouseButtonLeft) {
+		var source *redsnet.TaisTarget
+		if p.rposPendingSourceKey != "" {
+			for i := range targets.Targets {
+				if targetDisplayStateKey(&targets.Targets[i]) == p.rposPendingSourceKey {
+					source = &targets.Targets[i]
+					break
+				}
+			}
+			if source == nil {
+				p.rposPendingSourceKey = ""
+				p.commandResponse = ErrSTARSNoTrack.Error()
+				return
+			}
+		} else if strings.TrimSpace(p.commandInput) != "" {
+			var err error
+			source, err = p.rposTargetByReference(targets, p.commandInput)
+			if err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+		} else {
+			source = closestSlewTarget(targets, mouse.Pos, transforms)
+			if source == nil {
+				p.commandResponse = ErrSTARSNoTrack.Error()
+				return
+			}
+			if !p.rposSourceEligible(source) {
+				p.commandResponse = ErrSTARSIllegalTrack.Error()
+				return
+			}
+			p.rposPendingSourceKey = targetDisplayStateKey(source)
+			p.commandInput = ""
+			p.commandResponse = ""
+			return
+		}
+
+		if !p.rposSourceEligible(source) {
+			p.commandResponse = ErrSTARSIllegalTrack.Error()
+			return
+		}
+
+		destination := closestSlewTarget(targets, mouse.Pos, transforms)
+		if destination != nil {
+			if destination.FlightPlan != nil {
+				p.commandResponse = ErrSTARSIllegalTrack.Error()
+				return
+			}
+			if err := p.setTrackReposition(source, destination, configPoint{}); err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+		} else {
+			lat, lon := transforms.LatLonFromWindow(mouse.Pos)
+			if err := p.setTrackReposition(source, nil, configPoint{Lat: lat, Lon: lon}); err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+		}
+
+		// TRK RPOS is repetitive: clear the two designations but stay in RP mode.
+		p.rposPendingSourceKey = ""
+		p.commandInput = ""
+		p.commandResponse = ""
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 7.16: <MULTI FUNC>, <G>, slew + left
+	// trackball acknowledges an SPC on an unassociated track system-wide. This
+	// is distinct from the bare-slew 7.3 acknowledgement, which is local for an
+	// unassociated SPC.
+	if p.commandMode == CommandModeMultiFunc &&
+		strings.EqualFold(p.multiFuncPrefix+p.commandInput, "G") &&
+		mouse.WasReleased(platform.MouseButtonLeft) {
+		target := closestSlewTarget(targets, mouse.Pos, transforms)
+		if err := p.acknowledgeUnassociatedSPCSystemWide(target); err != nil {
+			p.commandResponse = err.Error()
+			return
+		}
+		p.resetCommand()
+		return
+	}
+
 	// TI 6191.409 Rev. 30, 6.13.1 / 6.13.17 Specify data block
 	// position for a single associated track. The implied form is simply
 	// <direction>, slew, left trackball. The explicit keyboard form is
@@ -559,6 +704,31 @@ func (p *STARSPane) consumeMouseEvents(
 			if !repetitive {
 				p.resetCommand()
 			}
+			return
+		}
+	}
+
+	// TI 6191.409 Rev. 30, 6.21.2-6.21.10 manual TPA implied commands.
+	// The keyboard portion remains in the Preview Area while the operator slews
+	// to a target and selects the left trackball button. These commands are
+	// repetitive, so a successful selection does not clear the entry.
+	if p.commandMode == CommandModeNone && mouse.WasReleased(platform.MouseButtonLeft) {
+		op, distance, sizeMode, recognized, err := parseTPAImpliedCommand(p.commandInput)
+		if recognized {
+			if err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+			target := closestSlewTarget(targets, mouse.Pos, transforms)
+			if target == nil {
+				p.commandResponse = ErrSTARSNoTrack.Error()
+				return
+			}
+			if err := p.applyTPAImpliedCommand(target, op, distance, sizeMode); err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+			p.commandResponse = ""
 			return
 		}
 	}
@@ -661,6 +831,12 @@ func (p *STARSPane) consumeMouseEvents(
 			// retained until that controller slews/selects the track. Consume
 			// the click here so it cannot also become a single-track quick look.
 			if p.acknowledgeOutboundHandoff(target) {
+				return
+			}
+			// TI 6191.409 Rev. 30, 7.3: bare slew + left trackball
+			// acknowledges an unacknowledged SPC (among the alert types handled
+			// by the real system) and leaves its abbreviation steady.
+			if p.acknowledgeSPCBySlew(target) {
 				return
 			}
 			if p.targetSupportsSingleTrackQuickLook(target) {

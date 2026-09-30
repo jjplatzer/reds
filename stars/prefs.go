@@ -275,6 +275,10 @@ type Preferences struct {
 	// shown in all Limited Data Blocks for unassociated tracks.
 	DisplayLDBBeaconCodes bool
 
+	// DisplayTPASize is the TCW/TDW-wide A/TPA MILEAGE state from 6.21.1
+	// and 6.21.11. Single-track *D+ commands can locally override it.
+	DisplayTPASize bool
+
 	// SelectedBeacons contains Mode 3/A codes or two-digit beacon-code banks
 	// selected for enhanced unassociated-track presentation. TI 6191.409
 	// section 6.13.11 defines this as an operator selection. Until REDS exposes
@@ -362,7 +366,9 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// which showed the beacon code in every LDB, until preference-set
 		// persistence/site adaptation supplies an initial value.
 		DisplayLDBBeaconCodes: true,
-		SelectedBeacons:       []string{"1200"},
+		// Match VICE/STARS: TPA mileage is enabled by default.
+		DisplayTPASize:  true,
+		SelectedBeacons: []string{"1200"},
 	}
 	for i := range prefs.DisplayWeatherLevel {
 		prefs.DisplayWeatherLevel[i] = true

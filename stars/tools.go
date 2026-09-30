@@ -3,6 +3,7 @@ package stars
 import (
 	"fmt"
 	stdmath "math"
+	"strconv"
 	"strings"
 
 	"github.com/juliusplatzer/reds/aviation"
@@ -672,4 +673,276 @@ func (p *STARSPane) drawRangeBearingLines(
 	lines.GenerateCommands(cb)
 	text.GenerateCommands(cb, texture)
 	cb.DisableScissor()
+}
+
+func formatTPADistance(v float32) string {
+	if v == float32(int(v)) {
+		return strconv.Itoa(int(v))
+	}
+	return fmt.Sprintf("%.1f", v)
+}
+
+func (p *STARSPane) tpaSizeVisible(state tpaTrackState) bool {
+	if state.DisplaySize != nil {
+		return *state.DisplaySize
+	}
+	return p.currentPrefs().DisplayTPASize
+}
+
+func (p *STARSPane) drawTPA(
+	ctx *panes.Context,
+	zcb *renderer.ZCmdBuffer,
+	transforms radar.LatLonTransformations,
+	snapshot redsnet.TaisSnapshot,
+) {
+	if p == nil || ctx == nil || zcb == nil || !snapshot.Ready || len(p.tpaTracks) == 0 {
+		return
+	}
+	ps := p.currentPrefs()
+	if ps.Brightness.Lines == 0 {
+		return
+	}
+
+	shortSide := ctx.PaneRect.Width()
+	if h := ctx.PaneRect.Height(); h < shortSide {
+		shortSide = h
+	}
+	if shortSide <= 0 || ps.Range <= 0 {
+		return
+	}
+	pixelsPerNM := shortSide / (2 * ps.Range)
+	if pixelsPerNM <= 0 {
+		return
+	}
+
+	lines := renderer.GetLinesBuilder()
+	defer renderer.ReturnLinesBuilder(lines)
+	text := renderer.GetTextDrawBuilder()
+	defer renderer.ReturnTextDrawBuilder(text)
+	text.SetFont(p.systemFont)
+
+	fontSize := p.datablockFontSize()
+	fontTexture := p.systemFontTexture(ctx.Renderer, fontSize)
+	color := ps.Brightness.Lines.ScaleRGB(p.colors.TerminalProximityAlert)
+	textStyle := renderer.TextStyle{Size: fontSize, Color: color.ToRGBA()}
+
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		key := targetDisplayStateKey(target)
+		state, ok := p.tpaTracks[key]
+		if !ok || !state.hasGraphic() || !taisTargetHasPosition(target) {
+			continue
+		}
+
+		center := transforms.WindowFromLatLon(target.Track.Lat, target.Track.Lon)
+		if !targetCenterNearPane(ctx, center, max(float32(20), max(state.JRingRadius, state.ConeLength)*pixelsPerNM+20)) {
+			continue
+		}
+
+		if state.JRingRadius > 0 {
+			radius := state.JRingRadius * pixelsPerNM
+			lines.AddCircle(renderer.PointVertex{X: center.X, Y: center.Y}, radius, 360)
+			if p.tpaSizeVisible(state) && fontTexture != 0 {
+				// TI 6191.409 Figure 6-23 places J-Ring mileage opposite the
+				// leader line. Move slightly inward/up so the text clears the ring.
+				leader := leaderLineUnitVector(p.targetLeaderLineDirection(target))
+				pos := redsmath.Vec2{
+					X: center.X - leader.X*radius,
+					Y: center.Y - leader.Y*radius,
+				}
+				label := formatTPADistance(state.JRingRadius)
+				pos.X -= float32(len(label)*fontSize) * 0.25
+				pos.Y -= float32(fontSize) * 0.5
+				text.AddText(label, pos, textStyle)
+			}
+			continue
+		}
+
+		// A manual TPA Cone is displayed only while the track is moving. Its
+		// vertex is at the target and its axis follows the current velocity.
+		vx, vy := float64(target.Track.VX), float64(target.Track.VY)
+		speed := stdmath.Hypot(vx, vy)
+		if state.ConeLength <= 0 || speed == 0 {
+			continue
+		}
+		east := vx / speed
+		north := vy / speed
+		lonScale := radar.LongitudeScaleFactorForLat(target.Track.Lat)
+		if lonScale == 0 {
+			continue
+		}
+		endLat := target.Track.Lat + north*float64(state.ConeLength)/60
+		endLon := normalizeLongitude(target.Track.Lon + east*float64(state.ConeLength)/(60*lonScale))
+		end := transforms.WindowFromLatLon(endLat, endLon)
+		dx, dy := end.X-center.X, end.Y-center.Y
+		norm := float32(stdmath.Hypot(float64(dx), float64(dy)))
+		if norm <= 0 {
+			continue
+		}
+		// VICE/STARS uses a narrow wedge; retain VICE's ten-display-pixel
+		// base width so the presentation remains stable as RANGE changes.
+		px, py := -dy/norm*5, dx/norm*5
+		apex := renderer.PointVertex{X: center.X, Y: center.Y}
+		baseLeft := renderer.PointVertex{X: end.X + px, Y: end.Y + py}
+		baseRight := renderer.PointVertex{X: end.X - px, Y: end.Y - py}
+
+		// Figure 6-24 shows the mileage in a genuine break in the two cone
+		// sides. Do not paint a background-colored mask: that would also
+		// erase weather/maps underneath the label. Instead, clip only the
+		// two sloping sides against the glyph bounds (plus two pixels), while
+		// leaving the transverse end of the cone intact.
+		clippedForMileage := false
+		if p.tpaSizeVisible(state) && fontTexture != 0 {
+			mid := redsmath.Vec2{X: center.X + dx*0.5, Y: center.Y + dy*0.5}
+			label := formatTPADistance(state.ConeLength)
+			if minInk, maxInk, ok := tpaTextInkBounds(p.systemFont, fontSize, label); ok {
+				inkCenter := redsmath.Vec2{
+					X: (minInk.X + maxInk.X) * 0.5,
+					Y: (minInk.Y + maxInk.Y) * 0.5,
+				}
+				textPos := redsmath.Vec2{X: mid.X - inkCenter.X, Y: mid.Y - inkCenter.Y}
+
+				const pad = float32(2)
+				exclusion := redsmath.NewRect(
+					textPos.X+minInk.X-pad,
+					textPos.Y+minInk.Y-pad,
+					textPos.X+maxInk.X+pad,
+					textPos.Y+maxInk.Y+pad,
+				)
+				addTPALineOutsideRect(lines, apex, baseLeft, exclusion)
+				addTPALineOutsideRect(lines, apex, baseRight, exclusion)
+				text.AddText(label, textPos, textStyle)
+				clippedForMileage = true
+			}
+		}
+
+		if !clippedForMileage {
+			lines.AddLine(apex, baseLeft)
+			lines.AddLine(apex, baseRight)
+		}
+		lines.AddLine(baseLeft, baseRight)
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zTargetTPA)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.SetRGB(color)
+	cb.LineWidth(max(float32(1), ctx.DPIScale))
+	lines.GenerateCommands(cb)
+	if fontTexture != 0 {
+		text.GenerateCommands(cb, fontTexture)
+	}
+	cb.DisableScissor()
+}
+
+// addTPALineOutsideRect adds the portions of segment a-b that lie outside
+// rect. The rectangle is only a drawing exclusion zone for a TPA cone side;
+// nothing is filled, so lower-z scope content remains visible through the gap.
+func addTPALineOutsideRect(lines *renderer.LinesBuilder, a, b renderer.PointVertex, rect redsmath.Rect) {
+	if lines == nil {
+		return
+	}
+	tEnter, tExit, intersects := tpaSegmentRectInterval(a, b, rect)
+	if !intersects {
+		lines.AddLine(a, b)
+		return
+	}
+
+	if tEnter > 0 {
+		lines.AddLine(a, tpaLerpPoint(a, b, tEnter))
+	}
+	if tExit < 1 {
+		lines.AddLine(tpaLerpPoint(a, b, tExit), b)
+	}
+}
+
+// tpaSegmentRectInterval returns the parametric interval of a-b lying inside
+// rect. Liang-Barsky clipping keeps this allocation-free since drawTPA may run
+// for many tracks every frame.
+func tpaSegmentRectInterval(a, b renderer.PointVertex, rect redsmath.Rect) (float32, float32, bool) {
+	dx, dy := b.X-a.X, b.Y-a.Y
+	tEnter, tExit := float32(0), float32(1)
+
+	clip := func(p, q float32) bool {
+		if p == 0 {
+			return q >= 0
+		}
+		r := q / p
+		if p < 0 {
+			if r > tExit {
+				return false
+			}
+			if r > tEnter {
+				tEnter = r
+			}
+		} else {
+			if r < tEnter {
+				return false
+			}
+			if r < tExit {
+				tExit = r
+			}
+		}
+		return true
+	}
+
+	if !clip(-dx, a.X-rect.Min.X) ||
+		!clip(dx, rect.Max.X-a.X) ||
+		!clip(-dy, a.Y-rect.Min.Y) ||
+		!clip(dy, rect.Max.Y-a.Y) {
+		return 0, 0, false
+	}
+	return tEnter, tExit, true
+}
+
+func tpaLerpPoint(a, b renderer.PointVertex, t float32) renderer.PointVertex {
+	return renderer.PointVertex{
+		X: a.X + (b.X-a.X)*t,
+		Y: a.Y + (b.Y-a.Y)*t,
+	}
+}
+
+// tpaTextInkBounds returns the rasterized glyph bounds relative to the origin
+// accepted by TextDrawBuilder.AddText. Keeping this local to TPA avoids using
+// layout-cell dimensions for the cone cutout; the exclusion should follow the
+// actual glyph ink rather than character advances.
+func tpaTextInkBounds(font *renderer.BitmapFont, size int, label string) (redsmath.Vec2, redsmath.Vec2, bool) {
+	if font == nil || label == "" {
+		return redsmath.Vec2{}, redsmath.Vec2{}, false
+	}
+	fs := font.Size(size)
+	if fs == nil {
+		return redsmath.Vec2{}, redsmath.Vec2{}, false
+	}
+
+	minInk := redsmath.Vec2{X: float32(stdmath.MaxFloat32), Y: float32(stdmath.MaxFloat32)}
+	maxInk := redsmath.Vec2{X: -float32(stdmath.MaxFloat32), Y: -float32(stdmath.MaxFloat32)}
+	penX := float32(0)
+	found := false
+	runes := []rune(label)
+	for i, r := range runes {
+		glyph, ok := fs.Glyph(r)
+		if !ok {
+			continue
+		}
+
+		x0 := penX + float32(glyph.BearingX)
+		y0 := float32(fs.LineHeight - glyph.BearingY)
+		x1 := x0 + float32(glyph.Width)
+		y1 := y0 + float32(glyph.Height)
+		minInk.X = min(minInk.X, x0)
+		minInk.Y = min(minInk.Y, y0)
+		maxInk.X = max(maxInk.X, x1)
+		maxInk.Y = max(maxInk.Y, y1)
+		found = true
+
+		if i == len(runes)-1 {
+			penX += float32(glyph.Width)
+		} else {
+			penX += float32(glyph.Advance)
+		}
+	}
+	return minInk, maxInk, found
 }

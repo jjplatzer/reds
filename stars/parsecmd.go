@@ -186,6 +186,44 @@ func (altitudeFilter6CommandParser) Parse(text string) (any, string, bool, error
 	return filter, text[6:], true, nil
 }
 
+type tpaDistanceCommandParser struct{}
+
+func (tpaDistanceCommandParser) Identifier() string { return "TPA_DISTANCE" }
+
+func (tpaDistanceCommandParser) Parse(text string) (any, string, bool, error) {
+	// TI 6191.409 Rev. 30, 6.21.2-6.21.7: 1 through 30 NM, with
+	// exactly one optional tenths digit permitted only for values 1 through 9.
+	if text == "" {
+		return nil, text, false, nil
+	}
+	i := 0
+	for i < len(text) && text[i] >= '0' && text[i] <= '9' {
+		i++
+	}
+	if i == 0 {
+		return nil, text, false, nil
+	}
+	whole, err := strconv.Atoi(text[:i])
+	if err != nil {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	value := float32(whole)
+	if i < len(text) && text[i] == '.' {
+		if whole < 1 || whole > 9 || i+1 >= len(text) || text[i+1] < '0' || text[i+1] > '9' {
+			return nil, text, true, ErrSTARSCommandFormat
+		}
+		value += float32(text[i+1]-'0') / 10
+		i += 2
+		if i < len(text) && ((text[i] >= '0' && text[i] <= '9') || text[i] == '.') {
+			return nil, text, true, ErrSTARSCommandFormat
+		}
+	}
+	if value < 1 || value > 30 {
+		return nil, text[i:], true, ErrSTARSCommandFormat
+	}
+	return value, text[i:], true, nil
+}
+
 type quickLookPositionSpec struct {
 	TCP  string
 	Plus bool
@@ -387,6 +425,7 @@ var commandTypeParsers = map[string]commandTypeParser{
 	"QL_POSITIONS":       quickLookPositionsCommandParser{},
 	"RBL_ID":             rblIDCommandParser{},
 	"RBL_FIELD":          rblFieldCommandParser{},
+	"TPA_DISTANCE":       tpaDistanceCommandParser{},
 }
 
 type commandMatcher interface {

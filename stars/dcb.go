@@ -223,8 +223,18 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 			p.setCommandMode(CommandModeRange)
 		})
 
-	// <PLACE CNTR> / <OFF CNTR>.
-	d.button("PLACE\nCNTR", mainFlags(buttonHalfVertical), false, nil)
+	// TI 6191.409 Rev. 30, 4.4.2: PLACE CNTR enters the Main-DCB
+	// trackball panning mode. Trackball movement continuously shifts the radar
+	// picture until the left trackball button fixes the new user center.
+	placeCenterSelected := p.commandMode == CommandModePlaceCenter
+	d.button("PLACE\nCNTR", mainFlags(buttonHalfVertical), placeCenterSelected, func() {
+		if placeCenterSelected {
+			p.setCommandMode(CommandModeNone)
+			return
+		}
+		p.setCommandMode(CommandModePlaceCenter)
+		ps.UseUserCenter = true
+	})
 	d.button("OFF\nCNTR", mainFlags(buttonHalfVertical), ps.UseUserCenter, func() {
 		ps.UseUserCenter = !ps.UseUserCenter
 	})
@@ -400,7 +410,13 @@ func (d *dcbDrawer) drawAuxPage() {
 		}
 	})
 	d.button("DWELL\nON", buttonFull, false, nil)
-	d.button("TPA /\nATPA", buttonFull, false, nil)
+	if p.commandMode == CommandModeTPA {
+		d.drawTPAPage()
+		return
+	}
+	d.button("TPA/\nATPA", buttonFull, false, func() {
+		p.setCommandMode(CommandModeTPA)
+	})
 
 	// Figure 2-12 TSAS-adapted controls. Table 2-6 says these appear grayed
 	// when TSAS is adapted but unavailable to the current TCW/TDW; REDS does
@@ -412,6 +428,38 @@ func (d *dcbDrawer) drawAuxPage() {
 	d.button("SHIFT", buttonFull, false, func() {
 		p.dcbShowAux = false
 		p.dcbSuppressPressUntilRelease = true
+	})
+}
+
+// drawTPAPage draws the five-button TPA / ATPA submenu from TI 6191.409
+// Rev. 30 Figure 6-27. ATPA processing is deliberately not enabled yet, so
+// only A/TPA MILEAGE and DONE are selectable in this first TPA implementation.
+func (d *dcbDrawer) drawTPAPage() {
+	p := d.pane
+	ps := p.currentPrefs()
+	onoff := func(v bool) string {
+		if v {
+			return "ENABLED"
+		}
+		return "INHIBTD"
+	}
+
+	d.button("A/TPA\nMILEAGE\n"+onoff(ps.DisplayTPASize), buttonFull, false, func() {
+		ps.DisplayTPASize = !ps.DisplayTPASize
+		// A DCB-wide change establishes the default for every current and
+		// future graphic; clear single-track overrides, matching *D+ semantics.
+		for key, state := range p.tpaTracks {
+			state.DisplaySize = nil
+			p.setTPAState(key, state)
+		}
+	})
+
+	// These controls belong to ATPA and become selectable when ATPA is added.
+	d.button("INTRAIL\nDIST\nINHIBTD", buttonFull|buttonDisabled, false, nil)
+	d.button("ALERT\nCONES\nINHIBTD", buttonFull|buttonDisabled, false, nil)
+	d.button("MONITOR\nCONES\nINHIBTD", buttonFull|buttonDisabled, false, nil)
+	d.button("DONE", buttonFull, false, func() {
+		p.setCommandMode(CommandModeNone)
 	})
 }
 

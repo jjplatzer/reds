@@ -2,6 +2,7 @@ package stars
 
 import (
 	"strings"
+	"sync"
 	"time"
 
 	redsmath "github.com/juliusplatzer/reds/math"
@@ -809,7 +810,7 @@ func (p *STARSPane) drawTargetHistory(
 	// avoids allocating/re-scanning the same history five times per target.
 	for i := range snapshot.Targets {
 		target := &snapshot.Targets[i]
-		if !taisTargetHasPosition(target) {
+		if !taisTargetHasPosition(target) || isRPOSUnsupportedTarget(target) {
 			continue
 		}
 		// VICE suppresses history whenever the ordinary data-block
@@ -883,7 +884,7 @@ func (p *STARSPane) drawPredictedTrackLines(
 
 	for i := range snapshot.Targets {
 		target := &snapshot.Targets[i]
-		if !taisTargetHasPosition(target) || target.FlightPlan == nil {
+		if !taisTargetHasPosition(target) || target.FlightPlan == nil || isRPOSUnsupportedTarget(target) {
 			continue
 		}
 		if !ps.PTLAll && !(ps.PTLOwn && (p.targetOwnedByCurrentTCP(target) ||
@@ -951,7 +952,7 @@ func (p *STARSPane) drawTargets(
 
 	for i := range snapshot.Targets {
 		target := &snapshot.Targets[i]
-		if !taisTargetHasPosition(target) {
+		if !taisTargetHasPosition(target) || isRPOSUnsupportedTarget(target) {
 			continue
 		}
 
@@ -1267,4 +1268,214 @@ func targetCenterNearPane(ctx *panes.Context, center redsmath.Vec2, diameter flo
 	margin := diameter
 	return center.X >= -margin && center.Y >= -margin &&
 		center.X <= ctx.PaneRect.Width()+margin && center.Y <= ctx.PaneRect.Height()+margin
+}
+
+// Per-target local display state. These helpers live with the rest of the
+// target state/rendering code rather than in a separate track.go.
+const starsMaxTPAGraphics = 50
+
+type tpaTrackState struct {
+	JRingRadius float32
+	ConeLength  float32
+	DisplaySize *bool
+}
+
+func (s tpaTrackState) hasGraphic() bool {
+	return s.JRingRadius > 0 || s.ConeLength > 0
+}
+
+func (p *STARSPane) tpaState(key string) tpaTrackState {
+	if p == nil || p.tpaTracks == nil || key == "" {
+		return tpaTrackState{}
+	}
+	return p.tpaTracks[key]
+}
+
+func (p *STARSPane) setTPAState(key string, state tpaTrackState) {
+	if p == nil || key == "" {
+		return
+	}
+	if p.tpaTracks == nil {
+		p.tpaTracks = make(map[string]tpaTrackState)
+	}
+	if !state.hasGraphic() && state.DisplaySize == nil {
+		delete(p.tpaTracks, key)
+		return
+	}
+	p.tpaTracks[key] = state
+}
+
+func (p *STARSPane) tpaGraphicCount() int {
+	count := 0
+	for _, state := range p.tpaTracks {
+		if state.hasGraphic() {
+			count++
+		}
+	}
+	return count
+}
+
+func (p *STARSPane) pruneTPAState(snapshot redsnet.TaisSnapshot) {
+	if p == nil || !snapshot.Ready || len(p.tpaTracks) == 0 {
+		return
+	}
+	live := make(map[string]struct{}, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		if key := targetDisplayStateKey(&snapshot.Targets[i]); key != "" {
+			live[key] = struct{}{}
+		}
+	}
+	for key := range p.tpaTracks {
+		if _, ok := live[key]; !ok {
+			delete(p.tpaTracks, key)
+		}
+	}
+}
+
+// spcSystemAcknowledgement records a system-wide acknowledgement initiated by
+// this pane. Keeping the origin pane lets us retire the shared acknowledgement
+// as soon as a later authoritative TAIS snapshot shows that the SPC has cleared
+// or changed, so a subsequent occurrence starts flashing again.
+type spcAcknowledgement struct {
+	Code            string
+	ForceAlertColor bool
+}
+
+type spcSystemAcknowledgement struct {
+	SystemKey string
+	Ack       spcAcknowledgement
+}
+
+var systemSPCAcknowledgements = struct {
+	sync.RWMutex
+	acks map[string]spcAcknowledgement
+}{acks: make(map[string]spcAcknowledgement)}
+
+func specialConditionCode(target *redsnet.TaisTarget) (string, bool) {
+	if _, ok := targetSpecialConditionIndicator(target); !ok || target == nil {
+		return "", false
+	}
+	code := strings.TrimSpace(target.Track.ReportedBeaconCode)
+	return code, code != ""
+}
+
+func specialConditionSystemKey(target *redsnet.TaisTarget) string {
+	if target == nil {
+		return ""
+	}
+	key := targetDisplayStateKey(target)
+	if key == "" {
+		return ""
+	}
+	facility := strings.ToUpper(strings.TrimSpace(target.Facility))
+	return facility + "\x00" + key
+}
+
+func (p *STARSPane) targetSPCAcknowledgement(target *redsnet.TaisTarget) (spcAcknowledgement, bool) {
+	if p == nil || target == nil {
+		return spcAcknowledgement{}, false
+	}
+	code, ok := specialConditionCode(target)
+	if !ok {
+		return spcAcknowledgement{}, false
+	}
+
+	// A system-wide acknowledgement takes precedence because section 7.16's
+	// unassociated-track command specifically changes the indication to the
+	// Alert/acknowledge color (red), including a secondary SPC.
+	systemKey := specialConditionSystemKey(target)
+	if systemKey != "" {
+		systemSPCAcknowledgements.RLock()
+		ack, acknowledged := systemSPCAcknowledgements.acks[systemKey]
+		systemSPCAcknowledgements.RUnlock()
+		if acknowledged && ack.Code == code {
+			return ack, true
+		}
+	}
+
+	key := targetDisplayStateKey(target)
+	if key != "" && p.spcAcknowledged != nil {
+		if ack, acknowledged := p.spcAcknowledged[key]; acknowledged && ack.Code == code {
+			return ack, true
+		}
+	}
+	return spcAcknowledgement{}, false
+}
+
+func (p *STARSPane) targetSPCAcknowledged(target *redsnet.TaisTarget) bool {
+	_, ok := p.targetSPCAcknowledgement(target)
+	return ok
+}
+
+func (p *STARSPane) setSPCAcknowledged(target *redsnet.TaisTarget, systemWide, forceAlertColor bool) {
+	if p == nil || target == nil {
+		return
+	}
+	code, ok := specialConditionCode(target)
+	if !ok {
+		return
+	}
+	key := targetDisplayStateKey(target)
+	if key == "" {
+		return
+	}
+	ack := spcAcknowledgement{Code: code, ForceAlertColor: forceAlertColor}
+	if p.spcAcknowledged == nil {
+		p.spcAcknowledged = make(map[string]spcAcknowledgement)
+	}
+	p.spcAcknowledged[key] = ack
+
+	if !systemWide {
+		return
+	}
+	systemKey := specialConditionSystemKey(target)
+	if systemKey == "" {
+		return
+	}
+	systemSPCAcknowledgements.Lock()
+	systemSPCAcknowledgements.acks[systemKey] = ack
+	systemSPCAcknowledgements.Unlock()
+
+	if p.spcSystemAcknowledged == nil {
+		p.spcSystemAcknowledged = make(map[string]spcSystemAcknowledgement)
+	}
+	p.spcSystemAcknowledged[key] = spcSystemAcknowledgement{SystemKey: systemKey, Ack: ack}
+}
+
+func (p *STARSPane) pruneSPCAcknowledgements(snapshot redsnet.TaisSnapshot) {
+	if p == nil || !snapshot.Ready {
+		return
+	}
+	if len(p.spcAcknowledged) == 0 && len(p.spcSystemAcknowledged) == 0 {
+		return
+	}
+
+	active := make(map[string]string)
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		code, ok := specialConditionCode(target)
+		if !ok {
+			continue
+		}
+		if key := targetDisplayStateKey(target); key != "" {
+			active[key] = code
+		}
+	}
+
+	for key, ack := range p.spcAcknowledged {
+		if active[key] != ack.Code {
+			delete(p.spcAcknowledged, key)
+		}
+	}
+	for key, systemAck := range p.spcSystemAcknowledged {
+		if active[key] == systemAck.Ack.Code {
+			continue
+		}
+		systemSPCAcknowledgements.Lock()
+		if ack, ok := systemSPCAcknowledgements.acks[systemAck.SystemKey]; ok && ack == systemAck.Ack {
+			delete(systemSPCAcknowledgements.acks, systemAck.SystemKey)
+		}
+		systemSPCAcknowledgements.Unlock()
+		delete(p.spcSystemAcknowledged, key)
+	}
 }
