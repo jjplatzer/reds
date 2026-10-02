@@ -1630,8 +1630,21 @@ func (p *STARSPane) atpaVolumeByID(id string) *atpaVolumeConfig {
 	id = strings.ToUpper(strings.TrimSpace(id))
 	for i := range p.config.Facility.ATPAVolumes {
 		volume := &p.config.Facility.ATPAVolumes[i]
-		if atpaVolumeID(volume) == id {
+		// VolumeID is the operator-facing ATPA volume identifier exported by
+		// CRC. Also accept the raw ID when it is short enough to be entered and
+		// tolerate runway zero-padding differences (4R versus 04R).
+		if strings.EqualFold(strings.TrimSpace(volume.VolumeID), id) ||
+			strings.EqualFold(strings.TrimSpace(volume.ID), id) {
 			return volume
+		}
+	}
+	wantedRunway := normalizeATPARunway(id)
+	if wantedRunway != "" {
+		for i := range p.config.Facility.ATPAVolumes {
+			volume := &p.config.Facility.ATPAVolumes[i]
+			if normalizeATPARunway(atpaVolumeID(volume)) == wantedRunway {
+				return volume
+			}
 		}
 	}
 	return nil
@@ -1835,6 +1848,13 @@ func (p *STARSPane) updateATPAInTrail(snapshot redsnet.TaisSnapshot) {
 			continue
 		}
 
+		// VICE binds ATPA processing to the aircraft's assigned approach before
+		// applying the geometric volume test. TAIS gives us an explicit runway
+		// field, so use it when present rather than trying to infer an approach
+		// from scratchpads. A blank/unrecognized runway retains the geometric
+		// fallback used by REDS for feeds that do not publish runway assignment.
+		assignedRunway := normalizeATPARunway(target.FlightPlan.Runway)
+
 		bestVolume := -1
 		bestLateral := stdmath.Inf(1)
 		bestThresholdDistance := stdmath.Inf(1)
@@ -1843,6 +1863,9 @@ func (p *STARSPane) updateATPAInTrail(snapshot redsnet.TaisSnapshot) {
 		for vi := range p.config.Facility.ATPAVolumes {
 			volume := &p.config.Facility.ATPAVolumes[vi]
 			if !p.atpaVolumeEnabled(volume) || !validConfigPoint(volume.RunwayThreshold) || volume.Length <= 0 {
+				continue
+			}
+			if assignedRunway != "" && !atpaVolumeMatchesAssignedRunway(volume, target, assignedRunway) {
 				continue
 			}
 			if p.atpaTrackExcludedByTCP(target, volume) {
@@ -2180,11 +2203,57 @@ func (p *STARSPane) atpaMonitorConeAllowed(target *redsnet.TaisTarget, volume *a
 	return false
 }
 
+// normalizeATPARunway canonicalizes the TAIS runway assignment and the
+// operator-facing ATPA VolumeID to the same form. STARS runway identifiers may
+// be zero-padded (04R) while flight-plan feeds commonly use 4R; both become
+// "4R". Non-runway strings return empty so they do not create false bindings.
+func normalizeATPARunway(value string) string {
+	value = strings.ToUpper(strings.TrimSpace(value))
+	value = strings.ReplaceAll(value, " ", "")
+	value = strings.ReplaceAll(value, "-", "")
+	for _, prefix := range []string{"RUNWAY", "RWY", "RW"} {
+		value = strings.TrimPrefix(value, prefix)
+	}
+	if value == "" {
+		return ""
+	}
+
+	i := 0
+	for i < len(value) && i < 2 && value[i] >= '0' && value[i] <= '9' {
+		i++
+	}
+	if i == 0 {
+		return ""
+	}
+	n, err := strconv.Atoi(value[:i])
+	if err != nil || n < 1 || n > 36 {
+		return ""
+	}
+	suffix := value[i:]
+	if suffix != "" && suffix != "L" && suffix != "C" && suffix != "R" {
+		return ""
+	}
+	return strconv.Itoa(n) + suffix
+}
+
+func atpaVolumeMatchesAssignedRunway(volume *atpaVolumeConfig, target *redsnet.TaisTarget, assignedRunway string) bool {
+	if volume == nil || target == nil || target.FlightPlan == nil || assignedRunway == "" {
+		return false
+	}
+	return normalizeATPARunway(atpaVolumeID(volume)) == assignedRunway
+}
+
 func atpaBaseTrackEligible(target *redsnet.TaisTarget) bool {
 	if target == nil || target.FlightPlan == nil || !taisTargetHasPosition(target) {
 		return false
 	}
 	if target.FlightPlan.Deleted || target.FlightPlan.Suspended {
+		return false
+	}
+	// ATPA is an arrival/in-trail approach function. VICE associates an ATPA
+	// volume through an assigned approach, so departures never enter the ATPA
+	// candidate set even if their path happens to cross an adapted rectangle.
+	if taisFlightPlanIsDeparture(target) {
 		return false
 	}
 
