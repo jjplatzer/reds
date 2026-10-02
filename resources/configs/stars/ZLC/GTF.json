@@ -65,6 +65,7 @@
       "name": "Approach",
       "radioName": "Great Falls Approach",
       "callsign": "GTF_APP",
+      "colorSet": "tcw",
       "areaId": "01G9BP7N30VYM0YHS92DPQN1KN",
       "tcpId": "01K2NF1E413QAK1SQJQX4ZF1AK",
       "tcp": "1A",
@@ -81,6 +82,7 @@
       "name": "Ground Control",
       "radioName": "Great Fall Ground",
       "callsign": "GTF_GND",
+      "colorSet": "tdw",
       "areaId": "01G9BPD05RS61YTETJNCD2HYS2",
       "tcpId": "01K2NF1E4132VCASBPCEBV1234",
       "tcp": "1G",
@@ -97,6 +99,7 @@
       "name": "Local Control",
       "radioName": "Great Falls Tower",
       "callsign": "GTF_TWR",
+      "colorSet": "tdw",
       "areaId": "01G9BPD05RS61YTETJNCD2HYS2",
       "tcpId": "01K8HJ3QQJQ0KM3MPJ4NCPYWQD",
       "tcp": "1K",
@@ -106,6 +109,100 @@
       },
       "range": 50,
       "freq": 118.7
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYSKPRSC39GDDW8SCYPA8GT1",
+      "airportId": "GTF",
+      "volumeId": "03",
+      "name": "RWY 03 ATPA",
+      "runwayThreshold": {
+        "lat": 47.46916667,
+        "lon": -111.38361111
+      },
+      "ceiling": 11000,
+      "floor": 3658,
+      "magneticHeading": 30,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 24304,
+      "widthRight": 24304,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZSC1DFSQ0Q4WYATRAPK1066",
+          "entry": "V3",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K0YKXDF0RTGWMWMVEQQYMN6X",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K0YKY0DX924XJ78PS4VVB830",
+          "entry": "V03",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYSKPRSEPACPCYY582BM6EZX",
+          "tcpId": "01K2NF1E413QAK1SQJQX4ZF1AK",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYSKPRSCWJZXZTRFVJCBK3RD",
+      "airportId": "GTF",
+      "volumeId": "21",
+      "name": "RWY 21 ATPA",
+      "runwayThreshold": {
+        "lat": 47.48944444,
+        "lon": -111.35361111
+      },
+      "ceiling": 9000,
+      "floor": 3658,
+      "magneticHeading": 210,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 24304,
+      "widthRight": 24304,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZSC1Q7FT88SEWXX5WRGQJ3N",
+          "entry": "V21",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K0YKYBK73FTD1TRNVVBHA8BX",
+          "entry": "V1",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K0YKYMM2HBV1K3HXFYJZX4J1",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYSKPRSE7V03F8V1VNWSFKAY",
+          "tcpId": "01K2NF1E413QAK1SQJQX4ZF1AK",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -177,8 +274,10 @@
         null,
         null,
         null,
+        null,
         108,
         110,
+        null,
         null,
         null,
         null,
@@ -248,6 +347,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

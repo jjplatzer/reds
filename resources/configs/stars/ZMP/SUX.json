@@ -74,6 +74,7 @@
       "name": "Ground Control",
       "radioName": "Sioux City Ground",
       "callsign": "SUX_GND",
+      "colorSet": "tdw",
       "areaId": "01GFETD36JZ4PBRC77MJ2QA3TF",
       "tcpId": "01K2NF1D3MSPQAKRGTK9C499EV",
       "tcp": "1G",
@@ -90,6 +91,7 @@
       "name": "Arrival/Departure",
       "radioName": "Sioux City Approach",
       "callsign": "SUX_APP",
+      "colorSet": "tcw",
       "areaId": "01GFETD36JZ4PBRC77MJ2QA3TF",
       "tcpId": "01K2NF1D3MY81GYAG7Z9S41CM8",
       "tcp": "1N",
@@ -106,6 +108,7 @@
       "name": "Arrival/Departure TRACAB",
       "radioName": "Sioux City Approach",
       "callsign": "SUX_APP",
+      "colorSet": "tdw",
       "areaId": "01GFETD36JZ4PBRC77MJ2QA3TF",
       "tcpId": "01K2NF1D3MK7J4T9HRHZCFHD1C",
       "tcp": "1R",
@@ -122,6 +125,7 @@
       "name": "Local Control",
       "radioName": "Sioux City Tower",
       "callsign": "SUX_TWR",
+      "colorSet": "tdw",
       "areaId": "01GFETD36JZ4PBRC77MJ2QA3TF",
       "tcpId": "01K2NF1D3M8ANWF9VGWPAS3W1A",
       "tcp": "1T",
@@ -131,6 +135,124 @@
       },
       "range": 150,
       "freq": 118.7
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYFGR04TB1XRAQADTFG997EA",
+      "airportId": "SUX",
+      "volumeId": "R13",
+      "name": "SUX ATPA R13",
+      "runwayThreshold": {
+        "lat": 42.40916667,
+        "lon": -96.39777778
+      },
+      "ceiling": 10000,
+      "floor": 1100,
+      "magneticHeading": 130,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 26400,
+      "widthRight": 26400,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFGS9T7S5QFYFVP28FWA9AN",
+          "entry": "V13",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JYFGSAXKKKZC92WAKSYNN8KJ",
+          "entry": "V31",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFGSXXEGWPA66CPMQC6V98C",
+          "tcpId": "01K2NF1D3MY81GYAG7Z9S41CM8",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGSY2F251942KN5GNKT7SQ",
+          "tcpId": "01K2NF1D3MK7J4T9HRHZCFHD1C",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGSY88H6A2MEMAE845B9DP",
+          "tcpId": "01K2NF1D3M9PAX9HVE62V1Y30F",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGSYDQP7AGPKFDBKFHDT40",
+          "tcpId": "01K2NF1D3M8ANWF9VGWPAS3W1A",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYFGV5C3J5RAGNDJXA361HQM",
+      "airportId": "SUX",
+      "volumeId": "R31",
+      "name": "SUX R31 ATPA",
+      "runwayThreshold": {
+        "lat": 42.39138889,
+        "lon": -96.37444444
+      },
+      "ceiling": 10000,
+      "floor": 1100,
+      "magneticHeading": 310,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 26400,
+      "widthRight": 26400,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFGW1409ST16VZJ3FFSZ548",
+          "entry": "V13",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JYFGW197NQHPTBEMN6KWRWA0",
+          "entry": "V31",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFGWDSHGAH7GV67HAE1NT80",
+          "tcpId": "01K2NF1D3MY81GYAG7Z9S41CM8",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGWDYRHT78KP1AY3HKWSPG",
+          "tcpId": "01K2NF1D3MK7J4T9HRHZCFHD1C",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGWE3ZZTE7J88BSHES7RJM",
+          "tcpId": "01K2NF1D3M9PAX9HVE62V1Y30F",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGWE80QD44SQR9WY4BB80J",
+          "tcpId": "01K2NF1D3M8ANWF9VGWPAS3W1A",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -203,6 +325,7 @@
         null,
         null,
         null,
+        null,
         2,
         4,
         6,
@@ -213,6 +336,7 @@
         16,
         null,
         20,
+        null,
         null,
         null,
         null,
@@ -289,6 +413,7 @@
         null,
         null,
         null,
+        null,
         2,
         4,
         6,
@@ -299,6 +424,7 @@
         16,
         null,
         20,
+        null,
         null,
         null,
         null,

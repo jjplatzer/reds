@@ -63,6 +63,7 @@
       "name": "Casper Approach",
       "radioName": "Casper Approach",
       "callsign": "CPR_APP",
+      "colorSet": "tcw",
       "areaId": "01H3D4YT6D470YRR1A66038MA5",
       "tcpId": "01K2NF1CJT5D287M9B2E4J6C74",
       "tcp": "1A",
@@ -79,6 +80,7 @@
       "name": "Casper Tower",
       "radioName": "Casper Tower",
       "callsign": "CPR_TWR",
+      "colorSet": "tdw",
       "areaId": "01H3D4YT6D470YRR1A66038MA5",
       "tcpId": "01K2NF1CJTYEJXV56MGGG8QSRK",
       "tcp": "1T",
@@ -88,6 +90,192 @@
       },
       "range": 75,
       "freq": 118.3
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYFGXPFC0P8RQTD4XXQYYMC5",
+      "airportId": "CPR",
+      "volumeId": "03",
+      "name": "CPR 03 ATPA",
+      "runwayThreshold": {
+        "lat": 42.89333333,
+        "lon": -106.475
+      },
+      "ceiling": 12000,
+      "floor": -9900,
+      "magneticHeading": 32,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFGXPFD8NFK9A6RGYPQPWTR",
+          "entry": "VV3",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFGXPFFW0XGJHFBNCM8BCZ3",
+          "tcpId": "01K2NF1CJT5D287M9B2E4J6C74",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGXPFFRVK5ERE4C17KPGMF",
+          "tcpId": "01K2NF1CJTHDRN3T4VFSVXSKEK",
+          "tcp": "1B",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGXPFF7VM4YRGJAD1WT5S6",
+          "tcpId": "01K2NF1CJT65VMDJBVGKJTNNN9",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYFGXPFCXB7HVVMB9P4JKJJR",
+      "airportId": "CPR",
+      "volumeId": "08",
+      "name": "CPR 08 ATPA",
+      "runwayThreshold": {
+        "lat": 42.90861111,
+        "lon": -106.48194444
+      },
+      "ceiling": 12000,
+      "floor": -9900,
+      "magneticHeading": 77,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFGXPFD9G62433GWKK3H1G0",
+          "entry": "VV8",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFGXPFFCQ2F2C4DR9PV4S2M",
+          "tcpId": "01K2NF1CJT5D287M9B2E4J6C74",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGXPFFD19SXDD81F5GRF7C",
+          "tcpId": "01K2NF1CJTHDRN3T4VFSVXSKEK",
+          "tcp": "1B",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGXPFFVGYKN2JPV9HDS3N2",
+          "tcpId": "01K2NF1CJT65VMDJBVGKJTNNN9",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYFGXPFCG264WKGFX1BNW37G",
+      "airportId": "CPR",
+      "volumeId": "21",
+      "name": "CPR 21 ATPA",
+      "runwayThreshold": {
+        "lat": 42.91361111,
+        "lon": -106.44861111
+      },
+      "ceiling": 12000,
+      "floor": -9900,
+      "magneticHeading": 212,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFGXPFDSRZA6YZVWTHH1ANV",
+          "entry": "VV1",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFGXPFF1DWP6NFHENBQAGX8",
+          "tcpId": "01K2NF1CJT5D287M9B2E4J6C74",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGXPFF9NN7VNPAZ6BQTNNT",
+          "tcpId": "01K2NF1CJTHDRN3T4VFSVXSKEK",
+          "tcp": "1B",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGXPFF9MJWVGRB0FZT7XVA",
+          "tcpId": "01K2NF1CJT65VMDJBVGKJTNNN9",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYFGXPFCQT5VCTS6P6FNMB6E",
+      "airportId": "CPR",
+      "volumeId": "26",
+      "name": "CPR 26 ATPA",
+      "runwayThreshold": {
+        "lat": 42.90888889,
+        "lon": -106.44944444
+      },
+      "ceiling": 12000,
+      "floor": -9900,
+      "magneticHeading": 257,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFGXPFDWW21TBTRPWE46TK4",
+          "entry": "VV6",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFGXPFFKD2M1EQRGE24SMH5",
+          "tcpId": "01K2NF1CJT5D287M9B2E4J6C74",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGXPFF9T4Y068WAWY7YP7V",
+          "tcpId": "01K2NF1CJTHDRN3T4VFSVXSKEK",
+          "tcp": "1B",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFGXPFFQ6JPDAKMKQHE10AS",
+          "tcpId": "01K2NF1CJT65VMDJBVGKJTNNN9",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -160,8 +348,10 @@
         null,
         null,
         null,
+        null,
         8,
         10,
+        null,
         null,
         null,
         null,

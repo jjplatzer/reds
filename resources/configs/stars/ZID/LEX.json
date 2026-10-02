@@ -86,6 +86,7 @@
       "name": "Radar East",
       "radioName": "Lexington Approach",
       "callsign": "LEX_E_APP",
+      "colorSet": "tcw",
       "areaId": "01GXS9HFYB6WEW6F6H5CXWSVZ7",
       "tcpId": "01K2NF1CN2JJAVPZS6AW1NR84W",
       "tcp": "1E",
@@ -102,6 +103,7 @@
       "name": "Radar Final",
       "radioName": "Lexington Approach",
       "callsign": "LEX_F_APP",
+      "colorSet": "tcw",
       "areaId": "01GXS9HFYB6WEW6F6H5CXWSVZ7",
       "tcpId": "01K2NF1CN2XAQ8E3DTX812PCD8",
       "tcp": "1F",
@@ -118,6 +120,7 @@
       "name": "Clearance Delivery",
       "radioName": "Lexington Clearance",
       "callsign": "LEX_DEL",
+      "colorSet": "tdw",
       "areaId": "01HAQKPFQMQ7DCW3XDYFWS6P3H",
       "tcpId": "01K2NF1CN2C08F1NXG1M8AKSYE",
       "tcp": "1T",
@@ -134,6 +137,7 @@
       "name": "Ground Control",
       "radioName": "Lexington Ground",
       "callsign": "LEX_GND",
+      "colorSet": "tdw",
       "areaId": "01HAQKPFQMQ7DCW3XDYFWS6P3H",
       "tcpId": "01K2NF1CN2C08F1NXG1M8AKSYE",
       "tcp": "1T",
@@ -150,6 +154,7 @@
       "name": "Local Control",
       "radioName": "Lexington Tower",
       "callsign": "LEX_TWR",
+      "colorSet": "tdw",
       "areaId": "01HAQKPFQMQ7DCW3XDYFWS6P3H",
       "tcpId": "01K2NF1CN2C08F1NXG1M8AKSYE",
       "tcp": "1T",
@@ -166,6 +171,7 @@
       "name": "Radar West",
       "radioName": "Lexington Approach",
       "callsign": "LEX_W_APP",
+      "colorSet": "tcw",
       "areaId": "01GXS9HFYB6WEW6F6H5CXWSVZ7",
       "tcpId": "01K2NF1CN2CZ19ZPEKT9A27D0B",
       "tcp": "1W",
@@ -175,6 +181,96 @@
       },
       "range": 150,
       "freq": 120.75
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JZS3G9X6M59N5X4GMCB4WA27",
+      "airportId": "LEX",
+      "volumeId": "LEX04",
+      "name": "ATPA LEX 04",
+      "runwayThreshold": {
+        "lat": 38.02777777777778,
+        "lon": -84.615
+      },
+      "ceiling": 5000,
+      "floor": 100,
+      "magneticHeading": 46,
+      "maximumHeadingDeviation": 80,
+      "length": 20,
+      "widthLeft": 15840,
+      "widthRight": 15840,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZS3HKHZBXBK9Y4J1MZ7RQ9B",
+          "tcpId": "01K2NF1CN2JJAVPZS6AW1NR84W",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KE2GCVBZW0J24AHVAGGG05NM",
+          "tcpId": "01K2NF1CN2XAQ8E3DTX812PCD8",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KE2GCZ58FSH4K7EMQ7QW4G22",
+          "tcpId": "01K2NF1CN2C08F1NXG1M8AKSYE",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KE2GCZGSYFBZ3A0HHZ2V0CMD",
+          "tcpId": "01K2NF1CN2CZ19ZPEKT9A27D0B",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZS3KR3QJNR16QY4GF6N919Z",
+      "airportId": "LEX",
+      "volumeId": "LEX22",
+      "name": "ATPA LEX 22",
+      "runwayThreshold": {
+        "lat": 38.04194444444444,
+        "lon": -84.59888888888888
+      },
+      "ceiling": 5000,
+      "floor": 100,
+      "magneticHeading": 226,
+      "maximumHeadingDeviation": 80,
+      "length": 20,
+      "widthLeft": 15840,
+      "widthRight": 15840,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZS3MWHSH2GK8V6QHHAMA5EF",
+          "tcpId": "01K2NF1CN2JJAVPZS6AW1NR84W",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KE2GE4VDEJMCDBNWZ4FTM417",
+          "tcpId": "01K2NF1CN2XAQ8E3DTX812PCD8",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KE2GE4ZRC2VMF70X3FC9HQJE",
+          "tcpId": "01K2NF1CN2C08F1NXG1M8AKSYE",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KE2GE556W190KF3PBGCMR6TZ",
+          "tcpId": "01K2NF1CN2CZ19ZPEKT9A27D0B",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -248,6 +344,7 @@
         null,
         null,
         null,
+        null,
         4,
         3,
         8,
@@ -255,6 +352,7 @@
         117,
         124,
         126,
+        null,
         null,
         null,
         null,

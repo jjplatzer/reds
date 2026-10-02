@@ -57,6 +57,7 @@
       "name": "East Approach",
       "radioName": "Rockford Approach",
       "callsign": "RFD_E_APP",
+      "colorSet": "tcw",
       "areaId": "01H5EE4091N4E3CJMN4EBZW7DH",
       "tcpId": "01K2NF1DXNXD4FASR8TB1KRKZR",
       "tcp": "1E",
@@ -73,6 +74,7 @@
       "name": "Local",
       "radioName": "Rockford Tower",
       "callsign": "RFD_TWR",
+      "colorSet": "tdw",
       "areaId": "01H5EE4091N4E3CJMN4EBZW7DH",
       "tcpId": "01K2NF1DXNQE05ANF576F0BS00",
       "tcp": "1T",
@@ -89,6 +91,7 @@
       "name": "VatVenture VFR",
       "radioName": "Rockford Approach",
       "callsign": "RFD_N_APP",
+      "colorSet": "tcw",
       "areaId": "01H5EE4091N4E3CJMN4EBZW7DH",
       "tcpId": "01K2NF1DXN59C0SKJ9HT3WP38X",
       "tcp": "1V",
@@ -105,6 +108,7 @@
       "name": "West Approach",
       "radioName": "Rockford Approach",
       "callsign": "RFD_W_APP",
+      "colorSet": "tcw",
       "areaId": "01H5EE4091N4E3CJMN4EBZW7DH",
       "tcpId": "01K2NF1DXPD2FQVCEFYZQ76ZT9",
       "tcp": "1W",
@@ -114,6 +118,80 @@
       },
       "range": 120,
       "freq": 126
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JZMP45K86FZQMMHF802P1N6Q",
+      "airportId": "RFD",
+      "volumeId": "01",
+      "name": "RFD 01",
+      "runwayThreshold": {
+        "lat": 42.18333333,
+        "lon": -89.09138889
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 5,
+      "maximumHeadingDeviation": 80,
+      "length": 30,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JZMP7ZQFBHB1XWRT6GY50SP5",
+      "airportId": "RFD",
+      "volumeId": "07",
+      "name": "RFD 07",
+      "runwayThreshold": {
+        "lat": 42.19027778,
+        "lon": -89.12
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 65,
+      "maximumHeadingDeviation": 79,
+      "length": 41,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JZMP0CQFX6JY54S90W8XC4FB",
+      "airportId": "RFD",
+      "volumeId": "19",
+      "name": "RFD 19",
+      "runwayThreshold": {
+        "lat": 42.20583333,
+        "lon": -89.08861111
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 185,
+      "maximumHeadingDeviation": 80,
+      "length": 38,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JZMP6EX0989ANP2Y68M0T1CB",
+      "airportId": "RFD",
+      "volumeId": "25",
+      "name": "RFD 25",
+      "runwayThreshold": {
+        "lat": 42.20166667,
+        "lon": -89.08638889
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 245,
+      "maximumHeadingDeviation": 80,
+      "length": 30,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
     }
   ],
   "mapGroups": [
@@ -188,8 +266,10 @@
         null,
         null,
         null,
+        null,
         23,
         24,
+        null,
         null,
         null,
         null,

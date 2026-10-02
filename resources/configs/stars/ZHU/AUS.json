@@ -157,6 +157,7 @@
       "name": "East Radar",
       "radioName": "Austin Approach",
       "callsign": "AUS_E_APP",
+      "colorSet": "tcw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDQKK55WM02GW6MGM76",
       "tcp": "1E",
@@ -173,6 +174,7 @@
       "name": "Final Approach",
       "radioName": "Austin Approach",
       "callsign": "AUS_F_APP",
+      "colorSet": "tcw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDRC5NCS536V7CX9JP7",
       "tcp": "1F",
@@ -189,6 +191,7 @@
       "name": "Local",
       "radioName": "Georgetown Tower",
       "callsign": "GTU_TWR",
+      "colorSet": "tdw",
       "areaId": "01H0E7AWC65EGPVF1QKCY626DD",
       "tcpId": "01K2NF1CDRPQJEN2ZNAGZZWY3T",
       "tcp": "1G",
@@ -205,6 +208,7 @@
       "name": "Local",
       "radioName": "San Marcos Tower",
       "callsign": "HYI_TWR",
+      "colorSet": "tdw",
       "areaId": "01H0E7X4RPH2XVNDTWMP63EWEG",
       "tcpId": "01K2NF1CDRTNK571PFZHZZMZTM",
       "tcp": "1H",
@@ -221,6 +225,7 @@
       "name": "Longhorn Sector",
       "radioName": "Austin Approach",
       "callsign": "AUS_L_APP",
+      "colorSet": "tcw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDRGGMQ2G883KT6YVDG",
       "tcp": "1L",
@@ -237,6 +242,7 @@
       "name": "Rodeo Sector",
       "radioName": "Austin Approach",
       "callsign": "AUS_R_APP",
+      "colorSet": "tcw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDRHQPHH0K92R99406A",
       "tcp": "1R",
@@ -253,6 +259,7 @@
       "name": "Local East",
       "radioName": "Austin Tower",
       "callsign": "AUS_E_TWR",
+      "colorSet": "tdw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDRBZDAB7RDECMPR7EW",
       "tcp": "1T",
@@ -269,6 +276,7 @@
       "name": "West Radar",
       "radioName": "Austin Approach",
       "callsign": "AUS_W_APP",
+      "colorSet": "tcw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDR0EPDAPPYV0QN33DK",
       "tcp": "1W",
@@ -285,6 +293,7 @@
       "name": "Local West",
       "radioName": "Austin Tower",
       "callsign": "AUS_W_TWR",
+      "colorSet": "tdw",
       "areaId": "01GYMKTME5AY40655EQ2HGG4WH",
       "tcpId": "01K2NF1CDRSQ4NM2DDWZMHXJ7T",
       "tcp": "1X",
@@ -294,6 +303,244 @@
       },
       "range": 100,
       "freq": 118.225
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYF7Z3S5EY50EY4XRJQ05V44",
+      "airportId": "AUS",
+      "volumeId": "AUS6L",
+      "name": "AUS 36L",
+      "runwayThreshold": {
+        "lat": 30.179977250648538,
+        "lon": -97.67848717504792
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 355,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachDistance": 2.5,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYF8002N9SJYWNFYHM6TJW90",
+          "entry": "V",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JYF8053504FE1P32Y5WQBJD7",
+          "entry": "W",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K2B7PY1K76RNNSPN2FT3AYKK",
+          "entry": "6R",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYF80EADZ2GZVHNRYRGHMH2H",
+          "tcpId": "01K2NF1CDR0EPDAPPYV0QN33DK",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF80G9D0ANN05KKCSE2X482",
+          "tcpId": "01K2NF1CDQKK55WM02GW6MGM76",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF80J050HHE9HSZC53WJPQY",
+          "tcpId": "01K2NF1CDRC5NCS536V7CX9JP7",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYF7X9N6SKHYERWEHT418Q8K",
+      "airportId": "AUS",
+      "volumeId": "AUS6R",
+      "name": "AUS 36R",
+      "runwayThreshold": {
+        "lat": 30.179125077198353,
+        "lon": -97.65725085084708
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 355,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachDistance": 5,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYF7Y9MXS8NXFGGB9Z1B76BY",
+          "entry": "V",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JYF7YHA5WKKRTMX7416BQZSZ",
+          "entry": "W",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K2B7PCPK6K85C3WGM899YP9C",
+          "entry": "6L",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYF7YTRN4JY7CSNSMBYGAYPJ",
+          "tcpId": "01K2NF1CDR0EPDAPPYV0QN33DK",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF7YXCDKAVVY6S0A71DB1CD",
+          "tcpId": "01K2NF1CDQKK55WM02GW6MGM76",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF7YZ0DWSP410N11R1SK6PF",
+          "tcpId": "01K2NF1CDRC5NCS536V7CX9JP7",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYF6ZTDSGXP7N69N6QZEB782",
+      "airportId": "AUS",
+      "volumeId": "AUS8L",
+      "name": "AUS 18L",
+      "runwayThreshold": {
+        "lat": 30.203807108806238,
+        "lon": -97.6579007223481
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 175,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachDistance": 5,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYF77ZWQPY1JSCYTWTP7ATFJ",
+          "entry": "V",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JYF7G9QFK09F3QSV78JF8HYR",
+          "entry": "W",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K2B7MZ1ARGPAHG64T63VZEE7",
+          "entry": "8R",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYF7H6VP14ZG0HB43THD3WRP",
+          "tcpId": "01K2NF1CDR0EPDAPPYV0QN33DK",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF7JD86WMQDKPTGQ29CR398",
+          "tcpId": "01K2NF1CDQKK55WM02GW6MGM76",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF7JW5Y93R5Z26JGC6ARBSH",
+          "tcpId": "01K2NF1CDRC5NCS536V7CX9JP7",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYF7SD86HBW4VYGPSNK1V3DN",
+      "airportId": "AUS",
+      "volumeId": "AUS8R",
+      "name": "AUS 18R",
+      "runwayThreshold": {
+        "lat": 30.213591151850444,
+        "lon": -97.67937843475035
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 175,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 1200,
+      "widthRight": 1200,
+      "twoPointFiveApproachDistance": 5,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYF7TCMNP9RFJS07S57J8VY6",
+          "entry": "V",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JYF7TJZ5F6J5VXVQG0ZEP6BM",
+          "entry": "W",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K2B7P1FB15R9ZQJHV6KEYART",
+          "entry": "8L",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYF7TXRDH79QC1FFVBQAD19E",
+          "tcpId": "01K2NF1CDR0EPDAPPYV0QN33DK",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF7V0MNE64BAP67WEPMQR46",
+          "tcpId": "01K2NF1CDQKK55WM02GW6MGM76",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF7V2BNRCK3ZEHWXY4XNAQX",
+          "tcpId": "01K2NF1CDRC5NCS536V7CX9JP7",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -371,6 +618,7 @@
         null,
         null,
         28,
+        31,
         54,
         56,
         58,
@@ -385,7 +633,8 @@
         null,
         null,
         null,
-        30
+        30,
+        36
       ]
     },
     {
@@ -441,6 +690,8 @@
         2
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,
@@ -526,6 +777,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

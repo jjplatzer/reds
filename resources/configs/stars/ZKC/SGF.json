@@ -101,6 +101,7 @@
       "name": "Clearance",
       "radioName": "Springfield Clearance",
       "callsign": "SGF_DEL",
+      "colorSet": "tdw",
       "areaId": "01G9GMCCWCK78EJJ0XSRJCMK40",
       "tcpId": "01K2NF1EE5C7TW6TFKTZTDY3PY",
       "tcp": "1D",
@@ -117,6 +118,7 @@
       "name": "Mizzou Radar",
       "radioName": "Mizzou Approach",
       "callsign": "MZU_APP",
+      "colorSet": "tcw",
       "areaId": "01G9GMCZV4DRS4C9NYYS53GQEA",
       "tcpId": "01K2NF1EE5GYNV7AG1YXTF1T2Z",
       "tcp": "1N",
@@ -133,6 +135,7 @@
       "name": "Springfield/Mizzou Radar",
       "radioName": "Springfield Approach",
       "callsign": "SGF_APP",
+      "colorSet": "tcw",
       "areaId": "01G9GMCCWCK78EJJ0XSRJCMK40",
       "tcpId": "01K2NF1EE598CS8KE0XS4SAR29",
       "tcp": "1S",
@@ -149,6 +152,7 @@
       "name": "Springfield Radar",
       "radioName": "Springfield Approach",
       "callsign": "SGF_S_APP",
+      "colorSet": "tcw",
       "areaId": "01G9GMCCWCK78EJJ0XSRJCMK40",
       "tcpId": "01K2NF1EE598CS8KE0XS4SAR29",
       "tcp": "1S",
@@ -165,6 +169,7 @@
       "name": "Local",
       "radioName": "Springfield Tower",
       "callsign": "SGF_TWR",
+      "colorSet": "tdw",
       "areaId": "01G9GMCCWCK78EJJ0XSRJCMK40",
       "tcpId": "01K2NF1EE5TZT9GCGV8VTZABAJ",
       "tcp": "1T",
@@ -247,6 +252,7 @@
         31,
         33,
         null,
+        null,
         8,
         10,
         12,
@@ -261,6 +267,7 @@
         30,
         32,
         34,
+        null,
         null
       ]
     },
@@ -332,6 +339,7 @@
         97,
         99,
         null,
+        null,
         74,
         76,
         78,
@@ -346,6 +354,7 @@
         96,
         98,
         100,
+        null,
         null
       ]
     }

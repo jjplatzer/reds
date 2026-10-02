@@ -125,6 +125,15 @@ type videoMapsListPreferences struct {
 	Selection videoMapsListSelection
 }
 
+// basicSTARSListPreferences is the per-position state shared by the three
+// tower lists. TI 6191.409 4.9.7/4.9.12/4.9.16 makes location, visibility,
+// and display capacity local TCW/TDW preferences.
+type basicSTARSListPreferences struct {
+	Position [2]float32
+	Visible  bool
+	Lines    int
+}
+
 // ssaFilterPreferences is the per-position state controlled by the Main DCB
 // <SSA FILTER> submenu in TI 6191.409 Rev. 30, 4.7 / Figure 4-7. The ALL
 // bit is intentionally independent of the individual bits: while ALL is on,
@@ -264,6 +273,7 @@ type Preferences struct {
 	VideoMapsList           videoMapsListPreferences
 	PreviewAreaPosition     [2]float32
 	SSAListPosition         [2]float32
+	TowerLists              [3]basicSTARSListPreferences
 	SSAFilter               ssaFilterPreferences
 	AltitudeFilters         altitudeFilterPreferences
 	QuickLookAll            bool
@@ -274,6 +284,23 @@ type Preferences struct {
 	// Rev. 30 section 6.13.9. It controls whether the reported Mode 3/A code is
 	// shown in all Limited Data Blocks for unassociated tracks.
 	DisplayLDBBeaconCodes bool
+
+	// DisplayTPASize is the TCW/TDW-wide A/TPA MILEAGE state from 6.21.1
+	// and 6.21.11. Single-track *D+ commands can locally override it.
+	DisplayTPASize bool
+
+	// DisplayATPAInTrailDist is the TCW/TDW-wide INTRAIL DIST state from
+	// 6.21.1 and 6.21.17. Single-track *DE/*DI commands can override it for
+	// individual qualifying tracks.
+	DisplayATPAInTrailDist bool
+
+	// DisplayATPAWarningAlertCones is the TCW/TDW-wide ALERT CONES state
+	// from 6.21.1 and 6.21.13. Figure 6-27 shows it enabled.
+	DisplayATPAWarningAlertCones bool
+
+	// DisplayATPAMonitorCones is the TCW/TDW-wide MONITOR CONES state from
+	// 6.21.1 and 6.21.15. Figure 6-27 shows it inhibited.
+	DisplayATPAMonitorCones bool
 
 	// SelectedBeacons contains Mode 3/A codes or two-digit beacon-code banks
 	// selected for enhanced unassociated-track presentation. TI 6191.409
@@ -352,6 +379,14 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// equivalent default is (.05, .10). TI 6191.409 4.9.4 allows the
 		// entering keyboard to relocate this position independently.
 		SSAListPosition: [2]float32{ssaDefaultX, ssaDefaultY},
+		// VICE defaults all three tower lists to five aircraft lines and hidden.
+		// Its normalized pane coordinates use a bottom-left origin; REDS uses
+		// top-left screen coordinates, so (.05,.8)/(.05,.9) become .2/.1.
+		TowerLists: [3]basicSTARSListPreferences{
+			{Position: [2]float32{0.05, 0.50}, Lines: 5},
+			{Position: [2]float32{0.05, 0.20}, Lines: 5},
+			{Position: [2]float32{0.05, 0.10}, Lines: 5},
+		},
 		// TI 6191.409 does not prescribe a power-up filter state. VICE starts
 		// with ALL selected, which also preserves REDS' pre-filter behavior of
 		// showing every SSA field it currently knows how to render.
@@ -362,7 +397,13 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// which showed the beacon code in every LDB, until preference-set
 		// persistence/site adaptation supplies an initial value.
 		DisplayLDBBeaconCodes: true,
-		SelectedBeacons:       []string{"1200"},
+		// Match VICE/STARS: TPA mileage and ATPA in-trail distance are
+		// enabled by default at a newly initialized display.
+		DisplayTPASize:               true,
+		DisplayATPAInTrailDist:       true,
+		DisplayATPAWarningAlertCones: true,
+		DisplayATPAMonitorCones:      false,
+		SelectedBeacons:              []string{"1200"},
 	}
 	for i := range prefs.DisplayWeatherLevel {
 		prefs.DisplayWeatherLevel[i] = true

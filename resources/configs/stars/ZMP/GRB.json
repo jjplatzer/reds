@@ -135,6 +135,7 @@
       "name": "Local Control",
       "radioName": "Appleton Tower",
       "callsign": "ATW_TWR",
+      "colorSet": "tdw",
       "areaId": "01H69PWETGD0RC33TJMJ530G04",
       "tcpId": "01K2NF1D3K2NH2396RR4BN7WSG",
       "tcp": "1A",
@@ -151,6 +152,7 @@
       "name": "Green Bay Arrival/Departure",
       "radioName": "Green Bay Approach",
       "callsign": "GRB_G_APP",
+      "colorSet": "tcw",
       "areaId": "01GFD6ZA4X9B210PX67S7QHBB4",
       "tcpId": "01K2NF1D3KZDRKV7G881P9MFZP",
       "tcp": "1G",
@@ -167,6 +169,7 @@
       "name": "Local Control",
       "radioName": "Traverse City Tower",
       "callsign": "TVC_TWR",
+      "colorSet": "tdw",
       "areaId": "01GFFSE7E19BC805K8A8QH648R",
       "tcpId": "01K2NF1D3KFPHZ6HRW8N3RXE9A",
       "tcp": "1R",
@@ -183,6 +186,7 @@
       "name": "Green Bay Satellite 2",
       "radioName": "Green Bay Approach",
       "callsign": "GRB_S_APP",
+      "colorSet": "tcw",
       "areaId": "01GFD6ZA4X9B210PX67S7QHBB4",
       "tcpId": "01K2NF1D3KNGGXF4H08D58V9JM",
       "tcp": "1S",
@@ -199,6 +203,7 @@
       "name": "Local Control",
       "radioName": "Green Bay Tower",
       "callsign": "GRB_TWR",
+      "colorSet": "tdw",
       "areaId": "01GFD6ZA4X9B210PX67S7QHBB4",
       "tcpId": "01K2NF1D3KND6PFJZNC1ZY0X7P",
       "tcp": "1T",
@@ -215,6 +220,7 @@
       "name": "Green Bay Satellite 3",
       "radioName": "GRB_X_APP",
       "callsign": "GRB_X_APP",
+      "colorSet": "tcw",
       "areaId": "01GFD6ZA4X9B210PX67S7QHBB4",
       "tcpId": "01K2NF1D3KVDRDB3SWVKC8PWQX",
       "tcp": "1X",
@@ -231,6 +237,7 @@
       "name": "Ground Control",
       "radioName": "Appleton Ground",
       "callsign": "ATW_GND",
+      "colorSet": "tdw",
       "areaId": "01H69PWETGD0RC33TJMJ530G04",
       "tcpId": "01K2NF1D3KWXC74C7WT0V2Q32E",
       "tcp": "2A",
@@ -247,6 +254,7 @@
       "name": "Ground Control",
       "radioName": "Traverse City Ground",
       "callsign": "TVC_GND",
+      "colorSet": "tdw",
       "areaId": "01GFFSE7E19BC805K8A8QH648R",
       "tcpId": "01K2NF1D3KESXHDHS2QCCRWG26",
       "tcp": "2R",
@@ -263,6 +271,7 @@
       "name": "Clearance Delivery",
       "radioName": "Green Bay Clearance",
       "callsign": "GRB_DEL",
+      "colorSet": "tdw",
       "areaId": "01GFD6ZA4X9B210PX67S7QHBB4",
       "tcpId": "01K2NF1D3KP1PAM1EKPAG3JJKW",
       "tcp": "2T",
@@ -279,6 +288,7 @@
       "name": "Ground Control",
       "radioName": "Green Bay Ground",
       "callsign": "GRB_GND",
+      "colorSet": "tdw",
       "areaId": "01GFD6ZA4X9B210PX67S7QHBB4",
       "tcpId": "01K2NF1D3KP1PAM1EKPAG3JJKW",
       "tcp": "2T",
@@ -288,6 +298,80 @@
       },
       "range": 150,
       "freq": 121.9
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYFFY32XXB7V5GG3Q11T88WJ",
+      "airportId": "GRB",
+      "volumeId": "18",
+      "name": "GRB RWY 18 ATPA",
+      "runwayThreshold": {
+        "lat": 44.4925,
+        "lon": -88.13361111
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 182,
+      "maximumHeadingDeviation": 90,
+      "length": 41.2,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JYFFZP7KTKWV3S81W3CHF4NC",
+      "airportId": "GRB",
+      "volumeId": "24",
+      "name": "GRB RWY 24 ATPA",
+      "runwayThreshold": {
+        "lat": 44.49277778,
+        "lon": -88.1125
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 242,
+      "maximumHeadingDeviation": 90,
+      "length": 50,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JYFG4438JM26HZ54C4TPZMWB",
+      "airportId": "GRB",
+      "volumeId": "36",
+      "name": "GRB RWY 36 ATPA",
+      "runwayThreshold": {
+        "lat": 44.47,
+        "lon": -88.13361111
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 2,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01JYFG59F5Y25VC96WXB9SEP72",
+      "airportId": "GRB",
+      "volumeId": "6",
+      "name": "GRB RWY 6 ATPA",
+      "runwayThreshold": {
+        "lat": 44.4825,
+        "lon": -88.13805556
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 62,
+      "maximumHeadingDeviation": 90,
+      "length": 32.5,
+      "widthLeft": 30356,
+      "widthRight": 30356,
+      "twoPointFiveApproachEnabled": false
     }
   ],
   "mapGroups": [
@@ -361,6 +445,7 @@
         501,
         502,
         620,
+        null,
         110,
         111,
         112,
@@ -375,7 +460,8 @@
         403,
         600,
         610,
-        630
+        630,
+        null
       ]
     },
     {
@@ -447,6 +533,7 @@
         600,
         610,
         630,
+        null,
         30,
         111,
         113,
@@ -461,7 +548,8 @@
         500,
         501,
         502,
-        620
+        620,
+        null
       ]
     },
     {
@@ -533,6 +621,7 @@
         23,
         112,
         116,
+        null,
         201,
         203,
         205,
@@ -547,7 +636,8 @@
         22,
         111,
         115,
-        113
+        113,
+        null
       ]
     },
     {
@@ -619,7 +709,9 @@
         null,
         null,
         null,
+        null,
         717,
+        null,
         null,
         null,
         null,

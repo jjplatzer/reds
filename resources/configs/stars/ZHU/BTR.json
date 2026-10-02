@@ -69,6 +69,7 @@
       "name": "East Approach",
       "radioName": "Batton Rouge Approach",
       "callsign": "BTR_E_APP",
+      "colorSet": "tcw",
       "areaId": "01GZHP34QD8QHPDCG7W2VC6MV2",
       "tcpId": "01K2NF1CDRQ4NM5RTQNBKB00XP",
       "tcp": "1E",
@@ -85,6 +86,7 @@
       "name": "Local",
       "radioName": "Ryan Tower",
       "callsign": "BTR_TWR",
+      "colorSet": "tdw",
       "areaId": "01GZHP34QD8QHPDCG7W2VC6MV2",
       "tcpId": "01K2NF1CDRCE8Z7DRVTKYWSB3Q",
       "tcp": "1L",
@@ -101,6 +103,7 @@
       "name": "West Approach",
       "radioName": "Baton Rouge Approach",
       "callsign": "BTR_W_APP",
+      "colorSet": "tcw",
       "areaId": "01GZHP34QD8QHPDCG7W2VC6MV2",
       "tcpId": "01K2NF1CDRAJQ9DECSTZFTH1VC",
       "tcp": "1W",
@@ -183,6 +186,7 @@
         29,
         30,
         35,
+        null,
         4,
         9,
         11,
@@ -197,7 +201,8 @@
         34,
         31,
         32,
-        36
+        36,
+        null
       ]
     }
   ],

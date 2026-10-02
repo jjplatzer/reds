@@ -37,7 +37,9 @@
       "id": "01K2NF1C9R8NFKQPZSK55S3GC1",
       "code": "1G",
       "subset": 1,
-      "sectorId": "G"
+      "sectorId": "G",
+      "parentTcpId": "01K2NF1C9RJTVTH3JCEMQA344W",
+      "parentTcp": "1F"
     },
     {
       "id": "01K2NF1C9RK36DGR7T698MX7ZX",
@@ -69,6 +71,7 @@
       "name": "Friant Radar",
       "radioName": "Fresno Approach",
       "callsign": "FAT_F_APP",
+      "colorSet": "tcw",
       "areaId": "01GEBMA3NJEKVB101ZRY7VE9QK",
       "tcpId": "01K2NF1C9RJTVTH3JCEMQA344W",
       "tcp": "1F",
@@ -85,6 +88,7 @@
       "name": "Chandler Radar",
       "radioName": "Fresno Approach",
       "callsign": "FAT_H_APP",
+      "colorSet": "tcw",
       "areaId": "01GEBMA3NJEKVB101ZRY7VE9QK",
       "tcpId": "01K2NF1C9RK36DGR7T698MX7ZX",
       "tcp": "1H",
@@ -101,6 +105,7 @@
       "name": "South Radar",
       "radioName": "Fresno Approach",
       "callsign": "FAT_S_APP",
+      "colorSet": "tcw",
       "areaId": "01GEBMA3NJEKVB101ZRY7VE9QK",
       "tcpId": "01K2NF1C9RVVMNV2KQD9PMK392",
       "tcp": "1S",
@@ -117,6 +122,7 @@
       "name": "CD",
       "radioName": "Fresno Clearance",
       "callsign": "FAT_DEL",
+      "colorSet": "tdw",
       "areaId": "01GEBMA3NJEKVB101ZRY7VE9QK",
       "tcpId": "01K2NF1C9RHXYN5T0W1K2RZPK9",
       "tcp": "1T",
@@ -133,6 +139,7 @@
       "name": "GC",
       "radioName": "Fresno Ground",
       "callsign": "FAT_GND",
+      "colorSet": "tdw",
       "areaId": "01GEBMA3NJEKVB101ZRY7VE9QK",
       "tcpId": "01K2NF1C9RHXYN5T0W1K2RZPK9",
       "tcp": "1T",
@@ -149,6 +156,7 @@
       "name": "LC",
       "radioName": "Fresno Tower",
       "callsign": "FAT_TWR",
+      "colorSet": "tdw",
       "areaId": "01GEBMA3NJEKVB101ZRY7VE9QK",
       "tcpId": "01K2NF1C9RHXYN5T0W1K2RZPK9",
       "tcp": "1T",
@@ -158,6 +166,94 @@
       },
       "range": 150,
       "freq": 118.2
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JZKTFDKEZB7RR0647RH3FFY6",
+      "airportId": "FAT",
+      "volumeId": "11L",
+      "name": "FAT 11L",
+      "runwayThreshold": {
+        "lat": 36.783889,
+        "lon": -119.73
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 112,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01M28TBX8MVC6QK0WMRDQ9ZBCR",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01M28TC1CFBJ0QY20SV22BSE2S",
+          "tcpId": "01K2NF1C9RK36DGR7T698MX7ZX",
+          "tcp": "1H",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01M28TC1TBAM3F8GQC90GEQNEN",
+          "tcpId": "01K2NF1C9RHXYN5T0W1K2RZPK9",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01M28ZQKXNQKK1NKB9KKP41MVB",
+          "tcpId": "01K2NF1C9RVVMNV2KQD9PMK392",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZKTQCQX86EMMWV7MNY3XBJB",
+      "airportId": "FAT",
+      "volumeId": "29R",
+      "name": "FAT 29R",
+      "runwayThreshold": {
+        "lat": 36.769444,
+        "lon": -119.704444
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 292,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01M28TA7FG2S2DGE1604QNGGWD",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01M28TANKFVEFS022YY0AJMJHH",
+          "tcpId": "01K2NF1C9RHXYN5T0W1K2RZPK9",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01M28TB1E7PBAKXHE1185H3C3K",
+          "tcpId": "01K2NF1C9RK36DGR7T698MX7ZX",
+          "tcp": "1H",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01M28ZQW1NGKFQW71P61VZ91SG",
+          "tcpId": "01K2NF1C9RVVMNV2KQD9PMK392",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -232,6 +328,7 @@
         null,
         null,
         null,
+        null,
         323,
         328,
         327,
@@ -243,6 +340,7 @@
         337,
         339,
         340,
+        null,
         null,
         null,
         null,

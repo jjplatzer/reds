@@ -276,6 +276,7 @@
       "name": "Spokane East Approach",
       "radioName": "Spokane Approach",
       "callsign": "GEG_E_APP",
+      "colorSet": "tcw",
       "areaId": "01GX5C8YJ7PV6EZH0WBHAMSHJQ",
       "tcpId": "01K2NF1DN6SF51S9CSAD23JV47",
       "tcp": "1E",
@@ -292,6 +293,7 @@
       "name": "Tower",
       "radioName": "Spokane Tower",
       "callsign": "GEG_TWR",
+      "colorSet": "tdw",
       "areaId": "01GX5C8YJ7PV6EZH0WBHAMSHJQ",
       "tcpId": "01KEFG1CS22B2KTP9FR9STDXKG",
       "tcp": "1G",
@@ -308,6 +310,7 @@
       "name": "Tower",
       "radioName": "Fairchild Tower",
       "callsign": "SKA_TWR",
+      "colorSet": "dod",
       "areaId": "01GX5C8YJ7PV6EZH0WBHAMSHJQ",
       "tcpId": "01KEFG0JWD8GF10J64BRHBG9CV",
       "tcp": "1K",
@@ -324,6 +327,7 @@
       "name": "Tri-Cities Approach",
       "radioName": "Spokane Approach",
       "callsign": "PSC_APP",
+      "colorSet": "tcw",
       "areaId": "01GX5CGN82TXKSF9PDA2JZMK8S",
       "tcpId": "01K2NF1DN6H67ERAXPE7PGYEW5",
       "tcp": "1P",
@@ -340,6 +344,7 @@
       "name": "Tower",
       "radioName": "Felts Tower",
       "callsign": "SFF_TWR",
+      "colorSet": "tdw",
       "areaId": "01GX5C8YJ7PV6EZH0WBHAMSHJQ",
       "tcpId": "01KEFG14A70CQBJGAQ2G0RRW3H",
       "tcp": "1S",
@@ -356,6 +361,7 @@
       "name": "Tower",
       "radioName": "Tri-Cities Tower",
       "callsign": "PSC_TWR",
+      "colorSet": "tdw",
       "areaId": "01GX5CGN82TXKSF9PDA2JZMK8S",
       "tcpId": "01K2NF1DN60A6485DDXWR45GT0",
       "tcp": "1T",
@@ -372,6 +378,7 @@
       "name": "Spokane West Approach",
       "radioName": "Spokane Approach",
       "callsign": "GEG_W_APP",
+      "colorSet": "tcw",
       "areaId": "01GX5C8YJ7PV6EZH0WBHAMSHJQ",
       "tcpId": "01K2NF1DN6KWJANZWAEK45TJWR",
       "tcp": "1W",
@@ -388,6 +395,7 @@
       "name": "Tower",
       "radioName": "Yakima Tower",
       "callsign": "YKM_TWR",
+      "colorSet": "tdw",
       "areaId": "01GX5CGN82TXKSF9PDA2JZMK8S",
       "tcpId": "01KEFG205RH5GZ07BX5FSM53BD",
       "tcp": "1X",
@@ -404,6 +412,7 @@
       "name": "Yakima Approach",
       "radioName": "Spokane Approach",
       "callsign": "YKM_APP",
+      "colorSet": "tcw",
       "areaId": "01GX5CGN82TXKSF9PDA2JZMK8S",
       "tcpId": "01K2NF1DN67Z85HKATKCJD6BK0",
       "tcp": "1Y",
@@ -413,6 +422,100 @@
       },
       "range": 150,
       "freq": 123.8
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYFJRDSHMZRA3N7JRTYYHHV9",
+      "airportId": "GEG",
+      "volumeId": "G03",
+      "name": "GEG_RWY_03",
+      "runwayThreshold": {
+        "lat": 47.61,
+        "lon": -117.55
+      },
+      "ceiling": 9000,
+      "floor": 0,
+      "magneticHeading": 31,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFP9CDM5R1RYGF63JF4D21W",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFP2EGMPAX80G7JMAGV209V",
+          "tcpId": "01K2NF1DN6SF51S9CSAD23JV47",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZKAXQP7T4KAXMBC5PJ1YPDJ",
+          "tcpId": "01K2NF1DN6KWJANZWAEK45TJWR",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZKT529WNDYTS7NB973DKM6D",
+          "tcpId": "01K2NF1DN60A6485DDXWR45GT0",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYFJN6AKWEQ0DQF6TF54FV5D",
+      "airportId": "GEG",
+      "volumeId": "G21",
+      "name": "GEG_RWY_21",
+      "runwayThreshold": {
+        "lat": 47.63119,
+        "lon": -117.51831
+      },
+      "ceiling": 9000,
+      "floor": 0,
+      "magneticHeading": 207,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFP5H0DZWAEG6FF4TQ961CS",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFP1T9KD6V3XJV2HGCS9AZP",
+          "tcpId": "01K2NF1DN6SF51S9CSAD23JV47",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZKAVA5XA0BPP8T32J0MZ4SJ",
+          "tcpId": "01K2NF1DN6KWJANZWAEK45TJWR",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZKQG9323850DCZED1GNQ94W",
+          "tcpId": "01K2NF1DN60A6485DDXWR45GT0",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -484,6 +587,7 @@
         null,
         null,
         null,
+        null,
         18,
         19,
         17,
@@ -492,6 +596,7 @@
         22,
         9,
         125,
+        null,
         null,
         null,
         null,
@@ -570,6 +675,7 @@
         420,
         423,
         null,
+        31,
         18,
         19,
         17,
@@ -584,7 +690,8 @@
         92,
         94,
         95,
-        null
+        null,
+        30
       ]
     },
     {
@@ -655,6 +762,7 @@
         442,
         445,
         447,
+        321,
         400,
         139,
         136,
@@ -669,7 +777,8 @@
         441,
         443,
         446,
-        530
+        530,
+        455
       ]
     },
     {
@@ -740,11 +849,13 @@
         null,
         null,
         null,
+        null,
         151,
         148,
         150,
         302,
         320,
+        null,
         null,
         null,
         null,
@@ -825,11 +936,13 @@
         null,
         null,
         null,
+        null,
         142,
         144,
         null,
         139,
         141,
+        null,
         null,
         null,
         null,

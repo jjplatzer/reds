@@ -127,6 +127,7 @@
       "name": "East Approach",
       "radioName": "Whidbey Approach",
       "callsign": "NUW_E_APP",
+      "colorSet": "dod",
       "areaId": "01GF9N446B8JAP6SK4WEN2YAEK",
       "tcpId": "01K2NF1DN6CDNCXXJ65YZV6Q7F",
       "tcp": "1E",
@@ -143,6 +144,7 @@
       "name": "Downrigger",
       "radioName": "Whidbey Approach",
       "callsign": "NUW_F_APP",
+      "colorSet": "dod",
       "areaId": "01K9BC1VVXPRS3NWTA8FH7M7RK",
       "tcpId": "01K9B7XZ4M4SG2K9CEMQR55YAD",
       "tcp": "1F",
@@ -159,6 +161,7 @@
       "name": "Tower",
       "radioName": "Whidbey Tower",
       "callsign": "NUW_TWR",
+      "colorSet": "dod",
       "areaId": "01GF9N446B8JAP6SK4WEN2YAEK",
       "tcpId": "01K2NF1DN60T7G1MQE9J14HEYK",
       "tcp": "1T",
@@ -175,6 +178,7 @@
       "name": "West Approach",
       "radioName": "W",
       "callsign": "NUW_W_APP",
+      "colorSet": "dod",
       "areaId": "01GF9N446B8JAP6SK4WEN2YAEK",
       "tcpId": "01K2NF1DN6X48HQB401VFHP6G2",
       "tcp": "1W",
@@ -184,6 +188,746 @@
       },
       "range": 150,
       "freq": 118.2
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01K9Z0YY22WP8J122JVVHNS8QD",
+      "airportId": "NUW",
+      "volumeId": "L07",
+      "name": "NUW_RWY_07",
+      "runwayThreshold": {
+        "lat": 48.35131,
+        "lon": -122.67288
+      },
+      "ceiling": 9000,
+      "floor": 47,
+      "magneticHeading": 69,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01K9Z158N98CRK9S6894CKD2MX",
+          "entry": "I14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z158TF09VM49392DRCQ7XF",
+          "entry": "G14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z158ZPVV807MPQ6GPZY1QN",
+          "entry": "G25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z1594YDV8Y3TWCJXVKYV10",
+          "entry": "G32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z1599EY12H4KX7445355TQ",
+          "entry": "T14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z159EN4MQPC7EQ30MMRTRN",
+          "entry": "T25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z159KM4JF38XA1GFWZRKAK",
+          "entry": "T32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z159RW632CYKTZ07HZK163",
+          "entry": "Y14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z159Y31J5MMK573EN5Z2A8",
+          "entry": "Y25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z15A329BVKKSSMHCQKTR82",
+          "entry": "Y32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z15A823Y7Z4RPSFQERZAYA",
+          "entry": "Z14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z15AD1M0CJGVPAF2Y3XMC3",
+          "entry": "Z25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z15AJ86PSFCD6HC406B4P1",
+          "entry": "Z32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z15AQ086XFYYNHSW2GS6FG",
+          "entry": "V14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z178J4VMAYFYH0P5NYS48Y",
+          "entry": "V25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z178Q3FE1HDNPAMJH7MX74",
+          "entry": "V32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z178W4SF9TQ49M0JSJE8H6",
+          "entry": "R14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z1790K769950C9FC33SD9D",
+          "entry": "R25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z1795B2PZCHJZGV1J0AWWK",
+          "entry": "R32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z181536KDBA841S43RA2CC",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01K9Z10FV1W4D53Y99KAEN7ER5",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01K9Z10G08FGZZ3E7QJ75ZPFCP",
+          "tcpId": "01K2NF1DN60T7G1MQE9J14HEYK",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01K9Z10G57RA7782904ZYMYY96",
+          "tcpId": "01K2NF1DN6X48HQB401VFHP6G2",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01K9Z0VGB5PNHSACQE59NGFXGZ",
+      "airportId": "NUW",
+      "volumeId": "L14",
+      "name": "NUW_RWY_14",
+      "runwayThreshold": {
+        "lat": 48.36171,
+        "lon": -122.66251
+      },
+      "ceiling": 9000,
+      "floor": 47,
+      "magneticHeading": 137,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01K9Z10YTGXPAR7JA9RM84MHE8",
+          "entry": "G07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z10YZQ36TN5YEYPWG8ES39",
+          "entry": "G7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z10Z56RXYSAABX93J3622B",
+          "entry": "G25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z10ZADDR1WY4XPT1RY70T8",
+          "entry": "G32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z10ZEXMP4G54AYC8Z5ESE3",
+          "entry": "Y07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z10ZKX7WYY26Y9XH81B43D",
+          "entry": "Y7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z10ZRMTFFQFVFMM3A3KP26",
+          "entry": "Y32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z10ZXW1V92WWMKW6KVWBPS",
+          "entry": "Y25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z1102VBJSN98WSY43SS81G",
+          "entry": "Z07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z1107VXZ7TP6A6BZ15T76N",
+          "entry": "Z7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z110CK7P89PPEX6AQ6EHHB",
+          "entry": "Z32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z110HJGJ0JFVQG43DK2KMQ",
+          "entry": "Z25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z110PJ56GGZS0JD7H0XG3J",
+          "entry": "V7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z110V9YETF76WRXRRSW3X5",
+          "entry": "V07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z1115GVG54NXTR5QGPBZBH",
+          "entry": "V25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z111AZWPBWPSFTG0EKA99F",
+          "entry": "V32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z111FQBCEJPVBNN3EPP9PT",
+          "entry": "R07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z111N5E4S8AXSYBK2SF4D7",
+          "entry": "R7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z111SXGP9HCG1KA6DD9K48",
+          "entry": "R25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z149TJ03JHG03Y8TEQGNJ8",
+          "entry": "R32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z14VA07TG05E43MWHYB53N",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K9Z18BD11TC3RMTXMVJ06YHJ",
+          "entry": "T32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z18BR60Q2ZZVZWMW8AWXCP",
+          "entry": "T25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z18C0APTW83GDSAZXTHWB1",
+          "entry": "T07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z18C99YS20SGJ4Q0SB62RR",
+          "entry": "T7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01K9Z0Y78D05FB6X5WK7TN3F0G",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01K9Z0Y7E3S0YKBCJDVRQGRWBF",
+          "tcpId": "01K2NF1DN60T7G1MQE9J14HEYK",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01K9Z0Y7JM4BEPKPVF45DR72ND",
+          "tcpId": "01K2NF1DN6X48HQB401VFHP6G2",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01K6RC8KPGW7AW88YCMVEZV35N",
+      "airportId": "NUW",
+      "volumeId": "L25",
+      "name": "NUW_RWY_25",
+      "runwayThreshold": {
+        "lat": 48.35247,
+        "lon": -122.64005
+      },
+      "ceiling": 9000,
+      "floor": 47,
+      "magneticHeading": 251,
+      "maximumHeadingDeviation": 90,
+      "length": 21,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01K9Z07PYJ07B6WSQ855RJGHPG",
+          "entry": "I14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z07Q4G05XS0CXMNQK2MEFZ",
+          "entry": "G14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z07Q9Z3ZB3H53FCRYR9H39",
+          "entry": "G32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z07QF6W7F35CP3327ZE39D",
+          "entry": "G07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z08R9C0JAG53FRKY2GZ5J5",
+          "entry": "G7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z08REVT0CGXAAH2EBFW4V2",
+          "entry": "T14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z08RKJBA6RB5PGT46DWAD7",
+          "entry": "T32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0ADAWC818CP0VYR58GFHW",
+          "entry": "T07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0C1EKH3Q1YT10TWFDJB5J",
+          "entry": "T7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0D1VYW0G5G2S1ACEVX7PG",
+          "entry": "Y14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0D21BXAY3BX07XCNPXFNY",
+          "entry": "Y32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0D25NXAR3QQAXB48CBD6Y",
+          "entry": "Y07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0D2AXAHRMN5GQ8MXQDH6N",
+          "entry": "Y7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0D2FM48NQK8T19VJC8M7X",
+          "entry": "Z14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0D2M3GJEDTT44K297T06C",
+          "entry": "Z32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0D2S34A9A83F0M1KNXCCA",
+          "entry": "Z07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0ER5526KH0XPEFNEQ9NJA",
+          "entry": "Z7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0FZJ74Q76XBXPEGP1BWM0",
+          "entry": "V14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0FZR51X6KH3ERJ8GVNH7X",
+          "entry": "V32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0FZWX201W5QRB5AK9PZK9",
+          "entry": "V07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0G02K0X3PXSGMR9MHJRQM",
+          "entry": "V7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0G1BFQ0DPYGT34045E8WE",
+          "entry": "R14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0G2B7DP5C6EAWAJMYVD5J",
+          "entry": "R32",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0G2GQDK679XF08M143ES4",
+          "entry": "R7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0G2NY2JVRJD1P8R2QVT7K",
+          "entry": "R07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0G30MWQTWGEX5MFSBZR1H",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01K9Z00PFFRF9JNWF0R246APE6",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01K9Z00RTYFAZHZHTKMKGNV9JT",
+          "tcpId": "01K2NF1DN60T7G1MQE9J14HEYK",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01K9Z00S0MAJG3Y9GVFDXH13SQ",
+          "tcpId": "01K2NF1DN6X48HQB401VFHP6G2",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01K9Z02A6098RYEJ5G89SA75HB",
+      "airportId": "NUW",
+      "volumeId": "L32",
+      "name": "NUW_RWY_32",
+      "runwayThreshold": {
+        "lat": 48.34189,
+        "lon": -122.64842
+      },
+      "ceiling": 9000,
+      "floor": 47,
+      "magneticHeading": 317,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01K9Z0KQZWW1EQ8Q0DZXN55VM9",
+          "entry": "I14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KR634093KQPRYQV3AS48",
+          "entry": "G14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KRBHZAMKS7T33J13YG4J",
+          "entry": "G25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KRGZ5TAY2STYB1W16J6M",
+          "entry": "G07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KRPF2KJE1EGWFP8HHR08",
+          "entry": "G7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KRVP35AJG7VHNR9BT23V",
+          "entry": "T14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KS0NZHE5Q04D22S108FX",
+          "entry": "T25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KS5VNTSCG4WBA51AVFDR",
+          "entry": "T07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KSBB841YZ5JWGJXF2YT1",
+          "entry": "T7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KSGBCPHTQV21GYK7HC3P",
+          "entry": "Y14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KSP09D47S0EBS260400B",
+          "entry": "Y25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KSTZP9XQY1PZ2FS5DEMT",
+          "entry": "Y07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KT07HW9YNDXDBDBJM049",
+          "entry": "Y7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KT5F4RKDQCP0D2NVG0M4",
+          "entry": "Z14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KTB4JTG9CRF9YZ6EGB60",
+          "entry": "Z25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KTG494YZW61M4EARBDHE",
+          "entry": "Z07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KTNCHVC4J6GX0DXBH6HQ",
+          "entry": "Z7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KTTB7ZT2SDGN7VW836Z1",
+          "entry": "V14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KTZJFNCT7CPGWSAYY45T",
+          "entry": "V25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KV4SW2H9ACGED7W0VPRN",
+          "entry": "V07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KV9R9EPC962MJFQ14YWH",
+          "entry": "V7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0KVFFSFP1QNKX8TH9R3VK",
+          "entry": "R14",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0QT3NDDZ2964SJQ2V0PY0",
+          "entry": "R25",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0QT93DSCE0RDYZ3KWZXJJ",
+          "entry": "R07",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0QTE3CAWYGV0TEHGJK9QF",
+          "entry": "R7",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K9Z0QTJV5T73BFKC4P39ZVJB",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01K9Z06C1RJ88NRGA52E3SA4TP",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01K9Z06C77B81CXCFH6YTBR57B",
+          "tcpId": "01K2NF1DN60T7G1MQE9J14HEYK",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01K9Z06CBYCZ6AHYZFSWD33NS4",
+          "tcpId": "01K2NF1DN6X48HQB401VFHP6G2",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -257,6 +1001,7 @@
         67,
         60,
         200,
+        146,
         94,
         95,
         307,
@@ -271,7 +1016,8 @@
         55,
         66,
         16,
-        201
+        201,
+        147
       ]
     },
     {
@@ -327,6 +1073,8 @@
         902
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

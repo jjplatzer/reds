@@ -74,6 +74,7 @@
       "name": "Approach",
       "radioName": "Clarksburg Approach",
       "callsign": "CKB_APP",
+      "colorSet": "tcw",
       "areaId": "01G92TBTNKS12NMGBGZBX6P2C0",
       "tcpId": "01K2NF1E62FGDEXEV4K903G9BT",
       "tcp": "1E",
@@ -90,6 +91,7 @@
       "name": "Ground",
       "radioName": "Clarksburg Ground",
       "callsign": "CKB_GND",
+      "colorSet": "tdw",
       "areaId": "01HE76P6YHD32KCWQRR8DHERW6",
       "tcpId": "01K2NF1E62918F4NH9YFA16E1E",
       "tcp": "1T",
@@ -106,6 +108,7 @@
       "name": "Local Control",
       "radioName": "Clarksburg Tower",
       "callsign": "CKB_TWR",
+      "colorSet": "tdw",
       "areaId": "01HE76P6YHD32KCWQRR8DHERW6",
       "tcpId": "01K2NF1E62918F4NH9YFA16E1E",
       "tcp": "1T",
@@ -122,6 +125,7 @@
       "name": "TMU/OTHER",
       "radioName": "Clarksburg Approach",
       "callsign": "CKB_T_APP",
+      "colorSet": "tcw",
       "areaId": "01G92TBTNKS12NMGBGZBX6P2C0",
       "tcpId": "01K2NF1E62BVEAFRS6EMRP387Z",
       "tcp": "1Z",
@@ -131,6 +135,204 @@
       },
       "range": 150,
       "freq": 123.45
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYPX2XS4MY0J04S651TNZ74Q",
+      "airportId": "CKB",
+      "volumeId": "CKB03",
+      "name": "CKB RWY 03",
+      "runwayThreshold": {
+        "lat": 39.28944444,
+        "lon": -80.23194444
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 31,
+      "maximumHeadingDeviation": 45,
+      "length": 30,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZ0JV72AK3MJ44VX2XC4MXF6",
+          "entry": "V03",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0JSFY42X7EDPCFZ9WHR1ZW",
+          "tcpId": "01K2NF1E62FGDEXEV4K903G9BT",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0JSG38MK2YPNJAKP7H2AWC",
+          "tcpId": "01K2NF1E62WQQ2PZTJXPPPAJS6",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0JSG85HEYYGTQE3PW6TZPC",
+          "tcpId": "01K2NF1E62BVEAFRS6EMRP387Z",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0JSHKVE8A15690036ZRBCF",
+          "tcpId": "01K2NF1E62918F4NH9YFA16E1E",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYPX3Y05AVBQKA0HETPFVXBC",
+      "airportId": "CKB",
+      "volumeId": "CKB21",
+      "name": "CKB RWY 21",
+      "runwayThreshold": {
+        "lat": 39.3075,
+        "lon": -80.22222222
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 211,
+      "maximumHeadingDeviation": 45,
+      "length": 30,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZ0JVFMWJ56XXTSKZAEMZFBG",
+          "entry": "V21",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0JSSTG52D47HZV4FFY5V15",
+          "tcpId": "01K2NF1E62FGDEXEV4K903G9BT",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0JSSZEXCK7WTYQR6R89DHE",
+          "tcpId": "01K2NF1E62WQQ2PZTJXPPPAJS6",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0JST4N64CXRVMESQ1ZYX9J",
+          "tcpId": "01K2NF1E62BVEAFRS6EMRP387Z",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0JST9FXPC3BXXE3CVCW7QG",
+          "tcpId": "01K2NF1E62918F4NH9YFA16E1E",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYPX1S1AD5E06BAMAK5HZNZ2",
+      "airportId": "MGW",
+      "volumeId": "MGW18",
+      "name": "MGW RWY 18",
+      "runwayThreshold": {
+        "lat": 39.65055556,
+        "lon": -79.91888889
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 181,
+      "maximumHeadingDeviation": 45,
+      "length": 30,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZ0JTMP47G552GHVFN9YKK2Q",
+          "entry": "V18",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0JRBMP8VTZ94JFYWMF0S04",
+          "tcpId": "01K2NF1E62FGDEXEV4K903G9BT",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0JRDH0WZ0BVHN0Q7NMRXTW",
+          "tcpId": "01K2NF1E62WQQ2PZTJXPPPAJS6",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0JRHQZ2TBHBJTW4RY66ETB",
+          "tcpId": "01K2NF1E62BVEAFRS6EMRP387Z",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYPX4WMMTXWKAW03QB5SB5BY",
+      "airportId": "MGW",
+      "volumeId": "MGW36",
+      "name": "MGW RWY 36",
+      "runwayThreshold": {
+        "lat": 39.63666667,
+        "lon": -79.91638889
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 1,
+      "maximumHeadingDeviation": 45,
+      "length": 30,
+      "widthLeft": 6076,
+      "widthRight": 60736,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZ0JVRBB1RRYMZHDTSV9DHQ5",
+          "entry": "V36",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0JRPGG5H0GKG4MEM769MXJ",
+          "tcpId": "01K2NF1E62FGDEXEV4K903G9BT",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0JRPPARERS3RJ48JQTVX29",
+          "tcpId": "01K2NF1E62WQQ2PZTJXPPPAJS6",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0JRPVAXNR4A287R6JSPGG5",
+          "tcpId": "01K2NF1E62BVEAFRS6EMRP387Z",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -189,6 +391,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

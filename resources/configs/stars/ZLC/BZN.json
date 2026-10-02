@@ -92,6 +92,7 @@
       "name": "Bozeman Radar",
       "radioName": "Big Sky Approach",
       "callsign": "BZN_APP",
+      "colorSet": "tcw",
       "areaId": "01GE8WA8C0JK4SFFSC142N5EVH",
       "tcpId": "01K2NF1E410CGX6E5RB39VEFX2",
       "tcp": "1B",
@@ -108,6 +109,7 @@
       "name": "Ground",
       "radioName": "Bozeman Ground",
       "callsign": "BZN_GND",
+      "colorSet": "tdw",
       "areaId": "01GE8WC5FP7NP8MDYWEJ2CBS83",
       "tcpId": "01K2NF1E41QEPG6X6PM6JCDQJZ",
       "tcp": "1N",
@@ -124,6 +126,7 @@
       "name": "Tower",
       "radioName": "Bozeman Tower",
       "callsign": "BZN_TWR",
+      "colorSet": "tdw",
       "areaId": "01GE8WC5FP7NP8MDYWEJ2CBS83",
       "tcpId": "01K2NF1E41Q41NDYV2RX6DARE2",
       "tcp": "1T",
@@ -140,6 +143,7 @@
       "name": "Clearance",
       "radioName": "Bozeman Clearance",
       "callsign": "BZN_DEL",
+      "colorSet": "tdw",
       "areaId": "01GE8WC5FP7NP8MDYWEJ2CBS83",
       "tcpId": "01K2NF1E41ZSFJWSCJR1C8KB4B",
       "tcp": "1X",
@@ -149,6 +153,100 @@
       },
       "range": 50,
       "freq": 124.05
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYSKPX7HVCPA6M9D8NXT4YEC",
+      "airportId": "BZN",
+      "volumeId": "RY12",
+      "name": "BZN RWY 12",
+      "runwayThreshold": {
+        "lat": 45.78805556,
+        "lon": -111.16638889
+      },
+      "ceiling": 14000,
+      "floor": 4200,
+      "magneticHeading": 120,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 12152,
+      "widthRight": 12152,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYSKPX7JGAGZ0XZZEDYVEHC2",
+          "entry": "V12",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K0YKWM4PECRTDSTWKP183Z0X",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYSKPX7M6AHK7DJAV065Q4V7",
+          "tcpId": "01K2NF1E410CGX6E5RB39VEFX2",
+          "tcp": "1B",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYSKPX7HK8DGDR3YPEYAPRY4",
+      "airportId": "BZN",
+      "volumeId": "RY30",
+      "name": "BZN RWY 30",
+      "runwayThreshold": {
+        "lat": 45.77027778,
+        "lon": -111.14194444
+      },
+      "ceiling": 14000,
+      "floor": 4200,
+      "magneticHeading": 300,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 12152,
+      "widthRight": 12152,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYSKPX7JYDMJ8RX9P0N5HK28",
+          "entry": "V30",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K0YKW6XDGC0PP6F6TEQFHSPR",
+          "entry": "VS",
+          "scratchPadNumber": "Two",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KGG0MMXQ1AEQ2SP9DHHJCS7W",
+          "entry": "V0",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KGG0MYN8C3YZ49JNPEDDHHX5",
+          "entry": "V3",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYSKPX7MV72A9ZBTCTKGAT31",
+          "tcpId": "01K2NF1E410CGX6E5RB39VEFX2",
+          "tcp": "1B",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -220,6 +318,7 @@
         400,
         null,
         null,
+        null,
         541,
         508,
         4,
@@ -233,6 +332,7 @@
         532,
         533,
         401,
+        null,
         null,
         null
       ]
@@ -292,6 +392,8 @@
         6
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

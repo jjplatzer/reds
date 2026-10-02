@@ -72,6 +72,7 @@
       "name": "Ground Control",
       "radioName": "Myrtle Beach Ground",
       "callsign": "MYR_GND",
+      "colorSet": "tdw",
       "areaId": "01HWTTWEEEMZHJKK35T7K9QV28",
       "tcpId": "01K2NF1DFE4KYH6TQSXX5F1SP4",
       "tcp": "1D",
@@ -88,6 +89,7 @@
       "name": "East Approach",
       "radioName": "Myrtle Beach Approach",
       "callsign": "MYR_E_APP",
+      "colorSet": "tcw",
       "areaId": "01GA5TSK3HB6TQ3R46A1EE16TR",
       "tcpId": "01K2NF1DFEMB2JH1WGMY4SARJN",
       "tcp": "1E",
@@ -104,6 +106,7 @@
       "name": "Local Control",
       "radioName": "Myrtle Beach Tower",
       "callsign": "MYR_TWR",
+      "colorSet": "tdw",
       "areaId": "01HWTTWEEEMZHJKK35T7K9QV28",
       "tcpId": "01K2NF1DFEM7XF9SJ1Q5PM0769",
       "tcp": "1T",
@@ -120,6 +123,7 @@
       "name": "West Approach",
       "radioName": "Myrtle Beach Approach",
       "callsign": "MYR_W_APP",
+      "colorSet": "tcw",
       "areaId": "01GA5TSK3HB6TQ3R46A1EE16TR",
       "tcpId": "01K2NF1DFEQ92ZD5KK1DYDH3Y8",
       "tcp": "1W",
@@ -129,6 +133,72 @@
       },
       "range": 150,
       "freq": 127.4
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JZ7AWWNFD4EG8B9G9DVPTF9B",
+      "airportId": "MYR",
+      "volumeId": "M18",
+      "name": "MYR 18",
+      "runwayThreshold": {
+        "lat": 33.69252,
+        "lon": -78.93152
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 177,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 26500,
+      "widthRight": 26500,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZ7AYJRSCTVYPMX02XYD9VFS",
+          "entry": "MYR",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ7AYQJS9J52Y3C0XYTZ93NN",
+          "entry": "V18",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ]
+    },
+    {
+      "id": "01JZ7AZ9EQAZ1XPYKFVCHPASWB",
+      "airportId": "MYR",
+      "volumeId": "M36",
+      "name": "MYR 36",
+      "runwayThreshold": {
+        "lat": 33.66697,
+        "lon": -78.92513
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 357,
+      "maximumHeadingDeviation": 90,
+      "length": 24,
+      "widthLeft": 26500,
+      "widthRight": 26500,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZ7B0YV8QEJ1N2AWBFFX5STA",
+          "entry": "V36",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JZ7B12R1GAXXSWBC0R5EST4P",
+          "entry": "MYR",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -201,6 +271,7 @@
         149,
         160,
         null,
+        null,
         123,
         8,
         120,
@@ -214,6 +285,7 @@
         141,
         143,
         150,
+        null,
         null,
         null
       ]
@@ -287,7 +359,9 @@
         null,
         null,
         null,
+        null,
         136,
+        null,
         null,
         null,
         null,

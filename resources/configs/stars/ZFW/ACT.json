@@ -61,6 +61,7 @@
       "name": "High Radar",
       "radioName": "Waco Approach",
       "callsign": "ACT_H_APP",
+      "colorSet": "tcw",
       "areaId": "01GKZZ9Z15ABDQY0HXHZP9T2FV",
       "tcpId": "01K2NF1D8SD9MG9WN2JSYFGW2B",
       "tcp": "1H",
@@ -77,6 +78,7 @@
       "name": "Low Radar",
       "radioName": "Waco Approach",
       "callsign": "ACT_L_APP",
+      "colorSet": "tcw",
       "areaId": "01GKZZ9Z15ABDQY0HXHZP9T2FV",
       "tcpId": "01K2NF1D8SZGERVY2PVP7R1WA9",
       "tcp": "1L",
@@ -93,6 +95,7 @@
       "name": "Ground",
       "radioName": "Waco Ground",
       "callsign": "ACT_GND",
+      "colorSet": "tdw",
       "areaId": "01GKZZ9Z15ABDQY0HXHZP9T2FV",
       "tcpId": "01K2NF1D8SAANN6843ZTQ7VH05",
       "tcp": "1T",
@@ -109,6 +112,7 @@
       "name": "Local",
       "radioName": "Waco Tower",
       "callsign": "ACT_TWR",
+      "colorSet": "tdw",
       "areaId": "01GKZZ9Z15ABDQY0HXHZP9T2FV",
       "tcpId": "01K2NF1D8SAANN6843ZTQ7VH05",
       "tcp": "1T",
@@ -191,6 +195,7 @@
         25,
         27,
         29,
+        31,
         2,
         4,
         6,
@@ -205,7 +210,8 @@
         24,
         26,
         28,
-        30
+        30,
+        32
       ]
     }
   ],

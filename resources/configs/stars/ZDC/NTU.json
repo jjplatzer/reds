@@ -51,6 +51,7 @@
       "name": "Approach",
       "radioName": "Oceana Approach",
       "callsign": "NTU_APP",
+      "colorSet": "dod",
       "areaId": "01HAD25KN4F69829KABXZYWQV5",
       "tcpId": "01K2NF1E0VKDE167CRF6GNDRRF",
       "tcp": "1O",
@@ -67,6 +68,7 @@
       "name": "Local",
       "radioName": "Oceana Tower",
       "callsign": "NTU_TWR",
+      "colorSet": "tdw",
       "areaId": "01HAD25KN4F69829KABXZYWQV5",
       "tcpId": "01K2NF1E0VV5FR00QDQHAZXN75",
       "tcp": "1Z",
@@ -76,6 +78,125 @@
       },
       "range": 80,
       "freq": 127.075
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01KK9T9J44N9V5GPPB4FW7CGXY",
+      "airportId": "NTU",
+      "volumeId": "NTU05",
+      "name": "ATPA NTU05L/R",
+      "runwayThreshold": {
+        "lat": 36.815,
+        "lon": -76.0425
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 52,
+      "maximumHeadingDeviation": 80,
+      "length": 20.7,
+      "widthLeft": 12152,
+      "widthRight": 43237,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KK9TC1F9WVGCMQTB6APWAJ0T",
+          "entry": "BK",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KK9TCPDY9RPQJ1FSBPXBF45X",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KK9TCPTNYE280MT8AJFJ46JV",
+          "tcpId": "01K2NF1E0VV5FR00QDQHAZXN75",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01KK9TD5ZEEX17P6KYGVAA634W",
+      "airportId": "NTU",
+      "volumeId": "NTU23",
+      "name": "ATPA NTU23L/R",
+      "runwayThreshold": {
+        "lat": 36.831388888888895,
+        "lon": -76.02416666666666
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 233,
+      "maximumHeadingDeviation": 80,
+      "length": 20,
+      "widthLeft": 43237,
+      "widthRight": 12152,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KK9TETQ1T7W6KJPXB742GD3N",
+          "entry": "BK",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KK9TFJJYE3QY2CFEXCMBZHQZ",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KK9TFJKVGE22YWQT7NX49ABX",
+          "tcpId": "01K2NF1E0VV5FR00QDQHAZXN75",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01KK9TFT6GTDR8PM7A1ZF8NZAY",
+      "airportId": "NTU",
+      "volumeId": "NTU32",
+      "name": "ATPA NTU32L/R",
+      "runwayThreshold": {
+        "lat": 36.81805555555556,
+        "lon": -76.01888888888888
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 325,
+      "maximumHeadingDeviation": 80,
+      "length": 20,
+      "widthLeft": 42533,
+      "widthRight": 43233,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01KK9THHSYVYQRD19C2EV8PZ12",
+          "entry": "BK",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KK9TJ4FDF189YVGX5D4QKZND",
+          "tcpId": "",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01KK9TJ4ZCF6H770NP575QNNXM",
+          "tcpId": "01K2NF1E0VV5FR00QDQHAZXN75",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "videoMaps": [

@@ -280,6 +280,7 @@
       "name": "Feeder",
       "radioName": "Cleveland Approach",
       "callsign": "CLE_A_APP",
+      "colorSet": "tcw",
       "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
       "tcpId": "01K2NF1E62M4WXATG1YMTAGBYR",
       "tcp": "1A",
@@ -296,6 +297,7 @@
       "name": "Departure North",
       "radioName": "Cleveland Departure",
       "callsign": "CLE_D_DEP",
+      "colorSet": "tcw",
       "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
       "tcpId": "01K2NF1E62CTHYXMVKBJVYXQZ0",
       "tcp": "1D",
@@ -312,6 +314,7 @@
       "name": "Final",
       "radioName": "Cleveland Approach",
       "callsign": "CLE_F_APP",
+      "colorSet": "tcw",
       "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
       "tcpId": "01K2NF1E62ATEWV6SC0M00EDYN",
       "tcp": "1F",
@@ -328,6 +331,7 @@
       "name": "Local Control",
       "radioName": "Cleveland Tower",
       "callsign": "CLE_TWR",
+      "colorSet": "tdw",
       "areaId": "01HE76C8FYET3HR7T676EAHP91",
       "tcpId": "01K2NF1E62QB2VCEKEF06NDD4S",
       "tcp": "1L",
@@ -344,6 +348,7 @@
       "name": "Local TMU/CIC",
       "radioName": "CLE TMU",
       "callsign": "CLE_T_TWR",
+      "colorSet": "tcw",
       "areaId": "01HE76C8FYET3HR7T676EAHP91",
       "tcpId": "01K2NF1E62QB2VCEKEF06NDD4S",
       "tcp": "1L",
@@ -360,6 +365,7 @@
       "name": "Departure South",
       "radioName": "Cleveland Departure",
       "callsign": "CLE_R_DEP",
+      "colorSet": "tcw",
       "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
       "tcpId": "01K2NF1E62FYJZ579NQXCHT48S",
       "tcp": "1R",
@@ -376,6 +382,7 @@
       "name": "Clearance Delivery",
       "radioName": "Cleveland Clearance",
       "callsign": "CLE_DEL",
+      "colorSet": "tdw",
       "areaId": "01HE76C8FYET3HR7T676EAHP91",
       "tcpId": "01K2NF1E627TWJVA0M0ZXJR7HQ",
       "tcp": "1T",
@@ -392,6 +399,7 @@
       "name": "Ground",
       "radioName": "Cleveland Ground",
       "callsign": "CLE_GND",
+      "colorSet": "tdw",
       "areaId": "01HE76C8FYET3HR7T676EAHP91",
       "tcpId": "01K2NF1E627TWJVA0M0ZXJR7HQ",
       "tcp": "1T",
@@ -408,6 +416,7 @@
       "name": "TMU/OTHER",
       "radioName": "Cleveland Approach",
       "callsign": "CLE_T_APP",
+      "colorSet": "tcw",
       "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
       "tcpId": "01K2NF1E62P40XTWZWGWC3XF8C",
       "tcp": "1Z",
@@ -424,6 +433,7 @@
       "name": "Ground",
       "radioName": "Lakefront Ground",
       "callsign": "BKL_GND",
+      "colorSet": "tdw",
       "areaId": "01HE77X2GXK2J15MBCJGB27Q09",
       "tcpId": "01K2NF1E62JDZMHNFJBGMMZCAQ",
       "tcp": "2L",
@@ -440,6 +450,7 @@
       "name": "Local Control",
       "radioName": "Lakefront Tower",
       "callsign": "BKL_TWR",
+      "colorSet": "tdw",
       "areaId": "01HE77X2GXK2J15MBCJGB27Q09",
       "tcpId": "01K2NF1E62JDZMHNFJBGMMZCAQ",
       "tcp": "2L",
@@ -456,6 +467,7 @@
       "name": "Satellite North",
       "radioName": "Cleveland Approach",
       "callsign": "CLE_N_APP",
+      "colorSet": "tcw",
       "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
       "tcpId": "01K2NF1E62E2YQ5BX55W5XKTH7",
       "tcp": "2N",
@@ -472,6 +484,7 @@
       "name": "Satellite East",
       "radioName": "Cleveland Approach",
       "callsign": "CAK_E_APP",
+      "colorSet": "tcw",
       "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
       "tcpId": "01K2NF1E62F6QQ1FP18247CCN5",
       "tcp": "3E",
@@ -488,6 +501,7 @@
       "name": "Clearance Delivery",
       "radioName": "Akron-Canton Clearance",
       "callsign": "CAK_DEL",
+      "colorSet": "tdw",
       "areaId": "01HE77YBYDSMZTF6S1XGX2FEWE",
       "tcpId": "01K2NF1E626E4VQDFK6TEEH5SQ",
       "tcp": "3L",
@@ -504,6 +518,7 @@
       "name": "Ground",
       "radioName": "Akron-Canton Ground",
       "callsign": "CAK_GND",
+      "colorSet": "tdw",
       "areaId": "01HE77YBYDSMZTF6S1XGX2FEWE",
       "tcpId": "01K2NF1E626E4VQDFK6TEEH5SQ",
       "tcp": "3L",
@@ -520,6 +535,7 @@
       "name": "Local Control",
       "radioName": "Akron-Canton Tower",
       "callsign": "CAK_TWR",
+      "colorSet": "tdw",
       "areaId": "01HE77YBYDSMZTF6S1XGX2FEWE",
       "tcpId": "01K2NF1E626E4VQDFK6TEEH5SQ",
       "tcp": "3L",
@@ -536,6 +552,7 @@
       "name": "Satellite South",
       "radioName": "Cleveland Approach",
       "callsign": "CAK_S_APP",
+      "colorSet": "tcw",
       "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
       "tcpId": "01K2NF1E62HZY54GYNW965DBZJ",
       "tcp": "3S",
@@ -552,6 +569,7 @@
       "name": "Ground",
       "radioName": "Mansfield Ground",
       "callsign": "MFD_GND",
+      "colorSet": "tdw",
       "areaId": "01HE77YQ51RNQYEAJX5R5MBWDP",
       "tcpId": "01K2NF1E624Z8CDBXZN4VEEA0E",
       "tcp": "4T",
@@ -568,6 +586,7 @@
       "name": "Local Control",
       "radioName": "Mansfield Tower",
       "callsign": "MFD_TWR",
+      "colorSet": "tdw",
       "areaId": "01HE77YQ51RNQYEAJX5R5MBWDP",
       "tcpId": "01K2NF1E624Z8CDBXZN4VEEA0E",
       "tcp": "4T",
@@ -584,6 +603,7 @@
       "name": "Satellite West",
       "radioName": "Cleveland Approach",
       "callsign": "MFD_W_APP",
+      "colorSet": "tcw",
       "areaId": "01G90HA4X64CQWDH9VVMFTZ8VD",
       "tcpId": "01K2NF1E62W1W68ZRR26G00SHH",
       "tcp": "4W",
@@ -600,6 +620,7 @@
       "name": "Ground",
       "radioName": "County Ground",
       "callsign": "CGF_GND",
+      "colorSet": "tdw",
       "areaId": "01HE77XS2FNWQR8A20H9297D00",
       "tcpId": "01K2NF1E62G9F8VZ7RHYTPHQMH",
       "tcp": "5T",
@@ -616,6 +637,7 @@
       "name": "Local Control",
       "radioName": "County Tower",
       "callsign": "CGF_TWR",
+      "colorSet": "tdw",
       "areaId": "01HE77XS2FNWQR8A20H9297D00",
       "tcpId": "01K2NF1E62G9F8VZ7RHYTPHQMH",
       "tcp": "5T",
@@ -625,6 +647,920 @@
       },
       "range": 50,
       "freq": 118.5
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYKR89F3R3FZFEGT87CNH0VD",
+      "airportId": "CLE",
+      "volumeId": "C28",
+      "name": "CLE 28",
+      "runwayThreshold": {
+        "lat": 41.41611111,
+        "lon": -81.83222222
+      },
+      "ceiling": 6300,
+      "floor": -9900,
+      "magneticHeading": 281,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 4000,
+      "widthRight": 4000,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYKRA6NGQ2Q2K5NEV1DD8X4S",
+          "entry": "V28",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JYKRABVZ3CBCFFXVVDF38YM3",
+          "entry": "V4L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKRANH6PEXFP9WDAEXC66FX",
+          "entry": "I4L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKRAT7ZS0360E592NZ9ATPW",
+          "entry": "Y4L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKRAZ2W73G60XFGRZEX9CGE",
+          "entry": "Z4L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9A5B9MBTS5KZAAERPBF5VH",
+          "entry": "I4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9A5BQY49G1HQPJ2MVPACD7",
+          "entry": "Y4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9A5C1JQ637C67KS6AFSE1C",
+          "entry": "Z4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9A5WGSNQ7DEBFQCQR7WHAP",
+          "entry": "V4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0KFQXDC61AD0GSQ9XAGBSP",
+          "tcpId": "01K2NF1E62M4WXATG1YMTAGBYR",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFR90AH4QTV99ZJP5ZDNC",
+          "tcpId": "01K2NF1E62CTHYXMVKBJVYXQZ0",
+          "tcp": "1D",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFRMX6DRSRBFGHWPMYDXA",
+          "tcpId": "01K2NF1E62ZKMZFEF24SVZZRSR",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFS19VWK384JPY5RGPWX3",
+          "tcpId": "01K2NF1E62ATEWV6SC0M00EDYN",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFSDXD499AQHV2NM8CCAC",
+          "tcpId": "01K2NF1E62YF6PJ4TDW9VC6ZG7",
+          "tcp": "1H",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFST24ZSEF641YB4PYXSD",
+          "tcpId": "01K2NF1E62QB2VCEKEF06NDD4S",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFT8D4YTJR29KBFVYZ69K",
+          "tcpId": "01K2NF1E620VC6P1Y66GDPQFWW",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFTNA6KPAX2W5DM8SYJM9",
+          "tcpId": "01K2NF1E626981CTMPVJTFFRBP",
+          "tcp": "1P",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFV2EYFS12SHT1QBHYQCX",
+          "tcpId": "01K2NF1E62MTRDFESQES90530A",
+          "tcp": "1Q",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFVF9Z4GZ7AY10DV64V13",
+          "tcpId": "01K2NF1E62FYJZ579NQXCHT48S",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFVYY4M8R4201QFRTNZ14",
+          "tcpId": "01K2NF1E6282CXRAZC0G2PANBT",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFWCP8YFAKCTJETWJV7QY",
+          "tcpId": "01K2NF1E627TWJVA0M0ZXJR7HQ",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFWTSPDJ83GGFZN0T105W",
+          "tcpId": "01K2NF1E62Y8F42RTG2RVC4DWJ",
+          "tcp": "1U",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFX8XEXS5DMAY2X4YDC55",
+          "tcpId": "01K2NF1E6243SS3838KW65ZAT0",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFXP4TRHKNP95VV13P9DT",
+          "tcpId": "01K2NF1E62CNT4CKBSN46DTTMJ",
+          "tcp": "1X",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFY3EG9Z1DSQ5Z6QNZ04N",
+          "tcpId": "01K2NF1E62P40XTWZWGWC3XF8C",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KFYGVWQ185DAPE6DZ24R8",
+          "tcpId": "01K2NF1E62E2YQ5BX55W5XKTH7",
+          "tcp": "2N",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYKQWFQ85PCPWQEW0K6VX9DQ",
+      "airportId": "CLE",
+      "volumeId": "C4L",
+      "name": "CLE 24L",
+      "runwayThreshold": {
+        "lat": 41.41527778,
+        "lon": -81.84194444
+      },
+      "ceiling": 6300,
+      "floor": -9900,
+      "magneticHeading": 238,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 60762,
+      "widthRight": 60762,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYKQYY5C324YDQPZGP68SS6E",
+          "entry": "V4L",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JYKQZ4V3EQCDD13C9KFSX5S1",
+          "entry": "V4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKQZA5AVP658SQ4XCEJC7GA",
+          "entry": "I4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKQZX7NBXGV4R1D8RSGJK9Q",
+          "entry": "Z4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKR02726J2YE43JA94KM6JB",
+          "entry": "Y4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKR4G1ZYB7GNRR6J6HF37TP",
+          "entry": "R28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9A45RNX5X93A2H8MXK8CMA",
+          "entry": "I28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9A45X9MX9XPRFVB1B9N2SD",
+          "entry": "V28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9AD39BZDBK8Z6W329EB1SX",
+          "entry": "V10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9AD429J3G0PD7AKVMCSZZK",
+          "entry": "R10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0K9Q1F4S17YHTNVFGX7RBM",
+          "tcpId": "01K2NF1E62M4WXATG1YMTAGBYR",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9QBPN8JK0V2Y2W2444FW",
+          "tcpId": "01K2NF1E62CTHYXMVKBJVYXQZ0",
+          "tcp": "1D",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9QPGB6MQM7FVP7VJ44J2",
+          "tcpId": "01K2NF1E62ZKMZFEF24SVZZRSR",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9R1K3PD220NT7J3ZYT6G",
+          "tcpId": "01K2NF1E62ATEWV6SC0M00EDYN",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9RDKAFW9MYPVRFM9XEQC",
+          "tcpId": "01K2NF1E62YF6PJ4TDW9VC6ZG7",
+          "tcp": "1H",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9RSEVWWD33ZE5FXTDNPG",
+          "tcpId": "01K2NF1E62QB2VCEKEF06NDD4S",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9S5MGAHX94ZAQ1GJCNSR",
+          "tcpId": "01K2NF1E620VC6P1Y66GDPQFWW",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9SHDNNZH9C5M4T0277K6",
+          "tcpId": "01K2NF1E626981CTMPVJTFFRBP",
+          "tcp": "1P",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9SXT8GBRBWS5961XFYRR",
+          "tcpId": "01K2NF1E62MTRDFESQES90530A",
+          "tcp": "1Q",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9TAXTT6F2PKN1ZM3M103",
+          "tcpId": "01K2NF1E62FYJZ579NQXCHT48S",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9TQ8E36YWK6FZXT5ZY87",
+          "tcpId": "01K2NF1E6282CXRAZC0G2PANBT",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9V31X3TAG68MGR7M6P0Z",
+          "tcpId": "01K2NF1E627TWJVA0M0ZXJR7HQ",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9VED74RJMNBNXMARQVVQ",
+          "tcpId": "01K2NF1E62Y8F42RTG2RVC4DWJ",
+          "tcp": "1U",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9VT75ZSCV2P827DMFD9F",
+          "tcpId": "01K2NF1E6243SS3838KW65ZAT0",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9W69AJRWD9XNQ5Q06VMN",
+          "tcpId": "01K2NF1E62CNT4CKBSN46DTTMJ",
+          "tcp": "1X",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K9WN93X9VZPMJWN3FK0ZX",
+          "tcpId": "01K2NF1E62P40XTWZWGWC3XF8C",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KAYDWK4107T1ZJN9MFYNR",
+          "tcpId": "01K2NF1E62E2YQ5BX55W5XKTH7",
+          "tcp": "2N",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYKQJ1MTPTF5JDW9BATRSYFH",
+      "airportId": "CLE",
+      "volumeId": "C4R",
+      "name": "CLE 24R",
+      "runwayThreshold": {
+        "lat": 41.41583333,
+        "lon": -81.84833333
+      },
+      "ceiling": 6300,
+      "floor": -9900,
+      "magneticHeading": 238,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 60762,
+      "widthRight": 60762,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYKQRZR2KJ00W3SJMAAQ5283",
+          "entry": "V2R",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JYKQS7VDA1FRXX4M91HFZGP1",
+          "entry": "V2L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKQSDP880NV6336BWCPGDBB",
+          "entry": "I4L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKQT2NHW16MX9BTFRS1CQ98",
+          "entry": "Z4L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKQTEQJ5CG774KBRXV1MFSN",
+          "entry": "Y4L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKR5F49FSBJ1A025HAE2Q7J",
+          "entry": "R10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ0K2YWZCW561VY7ZNP7VXPM",
+          "entry": "V10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ0K33R947417S1FB2FV5VW2",
+          "entry": "I28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ0K3GKCX7XZ4HDVSQVJ62B6",
+          "entry": "V28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9A3SD6SCN57DG2GXVRCWZE",
+          "entry": "R28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9ACP4Q7PSQGXDDEX246DTV",
+          "entry": "V10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9ACP8RQMFSHPYZ8CNHJNBM",
+          "entry": "R10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0K5YS89DH2R4QBB1F5JE1Z",
+          "tcpId": "01K2NF1E62M4WXATG1YMTAGBYR",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K5Z4RJ3C8ZKTXA1M2FPJW",
+          "tcpId": "01K2NF1E62CTHYXMVKBJVYXQZ0",
+          "tcp": "1D",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K5ZJ469QQQH4MB60YQZKV",
+          "tcpId": "01K2NF1E62ZKMZFEF24SVZZRSR",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K60176JDQFDQCJXC3GV7R",
+          "tcpId": "01K2NF1E62ATEWV6SC0M00EDYN",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K60E2ZCHQY968RH76B4XD",
+          "tcpId": "01K2NF1E62YF6PJ4TDW9VC6ZG7",
+          "tcp": "1H",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K60W47TBK65SPMFBWFG7M",
+          "tcpId": "01K2NF1E62QB2VCEKEF06NDD4S",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K61AF9PN9P3VPE24KV216",
+          "tcpId": "01K2NF1E620VC6P1Y66GDPQFWW",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K61QXSPXACXR8EDF0KNXA",
+          "tcpId": "01K2NF1E626981CTMPVJTFFRBP",
+          "tcp": "1P",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K6251CXR0RMPEXNA5GDF8",
+          "tcpId": "01K2NF1E62MTRDFESQES90530A",
+          "tcp": "1Q",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K62KQ3NHN6RE1QJ77HBXA",
+          "tcpId": "01K2NF1E62FYJZ579NQXCHT48S",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K630C608MNG8RP4V73KKH",
+          "tcpId": "01K2NF1E6282CXRAZC0G2PANBT",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K63FXP34J31582K6XC394",
+          "tcpId": "01K2NF1E627TWJVA0M0ZXJR7HQ",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K63V998VP8N0QHTCBK3MC",
+          "tcpId": "01K2NF1E62Y8F42RTG2RVC4DWJ",
+          "tcp": "1U",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K648YHKCWMN4R7SYB3SBV",
+          "tcpId": "01K2NF1E6243SS3838KW65ZAT0",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K64MW3DC9KSD75YA76A7Z",
+          "tcpId": "01K2NF1E62CNT4CKBSN46DTTMJ",
+          "tcp": "1X",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K654GMEVE2PGMRV7CRZN5",
+          "tcpId": "01K2NF1E62P40XTWZWGWC3XF8C",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0K65HFSY9ATS5YE8X3JM1D",
+          "tcpId": "01K2NF1E62E2YQ5BX55W5XKTH7",
+          "tcp": "2N",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYKR143BNCSRMGW9J4G834WK",
+      "airportId": "CLE",
+      "volumeId": "C6L",
+      "name": "CLE 06L",
+      "runwayThreshold": {
+        "lat": 41.39972222,
+        "lon": -81.87361111
+      },
+      "ceiling": 6300,
+      "floor": -9900,
+      "magneticHeading": 58,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 60762,
+      "widthRight": 60762,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYKR2XVVP7AWGWPADGSJQXSB",
+          "entry": "V6L",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JYKR365PRNKTXPY7YT5DJ83Z",
+          "entry": "V6R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKR3B21JDZGRKWTWC4S8GR8",
+          "entry": "I6R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKR3GQKKHWB8D7TN15XHQGN",
+          "entry": "Z6R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKR3QJ78Y47Y6CX5RJY3PS1",
+          "entry": "Y6R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9A4S5DH8ZR4GK53FYHCGBJ",
+          "entry": "V10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9A4VQMP6VDW6AZDKF0F4W8",
+          "entry": "R10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9A4YBMAS0H3GHXCS41BXPT",
+          "entry": "V28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9A4YGMNVV8093PTXEX8J47",
+          "entry": "I28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9A4YMS67V5A260AC7R5CFE",
+          "entry": "R28",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0KB9JR1QH7PNJRHC4WYBTC",
+          "tcpId": "01K2NF1E62M4WXATG1YMTAGBYR",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KB9ZBYR9B67Y7B2E782JF",
+          "tcpId": "01K2NF1E62CTHYXMVKBJVYXQZ0",
+          "tcp": "1D",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBAB4X6BC2GEQHYQZY2CG",
+          "tcpId": "01K2NF1E62ZKMZFEF24SVZZRSR",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBAN7BV7X6GTDB17Z17NJ",
+          "tcpId": "01K2NF1E62ATEWV6SC0M00EDYN",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBB283GJHWZ8GFNZHNTJV",
+          "tcpId": "01K2NF1E62YF6PJ4TDW9VC6ZG7",
+          "tcp": "1H",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBBHKKHC93HR55A8ACAFS",
+          "tcpId": "01K2NF1E62QB2VCEKEF06NDD4S",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBC0PVEZC16BHT7VB833B",
+          "tcpId": "01K2NF1E620VC6P1Y66GDPQFWW",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBCDX9Y8VC15HRJDAC6Z5",
+          "tcpId": "01K2NF1E626981CTMPVJTFFRBP",
+          "tcp": "1P",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBCV9J3VMTZR41WYM90VH",
+          "tcpId": "01K2NF1E62MTRDFESQES90530A",
+          "tcp": "1Q",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBDA4NCYH924H3JXNJB26",
+          "tcpId": "01K2NF1E62FYJZ579NQXCHT48S",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBDRN9DR9M8TPSY0JNBXG",
+          "tcpId": "01K2NF1E6282CXRAZC0G2PANBT",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBE7HQFG5N63EVK8K343A",
+          "tcpId": "01K2NF1E627TWJVA0M0ZXJR7HQ",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBENZ4XMJ76VWGHXARHJS",
+          "tcpId": "01K2NF1E62Y8F42RTG2RVC4DWJ",
+          "tcp": "1U",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBF3S58GRX3JB6CZQY9VM",
+          "tcpId": "01K2NF1E6243SS3838KW65ZAT0",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBFG7TGRPF3ZP3XBT2ND5",
+          "tcpId": "01K2NF1E62CNT4CKBSN46DTTMJ",
+          "tcp": "1X",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBFYNKT4YBXFRZ0XF9TP8",
+          "tcpId": "01K2NF1E62P40XTWZWGWC3XF8C",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KBGC3AQDFW8HJKW618BHE",
+          "tcpId": "01K2NF1E62E2YQ5BX55W5XKTH7",
+          "tcp": "2N",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYKR5QQRA2HK388WFSKNRBR3",
+      "airportId": "CLE",
+      "volumeId": "C6R",
+      "name": "CLE 06R",
+      "runwayThreshold": {
+        "lat": 41.40111111,
+        "lon": -81.86444444
+      },
+      "ceiling": 6300,
+      "floor": -9900,
+      "magneticHeading": 58,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 60762,
+      "widthRight": 60762,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYKR744MM3GTS764NBVG9K3F",
+          "entry": "V6R",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JYKR7A6Z4KB2833SEHACSR7F",
+          "entry": "V6L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKR7F11JW8N7MYDT07Z0S7F",
+          "entry": "I6L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKR7HX7FHVBZ62AC69P50FN",
+          "entry": "Z6L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JYKR7QAZW15DAXMDJYXYKY1B",
+          "entry": "Y6L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9ABCJ6BE2H2JK5XCRXTVGY",
+          "entry": "R10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9ABCPQXRRK6013CTQ967A0",
+          "entry": "V10",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0KD6K0JRMD0JSXETMWJE5H",
+          "tcpId": "01K2NF1E62M4WXATG1YMTAGBYR",
+          "tcp": "1A",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KD8XAJBT9B6Z8WC8NE821",
+          "tcpId": "01K2NF1E62AQD2T0F91BY5KER1",
+          "tcp": "1B",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KD9B3EK3E56QPB0ATA7D8",
+          "tcpId": "01K2NF1E62ZKMZFEF24SVZZRSR",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KD9RRXPKVX6EVTWE0R7FQ",
+          "tcpId": "01K2NF1E62ATEWV6SC0M00EDYN",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDA5X87QGK37AFS4DCEN9",
+          "tcpId": "01K2NF1E62YF6PJ4TDW9VC6ZG7",
+          "tcp": "1H",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDAJ3WYF1P1YWKS55XE1Z",
+          "tcpId": "01K2NF1E62QB2VCEKEF06NDD4S",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDAYYNW60FNQY9KVBZSTX",
+          "tcpId": "01K2NF1E620VC6P1Y66GDPQFWW",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDBBPQZWEAM4QX7N15EVR",
+          "tcpId": "01K2NF1E626981CTMPVJTFFRBP",
+          "tcp": "1P",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDBTX5F5ZRJAR8RC8CXQH",
+          "tcpId": "01K2NF1E62MTRDFESQES90530A",
+          "tcp": "1Q",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDCCQ9ZYCNBZC0AM36VM7",
+          "tcpId": "01K2NF1E62FYJZ579NQXCHT48S",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDCSGAX1HECSHJYAEJ5X2",
+          "tcpId": "01K2NF1E6282CXRAZC0G2PANBT",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDD75MC3EH8D2BSEJXF13",
+          "tcpId": "01K2NF1E627TWJVA0M0ZXJR7HQ",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDDK67SJA4YJ1QRTVKE6B",
+          "tcpId": "01K2NF1E62Y8F42RTG2RVC4DWJ",
+          "tcp": "1U",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDDZ5PETW2KV67RJZYQPW",
+          "tcpId": "01K2NF1E6243SS3838KW65ZAT0",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDEBS565619GHK6PJA2T1",
+          "tcpId": "01K2NF1E62CNT4CKBSN46DTTMJ",
+          "tcp": "1X",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDES2Q2J5Z54RN1P5PER7",
+          "tcpId": "01K2NF1E62P40XTWZWGWC3XF8C",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KDF6FVXWPEA3WFA6DYYBT",
+          "tcpId": "01K2NF1E62E2YQ5BX55W5XKTH7",
+          "tcp": "2N",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -706,6 +1642,7 @@
         319,
         404,
         406,
+        null,
         7,
         11,
         16,
@@ -720,6 +1657,7 @@
         314,
         null,
         405,
+        null,
         null
       ]
     },
@@ -791,10 +1729,12 @@
         null,
         null,
         null,
+        null,
         39,
         38,
         6,
         16,
+        null,
         null,
         null,
         null,
@@ -890,6 +1830,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ]
     },
@@ -946,6 +1888,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

@@ -136,6 +136,7 @@
       "name": "East Radar",
       "radioName": "Jackson Approach",
       "callsign": "JAN_E_APP",
+      "colorSet": "tcw",
       "areaId": "01GPCJ9ZBK2Y9N5339FR1SP7ST",
       "tcpId": "01K2NF1D19YQZBE6TQB9KFRRNG",
       "tcp": "1E",
@@ -152,6 +153,7 @@
       "name": "Final Radar",
       "radioName": "Jackson Approach",
       "callsign": "JAN_F_APP",
+      "colorSet": "tcw",
       "areaId": "01GPCJ9ZBK2Y9N5339FR1SP7ST",
       "tcpId": "01KMF3V735N8WJR09H4X6G0MRE",
       "tcp": "1F",
@@ -168,6 +170,7 @@
       "name": "Ground",
       "radioName": "Hawkins Ground",
       "callsign": "HKS_GND",
+      "colorSet": "tdw",
       "areaId": "01GWXHPM6S7H0AJ5RQCPH42H41",
       "tcpId": "01K2NF1D19R3TWNZXZB6A38JR0",
       "tcp": "1H",
@@ -184,6 +187,7 @@
       "name": "Local",
       "radioName": "Hawkins Tower",
       "callsign": "HKS_TWR",
+      "colorSet": "tdw",
       "areaId": "01GWXHPM6S7H0AJ5RQCPH42H41",
       "tcpId": "01K2NF1D19R3TWNZXZB6A38JR0",
       "tcp": "1H",
@@ -200,6 +204,7 @@
       "name": "Ground",
       "radioName": "Jackson Ground",
       "callsign": "JAN_GND",
+      "colorSet": "tdw",
       "areaId": "01JCYDRA1AWAF8JFK8X2VWW2JV",
       "tcpId": "01K2NF1D19AWPS8F068RPPJTSF",
       "tcp": "1T",
@@ -216,6 +221,7 @@
       "name": "Local",
       "radioName": "Jackson Tower",
       "callsign": "JAN_TWR",
+      "colorSet": "tdw",
       "areaId": "01JCYDRA1AWAF8JFK8X2VWW2JV",
       "tcpId": "01K2NF1D19AWPS8F068RPPJTSF",
       "tcp": "1T",
@@ -232,6 +238,7 @@
       "name": "West Radar",
       "radioName": "Jackson Approach",
       "callsign": "JAN_W_APP",
+      "colorSet": "tcw",
       "areaId": "01GPCJ9ZBK2Y9N5339FR1SP7ST",
       "tcpId": "01K2NF1D19NZXFJ3G8RZJ4BCYK",
       "tcp": "1W",
@@ -241,6 +248,220 @@
       },
       "range": 150,
       "freq": 125.25
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01KMF49GNG8GH8B2GAQMCZ7M6N",
+      "airportId": "JAN",
+      "volumeId": "16L",
+      "name": "JAN RWY 16L",
+      "runwayThreshold": {
+        "lat": 32.32819425,
+        "lon": -90.07771
+      },
+      "ceiling": 12000,
+      "floor": 0,
+      "magneticHeading": 158,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30500,
+      "widthRight": 30500,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01KMF4TP78DFZCR2TW7Z5V29ES",
+          "entry": "16R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KMF4VCQ3WBCXW580RBJGB2ED",
+          "entry": "34L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KMF4VHV4R60WHSXKA242CSFN",
+          "entry": "34R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KMF4VR1G209MJNRFBVT8XHGK",
+          "entry": "VF",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KMF51Q5WP3736AVZDNDSF1CK",
+          "tcpId": "01KMF3V735N8WJR09H4X6G0MRE",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01KMF52XSSK45KMECBTJESTK6Z",
+      "airportId": "JAN",
+      "volumeId": "16R",
+      "name": "JAN RWY 16R",
+      "runwayThreshold": {
+        "lat": 32.31582097,
+        "lon": -90.08438752
+      },
+      "ceiling": 12000,
+      "floor": 0,
+      "magneticHeading": 158,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30500,
+      "widthRight": 30500,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01KMF54TQG83R0YKSB5P581S5X",
+          "entry": "16L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KMF55B6H7HCJD09Z61KSSWJS",
+          "entry": "34L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KMF55FNK7NWPT2XX0W5SGTYD",
+          "entry": "34R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KMF55PYCPW0VZ6P3ERGCBBG3",
+          "entry": "VF",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KMF55YQW5GKZ3V33CFJEZMFC",
+          "tcpId": "01KMF3V735N8WJR09H4X6G0MRE",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01KMF56F8NVAWK5GETEJV37X68",
+      "airportId": "JAN",
+      "volumeId": "34L",
+      "name": "JAN RWY 34L",
+      "runwayThreshold": {
+        "lat": 32.29416177,
+        "lon": -90.07407527
+      },
+      "ceiling": 12000,
+      "floor": 0,
+      "magneticHeading": 338,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30500,
+      "widthRight": 30500,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01KMF57MRM6J1BD3SANAD58GAP",
+          "entry": "16L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KMF57YQJD27HZQ9JTPWBHY1T",
+          "entry": "16R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KMF583GNRY7TE84BV8JT13GP",
+          "entry": "34R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KMF587AEWQMFQ6NJCXJKGZMN",
+          "entry": "VF",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KMF58CQ93QSG6R2WAZWEJX1F",
+          "tcpId": "01KMF3V735N8WJR09H4X6G0MRE",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01KMF58SRSE7QBWNE73674CR46",
+      "airportId": "JAN",
+      "volumeId": "34R",
+      "name": "JAN RWY 34R",
+      "runwayThreshold": {
+        "lat": 32.30653463,
+        "lon": -90.06739644
+      },
+      "ceiling": 12000,
+      "floor": 0,
+      "magneticHeading": 338,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30500,
+      "widthRight": 30500,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01KMF5A0X9NQJB7P7BH0ME5M48",
+          "entry": "16L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KMF5A8GVE1Y6AB3QMC0X4574",
+          "entry": "16R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KMF5AFBADP80X62YQBFG8HKQ",
+          "entry": "34L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01KMF5AKM4895Q4YNTW2HGS279",
+          "entry": "VF",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01KMF5AQPGKBTBWT1PBRXZ2KTA",
+          "tcpId": "01KMF3V735N8WJR09H4X6G0MRE",
+          "tcp": "1F",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -315,8 +536,10 @@
         null,
         null,
         null,
+        null,
         8,
         10,
+        null,
         null,
         null,
         null,
@@ -385,6 +608,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

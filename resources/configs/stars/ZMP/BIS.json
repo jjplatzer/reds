@@ -63,6 +63,7 @@
       "name": "RE",
       "radioName": "Bismarck Approach",
       "callsign": "BIS_E_APP",
+      "colorSet": "tdw",
       "areaId": "01GFESBDB6AT759MZ30AXDHTC3",
       "tcpId": "01K2NF1D3K49VX3SECTX9RJJHJ",
       "tcp": "1E",
@@ -79,6 +80,7 @@
       "name": "GC",
       "radioName": "Bismarck Ground",
       "callsign": "BIS_GND",
+      "colorSet": "tdw",
       "areaId": "01GFESBDB6AT759MZ30AXDHTC3",
       "tcpId": "01K2NF1D3KAZ92Q7MGE6KSH74N",
       "tcp": "1G",
@@ -95,6 +97,7 @@
       "name": "LC",
       "radioName": "Bismarck Tower",
       "callsign": "BIS_TWR",
+      "colorSet": "tdw",
       "areaId": "01GFESBDB6AT759MZ30AXDHTC3",
       "tcpId": "01K2NF1D3KDSJCF2SA0WQ2GFN5",
       "tcp": "1T",
@@ -111,6 +114,7 @@
       "name": "RW",
       "radioName": "Bismarck Approach",
       "callsign": "BIS_W_APP",
+      "colorSet": "tdw",
       "areaId": "01GFESBDB6AT759MZ30AXDHTC3",
       "tcpId": "01K2NF1D3KYDFT0RN2SWMY5CH1",
       "tcp": "1W",
@@ -120,6 +124,196 @@
       },
       "range": 150,
       "freq": 124.8
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYF6DJZF58TAAPZXHVE1JRQ3",
+      "airportId": "BIS",
+      "volumeId": "03",
+      "name": "BIS 03 ATPA",
+      "runwayThreshold": {
+        "lat": 46.7625,
+        "lon": -100.7483333
+      },
+      "ceiling": 12000,
+      "floor": 0,
+      "magneticHeading": 32,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYF6FDVDVV8CBV8W8SYPSWMP",
+          "entry": "X",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYF6FGK3QNARWZX6XM3T1J6Q",
+          "tcpId": "01K2NF1D3K49VX3SECTX9RJJHJ",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF6FK9JK29CEDCRQHPTSGD2",
+          "tcpId": "01K2NF1D3KYDFT0RN2SWMY5CH1",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF6FNEYD5V4VXV464N1YJQC",
+          "tcpId": "01K2NF1D3KDSJCF2SA0WQ2GFN5",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYF68PDFXGRF7KDGEXG7V9HM",
+      "airportId": "BIS",
+      "volumeId": "13",
+      "name": "BIS 13 ATPA",
+      "runwayThreshold": {
+        "lat": 46.78388889,
+        "lon": -100.7616667
+      },
+      "ceiling": 12000,
+      "floor": 0,
+      "magneticHeading": 131,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYF6CP9WP77S5ZQDY6RRTGDS",
+          "entry": "X",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYF6D2BE3SJQNNF5BTVY3HHF",
+          "tcpId": "01K2NF1D3K49VX3SECTX9RJJHJ",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF6D8K545GFN5A1TA5F09YC",
+          "tcpId": "01K2NF1D3KYDFT0RN2SWMY5CH1",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF6DA8J37P7V2F6N8HT29RH",
+          "tcpId": "01K2NF1D3KDSJCF2SA0WQ2GFN5",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYF6FT80Z930RDCPMYZ1H7B3",
+      "airportId": "BIS",
+      "volumeId": "21",
+      "name": "BIS 21 ATPA",
+      "runwayThreshold": {
+        "lat": 46.77666667,
+        "lon": -100.7319444
+      },
+      "ceiling": 12000,
+      "floor": 0,
+      "magneticHeading": 212,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYF6GS1SDNXS4AV54YV99YR6",
+          "entry": "X",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYF6GY1NBGTRV2ATGRH4TDY4",
+          "tcpId": "01K2NF1D3K49VX3SECTX9RJJHJ",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF6H12HFHZDW2WGEZ43Z57Q",
+          "tcpId": "01K2NF1D3KYDFT0RN2SWMY5CH1",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF6H304BQGRV3KGYJX9A1ES",
+          "tcpId": "01K2NF1D3KDSJCF2SA0WQ2GFN5",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYF62QK85XV8PNNGPFX3VAND",
+      "airportId": "BIS",
+      "volumeId": "31",
+      "name": "BIS 31 ATPA",
+      "runwayThreshold": {
+        "lat": 46.766111,
+        "lon": -100.738056
+      },
+      "ceiling": 12000,
+      "floor": 0,
+      "magneticHeading": 311,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30000,
+      "widthRight": 30000,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYF679JTZ0SN45KHN85W7W3Z",
+          "entry": "X",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYF67ZB54FPBVPW751RHWWCV",
+          "tcpId": "01K2NF1D3K49VX3SECTX9RJJHJ",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF686W3CRX0THN2KCH2TPGZ",
+          "tcpId": "01K2NF1D3KYDFT0RN2SWMY5CH1",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYF68941T1DA8RS0WV5924W8",
+          "tcpId": "01K2NF1D3KDSJCF2SA0WQ2GFN5",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -194,10 +388,12 @@
         null,
         null,
         null,
+        null,
         2,
         4,
         6,
         8,
+        null,
         null,
         null,
         null,

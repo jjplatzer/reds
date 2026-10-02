@@ -85,6 +85,7 @@
       "name": "Satellite 2 Radar",
       "radioName": "Hulman Approach",
       "callsign": "HUF_G_APP",
+      "colorSet": "tcw",
       "areaId": "01GXYW04A82N1046V5Y94BE86V",
       "tcpId": "01K2NF1CN2C653R3ACD7X5GBRC",
       "tcp": "1G",
@@ -101,6 +102,7 @@
       "name": "Arrival Radar",
       "radioName": "Hulman Approach",
       "callsign": "HUF_H_APP",
+      "colorSet": "tcw",
       "areaId": "01GXYW04A82N1046V5Y94BE86V",
       "tcpId": "01K2NF1CN2EMVF6NX938PV94PW",
       "tcp": "1H",
@@ -117,6 +119,7 @@
       "name": "Satellite 1 Radar",
       "radioName": "Hulman Approach",
       "callsign": "HUF_Q_APP",
+      "colorSet": "tcw",
       "areaId": "01GXYW04A82N1046V5Y94BE86V",
       "tcpId": "01K2NF1CN24JQKMH7M6FGPX2TM",
       "tcp": "1Q",
@@ -133,6 +136,7 @@
       "name": "Ground Control",
       "radioName": "Hulman Ground",
       "callsign": "HUF_GND",
+      "colorSet": "tdw",
       "areaId": "01GZM7FW39A3KN2BX6W4K466JA",
       "tcpId": "01K2NF1CN22TSCNK3XXB802CCB",
       "tcp": "1T",
@@ -141,7 +145,7 @@
         "lon": -87.3035147
       },
       "range": 50,
-      "freq": 121.6
+      "freq": 121.9
     },
     {
       "id": "01GXRNA1G4EKZJHWHC83MP2VVR",
@@ -149,6 +153,7 @@
       "name": "Local Control",
       "radioName": "Hulman Tower",
       "callsign": "HUF_TWR",
+      "colorSet": "tdw",
       "areaId": "01GZM7FW39A3KN2BX6W4K466JA",
       "tcpId": "01K2NF1CN22TSCNK3XXB802CCB",
       "tcp": "1T",
@@ -158,6 +163,80 @@
       },
       "range": 50,
       "freq": 134.725
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01KM4HXVT5ABB2GG6M5ZXVH3B1",
+      "airportId": "HUF",
+      "volumeId": "H05",
+      "name": "ATPA HUF 05",
+      "runwayThreshold": {
+        "lat": 39.44027777777777,
+        "lon": -87.32305555555556
+      },
+      "ceiling": 6000,
+      "floor": -9900,
+      "magneticHeading": 48,
+      "maximumHeadingDeviation": 80,
+      "length": 15,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01KM4HZ1F9VHYRM3HQVE5N16B5",
+      "airportId": "HUF",
+      "volumeId": "H14",
+      "name": "ATPA HUF 14",
+      "runwayThreshold": {
+        "lat": 39.459722222222226,
+        "lon": -87.31027777777777
+      },
+      "ceiling": 6000,
+      "floor": -9900,
+      "magneticHeading": 135,
+      "maximumHeadingDeviation": 80,
+      "length": 15,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01KM4HZXR2N24VMPC00H9ZV0JH",
+      "airportId": "HUF",
+      "volumeId": "H23",
+      "name": "ATPA HUF 23",
+      "runwayThreshold": {
+        "lat": 39.45722222222223,
+        "lon": -87.29972222222221
+      },
+      "ceiling": 6000,
+      "floor": -9900,
+      "magneticHeading": 227,
+      "maximumHeadingDeviation": 80,
+      "length": 15,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false
+    },
+    {
+      "id": "01KM4J0PBM2HKWS77RA29CHX15",
+      "airportId": "HUF",
+      "volumeId": "H32",
+      "name": "ATPA HUF 32",
+      "runwayThreshold": {
+        "lat": 39.44555555555555,
+        "lon": -87.29222222222222
+      },
+      "ceiling": 6000,
+      "floor": -9900,
+      "magneticHeading": 315,
+      "maximumHeadingDeviation": 80,
+      "length": 15,
+      "widthLeft": 6076,
+      "widthRight": 6076,
+      "twoPointFiveApproachEnabled": false
     }
   ],
   "mapGroups": [
@@ -229,6 +308,7 @@
         null,
         null,
         null,
+        null,
         204,
         103,
         108,
@@ -239,6 +319,7 @@
         122,
         115,
         147,
+        null,
         null,
         null,
         null,

@@ -13,6 +13,61 @@ import (
 	"github.com/juliusplatzer/reds/renderer"
 )
 
+type specialConditionClass uint8
+
+const (
+	specialConditionNone specialConditionClass = iota
+	specialConditionPrimary
+	specialConditionSecondary
+)
+
+type specialConditionIndicator struct {
+	Abbreviation string
+	Class        specialConditionClass
+}
+
+// targetSpecialConditionIndicator maps the standard Mode 3/A special-condition
+// beacon codes to the STARS abbreviations in TI 6191.409 Rev. 30, Table 2-25.
+//
+//	7400 -> LL  UAS Lost Link              (primary / alert red)
+//	7500 -> HJ  Hijack Situation           (primary / alert red)
+//	7600 -> RF  Radio Communications Fail  (primary / alert red)
+//	7700 -> EM  General Emergency          (primary / alert red)
+//	7777 -> MI  Military Intercept         (secondary / caution yellow)
+//
+// LL=7400 is specified by JO 7110.65 for STARS/MEARTS. 7777 is reserved for
+// military interceptor operations; Table 2-25 defines MI as the corresponding
+// standard secondary Special Condition abbreviation. Facility-adapted SPC
+// beacon codes are intentionally not guessed here because REDS does not yet
+// carry that STARS adaptation data.
+func targetSpecialConditionIndicator(target *redsnet.TaisTarget) (specialConditionIndicator, bool) {
+	if target == nil {
+		return specialConditionIndicator{}, false
+	}
+
+	switch strings.TrimSpace(target.Track.ReportedBeaconCode) {
+	case "7400":
+		return specialConditionIndicator{Abbreviation: "LL", Class: specialConditionPrimary}, true
+	case "7500":
+		return specialConditionIndicator{Abbreviation: "HJ", Class: specialConditionPrimary}, true
+	case "7600":
+		return specialConditionIndicator{Abbreviation: "RF", Class: specialConditionPrimary}, true
+	case "7700":
+		return specialConditionIndicator{Abbreviation: "EM", Class: specialConditionPrimary}, true
+	case "7777":
+		return specialConditionIndicator{Abbreviation: "MI", Class: specialConditionSecondary}, true
+	default:
+		return specialConditionIndicator{}, false
+	}
+}
+
+// TI 6191.409 2.16.2 uses a half-second cadence while an SPC remains
+// unacknowledged. Once acknowledged, drawDatablocks keeps the abbreviation
+// continuously visible in its alert/caution color.
+func specialConditionBlinkVisible(now time.Time) bool {
+	return (now.UnixMilli()/500)&1 != 0
+}
+
 // targetDatablockType is the subset of the STARS data-block presentation that
 // REDS can determine directly from TAIS today. TI 6191.409 Rev. 30 section
 // 2.12 defines Full, Partial, and Limited data blocks. Single-track quick look
@@ -111,18 +166,39 @@ func (p *STARSPane) drawDatablocks(
 			Color: brightness.ScaleRGB(color).ToRGBA(),
 		}
 
+		spc, hasSPC := targetSpecialConditionIndicator(target)
+		spcAck, spcAcknowledged := p.targetSPCAcknowledgement(target)
+		spcStyle := style
+		if hasSPC {
+			spcColor := p.colors.AlertDatablock
+			if spc.Class == specialConditionSecondary && !(spcAcknowledged && spcAck.ForceAlertColor) {
+				spcColor = p.colors.CautionDatablock
+			}
+			spcStyle.Color = brightness.ScaleRGB(spcColor).ToRGBA()
+		}
+
 		switch dbType {
 		case targetDatablockFull:
-			// Figure 2-20: the leader is aligned with the ACID line. The
-			// omitted alert line remains conceptually above it; it does not need
-			// an empty raster row. Fields 3/4 and 5 on line 2 follow the STARS
-			// clock phase, while field 7 on line 3 carries assigned altitude.
+			// Figure 2-20 / section 2.16.2: line zero is immediately above
+			// the ACID line and carries Special Condition alert/caution text.
+			// The leader remains aligned with the ACID line.
+			if hasSPC && (spcAcknowledged || specialConditionBlinkVisible(now)) {
+				p.addDatablockLine(td, spc.Abbreviation, anchor, direction, -1, 0, lineHeight, spcStyle)
+			}
 			line1 := targetDatablockACID(target)
 			line2 := p.targetFullDatablockLine2(target, clockPhase)
-			line3 := targetFullDatablockLine3(target, direction)
+			field6, atpaStatus, line3Suffix := p.targetFullDatablockLine3Parts(target, direction, clockPhase)
 			p.addDatablockLine(td, line1, anchor, direction, 0, 0, lineHeight, style)
 			p.addDatablockLine(td, line2, anchor, direction, 1, 0, lineHeight, style)
-			p.addDatablockLine(td, line3, anchor, direction, 2, 0, lineHeight, style)
+
+			field6Style := style
+			switch atpaStatus {
+			case atpaStatusWarning:
+				field6Style.Color = brightness.ScaleRGB(p.colors.ATPAWarning).ToRGBA()
+			case atpaStatusAlert:
+				field6Style.Color = brightness.ScaleRGB(p.colors.ATPAAlert).ToRGBA()
+			}
+			p.addDatablockLineSegments(td, field6, line3Suffix, anchor, direction, 2, 0, lineHeight, field6Style, style)
 
 		case targetDatablockPartial:
 			// Figure 2-22: an ordinary unowned associated track does not show
@@ -134,12 +210,13 @@ func (p *STARSPane) drawDatablocks(
 
 		case targetDatablockLimited:
 			// Figure 2-23: the leader aligns with the altitude/ground-speed
-			// line. Section 6.13.9 controls whether the reported beacon code
-			// is normally shown in field 1 for all LDBs. Independently, 6.13.2
-			// requires slew + left trackball on one unassociated track to force
-			// that code into field 1 for five seconds. When neither condition
-			// applies, no empty raster row is reserved.
-			if p.currentPrefs().DisplayLDBBeaconCodes || p.targetLDBBeaconReadoutActive(target, now) {
+			// line. An active Special Condition occupies fixed line zero and,
+			// as in STARS/VICE, also expands the LDB so the current beacon code
+			// is visible in field 1 even when normal LDB beacon display is off.
+			if hasSPC && (spcAcknowledged || specialConditionBlinkVisible(now)) {
+				p.addDatablockLine(td, spc.Abbreviation, anchor, direction, -1, 1, lineHeight, spcStyle)
+			}
+			if hasSPC || p.currentPrefs().DisplayLDBBeaconCodes || p.targetLDBBeaconReadoutActive(target, now) {
 				line1 := normalizeBeaconCode(target.Track.ReportedBeaconCode)
 				p.addDatablockLine(td, line1, anchor, direction, 0, 1, lineHeight, style)
 			}
@@ -165,15 +242,8 @@ func altitudeWithinFilter(altitudeFeet int, filter [2]int) bool {
 // that STARS treats as special-purpose-code conditions. Facility-adapted SPCs
 // can be added when REDS carries that adaptation data.
 func targetHasAltitudeFilterSPC(target *redsnet.TaisTarget) bool {
-	if target == nil {
-		return false
-	}
-	switch strings.TrimSpace(target.Track.ReportedBeaconCode) {
-	case "7500", "7600", "7700":
-		return true
-	default:
-		return false
-	}
+	_, ok := targetSpecialConditionIndicator(target)
+	return ok
 }
 
 // targetAltitudeFilterAllowsDatablock mirrors VICE's placement of altitude
@@ -240,6 +310,13 @@ func (p *STARSPane) targetDatablockPresentation(target *redsnet.TaisTarget) (tar
 		}
 		return targetDatablockFull, color, ps.Brightness.OtherTracks
 	}
+	// TI 6191.409 2.16.2: an associated track with an active Special
+	// Condition is presented as an FDB so its line-zero warning is visible.
+	// If another controller owns it, retain the normal unowned FDB color and
+	// OTH brightness; only the SPC abbreviation itself is alert/caution color.
+	if _, ok := targetSpecialConditionIndicator(target); ok {
+		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
+	}
 	return targetDatablockPartial, p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 }
 
@@ -277,16 +354,73 @@ func (p *STARSPane) addDatablockLine(
 		return
 	}
 
-	width, _ := p.systemFont.MeasureText(text, style.Size)
 	x := anchor.X + 4
 	if datablockRightJustified(direction) {
-		x = anchor.X - 4 - float32(width)
+		// VICE/STARS right-justify by character cells, not by the visible
+		// bitmap bounds of the last glyph. This distinction matters when a
+		// field deliberately ends in a blank cell (for example FDB field 5):
+		// BitmapFont.MeasureText intentionally gives a trailing space no width,
+		// whereas STARS still reserves that cell.
+		x = anchor.X - 4 - p.datablockCellWidth(text, style.Size)
 	}
 
 	// REDS uses top-origin window coordinates. Place the center of anchorLine
 	// on the leader endpoint, then step later lines downward by one cell.
 	y := anchor.Y - float32(lineHeight)/2 + float32(lineIndex-anchorLine)*float32(lineHeight)
 	td.AddText(text, redsmath.Vec2{X: x, Y: y}, style)
+}
+
+func (p *STARSPane) addDatablockLineSegments(
+	td *renderer.TextDrawBuilder,
+	prefix, suffix string,
+	anchor redsmath.Vec2,
+	direction leaderLineDirection,
+	lineIndex int,
+	anchorLine int,
+	lineHeight int,
+	prefixStyle, suffixStyle renderer.TextStyle,
+) {
+	if p == nil || td == nil || (prefix == "" && suffix == "") {
+		return
+	}
+	full := prefix + suffix
+	x := anchor.X + 4
+	if datablockRightJustified(direction) {
+		// Match dbDrawLines in VICE: west-side FDB rows are justified by
+		// fixed character cells.  Field 6 + field 7 is nine cells in the
+		// normal ATPA/assigned-altitude case, the same width as FDB line 2,
+		// so the two rows share the same left edge.
+		x = anchor.X - 4 - p.datablockCellWidth(full, prefixStyle.Size)
+	}
+	y := anchor.Y - float32(lineHeight)/2 + float32(lineIndex-anchorLine)*float32(lineHeight)
+
+	if prefix != "" {
+		td.AddText(prefix, redsmath.Vec2{X: x, Y: y}, prefixStyle)
+		// Advance by STARS character cells so an intentional trailing blank
+		// in field 6 remains between ATPA in-trail distance and field 7.
+		// MeasureText() uses visible glyph bounds and therefore collapses a
+		// trailing space, which made e.g. "7.23 A050" render as "7.23A050".
+		x += p.datablockCellWidth(prefix, prefixStyle.Size)
+	}
+	if suffix != "" {
+		td.AddText(suffix, redsmath.Vec2{X: x, Y: y}, suffixStyle)
+	}
+}
+
+// datablockCellWidth returns the horizontal extent of text in STARS fixed
+// character cells. The bitmap font renderer measures visible glyph bounds, so
+// its MeasureText result intentionally omits the advance of a trailing blank.
+// Data blocks cannot do that: blank field positions are part of their layout.
+func (p *STARSPane) datablockCellWidth(text string, size int) float32 {
+	if p == nil || p.systemFont == nil || text == "" {
+		return 0
+	}
+	cellWidth, _ := p.systemFont.CharSize(size)
+	if cellWidth <= 0 {
+		width, _ := p.systemFont.MeasureText(text, size)
+		return float32(width)
+	}
+	return float32(len([]rune(text)) * cellWidth)
 }
 
 // VICE right-justifies datablocks for S/SW/W/NW leader orientations. Its
@@ -422,6 +556,11 @@ func (p *STARSPane) targetFullDatablockField34(target *redsnet.TaisTarget, clock
 	}
 
 	altitude := targetDatablockAltitude(target.Track.ReportedAltitude)
+	// An Unsupported FDB has no surveillance altitude. VICE/STARS therefore
+	// leaves the altitude slot empty unless a timeshared scratchpad occupies it.
+	if isRPOSUnsupportedTarget(target) {
+		altitude = ""
+	}
 	sp1 := targetPrimaryScratchpad(target)
 	sp2 := targetSecondaryScratchpad(target)
 	handoff := p.targetIntrafacilityHandoffIndicator(target)
@@ -499,7 +638,7 @@ func (p *STARSPane) targetFullDatablockLine2(target *redsnet.TaisTarget, clockPh
 	if target == nil {
 		return ""
 	}
-	return p.targetFullDatablockField34(target, clockPhase) + targetFullDatablockField5(target, clockPhase)
+	return p.targetFullDatablockField34(target, clockPhase) + p.targetFullDatablockField5(target, clockPhase)
 }
 
 // targetPartialDatablockLine1 formats Figure 2-22's single visible data row.
@@ -520,22 +659,80 @@ func targetPartialDatablockLine1(target *redsnet.TaisTarget, clockPhase int) str
 	return padDatablockField(left, 3) + " " + targetDatablockGroundSpeed(target.Track.VX, target.Track.VY)
 }
 
-// targetFullDatablockLine3 implements the assigned-altitude portion of Figure
-// 2-20 field 7. STARS prefixes the value with 'A' and displays hundreds of
-// feet. The leading columns reproduce VICE's field-6/field-7 placement: for
-// N-through-SE leaders field 7 is indented one extra character; for the
-// right-justified S-through-NW leaders it is not.
-func targetFullDatablockLine3(target *redsnet.TaisTarget, direction leaderLineDirection) string {
-	if target == nil || target.FlightPlan == nil || target.FlightPlan.AssignedAltitude == 0 {
-		return ""
+// targetFullDatablockATPAField implements Full Data Block field 6 ATPA data.
+// Figure 6-25 displays actual in-trail distance to hundredths of a nautical
+// mile; Warning distance is caution yellow and Alert distance is orange.
+// Sections 6.21.12/13 specify *TPA when Warning/Alert Cones are inhibited for
+// an individual track, while a TCW/TDW-wide inhibit removes *TPA.
+func (p *STARSPane) targetFullDatablockATPAField(target *redsnet.TaisTarget, clockPhase int) (string, atpaStatus) {
+	if p == nil || target == nil || target.FlightPlan == nil || clockPhase == 4 {
+		return "", atpaStatusUnset
+	}
+	key := targetDisplayStateKey(target)
+	atpa, ok := p.atpaTrackState(key)
+	if !ok || atpa.Ineligible {
+		return "", atpaStatusUnset
+	}
+	displayState := p.tpaState(key)
+
+	// 6.21.12: a selected-track inhibit is explicitly annunciated as *TPA,
+	// but only while the position-wide Warning/Alert function remains enabled.
+	if p.currentPrefs().DisplayATPAWarningAlertCones &&
+		displayState.DisplayATPAWarnAlert != nil && !*displayState.DisplayATPAWarnAlert {
+		return "*TPA", atpaStatusUnset
 	}
 
-	text := fmt.Sprintf("A%03d", target.FlightPlan.AssignedAltitude/100)
-	leading := 5 // field 6
-	if !datablockRightJustified(direction) {
-		leading++
+	if atpa.InTrailDistance <= 0 {
+		return "", atpaStatusUnset
 	}
-	return strings.Repeat(" ", leading) + text
+
+	showDistance := p.atpaInTrailVisible(displayState)
+	if atpa.Status == atpaStatusWarning || atpa.Status == atpaStatusAlert {
+		// 6.21.16/17: when a Warning or Alert Cone is actually displayed, the
+		// in-trail distance is displayed regardless of its normal inhibit state.
+		volume := p.atpaVolumeForState(atpa)
+		warningAlertAllowed := volume != nil && (p.atpaWarningAlertConeAllowed(target, volume) ||
+			(displayState.DisplayATPAWarnAlert != nil && *displayState.DisplayATPAWarnAlert))
+		if p.atpaWarnAlertVisible(displayState) && warningAlertAllowed {
+			showDistance = true
+		}
+	}
+	if !showDistance {
+		return "", atpaStatusUnset
+	}
+
+	if atpa.MinimumSeparation <= 0 {
+		return "NOWGT", atpaStatusUnset
+	}
+	return fmt.Sprintf("%.2f", atpa.InTrailDistance), atpa.Status
+}
+
+func (p *STARSPane) targetFullDatablockLine3Parts(target *redsnet.TaisTarget, direction leaderLineDirection, clockPhase int) (field6 string, field6Status atpaStatus, suffix string) {
+	if target == nil || target.FlightPlan == nil {
+		return "", atpaStatusUnset, ""
+	}
+
+	atpa, status := p.targetFullDatablockATPAField(target, clockPhase)
+	field6 = padDatablockField(atpa, 5)
+	if target.FlightPlan.AssignedAltitude == 0 {
+		if atpa == "" {
+			return "", status, ""
+		}
+		return strings.TrimRight(field6, " "), status, ""
+	}
+
+	assigned := fmt.Sprintf("A%03d", target.FlightPlan.AssignedAltitude/100)
+	if datablockRightJustified(direction) {
+		return field6, status, assigned
+	}
+	return field6, status, " " + assigned
+}
+
+// targetFullDatablockLine3 implements Figure 2-20 fields 6 and 7. Field 6 is
+// ATPA/beacon timeshared data; field 7 is assigned altitude.
+func (p *STARSPane) targetFullDatablockLine3(target *redsnet.TaisTarget, direction leaderLineDirection, clockPhase int) string {
+	field6, _, suffix := p.targetFullDatablockLine3Parts(target, direction, clockPhase)
+	return field6 + suffix
 }
 
 // TAIS flightPlan.type maps to the STARS flight-status field. Current SimpleXML
@@ -589,26 +786,55 @@ func normalizeTaisAirport(airport string) string {
 	return airport
 }
 
-func targetFullDatablockField5(target *redsnet.TaisTarget, clockPhase int) string {
+// padFullDatablockField5 preserves the five-character STARS Field 5 cell.
+// TI 6191.409 Rev. 30 Figure 2-20 lays the FDB out in fixed character
+// positions. CRC and VICE both retain one trailing blank after the normal
+// groundspeed/flight-rules/CWT presentation. That blank matters for
+// S/SW/W/NW data blocks because the complete line is right-justified.
+func padFullDatablockField5(value string) string {
+	return fmt.Sprintf("%-5s", value)
+}
+
+func (p *STARSPane) targetFullDatablockField5(target *redsnet.TaisTarget, clockPhase int) string {
 	if target == nil || target.FlightPlan == nil {
 		return ""
 	}
 
+	// An Unsupported FDB has no radar-derived groundspeed. STARS/VICE use
+	// 00 in the speed slot while retaining the flight-rules/category suffix.
+	if isRPOSUnsupportedTarget(target) && clockPhase == 1 {
+		return padFullDatablockField5("00" + targetDatablockFlightRulesIndicator(target.FlightPlan) +
+			targetDatablockCategory(target.FlightPlan))
+	}
+
+	actype := func() string {
+		value := strings.ToUpper(strings.TrimSpace(target.FlightPlan.ACType))
+		if target.FlightPlan.RNAV != 0 && value != "" {
+			value += "^"
+		}
+		return value
+	}
+
 	switch clockPhase {
 	case 1:
-		return targetDatablockGroundSpeed(target.Track.VX, target.Track.VY) +
+		return padFullDatablockField5(targetDatablockGroundSpeed(target.Track.VX, target.Track.VY) +
 			targetDatablockFlightRulesIndicator(target.FlightPlan) +
-			targetDatablockCategory(target.FlightPlan)
-	case 2, 3, 4:
-		actype := strings.ToUpper(strings.TrimSpace(target.FlightPlan.ACType))
-		if target.FlightPlan.RNAV != 0 && actype != "" {
-			actype += "^"
+			targetDatablockCategory(target.FlightPlan))
+	case 3:
+		// Figure 2-20 and 6.13.23/24: requested altitude timeshares in
+		// field 5 with groundspeed and aircraft type. REDS currently renders
+		// one-character position symbols, so the manual's one-character-TCP
+		// form applies: R followed by the requested altitude in hundreds of feet.
+		if p.displayRequestedAltitudeForTarget(target) {
+			return padFullDatablockField5(fmt.Sprintf("R%03d", target.FlightPlan.RequestedAltitude/100))
 		}
-		return actype
+		return padFullDatablockField5(actype())
+	case 2, 4:
+		return padFullDatablockField5(actype())
 	default:
-		return targetDatablockGroundSpeed(target.Track.VX, target.Track.VY) +
+		return padFullDatablockField5(targetDatablockGroundSpeed(target.Track.VX, target.Track.VY) +
 			targetDatablockFlightRulesIndicator(target.FlightPlan) +
-			targetDatablockCategory(target.FlightPlan)
+			targetDatablockCategory(target.FlightPlan))
 	}
 }
 

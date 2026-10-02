@@ -74,6 +74,7 @@
       "name": "San Angelo Radar",
       "radioName": "San Angelo Approach",
       "callsign": "SJT_APP",
+      "colorSet": "tcw",
       "areaId": "01H3DJMMV4JJDKNWZB9ZS33N0G",
       "tcpId": "01K2NF1D8TE6BYDTFW4C677DZ4",
       "tcp": "1J",
@@ -90,6 +91,7 @@
       "name": "Ground",
       "radioName": "Mathis Ground",
       "callsign": "SJT_GND",
+      "colorSet": "tdw",
       "areaId": "01H3DJMMV4JJDKNWZB9ZS33N0G",
       "tcpId": "01K2NF1D8TXFFBXBVS0ZQBBRRQ",
       "tcp": "1L",
@@ -106,6 +108,7 @@
       "name": "Local",
       "radioName": "Mathis Tower",
       "callsign": "SJT_TWR",
+      "colorSet": "tdw",
       "areaId": "01H3DJMMV4JJDKNWZB9ZS33N0G",
       "tcpId": "01K2NF1D8TXFFBXBVS0ZQBBRRQ",
       "tcp": "1L",
@@ -122,6 +125,7 @@
       "name": "North Radar",
       "radioName": "Midland Approach",
       "callsign": "MAF_N_APP",
+      "colorSet": "tcw",
       "areaId": "01H200KYA8J6HZRTRSE6DZ2SB5",
       "tcpId": "01K2NF1D8TGTKV8D4TC6BCM163",
       "tcp": "1N",
@@ -133,11 +137,46 @@
       "freq": 124.6
     },
     {
+      "id": "01H89T5SBXRTVP4GTERNE6QM7B",
+      "physicalFacility": "MAF",
+      "name": "Clearance",
+      "radioName": "Midland Clearance",
+      "callsign": "MAF_DEL",
+      "colorSet": "tcw",
+      "areaId": "01H200KYA8J6HZRTRSE6DZ2SB5",
+      "tcpId": "01K2NF1D8TGCQB83RBQ2C6XAF1",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 31.935707,
+        "lon": -102.196823
+      },
+      "range": 150,
+      "freq": 118.05
+    },
+    {
+      "id": "01H201FHYQAT8PGQ3F5V7ECHG6",
+      "physicalFacility": "MAF",
+      "name": "Ground",
+      "radioName": "Midland Ground",
+      "callsign": "MAF_GND",
+      "colorSet": "tcw",
+      "areaId": "01H200KYA8J6HZRTRSE6DZ2SB5",
+      "tcpId": "01K2NF1D8TGCQB83RBQ2C6XAF1",
+      "tcp": "1T",
+      "visualCenter": {
+        "lat": 31.935707,
+        "lon": -102.196823
+      },
+      "range": 150,
+      "freq": 121.9
+    },
+    {
       "id": "01H201EBHGFY31CM7GPY8AND8H",
       "physicalFacility": "MAF",
       "name": "Local",
       "radioName": "Midland Tower",
       "callsign": "MAF_TWR",
+      "colorSet": "tdw",
       "areaId": "01H200KYA8J6HZRTRSE6DZ2SB5",
       "tcpId": "01K2NF1D8TGCQB83RBQ2C6XAF1",
       "tcp": "1T",
@@ -233,6 +272,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ]
     },
@@ -290,6 +331,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

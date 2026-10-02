@@ -22,6 +22,7 @@ const (
 	zRangeRings       renderer.Z = -925
 	zCompass          renderer.Z = -850
 	zRangeBearingLine renderer.Z = -92
+	zTargetTPA        renderer.Z = -91
 )
 
 // STARSPane is the STARS TCW/TDW display surface. Facility adaptation feeds
@@ -90,6 +91,18 @@ type STARSPane struct {
 	// its reported beacon code into LDB field 1 for five seconds.
 	ldbBeaconReadoutUntil map[string]time.Time
 
+	// SPC acknowledgement is TCW/TDW-local unless the manual calls for
+	// system-wide propagation. The value records the active beacon code and any
+	// acknowledgement-specific color override.
+	spcAcknowledged       map[string]spcAcknowledgement
+	spcSystemAcknowledged map[string]spcSystemAcknowledgement
+
+	// Requested-altitude display state is local to this TCW/TDW. The global
+	// pointer is nil until the controller overrides the site default with RA;
+	// per-track entries implement RA/RAE/RAI followed by a slew.
+	requestedAltitudeDisplayOverride *bool
+	requestedAltitudeTrackOverrides  map[string]requestedAltitudeDisplayOverride
+
 	// rangeBearingLines are the operator-created *T Range Bearing Lines from
 	// TI 6191.409 6.7. wipRBL holds the first endpoint while STARS waits for
 	// the second endpoint. RBL state is intentionally transient display state,
@@ -103,6 +116,27 @@ type STARSPane struct {
 	// lets REDS reproduce the STARS handoff presentation without treating the
 	// receiving TCP as though it already owned the track.
 	taisOwnership map[string]taisOwnershipState
+
+	// tpaTracks stores manual TPA J-Ring/Cone state local to this TCW/TDW.
+	tpaTracks map[string]tpaTrackState
+
+	// atpaTracks is rebuilt from the current TAIS snapshot and adapted ATPA
+	// approach volumes. It holds pairing, minimum separation, and current
+	// Monitor/Warning/Alert state.
+	atpaTracks map[string]atpaTrackState
+
+	// atpaSite is shared by every pane for the same STARS facility. ATPA
+	// system/volume/2.5 enable state is supervisor-controlled site state, not
+	// a saved per-position preference (TI 6191.409 Rev. 30, 8.37-8.39).
+	atpaSite               *atpaSiteRuntimeState
+	atpaTrackSettingsReset uint64
+	atpaWarnAlertReset     uint64
+
+	// trackRepositions stores TI 6191.409 5.7.3 TRK RPOS presentation state.
+	// TAIS itself is read-only, so the local TCW/TDW snapshot is rewritten for
+	// display without mutating live feed state.
+	trackRepositions     map[string]trackRepositionState
+	rposPendingSourceKey string
 }
 
 // resolvedQuickLookTCP expands the one-character controller-symbol shorthand
@@ -317,6 +351,21 @@ func (p *STARSPane) ssaConsolidationCouplingLines() []string {
 	return []string{tcp + " CON: " + tcp}
 }
 
+// monitorColorsForPosition selects the monitor palette adapted for the
+// controller position. CRC emits lower-case "tcw", "tdw", and "dod" color
+// sets. DoD STARS uses a separate palette that REDS does not model yet, so keep
+// its existing TCW fallback until that palette is implemented.
+func monitorColorsForPosition(colorSet string) MonitorColors {
+	switch strings.ToLower(strings.TrimSpace(colorSet)) {
+	case "tdw":
+		return defaultTDWColors
+	case "", "tcw", "dod":
+		return defaultTCWColors
+	default:
+		return defaultTCWColors
+	}
+}
+
 // NewPane creates a STARS TCW pane for the selected controller position.
 func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPane, error) {
 	if logger == nil {
@@ -332,16 +381,19 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 		useFontSetB            = false
 		useFAAHFSTD010APalette = false
 	)
+
+	colors := monitorColorsForPosition(cfg.ControlPosition.ColorSet)
 	pane := &STARSPane{
 		logger:                 logger,
 		config:                 cfg,
 		prefs:                  newPreferences(cfg),
-		colors:                 defaultTCWColors,
+		colors:                 colors,
 		useFontSetB:            useFontSetB,
 		useFAAHFSTD010APalette: useFAAHFSTD010APalette,
 		systemFont:             newSystemFont(useFontSetB),
 		systemOutlineFont:      newSystemOutlineFont(useFontSetB),
 	}
+	pane.atpaSite = sharedATPASiteRuntimeState(cfg)
 	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()
 	// Validate the magnetic-adaptation resource once at startup. The actual
 	// value is selected from the tile containing the current display center in
@@ -401,9 +453,20 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	targets := p.targetSnapshot()
 	now := time.Now()
 	p.updateTaisOwnership(targets, now)
+	// ATPA is system processing derived from the authoritative surveillance
+	// positions, not from any local TRK RPOS display relocation.
+	p.updateATPAInTrail(targets)
+	// TRK RPOS is local display state layered on top of the authoritative TAIS
+	// snapshot. Apply it before pruning other display-keyed state so TPA and
+	// leader-direction state can follow a repositioned Full Data Block.
+	p.pruneTrackRepositions(targets)
+	targets = p.applyTrackRepositions(targets)
 	p.pruneSingleTrackQuickLook(targets)
 	p.pruneSingleTrackLeaderDirections(targets)
 	p.pruneLDBBeaconReadouts(targets, now)
+	p.pruneTPAState(targets)
+	p.pruneSPCAcknowledgements(targets)
+	p.pruneRequestedAltitudeDisplayOverrides(targets)
 	p.consumeMouseEvents(ctx, transforms, targets)
 
 	p.drawNexrad(ctx, zcb, transforms)
@@ -414,6 +477,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
 	p.drawPredictedTrackLines(ctx, zcb, transforms, targets)
 	p.drawRangeBearingLines(ctx, zcb, transforms, targets)
+	p.drawTPA(ctx, zcb, transforms, targets)
 	p.drawTargets(ctx, zcb, transforms, targets)
 	p.drawTargetLeaderLines(ctx, zcb, transforms, targets, now)
 	p.drawTargetPositionSymbols(ctx, zcb, transforms, targets, now)
@@ -424,6 +488,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
+	p.drawTowerLists(ctx, zcb, targets)
 	p.drawVideoMapsList(ctx, zcb)
 	p.applyCursor(ctx)
 	p.renderCursor(ctx, zcb)
@@ -522,6 +587,127 @@ func (p *STARSPane) consumeMouseEvents(
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
 
+	// TI 6191.409 Rev. 30, 4.4.2 PLACE CNTR. After the Main DCB
+	// selection, ordinary trackball/cursor motion pans the radar picture; the
+	// left trackball button fixes the new user-defined center and exits. Unlike
+	// right-button desktop panning, no mouse button is held while moving.
+	if p.commandMode == CommandModePlaceCenter {
+		if mouse.Delta.X != 0 || mouse.Delta.Y != 0 {
+			deltaLat, deltaLon := transforms.LatLonFromWindowV(mouse.Delta)
+			ps.UserCenter.Lat -= deltaLat
+			ps.UserCenter.Lon = normalizeLongitude(ps.UserCenter.Lon - deltaLon)
+			ps.UseUserCenter = true
+		}
+		if mouse.WasReleased(platform.MouseButtonLeft) {
+			p.setCommandMode(CommandModeNone)
+		}
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 5.7.3 TRK RPOS. F2 enters a repetitive
+	// two-designation command. The source may be selected by slew or identified
+	// by ACID/discrete beacon code; the destination is either an unassociated
+	// track or an empty scope position, which creates an Unsupported FDB.
+	if p.commandMode == CommandModeTrackReposition && mouse.WasReleased(platform.MouseButtonLeft) {
+		var source *redsnet.TaisTarget
+		if p.rposPendingSourceKey != "" {
+			for i := range targets.Targets {
+				if targetDisplayStateKey(&targets.Targets[i]) == p.rposPendingSourceKey {
+					source = &targets.Targets[i]
+					break
+				}
+			}
+			if source == nil {
+				p.rposPendingSourceKey = ""
+				p.commandResponse = ErrSTARSNoTrack.Error()
+				return
+			}
+		} else if strings.TrimSpace(p.commandInput) != "" {
+			var err error
+			source, err = p.rposTargetByReference(targets, p.commandInput)
+			if err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+		} else {
+			source = closestSlewTarget(targets, mouse.Pos, transforms)
+			if source == nil {
+				p.commandResponse = ErrSTARSNoTrack.Error()
+				return
+			}
+			if !p.rposSourceEligible(source) {
+				p.commandResponse = ErrSTARSIllegalTrack.Error()
+				return
+			}
+			p.rposPendingSourceKey = targetDisplayStateKey(source)
+			p.commandInput = ""
+			p.commandResponse = ""
+			return
+		}
+
+		if !p.rposSourceEligible(source) {
+			p.commandResponse = ErrSTARSIllegalTrack.Error()
+			return
+		}
+
+		destination := closestSlewTarget(targets, mouse.Pos, transforms)
+		if destination != nil {
+			if destination.FlightPlan != nil {
+				p.commandResponse = ErrSTARSIllegalTrack.Error()
+				return
+			}
+			if err := p.setTrackReposition(source, destination, configPoint{}); err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+		} else {
+			lat, lon := transforms.LatLonFromWindow(mouse.Pos)
+			if err := p.setTrackReposition(source, nil, configPoint{Lat: lat, Lon: lon}); err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+		}
+
+		// TRK RPOS is repetitive: clear the two designations but stay in RP mode.
+		p.rposPendingSourceKey = ""
+		p.commandInput = ""
+		p.commandResponse = ""
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 7.16: <MULTI FUNC>, <G>, slew + left
+	// trackball acknowledges an SPC on an unassociated track system-wide. This
+	// is distinct from the bare-slew 7.3 acknowledgement, which is local for an
+	// unassociated SPC.
+	if p.commandMode == CommandModeMultiFunc &&
+		strings.EqualFold(p.multiFuncPrefix+p.commandInput, "G") &&
+		mouse.WasReleased(platform.MouseButtonLeft) {
+		target := closestSlewTarget(targets, mouse.Pos, transforms)
+		if err := p.acknowledgeUnassociatedSPCSystemWide(target); err != nil {
+			p.commandResponse = err.Error()
+			return
+		}
+		p.resetCommand()
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 6.13.24: <MULTI FUNC>, <R>, <A>,
+	// optionally <E>/<I>, then slew + left trackball controls requested-altitude
+	// display for one Full data block. The keyboard-only all-FDB forms are
+	// registered in cmdtools.go.
+	if p.commandMode == CommandModeMultiFunc && mouse.WasReleased(platform.MouseButtonLeft) {
+		command := strings.ToUpper(p.multiFuncPrefix + p.commandInput)
+		if command == "RA" || command == "RAE" || command == "RAI" {
+			target := closestSlewTarget(targets, mouse.Pos, transforms)
+			if err := p.applyRequestedAltitudeDisplayCommand(target, command); err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+			p.resetCommand()
+			return
+		}
+	}
+
 	// TI 6191.409 Rev. 30, 6.13.1 / 6.13.17 Specify data block
 	// position for a single associated track. The implied form is simply
 	// <direction>, slew, left trackball. The explicit keyboard form is
@@ -559,6 +745,33 @@ func (p *STARSPane) consumeMouseEvents(
 			if !repetitive {
 				p.resetCommand()
 			}
+			return
+		}
+	}
+
+	// TI 6191.409 Rev. 30, 6.21.2-6.21.10 manual TPA commands plus
+	// single-track ATPA Warning/Alert, Monitor, and INTRAIL DIST overrides
+	// (6.21.12, 6.21.14, and 6.21.16).
+	// The keyboard portion remains in the Preview Area while the operator slews
+	// to a target and selects the left trackball button. These commands are
+	// repetitive, so a successful selection does not clear the entry.
+	if p.commandMode == CommandModeNone && mouse.WasReleased(platform.MouseButtonLeft) {
+		op, distance, sizeMode, recognized, err := parseTPAImpliedCommand(p.commandInput)
+		if recognized {
+			if err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+			target := closestSlewTarget(targets, mouse.Pos, transforms)
+			if target == nil {
+				p.commandResponse = ErrSTARSNoTrack.Error()
+				return
+			}
+			if err := p.applyTPAImpliedCommand(target, op, distance, sizeMode); err != nil {
+				p.commandResponse = err.Error()
+				return
+			}
+			p.commandResponse = ""
 			return
 		}
 	}
@@ -631,6 +844,43 @@ func (p *STARSPane) consumeMouseEvents(
 		return
 	}
 
+	// TI 6191.409 Rev. 30, 4.9.7 Move Tower list. P<id> remains in
+	// the Preview Area while the operator slews to the desired top-left corner;
+	// a left-trackball click moves the list and also shows it if it was hidden.
+	// Pressing ENTER instead is handled by cmdsetup.go as the 4.9.12
+	// hide/show command.
+	if p.commandMode == CommandModeMultiFunc {
+		command := strings.ToUpper(strings.TrimSpace(p.multiFuncPrefix + p.commandInput))
+		if strings.HasPrefix(command, "P") && len(command) >= 2 && len(command) <= 4 &&
+			!strings.ContainsAny(command, " \t\r\n") {
+			identifier := command[1:]
+			validID := true
+			for _, r := range identifier {
+				if (r < 'A' || r > 'Z') && (r < '0' || r > '9') {
+					validID = false
+					break
+				}
+			}
+			if validID && mouse.WasPressed(platform.MouseButtonLeft) {
+				idx, ok := p.towerListIndex(identifier)
+				if !ok {
+					p.commandResponse = ErrSTARSIllegalFunction.Error()
+					return
+				}
+				w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+				if w > 0 && h > 0 {
+					ps.TowerLists[idx].Position = [2]float32{
+						mouse.Pos.X / w,
+						mouse.Pos.Y / h,
+					}
+					ps.TowerLists[idx].Visible = true
+				}
+				p.resetCommand()
+				return
+			}
+		}
+	}
+
 	// TI 6191.409 Rev. 30, 6.1.2 Define user-specified range ring
 	// center. PLACE RR captures scope input until the operator clicks the
 	// desired point. The result is immediately displayed about that point and
@@ -661,6 +911,12 @@ func (p *STARSPane) consumeMouseEvents(
 			// retained until that controller slews/selects the track. Consume
 			// the click here so it cannot also become a single-track quick look.
 			if p.acknowledgeOutboundHandoff(target) {
+				return
+			}
+			// TI 6191.409 Rev. 30, 7.3: bare slew + left trackball
+			// acknowledges an unacknowledged SPC (among the alert types handled
+			// by the real system) and leaves its abbreviation steady.
+			if p.acknowledgeSPCBySlew(target) {
 				return
 			}
 			if p.targetSupportsSingleTrackQuickLook(target) {
@@ -986,11 +1242,13 @@ var defaultTDWColors = func() MonitorColors {
 	c.UnownedDatablock = starsWhite
 	c.TerminalProximityAlert = starsWhite
 
-	// The default map colors are yellow at TDWs. Brightness Category A Maps
-	// - 1 is also yellow; Brightness Category B Maps - 1 remains dim gray.
+	// CRC uses yellow as the TDW videomap base hue for both MPA and MPB; the
+	// A/B distinction changes brightness only. Keep the indexed defaults
+	// consistent as well even though videomap.go now reads ColorSet directly.
 	c.MapADefault = starsYellow
 	c.MapBDefault = starsYellow
 	c.MapA[0] = starsYellow
+	c.MapB[0] = starsYellow
 
 	// FMA mode is not available at TDWs (Table B-1 note 1).
 	c.FMARunway = renderer.RGB{}

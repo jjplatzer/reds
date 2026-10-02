@@ -978,6 +978,7 @@
       "name": "Ground",
       "radioName": "Danbury Ground",
       "callsign": "DXR_GND",
+      "colorSet": "tdw",
       "areaId": "01H5RTG0X0CMNB3N2B6ZW16ME6",
       "tcpId": "01K2NF1DSDDNM45XPP770NEN4P",
       "tcp": "14",
@@ -994,6 +995,7 @@
       "name": "Local",
       "radioName": "Danbury Tower",
       "callsign": "DXR_TWR",
+      "colorSet": "tdw",
       "areaId": "01H5RTG0X0CMNB3N2B6ZW16ME6",
       "tcpId": "01K2NF1DSDDNM45XPP770NEN4P",
       "tcp": "14",
@@ -1010,6 +1012,7 @@
       "name": "EMPYR",
       "radioName": "New York Approach",
       "callsign": "LGA_D_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V075MNB7D37NG5WT8TDYS",
       "tcpId": "01K2NF1DSDX0BDJGMYC5Q4KYKZ",
       "tcp": "1D",
@@ -1026,6 +1029,7 @@
       "name": "LaGuardia Final Vector",
       "radioName": "New York Approach",
       "callsign": "LGA_F_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V075MNB7D37NG5WT8TDYS",
       "tcpId": "01K2NF1DSDSSRRAZKAGNGTMCED",
       "tcp": "1F",
@@ -1042,6 +1046,7 @@
       "name": "Clearance Delivery",
       "radioName": "LaGuardia Clearance Delivery",
       "callsign": "LGA_DEL",
+      "colorSet": "tdw",
       "areaId": "01H2V5YZHBTGVVS3WP2B5JQ35S",
       "tcpId": "01K2NF1DSDKCB3DY05D38P58XJ",
       "tcp": "1I",
@@ -1058,6 +1063,7 @@
       "name": "Ground ",
       "radioName": "LaGuardia Ground",
       "callsign": "LGA_GND",
+      "colorSet": "tdw",
       "areaId": "01H2V5YZHBTGVVS3WP2B5JQ35S",
       "tcpId": "01K2NF1DSDKCB3DY05D38P58XJ",
       "tcp": "1I",
@@ -1074,6 +1080,7 @@
       "name": "Ground (Secondary)",
       "radioName": "LaGuardia Ground",
       "callsign": "LGA_GND",
+      "colorSet": "tdw",
       "areaId": "01H2V5YZHBTGVVS3WP2B5JQ35S",
       "tcpId": "01K2NF1DSDKCB3DY05D38P58XJ",
       "tcp": "1I",
@@ -1090,6 +1097,7 @@
       "name": "Local",
       "radioName": "LaGuardia Tower",
       "callsign": "LGA_TWR",
+      "colorSet": "tdw",
       "areaId": "01H2V5YZHBTGVVS3WP2B5JQ35S",
       "tcpId": "01K2NF1DSDKCB3DY05D38P58XJ",
       "tcp": "1I",
@@ -1106,6 +1114,7 @@
       "name": "LaGuardia Departure",
       "radioName": "New York Departure",
       "callsign": "LGA_DEP",
+      "colorSet": "tcw",
       "areaId": "01G90V075MNB7D37NG5WT8TDYS",
       "tcpId": "01K2NF1DSDRYFZJZ9WV1AP52TJ",
       "tcp": "1L",
@@ -1122,6 +1131,7 @@
       "name": "LaGuardia Departure (Combined)",
       "radioName": "New York Departure",
       "callsign": "NY_DEP",
+      "colorSet": "tcw",
       "areaId": "01GAPT17CK7V0PN20N966PJQZW",
       "tcpId": "01K2NF1DSDRYFZJZ9WV1AP52TJ",
       "tcp": "1L",
@@ -1138,6 +1148,7 @@
       "name": "Class B",
       "radioName": "LaGuardia Tower",
       "callsign": "LGA_B_TWR",
+      "colorSet": "tdw",
       "areaId": "01H2V5YZHBTGVVS3WP2B5JQ35S",
       "tcpId": "01K2NF1DSD7607F32M8BEZD74F",
       "tcp": "1Q",
@@ -1154,6 +1165,7 @@
       "name": "HAARP",
       "radioName": "New York Approach",
       "callsign": "LGA_V_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V075MNB7D37NG5WT8TDYS",
       "tcpId": "01K2NF1DSDWK03TGZGJZ87G1BC",
       "tcp": "1V",
@@ -1170,6 +1182,7 @@
       "name": "HAARP (Combined)",
       "radioName": "New York Approach",
       "callsign": "NY_APP",
+      "colorSet": "tcw",
       "areaId": "01GAPT17CK7V0PN20N966PJQZW",
       "tcpId": "01K2NF1DSDWK03TGZGJZ87G1BC",
       "tcp": "1V",
@@ -1186,6 +1199,7 @@
       "name": "Clearance Delivery",
       "radioName": "Westchester Clearance Delivery",
       "callsign": "HPN_DEL",
+      "colorSet": "tdw",
       "areaId": "01H2V69PFWAAR7PV8KPW1F439N",
       "tcpId": "01K2NF1DSDACTST8KMT2G93F19",
       "tcp": "1W",
@@ -1202,6 +1216,7 @@
       "name": "Ground",
       "radioName": "Westchester Ground",
       "callsign": "HPN_GND",
+      "colorSet": "tdw",
       "areaId": "01H2V69PFWAAR7PV8KPW1F439N",
       "tcpId": "01K2NF1DSDACTST8KMT2G93F19",
       "tcp": "1W",
@@ -1218,6 +1233,7 @@
       "name": "Local",
       "radioName": "Westchester Tower",
       "callsign": "HPN_TWR",
+      "colorSet": "tdw",
       "areaId": "01H2V69PFWAAR7PV8KPW1F439N",
       "tcpId": "01K2NF1DSDACTST8KMT2G93F19",
       "tcp": "1W",
@@ -1234,6 +1250,7 @@
       "name": "NOBBI",
       "radioName": "New York Approach",
       "callsign": "LGA_X_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V075MNB7D37NG5WT8TDYS",
       "tcpId": "01K2NF1DSDNDFAW55WY746CJHG",
       "tcp": "1X",
@@ -1250,6 +1267,7 @@
       "name": "NYACK",
       "radioName": "New York Departure",
       "callsign": "LGA_Y_DEP",
+      "colorSet": "tcw",
       "areaId": "01G90V075MNB7D37NG5WT8TDYS",
       "tcpId": "01K2NF1DSDHYCE0T9YWBCZ1YNC",
       "tcp": "1Y",
@@ -1266,6 +1284,7 @@
       "name": "CBA",
       "radioName": "Kennedy Tower",
       "callsign": "JFK_B_TWR",
+      "colorSet": "tdw",
       "areaId": "01H2V643AWWPXYN3NN5RRWM9G1",
       "tcpId": "01K2NF1DSDNGE8KXTKB9JRSNH4",
       "tcp": "27",
@@ -1282,6 +1301,7 @@
       "name": "Local 2",
       "radioName": "Kennedy Tower",
       "callsign": "JFK_TWR",
+      "colorSet": "tdw",
       "areaId": "01H2V643AWWPXYN3NN5RRWM9G1",
       "tcpId": "01K2NF1DSD23KJFQGDA413PHMM",
       "tcp": "29",
@@ -1298,6 +1318,7 @@
       "name": "Kennedy Final Vector",
       "radioName": "New York Approach",
       "callsign": "JFK_A_APP",
+      "colorSet": "tcw",
       "areaId": "01G90TWZ13C1NSNZEBKJ91GPTY",
       "tcpId": "01K2NF1DSDR4YEYNTMHQG6J41Q",
       "tcp": "2A",
@@ -1314,6 +1335,7 @@
       "name": "LENDY (Do Not Use)",
       "radioName": "New York Approach",
       "callsign": "JFK_E_APP",
+      "colorSet": "tcw",
       "areaId": "01HFJAB31C9DYVN54XZ1M7RA44",
       "tcpId": "01K8HBXBEAD5V5SW3ZA7DYGKCQ",
       "tcp": "2E",
@@ -1330,6 +1352,7 @@
       "name": "CAMRN",
       "radioName": "New York Approach",
       "callsign": "JFK_G_APP",
+      "colorSet": "tcw",
       "areaId": "01G90TWZ13C1NSNZEBKJ91GPTY",
       "tcpId": "01K2NF1DSDQWFXZW82HBQR3ZR2",
       "tcp": "2G",
@@ -1346,6 +1369,7 @@
       "name": "Kennedy Departure",
       "radioName": "New York Departure",
       "callsign": "JFK_DEP",
+      "colorSet": "tcw",
       "areaId": "01G90TWZ13C1NSNZEBKJ91GPTY",
       "tcpId": "01K2NF1DSDA2HNBZ5E5V7DQ2ZX",
       "tcp": "2J",
@@ -1362,6 +1386,7 @@
       "name": "Kennedy Departure (Combined)",
       "radioName": "New York Departure",
       "callsign": "NY_DEP",
+      "colorSet": "tcw",
       "areaId": "01GAPT17CK7V0PN20N966PJQZW",
       "tcpId": "01K2NF1DSDA2HNBZ5E5V7DQ2ZX",
       "tcp": "2J",
@@ -1378,6 +1403,7 @@
       "name": "ROBER",
       "radioName": "New York Approach",
       "callsign": "JFK_K_APP",
+      "colorSet": "tcw",
       "areaId": "01G90TWZ13C1NSNZEBKJ91GPTY",
       "tcpId": "01K2NF1DSDQRZ0XP52GPXN4ZR5",
       "tcp": "2K",
@@ -1394,6 +1420,7 @@
       "name": "ROBER (Combined)",
       "radioName": "New York Approach",
       "callsign": "NY_APP",
+      "colorSet": "tcw",
       "areaId": "01GAPT17CK7V0PN20N966PJQZW",
       "tcpId": "01K2NF1DSDQRZ0XP52GPXN4ZR5",
       "tcp": "2K",
@@ -1410,6 +1437,7 @@
       "name": "Kennedy Satellite",
       "radioName": "New York Approach",
       "callsign": "JFK_M_APP",
+      "colorSet": "tcw",
       "areaId": "01G90TWZ13C1NSNZEBKJ91GPTY",
       "tcpId": "01K2NF1DSDC6WAB52NBYKWEHQZ",
       "tcp": "2M",
@@ -1426,6 +1454,7 @@
       "name": "Clearance Delivery",
       "radioName": "Republic Clearance Delivery",
       "callsign": "FRG_DEL",
+      "colorSet": "tdw",
       "areaId": "01H9V8N99P5MDTNVB7XPMVR51Q",
       "tcpId": "01K2NF1DSDRR4K6PK0ZVCR792S",
       "tcp": "2P",
@@ -1442,6 +1471,7 @@
       "name": "Ground",
       "radioName": "Republic Ground",
       "callsign": "FRG_GND",
+      "colorSet": "tdw",
       "areaId": "01H9V8N99P5MDTNVB7XPMVR51Q",
       "tcpId": "01K2NF1DSDRR4K6PK0ZVCR792S",
       "tcp": "2P",
@@ -1458,6 +1488,7 @@
       "name": "Local",
       "radioName": "Republic Tower",
       "callsign": "FRG_TWR",
+      "colorSet": "tdw",
       "areaId": "01H9V8N99P5MDTNVB7XPMVR51Q",
       "tcpId": "01K2NF1DSDRR4K6PK0ZVCR792S",
       "tcp": "2P",
@@ -1474,6 +1505,7 @@
       "name": "Clearance Delivery",
       "radioName": "Kennedy Clearance",
       "callsign": "JFK_DEL",
+      "colorSet": "tdw",
       "areaId": "01H2V643AWWPXYN3NN5RRWM9G1",
       "tcpId": "01K2NF1DSD29JP9R7WAWAT5GTV",
       "tcp": "2W",
@@ -1490,6 +1522,7 @@
       "name": "Ground",
       "radioName": "Kennedy Ground",
       "callsign": "JFK_GND",
+      "colorSet": "tdw",
       "areaId": "01H2V643AWWPXYN3NN5RRWM9G1",
       "tcpId": "01K2NF1DSD29JP9R7WAWAT5GTV",
       "tcp": "2W",
@@ -1506,6 +1539,7 @@
       "name": "Ground (Secondary)",
       "radioName": "Kennedy Ground",
       "callsign": "JFK_GND",
+      "colorSet": "tdw",
       "areaId": "01H2V643AWWPXYN3NN5RRWM9G1",
       "tcpId": "01K2NF1DSD29JP9R7WAWAT5GTV",
       "tcp": "2W",
@@ -1522,6 +1556,7 @@
       "name": "Local 1",
       "radioName": "Kennedy Tower",
       "callsign": "JFK_TWR",
+      "colorSet": "tdw",
       "areaId": "01H2V643AWWPXYN3NN5RRWM9G1",
       "tcpId": "01K2NF1DSD29JP9R7WAWAT5GTV",
       "tcp": "2W",
@@ -1538,6 +1573,7 @@
       "name": "CIC",
       "radioName": "Kennedy Tower",
       "callsign": "JFK_TWR",
+      "colorSet": "tcw",
       "areaId": "01H2V643AWWPXYN3NN5RRWM9G1",
       "tcpId": "01K2NF1DSD29JP9R7WAWAT5GTV",
       "tcp": "2W",
@@ -1554,6 +1590,7 @@
       "name": "Clearance Delivery ",
       "radioName": "Long Island Clearance Delivery",
       "callsign": "ISP_DEL",
+      "colorSet": "tdw",
       "areaId": "01H9V9N0QZT6M7GB50SDXGKV0K",
       "tcpId": "01K2NF1DSD1MA88YRZT8XSQMCX",
       "tcp": "33",
@@ -1570,6 +1607,7 @@
       "name": "Ground",
       "radioName": "Long Island Ground",
       "callsign": "ISP_GND",
+      "colorSet": "tdw",
       "areaId": "01H9V9N0QZT6M7GB50SDXGKV0K",
       "tcpId": "01K2NF1DSD1MA88YRZT8XSQMCX",
       "tcp": "33",
@@ -1586,6 +1624,7 @@
       "name": "Local",
       "radioName": "Long Island Tower",
       "callsign": "ISP_TWR",
+      "colorSet": "tdw",
       "areaId": "01H9V9N0QZT6M7GB50SDXGKV0K",
       "tcpId": "01K2NF1DSD1MA88YRZT8XSQMCX",
       "tcp": "33",
@@ -1602,6 +1641,7 @@
       "name": "Ground",
       "radioName": "Suffolk Ground",
       "callsign": "FOK_GND",
+      "colorSet": "tdw",
       "areaId": "01H9V8ENFCR4NVHQ00BSGYB86K",
       "tcpId": "01K2NF1DSDV1MDMY0HTXXX24F6",
       "tcp": "34",
@@ -1618,6 +1658,7 @@
       "name": "Local",
       "radioName": "Suffolk Tower",
       "callsign": "FOK_TWR",
+      "colorSet": "tdw",
       "areaId": "01H9V8ENFCR4NVHQ00BSGYB86K",
       "tcpId": "01K2NF1DSDV1MDMY0HTXXX24F6",
       "tcp": "34",
@@ -1634,6 +1675,7 @@
       "name": "Ground",
       "radioName": "Bridgeport Ground",
       "callsign": "BDR_GND",
+      "colorSet": "tdw",
       "areaId": "01H9V7G25HNGQSGN4VE9S69MTM",
       "tcpId": "01K2NF1DSDA31YA6G880PC1MN9",
       "tcp": "35",
@@ -1650,6 +1692,7 @@
       "name": "Local",
       "radioName": "Bridgeport Tower",
       "callsign": "BDR_TWR",
+      "colorSet": "tdw",
       "areaId": "01H9V7G25HNGQSGN4VE9S69MTM",
       "tcpId": "01K2NF1DSDA31YA6G880PC1MN9",
       "tcp": "35",
@@ -1666,6 +1709,7 @@
       "name": "Ground",
       "radioName": "New Haven Ground",
       "callsign": "HVN_GND",
+      "colorSet": "tdw",
       "areaId": "01H9V9PQQTCH222JW2MMGF2N6M",
       "tcpId": "01K2NF1DSDT5N51JXT69CDDM89",
       "tcp": "37",
@@ -1682,6 +1726,7 @@
       "name": "Local",
       "radioName": "New Haven Tower",
       "callsign": "HVN_TWR",
+      "colorSet": "tdw",
       "areaId": "01H9V9PQQTCH222JW2MMGF2N6M",
       "tcpId": "01K2NF1DSDT5N51JXT69CDDM89",
       "tcp": "37",
@@ -1698,6 +1743,7 @@
       "name": "Ground",
       "radioName": "Oxford Ground",
       "callsign": "OXC_GND",
+      "colorSet": "tdw",
       "areaId": "01H9V9Z78ZJ8T0XR9PX458GNFQ",
       "tcpId": "01K2NF1DSDW661YTYKEVKWAPT4",
       "tcp": "39",
@@ -1714,6 +1760,7 @@
       "name": "Local",
       "radioName": "Oxford Tower",
       "callsign": "OXC_TWR",
+      "colorSet": "tdw",
       "areaId": "01H9V9Z78ZJ8T0XR9PX458GNFQ",
       "tcpId": "01K2NF1DSDW661YTYKEVKWAPT4",
       "tcp": "39",
@@ -1730,6 +1777,7 @@
       "name": "BEADS High",
       "radioName": "New York Approach",
       "callsign": "ISP_B_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V5G8SJA8WB4RM9N2RW22X",
       "tcpId": "01K2NF1DSDXNBKTG0058DKABXF",
       "tcp": "3B",
@@ -1746,6 +1794,7 @@
       "name": "Islip",
       "radioName": "New York Approach",
       "callsign": "ISP_H_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V5G8SJA8WB4RM9N2RW22X",
       "tcpId": "01K2NF1DSDJ9793KQ98M0YEVKC",
       "tcp": "3H",
@@ -1762,6 +1811,7 @@
       "name": "BEADS Low",
       "radioName": "New York Approach",
       "callsign": "ISP_I_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V5G8SJA8WB4RM9N2RW22X",
       "tcpId": "01K2NF1DSDA80GCGYKKC8C69E3",
       "tcp": "3I",
@@ -1778,6 +1828,7 @@
       "name": "Calverton",
       "radioName": "New York Approach",
       "callsign": "ISP_N_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V5G8SJA8WB4RM9N2RW22X",
       "tcpId": "01K2NF1DSDCVWW7MBB68ECKTX7",
       "tcp": "3N",
@@ -1794,6 +1845,7 @@
       "name": "VIKKY",
       "radioName": "New York Approach",
       "callsign": "ISP_O_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V5G8SJA8WB4RM9N2RW22X",
       "tcpId": "01K2NF1DSDVFRNB83TYZPS09J1",
       "tcp": "3O",
@@ -1810,6 +1862,7 @@
       "name": "SEALL",
       "radioName": "New York Approach",
       "callsign": "ISP_R_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V5G8SJA8WB4RM9N2RW22X",
       "tcpId": "01K2NF1DSDJ2FVPDS34HT991YH",
       "tcp": "3R",
@@ -1826,6 +1879,7 @@
       "name": "LOVES",
       "radioName": "New York Approach",
       "callsign": "ISP_Z_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V5G8SJA8WB4RM9N2RW22X",
       "tcpId": "01K2NF1DSD9RVCDKCJ9SDD061G",
       "tcp": "3Z",
@@ -1842,6 +1896,7 @@
       "name": "Clearance Delivery",
       "radioName": "Caldwell Clearance Delivery",
       "callsign": "CDW_DEL",
+      "colorSet": "tdw",
       "areaId": "01H5RTHH874AW7AG14E16NR8J5",
       "tcpId": "01K2NF1DSDT7A8ZWGWDQYW428B",
       "tcp": "41",
@@ -1858,6 +1913,7 @@
       "name": "Ground",
       "radioName": "Caldwell Ground",
       "callsign": "CDW_GND",
+      "colorSet": "tdw",
       "areaId": "01H5RTHH874AW7AG14E16NR8J5",
       "tcpId": "01K2NF1DSDT7A8ZWGWDQYW428B",
       "tcp": "41",
@@ -1874,6 +1930,7 @@
       "name": "Local",
       "radioName": "Caldwell Tower",
       "callsign": "CDW_TWR",
+      "colorSet": "tdw",
       "areaId": "01H5RTHH874AW7AG14E16NR8J5",
       "tcpId": "01K2NF1DSDT7A8ZWGWDQYW428B",
       "tcp": "41",
@@ -1890,6 +1947,7 @@
       "name": "Clearance Delivery",
       "radioName": "Morristown Clearance",
       "callsign": "MMU_DEL",
+      "colorSet": "tdw",
       "areaId": "01H9VA1B0WPYHHWWJCT4RVE5JD",
       "tcpId": "01K2NF1DSDTM3T79PHYXBME9TR",
       "tcp": "45",
@@ -1906,6 +1964,7 @@
       "name": "Ground",
       "radioName": "Morristown Ground",
       "callsign": "MMU_GND",
+      "colorSet": "tdw",
       "areaId": "01H9VA1B0WPYHHWWJCT4RVE5JD",
       "tcpId": "01K2NF1DSDTM3T79PHYXBME9TR",
       "tcp": "45",
@@ -1922,6 +1981,7 @@
       "name": "Local",
       "radioName": "Morristown Tower",
       "callsign": "MMU_TWR",
+      "colorSet": "tdw",
       "areaId": "01H9VA1B0WPYHHWWJCT4RVE5JD",
       "tcpId": "01K2NF1DSDTM3T79PHYXBME9TR",
       "tcp": "45",
@@ -1938,6 +1998,7 @@
       "name": "Newark North Arrival",
       "radioName": "Newark Approach",
       "callsign": "EWR_A_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V2ZRAJEHWM0YFNY2HHH9C",
       "tcpId": "01K2NF1DSDB1V7B0EH63FXGYWV",
       "tcp": "4A",
@@ -1954,6 +2015,7 @@
       "name": "Class B",
       "radioName": "Newark Tower",
       "callsign": "EWR_B_TWR",
+      "colorSet": "tdw",
       "areaId": "01H2V65ZY3RY61EM269H7KDRNZ",
       "tcpId": "01K2NF1DSDD0SJP5DPAPWCZJ34",
       "tcp": "4B",
@@ -1970,6 +2032,7 @@
       "name": "METRO",
       "radioName": "Newark Approach",
       "callsign": "EWR_H_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V2ZRAJEHWM0YFNY2HHH9C",
       "tcpId": "01K2NF1DSDXFF3X8A9CRECY9JQ",
       "tcp": "4H",
@@ -1986,6 +2049,7 @@
       "name": "Clearance Delivery",
       "radioName": "Teterboro Clearance Delivery ",
       "callsign": "TEB_DEL",
+      "colorSet": "tdw",
       "areaId": "01H2V685342AMJ7M1JYW8XNAX2",
       "tcpId": "01K2NF1DSDSN05WSJY5ZDD44C4",
       "tcp": "4J",
@@ -2002,6 +2066,7 @@
       "name": "Ground",
       "radioName": "Teterboro Ground",
       "callsign": "TEB_GND",
+      "colorSet": "tdw",
       "areaId": "01H2V685342AMJ7M1JYW8XNAX2",
       "tcpId": "01K2NF1DSDSN05WSJY5ZDD44C4",
       "tcp": "4J",
@@ -2018,6 +2083,7 @@
       "name": "Local",
       "radioName": "Teterboro Tower",
       "callsign": "TEB_TWR",
+      "colorSet": "tdw",
       "areaId": "01H2V685342AMJ7M1JYW8XNAX2",
       "tcpId": "01K2NF1DSDSN05WSJY5ZDD44C4",
       "tcp": "4J",
@@ -2034,6 +2100,7 @@
       "name": "Newark Final Vector 22",
       "radioName": "Newark Approach",
       "callsign": "EWR_Q_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V2ZRAJEHWM0YFNY2HHH9C",
       "tcpId": "01K2NF1DSDZ9ZVQ2WAC0JEBDPK",
       "tcp": "4M",
@@ -2050,6 +2117,7 @@
       "name": "Newark Departure",
       "radioName": "Newark Departure",
       "callsign": "EWR_DEP",
+      "colorSet": "tcw",
       "areaId": "01G90V2ZRAJEHWM0YFNY2HHH9C",
       "tcpId": "01K2NF1DSDJ2RJSYS57PWYFZK8",
       "tcp": "4N",
@@ -2066,6 +2134,7 @@
       "name": "Newark Departure (Combined)",
       "radioName": "New York Departure",
       "callsign": "NY_DEP",
+      "colorSet": "tcw",
       "areaId": "01GAPT17CK7V0PN20N966PJQZW",
       "tcpId": "01K2NF1DSDJ2RJSYS57PWYFZK8",
       "tcp": "4N",
@@ -2082,6 +2151,7 @@
       "name": "Yardley",
       "radioName": "Newark Approach",
       "callsign": "EWR_P_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V2ZRAJEHWM0YFNY2HHH9C",
       "tcpId": "01K2NF1DSD3A0SSTYJD6T5S4PM",
       "tcp": "4P",
@@ -2098,6 +2168,7 @@
       "name": "Yardley (Combined)",
       "radioName": "New York Approach",
       "callsign": "NY_APP",
+      "colorSet": "tcw",
       "areaId": "01GAPT17CK7V0PN20N966PJQZW",
       "tcpId": "01K2NF1DSD3A0SSTYJD6T5S4PM",
       "tcp": "4P",
@@ -2114,6 +2185,7 @@
       "name": "Newark Final Vector 4",
       "radioName": "Newark Approach",
       "callsign": "EWR_Q_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V2ZRAJEHWM0YFNY2HHH9C",
       "tcpId": "01K2NF1DSD1SV3DQW508QXDB34",
       "tcp": "4Q",
@@ -2130,6 +2202,7 @@
       "name": "ZEEBO",
       "radioName": "Newark Approach",
       "callsign": "EWR_S_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V2ZRAJEHWM0YFNY2HHH9C",
       "tcpId": "01K2NF1DSD2HRPKGQBP33M58AX",
       "tcp": "4S",
@@ -2146,6 +2219,7 @@
       "name": "MUGZY",
       "radioName": "Newark Approach",
       "callsign": "EWR_U_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V2ZRAJEHWM0YFNY2HHH9C",
       "tcpId": "01K2NF1DSDJ9SMZMPEDEWJT09E",
       "tcp": "4U",
@@ -2162,6 +2236,7 @@
       "name": "PENNS (Do Not Use)",
       "radioName": "New York Approach",
       "callsign": "EWR_W_APP",
+      "colorSet": "tcw",
       "areaId": "01HFJAB31C9DYVN54XZ1M7RA44",
       "tcpId": "01K2NF1DSD6PKEQ9CF088TXTKE",
       "tcp": "4W",
@@ -2178,6 +2253,7 @@
       "name": "Clearance Delivery",
       "radioName": "Newark Clearance Delivery",
       "callsign": "EWR_DEL",
+      "colorSet": "tdw",
       "areaId": "01H2V65ZY3RY61EM269H7KDRNZ",
       "tcpId": "01K2NF1DSDRFZ0SQTSA3MSZVE3",
       "tcp": "4Z",
@@ -2194,6 +2270,7 @@
       "name": "Ground",
       "radioName": "Newark Ground",
       "callsign": "EWR_GND",
+      "colorSet": "tdw",
       "areaId": "01H2V65ZY3RY61EM269H7KDRNZ",
       "tcpId": "01K2NF1DSDRFZ0SQTSA3MSZVE3",
       "tcp": "4Z",
@@ -2210,6 +2287,7 @@
       "name": "Local",
       "radioName": "Newark Tower",
       "callsign": "EWR_TWR",
+      "colorSet": "tdw",
       "areaId": "01H2V65ZY3RY61EM269H7KDRNZ",
       "tcpId": "01K2NF1DSDRFZ0SQTSA3MSZVE3",
       "tcp": "4Z",
@@ -2226,6 +2304,7 @@
       "name": "Liberty East",
       "radioName": "New York Departure",
       "callsign": "NY_LE_DEP",
+      "colorSet": "tcw",
       "areaId": "01G90V8644BH4VJVWFY4T9CK57",
       "tcpId": "01K2NF1DSD401AJ5K5TQX644D9",
       "tcp": "5E",
@@ -2242,6 +2321,7 @@
       "name": "Liberty Catskill",
       "radioName": "New York Approach",
       "callsign": "SWF_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V8644BH4VJVWFY4T9CK57",
       "tcpId": "01K2NF1DSD12TS1CH7CQ4EQAZS",
       "tcp": "5H",
@@ -2258,6 +2338,7 @@
       "name": "Ground",
       "radioName": "Stewart Ground",
       "callsign": "SWF_GND",
+      "colorSet": "tdw",
       "areaId": "01H9VEY3EE46E6GCFDNNM0TAKW",
       "tcpId": "01K2NF1DSDXP2X9M13YNBQ4Q08",
       "tcp": "5N",
@@ -2274,6 +2355,7 @@
       "name": "Local",
       "radioName": "Stewart Tower",
       "callsign": "SWF_TWR",
+      "colorSet": "tdw",
       "areaId": "01H9VEY3EE46E6GCFDNNM0TAKW",
       "tcpId": "01K2NF1DSDXP2X9M13YNBQ4Q08",
       "tcp": "5N",
@@ -2290,6 +2372,7 @@
       "name": "Ground",
       "radioName": "Dutchess County Ground",
       "callsign": "POU_GND",
+      "colorSet": "tdw",
       "areaId": "01H9VEW4CW4516D3K2WD1XVWXH",
       "tcpId": "01K2NF1DSD17FT846HC8PMMK8X",
       "tcp": "5P",
@@ -2306,6 +2389,7 @@
       "name": "Local",
       "radioName": "Dutchess County Tower",
       "callsign": "POU_TWR",
+      "colorSet": "tdw",
       "areaId": "01H9VEW4CW4516D3K2WD1XVWXH",
       "tcpId": "01K2NF1DSD17FT846HC8PMMK8X",
       "tcp": "5P",
@@ -2322,6 +2406,7 @@
       "name": "Liberty South",
       "radioName": "New York Departure",
       "callsign": "NY_LS_DEP",
+      "colorSet": "tcw",
       "areaId": "01G90V8644BH4VJVWFY4T9CK57",
       "tcpId": "01K2NF1DSD0NQ36PAYM9M42MB1",
       "tcp": "5S",
@@ -2338,6 +2423,7 @@
       "name": "Liberty North",
       "radioName": "New York Departure",
       "callsign": "NY_LN_DEP",
+      "colorSet": "tcw",
       "areaId": "01G90V8644BH4VJVWFY4T9CK57",
       "tcpId": "01K2NF1DSDTDWHPN3DXTYPA4G3",
       "tcp": "5T",
@@ -2354,6 +2440,7 @@
       "name": "Liberty West",
       "radioName": "New York Departure",
       "callsign": "NY_L_APP",
+      "colorSet": "tcw",
       "areaId": "01G90V8644BH4VJVWFY4T9CK57",
       "tcpId": "01K2NF1DSD6WXAEEQ2ZJWQHV5R",
       "tcp": "5W",
@@ -2370,6 +2457,7 @@
       "name": "Liberty West (Combined)",
       "radioName": "New York Departure",
       "callsign": "NY_L_APP",
+      "colorSet": "tcw",
       "areaId": "01GAPT17CK7V0PN20N966PJQZW",
       "tcpId": "01K2NF1DSD6WXAEEQ2ZJWQHV5R",
       "tcp": "5W",
@@ -2386,6 +2474,7 @@
       "name": "TMUAR",
       "radioName": "N90 TMU",
       "callsign": "NY_T_APP",
+      "colorSet": "tcw",
       "areaId": "01HFJAB31C9DYVN54XZ1M7RA44",
       "tcpId": "01K2NF1DSDJEB7S9NBYCRYWPWN",
       "tcp": "7A",
@@ -2402,6 +2491,7 @@
       "name": "TMUOM",
       "radioName": "N90 TMU",
       "callsign": "NY_T_APP",
+      "colorSet": "tcw",
       "areaId": "01HFJAB31C9DYVN54XZ1M7RA44",
       "tcpId": "01K2NF1DSD62JEWR42ZSQ8KM30",
       "tcp": "7M",
@@ -2418,6 +2508,7 @@
       "name": "Timelapse",
       "radioName": "N90 TMU",
       "callsign": "NY_T_APP",
+      "colorSet": "tcw",
       "areaId": "01HFJAB31C9DYVN54XZ1M7RA44",
       "tcpId": "01K2NF1DSDWQ73PY8ANDP2D2J0",
       "tcp": "7T",
@@ -2434,6 +2525,7 @@
       "name": "Guard",
       "radioName": "New York Guard",
       "callsign": "NY_EM_APP",
+      "colorSet": "tcw",
       "areaId": "01HFJAB31C9DYVN54XZ1M7RA44",
       "tcpId": "01K2NF1DSDS7ZM8D3FEVNBW4E8",
       "tcp": "9G",
@@ -2443,6 +2535,1493 @@
       },
       "range": 150,
       "freq": 121.5
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYF99JX57AMVVRC4JAB8WAK7",
+      "airportId": "EWR",
+      "volumeId": "EWR22",
+      "name": "ATPA EWR22",
+      "runwayThreshold": {
+        "lat": 40.69833333,
+        "lon": -74.16305556
+      },
+      "ceiling": 4500,
+      "floor": 100,
+      "magneticHeading": 219,
+      "maximumHeadingDeviation": 45,
+      "length": 17,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYFB1NPC6APJACWXXXJH2KB0",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFB0V078Z0CHN0VTM9CEGHR",
+          "tcpId": "01K2NF1DSDD0SJP5DPAPWCZJ34",
+          "tcp": "4B",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFB0VJCCC81XEPXQ8WK6EMB",
+          "tcpId": "01K2NF1DSD1SV3DQW508QXDB34",
+          "tcp": "4Q",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFB0WJ5Y73Q0SNNR1FGDBQ0",
+          "tcpId": "01K2NF1DSD6PKEQ9CF088TXTKE",
+          "tcp": "4W",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFB0Z910T28QDS8866T0MVX",
+          "tcpId": "01K2NF1DSDRFZ0SQTSA3MSZVE3",
+          "tcp": "4Z",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYFA1TXV0C964FH1SDH4NV4S",
+      "airportId": "EWR",
+      "volumeId": "EWR4",
+      "name": "ATPA EWR 4",
+      "runwayThreshold": {
+        "lat": 40.68083333,
+        "lon": -74.17388889
+      },
+      "ceiling": 4500,
+      "floor": 100,
+      "magneticHeading": 39,
+      "maximumHeadingDeviation": 45,
+      "length": 22,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYFBWN83V60T8ZD6ZAZ8K880",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBVZG69YBMJ55S9ZKNDN34",
+          "tcpId": "01K2NF1DSDD0SJP5DPAPWCZJ34",
+          "tcp": "4B",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBW0QXJX7P0V1ZB6306713",
+          "tcpId": "01K2NF1DSD1SV3DQW508QXDB34",
+          "tcp": "4Q",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBW2TSE7BVSS05TBNB51X2",
+          "tcpId": "01K2NF1DSD6PKEQ9CF088TXTKE",
+          "tcp": "4W",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBW3EF35BH1N2QKW7FAWKD",
+          "tcpId": "01K2NF1DSDRFZ0SQTSA3MSZVE3",
+          "tcp": "4Z",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9BTSWWPKSMJV9Q7FAM8A1",
+      "airportId": "HPN",
+      "volumeId": "HPN16",
+      "name": "ATPA HPN16",
+      "runwayThreshold": {
+        "lat": 41.07555556,
+        "lon": -73.71333333
+      },
+      "ceiling": 4000,
+      "floor": 100,
+      "magneticHeading": 162,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30385,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFB580WVWB3M68PR10V08YC",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFB3WZBEPMG2DKRNEN07ANY",
+          "tcpId": "01K2NF1DSDWK03TGZGJZ87G1BC",
+          "tcp": "1V",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFB3XHMQ5YVKKWG00DPD237",
+          "tcpId": "01K2NF1DSDACTST8KMT2G93F19",
+          "tcp": "1W",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFB3Y6C50S7VB78QPG1JJSA",
+          "tcpId": "01K2NF1DSDNDFAW55WY746CJHG",
+          "tcp": "1X",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFB3Z4FGNQV5PVJFP3K8AE8",
+          "tcpId": "01K2NF1DSDHYCE0T9YWBCZ1YNC",
+          "tcp": "1Y",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFB4002T9MEVHC894WB7KDP",
+          "tcpId": "01K2NF1DSDN60G6NSBG9EVKCXC",
+          "tcp": "17",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9E5T3FV94B6M4V0X3J068",
+      "airportId": "HPN",
+      "volumeId": "HPN34",
+      "name": "ATPA HPN34",
+      "runwayThreshold": {
+        "lat": 41.06,
+        "lon": -73.70138889
+      },
+      "ceiling": 3000,
+      "floor": 100,
+      "magneticHeading": 342,
+      "maximumHeadingDeviation": 90,
+      "length": 14,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFB8TPFBCP2H45FTKJ2S16C",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFB91MAB91HGGPD4QYXQWP3",
+          "tcpId": "01K2NF1DSDN60G6NSBG9EVKCXC",
+          "tcp": "17",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFB92F6C4TJWN96QPF8PT80",
+          "tcpId": "01K2NF1DSDWK03TGZGJZ87G1BC",
+          "tcp": "1V",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFB932TFF87TMJARCGBQTWQ",
+          "tcpId": "01K2NF1DSDACTST8KMT2G93F19",
+          "tcp": "1W",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFB93NQPJWQTYEADR0KV1HZ",
+          "tcpId": "01K2NF1DSDNDFAW55WY746CJHG",
+          "tcp": "1X",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFB94AE631WFRBTEEANKCGA",
+          "tcpId": "01K2NF1DSDHYCE0T9YWBCZ1YNC",
+          "tcp": "1Y",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9F5SF7TV3WYK9PA820GAZ",
+      "airportId": "ISP",
+      "volumeId": "ISP15",
+      "name": "ATPA ISP 15",
+      "runwayThreshold": {
+        "lat": 40.80222222,
+        "lon": -73.10722222
+      },
+      "ceiling": 8000,
+      "floor": 100,
+      "magneticHeading": 149,
+      "maximumHeadingDeviation": 90,
+      "length": 10,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFBA0Y67MEDEC5MSZACRXD2",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBAGS50G58F4HACPBC96M1",
+          "tcpId": "01K2NF1DSD1MA88YRZT8XSQMCX",
+          "tcp": "33",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBAH6C3G50YGQAERZ7207A",
+          "tcpId": "01K2NF1DSDT5N51JXT69CDDM89",
+          "tcp": "37",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9GJ3YZ54W106K6HQ5AEFQ",
+      "airportId": "ISP",
+      "volumeId": "ISP24",
+      "name": "ATPA ISP 24",
+      "runwayThreshold": {
+        "lat": 40.80222222,
+        "lon": -73.09444444
+      },
+      "ceiling": 8000,
+      "floor": 100,
+      "magneticHeading": 239,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFBAYFWTKDRTG0AAQZ26GGY",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBC3PA6PCMY27EVKERDB5J",
+          "tcpId": "01K2NF1DSD1MA88YRZT8XSQMCX",
+          "tcp": "33",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9AV4YNWV8M7BJQTZB4M29",
+      "airportId": "ISP",
+      "volumeId": "ISP33",
+      "name": "ATPA ISP 33",
+      "runwayThreshold": {
+        "lat": 40.79222222,
+        "lon": -73.09416667
+      },
+      "ceiling": 7000,
+      "floor": 100,
+      "magneticHeading": 329,
+      "maximumHeadingDeviation": 90,
+      "length": 10,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFB39M78YV54M0BS4XFYR4J",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFB2NN27D1ZA7XQWK3VCSEN",
+          "tcpId": "01K2NF1DSD1MA88YRZT8XSQMCX",
+          "tcp": "33",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFB2NYGZ61DK22R25Y3W2TV",
+          "tcpId": "01K2NF1DSDT5N51JXT69CDDM89",
+          "tcp": "37",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9HHBKYZFGXYFMVJQT8HNM",
+      "airportId": "ISP",
+      "volumeId": "ISP6",
+      "name": "ATPA ISP6",
+      "runwayThreshold": {
+        "lat": 40.78861111,
+        "lon": -73.1125
+      },
+      "ceiling": 3500,
+      "floor": 100,
+      "magneticHeading": 59,
+      "maximumHeadingDeviation": 90,
+      "length": 9,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFBCE8FTZ3FF4VBN0JQFKJY",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBD3CDTJG52J4QKB9Y3WQW",
+          "tcpId": "01K2NF1DSDT5N51JXT69CDDM89",
+          "tcp": "37",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9JSARVJNNCF4JXPT9VQ5P",
+      "airportId": "JFK",
+      "volumeId": "JK1",
+      "name": "ATPA JFK04L",
+      "runwayThreshold": {
+        "lat": 40.62194444,
+        "lon": -73.78583333
+      },
+      "ceiling": 5000,
+      "floor": 100,
+      "magneticHeading": 45,
+      "maximumHeadingDeviation": 90,
+      "length": 25,
+      "widthLeft": 12152,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFBG0QTKPH7V3DK4M6FGAF0",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JZ9BFNG376PJMJCRYS8YD4EN",
+          "entry": "4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9BFWQ1SR6CHPHMZZBEAJQP",
+          "entry": "I4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9BG03XBT03E7083RAJ6ZG4",
+          "entry": "V4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00RVJFT046WQR4X7R7B9P8F",
+          "entry": "L4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00RY7YXS2H9V4CFJQHTJ36M",
+          "entry": "O4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00RYBXY4TGDP48Z8NX7ENJJ",
+          "entry": "R4R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBG6NCAK4S3Z9YZF5D3VM6",
+          "tcpId": "01K2NF1DSDNGE8KXTKB9JRSNH4",
+          "tcp": "27",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBGDGTFSMP4F4430XBEMC5",
+          "tcpId": "01K2NF1DSD23KJFQGDA413PHMM",
+          "tcp": "29",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBGEK206D5JBQX3ER36JYD",
+          "tcpId": "01K2NF1DSDR4YEYNTMHQG6J41Q",
+          "tcp": "2A",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBGFGM7RGEDQ1YPRYM9WGR",
+          "tcpId": "01K2NF1DSD29JP9R7WAWAT5GTV",
+          "tcp": "2W",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9ME9SXQCFMFD1RC2R6W5G",
+      "airportId": "JFK",
+      "volumeId": "JK2",
+      "name": "ATPA JFK04R",
+      "runwayThreshold": {
+        "lat": 40.62527778,
+        "lon": -73.77027778
+      },
+      "ceiling": 4500,
+      "floor": 100,
+      "magneticHeading": 45,
+      "maximumHeadingDeviation": 90,
+      "length": 25,
+      "widthLeft": 12152,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYFBH3Q7P6H50E1J0PS5BDJ7",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JZ9BG7ZR3H4Y9WSTJQKDQQVR",
+          "entry": "4L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9BGAP7K0R8YYTCB5GC4KSC",
+          "entry": "V4L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9BGEZ6K7VVS8Q339N9GD3W",
+          "entry": "I4L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00RK90ZWCN952ACVNCTDEF8",
+          "entry": "R4L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00RKDDY3H91G57QQ5BNDQRB",
+          "entry": "L4L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBHEK37WTGW6J0PH3JDBVE",
+          "tcpId": "01K2NF1DSDNGE8KXTKB9JRSNH4",
+          "tcp": "27",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBHF6NQZV4Z8XM0G8PBWTV",
+          "tcpId": "01K2NF1DSD23KJFQGDA413PHMM",
+          "tcp": "29",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBHFX4T0G8EWFF1H7QD4MD",
+          "tcpId": "01K2NF1DSDR4YEYNTMHQG6J41Q",
+          "tcp": "2A",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBHH707VCGCM5V02XCYYZX",
+          "tcpId": "01K2NF1DSD29JP9R7WAWAT5GTV",
+          "tcp": "2W",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9ZH6XW71A56AGS8XNDZMB",
+      "airportId": "JFK",
+      "volumeId": "JK3",
+      "name": "ATPA JFK22L",
+      "runwayThreshold": {
+        "lat": 40.64527778,
+        "lon": -73.75472222
+      },
+      "ceiling": 4000,
+      "floor": 100,
+      "magneticHeading": 225,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYFBV8FD020BKBQ1BZRYHHTX",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JZ9BHBTPPHKH85EXTP4T2XF2",
+          "entry": "22R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9BHC2Q30QPRS25HM9G3373",
+          "entry": "I2R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9BHCEXY418700ZEVF6HRQT",
+          "entry": "V2R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SM6RKC3RB9MPYE4FZTW0J",
+          "entry": "L2R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SMBJ5HPTPXP18DASPCGW3",
+          "entry": "R2R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBTSCZBBW1R3GW0NV8NVK2",
+          "tcpId": "01K2NF1DSDNGE8KXTKB9JRSNH4",
+          "tcp": "27",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBTT1PAWMFA2MCKXPBHWHH",
+          "tcpId": "01K2NF1DSD23KJFQGDA413PHMM",
+          "tcp": "29",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBTTKDQRM1DB06K2X3DH82",
+          "tcpId": "01K2NF1DSDR4YEYNTMHQG6J41Q",
+          "tcp": "2A",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBTV4K3XBZVVM1FQFHQRRG",
+          "tcpId": "01K2NF1DSD29JP9R7WAWAT5GTV",
+          "tcp": "2W",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9NWT2TVYV1RXX6QWW3HM5",
+      "airportId": "JFK",
+      "volumeId": "JK4",
+      "name": "ATPA JFK22R",
+      "runwayThreshold": {
+        "lat": 40.6425,
+        "lon": -73.76972222
+      },
+      "ceiling": 5000,
+      "floor": 100,
+      "magneticHeading": 222,
+      "maximumHeadingDeviation": 90,
+      "length": 25,
+      "widthLeft": 12152,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYFBK5M1AZKKK7100Q61F7YJ",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JZ9BGTMJ0KE2XPH0SATK4PJH",
+          "entry": "22L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9BGYJ6FFDW22F83DXSRFAB",
+          "entry": "I2L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9BH29SF3TY1HFCEV1FE90H",
+          "entry": "V2L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SER7QKR9FV2XS18R2906X",
+          "entry": "L2L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SF5CPYT8RA5SXX9YZGPVK",
+          "entry": "X2L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SFA9MTGQP1F364VA97Q50",
+          "entry": "Y2L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SFEGYV49F9M6N36XJG88X",
+          "entry": "Z2L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SG2SP8KV5WCAS5JNRDYDM",
+          "entry": "B2L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBJF3TH5GVXY3B1FZKSAE6",
+          "tcpId": "01K2NF1DSDNGE8KXTKB9JRSNH4",
+          "tcp": "27",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBJFACQAD8PC8EMMJDDTM9",
+          "tcpId": "01K2NF1DSD23KJFQGDA413PHMM",
+          "tcp": "29",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBJFG9GB6KY7929YQ6JJ5P",
+          "tcpId": "01K2NF1DSDR4YEYNTMHQG6J41Q",
+          "tcp": "2A",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBJGEZ2CNF22S4BE50NSDB",
+          "tcpId": "01K2NF1DSD29JP9R7WAWAT5GTV",
+          "tcp": "2W",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9Q7YKSHDE1XVPKHSS1ZE0",
+      "airportId": "JFK",
+      "volumeId": "JK5",
+      "name": "ATPA JFK31L",
+      "runwayThreshold": {
+        "lat": 40.6325,
+        "lon": -73.78194444
+      },
+      "ceiling": 5000,
+      "floor": 100,
+      "magneticHeading": 315,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFBKH3BKY88G4PKJC5FZQSS",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JZ9BC9FYDP9JF3DN0RMJ33N5",
+          "entry": "31R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9BCGD0FZQ4FGQ7TQNZ36YB",
+          "entry": "I1R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9BCMYFGGKE3YH8MDXXPQBX",
+          "entry": "V1R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SSTKGFH89TF71F1CPQ6DX",
+          "entry": "L1R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00STJN63H5HJPZ19RFRK7QH",
+          "entry": "Y1R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00STRV7WVQCPTE84SGSWKHV",
+          "entry": "Z1R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBKVSESVK52R19H2PPYBXS",
+          "tcpId": "01K2NF1DSDNGE8KXTKB9JRSNH4",
+          "tcp": "27",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBKW6EFKGXSATXWXVR6QQV",
+          "tcpId": "01K2NF1DSD23KJFQGDA413PHMM",
+          "tcp": "29",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBKWQRCS29AEABV6E4FW1N",
+          "tcpId": "01K2NF1DSDR4YEYNTMHQG6J41Q",
+          "tcp": "2A",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBM0W0VJH2AJF5AQWFFCGG",
+          "tcpId": "01K2NF1DSD29JP9R7WAWAT5GTV",
+          "tcp": "2W",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9TQACJ6641R30YY3WNKYR",
+      "airportId": "JFK",
+      "volumeId": "JK6",
+      "name": "ATPA JFK31R",
+      "runwayThreshold": {
+        "lat": 40.64527778,
+        "lon": -73.7625
+      },
+      "ceiling": 5000,
+      "floor": 100,
+      "magneticHeading": 315,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFBNP116ZZANH4V80NDG2N2",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JZ9BDK8QZGD41GE72RNEEB9B",
+          "entry": "31L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9BDQBT58K538KN4ST2709P",
+          "entry": "I1L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ9BDTRKV0M7260FMWASQQ8G",
+          "entry": "V1L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SR73TFK5ZF3PH3A19RHGA",
+          "entry": "L1L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SRBJCTN6FTYVDGMT57RV3",
+          "entry": "O1L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SRXCYYQYHASFGQH2PGBAS",
+          "entry": "Y1L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SS19Z2G8A3YCAR967TY5J",
+          "entry": "Z1L",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBN82N60GSQYWTS95Z7GEM",
+          "tcpId": "01K2NF1DSDNGE8KXTKB9JRSNH4",
+          "tcp": "27",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBN8HNR82XX4P24TJGNSVW",
+          "tcpId": "01K2NF1DSD23KJFQGDA413PHMM",
+          "tcp": "29",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBN92Q5FQHHSC88381WNXJ",
+          "tcpId": "01K2NF1DSDR4YEYNTMHQG6J41Q",
+          "tcp": "2A",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBN9DS09MW8JX3WDTFQFHM",
+          "tcpId": "01K2NF1DSD29JP9R7WAWAT5GTV",
+          "tcp": "2W",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9WD42B7YV23P201VQ8GDJ",
+      "airportId": "JFK",
+      "volumeId": "JK7",
+      "name": "ATPA JFK13L",
+      "runwayThreshold": {
+        "lat": 40.65638889,
+        "lon": -73.7875
+      },
+      "ceiling": 5000,
+      "floor": 100,
+      "magneticHeading": 135,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYFBQ7V7SNMYHEDA5A3G5DN1",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01K00SB4CJ1CENJR67Y7GXKNJ4",
+          "entry": "O3R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SBQ1V3EKRE6DFG52ZGMF1",
+          "entry": "R3R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SBZ3Q2N8N3CHTCTA7BY4F",
+          "entry": "V3R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01K00SCCXNMCH2304Z4BYF0QHY",
+          "entry": "P1R",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBPPBV0NYEK00TJC65XCMF",
+          "tcpId": "01K2NF1DSDNGE8KXTKB9JRSNH4",
+          "tcp": "27",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBPPXHPAC6Q88TY41AFPWK",
+          "tcpId": "01K2NF1DSD23KJFQGDA413PHMM",
+          "tcp": "29",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBPQGS95JKK5ZW55ZKRVM5",
+          "tcpId": "01K2NF1DSDR4YEYNTMHQG6J41Q",
+          "tcp": "2A",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBPQVN9BDMJRHV1PEF7ZJC",
+          "tcpId": "01K2NF1DSD29JP9R7WAWAT5GTV",
+          "tcp": "2W",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF5SNB2CFVJZJXBEZP45JED",
+      "airportId": "LGA",
+      "volumeId": "LGA13",
+      "name": "ATPA LGA 13",
+      "runwayThreshold": {
+        "lat": 40.782222,
+        "lon": -73.878611
+      },
+      "ceiling": 3500,
+      "floor": 100,
+      "magneticHeading": 134,
+      "maximumHeadingDeviation": 75,
+      "length": 16,
+      "widthLeft": 30380,
+      "widthRight": 18228,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYFAGQJ443013J0TEWS0BNT5",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFA4MPZ51AHJJVNQCNY10AC",
+          "tcpId": "01K2NF1DSDSSRRAZKAGNGTMCED",
+          "tcp": "1F",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFA4WG7MHZQVJ795T3E04SF",
+          "tcpId": "01K2NF1DSDKCB3DY05D38P58XJ",
+          "tcp": "1I",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFA5E3JDWVBXR9062NSVGJ8",
+          "tcpId": "01K2NF1DSD7607F32M8BEZD74F",
+          "tcp": "1Q",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFA5NAWCSZT7ES6V0P57HR2",
+          "tcpId": "01K2NF1DSDNJZ5GN6VH318M8X2",
+          "tcp": "1T",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9YCSE206656EPBACDCPSJ",
+      "airportId": "LGA",
+      "volumeId": "LGA22",
+      "name": "ATPA LGA 22",
+      "runwayThreshold": {
+        "lat": 40.78555556,
+        "lon": -73.87055556
+      },
+      "ceiling": 6000,
+      "floor": 100,
+      "magneticHeading": 229,
+      "maximumHeadingDeviation": 90,
+      "length": 25,
+      "widthLeft": 37975,
+      "widthRight": 37975,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYFBRN76WTJKBC40QWHPAHVM",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBRT3SNW81RMJS5ZHHG26N",
+          "tcpId": "01K2NF1DSDSSRRAZKAGNGTMCED",
+          "tcp": "1F",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBSP6X7JYGXSW3SD0FA1XP",
+          "tcpId": "01K2NF1DSDKCB3DY05D38P58XJ",
+          "tcp": "1I",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBSS8XQJN7WEV78EE7Y4RA",
+          "tcpId": "01K2NF1DSD7607F32M8BEZD74F",
+          "tcp": "1Q",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBST5XHA8F4TSS21TCFGQD",
+          "tcpId": "01K2NF1DSDNJZ5GN6VH318M8X2",
+          "tcp": "1T",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF9XF076G4KKE669C0TDWGA",
+      "airportId": "LGA",
+      "volumeId": "LGA31",
+      "name": "ATPA LGA 31",
+      "runwayThreshold": {
+        "lat": 40.77194444,
+        "lon": -73.85694444
+      },
+      "ceiling": 3500,
+      "floor": 100,
+      "magneticHeading": 316,
+      "maximumHeadingDeviation": 90,
+      "length": 20,
+      "widthLeft": 15190,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYFBRAA4M5HWX0MRY7ZRGEX3",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFBQPQ4G1R4YZPVSX7AQSTX",
+          "tcpId": "01K2NF1DSDSSRRAZKAGNGTMCED",
+          "tcp": "1F",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBQQAPXTNSRAA1ZM0T6Q3D",
+          "tcpId": "01K2NF1DSDKCB3DY05D38P58XJ",
+          "tcp": "1I",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBQQZ5MV9T679XH97XNGZJ",
+          "tcpId": "01K2NF1DSD7607F32M8BEZD74F",
+          "tcp": "1Q",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFBQRJGFCGDFWKZT272GNYC",
+          "tcpId": "01K2NF1DSDNJZ5GN6VH318M8X2",
+          "tcp": "1T",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF98NETCZK1YJMVYD97QHYQ",
+      "airportId": "LGA",
+      "volumeId": "LGA4",
+      "name": "ATPA LGA 4",
+      "runwayThreshold": {
+        "lat": 40.76916667,
+        "lon": -73.88416667
+      },
+      "ceiling": 8000,
+      "floor": 100,
+      "magneticHeading": 44,
+      "maximumHeadingDeviation": 90,
+      "length": 30,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": true,
+      "scratchpads": [
+        {
+          "id": "01JYFAYV6J10Q7SYQEVMA95R1K",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFAYVS72WN523XFY89S8JJE",
+          "tcpId": "01K2NF1DSDSSRRAZKAGNGTMCED",
+          "tcp": "1F",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFAZGTQHXBCWXC836J31YZP",
+          "tcpId": "01K2NF1DSDKCB3DY05D38P58XJ",
+          "tcp": "1I",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFAZHQX6V6DHNRPS4F3JQ15",
+          "tcpId": "01K2NF1DSD7607F32M8BEZD74F",
+          "tcp": "1Q",
+          "coneType": "Alert"
+        },
+        {
+          "id": "01JYFAZJB3TAYYHND8ZR4385CY",
+          "tcpId": "01K2NF1DSDNJZ5GN6VH318M8X2",
+          "tcp": "1T",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF8NWA86Q1SHKRBGP4EHFV3",
+      "airportId": "POU",
+      "volumeId": "POU6",
+      "name": "POU 6",
+      "runwayThreshold": {
+        "lat": 41.62194444,
+        "lon": -73.89194444
+      },
+      "ceiling": 5000,
+      "floor": 100,
+      "magneticHeading": 64,
+      "maximumHeadingDeviation": 30,
+      "length": 15,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFAH4HTJ8W1GP7AE5J2XA87",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFA688BB458CSE5247V8JBM",
+          "tcpId": "01K2NF1DSD17FT846HC8PMMK8X",
+          "tcp": "5P",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF97921GATM3JMBZB1AJQDM",
+      "airportId": "SWF",
+      "volumeId": "SWF16",
+      "name": "ATPA SWF16",
+      "runwayThreshold": {
+        "lat": 41.51111111,
+        "lon": -74.10138889
+      },
+      "ceiling": 6000,
+      "floor": 100,
+      "magneticHeading": 163,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFAXWZSEX73PCZQ5GYDM423",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFAY9SB2RST37WZS93S400Y",
+          "tcpId": "01K2NF1DSDXP2X9M13YNBQ4Q08",
+          "tcp": "5N",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF8Q1XE129SQEJN9JNSQTZP",
+      "airportId": "SWF",
+      "volumeId": "SWF27",
+      "name": "ATPA SWF 27",
+      "runwayThreshold": {
+        "lat": 41.5075,
+        "lon": -74.08833333
+      },
+      "ceiling": 5000,
+      "floor": 100,
+      "magneticHeading": 272,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFAHEQG8VQRFBPRPNG1N65K",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFA9T2E61DH6ABKX02FFVHY",
+          "tcpId": "01K2NF1DSDXP2X9M13YNBQ4Q08",
+          "tcp": "5N",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF941VZHXKXGB2AWRPVH31M",
+      "airportId": "SWF",
+      "volumeId": "SWF34",
+      "name": "ATPA SWF34",
+      "runwayThreshold": {
+        "lat": 41.49694444,
+        "lon": -74.09027778
+      },
+      "ceiling": 6000,
+      "floor": 100,
+      "magneticHeading": 343,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFATMCW03B91Q0V3H5G4HKX",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFATR440MB6APTBMJHCSDJ1",
+          "tcpId": "01K2NF1DSDXP2X9M13YNBQ4Q08",
+          "tcp": "5N",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF8YHESTQJWWZ2W63QTVC77",
+      "airportId": "SWF",
+      "volumeId": "SWF9",
+      "name": "ATPA SWF 9",
+      "runwayThreshold": {
+        "lat": 41.50083333,
+        "lon": -74.13055556
+      },
+      "ceiling": 5000,
+      "floor": 100,
+      "magneticHeading": 92,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFAJ6ZWDHK027FC944QCAK6",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFAM056N1GNTM9N2NQ039YE",
+          "tcpId": "01K2NF1DSDXP2X9M13YNBQ4Q08",
+          "tcp": "5N",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF8ZPT7JZTDY83RW7MKWDJX",
+      "airportId": "TEB",
+      "volumeId": "TEB19",
+      "name": "ATPA TEB 19",
+      "runwayThreshold": {
+        "lat": 40.85777778,
+        "lon": -74.05888889
+      },
+      "ceiling": 3500,
+      "floor": 100,
+      "magneticHeading": 195,
+      "maximumHeadingDeviation": 45,
+      "length": 15,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFAKNRHDZ846H82YF0H4ART",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFA7CWJ48C3G5J5HGN9JSDG",
+          "tcpId": "01K2NF1DSDM5SB18N5FEV6ZYEN",
+          "tcp": "4I",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF924W25EKS6QA3707X0KCH",
+      "airportId": "TEB",
+      "volumeId": "TEB24",
+      "name": "ATPA TEB24",
+      "runwayThreshold": {
+        "lat": 40.85777778,
+        "lon": -74.05416667
+      },
+      "ceiling": 3500,
+      "floor": 100,
+      "magneticHeading": 231,
+      "maximumHeadingDeviation": 45,
+      "length": 15,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFARJNG0AHSBJAZEH59D6TK",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFAR1ZDW29SB2Y7HR2QF40C",
+          "tcpId": "01K2NF1DSDM5SB18N5FEV6ZYEN",
+          "tcp": "4I",
+          "coneType": "Alert"
+        }
+      ]
+    },
+    {
+      "id": "01JYF931GR524SCCQPC4YED1NQ",
+      "airportId": "TEB",
+      "volumeId": "TEB6",
+      "name": "ATPA TEB 06",
+      "runwayThreshold": {
+        "lat": 40.84666667,
+        "lon": -74.07027778
+      },
+      "ceiling": 3500,
+      "floor": 100,
+      "magneticHeading": 60,
+      "maximumHeadingDeviation": 45,
+      "length": 30,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JYFASJ661ZRJW5W64MKQTA21",
+          "entry": "VAP",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JYFASSMX1TCWBJXPQ05ARA4P",
+          "tcpId": "01K2NF1DSDM5SB18N5FEV6ZYEN",
+          "tcp": "4I",
+          "coneType": "Alert"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -2519,6 +4098,7 @@
         201,
         202,
         null,
+        null,
         211,
         846,
         null,
@@ -2533,6 +4113,7 @@
         200,
         203,
         204,
+        null,
         null
       ]
     },
@@ -2608,6 +4189,7 @@
         300,
         400,
         null,
+        null,
         204,
         202,
         205,
@@ -2622,6 +4204,7 @@
         501,
         500,
         100,
+        null,
         null
       ]
     },
@@ -2699,6 +4282,7 @@
         null,
         null,
         null,
+        null,
         304,
         305,
         322,
@@ -2706,6 +4290,7 @@
         851,
         870,
         803,
+        null,
         null,
         null,
         null,
@@ -2791,6 +4376,7 @@
         201,
         202,
         200,
+        null,
         846,
         851,
         870,
@@ -2805,6 +4391,7 @@
         100,
         203,
         204,
+        null,
         null
       ]
     },
@@ -2881,6 +4468,7 @@
         846,
         null,
         null,
+        null,
         803,
         201,
         202,
@@ -2894,6 +4482,7 @@
         null,
         851,
         870,
+        null,
         null
       ]
     },
@@ -2969,7 +4558,9 @@
         null,
         null,
         null,
+        null,
         846,
+        null,
         null,
         null,
         null,
@@ -3073,6 +4664,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ]
     },
@@ -3145,9 +4738,11 @@
         null,
         null,
         null,
+        null,
         613,
         849,
         803,
+        null,
         null,
         null,
         null,
@@ -3215,6 +4810,8 @@
         803
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,
@@ -3331,6 +4928,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ]
     },
@@ -3387,6 +4986,8 @@
         null
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,
@@ -3501,7 +5102,9 @@
         null,
         null,
         null,
-        null
+        null,
+        null,
+        969
       ]
     },
     {
@@ -3557,6 +5160,8 @@
         849
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

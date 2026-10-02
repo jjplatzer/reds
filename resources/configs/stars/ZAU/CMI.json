@@ -63,6 +63,7 @@
       "name": "East Approach",
       "radioName": "Champaign Approach",
       "callsign": "CMI_E_APP",
+      "colorSet": "tcw",
       "areaId": "01GT5453TNZP23T2730BXNSB4Q",
       "tcpId": "01K2NF1DXN8CJC2DQDPHXK1JD6",
       "tcp": "1E",
@@ -79,6 +80,7 @@
       "name": "Local",
       "radioName": "Champaign Tower",
       "callsign": "CMI_TWR",
+      "colorSet": "tdw",
       "areaId": "01GT5453TNZP23T2730BXNSB4Q",
       "tcpId": "01K2NF1DXNQ1K2BWXZ8ST88020",
       "tcp": "1T",
@@ -95,6 +97,7 @@
       "name": "West Approach",
       "radioName": "Champaign Approach",
       "callsign": "CMI_W_APP",
+      "colorSet": "tcw",
       "areaId": "01GT5453TNZP23T2730BXNSB4Q",
       "tcpId": "01K2NF1DXNJQ1D2Q80VYE8T5BH",
       "tcp": "1W",
@@ -104,6 +107,208 @@
       },
       "range": 100,
       "freq": 132.85
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JZPHJM6VJV6VCHB766662N4B",
+      "airportId": "CMI",
+      "volumeId": "14",
+      "name": "CMI 14",
+      "runwayThreshold": {
+        "lat": 40.0475,
+        "lon": -88.28583333
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 136,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 9114,
+      "widthRight": 9114,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZPHTJJWMD8YR8734QGFY384",
+          "tcpId": "01K2NF1DXN8CJC2DQDPHXK1JD6",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHTJQC8PMMY10524C4ZTB3",
+          "tcpId": "01K2NF1DXND9PRCJ0D1VTTEKYT",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHTJWCV147P7PCRYR46PKM",
+          "tcpId": "01K2NF1DXN0DFYRQSHWPD6HB8C",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHTK148TRAK0DA96Y7N3SE",
+          "tcpId": "01K2NF1DXNQ1K2BWXZ8ST88020",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHTK54KNXBHF9YZW4BZ3R5",
+          "tcpId": "01K2NF1DXNJQ1D2Q80VYE8T5BH",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZPHKSBV3BH4ZYH9F91KS8Z2",
+      "airportId": "CMI",
+      "volumeId": "22",
+      "name": "CMI 22",
+      "runwayThreshold": {
+        "lat": 40.04527778,
+        "lon": -88.27027778
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 221,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 9114,
+      "widthRight": 18228,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZPHTXGWVPRNVZKT3MVXRQS0",
+          "tcpId": "01K2NF1DXN8CJC2DQDPHXK1JD6",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHTXNCSV7GXHW9XVHDSGDD",
+          "tcpId": "01K2NF1DXND9PRCJ0D1VTTEKYT",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHTXT4FVTB3ZDSRK5QAHX7",
+          "tcpId": "01K2NF1DXN0DFYRQSHWPD6HB8C",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHTXYW505EYN4QSES4DTB2",
+          "tcpId": "01K2NF1DXNQ1K2BWXZ8ST88020",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHTY3CGSHAWB38SX67HKJN",
+          "tcpId": "01K2NF1DXNJQ1D2Q80VYE8T5BH",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZPHFASGR8A0C20RDYM4AJM5",
+      "airportId": "CMI",
+      "volumeId": "32",
+      "name": "CMI 32",
+      "runwayThreshold": {
+        "lat": 40.03138889,
+        "lon": -88.26555556
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 316,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 9114,
+      "widthRight": 9114,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZPHSFCCZB8GZWZ20KGNSPBZ",
+          "tcpId": "01K2NF1DXN8CJC2DQDPHXK1JD6",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHSFGMPTB3J6XQG4B3648G",
+          "tcpId": "01K2NF1DXND9PRCJ0D1VTTEKYT",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHSFPM5CCKXARYRE7TZVTW",
+          "tcpId": "01K2NF1DXN0DFYRQSHWPD6HB8C",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHSFTM6G8HESQMKBFVM3CR",
+          "tcpId": "01K2NF1DXNQ1K2BWXZ8ST88020",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHSG0CS6JAGBTG6W1WY16H",
+          "tcpId": "01K2NF1DXNJQ1D2Q80VYE8T5BH",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JZPHH4AN4JQ9G43VBTQPZHB0",
+      "airportId": "CMI",
+      "volumeId": "4",
+      "name": "CMI 4",
+      "runwayThreshold": {
+        "lat": 40.03166667,
+        "lon": -88.28555556
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 41,
+      "maximumHeadingDeviation": 90,
+      "length": 15,
+      "widthLeft": 21266,
+      "widthRight": 9114,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JZPHT8VMWS42M801RFTM9AMR",
+          "tcpId": "01K2NF1DXN8CJC2DQDPHXK1JD6",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHT96WQ0NN92JD93F8C4W3",
+          "tcpId": "01K2NF1DXND9PRCJ0D1VTTEKYT",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHT9BXFGB3K45CQV9AP0RF",
+          "tcpId": "01K2NF1DXN0DFYRQSHWPD6HB8C",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHT9HDAPNSXRQWYSCCE4HF",
+          "tcpId": "01K2NF1DXNQ1K2BWXZ8ST88020",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZPHT9PMZZ4JBDYRHG74TVA3",
+          "tcpId": "01K2NF1DXNJQ1D2Q80VYE8T5BH",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -164,6 +369,8 @@
       ],
       "submenuMapIds": [
         7,
+        null,
+        null,
         null,
         null,
         null,

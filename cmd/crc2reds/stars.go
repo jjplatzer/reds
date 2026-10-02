@@ -69,15 +69,50 @@ type crcSTARSFacility struct {
 }
 
 type crcSTARSConfiguration struct {
-	Areas       []crcSTARSArea     `json:"areas"`
-	VideoMapIDs []string           `json:"videoMapIds"`
-	MapGroups   []crcSTARSMapGroup `json:"mapGroups"`
-	TCPs        []crcSTARSTCP      `json:"tcps"`
+	Areas       []crcSTARSArea       `json:"areas"`
+	VideoMapIDs []string             `json:"videoMapIds"`
+	MapGroups   []crcSTARSMapGroup   `json:"mapGroups"`
+	TCPs        []crcSTARSTCP        `json:"tcps"`
+	ATPAVolumes []crcSTARSATPAVolume `json:"atpaVolumes"`
 }
 
 type crcSTARSMapGroup struct {
 	MapIDs []*int   `json:"mapIds"`
 	TCPs   []string `json:"tcps"`
+}
+
+type crcSTARSATPAVolume struct {
+	ID                           string                   `json:"id"`
+	AirportID                    string                   `json:"airportId"`
+	VolumeID                     string                   `json:"volumeId"`
+	Name                         string                   `json:"name"`
+	RunwayThreshold              json.RawMessage          `json:"runwayThreshold"`
+	Ceiling                      *int                     `json:"ceiling"`
+	Floor                        int                      `json:"floor"`
+	MagneticHeading              int                      `json:"magneticHeading"`
+	MaximumHeadingDeviation      *int                     `json:"maximumHeadingDeviation"`
+	Length                       *float64                 `json:"length"`
+	WidthLeft                    *int                     `json:"widthLeft"`
+	WidthRight                   *int                     `json:"widthRight"`
+	TwoPointFiveApproachDistance *float64                 `json:"twoPointFiveApproachDistance"`
+	TwoPointFiveApproachEnabled  bool                     `json:"twoPointFiveApproachEnabled"`
+	Scratchpads                  []crcSTARSATPAScratchpad `json:"scratchpads"`
+	TCPs                         []crcSTARSATPATCPDisplay `json:"tcps"`
+	ExcludedTCPIDs               []string                 `json:"excludedTcpIds"`
+	LeaderDirections             []json.RawMessage        `json:"leaderDirections"`
+}
+
+type crcSTARSATPAScratchpad struct {
+	ID               string          `json:"id"`
+	Entry            string          `json:"entry"`
+	ScratchPadNumber json.RawMessage `json:"scratchPadNumber"`
+	Type             json.RawMessage `json:"type"`
+}
+
+type crcSTARSATPATCPDisplay struct {
+	ID       string          `json:"id"`
+	TCPID    string          `json:"tcpId"`
+	ConeType json.RawMessage `json:"coneType"`
 }
 
 type crcSTARSArea struct {
@@ -98,8 +133,9 @@ type crcSTARSTCP struct {
 }
 
 type crcSTARSPositionConfiguration struct {
-	AreaID string `json:"areaId"`
-	TCPID  string `json:"tcpId"`
+	AreaID   string          `json:"areaId"`
+	ColorSet json.RawMessage `json:"colorSet"`
+	TCPID    string          `json:"tcpId"`
 }
 
 type crcSTARSPosition struct {
@@ -132,6 +168,7 @@ type redsSTARSControlPosition struct {
 	Name             string           `json:"name,omitempty"`
 	RadioName        string           `json:"radioName,omitempty"`
 	Callsign         string           `json:"callsign,omitempty"`
+	ColorSet         string           `json:"colorSet,omitempty"`
 	AreaID           string           `json:"areaId"`
 	TCPID            string           `json:"tcpId,omitempty"`
 	TCP              string           `json:"tcp,omitempty"`
@@ -168,6 +205,41 @@ type redsSTARSMapGroup struct {
 	SubmenuMapIDs []*int `json:"submenuMapIds"`
 }
 
+type redsSTARSATPAVolume struct {
+	ID                           string                    `json:"id"`
+	AirportID                    string                    `json:"airportId,omitempty"`
+	VolumeID                     string                    `json:"volumeId,omitempty"`
+	Name                         string                    `json:"name,omitempty"`
+	RunwayThreshold              *redsSTARSLatLon          `json:"runwayThreshold,omitempty"`
+	Ceiling                      int                       `json:"ceiling"`
+	Floor                        int                       `json:"floor"`
+	MagneticHeading              int                       `json:"magneticHeading"`
+	MaximumHeadingDeviation      int                       `json:"maximumHeadingDeviation"`
+	Length                       float64                   `json:"length"`
+	WidthLeft                    int                       `json:"widthLeft"`
+	WidthRight                   int                       `json:"widthRight"`
+	TwoPointFiveApproachDistance *float64                  `json:"twoPointFiveApproachDistance,omitempty"`
+	TwoPointFiveApproachEnabled  bool                      `json:"twoPointFiveApproachEnabled"`
+	Scratchpads                  []redsSTARSATPAScratchpad `json:"scratchpads,omitempty"`
+	TCPs                         []redsSTARSATPATCPDisplay `json:"tcps,omitempty"`
+	ExcludedTCPIDs               []string                  `json:"excludedTcpIds,omitempty"`
+	LeaderDirections             []json.RawMessage         `json:"leaderDirections,omitempty"`
+}
+
+type redsSTARSATPAScratchpad struct {
+	ID               string          `json:"id,omitempty"`
+	Entry            string          `json:"entry"`
+	ScratchPadNumber json.RawMessage `json:"scratchPadNumber"`
+	Type             json.RawMessage `json:"type"`
+}
+
+type redsSTARSATPATCPDisplay struct {
+	ID       string          `json:"id,omitempty"`
+	TCPID    string          `json:"tcpId"`
+	TCP      string          `json:"tcp,omitempty"`
+	ConeType json.RawMessage `json:"coneType"`
+}
+
 type redsSTARSVideoMap struct {
 	ID                 string `json:"id"`
 	Name               string `json:"name"`
@@ -187,6 +259,7 @@ type redsSTARSFacilityConfig struct {
 	Areas            []redsSTARSArea            `json:"areas,omitempty"`
 	TCPs             []redsSTARSTCP             `json:"tcps,omitempty"`
 	ControlPositions []redsSTARSControlPosition `json:"controlPositions"`
+	ATPAVolumes      []redsSTARSATPAVolume      `json:"atpaVolumes,omitempty"`
 
 	MapGroups []redsSTARSMapGroup `json:"mapGroups,omitempty"`
 	VideoMaps []redsSTARSVideoMap `json:"videoMaps,omitempty"`
@@ -670,9 +743,10 @@ func convertSTARSConfig(root, artcc, outDir string) (int, error) {
 		}
 
 		fmt.Printf(
-			"wrote %s: %d positions, %d map groups, %d maps, %d boundary candidates\n",
+			"wrote %s: %d positions, %d ATPA volumes, %d map groups, %d maps, %d boundary candidates\n",
 			dst,
 			len(cfg.ControlPositions),
+			len(cfg.ATPAVolumes),
 			len(cfg.MapGroups),
 			len(cfg.VideoMaps),
 			len(cfg.BoundaryMapCandidates),
@@ -792,6 +866,65 @@ func buildSTARSFacilityConfig(
 		return cfg.TCPs[i].ID < cfg.TCPs[j].ID
 	})
 
+	for _, volume := range stars.ATPAVolumes {
+		v := redsSTARSATPAVolume{
+			ID:                           strings.TrimSpace(volume.ID),
+			AirportID:                    strings.TrimSpace(volume.AirportID),
+			VolumeID:                     strings.TrimSpace(volume.VolumeID),
+			Name:                         volume.Name,
+			RunwayThreshold:              starsDecodeLatLon(volume.RunwayThreshold),
+			Ceiling:                      starsIntDefault(volume.Ceiling, 10000),
+			Floor:                        volume.Floor,
+			MagneticHeading:              volume.MagneticHeading,
+			MaximumHeadingDeviation:      starsIntDefault(volume.MaximumHeadingDeviation, 90),
+			Length:                       starsFloat64Default(volume.Length, 24),
+			WidthLeft:                    starsIntDefault(volume.WidthLeft, 1200),
+			WidthRight:                   starsIntDefault(volume.WidthRight, 1200),
+			TwoPointFiveApproachDistance: starsCloneFloat64(volume.TwoPointFiveApproachDistance),
+			TwoPointFiveApproachEnabled:  volume.TwoPointFiveApproachEnabled,
+			ExcludedTCPIDs:               append([]string(nil), volume.ExcludedTCPIDs...),
+			LeaderDirections:             starsCloneRawMessages(volume.LeaderDirections),
+		}
+
+		for _, scratchpad := range volume.Scratchpads {
+			v.Scratchpads = append(v.Scratchpads, redsSTARSATPAScratchpad{
+				ID:               strings.TrimSpace(scratchpad.ID),
+				Entry:            scratchpad.Entry,
+				ScratchPadNumber: starsRawMessageDefault(scratchpad.ScratchPadNumber, `"One"`),
+				Type:             starsRawMessageDefault(scratchpad.Type, `"Exclude"`),
+			})
+		}
+
+		for _, display := range volume.TCPs {
+			tcpID := strings.TrimSpace(display.TCPID)
+			tcpCode := ""
+			if tcp, ok := tcpByID[tcpID]; ok {
+				tcpCode = starsTCPCode(tcp)
+			}
+			v.TCPs = append(v.TCPs, redsSTARSATPATCPDisplay{
+				ID:       strings.TrimSpace(display.ID),
+				TCPID:    tcpID,
+				TCP:      tcpCode,
+				ConeType: starsRawMessageDefault(display.ConeType, `"AlertAndMonitor"`),
+			})
+		}
+
+		cfg.ATPAVolumes = append(cfg.ATPAVolumes, v)
+	}
+	sort.SliceStable(cfg.ATPAVolumes, func(i, j int) bool {
+		a, b := cfg.ATPAVolumes[i], cfg.ATPAVolumes[j]
+		if a.AirportID != b.AirportID {
+			return a.AirportID < b.AirportID
+		}
+		if a.VolumeID != b.VolumeID {
+			return a.VolumeID < b.VolumeID
+		}
+		if a.Name != b.Name {
+			return a.Name < b.Name
+		}
+		return a.ID < b.ID
+	})
+
 	for _, fp := range starsPositionsForRadarFacility(facility) {
 		p := fp.Position
 		if p.STARSConfiguration == nil {
@@ -817,6 +950,16 @@ func buildSTARSFacilityConfig(
 			)
 		}
 
+		colorSet, err := starsColorSetName(p.STARSConfiguration.ColorSet)
+		if err != nil {
+			return redsSTARSFacilityConfig{}, fmt.Errorf(
+				"position %q (%s): %w",
+				p.Callsign,
+				positionID,
+				err,
+			)
+		}
+
 		tcpID := strings.TrimSpace(p.STARSConfiguration.TCPID)
 		tcpCode := ""
 		if tcpID != "" {
@@ -839,6 +982,7 @@ func buildSTARSFacilityConfig(
 			Name:             p.Name,
 			RadioName:        p.RadioName,
 			Callsign:         p.Callsign,
+			ColorSet:         colorSet,
 			AreaID:           areaID,
 			TCPID:            tcpID,
 			TCP:              tcpCode,
@@ -955,6 +1099,47 @@ func starsPositionsForRadarFacility(f *crcSTARSFacility) []starsFacilityPosition
 	}
 
 	return out
+}
+
+// starsColorSetName normalizes CRC's StarsColorSet enum. Depending on how
+// the CRC ARTCC JSON was exported, enums may be emitted either as their names
+// (Tcw/Tdw/Dod) or as the underlying numeric values (0/1/2). Missing values
+// fall back to TCW, which is also the enum's zero/default value.
+func starsColorSetName(raw json.RawMessage) (string, error) {
+	if len(raw) == 0 || string(raw) == "null" {
+		return "tcw", nil
+	}
+
+	var name string
+	if err := json.Unmarshal(raw, &name); err == nil {
+		name = strings.ToLower(strings.TrimSpace(name))
+		switch name {
+		case "tcw", "0":
+			return "tcw", nil
+		case "tdw", "1":
+			return "tdw", nil
+		case "dod", "2":
+			return "dod", nil
+		default:
+			return "", fmt.Errorf("unsupported STARS color set %q", name)
+		}
+	}
+
+	var value int
+	if err := json.Unmarshal(raw, &value); err == nil {
+		switch value {
+		case 0:
+			return "tcw", nil
+		case 1:
+			return "tdw", nil
+		case 2:
+			return "dod", nil
+		default:
+			return "", fmt.Errorf("unsupported STARS color set %d", value)
+		}
+	}
+
+	return "", fmt.Errorf("invalid STARS color set %s", string(raw))
 }
 
 func starsTCPCode(tcp crcSTARSTCP) string {
@@ -1084,6 +1269,53 @@ func starsFrequencyMHz(v float64) float64 {
 	default:
 		return v
 	}
+}
+
+func starsIntDefault(v *int, fallback int) int {
+	if v == nil {
+		return fallback
+	}
+	return *v
+}
+
+func starsFloat64Default(v *float64, fallback float64) float64 {
+	if v == nil {
+		return fallback
+	}
+	return *v
+}
+
+func starsCloneFloat64(v *float64) *float64 {
+	if v == nil {
+		return nil
+	}
+	out := *v
+	return &out
+}
+
+func starsRawMessageDefault(in json.RawMessage, fallback string) json.RawMessage {
+	if len(in) == 0 || string(in) == "null" {
+		return json.RawMessage(fallback)
+	}
+	return starsCloneRawMessage(in)
+}
+
+func starsCloneRawMessage(in json.RawMessage) json.RawMessage {
+	if len(in) == 0 {
+		return nil
+	}
+	return append(json.RawMessage(nil), in...)
+}
+
+func starsCloneRawMessages(in []json.RawMessage) []json.RawMessage {
+	if len(in) == 0 {
+		return nil
+	}
+	out := make([]json.RawMessage, len(in))
+	for i := range in {
+		out[i] = starsCloneRawMessage(in[i])
+	}
+	return out
 }
 
 func starsCloneMapIDs(in []*int) []*int {

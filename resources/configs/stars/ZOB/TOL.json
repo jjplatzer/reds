@@ -74,6 +74,7 @@
       "name": "East",
       "radioName": "Toledo Approach",
       "callsign": "TOL_E_APP",
+      "colorSet": "tcw",
       "areaId": "01G92VB46FK6VQJP7P6K0FFG2D",
       "tcpId": "01K2NF1E63QWDXT46HRA1WATFC",
       "tcp": "1E",
@@ -90,6 +91,7 @@
       "name": "Clearance Delivery",
       "radioName": "Toledo Clearance",
       "callsign": "TOL_DEL",
+      "colorSet": "tdw",
       "areaId": "01HE774733VC46X09Q2VC6NSF4",
       "tcpId": "01K2NF1E63W9977CDBSDTH44NB",
       "tcp": "1T",
@@ -106,6 +108,7 @@
       "name": "Ground",
       "radioName": "Toledo Ground",
       "callsign": "TOL_GND",
+      "colorSet": "tdw",
       "areaId": "01HE774733VC46X09Q2VC6NSF4",
       "tcpId": "01K2NF1E63W9977CDBSDTH44NB",
       "tcp": "1T",
@@ -122,6 +125,7 @@
       "name": "Local Control",
       "radioName": "Toledo Tower",
       "callsign": "TOL_TWR",
+      "colorSet": "tdw",
       "areaId": "01HE774733VC46X09Q2VC6NSF4",
       "tcpId": "01K2NF1E63W9977CDBSDTH44NB",
       "tcp": "1T",
@@ -138,6 +142,7 @@
       "name": "West",
       "radioName": "Toledo Approach",
       "callsign": "TOL_W_APP",
+      "colorSet": "tcw",
       "areaId": "01G92VB46FK6VQJP7P6K0FFG2D",
       "tcpId": "01K2NF1E63EWRV5E6GZXY2P2S7",
       "tcp": "1W",
@@ -154,6 +159,7 @@
       "name": "TMU/OTHER",
       "radioName": "Toledo Approach",
       "callsign": "TOL_T_APP",
+      "colorSet": "tcw",
       "areaId": "01G92VB46FK6VQJP7P6K0FFG2D",
       "tcpId": "01K2NF1E63R8KT236YTKYPYG65",
       "tcp": "1Z",
@@ -163,6 +169,136 @@
       },
       "range": 150,
       "freq": 123.45
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYPX8MM0ESXP2CHG2E7YVMFN",
+      "airportId": "TOL",
+      "volumeId": "RWY07",
+      "name": "TOL RWY07",
+      "runwayThreshold": {
+        "lat": 41.58138889,
+        "lon": -83.83111111
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 72,
+      "maximumHeadingDeviation": 30,
+      "length": 15,
+      "widthLeft": 9114,
+      "widthRight": 9114,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZ0KZ7KPEJF34JYX1X620N8W",
+          "entry": "V07",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0KVG92PY876TFHJ7Y6CNAS",
+          "tcpId": "01K2NF1E63W9977CDBSDTH44NB",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KVGQBJGMW2SYT7RBQP191",
+          "tcpId": "01K2NF1E63QWDXT46HRA1WATFC",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KVH6Y0WX90B7T4WPFFKZG",
+          "tcpId": "01K2NF1E63R8KT236YTKYPYG65",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KVJH56YPNYPZ0SX2AQ3FV",
+          "tcpId": "01K2NF1E63EWRV5E6GZXY2P2S7",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYPX9QQP3JY53HA8VQSVWEZV",
+      "airportId": "TOL",
+      "volumeId": "RWY25",
+      "name": "TOL RWY25",
+      "runwayThreshold": {
+        "lat": 41.59277778,
+        "lon": -83.795
+      },
+      "ceiling": 4000,
+      "floor": 0,
+      "magneticHeading": 252,
+      "maximumHeadingDeviation": 30,
+      "length": 15,
+      "widthLeft": 9114,
+      "widthRight": 9114,
+      "twoPointFiveApproachEnabled": false,
+      "scratchpads": [
+        {
+          "id": "01JZ0KWJFBS5FEZD8YNB98HRW2",
+          "entry": "V25",
+          "scratchPadNumber": "One",
+          "type": "Ineligible"
+        },
+        {
+          "id": "01JZ0KXJ4MCCRRHJD1YN8P37CX",
+          "entry": "V34",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ0KXYQ84M7F5YYKKY4R8447",
+          "entry": "V16",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ0KY45N07DD208PPFM7S0H1",
+          "entry": "R16",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        },
+        {
+          "id": "01JZ0KYS3MC7BZKC0N96M98C54",
+          "entry": "R34",
+          "scratchPadNumber": "One",
+          "type": "Exclude"
+        }
+      ],
+      "tcps": [
+        {
+          "id": "01JZ0KWAT5W9YRYFS20390HBZT",
+          "tcpId": "01K2NF1E63W9977CDBSDTH44NB",
+          "tcp": "1T",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KWAZDEAMM846WA2THB8RB",
+          "tcpId": "01K2NF1E63QWDXT46HRA1WATFC",
+          "tcp": "1E",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KWB4PEMSSKGQ0XGSYT2BB",
+          "tcpId": "01K2NF1E63R8KT236YTKYPYG65",
+          "tcp": "1Z",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JZ0KWFMRGAN5MYN979CMB7NN",
+          "tcpId": "01K2NF1E63EWRV5E6GZXY2P2S7",
+          "tcp": "1W",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -222,6 +358,8 @@
         6
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

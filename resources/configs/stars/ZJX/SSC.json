@@ -52,6 +52,7 @@
       "name": "Ground",
       "radioName": "Shaw Ground",
       "callsign": "SSC_GND",
+      "colorSet": "tdw",
       "areaId": "01HC3HW8P7M4ARRGNYB41AYDXM",
       "tcpId": "01K2NF1DFF2TV4GCXT4509P3XS",
       "tcp": "1D",
@@ -68,6 +69,7 @@
       "name": "Tower",
       "radioName": "Shaw Tower",
       "callsign": "SSC_TWR",
+      "colorSet": "tdw",
       "areaId": "01HC3HW8P7M4ARRGNYB41AYDXM",
       "tcpId": "01K2NF1DFFGF34165397CM8P2G",
       "tcp": "1T",
@@ -84,6 +86,7 @@
       "name": "Approach",
       "radioName": "Shaw Approach",
       "callsign": "SSC_APP",
+      "colorSet": "tcw",
       "areaId": "01HC3HW8P7M4ARRGNYB41AYDXM",
       "tcpId": "01K2NF1DFFKJ7VSWRZ5BN8CRAY",
       "tcp": "1Z",
@@ -151,6 +154,8 @@
         201
       ],
       "submenuMapIds": [
+        null,
+        null,
         null,
         null,
         null,

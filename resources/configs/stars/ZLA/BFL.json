@@ -91,6 +91,7 @@
       "name": "Local",
       "radioName": "Bakersfield Tower",
       "callsign": "BFL_TWR",
+      "colorSet": "tdw",
       "areaId": "01GFH3WKAZEMHABX7115SPP0MB",
       "tcpId": "01K2NF1CRSJHH000Z63ZYVWDX7",
       "tcp": "1L",
@@ -107,6 +108,7 @@
       "name": "North Approach",
       "radioName": "Bakersfield Approach",
       "callsign": "BFL_N_APP",
+      "colorSet": "tcw",
       "areaId": "01GFH3WKAZEMHABX7115SPP0MB",
       "tcpId": "01K2NF1CRSR7R8J937M4K6Q3T7",
       "tcp": "1N",
@@ -123,6 +125,7 @@
       "name": "Departure",
       "radioName": "Bakersfield Departure",
       "callsign": "BFL_DEP",
+      "colorSet": "tcw",
       "areaId": "01GFH3WKAZEMHABX7115SPP0MB",
       "tcpId": "01K2NF1CRSQ4D9NFMTV0QE8NNX",
       "tcp": "1R",
@@ -139,6 +142,7 @@
       "name": "South Approach",
       "radioName": "Bakersfield Approach",
       "callsign": "BFL_S_APP",
+      "colorSet": "tcw",
       "areaId": "01GFH3WKAZEMHABX7115SPP0MB",
       "tcpId": "01K2NF1CRSCC8K68XY4CFS7QR1",
       "tcp": "1S",
@@ -155,6 +159,7 @@
       "name": "Ground",
       "radioName": "Bakersfield Ground",
       "callsign": "BFL_GND",
+      "colorSet": "tdw",
       "areaId": "01HBP3Z0AYRVSKV11ABQXN4N06",
       "visualCenter": {
         "lat": 35.44083333,
@@ -162,6 +167,98 @@
       },
       "range": 50,
       "freq": 121.7
+    }
+  ],
+  "atpaVolumes": [
+    {
+      "id": "01JYFXYQTW2N5PXKGHY8F768N8",
+      "airportId": "BFL",
+      "volumeId": "12L",
+      "name": "BFL 12L",
+      "runwayThreshold": {
+        "lat": 35.44638889,
+        "lon": -119.0713889
+      },
+      "ceiling": 5000,
+      "floor": 0,
+      "magneticHeading": 121,
+      "maximumHeadingDeviation": 90,
+      "length": 23,
+      "widthLeft": 30380,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JYFYD02VB9RSPYV4N4Z0YXJQ",
+          "tcpId": "01K2NF1CRSJHH000Z63ZYVWDX7",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFYD4XA2PTF2EHPQH5CSRFD",
+          "tcpId": "01K2NF1CRSR7R8J937M4K6Q3T7",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFYD9FNPN2RAH866S2GHQ8K",
+          "tcpId": "01K2NF1CRSQ4D9NFMTV0QE8NNX",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFYDC5GCM2ED5FS273HAFMN",
+          "tcpId": "01K2NF1CRSCC8K68XY4CFS7QR1",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
+    },
+    {
+      "id": "01JYFY7A9M03R1AMCZVMZ34XKF",
+      "airportId": "BFL",
+      "volumeId": "30R",
+      "name": "BFL 30R",
+      "runwayThreshold": {
+        "lat": 35.43194444,
+        "lon": -119.0536111
+      },
+      "ceiling": 10000,
+      "floor": 0,
+      "magneticHeading": 301,
+      "maximumHeadingDeviation": 90,
+      "length": 28.5,
+      "widthLeft": 80000,
+      "widthRight": 30380,
+      "twoPointFiveApproachDistance": 10,
+      "twoPointFiveApproachEnabled": false,
+      "tcps": [
+        {
+          "id": "01JYFYAAPWQY6KX1HPV3M4P87Q",
+          "tcpId": "01K2NF1CRSJHH000Z63ZYVWDX7",
+          "tcp": "1L",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFYB6WZQ0KPQDXTHAGY9PPC",
+          "tcpId": "01K2NF1CRSR7R8J937M4K6Q3T7",
+          "tcp": "1N",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFYBDFJW2BDGQHPA7ZV7P8Z",
+          "tcpId": "01K2NF1CRSQ4D9NFMTV0QE8NNX",
+          "tcp": "1R",
+          "coneType": "AlertAndMonitor"
+        },
+        {
+          "id": "01JYFYBGQDSNYMRN46ZSK9MR3P",
+          "tcpId": "01K2NF1CRSCC8K68XY4CFS7QR1",
+          "tcp": "1S",
+          "coneType": "AlertAndMonitor"
+        }
+      ]
     }
   ],
   "mapGroups": [
@@ -237,6 +334,7 @@
         145,
         null,
         null,
+        null,
         2,
         4,
         6,
@@ -250,6 +348,7 @@
         15,
         105,
         200,
+        null,
         null,
         null
       ]
