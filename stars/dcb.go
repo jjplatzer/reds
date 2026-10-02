@@ -32,6 +32,7 @@ const (
 	charSizeStartColumn         = mainDCBColumns - 5 // VICE / Figure 4-9: submenu follows CHAR SIZE.
 	charSizeDCBColumns          = mainDCBColumns + 1 // six full buttons from column 14 through 19.
 	ssaFilterStartColumn        = 2                  // VICE / Figure 4-7: overlay starts after two Main-DCB columns.
+	tpaStartColumn              = mainDCBColumns - 5 // VICE: TPA/ATPA submenu occupies the final five Main-DCB columns.
 )
 
 const zDCB renderer.Z = 100
@@ -156,11 +157,19 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	briteActive := p.commandMode == CommandModeBrite || p.commandMode == CommandModeBriteSpinner
 	charSizeActive := p.commandMode == CommandModeCharSize || p.commandMode == CommandModeCharSizeSpinner
 	ssaFilterActive := p.commandMode == CommandModeSSAFilter
-	submenuActive := mapsActive || briteActive || charSizeActive || ssaFilterActive
-	if p.dcbShowAux && !submenuActive {
-		d.drawAuxPage()
+	tpaActive := p.commandMode == CommandModeTPA
+	mainSubmenuActive := mapsActive || briteActive || charSizeActive || ssaFilterActive
+
+	// Main-page submenus are drawn on top of a disabled Main DCB. TPA/ATPA
+	// follows the same VICE model, but its backing page is the Auxiliary DCB.
+	// Keep drawing that full page in the disabled modality so every control
+	// outside the five-button ATPA overlay is visibly dimmed and inert.
+	if tpaActive {
+		d.drawAuxPage(true)
+	} else if p.dcbShowAux && !mainSubmenuActive {
+		d.drawAuxPage(false)
 	} else {
-		d.drawMainPage(submenuActive)
+		d.drawMainPage(mainSubmenuActive)
 	}
 	if mapsActive {
 		// TI 6191.409 Rev. 30, Figure 4-4: the MAPS submenu begins immediately
@@ -203,6 +212,17 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			Y: 0,
 		}
 		d.drawSSAFilterPage()
+	}
+	if tpaActive {
+		// VICE renders the regular Auxiliary DCB first in the disabled modality,
+		// then overlays the five-button TPA/ATPA submenu in the final five
+		// Main-DCB columns. In the Rev. 30 auxiliary layout this starts where
+		// the ordinary TPA/ATPA button sits and covers TSAS/TIME LINE/SHIFT.
+		d.cursor = redsmath.Vec2{
+			X: -p.dcbScroll + float32(tpaStartColumn)*d.buttonSize,
+			Y: 0,
+		}
+		d.drawTPAPage()
 	}
 	cb.DisableScissor()
 }
@@ -338,7 +358,7 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 		p.setCommandMode(CommandModeCharSize)
 	})
 	d.button("MODE\nFSL", mainFlags(buttonFull)|buttonUnsupported, false, nil)
-	d.button("SITE\nMULTI", mainFlags(buttonFull), false, nil)
+	d.button("SITE\nFUSED", mainFlags(buttonFull), false, nil)
 	d.button("PREF", mainFlags(buttonFull), false, nil)
 	d.button("SSA\nFILTER", mainFlags(buttonHalfVertical), false, func() {
 		p.setCommandMode(CommandModeSSAFilter)
@@ -352,48 +372,53 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 
 // drawAuxPage draws the High Resolution (2K) Auxiliary Display Control Bar
 // using the TSAS-adapted layout in TI 6191.409 Rev. 30, Figure 2-12 / Table
-// 2-6. For this first implementation only <SHIFT> is operational. TSAS and
-// TIME LINE are deliberately shown as unsupported until REDS has TSAS state;
-// the remaining controls retain their normal appearance so functionality can
-// be added later without changing the page geometry.
-func (d *dcbDrawer) drawAuxPage() {
+// 2-6. Controls that VICE does not currently implement are presented with
+// its unsupported/gray modality. When the TPA/ATPA submenu is active, this
+// full Auxiliary page is redrawn disabled behind the five-button overlay.
+func (d *dcbDrawer) drawAuxPage(disabled bool) {
 	p := d.pane
 	ps := p.currentPrefs()
+	auxFlags := func(flags dcbFlags) dcbFlags {
+		if disabled {
+			return flags | buttonDisabled
+		}
+		return flags
+	}
 
 	// <VOL n>.
-	d.button("VOL\n2", buttonFull, false, nil)
+	d.button("VOL\n2", auxFlags(buttonFull), false, nil)
 
 	// <HISTORY n> / <H_RATE n.n>.
-	d.button("HISTORY\n5", buttonHalfVertical, false, nil)
-	d.button("H_RATE\n4.5", buttonHalfVertical, false, nil)
+	d.button("HISTORY\n5", auxFlags(buttonHalfVertical), false, nil)
+	d.button("H_RATE\n4.5", auxFlags(buttonHalfVertical), false, nil)
 
 	// Cursor controls and uncorrelated-target presentation.
-	d.button("CURSOR\nHOME", buttonFull, false, nil)
-	d.button("CSR SPD\n5", buttonFull, false, nil)
-	d.button("MAP\nUNCOR", buttonFull, false, nil)
-	d.button("UNCOR", buttonFull, false, nil)
-	d.button("BEACON\nMODE-2", buttonFull, false, nil)
-	d.button("RTQC", buttonFull, false, nil)
-	d.button("MCP", buttonFull, false, nil)
+	d.button("CURSOR\nHOME", auxFlags(buttonFull), false, nil)
+	d.button("CSR SPD\n5", auxFlags(buttonFull)|buttonUnsupported, false, nil)
+	d.button("MAP\nUNCOR", auxFlags(buttonFull)|buttonUnsupported, false, nil)
+	d.button("UNCOR", auxFlags(buttonFull)|buttonUnsupported, false, nil)
+	d.button("BEACON\nMODE-2", auxFlags(buttonFull)|buttonUnsupported, false, nil)
+	d.button("RTQC", auxFlags(buttonFull)|buttonUnsupported, false, nil)
+	d.button("MCP", auxFlags(buttonFull)|buttonUnsupported, false, nil)
 
 	// DCB position radio-button group. These are intentionally inert for now.
-	d.button("DCB\nTOP", buttonHalfVertical, true, nil)
-	d.button("DCB\nLEFT", buttonHalfVertical, false, nil)
-	d.button("DCB\nRIGHT", buttonHalfVertical, false, nil)
-	d.button("DCB\nBOTTOM", buttonHalfVertical, false, nil)
+	d.button("DCB\nTOP", auxFlags(buttonHalfVertical), true, nil)
+	d.button("DCB\nLEFT", auxFlags(buttonHalfVertical), false, nil)
+	d.button("DCB\nRIGHT", auxFlags(buttonHalfVertical), false, nil)
+	d.button("DCB\nBOTTOM", auxFlags(buttonHalfVertical), false, nil)
 
 	// Predicted Track Line controls, TI 6191.409 Rev. 30, 6.3.2-6.3.4.
 	// PTL LNTH is an adjustment button; PTL OWN and PTL ALL are mutually
 	// exclusive toggles and are unavailable when the PTL value is zero.
 	ptlLengthSelected := p.commandMode == CommandModePTLLength
-	d.button(fmt.Sprintf("PTL\nLNTH\n%.1f", ps.PTLLength), buttonFull, ptlLengthSelected, func() {
+	d.button(fmt.Sprintf("PTL\nLNTH\n%.1f", ps.PTLLength), auxFlags(buttonFull), ptlLengthSelected, func() {
 		if ptlLengthSelected {
 			p.resetCommand()
 			return
 		}
 		p.setCommandMode(CommandModePTLLength)
 	})
-	ptlFlags := buttonHalfVertical
+	ptlFlags := auxFlags(buttonHalfVertical)
 	if ps.PTLLength == 0 {
 		ptlFlags |= buttonDisabled
 	}
@@ -409,23 +434,19 @@ func (d *dcbDrawer) drawAuxPage() {
 			ps.PTLOwn = false
 		}
 	})
-	d.button("DWELL\nON", buttonFull, false, nil)
-	if p.commandMode == CommandModeTPA {
-		d.drawTPAPage()
-		return
-	}
-	d.button("TPA/\nATPA", buttonFull, false, func() {
+	d.button("DWELL\nON", auxFlags(buttonFull), false, nil)
+	d.button("TPA/\nATPA", auxFlags(buttonFull), false, func() {
 		p.setCommandMode(CommandModeTPA)
 	})
 
 	// Figure 2-12 TSAS-adapted controls. Table 2-6 says these appear grayed
 	// when TSAS is adapted but unavailable to the current TCW/TDW; REDS does
 	// not have TSAS integration yet, so keep both controls in that state.
-	d.button("TSAS", buttonHalfVertical|buttonUnsupported, false, nil)
-	d.button("TIME\nLINE", buttonHalfVertical|buttonUnsupported, false, nil)
+	d.button("TSAS", auxFlags(buttonHalfVertical)|buttonUnsupported, false, nil)
+	d.button("TIME\nLINE", auxFlags(buttonHalfVertical)|buttonUnsupported, false, nil)
 
 	// <SHIFT> toggles the Main and Auxiliary DCBs (Table 2-6).
-	d.button("SHIFT", buttonFull, false, func() {
+	d.button("SHIFT", auxFlags(buttonFull), false, func() {
 		p.dcbShowAux = false
 		p.dcbSuppressPressUntilRelease = true
 	})
