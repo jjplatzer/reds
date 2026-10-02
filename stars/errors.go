@@ -12,6 +12,7 @@ var (
 	ErrSTARSIllegalPosition = errors.New("ILL POS")
 	ErrSTARSIllegalTrack    = errors.New("ILL TRK")
 	ErrSTARSIllegalFunction = errors.New("ILL FNCT")
+	ErrSTARSIllegalVolume   = errors.New("ILL VOL")
 	ErrSTARSNoTrack         = errors.New("NO TRK")
 	ErrSTARSCapacity        = errors.New("CAPACITY")
 	ErrSTARSRBLID           = errors.New("RBL ID")

@@ -224,6 +224,40 @@ func (tpaDistanceCommandParser) Parse(text string) (any, string, bool, error) {
 	return value, text[i:], true, nil
 }
 
+type atpaVolumeAction struct {
+	VolumeID string
+	Enable   bool
+}
+
+type atpaVolumeActionCommandParser struct{}
+
+func (atpaVolumeActionCommandParser) Identifier() string { return "ATPA_VOLUME_ACTION" }
+
+func (atpaVolumeActionCommandParser) Parse(text string) (any, string, bool, error) {
+	// TI 6191.409 Rev. 30, 8.38-8.39: volume ID is 1-5 alphanumeric
+	// characters followed immediately by E (enable) or I (inhibit).
+	text = strings.ToUpper(strings.TrimSpace(text))
+	if len(text) < 2 || len(text) > 6 {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	id := text[:len(text)-1]
+	for _, r := range id {
+		if (r < 'A' || r > 'Z') && (r < '0' || r > '9') {
+			return nil, text, true, ErrSTARSCommandFormat
+		}
+	}
+	var enable bool
+	switch text[len(text)-1] {
+	case 'E':
+		enable = true
+	case 'I':
+		enable = false
+	default:
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	return atpaVolumeAction{VolumeID: id, Enable: enable}, "", true, nil
+}
+
 type quickLookPositionSpec struct {
 	TCP  string
 	Plus bool
@@ -426,6 +460,7 @@ var commandTypeParsers = map[string]commandTypeParser{
 	"RBL_ID":             rblIDCommandParser{},
 	"RBL_FIELD":          rblFieldCommandParser{},
 	"TPA_DISTANCE":       tpaDistanceCommandParser{},
+	"ATPA_VOLUME_ACTION": atpaVolumeActionCommandParser{},
 }
 
 type commandMatcher interface {

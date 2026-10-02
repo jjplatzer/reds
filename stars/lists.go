@@ -245,15 +245,81 @@ func (p *STARSPane) ssaSystemStatusText() (string, bool) {
 
 // ssaSystemOffText returns SSA field J (System OFF Indicators).
 //
-// TI 6191.409 Rev. 30, Table 2-18 defines this field as system-wide inhibited
-// processing capabilities (CA, MCI, MSAW, CRDA, HOP, INTRAIL, etc.). VICE
-// builds the line only from actual simulator inhibit state and omits it when
-// nothing is disabled. REDS does not yet receive those site-wide inhibit
-// states from TAIS, so an empty field is the only truthful current result.
-// Keep the decision isolated here so those states can be wired in later
-// without changing the SSA FILTER or renderer layout.
+// TI 6191.409 Rev. 30, Table 2-18 defines INTRAIL as the system-off indicator
+// when ATPA processing is inhibited site-wide. Other site-wide inhibits can be
+// added here as REDS gains their authoritative state.
 func (p *STARSPane) ssaSystemOffText() string {
+	if p != nil && p.atpaAdapted() && !p.atpaEnabled() {
+		return "INTRAIL"
+	}
 	return ""
+}
+
+// ssaChopLong applies the Table 2-15 continuation modality used by the ATPA
+// M2/M3 fields: if the line cannot fit, terminate the visible list with '+'.
+// VICE uses the STARS 32-character SSA field width, so mirror it here.
+func ssaChopLong(text string) string {
+	if len(text) <= 32 {
+		return text
+	}
+	text = text[:32]
+	if i := strings.LastIndexByte(text, ' '); i >= 0 {
+		return text[:i] + "+"
+	}
+	return text
+}
+
+// ssaATPAInTrailText implements Table 2-15 field M2. When ATPA is enabled,
+// positions adapted for at least one volume show INTRAIL ON unless one or more
+// volumes of interest have been manually disabled; in that case those IDs are
+// listed instead.
+func (p *STARSPane) ssaATPAInTrailText() string {
+	if p == nil || !p.atpaEnabled() {
+		return ""
+	}
+	var disabled []string
+	hasEnabled := false
+	for i := range p.config.Facility.ATPAVolumes {
+		volume := &p.config.Facility.ATPAVolumes[i]
+		if !p.atpaVolumeOfInterest(volume) {
+			continue
+		}
+		if p.atpaVolumeEnabled(volume) {
+			hasEnabled = true
+		} else if id := atpaVolumeID(volume); id != "" {
+			disabled = append(disabled, id)
+		}
+	}
+	if len(disabled) != 0 {
+		return ssaChopLong("INTRAIL OFF: " + strings.Join(disabled, " "))
+	}
+	if hasEnabled {
+		return "INTRAIL ON"
+	}
+	return ""
+}
+
+// ssaATPA25Text implements Table 2-15 field M3. Only enabled, adapted volumes
+// of interest whose 2.5-NM reduced-separation state is currently enabled are
+// listed. An empty set removes the M3 line entirely.
+func (p *STARSPane) ssaATPA25Text() string {
+	if p == nil || !p.atpaEnabled() {
+		return ""
+	}
+	var enabled []string
+	for i := range p.config.Facility.ATPAVolumes {
+		volume := &p.config.Facility.ATPAVolumes[i]
+		if !p.atpaVolumeOfInterest(volume) || !p.atpaVolume25Enabled(volume) {
+			continue
+		}
+		if id := atpaVolumeID(volume); id != "" {
+			enabled = append(enabled, id)
+		}
+	}
+	if len(enabled) == 0 {
+		return ""
+	}
+	return ssaChopLong("INTRAIL 2.5 ON: " + strings.Join(enabled, " "))
 }
 
 // drawSSA draws the System Status Area in the field order defined by
@@ -483,6 +549,17 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		// line is selected for display.
 		if filter.All || filter.AltitudeFilters {
 			addLine(p.currentPrefs().AltitudeFilters.ssaText(), p.colors.List)
+		}
+
+		// Fields M2/M3 - ATPA In-trail Approach Volume and 2.5-NM Reduced
+		// Separation status (Table 2-15). These lines are suppressed whenever
+		// ATPA is disabled system-wide. INTRAIL and 2.5 are independently
+		// selectable in the SSA FILTER submenu.
+		if filter.All || filter.Intrail {
+			addLine(p.ssaATPAInTrailText(), p.colors.List)
+		}
+		if filter.All || filter.Intrail25 {
+			addLine(p.ssaATPA25Text(), p.colors.List)
 		}
 
 		// Remaining fields between E1 and N are omitted until their corresponding

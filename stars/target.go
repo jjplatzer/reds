@@ -1523,12 +1523,281 @@ type atpaVolumeMember struct {
 	Ineligible        bool
 }
 
-// atpaEnabled is the runtime stand-in for STARS' system-wide ATPA state. REDS
-// does not yet implement the supervisor 2ATPA command, so an adapted volume is
-// treated as an enabled ATPA installation. When the supervisor state is added,
-// this is the single place that needs to become state-aware.
-func (p *STARSPane) atpaEnabled() bool {
+// ATPA system/volume state is site-wide supervisor state (TI 6191.409 Rev. 30,
+// 8.37-8.39), so all panes for one STARS facility share the same object. The
+// per-track presentation overrides remain local to each TCW/TDW.
+type atpaVolumeRuntimeState struct {
+	Disabled          bool
+	Reduced25Disabled bool
+}
+
+type atpaSiteRuntimeState struct {
+	sync.RWMutex
+	Enabled bool
+	Volumes map[string]atpaVolumeRuntimeState
+
+	// Supervisor operations can require TCW/TDW-local track settings to be
+	// reset. Epochs let every open pane observe that site-wide action without
+	// keeping a registry of pane pointers.
+	TrackSettingsReset uint64
+	WarnAlertReset     uint64
+}
+
+var atpaSiteRuntimeStates = struct {
+	sync.Mutex
+	states map[string]*atpaSiteRuntimeState
+}{states: make(map[string]*atpaSiteRuntimeState)}
+
+func atpaVolumeID(volume *atpaVolumeConfig) string {
+	if volume == nil {
+		return ""
+	}
+	id := strings.ToUpper(strings.TrimSpace(volume.VolumeID))
+	if id == "" {
+		id = strings.ToUpper(strings.TrimSpace(volume.ID))
+	}
+	return id
+}
+
+func atpaSiteKey(cfg selectedConfig) string {
+	return strings.ToUpper(strings.TrimSpace(cfg.Facility.ARTCC)) + "|" +
+		strings.ToUpper(strings.TrimSpace(cfg.Facility.Facility))
+}
+
+func sharedATPASiteRuntimeState(cfg selectedConfig) *atpaSiteRuntimeState {
+	key := atpaSiteKey(cfg)
+	atpaSiteRuntimeStates.Lock()
+	defer atpaSiteRuntimeStates.Unlock()
+
+	state := atpaSiteRuntimeStates.states[key]
+	if state == nil {
+		state = &atpaSiteRuntimeState{
+			Enabled: len(cfg.Facility.ATPAVolumes) != 0,
+			Volumes: make(map[string]atpaVolumeRuntimeState),
+		}
+		atpaSiteRuntimeStates.states[key] = state
+	}
+
+	// Keep the shared state tolerant of a later pane loading a config with
+	// additional adapted volumes. A newly seen adapted volume starts at its
+	// configuration-plan default: enabled, with adapted 2.5 capability active.
+	state.Lock()
+	for i := range cfg.Facility.ATPAVolumes {
+		id := atpaVolumeID(&cfg.Facility.ATPAVolumes[i])
+		if id == "" {
+			continue
+		}
+		if _, ok := state.Volumes[id]; !ok {
+			state.Volumes[id] = atpaVolumeRuntimeState{}
+		}
+	}
+	state.Unlock()
+	return state
+}
+
+func (p *STARSPane) atpaRuntimeState() *atpaSiteRuntimeState {
+	if p == nil {
+		return nil
+	}
+	if p.atpaSite == nil {
+		p.atpaSite = sharedATPASiteRuntimeState(p.config)
+	}
+	return p.atpaSite
+}
+
+func (p *STARSPane) atpaAdapted() bool {
 	return p != nil && len(p.config.Facility.ATPAVolumes) != 0
+}
+
+func (p *STARSPane) atpaEnabled() bool {
+	if !p.atpaAdapted() {
+		return false
+	}
+	state := p.atpaRuntimeState()
+	if state == nil {
+		return false
+	}
+	state.RLock()
+	enabled := state.Enabled
+	state.RUnlock()
+	return enabled
+}
+
+func (p *STARSPane) atpaVolumeByID(id string) *atpaVolumeConfig {
+	if p == nil {
+		return nil
+	}
+	id = strings.ToUpper(strings.TrimSpace(id))
+	for i := range p.config.Facility.ATPAVolumes {
+		volume := &p.config.Facility.ATPAVolumes[i]
+		if atpaVolumeID(volume) == id {
+			return volume
+		}
+	}
+	return nil
+}
+
+func (p *STARSPane) atpaVolumeEnabled(volume *atpaVolumeConfig) bool {
+	if volume == nil || !p.atpaEnabled() {
+		return false
+	}
+	state := p.atpaRuntimeState()
+	id := atpaVolumeID(volume)
+	state.RLock()
+	volumeState, ok := state.Volumes[id]
+	state.RUnlock()
+	return id != "" && ok && !volumeState.Disabled
+}
+
+func (p *STARSPane) atpaVolume25Enabled(volume *atpaVolumeConfig) bool {
+	if volume == nil || !volume.TwoPointFiveApproachEnabled ||
+		volume.TwoPointFiveApproachDistance == nil || *volume.TwoPointFiveApproachDistance <= 0 ||
+		!p.atpaEnabled() {
+		return false
+	}
+	state := p.atpaRuntimeState()
+	id := atpaVolumeID(volume)
+	state.RLock()
+	volumeState, ok := state.Volumes[id]
+	state.RUnlock()
+	return id != "" && ok && !volumeState.Disabled && !volumeState.Reduced25Disabled
+}
+
+// atpaVolumeOfInterest implements the Table 2-15 M2/M3 phrase "volumes of
+// interest to this TCP" using CRC's per-volume TCP adaptation. A volume is
+// reported in this position's SSA only when the current TCP/TCP ID is adapted
+// on that volume.
+func (p *STARSPane) atpaVolumeOfInterest(volume *atpaVolumeConfig) bool {
+	if p == nil || volume == nil {
+		return false
+	}
+	ownTCP := strings.TrimSpace(p.ownTCP())
+	ownTCPID := strings.TrimSpace(p.config.ControlPosition.TCPID)
+	for _, display := range volume.TCPs {
+		if ownTCP != "" && strings.EqualFold(strings.TrimSpace(display.TCP), ownTCP) {
+			return true
+		}
+		if ownTCPID != "" && strings.EqualFold(strings.TrimSpace(display.TCPID), ownTCPID) {
+			return true
+		}
+	}
+	return false
+}
+
+func (p *STARSPane) applyATPASiteTrackResets() {
+	if p == nil {
+		return
+	}
+	state := p.atpaRuntimeState()
+	if state == nil {
+		return
+	}
+	state.RLock()
+	allEpoch := state.TrackSettingsReset
+	warnEpoch := state.WarnAlertReset
+	state.RUnlock()
+
+	if p.atpaTrackSettingsReset != allEpoch {
+		for key, trackState := range p.tpaTracks {
+			trackState.DisplayATPAWarnAlert = nil
+			trackState.DisplayATPAMonitor = nil
+			trackState.DisplayATPAInTrail = nil
+			p.setTPAState(key, trackState)
+		}
+		p.atpaTrackSettingsReset = allEpoch
+		p.atpaWarnAlertReset = warnEpoch
+		return
+	}
+	if p.atpaWarnAlertReset != warnEpoch {
+		for key, trackState := range p.tpaTracks {
+			trackState.DisplayATPAWarnAlert = nil
+			p.setTPAState(key, trackState)
+		}
+		p.atpaWarnAlertReset = warnEpoch
+	}
+}
+
+// setATPAEnabled implements the site-wide state transition in 8.37. Enabling
+// restores every adapted volume to its current configuration-plan defaults;
+// REDS' extracted CRC data has no separate "default disabled" bit, so adapted
+// volumes default enabled and adapted 2.5 capability defaults active.
+func (p *STARSPane) setATPAEnabled(enabled bool) bool {
+	state := p.atpaRuntimeState()
+	if state == nil {
+		return false
+	}
+	state.Lock()
+	if state.Enabled == enabled {
+		state.Unlock()
+		return false
+	}
+	state.Enabled = enabled
+	if enabled {
+		for id := range state.Volumes {
+			state.Volumes[id] = atpaVolumeRuntimeState{}
+		}
+		state.TrackSettingsReset++
+	}
+	state.Unlock()
+	if !enabled {
+		p.atpaTracks = nil
+	}
+	return true
+}
+
+func (p *STARSPane) setATPAVolumeEnabled(volume *atpaVolumeConfig, enabled bool) bool {
+	if volume == nil {
+		return false
+	}
+	state := p.atpaRuntimeState()
+	id := atpaVolumeID(volume)
+	if state == nil || id == "" {
+		return false
+	}
+	state.Lock()
+	volumeState, ok := state.Volumes[id]
+	if !ok {
+		state.Unlock()
+		return false
+	}
+	changed := volumeState.Disabled == enabled
+	if changed {
+		volumeState.Disabled = !enabled
+		if enabled {
+			// 8.38: enabling a volume restores 2.5 to its site-adapted state.
+			volumeState.Reduced25Disabled = false
+		} else {
+			// 8.38 also re-enables per-track Warning/Alert cone presentation.
+			state.WarnAlertReset++
+		}
+		state.Volumes[id] = volumeState
+	}
+	state.Unlock()
+	return changed
+}
+
+func (p *STARSPane) setATPAVolume25Enabled(volume *atpaVolumeConfig, enabled bool) bool {
+	if volume == nil {
+		return false
+	}
+	state := p.atpaRuntimeState()
+	id := atpaVolumeID(volume)
+	if state == nil || id == "" {
+		return false
+	}
+	state.Lock()
+	volumeState, ok := state.Volumes[id]
+	if !ok {
+		state.Unlock()
+		return false
+	}
+	changed := volumeState.Reduced25Disabled == enabled
+	if changed {
+		volumeState.Reduced25Disabled = !enabled
+		state.Volumes[id] = volumeState
+	}
+	state.Unlock()
+	return changed
 }
 
 func (p *STARSPane) atpaTrackState(key string) (atpaTrackState, bool) {
@@ -1548,6 +1817,7 @@ func (p *STARSPane) updateATPAInTrail(snapshot redsnet.TaisSnapshot) {
 	if p == nil {
 		return
 	}
+	p.applyATPASiteTrackResets()
 
 	// Rebuild rather than incrementally mutate. Typical terminal target counts
 	// and ATPA-volume counts are small, and this avoids stale pairings when a
@@ -1572,7 +1842,7 @@ func (p *STARSPane) updateATPAInTrail(snapshot redsnet.TaisSnapshot) {
 
 		for vi := range p.config.Facility.ATPAVolumes {
 			volume := &p.config.Facility.ATPAVolumes[vi]
-			if !validConfigPoint(volume.RunwayThreshold) || volume.Length <= 0 {
+			if !p.atpaVolumeEnabled(volume) || !validConfigPoint(volume.RunwayThreshold) || volume.Length <= 0 {
 				continue
 			}
 			if p.atpaTrackExcludedByTCP(target, volume) {
@@ -1627,10 +1897,7 @@ func (p *STARSPane) updateATPAInTrail(snapshot redsnet.TaisSnapshot) {
 		})
 
 		volume := &p.config.Facility.ATPAVolumes[vi]
-		volumeID := strings.TrimSpace(volume.VolumeID)
-		if volumeID == "" {
-			volumeID = strings.TrimSpace(volume.ID)
-		}
+		volumeID := atpaVolumeID(volume)
 
 		for i := range group {
 			target := &snapshot.Targets[group[i].TargetIndex]
@@ -1658,7 +1925,7 @@ func (p *STARSPane) updateATPAInTrail(snapshot redsnet.TaisSnapshot) {
 				backCWT, backOK := atpaCWTCategory(target.FlightPlan)
 				if frontOK && backOK {
 					state.MinimumSeparation = atpaApproachSeparation(
-						frontCWT, backCWT, atpaEligible25NM(volume, target, lead),
+						frontCWT, backCWT, p.atpaEligible25NM(volume, target, lead),
 					)
 					if state.MinimumSeparation > 0 {
 						state.Status = atpaPredictedStatus(volume, target, lead, state.MinimumSeparation)
@@ -1814,9 +2081,8 @@ func (m atpaModeledAircraft) nextPosition(position [2]float64) [2]float64 {
 // when both members are established within 0.2 NM of the extended centerline.
 // REDS does not have VICE's approach-nav boolean, so derive the equivalent
 // centerline test directly from the CRC ATPA volume geometry.
-func atpaEligible25NM(volume *atpaVolumeConfig, trailing, leading *redsnet.TaisTarget) bool {
-	if volume == nil || trailing == nil || leading == nil || !volume.TwoPointFiveApproachEnabled ||
-		volume.TwoPointFiveApproachDistance == nil || *volume.TwoPointFiveApproachDistance <= 0 {
+func (p *STARSPane) atpaEligible25NM(volume *atpaVolumeConfig, trailing, leading *redsnet.TaisTarget) bool {
+	if volume == nil || trailing == nil || leading == nil || !p.atpaVolume25Enabled(volume) {
 		return false
 	}
 	along, lateral, ok := atpaVolumeCoordinates(volume, trailing)
@@ -1856,11 +2122,7 @@ func (p *STARSPane) atpaVolumeForState(state atpaTrackState) *atpaVolumeConfig {
 	}
 	for i := range p.config.Facility.ATPAVolumes {
 		v := &p.config.Facility.ATPAVolumes[i]
-		id := strings.TrimSpace(v.VolumeID)
-		if id == "" {
-			id = strings.TrimSpace(v.ID)
-		}
-		if strings.EqualFold(id, state.VolumeID) {
+		if strings.EqualFold(atpaVolumeID(v), state.VolumeID) {
 			return v
 		}
 	}

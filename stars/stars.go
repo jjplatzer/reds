@@ -125,6 +125,13 @@ type STARSPane struct {
 	// Monitor/Warning/Alert state.
 	atpaTracks map[string]atpaTrackState
 
+	// atpaSite is shared by every pane for the same STARS facility. ATPA
+	// system/volume/2.5 enable state is supervisor-controlled site state, not
+	// a saved per-position preference (TI 6191.409 Rev. 30, 8.37-8.39).
+	atpaSite               *atpaSiteRuntimeState
+	atpaTrackSettingsReset uint64
+	atpaWarnAlertReset     uint64
+
 	// trackRepositions stores TI 6191.409 5.7.3 TRK RPOS presentation state.
 	// TAIS itself is read-only, so the local TCW/TDW snapshot is rewritten for
 	// display without mutating live feed state.
@@ -386,6 +393,7 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 		systemFont:             newSystemFont(useFontSetB),
 		systemOutlineFont:      newSystemOutlineFont(useFontSetB),
 	}
+	pane.atpaSite = sharedATPASiteRuntimeState(cfg)
 	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()
 	// Validate the magnetic-adaptation resource once at startup. The actual
 	// value is selected from the tile containing the current display center in
