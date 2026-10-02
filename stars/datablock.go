@@ -354,10 +354,14 @@ func (p *STARSPane) addDatablockLine(
 		return
 	}
 
-	width, _ := p.systemFont.MeasureText(text, style.Size)
 	x := anchor.X + 4
 	if datablockRightJustified(direction) {
-		x = anchor.X - 4 - float32(width)
+		// VICE/STARS right-justify by character cells, not by the visible
+		// bitmap bounds of the last glyph. This distinction matters when a
+		// field deliberately ends in a blank cell (for example FDB field 5):
+		// BitmapFont.MeasureText intentionally gives a trailing space no width,
+		// whereas STARS still reserves that cell.
+		x = anchor.X - 4 - p.datablockCellWidth(text, style.Size)
 	}
 
 	// REDS uses top-origin window coordinates. Place the center of anchorLine
@@ -380,21 +384,43 @@ func (p *STARSPane) addDatablockLineSegments(
 		return
 	}
 	full := prefix + suffix
-	width, _ := p.systemFont.MeasureText(full, prefixStyle.Size)
 	x := anchor.X + 4
 	if datablockRightJustified(direction) {
-		x = anchor.X - 4 - float32(width)
+		// Match dbDrawLines in VICE: west-side FDB rows are justified by
+		// fixed character cells.  Field 6 + field 7 is nine cells in the
+		// normal ATPA/assigned-altitude case, the same width as FDB line 2,
+		// so the two rows share the same left edge.
+		x = anchor.X - 4 - p.datablockCellWidth(full, prefixStyle.Size)
 	}
 	y := anchor.Y - float32(lineHeight)/2 + float32(lineIndex-anchorLine)*float32(lineHeight)
 
 	if prefix != "" {
 		td.AddText(prefix, redsmath.Vec2{X: x, Y: y}, prefixStyle)
-		prefixWidth, _ := p.systemFont.MeasureText(prefix, prefixStyle.Size)
-		x += float32(prefixWidth)
+		// Advance by STARS character cells so an intentional trailing blank
+		// in field 6 remains between ATPA in-trail distance and field 7.
+		// MeasureText() uses visible glyph bounds and therefore collapses a
+		// trailing space, which made e.g. "7.23 A050" render as "7.23A050".
+		x += p.datablockCellWidth(prefix, prefixStyle.Size)
 	}
 	if suffix != "" {
 		td.AddText(suffix, redsmath.Vec2{X: x, Y: y}, suffixStyle)
 	}
+}
+
+// datablockCellWidth returns the horizontal extent of text in STARS fixed
+// character cells. The bitmap font renderer measures visible glyph bounds, so
+// its MeasureText result intentionally omits the advance of a trailing blank.
+// Data blocks cannot do that: blank field positions are part of their layout.
+func (p *STARSPane) datablockCellWidth(text string, size int) float32 {
+	if p == nil || p.systemFont == nil || text == "" {
+		return 0
+	}
+	cellWidth, _ := p.systemFont.CharSize(size)
+	if cellWidth <= 0 {
+		width, _ := p.systemFont.MeasureText(text, size)
+		return float32(width)
+	}
+	return float32(len([]rune(text)) * cellWidth)
 }
 
 // VICE right-justifies datablocks for S/SW/W/NW leader orientations. Its
@@ -760,6 +786,15 @@ func normalizeTaisAirport(airport string) string {
 	return airport
 }
 
+// padFullDatablockField5 preserves the five-character STARS Field 5 cell.
+// TI 6191.409 Rev. 30 Figure 2-20 lays the FDB out in fixed character
+// positions. CRC and VICE both retain one trailing blank after the normal
+// groundspeed/flight-rules/CWT presentation. That blank matters for
+// S/SW/W/NW data blocks because the complete line is right-justified.
+func padFullDatablockField5(value string) string {
+	return fmt.Sprintf("%-5s", value)
+}
+
 func (p *STARSPane) targetFullDatablockField5(target *redsnet.TaisTarget, clockPhase int) string {
 	if target == nil || target.FlightPlan == nil {
 		return ""
@@ -768,8 +803,8 @@ func (p *STARSPane) targetFullDatablockField5(target *redsnet.TaisTarget, clockP
 	// An Unsupported FDB has no radar-derived groundspeed. STARS/VICE use
 	// 00 in the speed slot while retaining the flight-rules/category suffix.
 	if isRPOSUnsupportedTarget(target) && clockPhase == 1 {
-		return "00" + targetDatablockFlightRulesIndicator(target.FlightPlan) +
-			targetDatablockCategory(target.FlightPlan)
+		return padFullDatablockField5("00" + targetDatablockFlightRulesIndicator(target.FlightPlan) +
+			targetDatablockCategory(target.FlightPlan))
 	}
 
 	actype := func() string {
@@ -782,24 +817,24 @@ func (p *STARSPane) targetFullDatablockField5(target *redsnet.TaisTarget, clockP
 
 	switch clockPhase {
 	case 1:
-		return targetDatablockGroundSpeed(target.Track.VX, target.Track.VY) +
+		return padFullDatablockField5(targetDatablockGroundSpeed(target.Track.VX, target.Track.VY) +
 			targetDatablockFlightRulesIndicator(target.FlightPlan) +
-			targetDatablockCategory(target.FlightPlan)
+			targetDatablockCategory(target.FlightPlan))
 	case 3:
 		// Figure 2-20 and 6.13.23/24: requested altitude timeshares in
 		// field 5 with groundspeed and aircraft type. REDS currently renders
 		// one-character position symbols, so the manual's one-character-TCP
 		// form applies: R followed by the requested altitude in hundreds of feet.
 		if p.displayRequestedAltitudeForTarget(target) {
-			return fmt.Sprintf("R%03d", target.FlightPlan.RequestedAltitude/100)
+			return padFullDatablockField5(fmt.Sprintf("R%03d", target.FlightPlan.RequestedAltitude/100))
 		}
-		return actype()
+		return padFullDatablockField5(actype())
 	case 2, 4:
-		return actype()
+		return padFullDatablockField5(actype())
 	default:
-		return targetDatablockGroundSpeed(target.Track.VX, target.Track.VY) +
+		return padFullDatablockField5(targetDatablockGroundSpeed(target.Track.VX, target.Track.VY) +
 			targetDatablockFlightRulesIndicator(target.FlightPlan) +
-			targetDatablockCategory(target.FlightPlan)
+			targetDatablockCategory(target.FlightPlan))
 	}
 }
 
