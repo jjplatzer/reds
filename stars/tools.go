@@ -689,13 +689,35 @@ func (p *STARSPane) tpaSizeVisible(state tpaTrackState) bool {
 	return p.currentPrefs().DisplayTPASize
 }
 
+func (p *STARSPane) atpaInTrailVisible(state tpaTrackState) bool {
+	if state.DisplayATPAInTrail != nil {
+		return *state.DisplayATPAInTrail
+	}
+	return p.currentPrefs().DisplayATPAInTrailDist
+}
+
+func (p *STARSPane) atpaMonitorVisible(state tpaTrackState) bool {
+	if state.DisplayATPAMonitor != nil {
+		return *state.DisplayATPAMonitor
+	}
+	return p.currentPrefs().DisplayATPAMonitorCones
+}
+
+func (p *STARSPane) atpaWarnAlertVisible(state tpaTrackState) bool {
+	if !p.currentPrefs().DisplayATPAWarningAlertCones {
+		return false
+	}
+	return state.DisplayATPAWarnAlert == nil || *state.DisplayATPAWarnAlert
+}
+
 func (p *STARSPane) drawTPA(
 	ctx *panes.Context,
 	zcb *renderer.ZCmdBuffer,
 	transforms radar.LatLonTransformations,
 	snapshot redsnet.TaisSnapshot,
 ) {
-	if p == nil || ctx == nil || zcb == nil || !snapshot.Ready || len(p.tpaTracks) == 0 {
+	if p == nil || ctx == nil || zcb == nil || !snapshot.Ready ||
+		(len(p.tpaTracks) == 0 && len(p.atpaTracks) == 0) {
 		return
 	}
 	ps := p.currentPrefs()
@@ -715,36 +737,56 @@ func (p *STARSPane) drawTPA(
 		return
 	}
 
-	lines := renderer.GetLinesBuilder()
-	defer renderer.ReturnLinesBuilder(lines)
+	baseLines := renderer.GetLinesBuilder()
+	defer renderer.ReturnLinesBuilder(baseLines)
+	warningLines := renderer.GetLinesBuilder()
+	defer renderer.ReturnLinesBuilder(warningLines)
+	alertLines := renderer.GetLinesBuilder()
+	defer renderer.ReturnLinesBuilder(alertLines)
 	text := renderer.GetTextDrawBuilder()
 	defer renderer.ReturnTextDrawBuilder(text)
 	text.SetFont(p.systemFont)
 
 	fontSize := p.datablockFontSize()
 	fontTexture := p.systemFontTexture(ctx.Renderer, fontSize)
-	color := ps.Brightness.Lines.ScaleRGB(p.colors.TerminalProximityAlert)
-	textStyle := renderer.TextStyle{Size: fontSize, Color: color.ToRGBA()}
+	baseColor := ps.Brightness.Lines.ScaleRGB(p.colors.TerminalProximityAlert)
+	warningColor := ps.Brightness.Lines.ScaleRGB(p.colors.ATPAWarning)
+	alertColor := ps.Brightness.Lines.ScaleRGB(p.colors.ATPAAlert)
+
+	// ATPA cone orientation is toward the leading track, so make the current
+	// snapshot addressable by the same stable key used by atpaTrackState.
+	targetsByKey := make(map[string]*redsnet.TaisTarget, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if key := targetDisplayStateKey(target); key != "" {
+			targetsByKey[key] = target
+		}
+	}
 
 	for i := range snapshot.Targets {
 		target := &snapshot.Targets[i]
 		key := targetDisplayStateKey(target)
-		state, ok := p.tpaTracks[key]
-		if !ok || !state.hasGraphic() || !taisTargetHasPosition(target) {
+		state := p.tpaState(key)
+		atpa, hasATPA := p.atpaTrackState(key)
+		if (!state.hasGraphic() && !hasATPA) || !taisTargetHasPosition(target) {
 			continue
 		}
 
+		maxGraphicNM := max(state.JRingRadius, state.ConeLength)
+		if hasATPA {
+			maxGraphicNM = max(maxGraphicNM, atpa.MinimumSeparation)
+		}
 		center := transforms.WindowFromLatLon(target.Track.Lat, target.Track.Lon)
-		if !targetCenterNearPane(ctx, center, max(float32(20), max(state.JRingRadius, state.ConeLength)*pixelsPerNM+20)) {
+		if !targetCenterNearPane(ctx, center, max(float32(20), maxGraphicNM*pixelsPerNM+20)) {
 			continue
 		}
 
+		// A J-Ring is independent of ATPA cones; Warning/Alert modalities only
+		// supersede TPA Cones, not J-Rings (Figure 6-25 / section 6.21).
 		if state.JRingRadius > 0 {
 			radius := state.JRingRadius * pixelsPerNM
-			lines.AddCircle(renderer.PointVertex{X: center.X, Y: center.Y}, radius, 360)
+			baseLines.AddCircle(renderer.PointVertex{X: center.X, Y: center.Y}, radius, 360)
 			if p.tpaSizeVisible(state) && fontTexture != 0 {
-				// TI 6191.409 Figure 6-23 places J-Ring mileage opposite the
-				// leader line. Move slightly inward/up so the text clears the ring.
 				leader := leaderLineUnitVector(p.targetLeaderLineDirection(target))
 				pos := redsmath.Vec2{
 					X: center.X - leader.X*radius,
@@ -753,48 +795,128 @@ func (p *STARSPane) drawTPA(
 				label := formatTPADistance(state.JRingRadius)
 				pos.X -= float32(len(label)*fontSize) * 0.25
 				pos.Y -= float32(fontSize) * 0.5
-				text.AddText(label, pos, textStyle)
+				text.AddText(label, pos, renderer.TextStyle{Size: fontSize, Color: baseColor.ToRGBA()})
 			}
+		}
+
+		var lead *redsnet.TaisTarget
+		var volume *atpaVolumeConfig
+		if hasATPA && atpa.LeadKey != "" && atpa.MinimumSeparation > 0 {
+			lead = targetsByKey[atpa.LeadKey]
+			volume = p.atpaVolumeForState(atpa)
+		}
+
+		warnAlertTrackEnabled := p.atpaWarnAlertVisible(state)
+		monitorTrackEnabled := p.atpaMonitorVisible(state)
+		inTrailTrackEnabled := p.atpaInTrailVisible(state)
+		perTrackWarnAlertInhibited := ps.DisplayATPAWarningAlertCones &&
+			state.DisplayATPAWarnAlert != nil && !*state.DisplayATPAWarnAlert
+
+		drawATPAWarning := false
+		drawATPAAlert := false
+		drawATPAMonitor := false
+		if lead != nil && taisTargetHasPosition(lead) && volume != nil {
+			// 6.21.12 allows a controller to enable Warning/Alert Cones for an
+			// individual qualifying FDB even when this TCP is not one of the
+			// volume's normally adapted Warning/Alert display positions.
+			warningAlertAllowed := p.atpaWarningAlertConeAllowed(target, volume) ||
+				(state.DisplayATPAWarnAlert != nil && *state.DisplayATPAWarnAlert)
+			monitorAllowed := p.atpaMonitorConeAllowed(target, volume)
+
+			switch atpa.Status {
+			case atpaStatusWarning:
+				drawATPAWarning = warnAlertTrackEnabled && warningAlertAllowed
+			case atpaStatusAlert:
+				drawATPAAlert = warnAlertTrackEnabled && warningAlertAllowed
+			case atpaStatusMonitor:
+				drawATPAMonitor = monitorTrackEnabled && monitorAllowed
+			}
+
+			// Sections 6.21.12/13/16/17: if a Warning/Alert Cone is inhibited,
+			// a Monitor Cone is shown instead only when Monitor Cones are enabled
+			// and the actual in-trail distance is inhibited for the track.
+			if (atpa.Status == atpaStatusWarning || atpa.Status == atpaStatusAlert) &&
+				!drawATPAWarning && !drawATPAAlert && !inTrailTrackEnabled &&
+				monitorTrackEnabled && monitorAllowed {
+				drawATPAMonitor = true
+			}
+		}
+
+		drawATPACone := drawATPAMonitor || drawATPAWarning || drawATPAAlert
+
+		// TI 6191.409 6-160: a manual TPA cone in an ATPA pair is enlarged to
+		// at least the allowable minimum. If an ATPA cone is actually displayed,
+		// its own length is exactly the allowable minimum and it supersedes the
+		// manual TPA cone. A Warning/Alert condition with colored in-trail data
+		// also inhibits the manual cone even when Warning/Alert Cones are hidden.
+		manualConeLength := state.ConeLength
+		if hasATPA && atpa.MinimumSeparation > 0 && manualConeLength > 0 {
+			manualConeLength = max(manualConeLength, atpa.MinimumSeparation)
+		}
+		inWarningAlert := atpa.Status == atpaStatusWarning || atpa.Status == atpaStatusAlert
+		actualInTrailDisplayed := inTrailTrackEnabled && !perTrackWarnAlertInhibited
+		if drawATPAWarning || drawATPAAlert {
+			actualInTrailDisplayed = true // Warning/Alert Cones force the distance on.
+		}
+		drawManualCone := manualConeLength > 0 && !drawATPACone && !(inWarningAlert && actualInTrailDisplayed)
+		if !drawATPACone && !drawManualCone {
 			continue
 		}
 
-		// A manual TPA Cone is displayed only while the track is moving. Its
-		// vertex is at the target and its axis follows the current velocity.
-		vx, vy := float64(target.Track.VX), float64(target.Track.VY)
-		speed := stdmath.Hypot(vx, vy)
-		if state.ConeLength <= 0 || speed == 0 {
-			continue
+		coneLength := manualConeLength
+		coneColor := baseColor
+		coneLines := baseLines
+		var end redsmath.Vec2
+		if drawATPACone {
+			coneLength = atpa.MinimumSeparation
+			leadPos := transforms.WindowFromLatLon(lead.Track.Lat, lead.Track.Lon)
+			dx, dy := leadPos.X-center.X, leadPos.Y-center.Y
+			norm := float32(stdmath.Hypot(float64(dx), float64(dy)))
+			if norm <= 0 {
+				continue
+			}
+			scale := coneLength * pixelsPerNM / norm
+			end = redsmath.Vec2{X: center.X + dx*scale, Y: center.Y + dy*scale}
+
+			if drawATPAWarning {
+				coneColor = warningColor
+				coneLines = warningLines
+			} else if drawATPAAlert {
+				coneColor = alertColor
+				coneLines = alertLines
+			}
+		} else {
+			// A manual TPA Cone follows current velocity.
+			vx, vy := float64(target.Track.VX), float64(target.Track.VY)
+			speed := stdmath.Hypot(vx, vy)
+			if speed == 0 {
+				continue
+			}
+			east := vx / speed
+			north := vy / speed
+			lonScale := radar.LongitudeScaleFactorForLat(target.Track.Lat)
+			if lonScale == 0 {
+				continue
+			}
+			endLat := target.Track.Lat + north*float64(coneLength)/60
+			endLon := normalizeLongitude(target.Track.Lon + east*float64(coneLength)/(60*lonScale))
+			end = transforms.WindowFromLatLon(endLat, endLon)
 		}
-		east := vx / speed
-		north := vy / speed
-		lonScale := radar.LongitudeScaleFactorForLat(target.Track.Lat)
-		if lonScale == 0 {
-			continue
-		}
-		endLat := target.Track.Lat + north*float64(state.ConeLength)/60
-		endLon := normalizeLongitude(target.Track.Lon + east*float64(state.ConeLength)/(60*lonScale))
-		end := transforms.WindowFromLatLon(endLat, endLon)
+
 		dx, dy := end.X-center.X, end.Y-center.Y
 		norm := float32(stdmath.Hypot(float64(dx), float64(dy)))
 		if norm <= 0 {
 			continue
 		}
-		// VICE/STARS uses a narrow wedge; retain VICE's ten-display-pixel
-		// base width so the presentation remains stable as RANGE changes.
 		px, py := -dy/norm*5, dx/norm*5
 		apex := renderer.PointVertex{X: center.X, Y: center.Y}
 		baseLeft := renderer.PointVertex{X: end.X + px, Y: end.Y + py}
 		baseRight := renderer.PointVertex{X: end.X - px, Y: end.Y - py}
 
-		// Figure 6-24 shows the mileage in a genuine break in the two cone
-		// sides. Do not paint a background-colored mask: that would also
-		// erase weather/maps underneath the label. Instead, clip only the
-		// two sloping sides against the glyph bounds (plus two pixels), while
-		// leaving the transverse end of the cone intact.
 		clippedForMileage := false
 		if p.tpaSizeVisible(state) && fontTexture != 0 {
 			mid := redsmath.Vec2{X: center.X + dx*0.5, Y: center.Y + dy*0.5}
-			label := formatTPADistance(state.ConeLength)
+			label := formatTPADistance(coneLength)
 			if minInk, maxInk, ok := tpaTextInkBounds(p.systemFont, fontSize, label); ok {
 				inkCenter := redsmath.Vec2{
 					X: (minInk.X + maxInk.X) * 0.5,
@@ -809,18 +931,18 @@ func (p *STARSPane) drawTPA(
 					textPos.X+maxInk.X+pad,
 					textPos.Y+maxInk.Y+pad,
 				)
-				addTPALineOutsideRect(lines, apex, baseLeft, exclusion)
-				addTPALineOutsideRect(lines, apex, baseRight, exclusion)
-				text.AddText(label, textPos, textStyle)
+				addTPALineOutsideRect(coneLines, apex, baseLeft, exclusion)
+				addTPALineOutsideRect(coneLines, apex, baseRight, exclusion)
+				text.AddText(label, textPos, renderer.TextStyle{Size: fontSize, Color: coneColor.ToRGBA()})
 				clippedForMileage = true
 			}
 		}
 
 		if !clippedForMileage {
-			lines.AddLine(apex, baseLeft)
-			lines.AddLine(apex, baseRight)
+			coneLines.AddLine(apex, baseLeft)
+			coneLines.AddLine(apex, baseRight)
 		}
-		lines.AddLine(baseLeft, baseRight)
+		coneLines.AddLine(baseLeft, baseRight)
 	}
 
 	x, y, width, height := ctx.PaneFramebufferRect()
@@ -828,9 +950,13 @@ func (p *STARSPane) drawTPA(
 	cb.Viewport(x, y, width, height)
 	cb.Scissor(x, y, width, height)
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
-	cb.SetRGB(color)
 	cb.LineWidth(max(float32(1), ctx.DPIScale))
-	lines.GenerateCommands(cb)
+	cb.SetRGB(baseColor)
+	baseLines.GenerateCommands(cb)
+	cb.SetRGB(warningColor)
+	warningLines.GenerateCommands(cb)
+	cb.SetRGB(alertColor)
+	alertLines.GenerateCommands(cb)
 	if fontTexture != 0 {
 		text.GenerateCommands(cb, fontTexture)
 	}

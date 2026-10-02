@@ -290,9 +290,17 @@ type Preferences struct {
 	DisplayTPASize bool
 
 	// DisplayATPAInTrailDist is the TCW/TDW-wide INTRAIL DIST state from
-	// 6.21.1 and 6.21.17. Single-track *DI commands can inhibit individual
-	// qualifying tracks while this global display is enabled.
+	// 6.21.1 and 6.21.17. Single-track *DE/*DI commands can override it for
+	// individual qualifying tracks.
 	DisplayATPAInTrailDist bool
+
+	// DisplayATPAWarningAlertCones is the TCW/TDW-wide ALERT CONES state
+	// from 6.21.1 and 6.21.13. Figure 6-27 shows it enabled.
+	DisplayATPAWarningAlertCones bool
+
+	// DisplayATPAMonitorCones is the TCW/TDW-wide MONITOR CONES state from
+	// 6.21.1 and 6.21.15. Figure 6-27 shows it inhibited.
+	DisplayATPAMonitorCones bool
 
 	// SelectedBeacons contains Mode 3/A codes or two-digit beacon-code banks
 	// selected for enhanced unassociated-track presentation. TI 6191.409
@@ -391,9 +399,11 @@ func newPreferences(cfg selectedConfig) Preferences {
 		DisplayLDBBeaconCodes: true,
 		// Match VICE/STARS: TPA mileage and ATPA in-trail distance are
 		// enabled by default at a newly initialized display.
-		DisplayTPASize:         true,
-		DisplayATPAInTrailDist: true,
-		SelectedBeacons:        []string{"1200"},
+		DisplayTPASize:               true,
+		DisplayATPAInTrailDist:       true,
+		DisplayATPAWarningAlertCones: true,
+		DisplayATPAMonitorCones:      false,
+		SelectedBeacons:              []string{"1200"},
 	}
 	for i := range prefs.DisplayWeatherLevel {
 		prefs.DisplayWeatherLevel[i] = true

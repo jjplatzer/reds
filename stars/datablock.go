@@ -187,10 +187,18 @@ func (p *STARSPane) drawDatablocks(
 			}
 			line1 := targetDatablockACID(target)
 			line2 := p.targetFullDatablockLine2(target, clockPhase)
-			line3 := p.targetFullDatablockLine3(target, direction, clockPhase)
+			field6, atpaStatus, line3Suffix := p.targetFullDatablockLine3Parts(target, direction, clockPhase)
 			p.addDatablockLine(td, line1, anchor, direction, 0, 0, lineHeight, style)
 			p.addDatablockLine(td, line2, anchor, direction, 1, 0, lineHeight, style)
-			p.addDatablockLine(td, line3, anchor, direction, 2, 0, lineHeight, style)
+
+			field6Style := style
+			switch atpaStatus {
+			case atpaStatusWarning:
+				field6Style.Color = brightness.ScaleRGB(p.colors.ATPAWarning).ToRGBA()
+			case atpaStatusAlert:
+				field6Style.Color = brightness.ScaleRGB(p.colors.ATPAAlert).ToRGBA()
+			}
+			p.addDatablockLineSegments(td, field6, line3Suffix, anchor, direction, 2, 0, lineHeight, field6Style, style)
 
 		case targetDatablockPartial:
 			// Figure 2-22: an ordinary unowned associated track does not show
@@ -356,6 +364,37 @@ func (p *STARSPane) addDatablockLine(
 	// on the leader endpoint, then step later lines downward by one cell.
 	y := anchor.Y - float32(lineHeight)/2 + float32(lineIndex-anchorLine)*float32(lineHeight)
 	td.AddText(text, redsmath.Vec2{X: x, Y: y}, style)
+}
+
+func (p *STARSPane) addDatablockLineSegments(
+	td *renderer.TextDrawBuilder,
+	prefix, suffix string,
+	anchor redsmath.Vec2,
+	direction leaderLineDirection,
+	lineIndex int,
+	anchorLine int,
+	lineHeight int,
+	prefixStyle, suffixStyle renderer.TextStyle,
+) {
+	if p == nil || td == nil || (prefix == "" && suffix == "") {
+		return
+	}
+	full := prefix + suffix
+	width, _ := p.systemFont.MeasureText(full, prefixStyle.Size)
+	x := anchor.X + 4
+	if datablockRightJustified(direction) {
+		x = anchor.X - 4 - float32(width)
+	}
+	y := anchor.Y - float32(lineHeight)/2 + float32(lineIndex-anchorLine)*float32(lineHeight)
+
+	if prefix != "" {
+		td.AddText(prefix, redsmath.Vec2{X: x, Y: y}, prefixStyle)
+		prefixWidth, _ := p.systemFont.MeasureText(prefix, prefixStyle.Size)
+		x += float32(prefixWidth)
+	}
+	if suffix != "" {
+		td.AddText(suffix, redsmath.Vec2{X: x, Y: y}, suffixStyle)
+	}
 }
 
 // VICE right-justifies datablocks for S/SW/W/NW leader orientations. Its
@@ -594,60 +633,80 @@ func targetPartialDatablockLine1(target *redsnet.TaisTarget, clockPhase int) str
 	return padDatablockField(left, 3) + " " + targetDatablockGroundSpeed(target.Track.VX, target.Track.VY)
 }
 
-// targetFullDatablockATPAField implements the INTRAIL DIST portion of Full
-// Data Block field 6. TI 6191.409 Figure 6-25 displays actual in-trail distance
-// to hundredths of a nautical mile. VICE additionally presents NOWGT when the
-// paired track lacks a CWT/weight category; retain that behavior because STARS
-// cannot establish the corresponding ATPA separation requirement.
-func (p *STARSPane) targetFullDatablockATPAField(target *redsnet.TaisTarget, clockPhase int) string {
-	if p == nil || target == nil || target.FlightPlan == nil || !p.currentPrefs().DisplayATPAInTrailDist {
-		return ""
-	}
-	// VICE mirrors the STARS field-6 phase schedule: ATPA data has priority
-	// in phases 1 and 2, remains available behind beacon data in phase 3,
-	// and field 6 is blank in phase 4. REDS does not yet render the FDB
-	// beacon/mismatch alternatives, so phases 1-3 all resolve to ATPA here.
-	if clockPhase == 4 {
-		return ""
+// targetFullDatablockATPAField implements Full Data Block field 6 ATPA data.
+// Figure 6-25 displays actual in-trail distance to hundredths of a nautical
+// mile; Warning distance is caution yellow and Alert distance is orange.
+// Sections 6.21.12/13 specify *TPA when Warning/Alert Cones are inhibited for
+// an individual track, while a TCW/TDW-wide inhibit removes *TPA.
+func (p *STARSPane) targetFullDatablockATPAField(target *redsnet.TaisTarget, clockPhase int) (string, atpaStatus) {
+	if p == nil || target == nil || target.FlightPlan == nil || clockPhase == 4 {
+		return "", atpaStatusUnset
 	}
 	key := targetDisplayStateKey(target)
-	state, ok := p.atpaTrackState(key)
-	if !ok || state.InTrailDistance <= 0 || state.Ineligible {
-		return ""
+	atpa, ok := p.atpaTrackState(key)
+	if !ok || atpa.Ineligible {
+		return "", atpaStatusUnset
 	}
-	if p.tpaState(key).InhibitInTrailDistance {
-		return ""
+	displayState := p.tpaState(key)
+
+	// 6.21.12: a selected-track inhibit is explicitly annunciated as *TPA,
+	// but only while the position-wide Warning/Alert function remains enabled.
+	if p.currentPrefs().DisplayATPAWarningAlertCones &&
+		displayState.DisplayATPAWarnAlert != nil && !*displayState.DisplayATPAWarnAlert {
+		return "*TPA", atpaStatusUnset
 	}
-	if strings.TrimSpace(target.FlightPlan.Category) == "" {
-		return "NOWGT"
+
+	if atpa.InTrailDistance <= 0 {
+		return "", atpaStatusUnset
 	}
-	return fmt.Sprintf("%.2f", state.InTrailDistance)
+
+	showDistance := p.atpaInTrailVisible(displayState)
+	if atpa.Status == atpaStatusWarning || atpa.Status == atpaStatusAlert {
+		// 6.21.16/17: when a Warning or Alert Cone is actually displayed, the
+		// in-trail distance is displayed regardless of its normal inhibit state.
+		volume := p.atpaVolumeForState(atpa)
+		warningAlertAllowed := volume != nil && (p.atpaWarningAlertConeAllowed(target, volume) ||
+			(displayState.DisplayATPAWarnAlert != nil && *displayState.DisplayATPAWarnAlert))
+		if p.atpaWarnAlertVisible(displayState) && warningAlertAllowed {
+			showDistance = true
+		}
+	}
+	if !showDistance {
+		return "", atpaStatusUnset
+	}
+
+	if atpa.MinimumSeparation <= 0 {
+		return "NOWGT", atpaStatusUnset
+	}
+	return fmt.Sprintf("%.2f", atpa.InTrailDistance), atpa.Status
 }
 
-// targetFullDatablockLine3 implements Figure 2-20 fields 6 and 7. Field 6 is
-// ATPA/beacon timeshared data; REDS currently supplies ATPA in-trail distance.
-// Field 7 is assigned altitude. The field-7 indentation follows VICE/STARS:
-// N-through-SE leaders have one separator cell between fields 6 and 7, while
-// right-justified S-through-NW leaders do not.
-func (p *STARSPane) targetFullDatablockLine3(target *redsnet.TaisTarget, direction leaderLineDirection, clockPhase int) string {
+func (p *STARSPane) targetFullDatablockLine3Parts(target *redsnet.TaisTarget, direction leaderLineDirection, clockPhase int) (field6 string, field6Status atpaStatus, suffix string) {
 	if target == nil || target.FlightPlan == nil {
-		return ""
+		return "", atpaStatusUnset, ""
 	}
 
-	atpa := p.targetFullDatablockATPAField(target, clockPhase)
-	field6 := padDatablockField(atpa, 5)
+	atpa, status := p.targetFullDatablockATPAField(target, clockPhase)
+	field6 = padDatablockField(atpa, 5)
 	if target.FlightPlan.AssignedAltitude == 0 {
 		if atpa == "" {
-			return ""
+			return "", status, ""
 		}
-		return strings.TrimRight(field6, " ")
+		return strings.TrimRight(field6, " "), status, ""
 	}
 
 	assigned := fmt.Sprintf("A%03d", target.FlightPlan.AssignedAltitude/100)
 	if datablockRightJustified(direction) {
-		return field6 + assigned
+		return field6, status, assigned
 	}
-	return field6 + " " + assigned
+	return field6, status, " " + assigned
+}
+
+// targetFullDatablockLine3 implements Figure 2-20 fields 6 and 7. Field 6 is
+// ATPA/beacon timeshared data; field 7 is assigned altitude.
+func (p *STARSPane) targetFullDatablockLine3(target *redsnet.TaisTarget, direction leaderLineDirection, clockPhase int) string {
+	field6, _, suffix := p.targetFullDatablockLine3Parts(target, direction, clockPhase)
+	return field6 + suffix
 }
 
 // TAIS flightPlan.type maps to the STARS flight-status field. Current SimpleXML

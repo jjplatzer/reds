@@ -432,8 +432,8 @@ func (d *dcbDrawer) drawAuxPage() {
 }
 
 // drawTPAPage draws the five-button TPA / ATPA submenu from TI 6191.409
-// Rev. 30 Figure 6-27. REDS currently implements ATPA INTRAIL DIST; alert and
-// monitor cones remain disabled until the warning/alert stage is added.
+// Rev. 30 Figure 6-27, including the documented default modalities: mileage,
+// in-trail distance, and Alert Cones enabled; Monitor Cones inhibited.
 func (d *dcbDrawer) drawTPAPage() {
 	p := d.pane
 	ps := p.currentPrefs()
@@ -463,9 +463,29 @@ func (d *dcbDrawer) drawTPAPage() {
 		ps.DisplayATPAInTrailDist = !ps.DisplayATPAInTrailDist
 	})
 
-	// Warning/alert and monitor cones are the next ATPA stage.
-	d.button("ALERT\nCONES\nINHIBTD", buttonFull|buttonDisabled, false, nil)
-	d.button("MONITOR\nCONES\nINHIBTD", buttonFull|buttonDisabled, false, nil)
+	alertFlags := buttonFull
+	if !atpaEnabled {
+		alertFlags |= buttonDisabled
+	}
+	d.button("ALERT\nCONES\n"+onoff(ps.DisplayATPAWarningAlertCones), alertFlags, false, func() {
+		ps.DisplayATPAWarningAlertCones = !ps.DisplayATPAWarningAlertCones
+		for key, state := range p.tpaTracks {
+			state.DisplayATPAWarnAlert = nil
+			p.setTPAState(key, state)
+		}
+	})
+
+	monitorFlags := buttonFull
+	if !atpaEnabled {
+		monitorFlags |= buttonDisabled
+	}
+	d.button("MONITOR\nCONES\n"+onoff(ps.DisplayATPAMonitorCones), monitorFlags, false, func() {
+		ps.DisplayATPAMonitorCones = !ps.DisplayATPAMonitorCones
+		for key, state := range p.tpaTracks {
+			state.DisplayATPAMonitor = nil
+			p.setTPAState(key, state)
+		}
+	})
 	d.button("DONE", buttonFull, false, func() {
 		p.setCommandMode(CommandModeNone)
 	})

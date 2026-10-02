@@ -193,6 +193,52 @@ func init() {
 		return setAllATPAInTrail(p, false)
 	})
 
+	// TI 6191.409 Rev. 30, 6.21.13. Enable/inhibit ATPA Warning and
+	// Alert Cones for this TCW/TDW. This is the master gate for the
+	// corresponding single-track *AE/*AI overrides.
+	setAllATPAWarnAlert := func(p *STARSPane, enabled bool) (CommandStatus, error) {
+		if !p.atpaEnabled() {
+			return CommandStatus{}, ErrSTARSIllegalFunction
+		}
+		p.currentPrefs().DisplayATPAWarningAlertCones = enabled
+		// A position-wide setting applies to all current and future qualifying
+		// tracks. CRC likewise clears its selected-track Warning/Alert
+		// overrides when this setting changes.
+		for key, state := range p.tpaTracks {
+			state.DisplayATPAWarnAlert = nil
+			p.setTPAState(key, state)
+		}
+		return CommandStatus{}, nil
+	}
+	registerCommand(CommandModeNone, "*AE", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return setAllATPAWarnAlert(p, true)
+	})
+	registerCommand(CommandModeNone, "*AI", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return setAllATPAWarnAlert(p, false)
+	})
+
+	// TI 6191.409 Rev. 30, 6.21.15. Enable/inhibit ATPA Monitor Cones
+	// for this TCW/TDW.
+	setAllATPAMonitor := func(p *STARSPane, enabled bool) (CommandStatus, error) {
+		if !p.atpaEnabled() {
+			return CommandStatus{}, ErrSTARSIllegalFunction
+		}
+		p.currentPrefs().DisplayATPAMonitorCones = enabled
+		// As with Warning/Alert Cones, the position-wide command establishes
+		// the current/future setting for all qualifying tracks.
+		for key, state := range p.tpaTracks {
+			state.DisplayATPAMonitor = nil
+			p.setTPAState(key, state)
+		}
+		return CommandStatus{}, nil
+	}
+	registerCommand(CommandModeNone, "*BE", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return setAllATPAMonitor(p, true)
+	})
+	registerCommand(CommandModeNone, "*BI", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return setAllATPAMonitor(p, false)
+	})
+
 }
 
 func parseTPAImpliedCommand(input string) (op byte, distance float32, sizeMode byte, recognized bool, err error) {
@@ -201,11 +247,23 @@ func parseTPAImpliedCommand(input string) (op byte, distance float32, sizeMode b
 		return 0, 0, 0, false, nil
 	}
 
+	if input == "*AE" {
+		return 'A', 0, 'E', true, nil
+	}
+	if input == "*AI" {
+		return 'A', 0, 'I', true, nil
+	}
+	if input == "*BE" {
+		return 'B', 0, 'E', true, nil
+	}
+	if input == "*BI" {
+		return 'B', 0, 'I', true, nil
+	}
 	if input == "*DE" {
-		return 'E', 0, 0, true, nil
+		return 'T', 0, 'E', true, nil
 	}
 	if input == "*DI" {
-		return 'I', 0, 0, true, nil
+		return 'T', 0, 'I', true, nil
 	}
 	if input == "*D+" {
 		return 'D', 0, 0, true, nil
@@ -280,7 +338,8 @@ func (p *STARSPane) applyTPAImpliedCommand(target *redsnet.TaisTarget, op byte, 
 		return nil
 
 	case 'D':
-		if !state.hasGraphic() {
+		atpa, hasATPA := p.atpaTrackState(key)
+		if !state.hasGraphic() && (!hasATPA || atpa.MinimumSeparation <= 0 || atpa.LeadKey == "") {
 			return ErrSTARSIllegalFunction
 		}
 		switch sizeMode {
@@ -301,24 +360,68 @@ func (p *STARSPane) applyTPAImpliedCommand(target *redsnet.TaisTarget, op byte, 
 		p.setTPAState(key, state)
 		return nil
 
-	case 'E', 'I':
-		// 6.21.16: ATPA must be enabled, and the selected track must be
-		// associated, currently qualifying inside an ATPA volume, and
-		// displaying a Full Data Block.
-		if !p.atpaEnabled() {
+	case 'A':
+		// 6.21.12: the position-wide Warning/Alert display must be enabled,
+		// and the selected track must be an associated IFR FDB in an enabled
+		// ATPA approach volume.
+		if !p.atpaEnabled() || !p.currentPrefs().DisplayATPAWarningAlertCones {
 			return ErrSTARSIllegalFunction
 		}
-		if target.FlightPlan == nil {
-			return ErrSTARSIllegalTrack
-		}
-		if _, ok := p.atpaTrackState(key); !ok {
+		atpa, ok := p.atpaTrackState(key)
+		if !ok || atpa.Ineligible || target.FlightPlan == nil {
 			return ErrSTARSIllegalTrack
 		}
 		dbType, _, _ := p.targetDatablockPresentation(target)
 		if dbType != targetDatablockFull {
 			return ErrSTARSIllegalTrack
 		}
-		state.InhibitInTrailDistance = op == 'I'
+		v := sizeMode == 'E'
+		state.DisplayATPAWarnAlert = &v
+		p.setTPAState(key, state)
+		return nil
+
+	case 'B':
+		// 6.21.14: single-track Monitor Cone control requires ATPA and the
+		// TCW/TDW Warning/Alert function to be enabled. The track must be
+		// owned here or adapted for Monitor Cones, qualify in a volume, and
+		// have usable weight/CWT data (i.e. not display NOWGT).
+		if !p.atpaEnabled() || !p.currentPrefs().DisplayATPAWarningAlertCones {
+			return ErrSTARSIllegalFunction
+		}
+		atpa, ok := p.atpaTrackState(key)
+		if !ok || atpa.Ineligible || atpa.MinimumSeparation <= 0 || target.FlightPlan == nil {
+			return ErrSTARSIllegalTrack
+		}
+		volume := p.atpaVolumeForState(atpa)
+		if volume == nil || !p.atpaMonitorConeAllowed(target, volume) {
+			return ErrSTARSIllegalTrack
+		}
+		v := sizeMode == 'E'
+		state.DisplayATPAMonitor = &v
+		p.setTPAState(key, state)
+		return nil
+
+	case 'T':
+		// 6.21.16: ATPA must be enabled, and the selected track must be
+		// associated, currently qualifying inside an ATPA volume, and
+		// displaying a Full Data Block. A single-track setting overrides the
+		// TCW/TDW-wide INTRAIL DIST state.
+		if !p.atpaEnabled() {
+			return ErrSTARSIllegalFunction
+		}
+		if target.FlightPlan == nil {
+			return ErrSTARSIllegalTrack
+		}
+		atpa, ok := p.atpaTrackState(key)
+		if !ok || atpa.Ineligible {
+			return ErrSTARSIllegalTrack
+		}
+		dbType, _, _ := p.targetDatablockPresentation(target)
+		if dbType != targetDatablockFull {
+			return ErrSTARSIllegalTrack
+		}
+		v := sizeMode == 'E'
+		state.DisplayATPAInTrail = &v
 		p.setTPAState(key, state)
 		return nil
 	}

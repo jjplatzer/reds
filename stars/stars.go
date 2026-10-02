@@ -121,7 +121,8 @@ type STARSPane struct {
 	tpaTracks map[string]tpaTrackState
 
 	// atpaTracks is rebuilt from the current TAIS snapshot and adapted ATPA
-	// approach volumes. It holds the current in-trail pairing/distance state.
+	// approach volumes. It holds pairing, minimum separation, and current
+	// Monitor/Warning/Alert state.
 	atpaTracks map[string]atpaTrackState
 
 	// trackRepositions stores TI 6191.409 5.7.3 TRK RPOS presentation state.
@@ -740,8 +741,9 @@ func (p *STARSPane) consumeMouseEvents(
 		}
 	}
 
-	// TI 6191.409 Rev. 30, 6.21.2-6.21.10 manual TPA commands and
-	// 6.21.16 single-track ATPA INTRAIL DIST enable/inhibit.
+	// TI 6191.409 Rev. 30, 6.21.2-6.21.10 manual TPA commands plus
+	// single-track ATPA Warning/Alert, Monitor, and INTRAIL DIST overrides
+	// (6.21.12, 6.21.14, and 6.21.16).
 	// The keyboard portion remains in the Preview Area while the operator slews
 	// to a target and selects the left trackball button. These commands are
 	// repetitive, so a successful selection does not clear the entry.

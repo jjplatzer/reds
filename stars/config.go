@@ -50,7 +50,15 @@ type atpaVolumeConfig struct {
 	TwoPointFiveApproachDistance *float64               `json:"twoPointFiveApproachDistance"`
 	TwoPointFiveApproachEnabled  bool                   `json:"twoPointFiveApproachEnabled"`
 	Scratchpads                  []atpaScratchpadConfig `json:"scratchpads"`
+	TCPs                         []atpaTCPDisplayConfig `json:"tcps"`
 	ExcludedTCPIDs               []string               `json:"excludedTcpIds"`
+}
+
+type atpaTCPDisplayConfig struct {
+	ID       string          `json:"id"`
+	TCPID    string          `json:"tcpId"`
+	TCP      string          `json:"tcp"`
+	ConeType json.RawMessage `json:"coneType"`
 }
 
 type atpaScratchpadConfig struct {
