@@ -239,6 +239,25 @@ func init() {
 		return setAllATPAMonitor(p, false)
 	})
 
+	// TI 6191.409 Rev. 30, 6.21.18. <MULTI FUNC>, <+>, <ENTER>
+	// displays the ATPA Approach Volumes disabled since the last configuration
+	// plan change. The display is local to this TCW/TDW; the volume enable
+	// state itself remains the shared site state controlled by 2ATPA...E/I.
+	registerCommand(CommandModeMultiFunc, "+", func(p *STARSPane, args []any) (CommandStatus, error) {
+		if !p.atpaEnabled() {
+			return CommandStatus{}, ErrSTARSIllegalFunction
+		}
+		disabled := make([]string, 0, len(p.config.Facility.ATPAVolumes))
+		for i := range p.config.Facility.ATPAVolumes {
+			volume := &p.config.Facility.ATPAVolumes[i]
+			id := atpaVolumeID(volume)
+			if id != "" && !p.atpaVolumeEnabled(volume) {
+				disabled = append(disabled, id)
+			}
+		}
+		return CommandStatus{Output: strings.Join(disabled, " ")}, nil
+	})
+
 }
 
 func parseTPAImpliedCommand(input string) (op byte, distance float32, sizeMode byte, recognized bool, err error) {

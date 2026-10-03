@@ -10,11 +10,14 @@ import (
 	"github.com/juliusplatzer/reds/stars/assets"
 )
 
-const zMouseCursor = renderer.Z(1000)
+const (
+	zMouseCursor   = renderer.Z(1000)
+	dcbCursorScale = float32(1)
+)
 
-// applyCursor selects whether the platform cursor or the STARS scope cursor
-// should be visible. VICE leaves the normal OS arrow over the DCB and uses the
-// STARS crosshair everywhere else inside the scope.
+// applyCursor selects whether the platform cursor or a STARS cursor should be
+// visible. The scope uses the STARS keyboard cursor; the DCB uses the Solaris
+// OPEN LOOK basic pointer from the original cursor font.
 func (p *STARSPane) applyCursor(ctx *panes.Context) {
 	if p == nil || ctx == nil || ctx.Platform == nil {
 		return
@@ -25,12 +28,12 @@ func (p *STARSPane) applyCursor(ctx *panes.Context) {
 	}
 
 	paneLocal := redsmath.RectFromSize(ctx.PaneRect.Width(), ctx.PaneRect.Height())
-	if !paneLocal.Contains(ctx.Mouse.Pos) || p.mouseOverDCB(ctx) {
+	if !paneLocal.Contains(ctx.Mouse.Pos) {
 		ctx.Platform.ClearCursorOverride()
 		return
 	}
 
-	if cursor := p.scopeCursor(); cursor != nil {
+	if cursor, _ := p.activeCursor(ctx); cursor != nil {
 		ctx.Platform.SetCursorHiddenOverride()
 		return
 	}
@@ -49,12 +52,25 @@ func (p *STARSPane) scopeCursor() *renderer.CursorBitmap {
 	return cursor
 }
 
-func (p *STARSPane) scopeCursorTexture(r renderer.Renderer) renderer.TextureID {
-	if p == nil || r == nil {
+// activeCursor returns the cursor under the mouse and its presentation scale.
+// Keep the authentic OPEN LOOK DCB cursor at its native 18x18 source+mask
+// size so it can be compared directly with the 2x presentation.
+func (p *STARSPane) activeCursor(ctx *panes.Context) (*renderer.CursorBitmap, float32) {
+	if p == nil || ctx == nil {
+		return nil, 1
+	}
+	if p.mouseOverDCB(ctx) {
+		cursor, _ := assets.StarsCursor("dcb_cursor_0")
+		return cursor, dcbCursorScale
+	}
+	return p.scopeCursor(), 1
+}
+
+func (p *STARSPane) cursorTextureFor(r renderer.Renderer, cursor *renderer.CursorBitmap) renderer.TextureID {
+	if p == nil || r == nil || cursor == nil {
 		return 0
 	}
-	size := max(0, min(p.currentPrefs().CharSize.Datablocks, 4))
-	assetName := "keyboard_1_" + strconv.Itoa(size)
+	assetName := cursor.Name
 	if p.cursorTexture != 0 && p.cursorTextureAsset == assetName {
 		return p.cursorTexture
 	}
@@ -63,20 +79,17 @@ func (p *STARSPane) scopeCursorTexture(r renderer.Renderer) renderer.TextureID {
 		p.cursorTexture = 0
 	}
 
-	cursor := p.scopeCursor()
-	if cursor == nil {
-		p.cursorTextureAsset = ""
-		return 0
-	}
 	p.cursorTexture = r.CreateTextureRGBA(cursor.Width, cursor.Height, cursor.RGBABytes(), true)
 	if p.cursorTexture != 0 {
 		p.cursorTextureAsset = assetName
+	} else {
+		p.cursorTextureAsset = ""
 	}
 	return p.cursorTexture
 }
 
 func (p *STARSPane) renderCursor(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
-	if p == nil || ctx == nil || zcb == nil || ctx.Mouse == nil || p.mouseOverDCB(ctx) {
+	if p == nil || ctx == nil || zcb == nil || ctx.Mouse == nil {
 		return
 	}
 
@@ -85,11 +98,11 @@ func (p *STARSPane) renderCursor(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		return
 	}
 
-	cursor := p.scopeCursor()
+	cursor, scale := p.activeCursor(ctx)
 	if cursor == nil {
 		return
 	}
-	textureID := p.scopeCursorTexture(ctx.Renderer)
+	textureID := p.cursorTextureFor(ctx.Renderer, cursor)
 	if textureID == 0 {
 		return
 	}
@@ -102,10 +115,12 @@ func (p *STARSPane) renderCursor(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.SetRGBA(renderer.RGBA{R: 1, G: 1, B: 1, A: 1})
 
 	mouse := ctx.Mouse.Pos
-	left := float32(stdmath.Floor(float64(mouse.X - float32(cursor.Hotspot[0]))))
-	top := float32(stdmath.Floor(float64(mouse.Y - float32(cursor.Hotspot[1]))))
-	right := left + float32(cursor.Width)
-	bottom := top + float32(cursor.Height)
+	hotspotX := float32(cursor.Hotspot[0]) * scale
+	hotspotY := float32(cursor.Hotspot[1]) * scale
+	left := float32(stdmath.Floor(float64(mouse.X - hotspotX)))
+	top := float32(stdmath.Floor(float64(mouse.Y - hotspotY)))
+	right := left + float32(cursor.Width)*scale
+	bottom := top + float32(cursor.Height)*scale
 
 	builder := renderer.GetTexturedTrianglesBuilder()
 	builder.AddQuad(
