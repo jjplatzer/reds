@@ -85,6 +85,62 @@ func (p *STARSPane) targetSnapshot() redsnet.TaisSnapshot {
 	)
 }
 
+func targetWithoutCoastPhase2(snapshot redsnet.TaisSnapshot) redsnet.TaisSnapshot {
+	if len(snapshot.Targets) == 0 {
+		return snapshot
+	}
+	out := snapshot
+	out.Targets = make([]redsnet.TaisTarget, 0, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		if snapshot.Targets[i].CoastPhase >= redsnet.TaisCoastPhase2 {
+			continue
+		}
+		out.Targets = append(out.Targets, snapshot.Targets[i])
+	}
+	return out
+}
+
+func targetOutsideCoastSuspendList(snapshot redsnet.TaisSnapshot) redsnet.TaisSnapshot {
+	if len(snapshot.Targets) == 0 {
+		return snapshot
+	}
+	out := snapshot
+	out.Targets = make([]redsnet.TaisTarget, 0, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if target.CoastPhase >= redsnet.TaisCoastPhase2 ||
+			(target.FlightPlan != nil && target.FlightPlan.Suspended) {
+			continue
+		}
+		out.Targets = append(out.Targets, *target)
+	}
+	return out
+}
+
+// radarTargetSnapshot implements the Coast Phase 2 presentation from TI
+// 6191.409 Rev. 30 Table 2-23. Ordinary Phase 2 tracks leave the radar
+// display and are represented by the Coast/Suspend List. A special-condition
+// track remains at its last valid position/data block until the condition is
+// acknowledged (or surveillance returns).
+func (p *STARSPane) radarTargetSnapshot(snapshot redsnet.TaisSnapshot) redsnet.TaisSnapshot {
+	if len(snapshot.Targets) == 0 {
+		return snapshot
+	}
+	out := snapshot
+	out.Targets = make([]redsnet.TaisTarget, 0, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if target.CoastPhase < redsnet.TaisCoastPhase2 {
+			out.Targets = append(out.Targets, *target)
+			continue
+		}
+		if _, special := targetSpecialConditionIndicator(target); special && !p.targetSPCAcknowledged(target) {
+			out.Targets = append(out.Targets, *target)
+		}
+	}
+	return out
+}
+
 // closestSlewTarget mirrors VICE's 20-pixel target slew tolerance. Only
 // surveillance positions are considered; data-block text itself is not a separate
 // hit target for this implied command.

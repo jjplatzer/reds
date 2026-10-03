@@ -51,6 +51,12 @@ const (
 	TaisFeedName        = "tais"
 )
 
+const (
+	TaisCoastPhaseNone = iota
+	TaisCoastPhase1
+	TaisCoastPhase2
+)
+
 // TaisFrame is the protocol-v1 envelope emitted by the REDS TAIS service.
 // Snapshot frames carry Targets, update frames carry Target, and remove frames
 // carry Key. The client validates protocol/feed/revision before mutating state.
@@ -66,14 +72,16 @@ type TaisFrame struct {
 }
 
 type TaisTarget struct {
-	Key          string            `json:"key"`
-	Facility     string            `json:"facility"`
-	ReceivedAt   time.Time         `json:"receivedAt,omitempty"`
-	RecordMeta   *TaisRecordMeta   `json:"recordMeta,omitempty"`
-	Track        TaisTrack         `json:"track"`
-	FlightPlan   *TaisFlightPlan   `json:"flightPlan,omitempty"`
-	EnhancedData *TaisEnhancedData `json:"enhancedData,omitempty"`
-	History      []TaisHistory     `json:"history,omitempty"`
+	Key           string            `json:"key"`
+	Facility      string            `json:"facility"`
+	ReceivedAt    time.Time         `json:"receivedAt,omitempty"`
+	RecordMeta    *TaisRecordMeta   `json:"recordMeta,omitempty"`
+	CoastPhase    int               `json:"coastPhase,omitempty"`
+	CoastPhase2At time.Time         `json:"coastPhase2At,omitempty"`
+	Track         TaisTrack         `json:"track"`
+	FlightPlan    *TaisFlightPlan   `json:"flightPlan,omitempty"`
+	EnhancedData  *TaisEnhancedData `json:"enhancedData,omitempty"`
+	History       []TaisHistory     `json:"history,omitempty"`
 }
 
 type TaisRecordMeta struct {

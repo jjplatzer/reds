@@ -117,6 +117,16 @@ type STARSPane struct {
 	// receiving TCP as though it already owned the track.
 	taisOwnership map[string]taisOwnershipState
 
+	// Coast/Suspend tab line numbers are system-provided in real STARS/CRC.
+	// TAIS does not carry them yet, so REDS keeps a display-local 0..99
+	// allocator for suspended-list presentation until authoritative line-number
+	// data is added to the feed.
+	coastSuspendLineNumbers   map[string]int
+	coastSuspendFirstSeen     map[string]uint64
+	coastSuspendFrozenAtEntry map[string]bool
+	coastSuspendSequence      uint64
+	coastSuspendNextLine      int
+
 	// tpaTracks stores manual TPA J-Ring/Cone state local to this TCW/TDW.
 	tpaTracks map[string]tpaTrackState
 
@@ -450,23 +460,38 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 
 	p.processKeyboardInput(ctx)
 	transforms := p.scopeTransformations(ctx)
-	targets := p.targetSnapshot()
+	allTargets := p.targetSnapshot()
 	now := time.Now()
-	p.updateTaisOwnership(targets, now)
+	p.updateTaisOwnership(allTargets, now)
+
+	// Coast Phase 2 removes an ordinary track from the radar display and its
+	// TPA/ATPA processing, but the retained server record is still needed for
+	// the Coast/Suspend List. Keep separate snapshots rather than deleting the
+	// source target at Total Coast Time.
+	activeTargets := targetWithoutCoastPhase2(allTargets)
 	// ATPA is system processing derived from the authoritative surveillance
 	// positions, not from any local TRK RPOS display relocation.
-	p.updateATPAInTrail(targets)
+	p.updateATPAInTrail(activeTargets)
 	// TRK RPOS is local display state layered on top of the authoritative TAIS
-	// snapshot. Apply it before pruning other display-keyed state so TPA and
-	// leader-direction state can follow a repositioned Full Data Block.
-	p.pruneTrackRepositions(targets)
+	// snapshot. Entering Coast Phase 2 also removes local display-only target
+	// state such as TPA, quick-look, and manual leader direction.
+	p.pruneTrackRepositions(activeTargets)
+	p.pruneSingleTrackQuickLook(activeTargets)
+	p.pruneSingleTrackLeaderDirections(activeTargets)
+	p.pruneLDBBeaconReadouts(activeTargets, now)
+	// Preserve manual TPA state while a track is in the Coast/Suspend List.
+	// Figure 2-30 removes the J-ring/cone from presentation while listed, but
+	// requires it to redisplay automatically if the flight plan associates to
+	// the track again. Only a true source removal should discard that state.
+	p.pruneTPAState(allTargets)
+	p.pruneRequestedAltitudeDisplayOverrides(activeTargets)
+
+	// SPC acknowledgement must survive while a Phase 2 special-condition track
+	// remains visible at its last valid position. Other Phase 2 tracks are
+	// excluded from the radar-facing snapshot below.
+	p.pruneSPCAcknowledgements(allTargets)
+	targets := p.radarTargetSnapshot(allTargets)
 	targets = p.applyTrackRepositions(targets)
-	p.pruneSingleTrackQuickLook(targets)
-	p.pruneSingleTrackLeaderDirections(targets)
-	p.pruneLDBBeaconReadouts(targets, now)
-	p.pruneTPAState(targets)
-	p.pruneSPCAcknowledgements(targets)
-	p.pruneRequestedAltitudeDisplayOverrides(targets)
 	p.consumeMouseEvents(ctx, transforms, targets)
 
 	p.drawNexrad(ctx, zcb, transforms)
@@ -477,7 +502,9 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
 	p.drawPredictedTrackLines(ctx, zcb, transforms, targets)
 	p.drawRangeBearingLines(ctx, zcb, transforms, targets)
-	p.drawTPA(ctx, zcb, transforms, targets)
+	// TPA graphics are suppressed while a track is in the Coast/Suspend List,
+	// while their local state is retained above for automatic redisplay.
+	p.drawTPA(ctx, zcb, transforms, targetOutsideCoastSuspendList(targets))
 	p.drawTargets(ctx, zcb, transforms, targets)
 	p.drawTargetLeaderLines(ctx, zcb, transforms, targets, now)
 	p.drawTargetPositionSymbols(ctx, zcb, transforms, targets, now)
@@ -488,7 +515,8 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
-	p.drawTowerLists(ctx, zcb, targets)
+	p.drawCoastSuspendList(ctx, zcb, allTargets)
+	p.drawTowerLists(ctx, zcb, activeTargets)
 	p.drawVideoMapsList(ctx, zcb)
 	p.applyCursor(ctx)
 	p.renderCursor(ctx, zcb)
@@ -838,6 +866,25 @@ func (p *STARSPane) consumeMouseEvents(
 					mouse.Pos.Y / h,
 				}
 				ps.VideoMapsList.Visible = true
+			}
+			p.resetCommand()
+		}
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 4.9.6 Move and show aircraft list. After
+	// <MULTI FUNC>, T, C, a left-trackball click relocates the top-left
+	// corner of the Coast/Suspend list and makes it visible. TC<ENTER> is the
+	// separate 4.9.11 hide/show operation registered in cmdsetup.go.
+	if p.commandMode == CommandModeMultiFunc && p.multiFuncPrefix+p.commandInput == "TC" {
+		if mouse.WasPressed(platform.MouseButtonLeft) {
+			w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+			if w > 0 && h > 0 {
+				ps.CoastSuspendList.Position = [2]float32{
+					mouse.Pos.X / w,
+					mouse.Pos.Y / h,
+				}
+				ps.CoastSuspendList.Visible = true
 			}
 			p.resetCommand()
 		}

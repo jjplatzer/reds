@@ -31,6 +31,10 @@ public final class TrackCache {
     public static final double STARS_DEFAULT_HISTORY_RATE_SECONDS = 4.5;
     public static final int DEFAULT_RAW_HISTORY_CAPACITY = 64;
 
+    public static final int COAST_PHASE_NONE = 0;
+    public static final int COAST_PHASE_1 = 1;
+    public static final int COAST_PHASE_2 = 2;
+
     private final int historyCapacity;
     private final Map<String, State> tracks = new HashMap<>();
 
@@ -59,7 +63,14 @@ public final class TrackCache {
             }
             if (time.equals(state.lastPositionTime)) {
                 duplicatePositions++;
-                state.current = obs; // Flight-plan fields may still have changed.
+                state.current = obs; // Flight-plan/status fields may still have changed.
+                // TAIS exposes the source track status active/coast/drop. A same-MRT
+                // coast status is sufficient to enter Phase 1, but a same-MRT active
+                // flight-plan update must not resurrect a Phase 2 track; only a newer
+                // radar position does that.
+                if (isCoast(track.status()) && state.coastPhase < COAST_PHASE_2) {
+                    state.coastPhase = COAST_PHASE_1;
+                }
                 return;
             }
         }
@@ -70,12 +81,25 @@ public final class TrackCache {
         if (Boolean.TRUE.equals(track.newTrack()) && state.current != null) {
             state.history.clear();
             state.lastPositionTime = null;
+            state.coastPhase = COAST_PHASE_NONE;
+            state.coastPhase2At = null;
             historyResets++;
         }
 
         state.current = obs;
 
-        if (!track.hasPosition()) return;
+        if (!track.hasPosition()) {
+            if (isCoast(track.status()) && state.coastPhase < COAST_PHASE_2) {
+                state.coastPhase = COAST_PHASE_1;
+            }
+            return;
+        }
+
+        // A newer surveillance position is a STARS re-association and therefore
+        // removes the target from Coast Phase 2. If TAIS itself already labels
+        // that newer report as coast, start it in Phase 1 instead.
+        state.coastPhase = isCoast(track.status()) ? COAST_PHASE_1 : COAST_PHASE_NONE;
+        state.coastPhase2At = null;
 
         state.history.addLast(HistoryPosition.from(obs));
         state.lastPositionTime = time;
@@ -112,29 +136,55 @@ public final class TrackCache {
         return state == null ? null : state.current;
     }
 
-    /** Remove a dropped STARS track from current state and its raw history. */
+    /** Remove a source-declared dropped STARS track from current state and history. */
     public boolean remove(String targetKey) {
         return tracks.remove(targetKey) != null;
     }
 
     /**
-     * Remove radar tracks that have not received a newer position for the
-     * configured STARS total-coast interval. Flight-plan-only/pseudo records
-     * have no lastPositionTime and are intentionally not aged out here.
-     *
-     * The operator manual defines Coast Phase 2 as beginning after the Total
-     * Coast Time VSP expires (default 30 seconds), at which point the track is
-     * removed from the radar display. A later newer position may create the
-     * track again, matching STARS redisplay after radar contact returns.
+     * Advance stale radar tracks into STARS Coast Phase 2 after Total Coast
+     * Time. Phase 2 is deliberately retained in current state: TI 6191.409
+     * moves the track from the radar display to the Coast/Suspend List at this
+     * point; it does not define a second display-side expiration timer. TAIS
+     * exposes a distinct source track status of "drop", and that later source
+     * event is what removes the record from this cache.
      */
-    public List<String> removeCoastedOutTracks(Instant now, Duration totalCoastTime) {
+    public List<SnapshotTarget> advanceCoastPhases(Instant now, Duration totalCoastTime) {
         if (totalCoastTime.isNegative() || totalCoastTime.isZero()) {
             throw new IllegalArgumentException("total coast time must be positive");
         }
 
+        List<SnapshotTarget> transitioned = new ArrayList<>();
+        for (State state : tracks.values()) {
+            if (state.current == null || state.lastPositionTime == null || state.coastPhase >= COAST_PHASE_2) {
+                continue;
+            }
+            Instant phase2At = state.lastPositionTime.plus(totalCoastTime);
+            if (phase2At.isAfter(now)) {
+                continue;
+            }
+            state.coastPhase = COAST_PHASE_2;
+            state.coastPhase2At = phase2At;
+            transitioned.add(snapshotTarget(state));
+        }
+
+        transitioned.sort((a, b) -> a.target().targetKey().compareTo(b.target().targetKey()));
+        return List.copyOf(transitioned);
+    }
+
+    /**
+     * Legacy destructive coast-expiry API retained for source compatibility
+     * with older callers/tests. Live TrackStore no longer uses this method;
+     * production STARS behavior uses advanceCoastPhases() and waits for the
+     * source TAIS drop event before final removal.
+     */
+    @Deprecated(forRemoval = true)
+    public List<String> removeCoastedOutTracks(Instant now, Duration totalCoastTime) {
+        if (totalCoastTime.isNegative() || totalCoastTime.isZero()) {
+            throw new IllegalArgumentException("total coast time must be positive");
+        }
         Instant cutoff = now.minus(totalCoastTime);
         List<String> removed = new ArrayList<>();
-
         var iterator = tracks.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, State> entry = iterator.next();
@@ -144,9 +194,13 @@ public final class TrackCache {
                 iterator.remove();
             }
         }
-
         removed.sort(String::compareTo);
         return List.copyOf(removed);
+    }
+
+    public SnapshotTarget snapshotTarget(String targetKey) {
+        State state = tracks.get(targetKey);
+        return state == null || state.current == null ? null : snapshotTarget(state);
     }
 
     /**
@@ -158,19 +212,31 @@ public final class TrackCache {
 
         for (State state : tracks.values()) {
             if (state.current == null) continue;
-            out.add(new SnapshotTarget(
-                    state.current,
-                    List.copyOf(new ArrayList<>(state.history))
-            ));
+            out.add(snapshotTarget(state));
         }
 
         out.sort((a, b) -> a.target().targetKey().compareTo(b.target().targetKey()));
         return List.copyOf(out);
     }
 
+    private SnapshotTarget snapshotTarget(State state) {
+        return new SnapshotTarget(
+                state.current,
+                List.copyOf(new ArrayList<>(state.history)),
+                state.coastPhase,
+                state.coastPhase2At
+        );
+    }
+
+    private static boolean isCoast(String status) {
+        return status != null && status.equalsIgnoreCase("coast");
+    }
+
     public record SnapshotTarget(
             TaisObservation target,
-            List<HistoryPosition> history
+            List<HistoryPosition> history,
+            int coastPhase,
+            Instant coastPhase2At
     ) {
         public SnapshotTarget {
             history = List.copyOf(history);
@@ -189,6 +255,8 @@ public final class TrackCache {
     private static final class State {
         TaisObservation current;
         Instant lastPositionTime;
+        int coastPhase;
+        Instant coastPhase2At;
         final ArrayDeque<HistoryPosition> history = new ArrayDeque<>();
     }
 }

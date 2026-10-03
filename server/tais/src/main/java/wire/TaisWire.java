@@ -12,8 +12,9 @@ import java.util.List;
 /**
  * Stable protocol-v1 JSON for the REDS TAIS WebSocket.
  *
- * The wire representation stays close to the normalized SimpleXML model and
- * deliberately performs no surveillance fusion or display-specific inference.
+ * The wire representation stays close to the normalized SimpleXML model. The
+ * only derived lifecycle fields are STARS coast phase / Phase-2 entry time,
+ * which the server must retain so clients can implement the Coast/Suspend List.
  */
 public final class TaisWire {
 
@@ -29,7 +30,7 @@ public final class TaisWire {
     ) {
         JsonArray array = new JsonArray();
         for (TrackCache.SnapshotTarget target : targets) {
-            array.add(target(target.target(), target.history(), true));
+            array.add(target(target, true));
         }
 
         return envelope("snapshot", revision)
@@ -37,9 +38,9 @@ public final class TaisWire {
                 .put("targets", array);
     }
 
-    public static JsonObject update(long revision, TaisObservation observation) {
+    public static JsonObject update(long revision, TrackCache.SnapshotTarget target) {
         return envelope("update", revision)
-                .put("target", target(observation, List.of(), false));
+                .put("target", target(target, false));
     }
 
     public static JsonObject remove(long revision, String key) {
@@ -55,14 +56,14 @@ public final class TaisWire {
                 .put("revision", revision);
     }
 
-    private static JsonObject target(
-            TaisObservation observation,
-            List<HistoryPosition> history,
-            boolean includeHistory
-    ) {
+    private static JsonObject target(TrackCache.SnapshotTarget snapshot, boolean includeHistory) {
+        TaisObservation observation = snapshot.target();
+        List<HistoryPosition> history = snapshot.history();
         JsonObject out = new JsonObject()
                 .put("key", observation.targetKey())
-                .put("facility", observation.facility());
+                .put("facility", observation.facility())
+                .put("coastPhase", snapshot.coastPhase());
+        putInstant(out, "coastPhase2At", snapshot.coastPhase2At());
 
         putInstant(out, "receivedAt", observation.receivedAt());
 

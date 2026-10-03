@@ -27,7 +27,7 @@ public final class TrackStore extends AbstractVerticle {
     private Duration totalCoastTime;
     private long revision;
     private long removals;
-    private long coastRemovals;
+    private long coastPhase2Transitions;
 
     @Override
     public void start() {
@@ -64,9 +64,9 @@ public final class TrackStore extends AbstractVerticle {
                 String key = obs.targetKey();
 
                 // TAIS distinguishes a dropped track from a coasting track.
-                // Dropped tracks disappear immediately. Coasting tracks are
-                // retained through the STARS Total Coast Time and are removed
-                // by the periodic sweep below.
+                // A source-declared drop is the terminal lifecycle event. Coast
+                // Phase 2 is retained so the client can move the flight from the
+                // radar window into the Coast/Suspend List.
                 if (isDrop(obs.track().status())) {
                     if (cache.remove(key)) {
                         removals++;
@@ -78,49 +78,40 @@ public final class TrackStore extends AbstractVerticle {
                     continue;
                 }
 
-                // Do not resurrect already-coasted-out radar positions from a
-                // delayed/backlogged TAIS message. Flight-plan-only records are
-                // exempt because they are not radar tracks.
-                if (isAlreadyCoastedOut(obs, Instant.now())) {
-                    continue;
-                }
-
                 cache.accept(obs);
 
                 // TrackCache intentionally ignores out-of-order reports. For
                 // accepted reports (including same-MRT flight-plan changes),
                 // current() is the exact observation reference just supplied.
+                // Serialize the cache snapshot so coast-phase state accompanies
+                // ordinary TAIS updates without inventing a second feed.
                 if (cache.current(key) == obs) {
-                    vertx.eventBus().publish(
-                            EVENT_ADDRESS,
-                            TaisWire.update(++revision, obs)
-                    );
+                    TrackCache.SnapshotTarget target = cache.snapshotTarget(key);
+                    if (target != null) {
+                        vertx.eventBus().publish(
+                                EVENT_ADDRESS,
+                                TaisWire.update(++revision, target)
+                        );
+                    }
                 }
             }
         });
 
-        vertx.setPeriodic(coastSweepIntervalMs, ignored -> evictCoastedOutTracks());
+        vertx.setPeriodic(coastSweepIntervalMs, ignored -> advanceCoastPhases());
         vertx.setPeriodic(statsIntervalMs, ignored -> printStats());
         System.out.println("[TAIS store] Raw history capacity=" + historyCapacity + " positions/track" +
                 " totalCoastTime=" + totalCoastTimeMs + "ms" +
                 " coastSweep=" + coastSweepIntervalMs + "ms");
     }
 
-    private void evictCoastedOutTracks() {
-        for (String key : cache.removeCoastedOutTracks(Instant.now(), totalCoastTime)) {
-            removals++;
-            coastRemovals++;
+    private void advanceCoastPhases() {
+        for (TrackCache.SnapshotTarget target : cache.advanceCoastPhases(Instant.now(), totalCoastTime)) {
+            coastPhase2Transitions++;
             vertx.eventBus().publish(
                     EVENT_ADDRESS,
-                    TaisWire.remove(++revision, key)
+                    TaisWire.update(++revision, target)
             );
         }
-    }
-
-    private boolean isAlreadyCoastedOut(TaisObservation obs, Instant now) {
-        if (!obs.track().hasPosition()) return false;
-        Instant mrtTime = obs.track().mrtTime();
-        return mrtTime != null && !mrtTime.isAfter(now.minus(totalCoastTime));
     }
 
     private void printStats() {
@@ -132,7 +123,7 @@ public final class TrackStore extends AbstractVerticle {
                 " outOfOrder=" + stats.outOfOrderPositions() +
                 " resets=" + stats.historyResets() +
                 " removed=" + removals +
-                " coastRemoved=" + coastRemovals +
+                " coastPhase2=" + coastPhase2Transitions +
                 " revision=" + revision);
     }
 

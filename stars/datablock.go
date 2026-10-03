@@ -448,7 +448,20 @@ func targetDatablockAltitudeGroundSpeed(target *redsnet.TaisTarget) string {
 	if target == nil {
 		return ""
 	}
-	return targetDatablockAltitude(target.Track.ReportedAltitude) + " " + targetDatablockGroundSpeed(target.Track.VX, target.Track.VY)
+	return targetDatablockAltitudeField(target) + " " + targetDatablockGroundSpeed(target.Track.VX, target.Track.VY)
+}
+
+// TI 6191.409 Rev. 30 Table 2-23 replaces the data-block altitude field
+// with CST during Coast Phase 1. A special-condition track retained on the
+// radar display in Phase 2 therefore keeps its last coasting presentation.
+func targetDatablockAltitudeField(target *redsnet.TaisTarget) string {
+	if target == nil {
+		return ""
+	}
+	if target.CoastPhase >= redsnet.TaisCoastPhase1 {
+		return "CST"
+	}
+	return targetDatablockAltitude(target.Track.ReportedAltitude)
 }
 
 // STARS displays Mode-C altitude in hundreds of feet. Follow VICE's rounding
@@ -555,7 +568,7 @@ func (p *STARSPane) targetFullDatablockField34(target *redsnet.TaisTarget, clock
 		return ""
 	}
 
-	altitude := targetDatablockAltitude(target.Track.ReportedAltitude)
+	altitude := targetDatablockAltitudeField(target)
 	// An Unsupported FDB has no surveillance altitude. VICE/STARS therefore
 	// leaves the altitude slot empty unless a timeshared scratchpad occupies it.
 	if isRPOSUnsupportedTarget(target) {
@@ -650,7 +663,7 @@ func targetPartialDatablockLine1(target *redsnet.TaisTarget, clockPhase int) str
 		return ""
 	}
 
-	left := targetDatablockAltitude(target.Track.ReportedAltitude)
+	left := targetDatablockAltitudeField(target)
 	if clockPhase == 2 || clockPhase == 3 {
 		if sp1 := targetPrimaryScratchpad(target); sp1 != "" {
 			left = sp1

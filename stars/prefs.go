@@ -125,9 +125,10 @@ type videoMapsListPreferences struct {
 	Selection videoMapsListSelection
 }
 
-// basicSTARSListPreferences is the per-position state shared by the three
-// tower lists. TI 6191.409 4.9.7/4.9.12/4.9.16 makes location, visibility,
-// and display capacity local TCW/TDW preferences.
+// basicSTARSListPreferences is the per-position state shared by simple
+// STARS system lists. TI 6191.409 4.9.6/4.9.11/4.9.15 and
+// 4.9.7/4.9.12/4.9.16 make location, visibility, and display capacity local
+// TCW/TDW preferences for the Coast/Suspend and Tower lists respectively.
 type basicSTARSListPreferences struct {
 	Position [2]float32
 	Visible  bool
@@ -273,6 +274,7 @@ type Preferences struct {
 	VideoMapsList           videoMapsListPreferences
 	PreviewAreaPosition     [2]float32
 	SSAListPosition         [2]float32
+	CoastSuspendList        basicSTARSListPreferences
 	TowerLists              [3]basicSTARSListPreferences
 	SSAFilter               ssaFilterPreferences
 	AltitudeFilters         altitudeFilterPreferences
@@ -379,6 +381,15 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// equivalent default is (.05, .10). TI 6191.409 4.9.4 allows the
 		// entering keyboard to relocate this position independently.
 		SSAListPosition: [2]float32{ssaDefaultX, ssaDefaultY},
+		// TI 6191.409 does not prescribe an initial Coast/Suspend-list location,
+		// size, or visibility; these are saved preference-set characteristics.
+		// Match VICE's established fallback: five aircraft lines, hidden, at
+		// (.8,.65) in its bottom-left-origin coordinates. REDS uses top-left
+		// screen coordinates, hence the equivalent y value is .35.
+		CoastSuspendList: basicSTARSListPreferences{
+			Position: [2]float32{0.80, 0.35},
+			Lines:    5,
+		},
 		// VICE defaults all three tower lists to five aircraft lines and hidden.
 		// Its normalized pane coordinates use a bottom-left origin; REDS uses
 		// top-left screen coordinates, so (.05,.8)/(.05,.9) become .2/.1.

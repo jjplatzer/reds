@@ -617,6 +617,323 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	cb.DisableScissor()
 }
 
+const coastSuspendTabLineCapacity = 100
+
+type coastSuspendListEntry struct {
+	target           *redsnet.TaisTarget
+	lineNumber       int
+	status           byte
+	frozenBeforeList bool
+}
+
+// coastSuspendListEntries implements TI 6191.409 Rev. 30 section 2.15.2:
+// suspended flights owned by the controller, plus Coast Phase 2 tracks owned
+// by the controller. A center-owned coasting track also appears at a pending
+// receiver and at the previous owner, which maps to REDS' inbound-pending and
+// post-acceptance ownership states.
+//
+// Real STARS tab line numbers are system data (CRC receives them separately as
+// StarsLineNumberDto). The current REDS TAIS parser does not carry an
+// authoritative tab line number, so REDS allocates stable display-local 0..99
+// numbers until that data is available.
+func (p *STARSPane) coastSuspendListEntries(snapshot redsnet.TaisSnapshot) []coastSuspendListEntry {
+	if p == nil || !snapshot.Ready {
+		return nil
+	}
+	if p.coastSuspendLineNumbers == nil {
+		p.coastSuspendLineNumbers = make(map[string]int)
+	}
+	if p.coastSuspendFirstSeen == nil {
+		p.coastSuspendFirstSeen = make(map[string]uint64)
+	}
+	if p.coastSuspendFrozenAtEntry == nil {
+		p.coastSuspendFrozenAtEntry = make(map[string]bool)
+	}
+
+	targets := make(map[string]*redsnet.TaisTarget)
+	statuses := make(map[string]byte)
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if target.FlightPlan == nil || target.FlightPlan.Deleted {
+			continue
+		}
+
+		status := byte(0)
+		if target.FlightPlan.Suspended {
+			// Section 2.15.2 lists suspended flights owned by the controller.
+			if !p.targetOwnedByCurrentTCP(target) {
+				continue
+			}
+			status = 'S'
+		} else if target.CoastPhase >= redsnet.TaisCoastPhase2 {
+			// Center-owned Coast Phase 2 tracks also appear in the pending and
+			// previous owner's Coast/Suspend lists.
+			if !p.targetOwnedByCurrentTCP(target) && !p.targetInboundHandoff(target) &&
+				!p.targetOutboundHandoffAccepted(target) {
+				continue
+			}
+			status = 'C'
+		} else {
+			continue
+		}
+
+		key := targetDisplayStateKey(target)
+		if key == "" {
+			// Flight-plan-only records normally retain a TAIS target key. Keep a
+			// deterministic fallback for feeds where that key is absent.
+			acid := strings.ToUpper(strings.TrimSpace(target.FlightPlan.ACID))
+			if target.FlightPlan.SFPN > 0 {
+				key = fmt.Sprintf("%s:FP:%d", strings.TrimSpace(target.Facility), target.FlightPlan.SFPN)
+			} else if acid != "" {
+				key = strings.TrimSpace(target.Facility) + ":FP:" + acid
+			}
+		}
+		if key == "" {
+			continue
+		}
+		targets[key] = target
+		statuses[key] = status
+	}
+
+	// List-lifetime state is released as soon as a flight leaves the list. If
+	// it later re-enters, it is a newly added entry and receives a new ordering
+	// token (and potentially a new tab line number).
+	for key := range p.coastSuspendLineNumbers {
+		if _, ok := targets[key]; !ok {
+			delete(p.coastSuspendLineNumbers, key)
+		}
+	}
+	for key := range p.coastSuspendFirstSeen {
+		if _, ok := targets[key]; !ok {
+			delete(p.coastSuspendFirstSeen, key)
+			delete(p.coastSuspendFrozenAtEntry, key)
+		}
+	}
+
+	// On a fresh client snapshot several already-existing rows can appear at
+	// once. Coast Phase 2 has an authoritative transition time from the server;
+	// suspended records use the TAIS receipt time as the best available entry
+	// time. The manual requires oldest at the top, newest at the bottom.
+	entryTime := func(key string) time.Time {
+		target := targets[key]
+		if statuses[key] == 'C' && !target.CoastPhase2At.IsZero() {
+			return target.CoastPhase2At
+		}
+		return target.ReceivedAt
+	}
+	var newKeys []string
+	for key := range targets {
+		if _, ok := p.coastSuspendFirstSeen[key]; !ok {
+			newKeys = append(newKeys, key)
+		}
+	}
+	sort.SliceStable(newKeys, func(i, j int) bool {
+		aTime, bTime := entryTime(newKeys[i]), entryTime(newKeys[j])
+		if !aTime.Equal(bTime) {
+			if aTime.IsZero() {
+				return false
+			}
+			if bTime.IsZero() {
+				return true
+			}
+			return aTime.Before(bTime)
+		}
+		a, b := targets[newKeys[i]], targets[newKeys[j]]
+		aacid := strings.ToUpper(strings.TrimSpace(a.FlightPlan.ACID))
+		bacid := strings.ToUpper(strings.TrimSpace(b.FlightPlan.ACID))
+		if aacid != bacid {
+			return aacid < bacid
+		}
+		return newKeys[i] < newKeys[j]
+	})
+	for _, key := range newKeys {
+		p.coastSuspendSequence++
+		p.coastSuspendFirstSeen[key] = p.coastSuspendSequence
+		// Figure 2-30 defines ZZ as a flight that was frozen before entering
+		// the list. Snapshot the flag now instead of letting a later update
+		// retroactively change the list condition.
+		p.coastSuspendFrozenAtEntry[key] = targets[key].Track.Frozen
+	}
+
+	var used [coastSuspendTabLineCapacity]bool
+	for key, line := range p.coastSuspendLineNumbers {
+		if _, ok := targets[key]; !ok || line < 0 || line >= len(used) || used[line] {
+			delete(p.coastSuspendLineNumbers, key)
+			continue
+		}
+		used[line] = true
+	}
+
+	orderedKeys := make([]string, 0, len(targets))
+	for key := range targets {
+		orderedKeys = append(orderedKeys, key)
+	}
+	sort.SliceStable(orderedKeys, func(i, j int) bool {
+		return p.coastSuspendFirstSeen[orderedKeys[i]] < p.coastSuspendFirstSeen[orderedKeys[j]]
+	})
+
+	// Allocate line numbers in list-addition order. STARS has 100 tab line
+	// numbers. When all are occupied the list row's number field is blank; the
+	// corresponding suspended target-symbol behavior can be added when REDS
+	// implements the suspended position symbol itself.
+	for _, key := range orderedKeys {
+		if _, ok := p.coastSuspendLineNumbers[key]; ok {
+			continue
+		}
+		for step := 0; step < coastSuspendTabLineCapacity; step++ {
+			line := (p.coastSuspendNextLine + step) % coastSuspendTabLineCapacity
+			if used[line] {
+				continue
+			}
+			p.coastSuspendLineNumbers[key] = line
+			used[line] = true
+			p.coastSuspendNextLine = (line + 1) % coastSuspendTabLineCapacity
+			break
+		}
+	}
+
+	entries := make([]coastSuspendListEntry, 0, len(orderedKeys))
+	for _, key := range orderedKeys {
+		line := -1
+		if assigned, ok := p.coastSuspendLineNumbers[key]; ok {
+			line = assigned
+		}
+		entries = append(entries, coastSuspendListEntry{
+			target:           targets[key],
+			lineNumber:       line,
+			status:           statuses[key],
+			frozenBeforeList: p.coastSuspendFrozenAtEntry[key],
+		})
+	}
+	return entries
+}
+
+func coastSuspendBeaconCode(entry coastSuspendListEntry) string {
+	target := entry.target
+	if target == nil || target.FlightPlan == nil {
+		return ""
+	}
+	// A coast row represents the last tracked target, so prefer its reported
+	// Mode 3/A. A suspended flight-plan row follows VICE/CRC practice and uses
+	// its assigned code, falling back to the other source only when necessary.
+	if entry.status == 'C' {
+		if code := normalizeBeaconCode(target.Track.ReportedBeaconCode); code != "" {
+			return code
+		}
+		return normalizeBeaconCode(target.FlightPlan.AssignedBeaconCode)
+	}
+	if code := normalizeBeaconCode(target.FlightPlan.AssignedBeaconCode); code != "" {
+		return code
+	}
+	return normalizeBeaconCode(target.Track.ReportedBeaconCode)
+}
+
+func coastSuspendSupplement(entry coastSuspendListEntry) string {
+	target := entry.target
+	if target == nil {
+		return ""
+	}
+
+	// Figure 2-30 defines these conditions directly. Current TAIS exposes enough
+	// state for NT, CST and ZZ, plus ordinary surveillance altitude. It does not
+	// expose a pilot-reported-altitude value/provenance, out-of-range status,
+	// primary-only status, or the specific beacon/IFDT disassociation cause
+	// required for OR, RDR, the '*' altitude suffix, or SDBC. Those values must
+	// remain absent rather than be inferred from unrelated surveillance fields.
+	if entry.status == 'S' && target.CoastPhase >= redsnet.TaisCoastPhase1 {
+		return "CST"
+	}
+	if !taisTargetHasPosition(target) {
+		return "NT"
+	}
+	if entry.frozenBeforeList {
+		return "ZZ"
+	}
+	if target.Track.ReportedAltitude != 0 {
+		return targetDatablockAltitude(target.Track.ReportedAltitude)
+	}
+	return ""
+}
+
+func (p *STARSPane) coastSuspendListText(snapshot redsnet.TaisSnapshot) string {
+	if p == nil {
+		return ""
+	}
+	entries := p.coastSuspendListEntries(snapshot)
+	list := p.currentPrefs().CoastSuspendList
+	if !list.Visible {
+		return ""
+	}
+
+	var text strings.Builder
+	text.WriteString("COAST/SUSPEND\n")
+	limit := min(list.Lines, len(entries))
+	for i := 0; i < limit; i++ {
+		entry := entries[i]
+		target := entry.target
+		acid := strings.ToUpper(strings.TrimSpace(target.FlightPlan.ACID))
+		if len(acid) > 7 {
+			acid = acid[:7]
+		}
+		line := "  "
+		if entry.lineNumber >= 0 {
+			line = fmt.Sprintf("%2d", entry.lineNumber)
+		}
+		fmt.Fprintf(&text, "%s %-7s %c %4s", line, acid, entry.status, coastSuspendBeaconCode(entry))
+		if supplement := coastSuspendSupplement(entry); supplement != "" {
+			text.WriteByte(' ')
+			text.WriteString(supplement)
+		}
+		if i+1 < limit {
+			text.WriteByte('\n')
+		}
+	}
+	return strings.TrimRight(text.String(), "\n")
+}
+
+// drawCoastSuspendList uses the standard STARS list modalities: LISTS
+// character size and brightness, and the green List/List Title color from
+// Appendix B. The title remains visible even when there are no entries.
+func (p *STARSPane) drawCoastSuspendList(ctx *panes.Context, zcb *renderer.ZCmdBuffer, snapshot redsnet.TaisSnapshot) {
+	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
+		return
+	}
+
+	text := p.coastSuspendListText(snapshot)
+	if text == "" {
+		return
+	}
+	w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+	if w <= 0 || h <= 0 {
+		return
+	}
+	fontSize := p.listFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
+	if texture == 0 {
+		return
+	}
+
+	ps := p.currentPrefs()
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zLists)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+
+	td := renderer.GetTextDrawBuilder()
+	td.SetFont(p.systemFont)
+	td.AddText(text, redsmath.Vec2{
+		X: ps.CoastSuspendList.Position[0] * w,
+		Y: ps.CoastSuspendList.Position[1] * h,
+	}, renderer.TextStyle{
+		Size:  fontSize,
+		Color: ps.Brightness.Lists.ScaleRGB(p.colors.List).ToRGBA(),
+	})
+	td.GenerateCommands(cb, texture)
+	renderer.ReturnTextDrawBuilder(td)
+	cb.DisableScissor()
+}
+
 // towerListAirports resolves the three tower-list slots REDS can derive from
 // the current CRC-generated adaptation. Real STARS carries an explicit adapted
 // tower-list identifier/airport assignment; crc2reds does not export that

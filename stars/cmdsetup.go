@@ -35,7 +35,7 @@ func (towerListIDCommandParser) Parse(text string) (any, string, bool, error) {
 	return id, text[end:], true, nil
 }
 
-var errTowerListIllegalParameter = errors.New("ILL PARAM")
+var errListIllegalParameter = errors.New("ILL PARAM")
 
 type towerListLinesCommandParser struct{}
 
@@ -55,9 +55,17 @@ func (towerListLinesCommandParser) Parse(text string) (any, string, bool, error)
 		return nil, text, true, ErrSTARSCommandFormat
 	}
 	if n < 1 || n > 100 {
-		return nil, "", true, errTowerListIllegalParameter
+		return nil, "", true, errListIllegalParameter
 	}
 	return n, "", true, nil
+}
+
+type coastSuspendListLinesCommandParser struct{}
+
+func (coastSuspendListLinesCommandParser) Identifier() string { return "COAST_SUSPEND_LIST_LINES" }
+
+func (coastSuspendListLinesCommandParser) Parse(text string) (any, string, bool, error) {
+	return towerListLinesCommandParser{}.Parse(text)
 }
 
 func init() {
@@ -65,6 +73,27 @@ func init() {
 	// these local list parsers can be installed without growing parsecmd.go.
 	commandTypeParsers["TOWER_LIST_ID"] = towerListIDCommandParser{}
 	commandTypeParsers["TOWER_LIST_LINES"] = towerListLinesCommandParser{}
+	commandTypeParsers["COAST_SUSPEND_LIST_LINES"] = coastSuspendListLinesCommandParser{}
+
+	// TI 6191.409 Rev. 30, 4.9.15: <MULTI FUNC>, T, C, <SPACE>,
+	// <1..100>, <ENTER> changes the Coast/Suspend-list display capacity and
+	// shows the list if it was hidden. Keep the literal space in the command
+	// specification; TC5 is not the documented keyboard sequence.
+	registerCommand(CommandModeMultiFunc, "TC [COAST_SUSPEND_LIST_LINES]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		list := &p.currentPrefs().CoastSuspendList
+		list.Lines = args[0].(int)
+		list.Visible = true
+		return CommandStatus{}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 4.9.11: C is the Coast/Suspend aircraft-list ID.
+	// TC<ENTER> toggles list visibility. TC followed by a slew/click is
+	// intercepted in consumeMouseEvents and implements 4.9.6 instead.
+	registerCommand(CommandModeMultiFunc, "TC", func(p *STARSPane, args []any) (CommandStatus, error) {
+		list := &p.currentPrefs().CoastSuspendList
+		list.Visible = !list.Visible
+		return CommandStatus{}, nil
+	})
 
 	// 4.9.16 Change size of Tower list. The space is significant in the STARS
 	// keyboard modality: P<id><SPACE><1..100><ENTER>. Resizing also shows a
