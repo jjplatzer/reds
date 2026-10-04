@@ -7,6 +7,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	neturl "net/url"
 	"sort"
 	"strings"
 	"sync"
@@ -26,11 +27,12 @@ const (
 var errTaisClientClosed = errors.New("TAIS client closed")
 
 type TaisClient struct {
-	logger *redslog.Logger
-	url    string
-	token  string
-	state  *taisState
-	dialer *websocket.Dialer
+	logger   *redslog.Logger
+	url      string
+	facility string
+	token    string
+	state    *taisState
+	dialer   *websocket.Dialer
 
 	close chan struct{}
 
@@ -45,7 +47,7 @@ type TaisClient struct {
 	lastError error
 }
 
-func NewTaisClient(url string, logger *redslog.Logger) *TaisClient {
+func NewTaisClient(url, facility string, logger *redslog.Logger) *TaisClient {
 	if logger == nil {
 		logger = &redslog.Logger{
 			Logger: slog.Default(),
@@ -56,15 +58,30 @@ func NewTaisClient(url string, logger *redslog.Logger) *TaisClient {
 	if url == "" {
 		url = TaisWebSocketURL()
 	}
+	facility = strings.ToUpper(strings.TrimSpace(facility))
+	url = taisFacilityWebSocketURL(url, facility)
 
 	return &TaisClient{
-		logger: logger,
-		url:    url,
-		token:  LiveServerToken(),
-		state:  newTaisState(),
-		dialer: websocket.DefaultDialer,
-		close:  make(chan struct{}),
+		logger:   logger,
+		url:      url,
+		facility: facility,
+		token:    LiveServerToken(),
+		state:    newTaisState(),
+		dialer:   websocket.DefaultDialer,
+		close:    make(chan struct{}),
 	}
+}
+
+func taisFacilityWebSocketURL(rawURL, facility string) string {
+	parsed, err := neturl.Parse(strings.TrimSpace(rawURL))
+	if err != nil || parsed == nil {
+		return rawURL
+	}
+
+	query := parsed.Query()
+	query.Set("facility", strings.ToUpper(strings.TrimSpace(facility)))
+	parsed.RawQuery = query.Encode()
+	return parsed.String()
 }
 
 func (c *TaisClient) Start() {
@@ -240,6 +257,9 @@ func (c *TaisClient) readFrames(conn *websocket.Conn) error {
 		decoder := json.NewDecoder(reader)
 		if err := decoder.Decode(&frame); err != nil {
 			return fmt.Errorf("decode TAIS frame: %w", err)
+		}
+		if frame.Facility != "" && !strings.EqualFold(frame.Facility, c.facility) {
+			return fmt.Errorf("TAIS frame for facility %q received on %q subscription", frame.Facility, c.facility)
 		}
 		if err := c.state.apply(frame); err != nil {
 			// A revision gap cannot be repaired from incremental events because

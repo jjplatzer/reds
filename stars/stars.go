@@ -431,6 +431,7 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	// snapshots without coupling display code to WebSocket/revision handling.
 	pane.tais = redsnet.NewTaisClient(
 		redsnet.TaisWebSocketURL(),
+		pane.config.Facility.Facility,
 		logger.With(slog.String("component", "tais")),
 	)
 	pane.tais.Start()

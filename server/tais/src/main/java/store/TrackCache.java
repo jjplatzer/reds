@@ -208,10 +208,22 @@ public final class TrackCache {
      * The mutable cache itself never crosses Vert.x event-loop ownership.
      */
     public List<SnapshotTarget> snapshot() {
+        return snapshot(null);
+    }
+
+    /**
+     * Immutable point-in-time copy restricted to one TAIS source facility.
+     * A null/blank facility preserves the legacy all-facility snapshot for
+     * internal callers and tests; public WebSocket clients always request a
+     * concrete facility.
+     */
+    public List<SnapshotTarget> snapshot(String facility) {
+        boolean scoped = facility != null && !facility.isBlank();
         List<SnapshotTarget> out = new ArrayList<>(tracks.size());
 
         for (State state : tracks.values()) {
             if (state.current == null) continue;
+            if (scoped && !facility.equalsIgnoreCase(state.current.facility())) continue;
             out.add(snapshotTarget(state));
         }
 

@@ -26,6 +26,17 @@ final class TrackCacheTest {
     }
 
     @Test
+    void snapshotCanBeScopedToOneFacility() {
+        TrackCache cache = new TrackCache(10);
+        cache.accept(observation("N90", "42", "2026-09-23T13:00:00Z", false));
+        cache.accept(observation("ABQ", "7", "2026-09-23T13:00:01Z", false));
+
+        var snapshot = cache.snapshot("abq");
+        assertEquals(1, snapshot.size());
+        assertEquals("ABQ:T7", snapshot.getFirst().target().targetKey());
+    }
+
+    @Test
     void newTrackFlagResetsHistoryForReusedTrackNumber() {
         TrackCache cache = new TrackCache(10);
         cache.accept(observation("2026-09-23T13:00:00Z", false));
@@ -73,8 +84,17 @@ final class TrackCacheTest {
     }
 
     private static TaisObservation observation(String trackNum, String time, boolean isNew) {
+        return observation("N90", trackNum, time, isNew);
+    }
+
+    private static TaisObservation observation(
+            String facility,
+            String trackNum,
+            String time,
+            boolean isNew
+    ) {
         return new TaisObservation(
-                "N90",
+                facility,
                 new TaisObservation.RecordMeta(null, null, null, null, null, null, null, null),
                 new TaisObservation.Track(
                         trackNum, Instant.parse(time), "active", "abcdef",

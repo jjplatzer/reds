@@ -26,6 +26,7 @@ public final class TaisWire {
     public static JsonObject snapshot(
             long revision,
             Instant generatedAt,
+            String facility,
             List<TrackCache.SnapshotTarget> targets
     ) {
         JsonArray array = new JsonArray();
@@ -34,17 +35,20 @@ public final class TaisWire {
         }
 
         return envelope("snapshot", revision)
+                .put("facility", facility)
                 .put("generatedAt", generatedAt.toString())
                 .put("targets", array);
     }
 
     public static JsonObject update(long revision, TrackCache.SnapshotTarget target) {
         return envelope("update", revision)
+                .put("facility", target.target().facility())
                 .put("target", target(target, false));
     }
 
-    public static JsonObject remove(long revision, String key) {
+    public static JsonObject remove(long revision, String facility, String key) {
         return envelope("remove", revision)
+                .put("facility", facility)
                 .put("key", key);
     }
 

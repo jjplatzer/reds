@@ -31,6 +31,7 @@ const (
 	briteDCBColumns             = 9                  // TI 6191.409 Rev. 30, Figure 4-13.
 	charSizeStartColumn         = mainDCBColumns - 5 // VICE / Figure 4-9: submenu follows CHAR SIZE.
 	charSizeDCBColumns          = mainDCBColumns + 1 // six full buttons from column 14 through 19.
+	prefStartColumn             = 5                  // CRC 2K PREF overlay leaves RANGE through MAPS visible.
 	ssaFilterStartColumn        = 2                  // VICE / Figure 4-7: overlay starts after two Main-DCB columns.
 	tpaStartColumn              = mainDCBColumns - 5 // VICE: TPA/ATPA submenu occupies the final five Main-DCB columns.
 )
@@ -156,9 +157,10 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	mapsActive := p.commandMode == CommandModeMaps
 	briteActive := p.commandMode == CommandModeBrite || p.commandMode == CommandModeBriteSpinner
 	charSizeActive := p.commandMode == CommandModeCharSize || p.commandMode == CommandModeCharSizeSpinner
+	prefActive := p.commandMode == CommandModePrefA || p.commandMode == CommandModePrefB
 	ssaFilterActive := p.commandMode == CommandModeSSAFilter
 	tpaActive := p.commandMode == CommandModeTPA
-	mainSubmenuActive := mapsActive || briteActive || charSizeActive || ssaFilterActive
+	mainSubmenuActive := mapsActive || briteActive || charSizeActive || prefActive || ssaFilterActive
 
 	// Main-page submenus are drawn on top of a disabled Main DCB. TPA/ATPA
 	// follows the same VICE model, but its backing page is the Auxiliary DCB.
@@ -202,6 +204,16 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		}
 		p.adjustActiveCharSize(ctx)
 		d.drawCharSizePage()
+	}
+	if prefActive {
+		// CRC's High Resolution (2K) PREF page is a 14-column overlay on the
+		// disabled Main DCB. The first five Main-DCB columns remain visible:
+		// RANGE, PLACE/OFF CNTR, RR, PLACE RR/RR CNTR, and MAPS.
+		d.cursor = redsmath.Vec2{
+			X: -p.dcbScroll + float32(prefStartColumn)*d.buttonSize,
+			Y: 0,
+		}
+		d.drawPrefPage()
 	}
 	if ssaFilterActive {
 		// TI 6191.409 Rev. 30, Figure 4-7 overlays the SSA FILTER submenu on
@@ -359,7 +371,9 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 	})
 	d.button("MODE\nFSL", mainFlags(buttonFull)|buttonUnsupported, false, nil)
 	d.button("SITE\nFUSED", mainFlags(buttonFull), false, nil)
-	d.button("PREF", mainFlags(buttonFull), false, nil)
+	d.button("PREF", mainFlags(buttonFull), false, func() {
+		p.setCommandMode(CommandModePrefA)
+	})
 	d.button("SSA\nFILTER", mainFlags(buttonHalfVertical), false, func() {
 		p.setCommandMode(CommandModeSSAFilter)
 	})
@@ -1005,6 +1019,54 @@ func (d *dcbDrawer) drawCharSizePage() {
 		})
 	}
 
+	d.button("DONE", buttonFull, false, func() {
+		p.setCommandMode(CommandModeNone)
+	})
+}
+
+// drawPrefPage mirrors CRC's High Resolution (2K) STARS PREF layout. The
+// disabled Main DCB remains underneath; this 14-column overlay starts after
+// the first five Main-DCB columns. CRC exposes 32 preference-set slots as two
+// pages of sixteen half-height buttons. Only the
+// button for the other page is shown: page 1-16 shows 17-32, and page 17-32
+// shows 1-16. The remaining controls are DEFAULT/UNDO, OP INITS,
+// SAVE AS/MODIFY, CHG PIN/DELETE, and DONE.
+//
+// This is intentionally presentation-only. Preference records, authentication,
+// persistence, active-set highlighting, and all management actions will be
+// supplied by the REDS server in the follow-up implementation.
+func (d *dcbDrawer) drawPrefPage() {
+	p := d.pane
+	pageA := p.commandMode == CommandModePrefA
+	first := 1
+	if !pageA {
+		first = 17
+	}
+
+	// Preserve the sixteen-slot geometry now. Once server-side preference sets
+	// are available, these labels can be replaced by the real CRC-style slot
+	// text without changing the DCB layout.
+	for n := first; n < first+16; n++ {
+		d.button(fmt.Sprintf("%02d", n), buttonHalfVertical, false, nil)
+	}
+
+	if pageA {
+		d.button("17-32", buttonFull, false, func() {
+			p.setCommandMode(CommandModePrefB)
+		})
+	} else {
+		d.button("1-16", buttonFull, false, func() {
+			p.setCommandMode(CommandModePrefA)
+		})
+	}
+
+	d.button("DEFAULT", buttonHalfVertical, false, nil)
+	d.button("UNDO", buttonHalfVertical, false, nil)
+	d.button("OP\nINITS", buttonFull, false, nil)
+	d.button("SAVE AS", buttonHalfVertical, false, nil)
+	d.button("MODIFY", buttonHalfVertical, false, nil)
+	d.button("CHG PIN", buttonHalfVertical, false, nil)
+	d.button("DELETE", buttonHalfVertical, false, nil)
 	d.button("DONE", buttonFull, false, func() {
 		p.setCommandMode(CommandModeNone)
 	})

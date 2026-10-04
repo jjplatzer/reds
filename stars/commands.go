@@ -27,6 +27,8 @@ const (
 	CommandModeTPA
 	CommandModeTrackReposition
 	CommandModePlaceCenter
+	CommandModePrefA
+	CommandModePrefB
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -60,6 +62,8 @@ func (m CommandMode) PreviewString() string {
 		return "RP"
 	case CommandModePlaceCenter:
 		return "CNTR"
+	case CommandModePrefA, CommandModePrefB:
+		return "PREFS"
 	default:
 		return ""
 	}
@@ -466,6 +470,17 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 				p.commandInput += strings.ToUpper(string(r))
 				p.commandResponse = ""
 			}
+		}
+		return
+	}
+
+	// The PREF submenu is DCB-driven. Preference-set storage and the actions
+	// behind the individual buttons are intentionally left for the server-side
+	// preference-set implementation; for now only page navigation and DONE are
+	// active. Escape abandons the submenu just like DONE.
+	if p.commandMode == CommandModePrefA || p.commandMode == CommandModePrefB {
+		if keyboard.WasPressed(platform.KeyEscape) {
+			p.resetCommand()
 		}
 		return
 	}

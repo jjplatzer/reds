@@ -64,6 +64,7 @@ type TaisFrame struct {
 	Type        string       `json:"type"`
 	Protocol    int          `json:"protocol"`
 	Feed        string       `json:"feed"`
+	Facility    string       `json:"facility,omitempty"`
 	Revision    uint64       `json:"revision"`
 	GeneratedAt time.Time    `json:"generatedAt,omitempty"`
 	Targets     []TaisTarget `json:"targets,omitempty"`
