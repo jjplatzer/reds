@@ -867,6 +867,10 @@ func (p *STARSPane) coastSuspendListText(snapshot redsnet.TaisSnapshot) string {
 
 	var text strings.Builder
 	text.WriteString("COAST/SUSPEND\n")
+	if list.Lines > 0 && len(entries) > list.Lines {
+		fmt.Fprintf(&text, "MORE: %d/%d\n", list.Lines, len(entries))
+	}
+
 	limit := min(list.Lines, len(entries))
 	for i := 0; i < limit; i++ {
 		entry := entries[i]
@@ -1077,6 +1081,9 @@ func (p *STARSPane) towerListText(airport string, lines int, snapshot redsnet.Ta
 	entries := p.towerListEntries(airport, snapshot)
 	var text strings.Builder
 	fmt.Fprintf(&text, "%s TOWER\n", airport)
+	if len(entries) > lines {
+		fmt.Fprintf(&text, "MORE: %d/%d\n", lines, len(entries))
+	}
 	for i := 0; i < len(entries) && i < lines; i++ {
 		// VICE's default Tower-list format is [ACID] [ACTYPE]: ACID occupies
 		// seven columns and aircraft type four, right aligned.
