@@ -6,6 +6,75 @@ import (
 	"strings"
 )
 
+func validateStarsPreferenceSetName(name string) error {
+	name = strings.ToUpper(strings.TrimSpace(name))
+	if len(name) < 1 || len(name) > 7 {
+		return ErrSTARSCommandFormat
+	}
+	for _, r := range name {
+		if (r < 'A' || r > 'Z') && (r < '0' || r > '9') {
+			return ErrSTARSCommandFormat
+		}
+	}
+	if value, err := strconv.Atoi(name); err == nil && value >= 1 && value <= starsPreferenceSetCount {
+		return ErrSTARSIllegalPrefset
+	}
+	return nil
+}
+
+func (p *STARSPane) selectPreferenceSetByReference(reference string) error {
+	reference = strings.ToUpper(strings.TrimSpace(reference))
+	if reference == "" {
+		return ErrSTARSCommandFormat
+	}
+	if number, err := strconv.Atoi(reference); err == nil {
+		if number < 1 || number > starsPreferenceSetCount {
+			return ErrSTARSCommandFormat
+		}
+		return p.selectPreferenceSet(number - 1)
+	}
+	for i, saved := range p.prefSets.Saved {
+		if saved != nil && strings.EqualFold(saved.Name, reference) {
+			return p.selectPreferenceSet(i)
+		}
+	}
+	return ErrSTARSIllegalPrefset
+}
+
+func (p *STARSPane) savePreferenceSetAs(name string) error {
+	if p == nil {
+		return ErrSTARSCommandFormat
+	}
+	name = strings.ToUpper(strings.TrimSpace(name))
+	if err := validateStarsPreferenceSetName(name); err != nil {
+		return err
+	}
+	for _, saved := range p.prefSets.Saved {
+		if saved != nil && strings.EqualFold(saved.Name, name) {
+			return ErrSTARSIllegalPrefset
+		}
+	}
+
+	idx := -1
+	for i, saved := range p.prefSets.Saved {
+		if saved == nil {
+			idx = i
+			break
+		}
+	}
+	if idx == -1 {
+		return ErrSTARSCapacity
+	}
+
+	p.prefSets.Saved[idx] = &starsSavedPreferenceSet{
+		Name:        name,
+		Preferences: captureStarsPreferenceSnapshot(p.currentPrefs()),
+	}
+	p.prefSelected = &idx
+	p.persistPreferenceSets()
+	return nil
+}
+
 // towerListIDCommandParser implements the adapted 1-3 alphanumeric identifier
 // in TI 6191.409 Rev. 30 sections 4.9.7, 4.9.12, and 4.9.16. REDS does not yet
 // receive CRC's explicit tower-list identifier adaptation, so REDS currently
@@ -69,6 +138,32 @@ func (coastSuspendListLinesCommandParser) Parse(text string) (any, string, bool,
 }
 
 func init() {
+	// TI 6191.409 Rev. 30, 4.1.3: after selecting PREF SET the operator may
+	// identify one of the 32 stored sets by number or by its saved name.
+	registerCommand(CommandModePref, "[PREF_REFERENCE]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		if err := p.selectPreferenceSetByReference(args[0].(string)); err != nil {
+			return CommandStatus{}, err
+		}
+		return CommandStatus{}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 4.1.4: SAVE AS accepts a 1-7 character
+	// alphanumeric name. The set is placed in the first available slot.
+	registerCommand(CommandModeSavePrefAs, "[PREF_NAME]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		if err := p.savePreferenceSetAs(args[0].(string)); err != nil {
+			return CommandStatus{}, err
+		}
+		p.commandMode = CommandModePref
+		return CommandStatus{Clear: ClearInput}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 4.1.10: MULTI FUNC K restores the current
+	// display characteristics to their system defaults.
+	registerCommand(CommandModeMultiFunc, "K", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.resetDefaultPreferenceCharacteristics()
+		return CommandStatus{}, nil
+	})
+
 	// The parser registry is initialized before package init functions run, so
 	// these local list parsers can be installed without growing parsecmd.go.
 	commandTypeParsers["TOWER_LIST_ID"] = towerListIDCommandParser{}

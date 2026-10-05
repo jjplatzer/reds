@@ -1,8 +1,15 @@
 package stars
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
+	"log/slog"
 	stdmath "math"
+	"os"
+	"path/filepath"
+	"strings"
+	"sync"
 
 	"github.com/juliusplatzer/reds/radar"
 	"github.com/juliusplatzer/reds/renderer"
@@ -18,6 +25,309 @@ const (
 	// TCW maximum until TDW selection/adaptation is introduced.
 	maximumTCWRange = float32(512)
 )
+
+const (
+	starsPreferenceSetCount       = 32
+	starsPreferenceSetFileVersion = 1
+)
+
+// starsPreferenceSnapshot contains the display characteristics that STARS
+// stores in a preference set. Keep this deliberately narrower than Preferences:
+// operational/transient state such as quick looks, altitude filters, selected
+// beacon codes, and per-track state must not be changed merely by loading a
+// display preference set.
+//
+// TI 6191.409 4.1.5 describes preference sets as display characteristics.
+// CRC documents the saved items as display center/range, range rings, default
+// leader settings, PTLs, visible lists/SSA fields/maps, brightness, character
+// sizes, and list locations/sizes. REDS also stores the Preview Area location,
+// matching VICE's STARS preference representation.
+type starsPreferenceSnapshot struct {
+	UserCenter              configPoint `json:"userCenter"`
+	UseUserCenter           bool        `json:"useUserCenter"`
+	Range                   float32     `json:"range"`
+	RangeRingRadius         float32     `json:"rangeRingRadius"`
+	RangeRingsUserCenter    configPoint `json:"rangeRingsUserCenter"`
+	UseUserRangeRingsCenter bool        `json:"useUserRangeRingsCenter"`
+
+	LeaderLineDirection leaderLineDirection `json:"leaderLineDirection"`
+	LeaderLineLength    int                 `json:"leaderLineLength"`
+	PTLLength           float32             `json:"ptlLength"`
+	PTLOwn              bool                `json:"ptlOwn"`
+	PTLAll              bool                `json:"ptlAll"`
+
+	Brightness BrightnessPreferences    `json:"brightness"`
+	CharSize   CharacterSizePreferences `json:"charSize"`
+
+	DisplayWeatherLevel [6]bool                  `json:"displayWeatherLevel"`
+	VideoMapVisible     map[int]bool             `json:"videoMapVisible"`
+	VideoMapsList       videoMapsListPreferences `json:"videoMapsList"`
+
+	PreviewAreaPosition [2]float32                   `json:"previewAreaPosition"`
+	SSAListPosition     [2]float32                   `json:"ssaListPosition"`
+	CoastSuspendList    basicSTARSListPreferences    `json:"coastSuspendList"`
+	TowerLists          [3]basicSTARSListPreferences `json:"towerLists"`
+	SSAFilter           ssaFilterPreferences         `json:"ssaFilter"`
+}
+
+type starsSavedPreferenceSet struct {
+	Name        string                  `json:"name"`
+	Preferences starsPreferenceSnapshot `json:"preferences"`
+}
+
+type starsPreferenceSetFile struct {
+	Version  int                                               `json:"version"`
+	Facility string                                            `json:"facility"`
+	Saved    [starsPreferenceSetCount]*starsSavedPreferenceSet `json:"saved"`
+}
+
+type starsPreferenceSets struct {
+	Saved [starsPreferenceSetCount]*starsSavedPreferenceSet
+}
+
+// CRC separates its persistent STARS PrefSetRepository from the per-display
+// PrefSetManager. Mirror that split in-process: all STARS panes for a facility
+// share the saved repository, while each pane keeps its own active selection
+// and RESTORE snapshot.
+var starsPreferenceRepositories = struct {
+	sync.Mutex
+	byFacility map[string]*starsPreferenceSets
+}{byFacility: make(map[string]*starsPreferenceSets)}
+
+func cloneBoolMap(src map[int]bool) map[int]bool {
+	if src == nil {
+		return make(map[int]bool)
+	}
+	out := make(map[int]bool, len(src))
+	for key, value := range src {
+		out[key] = value
+	}
+	return out
+}
+
+func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
+	if p == nil {
+		return starsPreferenceSnapshot{}
+	}
+	return starsPreferenceSnapshot{
+		UserCenter:              p.UserCenter,
+		UseUserCenter:           p.UseUserCenter,
+		Range:                   p.Range,
+		RangeRingRadius:         p.RangeRingRadius,
+		RangeRingsUserCenter:    p.RangeRingsUserCenter,
+		UseUserRangeRingsCenter: p.UseUserRangeRingsCenter,
+		LeaderLineDirection:     p.LeaderLineDirection,
+		LeaderLineLength:        p.LeaderLineLength,
+		PTLLength:               p.PTLLength,
+		PTLOwn:                  p.PTLOwn,
+		PTLAll:                  p.PTLAll,
+		Brightness:              p.Brightness,
+		CharSize:                p.CharSize,
+		DisplayWeatherLevel:     p.DisplayWeatherLevel,
+		VideoMapVisible:         cloneBoolMap(p.VideoMapVisible),
+		VideoMapsList:           p.VideoMapsList,
+		PreviewAreaPosition:     p.PreviewAreaPosition,
+		SSAListPosition:         p.SSAListPosition,
+		CoastSuspendList:        p.CoastSuspendList,
+		TowerLists:              p.TowerLists,
+		SSAFilter:               p.SSAFilter,
+	}
+}
+
+func (s starsPreferenceSnapshot) apply(p *Preferences) {
+	if p == nil {
+		return
+	}
+	p.UserCenter = s.UserCenter
+	p.UseUserCenter = s.UseUserCenter
+	p.Range = clampSTARSRange(s.Range)
+	p.RangeRingRadius = s.RangeRingRadius
+	p.RangeRingsUserCenter = s.RangeRingsUserCenter
+	p.UseUserRangeRingsCenter = s.UseUserRangeRingsCenter
+	p.LeaderLineDirection = s.LeaderLineDirection
+	p.LeaderLineLength = s.LeaderLineLength
+	p.PTLLength = s.PTLLength
+	p.PTLOwn = s.PTLOwn
+	p.PTLAll = s.PTLAll
+	p.Brightness = s.Brightness
+	p.CharSize = s.CharSize
+	p.DisplayWeatherLevel = s.DisplayWeatherLevel
+	p.VideoMapVisible = cloneBoolMap(s.VideoMapVisible)
+	p.VideoMapsList = s.VideoMapsList
+	p.PreviewAreaPosition = s.PreviewAreaPosition
+	p.SSAListPosition = s.SSAListPosition
+	p.CoastSuspendList = s.CoastSuspendList
+	p.TowerLists = s.TowerLists
+	p.SSAFilter = s.SSAFilter
+}
+
+func starsPreferenceSetPath(facility string) (string, error) {
+	facility, err := normalizedSTARSResourceCode("preference-set facility", facility)
+	if err != nil {
+		return "", err
+	}
+	root, err := os.UserConfigDir()
+	if err != nil {
+		return "", fmt.Errorf("STARS preference sets: resolve user config directory: %w", err)
+	}
+	return filepath.Join(root, "REDS", "PrefSets", "STARS", facility+".json"), nil
+}
+
+func loadStarsPreferenceSetsFile(facility string) (starsPreferenceSets, error) {
+	var sets starsPreferenceSets
+	path, err := starsPreferenceSetPath(facility)
+	if err != nil {
+		return sets, err
+	}
+	data, err := os.ReadFile(path)
+	if errors.Is(err, os.ErrNotExist) {
+		return sets, nil
+	}
+	if err != nil {
+		return sets, fmt.Errorf("read %s: %w", path, err)
+	}
+
+	var file starsPreferenceSetFile
+	if err := json.Unmarshal(data, &file); err != nil {
+		return sets, fmt.Errorf("decode %s: %w", path, err)
+	}
+	if file.Version != starsPreferenceSetFileVersion {
+		return sets, fmt.Errorf("decode %s: unsupported version %d", path, file.Version)
+	}
+
+	// Keep malformed individual slots from poisoning the complete preference
+	// repository. The file itself remains readable and the invalid slot is
+	// simply treated as unused.
+	for i, saved := range file.Saved {
+		if saved == nil {
+			continue
+		}
+		name := strings.ToUpper(strings.TrimSpace(saved.Name))
+		if validateStarsPreferenceSetName(name) != nil {
+			continue
+		}
+		saved.Name = name
+		saved.Preferences.VideoMapVisible = cloneBoolMap(saved.Preferences.VideoMapVisible)
+		sets.Saved[i] = saved
+	}
+	return sets, nil
+}
+
+func sharedStarsPreferenceSets(facility string) (*starsPreferenceSets, error) {
+	facility, err := normalizedSTARSResourceCode("preference-set facility", facility)
+	if err != nil {
+		return nil, err
+	}
+
+	starsPreferenceRepositories.Lock()
+	defer starsPreferenceRepositories.Unlock()
+	if sets := starsPreferenceRepositories.byFacility[facility]; sets != nil {
+		return sets, nil
+	}
+
+	loaded, loadErr := loadStarsPreferenceSetsFile(facility)
+	sets := &loaded
+	starsPreferenceRepositories.byFacility[facility] = sets
+	return sets, loadErr
+}
+
+func saveStarsPreferenceSets(facility string, sets *starsPreferenceSets) error {
+	path, err := starsPreferenceSetPath(facility)
+	if err != nil {
+		return err
+	}
+	if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
+		return fmt.Errorf("create %s: %w", filepath.Dir(path), err)
+	}
+
+	if sets == nil {
+		return errors.New("STARS preference sets: nil repository")
+	}
+	file := starsPreferenceSetFile{
+		Version:  starsPreferenceSetFileVersion,
+		Facility: strings.ToUpper(strings.TrimSpace(facility)),
+		Saved:    sets.Saved,
+	}
+	data, err := json.MarshalIndent(file, "", "  ")
+	if err != nil {
+		return fmt.Errorf("encode STARS preference sets: %w", err)
+	}
+	data = append(data, '\n')
+	if err := os.WriteFile(path, data, 0o600); err != nil {
+		return fmt.Errorf("write %s: %w", path, err)
+	}
+	return nil
+}
+
+func (p *STARSPane) selectedPreferenceSet() *starsSavedPreferenceSet {
+	if p == nil || p.prefSelected == nil {
+		return nil
+	}
+	idx := *p.prefSelected
+	if idx < 0 || idx >= len(p.prefSets.Saved) {
+		return nil
+	}
+	return p.prefSets.Saved[idx]
+}
+
+func (p *STARSPane) resetDefaultPreferenceCharacteristics() {
+	if p == nil {
+		return
+	}
+	defaults := newPreferences(p.config)
+	captureStarsPreferenceSnapshot(&defaults).apply(p.currentPrefs())
+	p.prefSelected = nil
+}
+
+func (p *STARSPane) selectPreferenceSet(index int) error {
+	if p == nil || index < 0 || index >= len(p.prefSets.Saved) || p.prefSets.Saved[index] == nil {
+		return ErrSTARSCommandFormat
+	}
+	p.prefSets.Saved[index].Preferences.apply(p.currentPrefs())
+	idx := index
+	p.prefSelected = &idx
+	return nil
+}
+
+func (p *STARSPane) saveSelectedPreferenceSet() {
+	if p == nil || p.prefSelected == nil {
+		return
+	}
+	idx := *p.prefSelected
+	if idx < 0 || idx >= len(p.prefSets.Saved) || p.prefSets.Saved[idx] == nil {
+		return
+	}
+	name := p.prefSets.Saved[idx].Name
+	p.prefSets.Saved[idx] = &starsSavedPreferenceSet{
+		Name:        name,
+		Preferences: captureStarsPreferenceSnapshot(p.currentPrefs()),
+	}
+	p.persistPreferenceSets()
+}
+
+func (p *STARSPane) deleteSelectedPreferenceSet() {
+	if p == nil || p.prefSelected == nil {
+		return
+	}
+	idx := *p.prefSelected
+	if idx < 0 || idx >= len(p.prefSets.Saved) {
+		return
+	}
+	p.prefSets.Saved[idx] = nil
+	p.prefSelected = nil
+	p.persistPreferenceSets()
+}
+
+func (p *STARSPane) persistPreferenceSets() {
+	if p == nil {
+		return
+	}
+	if err := saveStarsPreferenceSets(p.config.Facility.Facility, p.prefSets); err != nil && p.logger != nil {
+		p.logger.Warn("Unable to save STARS preference sets",
+			slog.String("facility", p.config.Facility.Facility),
+			slog.Any("error", err))
+	}
+}
 
 const starsNegativeAltitudeFilterLimitFeet = -9900
 
@@ -246,9 +556,9 @@ func leaderLineDirectionFromKeypad(key int) (leaderLineDirection, bool) {
 	}
 }
 
-// Preferences contains the per-position STARS display state that will later
-// be saved/restored by STARS preference sets. The names mirror VICE's STARS
-// Preferences so DCB commands and saved preference sets can use the same state.
+// Preferences contains the per-position STARS display state. The names mirror
+// VICE's STARS Preferences; the display-characteristic subset defined in
+// prefsets.go is persisted by the STARS PREF function.
 type Preferences struct {
 	// DisplayDCB is controlled by the physical STARS <DCB> key. TI 6191.409
 	// Rev. 30 section 2.5 defines it as a toggle of the Display Control Bar.

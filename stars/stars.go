@@ -32,6 +32,10 @@ type STARSPane struct {
 	logger                       *redslog.Logger
 	config                       selectedConfig
 	prefs                        Preferences
+	prefSets                     *starsPreferenceSets
+	prefSelected                 *int
+	prefRestore                  *starsPreferenceSnapshot
+	prefRestoreSelected          *int
 	longitudeScaleFactor         float64
 	colors                       MonitorColors
 	cursorTexture                renderer.TextureID
@@ -393,15 +397,25 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	)
 
 	colors := monitorColorsForPosition(cfg.ControlPosition.ColorSet)
+	prefSets, prefSetsErr := sharedStarsPreferenceSets(cfg.Facility.Facility)
+	if prefSets == nil {
+		prefSets = &starsPreferenceSets{}
+	}
 	pane := &STARSPane{
 		logger:                 logger,
 		config:                 cfg,
 		prefs:                  newPreferences(cfg),
+		prefSets:               prefSets,
 		colors:                 colors,
 		useFontSetB:            useFontSetB,
 		useFAAHFSTD010APalette: useFAAHFSTD010APalette,
 		systemFont:             newSystemFont(useFontSetB),
 		systemOutlineFont:      newSystemOutlineFont(useFontSetB),
+	}
+	if prefSetsErr != nil {
+		logger.Warn("Unable to load STARS preference sets; starting with empty slots",
+			slog.String("facility", cfg.Facility.Facility),
+			slog.Any("error", prefSetsErr))
 	}
 	pane.atpaSite = sharedATPASiteRuntimeState(cfg)
 	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()

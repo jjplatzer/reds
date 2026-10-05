@@ -27,8 +27,8 @@ const (
 	CommandModeTPA
 	CommandModeTrackReposition
 	CommandModePlaceCenter
-	CommandModePrefA
-	CommandModePrefB
+	CommandModePref
+	CommandModeSavePrefAs
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -62,8 +62,10 @@ func (m CommandMode) PreviewString() string {
 		return "RP"
 	case CommandModePlaceCenter:
 		return "CNTR"
-	case CommandModePrefA, CommandModePrefB:
-		return "PREFS"
+	case CommandModePref:
+		return "PREF"
+	case CommandModeSavePrefAs:
+		return "PREF SET NAME"
 	default:
 		return ""
 	}
@@ -417,6 +419,14 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		p.setCommandMode(CommandModeCharSize)
 		return
 	}
+	// VICE maps the physical STARS <PREF SET> key to Ctrl+F12. Entering the
+	// menu snapshots the current display characteristics so RESTORE has the
+	// same behavior as entering through the Main DCB PREF button.
+	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF12) &&
+		p.currentPrefs().DisplayDCB {
+		p.beginPrefMenu()
+		return
+	}
 
 	// CommandModeNone is also the real STARS implied-command entry state.
 	// Ordinary typed text is therefore accumulated even without selecting a
@@ -474,17 +484,6 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		return
 	}
 
-	// The PREF submenu is DCB-driven. Preference-set storage and the actions
-	// behind the individual buttons are intentionally left for the server-side
-	// preference-set implementation; for now only page navigation and DONE are
-	// active. Escape abandons the submenu just like DONE.
-	if p.commandMode == CommandModePrefA || p.commandMode == CommandModePrefB {
-		if keyboard.WasPressed(platform.KeyEscape) {
-			p.resetCommand()
-		}
-		return
-	}
-
 	// The TPA / ATPA submenu is DCB-driven. TPA implied keyboard commands are
 	// entered after leaving the submenu, as in VICE's mode split.
 	if p.commandMode == CommandModeTPA {
@@ -515,7 +514,11 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	}
 
 	if keyboard.WasPressed(platform.KeyEscape) {
-		p.resetCommand()
+		if p.commandMode == CommandModePref || p.commandMode == CommandModeSavePrefAs {
+			p.closePrefMenu()
+		} else {
+			p.resetCommand()
+		}
 		return
 	}
 	if keyboard.WasPressed(platform.KeyBackspace) {
