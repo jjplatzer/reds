@@ -727,7 +727,7 @@ func (p *STARSPane) targetFullDatablockLine3Parts(target *redsnet.TaisTarget, di
 
 	atpa, status := p.targetFullDatablockATPAField(target, clockPhase)
 	field6 = padDatablockField(atpa, 5)
-	if target.FlightPlan.AssignedAltitude == 0 {
+	if p.AssignedAltitudesHidden() || target.FlightPlan.AssignedAltitude == 0 {
 		if atpa == "" {
 			return "", status, ""
 		}

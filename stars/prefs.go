@@ -161,6 +161,57 @@ func (s starsPreferenceSnapshot) apply(p *Preferences) {
 	p.SSAFilter = s.SSAFilter
 }
 
+// applyPreferenceSnapshot restores a saved STARS display preference and makes
+// sure every video map selected by that snapshot is resident in the pane's
+// render cache. Main-DCB maps are preloaded at startup, but MAPS-submenu maps
+// are intentionally lazy-loaded when selected. Without this step a restored
+// preference set could correctly mark a submenu map active in VideoMapVisible
+// while drawVideoMaps had no geometry to draw for it.
+func (p *STARSPane) applyPreferenceSnapshot(snapshot starsPreferenceSnapshot) {
+	if p == nil {
+		return
+	}
+
+	snapshot.apply(p.currentPrefs())
+	p.loadVisiblePreferenceVideoMaps()
+}
+
+func (p *STARSPane) loadVisiblePreferenceVideoMaps() {
+	if p == nil {
+		return
+	}
+
+	visible := p.currentPrefs().VideoMapVisible
+	if len(visible) == 0 {
+		return
+	}
+
+	// Preference sets are shared by a STARS facility, not by one TCP. Resolve
+	// selected IDs against the complete facility map adaptation so a set saved
+	// at another position can still restore any map that belongs to the same
+	// facility.
+	maps := make([]videoMapConfig, 0, len(visible))
+	seen := make(map[int]struct{}, len(visible))
+	for _, vm := range p.config.Facility.VideoMaps {
+		if vm.STARSID == 0 || !visible[vm.STARSID] {
+			continue
+		}
+		if _, ok := seen[vm.STARSID]; ok {
+			continue
+		}
+		seen[vm.STARSID] = struct{}{}
+		maps = append(maps, vm)
+	}
+	if len(maps) == 0 {
+		return
+	}
+
+	if err := p.loadVideoMaps(maps); err != nil && p.logger != nil {
+		p.logger.Warn("Unable to restore STARS video maps from preference set",
+			slog.Any("error", err))
+	}
+}
+
 func starsPreferenceSetPath(facility string) (string, error) {
 	facility, err := normalizedSTARSResourceCode("preference-set facility", facility)
 	if err != nil {
@@ -275,7 +326,7 @@ func (p *STARSPane) resetDefaultPreferenceCharacteristics() {
 		return
 	}
 	defaults := newPreferences(p.config)
-	captureStarsPreferenceSnapshot(&defaults).apply(p.currentPrefs())
+	p.applyPreferenceSnapshot(captureStarsPreferenceSnapshot(&defaults))
 	p.prefSelected = nil
 }
 
@@ -283,7 +334,7 @@ func (p *STARSPane) selectPreferenceSet(index int) error {
 	if p == nil || index < 0 || index >= len(p.prefSets.Saved) || p.prefSets.Saved[index] == nil {
 		return ErrSTARSCommandFormat
 	}
-	p.prefSets.Saved[index].Preferences.apply(p.currentPrefs())
+	p.applyPreferenceSnapshot(p.prefSets.Saved[index].Preferences)
 	idx := index
 	p.prefSelected = &idx
 	return nil

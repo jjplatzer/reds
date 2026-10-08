@@ -70,11 +70,14 @@ const (
 	titleBarActionNone titleBarAction = iota
 	titleBarActionAddNewWindow
 	titleBarActionSwitchFacility
+	titleBarActionToggleStarsAssignedAltitudes
 	titleBarActionToggleStarsFontSetB
 	titleBarActionToggleStarsFAAHFSTD010APalette
 )
 
 type titleBarMenuOptions struct {
+	ShowStarsAssignedAltitudes   bool
+	HideStarsAssignedAltitudes   bool
 	ShowStarsFontSetB            bool
 	UseStarsFontSetB             bool
 	ShowStarsFAAHFSTD010APalette bool
@@ -226,13 +229,16 @@ func drawTitleBarMenuPopup(
 	)
 	menuHeight := float32(2 * titleBarMenuItemHeight)
 	popupWidth := float32(titleBarMenuPopupWidth)
+	if menuOptions.ShowStarsAssignedAltitudes {
+		menuHeight += float32(titleBarMenuItemHeight)
+	}
 	if menuOptions.ShowStarsFontSetB {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
 	if menuOptions.ShowStarsFAAHFSTD010APalette {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
-	if menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+	if menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
 		popupWidth = titleBarStarsMenuPopupWidth
 	}
 	imgui.SetNextWindowSizeV(
@@ -256,7 +262,7 @@ func drawTitleBarMenuPopup(
 	action := titleBarActionNone
 	if imgui.BeginPopupV("##titlebar-menu-popup", flags) {
 		textPadX := float32(titleBarMenuTextPadX)
-		if menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+		if menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
 			// Reserve the same check gutter as the STARS checked rows so all
 			// labels start on the same vertical axis.
 			textPadX = titleBarMenuCheckedTextPadX
@@ -330,6 +336,44 @@ func drawTitleBarMenuPopup(
 		}
 
 		rowY += float32(titleBarMenuItemHeight)
+		if menuOptions.ShowStarsAssignedAltitudes {
+			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
+			hideAssignedAltitudeClicked := imgui.InvisibleButtonV(
+				"##stars-hide-assigned-altitudes-menu-item",
+				imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
+				imgui.ButtonFlagsMouseButtonLeft,
+			)
+
+			rowMin := imgui.ItemRectMin()
+			rowMax := imgui.ItemRectMax()
+			if imgui.IsItemHovered() {
+				imgui.WindowDrawList().AddRectFilledV(
+					rowMin,
+					rowMax,
+					imgui.ColorU32Vec4(titleBarMenuHover),
+					titleBarMenuPopupRounding,
+					imgui.DrawFlagsRoundCornersAll,
+				)
+			}
+
+			if menuOptions.HideStarsAssignedAltitudes {
+				drawTitleBarMenuCheck(rowMin, titleBarMenuItemHeight)
+			}
+			drawTitleBarMenuItemTextWithPad(
+				rowMin,
+				titleBarMenuItemHeight,
+				popupWidth,
+				titleBarMenuCheckedTextPadX,
+				"Hide Assigned Altitudes",
+				titleBarHideAssignedAltitudesShortcutParts(),
+			)
+
+			if hideAssignedAltitudeClicked {
+				action = titleBarActionToggleStarsAssignedAltitudes
+			}
+			rowY += float32(titleBarMenuItemHeight)
+		}
+
 		if menuOptions.ShowStarsFontSetB {
 			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
 			fontClicked := imgui.InvisibleButtonV(
@@ -508,6 +552,24 @@ func titleBarSwitchFacilityShortcutParts() []titleBarShortcutPart {
 	}
 }
 
+func titleBarHideAssignedAltitudesShortcutParts() []titleBarShortcutPart {
+	if runtime.GOOS == "darwin" {
+		return []titleBarShortcutPart{
+			{Text: shortcutCommandSymbol},
+			{Text: "+"},
+			{Text: shortcutShiftSymbol},
+			{Text: "+A"},
+		}
+	}
+
+	return []titleBarShortcutPart{
+		{Text: shortcutControlSymbol},
+		{Text: "+"},
+		{Text: shortcutShiftSymbol},
+		{Text: "+A"},
+	}
+}
+
 func titleBarFontSetBShortcutParts() []titleBarShortcutPart {
 	if runtime.GOOS == "darwin" {
 		return []titleBarShortcutPart{
@@ -650,6 +712,9 @@ func titleBarShortcutAction(
 	}
 	if keyboard.WasPressed(platform.KeyF) {
 		return titleBarActionSwitchFacility
+	}
+	if menuOptions.ShowStarsAssignedAltitudes && keyboard.WasPressed(platform.KeyA) {
+		return titleBarActionToggleStarsAssignedAltitudes
 	}
 	if menuOptions.ShowStarsFontSetB && keyboard.WasPressed(platform.KeyS) {
 		return titleBarActionToggleStarsFontSetB

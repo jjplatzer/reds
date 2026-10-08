@@ -77,6 +77,7 @@ const (
 	KeyShift
 	KeyControl
 	KeyCommand
+	KeyA
 	KeyC
 	KeyF
 	KeyP

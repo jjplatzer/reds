@@ -6,9 +6,10 @@ import (
 )
 
 const (
-	PublicSmesWebSocketURL = "wss://reds-stdds-live.jjplatzer.com/ws"
-	PublicTaisWebSocketURL = "wss://reds-stdds-live.jjplatzer.com/tais/ws"
-	PublicPlaybackBaseURL  = "https://reds-stdds-live.jjplatzer.com/playback"
+	PublicSmesWebSocketURL  = "wss://reds-stdds-live.jjplatzer.com/ws"
+	PublicTaisWebSocketURL  = "wss://reds-stdds-live.jjplatzer.com/tais/ws"
+	PublicSfdpsWebSocketURL = "wss://reds-stdds-live.jjplatzer.com/sfdps/ws"
+	PublicPlaybackBaseURL   = "https://reds-stdds-live.jjplatzer.com/playback"
 )
 
 func UsePublicServer() bool {
@@ -41,6 +42,22 @@ func TaisWebSocketURL() string {
 		port = "8081"
 	}
 	return "ws://localhost:" + port + "/tais/ws"
+}
+
+func SfdpsWebSocketURL() string {
+	if override := strings.TrimSpace(os.Getenv("SFDPS_WS_URL")); override != "" {
+		return override
+	}
+
+	if UsePublicServer() {
+		return PublicSfdpsWebSocketURL
+	}
+
+	port := strings.TrimSpace(os.Getenv("SFDPS_WS_PORT"))
+	if port == "" {
+		port = "8082"
+	}
+	return "ws://localhost:" + port + "/sfdps/ws"
 }
 
 func LiveServerToken() string {

@@ -1055,7 +1055,7 @@ func (p *STARSPane) restorePreferencesFromPrefEntry() {
 	if p == nil || p.prefRestore == nil {
 		return
 	}
-	p.prefRestore.apply(p.currentPrefs())
+	p.applyPreferenceSnapshot(*p.prefRestore)
 	if p.prefRestoreSelected == nil {
 		p.prefSelected = nil
 	} else {

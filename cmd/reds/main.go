@@ -244,6 +244,8 @@ func run(logger *redslog.Logger) error {
 		case appModeScope:
 			menuOptions := titleBarMenuOptions{}
 			if starsPane, ok := active.(*stars.STARSPane); ok {
+				menuOptions.ShowStarsAssignedAltitudes = true
+				menuOptions.HideStarsAssignedAltitudes = starsPane.AssignedAltitudesHidden()
 				menuOptions.ShowStarsFontSetB = true
 				menuOptions.UseStarsFontSetB = starsPane.UseFontSetB()
 				menuOptions.ShowStarsFAAHFSTD010APalette = true
@@ -284,6 +286,10 @@ func run(logger *redslog.Logger) error {
 				}
 			case titleBarActionSwitchFacility:
 				switchToMenu(&mode, &active, &scopeTitle, plat, consumer, m)
+			case titleBarActionToggleStarsAssignedAltitudes:
+				if starsPane, ok := active.(*stars.STARSPane); ok {
+					starsPane.ToggleAssignedAltitudesHidden()
+				}
 			case titleBarActionToggleStarsFontSetB:
 				if starsPane, ok := active.(*stars.STARSPane); ok {
 					starsPane.ToggleFontSetB(r)

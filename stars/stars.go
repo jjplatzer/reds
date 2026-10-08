@@ -45,6 +45,7 @@ type STARSPane struct {
 	dcbSuppressPressUntilRelease bool
 	useFontSetB                  bool
 	useFAAHFSTD010APalette       bool
+	hideAssignedAltitudes        bool
 	systemFont                   *renderer.BitmapFont
 	systemFontTextures           map[int]renderer.TextureID
 	systemOutlineFont            *renderer.BitmapFont
@@ -151,6 +152,20 @@ type STARSPane struct {
 	// display without mutating live feed state.
 	trackRepositions     map[string]trackRepositionState
 	rposPendingSourceKey string
+}
+
+// AssignedAltitudesHidden reports the display-only burger-menu override used
+// to suppress FDB assigned-altitude field 7. It deliberately does not alter
+// TAIS flight-plan state or STARS preference sets.
+func (p *STARSPane) AssignedAltitudesHidden() bool {
+	return p != nil && p.hideAssignedAltitudes
+}
+
+// ToggleAssignedAltitudesHidden changes only this TCW/TDW presentation.
+func (p *STARSPane) ToggleAssignedAltitudesHidden() {
+	if p != nil {
+		p.hideAssignedAltitudes = !p.hideAssignedAltitudes
+	}
 }
 
 // resolvedQuickLookTCP expands the one-character controller-symbol shorthand
