@@ -243,6 +243,9 @@ func run(logger *redslog.Logger) error {
 
 		case appModeScope:
 			menuOptions := titleBarMenuOptions{}
+			if _, ok := active.(*asdex.ASDEXPane); ok {
+				menuOptions.ShowASDEXSeparator = true
+			}
 			if starsPane, ok := active.(*stars.STARSPane); ok {
 				menuOptions.ShowStarsAssignedAltitudes = true
 				menuOptions.HideStarsAssignedAltitudes = starsPane.AssignedAltitudesHidden()
@@ -286,6 +289,12 @@ func run(logger *redslog.Logger) error {
 				}
 			case titleBarActionSwitchFacility:
 				switchToMenu(&mode, &active, &scopeTitle, plat, consumer, m)
+			case titleBarActionDefineTemporaryArea:
+				// UI and keyboard action only; area definition is implemented later.
+				logger.Info("Define Temporary Area selected (not yet implemented)")
+			case titleBarActionViewNOTAMs:
+				// The NOTAM viewer will be wired to this menu action later.
+				logger.Info("View NOTAMs selected (not yet implemented)")
 			case titleBarActionToggleStarsAssignedAltitudes:
 				if starsPane, ok := active.(*stars.STARSPane); ok {
 					starsPane.ToggleAssignedAltitudesHidden()
