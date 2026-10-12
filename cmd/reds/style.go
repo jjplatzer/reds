@@ -74,6 +74,12 @@ const (
 // from the label (the visible label is drawn separately, like the Qt QLabel).
 // Returns true if the selection changed this frame.
 func dropdown(id string, st dropState, items []string, selected *int, enabled bool) bool {
+	return dropdownSized(id, st, items, selected, enabled, imgui.ContentRegionAvail().X)
+}
+
+// dropdownSized is the same styled selector at an explicit width. It is used
+// for the side-by-side endpoint fields in the temporary-area dialog.
+func dropdownSized(id string, st dropState, items []string, selected *int, enabled bool, width float32) bool {
 	frameBg := st.frameColor()
 	framePaddingY := (controlHeight - imgui.FontSize()) / 2
 	if framePaddingY < 0 {
@@ -108,7 +114,6 @@ func dropdown(id string, st dropState, items []string, selected *int, enabled bo
 	}
 
 	changed := false
-	width := imgui.ContentRegionAvail().X
 	popupID := id + "Popup"
 
 	if imgui.InvisibleButtonV(id, imgui.Vec2{X: width, Y: controlHeight}, imgui.ButtonFlagsMouseButtonLeft) && enabled {

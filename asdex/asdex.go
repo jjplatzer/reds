@@ -243,6 +243,7 @@ type ASDEXPane struct {
 	videomap          *VideoMap
 	safetyLogic       SafetyLogic
 	tempData          TempData
+	surfaceGraph      *surfaceRouteGraph
 	windows           ScopeWindowManager
 	targets           TargetStore
 	smes              *redsnet.SmesClient

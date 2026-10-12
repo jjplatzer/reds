@@ -62,6 +62,8 @@ var (
 		false,
 		"print REDS version and exit",
 	)
+	// Internal entry point for a separate, movable native temporary-area window.
+	tempAreaDialogAirport = flag.String("temp-area-dialog", "", "internal temporary area window")
 )
 
 type appMode int
@@ -80,6 +82,13 @@ func realMain() (exitCode int) {
 
 	if *showVersion {
 		fmt.Println(buildinfo.String())
+		return 0
+	}
+	if *tempAreaDialogAirport != "" {
+		if err := runTempAreaWindow(*tempAreaDialogAirport); err != nil {
+			fmt.Fprintf(os.Stderr, "reds: temporary map area window: %v\n", err)
+			return 1
+		}
 		return 0
 	}
 
@@ -206,6 +215,8 @@ func run(logger *redslog.Logger) error {
 	defer consumer.Stop()
 
 	bg := colDialogBg
+	var tempArea tempAreaWindowProcess
+	defer tempArea.close()
 	for !plat.ShouldStop() {
 		plat.ProcessEvents()
 		plat.NewFrame()
@@ -237,11 +248,15 @@ func run(logger *redslog.Logger) error {
 				active = pane
 				scopeTitle = m.selection.ScopeTitle()
 				mode = appModeScope
+				tempArea.close()
 			case menuCancelled:
 				return nil
 			}
 
 		case appModeScope:
+			if pane, ok := active.(*asdex.ASDEXPane); ok {
+				tempArea.drain(pane)
+			}
 			menuOptions := titleBarMenuOptions{}
 			if _, ok := active.(*asdex.ASDEXPane); ok {
 				menuOptions.ShowASDEXSeparator = true
@@ -288,10 +303,18 @@ func run(logger *redslog.Logger) error {
 					)
 				}
 			case titleBarActionSwitchFacility:
+				if pane, ok := active.(*asdex.ASDEXPane); ok {
+					pane.ClearGraphAreaPreview()
+				}
+				tempArea.close()
 				switchToMenu(&mode, &active, &scopeTitle, plat, consumer, m)
 			case titleBarActionDefineTemporaryArea:
-				// UI and keyboard action only; area definition is implemented later.
-				logger.Info("Define Temporary Area selected (not yet implemented)")
+				if pane, isASDEX := active.(*asdex.ASDEXPane); isASDEX {
+					pane.ClearGraphAreaPreview()
+					if err := tempArea.show(m.selection.Facility); err != nil {
+						logger.Error("Unable to open temporary map area window", slog.Any("error", err))
+					}
+				}
 			case titleBarActionViewNOTAMs:
 				// The NOTAM viewer will be wired to this menu action later.
 				logger.Info("View NOTAMs selected (not yet implemented)")

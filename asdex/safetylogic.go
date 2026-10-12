@@ -427,7 +427,7 @@ func LoadSafetyLogic(airport string, vm *VideoMap) (SafetyLogic, error) {
 		return SafetyLogic{}, fmt.Errorf("ASDE-X safety logic %s: missing videomap projection", airport)
 	}
 
-	path := filepath.ToSlash(filepath.Join("asdex", "surface", airport+".json"))
+	path := filepath.ToSlash(filepath.Join("asdex", "surface", airport+".json.zst"))
 	if !util.ResourceExists(path) {
 		return SafetyLogic{}, fmt.Errorf("ASDE-X safety logic %s not found", airport)
 	}
