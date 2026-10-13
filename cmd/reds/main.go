@@ -84,6 +84,13 @@ func realMain() (exitCode int) {
 		fmt.Println(buildinfo.String())
 		return 0
 	}
+	if *notamWindowAirport != "" {
+		if err := runNOTAMWindow(*notamWindowAirport); err != nil {
+			fmt.Fprintf(os.Stderr, "reds: NOTAM viewer: %v\n", err)
+			return 1
+		}
+		return 0
+	}
 	if *tempAreaDialogAirport != "" {
 		if err := runTempAreaWindow(*tempAreaDialogAirport); err != nil {
 			fmt.Fprintf(os.Stderr, "reds: temporary map area window: %v\n", err)
@@ -213,6 +220,8 @@ func run(logger *redslog.Logger) error {
 	scopeTitle := ""
 	consumer := &smesConsumer{}
 	defer consumer.Stop()
+	var notamWindow notamWindowProcess
+	defer notamWindow.close()
 
 	bg := colDialogBg
 	var tempArea tempAreaWindowProcess
@@ -249,6 +258,7 @@ func run(logger *redslog.Logger) error {
 				scopeTitle = m.selection.ScopeTitle()
 				mode = appModeScope
 				tempArea.close()
+				notamWindow.close()
 			case menuCancelled:
 				return nil
 			}
@@ -307,6 +317,7 @@ func run(logger *redslog.Logger) error {
 					pane.ClearGraphAreaPreview()
 				}
 				tempArea.close()
+				notamWindow.close()
 				switchToMenu(&mode, &active, &scopeTitle, plat, consumer, m)
 			case titleBarActionDefineTemporaryArea:
 				if pane, isASDEX := active.(*asdex.ASDEXPane); isASDEX {
@@ -316,8 +327,11 @@ func run(logger *redslog.Logger) error {
 					}
 				}
 			case titleBarActionViewNOTAMs:
-				// The NOTAM viewer will be wired to this menu action later.
-				logger.Info("View NOTAMs selected (not yet implemented)")
+				if _, isASDEX := active.(*asdex.ASDEXPane); isASDEX {
+					if err := notamWindow.show(m.selection.Facility); err != nil {
+						logger.Error("Unable to open NOTAM window", slog.Any("error", err))
+					}
+				}
 			case titleBarActionToggleStarsAssignedAltitudes:
 				if starsPane, ok := active.(*stars.STARSPane); ok {
 					starsPane.ToggleAssignedAltitudesHidden()
