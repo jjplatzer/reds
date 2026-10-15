@@ -2136,6 +2136,163 @@ func pavementHasTaxiway(id, taxiway string) bool {
 	return false
 }
 
+// graphSegmentTouchesJunction tests a graph centerline segment against a source
+// pavement polygon. Both are in lon/lat here; only intersection parameters are
+// compared, so no distance or projected-width approximation is involved.
+func graphSegmentTouchesJunction(a, b pavementPoint, ring pavementRing) bool {
+	if pavePointInPolygon(a, ring) || pavePointInPolygon(b, ring) {
+		return true
+	}
+	ab := psub(b, a)
+	for i, c := range ring {
+		d := ring[(i+1)%len(ring)]
+		cd := psub(d, c)
+		denom := pcross(ab, cd)
+		if denom == 0 {
+			continue
+		}
+		ac := psub(c, a)
+		if paveBetween(pcross(ac, cd)/denom) && paveBetween(pcross(ac, ab)/denom) {
+			return true
+		}
+	}
+	return false
+}
+
+// terminalTaxiwayJunction identifies a shared source polygon at the end of
+// the named taxiway, not an intermediate junction the taxiway passes through.
+// A graph arm counts only if the named taxiway continues past the polygon, or
+// the crossing edge itself is exclusive to that taxiway. This matters at e.g.
+// KATL A_A11: A has two continuing arms, but A11 has only its north arm; the
+// east/west edges there continue as A, not as A11.
+// Unknown/ambiguous geometry is retained instead of creating holes in a
+// through-taxiway closure.
+func (g *surfaceRouteGraph) terminalTaxiwayJunction(taxiway string, polygon [][]float64) bool {
+	ring := make(pavementRing, 0, len(polygon))
+	for _, coord := range polygon {
+		if len(coord) != 2 {
+			return false
+		}
+		ring = append(ring, pavementPoint{coord[0], coord[1]})
+	}
+	if len(ring) < 3 {
+		return false
+	}
+
+	adjacency := make(map[int][]int)
+	for i, edge := range g.Edges {
+		if graphHasName(edge.Names, taxiway) {
+			adjacency[edge.A] = append(adjacency[edge.A], i)
+			adjacency[edge.B] = append(adjacency[edge.B], i)
+		}
+	}
+
+	outsideArms := make(map[int]bool)
+	for i, edge := range g.Edges {
+		if !graphHasName(edge.Names, taxiway) {
+			continue
+		}
+		coords := make([][]float64, 0, len(edge.Shape)+2)
+		coords = append(coords, g.Nodes[edge.A])
+		coords = append(coords, edge.Shape...)
+		coords = append(coords, g.Nodes[edge.B])
+		touches := false
+		for j := 1; j < len(coords); j++ {
+			a, b := coords[j-1], coords[j]
+			if len(a) != 2 || len(b) != 2 {
+				continue
+			}
+			if graphSegmentTouchesJunction(pavementPoint{a[0], a[1]}, pavementPoint{b[0], b[1]}, ring) {
+				touches = true
+				break
+			}
+		}
+		if !touches {
+			continue
+		}
+		for _, node := range [...]int{edge.A, edge.B} {
+			pos := g.Nodes[node]
+			if pavePointInPolygon(pavementPoint{pos[0], pos[1]}, ring) {
+				continue
+			}
+			continues := len(edge.Names) == 1
+			for _, neighbor := range adjacency[node] {
+				if neighbor != i {
+					continues = true
+					break
+				}
+			}
+			if continues {
+				outsideArms[node] = true
+			}
+		}
+		if len(outsideArms) >= 2 {
+			return false
+		}
+	}
+	// Zero recognized arms is ambiguous; never remove a through junction
+	// merely because the graph and the pavement geometry disagree.
+	return len(outsideArms) == 1
+}
+
+// graphPavementsMeet reports whether two source pavement polygons touch or
+// overlap. The airport data uses adjacent polygon outlines for split taxiways;
+// checking these outlines avoids relying solely on imperfect graph edge names.
+func graphPavementsMeet(a, b [][]float64) bool {
+	if len(a) < 3 || len(b) < 3 {
+		return false
+	}
+	ring := make(pavementRing, 0, len(b))
+	for _, coord := range b {
+		if len(coord) != 2 {
+			return false
+		}
+		ring = append(ring, pavementPoint{coord[0], coord[1]})
+	}
+	for i, coord := range a {
+		prev := a[(i+len(a)-1)%len(a)]
+		if len(coord) != 2 || len(prev) != 2 {
+			return false
+		}
+		if graphSegmentTouchesJunction(pavementPoint{prev[0], prev[1]}, pavementPoint{coord[0], coord[1]}, ring) {
+			return true
+		}
+	}
+	return false
+}
+
+// throughTaxiwayJunction overrides a false graph-terminal classification when
+// the source polygon connects TWO distinct unshared pieces of the named taxiway.
+// E.g. KATL A_A7 and A_D must remain part of a whole-A closure, whereas A_A11
+// connects only one A11 piece and is excluded when closing A11 alone.
+func (g *surfaceRouteGraph) throughTaxiwayJunction(taxiway string, polygon [][]float64) bool {
+	connected := 0
+	for _, feature := range g.Pavements {
+		if !strings.EqualFold(strings.TrimSpace(feature.ID), taxiway) {
+			continue
+		}
+		if graphPavementsMeet(feature.Polygon, polygon) {
+			connected++
+			if connected >= 2 {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// A bounded section uses its explicit From/To intersection names as open
+// endpoints. Other shared polygons along the selected route remain included.
+func graphBoundaryJunction(id, from, to string) bool {
+	for _, label := range [...]string{from, to} {
+		boundary, err := parseGraphBoundary(label)
+		if err == nil && boundary.kind != "" && pavementHasTaxiway(id, boundary.name) {
+			return true
+		}
+	}
+	return false
+}
+
 func graphAreaMaskRectangle(a, b redsmath.Vec2, halfWidth float32) pavementRing {
 	d := b.Sub(a)
 	l := float32(stdmath.Hypot(float64(d.X), float64(d.Y)))
@@ -2174,12 +2331,24 @@ func (p *ASDEXPane) graphAreaPolygons(req GraphAreaRequest) ([]graphAreaPolygon,
 		return nil, err
 	}
 
-	// Preserve the current named FAA/REDS pavement polygons, including
-	// junction features such as A_C that belong to both A and C.
+	// Use the original pavement geometry, but treat endpoint junctions as
+	// open boundaries. A shared polygon (e.g. KATL A_A11) belongs to both
+	// named taxiways: closing A11 must not also close the through taxiway A.
+	// Intermediate shared junctions remain part of the selected pavement.
+	bounded := strings.TrimSpace(req.From) != "" && req.From != "No Endpoint"
 	var pavement []pavementRing
 	for _, feature := range g.Pavements {
 		if !pavementHasTaxiway(feature.ID, req.Taxiway) || len(feature.Polygon) < 3 {
 			continue
+		}
+		if strings.Contains(feature.ID, "_") {
+			if bounded && graphBoundaryJunction(feature.ID, req.From, req.To) {
+				continue
+			}
+			if !bounded && g.terminalTaxiwayJunction(req.Taxiway, feature.Polygon) &&
+				!g.throughTaxiwayJunction(req.Taxiway, feature.Polygon) {
+				continue
+			}
 		}
 		points := make([]redsmath.Vec2, 0, len(feature.Polygon))
 		for _, coord := range feature.Polygon {
@@ -2200,7 +2369,7 @@ func (p *ASDEXPane) graphAreaPolygons(req GraphAreaRequest) ([]graphAreaPolygon,
 	// mask. A bounded closure uses the graph path only as a clipping mask.
 	// Neither case draws the centerline corridor itself.
 	var mask []pavementRing
-	if strings.TrimSpace(req.From) != "" && req.From != "No Endpoint" {
+	if bounded {
 		degrees := make(map[int]int)
 		for _, index := range indices {
 			edge := g.Edges[index]
