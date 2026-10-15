@@ -128,7 +128,9 @@ func fetchNOTAMTexts(airport string) ([]string, error) {
 	var payload struct {
 		Airport string `json:"airport"`
 		Results []struct {
-			Text string `json:"text"`
+			Number    string `json:"number"`
+			NOTAMType string `json:"notam_type"`
+			Text      string `json:"text"`
 		} `json:"results"`
 	}
 	// Limit the local response so a misconfigured reverse proxy cannot exhaust
@@ -142,10 +144,26 @@ func fetchNOTAMTexts(airport string) ([]string, error) {
 	texts := make([]string, 0, len(payload.Results))
 	for _, n := range payload.Results {
 		if n.Text != "" {
-			texts = append(texts, n.Text)
+			texts = append(texts, formatNOTAMText(n.Number, n.NOTAMType, n.Text))
 		}
 	}
 	return texts, nil
+}
+
+// NOTAC's number already includes the series (e.g. A3111/26), while
+// notam_type is N (new), R (replacement), or C (cancellation). Some raw
+// texts already begin with this header; only supply it when absent.
+func formatNOTAMText(number, notamType, raw string) string {
+	number = strings.ToUpper(strings.TrimSpace(number))
+	notamType = strings.ToUpper(strings.TrimSpace(notamType))
+	if number == "" || (notamType != "N" && notamType != "R" && notamType != "C") {
+		return raw
+	}
+	header := number + " NOTAM" + notamType
+	if strings.HasPrefix(strings.ToUpper(strings.TrimSpace(raw)), header) {
+		return raw
+	}
+	return header + "\n" + raw
 }
 
 type notamLoadResult struct {
@@ -208,6 +226,7 @@ func runNOTAMWindow(airport string) error {
 	loading := true
 	var texts []string
 	var loadErr error
+	var searchKeyword string
 	open := true
 	for open && !plat.ShouldStop() {
 		select {
@@ -218,7 +237,7 @@ func runNOTAMWindow(airport string) error {
 		plat.ProcessEvents()
 		plat.NewFrame()
 		imgui.NewFrame()
-		drawNOTAMWindow(plat, airport, loading, texts, loadErr, &open)
+		drawNOTAMWindow(plat, airport, loading, texts, loadErr, &searchKeyword, &open)
 		imgui.Render()
 		bg := colDialogBg
 		plat.Clear(bg.X, bg.Y, bg.Z)
@@ -228,7 +247,44 @@ func runNOTAMWindow(airport string) error {
 	return nil
 }
 
-func drawNOTAMWindow(plat platform.Platform, airport string, loading bool, texts []string, loadErr error, open *bool) {
+// drawNOTAMKeywordSearch is one full-width, focusable ImGui text input. Use
+// the same rounded border as other controls, but no frame fill: the parent
+// window background shows through. The bundled Symbols font provides U+E721.
+func drawNOTAMKeywordSearch(windowWidth float32, keyword *string) {
+	const (
+		inset     float32 = 20
+		iconWidth float32 = 34
+	)
+	x, y := inset, float32(scopeTitleBarHeight+16)
+	width := windowWidth - 2*inset
+	min := imgui.Vec2{X: x, Y: y}
+	max := imgui.Vec2{X: x + width, Y: y + controlHeight}
+
+	// Make the actual input occupy the entire outlined rectangle rather than
+	// drawing a separate rounded background behind a smaller hit target.
+	imgui.SetCursorScreenPos(min)
+	imgui.SetNextItemWidth(width)
+	imgui.PushStyleVarFloat(imgui.StyleVarFrameRounding, frameRounding)
+	imgui.PushStyleVarFloat(imgui.StyleVarFrameBorderSize, 1)
+	imgui.PushStyleVarVec2(imgui.StyleVarFramePadding,
+		imgui.Vec2{X: controlPaddingX, Y: (controlHeight - imgui.FontSize()) / 2})
+	// Fully transparent fill in all interaction states; just the outline.
+	imgui.PushStyleColorVec4(imgui.ColFrameBg, imgui.Vec4{})
+	imgui.PushStyleColorVec4(imgui.ColFrameBgHovered, imgui.Vec4{})
+	imgui.PushStyleColorVec4(imgui.ColFrameBgActive, imgui.Vec4{})
+	imgui.PushStyleColorVec4(imgui.ColBorder, colBorder)
+	imgui.PushStyleColorVec4(imgui.ColText, colText)
+	imgui.PushStyleColorVec4(imgui.ColTextDisabled, colBorder)
+	imgui.InputTextWithHint("##notams-search", "Search Keyword...", keyword, 0, nil)
+	imgui.PopStyleColorV(6)
+	imgui.PopStyleVarV(3)
+
+	// Draw the glyph without introducing another item that could take focus.
+	drawTitleBarSymbolGlyph("\ue721", symbolsFont12, 12,
+		imgui.Vec2{X: max.X - iconWidth, Y: y}, max, colBorder)
+}
+
+func drawNOTAMWindow(plat platform.Platform, airport string, loading bool, texts []string, loadErr error, searchKeyword *string, open *bool) {
 	size := plat.DisplaySize()
 	imgui.SetNextWindowPosV(imgui.Vec2{}, imgui.CondAlways, imgui.Vec2{})
 	imgui.SetNextWindowSizeV(imgui.Vec2{X: size[0], Y: size[1]}, imgui.CondAlways)
@@ -267,7 +323,9 @@ func drawNOTAMWindow(plat platform.Platform, airport string, loading bool, texts
 		plat.MoveWindowBy(delta.X, delta.Y)
 	}
 
-	imgui.SetCursorScreenPos(imgui.Vec2{X: 18, Y: scopeTitleBarHeight + 16})
+	// Keep the search bar visible even while the airport data is loading.
+	drawNOTAMKeywordSearch(size[0], searchKeyword)
+	imgui.SetCursorScreenPos(imgui.Vec2{X: 18, Y: scopeTitleBarHeight + 16 + controlHeight + 16})
 	if loading {
 		imgui.TextUnformatted("Loading NOTAMs...")
 	} else if loadErr != nil {
@@ -275,18 +333,27 @@ func drawNOTAMWindow(plat platform.Platform, airport string, loading bool, texts
 	} else if len(texts) == 0 {
 		imgui.TextUnformatted("No current NOTAMs found for " + airport + ".")
 	} else {
+		keyword := strings.ToUpper(strings.TrimSpace(*searchKeyword))
 		// Use the same background as the window and wrap the displayed raw
 		// text to the available child width (recomputed when resized).
 		imgui.PushStyleColorVec4(imgui.ColChildBg, colDialogBg)
 		// Leave room for the source attribution below the scrolling notices.
 		imgui.BeginChildStrV("##notams-scroll", imgui.Vec2{X: 0, Y: -28}, 0, 0)
 		imgui.PushFont(notamFont, 16)
-		for i, text := range texts {
-			if i > 0 {
+		shown := 0
+		for _, text := range texts {
+			if keyword != "" && !strings.Contains(strings.ToUpper(text), keyword) {
+				continue
+			}
+			if shown > 0 {
 				imgui.Separator()
 				imgui.Spacing()
 			}
 			imgui.TextWrapped(text)
+			shown++
+		}
+		if shown == 0 {
+			imgui.TextUnformatted("No NOTAMs match your keyword.")
 		}
 		imgui.PopFont()
 		imgui.EndChild()

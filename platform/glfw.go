@@ -173,6 +173,19 @@ func (g *glfwPlatform) ProcessEvents() {
 func (g *glfwPlatform) NewFrame() {
 	implogl3.NewFrame()
 	implglfw.NewFrame()
+	// SetCharCallback (installed after the ImGui backend) receives GLFW text
+	// input instead of the backend. Forward those characters to ImGui before
+	// imgui.NewFrame() so focused InputText widgets can accept typing.
+	for _, ch := range g.keyboard.Text {
+		g.imguiIO.AddInputCharacter(uint32(ch))
+	}
+	// Likewise, SetScrollCallback receives wheel and trackpad events instead
+	// of the backend's callback. Give the same (possibly fractional) deltas
+	// to ImGui so scrollable popups and child windows work without dragging
+	// their scrollbars. REDS panes still receive g.mouse.Wheel as before.
+	if wheel := g.mouse.Wheel; wheel.X != 0 || wheel.Y != 0 {
+		g.imguiIO.AddMouseWheelEvent(wheel.X, wheel.Y)
+	}
 }
 
 func (g *glfwPlatform) Clear(r, gn, b float32) {
