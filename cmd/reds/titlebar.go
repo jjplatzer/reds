@@ -29,6 +29,9 @@ const (
 	titleBarMenuShortcutPadRight   = 14
 	titleBarMenuPopupRounding      = 6
 	titleBarMenuPopupBorderSize    = 1
+	titleBarMenuSeparatorHeight    = 9 // 4 px padding + 1 px line + 4 px padding
+	titleBarMenuSeparatorInsetX    = 12
+	titleBarMenuSeparatorWidth     = 1
 )
 
 const (
@@ -52,9 +55,11 @@ var (
 	titleBarHover      = imgui.Vec4{X: 37.0 / 255.0, Y: 37.0 / 255.0, Z: 37.0 / 255.0, W: 1}
 	titleBarCloseHover = imgui.Vec4{X: 232.0 / 255.0, Y: 17.0 / 255.0, Z: 35.0 / 255.0, W: 1}
 
-	titleBarMenuBg         = imgui.Vec4{X: 61.0 / 255.0, Y: 61.0 / 255.0, Z: 76.0 / 255.0, W: 1}
-	titleBarMenuBorder     = imgui.Vec4{X: 74.0 / 255.0, Y: 74.0 / 255.0, Z: 94.0 / 255.0, W: 1}
-	titleBarMenuHover      = imgui.Vec4{X: 76.0 / 255.0, Y: 79.0 / 255.0, Z: 98.0 / 255.0, W: 1}
+	titleBarMenuBg     = imgui.Vec4{X: 61.0 / 255.0, Y: 61.0 / 255.0, Z: 76.0 / 255.0, W: 1}
+	titleBarMenuBorder = imgui.Vec4{X: 74.0 / 255.0, Y: 74.0 / 255.0, Z: 94.0 / 255.0, W: 1}
+	titleBarMenuHover  = imgui.Vec4{X: 76.0 / 255.0, Y: 79.0 / 255.0, Z: 98.0 / 255.0, W: 1}
+	// CRC uses Avalonia Fluent's SystemBaseMediumLowColor (#66FFFFFF) for separators.
+	titleBarMenuSeparator  = imgui.Vec4{X: 1, Y: 1, Z: 1, W: 102.0 / 255.0}
 	titleBarMenuFg         = imgui.Vec4{X: 240.0 / 255.0, Y: 240.0 / 255.0, Z: 240.0 / 255.0, W: 1}
 	titleBarMenuShortcutFg = imgui.Vec4{
 		X: 190.0 / 255.0,
@@ -70,11 +75,17 @@ const (
 	titleBarActionNone titleBarAction = iota
 	titleBarActionAddNewWindow
 	titleBarActionSwitchFacility
+	titleBarActionDefineTemporaryArea
+	titleBarActionViewNOTAMs
+	titleBarActionToggleStarsAssignedAltitudes
 	titleBarActionToggleStarsFontSetB
 	titleBarActionToggleStarsFAAHFSTD010APalette
 )
 
 type titleBarMenuOptions struct {
+	ShowASDEXSeparator           bool
+	ShowStarsAssignedAltitudes   bool
+	HideStarsAssignedAltitudes   bool
 	ShowStarsFontSetB            bool
 	UseStarsFontSetB             bool
 	ShowStarsFAAHFSTD010APalette bool
@@ -225,14 +236,21 @@ func drawTitleBarMenuPopup(
 		imgui.Vec2{},
 	)
 	menuHeight := float32(2 * titleBarMenuItemHeight)
+	if menuOptions.ShowASDEXSeparator {
+		// The separator and two ASDE-X-only menu rows.
+		menuHeight += titleBarMenuSeparatorHeight + 2*titleBarMenuItemHeight
+	}
 	popupWidth := float32(titleBarMenuPopupWidth)
+	if menuOptions.ShowStarsAssignedAltitudes {
+		menuHeight += float32(titleBarMenuItemHeight)
+	}
 	if menuOptions.ShowStarsFontSetB {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
 	if menuOptions.ShowStarsFAAHFSTD010APalette {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
-	if menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+	if menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
 		popupWidth = titleBarStarsMenuPopupWidth
 	}
 	imgui.SetNextWindowSizeV(
@@ -255,8 +273,10 @@ func drawTitleBarMenuPopup(
 
 	action := titleBarActionNone
 	if imgui.BeginPopupV("##titlebar-menu-popup", flags) {
+		// Right-align each complete shortcut; modifier glyphs need not share a left edge.
+		shortcutRightX := popupWidth - titleBarMenuShortcutPadRight
 		textPadX := float32(titleBarMenuTextPadX)
-		if menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+		if menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
 			// Reserve the same check gutter as the STARS checked rows so all
 			// labels start on the same vertical axis.
 			textPadX = titleBarMenuCheckedTextPadX
@@ -284,9 +304,9 @@ func drawTitleBarMenuPopup(
 		drawTitleBarMenuItemTextWithPad(
 			newWindowRowMin,
 			titleBarMenuItemHeight,
-			popupWidth,
+			shortcutRightX,
 			textPadX,
-			"Add New Window",
+			"New Window...",
 			titleBarAddNewWindowShortcutParts(),
 		)
 
@@ -318,7 +338,7 @@ func drawTitleBarMenuPopup(
 		drawTitleBarMenuItemTextWithPad(
 			switchFacilityRowMin,
 			titleBarMenuItemHeight,
-			popupWidth,
+			shortcutRightX,
 			textPadX,
 			"Switch Facility...",
 			titleBarSwitchFacilityShortcutParts(),
@@ -330,6 +350,125 @@ func drawTitleBarMenuPopup(
 		}
 
 		rowY += float32(titleBarMenuItemHeight)
+		if menuOptions.ShowASDEXSeparator {
+			// Match CRC's Fluent separator without adding another menu item.
+			lineY := switchFacilityRowMax.Y + float32(titleBarMenuSeparatorHeight)*0.5
+			imgui.WindowDrawList().AddLineV(
+				imgui.Vec2{X: switchFacilityRowMin.X + titleBarMenuSeparatorInsetX, Y: lineY},
+				imgui.Vec2{X: switchFacilityRowMax.X - titleBarMenuSeparatorInsetX, Y: lineY},
+				imgui.ColorU32Vec4(titleBarMenuSeparator),
+				titleBarMenuSeparatorWidth,
+			)
+		}
+		if menuOptions.ShowASDEXSeparator {
+			rowY += titleBarMenuSeparatorHeight
+			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
+			defineTemporaryAreaClicked := imgui.InvisibleButtonV(
+				"##asdex-define-temporary-area-menu-item",
+				imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
+				imgui.ButtonFlagsMouseButtonLeft,
+			)
+
+			rowMin := imgui.ItemRectMin()
+			rowMax := imgui.ItemRectMax()
+			if imgui.IsItemHovered() {
+				imgui.WindowDrawList().AddRectFilledV(
+					rowMin,
+					rowMax,
+					imgui.ColorU32Vec4(titleBarMenuHover),
+					titleBarMenuPopupRounding,
+					imgui.DrawFlagsRoundCornersAll,
+				)
+			}
+
+			drawTitleBarMenuItemTextWithPad(
+				rowMin,
+				titleBarMenuItemHeight,
+				shortcutRightX,
+				textPadX,
+				"Define Temporary Area...",
+				titleBarDefineTemporaryAreaShortcutParts(),
+			)
+
+			if defineTemporaryAreaClicked {
+				action = titleBarActionDefineTemporaryArea
+				imgui.CloseCurrentPopup()
+			}
+			rowY += float32(titleBarMenuItemHeight)
+
+			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
+			viewNOTAMsClicked := imgui.InvisibleButtonV(
+				"##asdex-view-notams-menu-item",
+				imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
+				imgui.ButtonFlagsMouseButtonLeft,
+			)
+
+			rowMin = imgui.ItemRectMin()
+			rowMax = imgui.ItemRectMax()
+			if imgui.IsItemHovered() {
+				imgui.WindowDrawList().AddRectFilledV(
+					rowMin,
+					rowMax,
+					imgui.ColorU32Vec4(titleBarMenuHover),
+					titleBarMenuPopupRounding,
+					imgui.DrawFlagsRoundCornersAll,
+				)
+			}
+
+			drawTitleBarMenuItemTextWithPad(
+				rowMin,
+				titleBarMenuItemHeight,
+				shortcutRightX,
+				textPadX,
+				"View NOTAMs...",
+				titleBarViewNOTAMsShortcutParts(),
+			)
+
+			if viewNOTAMsClicked {
+				action = titleBarActionViewNOTAMs
+				imgui.CloseCurrentPopup()
+			}
+			rowY += float32(titleBarMenuItemHeight)
+		}
+
+		if menuOptions.ShowStarsAssignedAltitudes {
+			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
+			hideAssignedAltitudeClicked := imgui.InvisibleButtonV(
+				"##stars-hide-assigned-altitudes-menu-item",
+				imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
+				imgui.ButtonFlagsMouseButtonLeft,
+			)
+
+			rowMin := imgui.ItemRectMin()
+			rowMax := imgui.ItemRectMax()
+			if imgui.IsItemHovered() {
+				imgui.WindowDrawList().AddRectFilledV(
+					rowMin,
+					rowMax,
+					imgui.ColorU32Vec4(titleBarMenuHover),
+					titleBarMenuPopupRounding,
+					imgui.DrawFlagsRoundCornersAll,
+				)
+			}
+
+			if menuOptions.HideStarsAssignedAltitudes {
+				drawTitleBarMenuCheck(rowMin, titleBarMenuItemHeight)
+			}
+			drawTitleBarMenuItemTextWithPad(
+				rowMin,
+				titleBarMenuItemHeight,
+				shortcutRightX,
+				titleBarMenuCheckedTextPadX,
+				"Hide Assigned Altitudes",
+				titleBarHideAssignedAltitudesShortcutParts(),
+			)
+
+			if hideAssignedAltitudeClicked {
+				action = titleBarActionToggleStarsAssignedAltitudes
+			}
+			rowY += float32(titleBarMenuItemHeight)
+		}
+
 		if menuOptions.ShowStarsFontSetB {
 			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
 			fontClicked := imgui.InvisibleButtonV(
@@ -356,7 +495,7 @@ func drawTitleBarMenuPopup(
 			drawTitleBarMenuItemTextWithPad(
 				fontRowMin,
 				titleBarMenuItemHeight,
-				popupWidth,
+				shortcutRightX,
 				titleBarMenuCheckedTextPadX,
 				"Use Font Set B",
 				titleBarFontSetBShortcutParts(),
@@ -394,7 +533,7 @@ func drawTitleBarMenuPopup(
 			drawTitleBarMenuItemTextWithPad(
 				wxRowMin,
 				titleBarMenuItemHeight,
-				popupWidth,
+				shortcutRightX,
 				titleBarMenuCheckedTextPadX,
 				"Use FAA-HF-STD010A Palette",
 				titleBarFAAHFSTD010APaletteShortcutParts(),
@@ -434,7 +573,7 @@ func drawTitleBarMenuCheck(rowMin imgui.Vec2, itemHeight float32) {
 
 func drawTitleBarMenuItemTextWithPad(
 	rowMin imgui.Vec2,
-	itemHeight, popupWidth, textPadX float32,
+	itemHeight float32, shortcutRightX float32, textPadX float32,
 	label string,
 	shortcut []titleBarShortcutPart,
 ) {
@@ -449,12 +588,12 @@ func drawTitleBarMenuItemTextWithPad(
 		label,
 	)
 
-	drawTitleBarShortcutParts(rowMin, itemHeight, popupWidth, shortcut)
+	drawTitleBarShortcutParts(rowMin, itemHeight, shortcutRightX, shortcut)
 }
 
 func drawTitleBarMenuItemText(
 	rowMin imgui.Vec2,
-	itemHeight, popupWidth float32,
+	itemHeight float32, shortcutRightX float32,
 	label string,
 	shortcut []titleBarShortcutPart,
 ) {
@@ -469,7 +608,7 @@ func drawTitleBarMenuItemText(
 		label,
 	)
 
-	drawTitleBarShortcutParts(rowMin, itemHeight, popupWidth, shortcut)
+	drawTitleBarShortcutParts(rowMin, itemHeight, shortcutRightX, shortcut)
 }
 
 func titleBarAddNewWindowShortcutParts() []titleBarShortcutPart {
@@ -505,6 +644,60 @@ func titleBarSwitchFacilityShortcutParts() []titleBarShortcutPart {
 		{Text: "+"},
 		{Text: shortcutShiftSymbol},
 		{Text: "+F"},
+	}
+}
+
+func titleBarDefineTemporaryAreaShortcutParts() []titleBarShortcutPart {
+	if runtime.GOOS == "darwin" {
+		return []titleBarShortcutPart{
+			{Text: shortcutCommandSymbol},
+			{Text: "+"},
+			{Text: shortcutShiftSymbol},
+			{Text: "+M"},
+		}
+	}
+
+	return []titleBarShortcutPart{
+		{Text: shortcutControlSymbol},
+		{Text: "+"},
+		{Text: shortcutShiftSymbol},
+		{Text: "+M"},
+	}
+}
+
+func titleBarViewNOTAMsShortcutParts() []titleBarShortcutPart {
+	if runtime.GOOS == "darwin" {
+		return []titleBarShortcutPart{
+			{Text: shortcutCommandSymbol},
+			{Text: "+"},
+			{Text: shortcutShiftSymbol},
+			{Text: "+N"},
+		}
+	}
+
+	return []titleBarShortcutPart{
+		{Text: shortcutControlSymbol},
+		{Text: "+"},
+		{Text: shortcutShiftSymbol},
+		{Text: "+N"},
+	}
+}
+
+func titleBarHideAssignedAltitudesShortcutParts() []titleBarShortcutPart {
+	if runtime.GOOS == "darwin" {
+		return []titleBarShortcutPart{
+			{Text: shortcutCommandSymbol},
+			{Text: "+"},
+			{Text: shortcutShiftSymbol},
+			{Text: "+A"},
+		}
+	}
+
+	return []titleBarShortcutPart{
+		{Text: shortcutControlSymbol},
+		{Text: "+"},
+		{Text: shortcutShiftSymbol},
+		{Text: "+A"},
 	}
 }
 
@@ -573,16 +766,15 @@ func titleBarShortcutPartsWidth(parts []titleBarShortcutPart) float32 {
 
 func drawTitleBarShortcutParts(
 	rowMin imgui.Vec2,
-	itemHeight, popupWidth float32,
+	itemHeight float32, shortcutRightX float32,
 	parts []titleBarShortcutPart,
 ) {
 	if len(parts) == 0 {
 		return
 	}
 
-	x := rowMin.X + popupWidth -
-		titleBarMenuShortcutPadRight -
-		titleBarShortcutPartsWidth(parts)
+	// Measure the complete shortcut in its actual fonts so its right edge is fixed.
+	x := rowMin.X + shortcutRightX - titleBarShortcutPartsWidth(parts)
 
 	for _, part := range parts {
 		if part.Text == "" {
@@ -611,6 +803,7 @@ func drawTitleBarShortcutParts(
 			continue
 		}
 
+		textSize := imgui.CalcTextSize(part.Text)
 		textY := rowMin.Y + (itemHeight-imgui.FontSize())*0.5
 		if textY < rowMin.Y {
 			textY = rowMin.Y
@@ -620,7 +813,7 @@ func drawTitleBarShortcutParts(
 			imgui.ColorU32Vec4(titleBarMenuShortcutFg),
 			part.Text,
 		)
-		x += imgui.CalcTextSize(part.Text).X
+		x += textSize.X
 	}
 }
 
@@ -650,6 +843,15 @@ func titleBarShortcutAction(
 	}
 	if keyboard.WasPressed(platform.KeyF) {
 		return titleBarActionSwitchFacility
+	}
+	if menuOptions.ShowASDEXSeparator && keyboard.WasPressed(platform.KeyM) {
+		return titleBarActionDefineTemporaryArea
+	}
+	if menuOptions.ShowASDEXSeparator && keyboard.WasPressed(platform.KeyN) {
+		return titleBarActionViewNOTAMs
+	}
+	if menuOptions.ShowStarsAssignedAltitudes && keyboard.WasPressed(platform.KeyA) {
+		return titleBarActionToggleStarsAssignedAltitudes
 	}
 	if menuOptions.ShowStarsFontSetB && keyboard.WasPressed(platform.KeyS) {
 		return titleBarActionToggleStarsFontSetB

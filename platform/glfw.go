@@ -173,6 +173,19 @@ func (g *glfwPlatform) ProcessEvents() {
 func (g *glfwPlatform) NewFrame() {
 	implogl3.NewFrame()
 	implglfw.NewFrame()
+	// SetCharCallback (installed after the ImGui backend) receives GLFW text
+	// input instead of the backend. Forward those characters to ImGui before
+	// imgui.NewFrame() so focused InputText widgets can accept typing.
+	for _, ch := range g.keyboard.Text {
+		g.imguiIO.AddInputCharacter(uint32(ch))
+	}
+	// REDS captures GLFW wheel and trackpad events itself. Reduce the deltas
+	// forwarded to ImGui for less sensitive menu scrolling, without affecting
+	// radar zoom (which still uses the unscaled g.mouse.Wheel).
+	const menuWheelScale float32 = 0.35
+	if wheel := g.mouse.Wheel; wheel.X != 0 || wheel.Y != 0 {
+		g.imguiIO.AddMouseWheelEvent(wheel.X*menuWheelScale, wheel.Y*menuWheelScale)
+	}
 }
 
 func (g *glfwPlatform) Clear(r, gn, b float32) {
@@ -382,11 +395,14 @@ var trackedKeys = []trackedKey{
 	{KeyShift, glfw.KeyLeftShift},
 	{KeyControl, glfw.KeyLeftControl},
 	{KeyCommand, glfw.KeyLeftSuper},
+	{KeyA, glfw.KeyA},
 	{KeyC, glfw.KeyC},
 	{KeyF, glfw.KeyF},
 	{KeyP, glfw.KeyP},
 	{KeyS, glfw.KeyS},
 	{KeyW, glfw.KeyW},
+	{KeyM, glfw.KeyM},
+	{KeyN, glfw.KeyN},
 }
 
 func (g *glfwPlatform) updateKeyboard() {

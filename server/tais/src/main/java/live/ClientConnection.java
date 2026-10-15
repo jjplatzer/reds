@@ -16,19 +16,25 @@ import java.util.ArrayDeque;
 final class ClientConnection {
 
     private final ServerWebSocket socket;
+    private final String facility;
     private final int pendingMax;
     private final ArrayDeque<JsonObject> pending = new ArrayDeque<>();
 
     private boolean ready;
     private boolean closed;
 
-    ClientConnection(ServerWebSocket socket, int pendingMax) {
+    ClientConnection(ServerWebSocket socket, String facility, int pendingMax) {
         this.socket = socket;
+        this.facility = facility;
         this.pendingMax = pendingMax;
     }
 
+    String facility() {
+        return facility;
+    }
+
     void onLiveFrame(JsonObject frame) {
-        if (closed) return;
+        if (closed || !matchesFacility(frame)) return;
 
         if (ready) {
             send(frame);
@@ -63,6 +69,11 @@ final class ClientConnection {
         }
 
         ready = !closed;
+    }
+
+    private boolean matchesFacility(JsonObject frame) {
+        String frameFacility = frame.getString("facility");
+        return frameFacility != null && facility.equalsIgnoreCase(frameFacility);
     }
 
     void markClosed() {

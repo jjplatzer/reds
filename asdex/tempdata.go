@@ -1,8 +1,11 @@
 package asdex
 
 import (
+	"encoding/json"
 	"fmt"
 	stdmath "math"
+	"path/filepath"
+	"sort"
 	"strings"
 	"unicode"
 
@@ -11,6 +14,7 @@ import (
 	"github.com/juliusplatzer/reds/platform"
 	"github.com/juliusplatzer/reds/radar"
 	"github.com/juliusplatzer/reds/renderer"
+	"github.com/juliusplatzer/reds/util"
 )
 
 const (
@@ -101,7 +105,10 @@ type TempData struct {
 
 	closedAreas     []TempArea
 	restrictedAreas []TempArea
-	texts           []TempText
+	// Preview is transient; created graph pavement areas use ordinary TEMP DATA
+	// collections so DCB DELETE GLOBAL continues to work for them.
+	graphPreviewAreas []TempArea
+	texts             []TempText
 
 	nextAreaID int
 	nextTextID int
@@ -111,6 +118,7 @@ type TempArea struct {
 	ID     string
 	Type   TempDataType
 	Points []redsmath.Vec2
+	Holes  [][]redsmath.Vec2 // graph-derived geometry may contain pavement islands
 	Bounds redsmath.Rect
 
 	Hidden      bool
@@ -358,24 +366,23 @@ func (td *TempData) VisibleObjectCount() int {
 	if td == nil {
 		return 0
 	}
-
-	count := 0
+	ids := make(map[string]bool)
 	for _, area := range td.closedAreas {
 		if !area.Hidden {
-			count++
+			ids[area.ID] = true
 		}
 	}
 	for _, area := range td.restrictedAreas {
 		if !area.Hidden {
-			count++
+			ids[area.ID] = true
 		}
 	}
 	for _, text := range td.texts {
 		if !text.Hidden {
-			count++
+			ids[text.ID] = true
 		}
 	}
-	return count
+	return len(ids)
 }
 
 func (td *TempData) AddArea(areaType TempDataType, points []redsmath.Vec2) {
@@ -403,6 +410,70 @@ func (td *TempData) AddArea(areaType TempDataType, points []redsmath.Vec2) {
 	case TempDataRestrictedArea:
 		td.restrictedAreas = append(td.restrictedAreas, area)
 	}
+}
+
+// SetGraphAreaPreview replaces any earlier graph preview. It never changes
+// committed temporary areas and is discarded when the native editor closes.
+func (td *TempData) SetGraphAreaPreview(areaType TempDataType, polygons []graphAreaPolygon) int {
+	if td == nil {
+		return 0
+	}
+	td.graphPreviewAreas = buildGraphTempAreas(areaType, polygons)
+	return len(td.graphPreviewAreas)
+}
+
+func (td *TempData) ClearGraphAreaPreview() {
+	if td != nil {
+		td.graphPreviewAreas = nil
+	}
+}
+
+// CommitGraphAreas adds the selected graph overlay as a single logical TEMP DATA
+// object. Its component pavement polygons share an ID for DCB deletion.
+func (td *TempData) CommitGraphAreas(areaType TempDataType, polygons []graphAreaPolygon) int {
+	if td == nil {
+		return 0
+	}
+	areas := buildGraphTempAreas(areaType, polygons)
+	if len(areas) == 0 {
+		return 0
+	}
+	// One logical closure may consist of several disjoint pavement components. A common ID
+	// lets clicking any segment highlight/delete the entire area via DCB.
+	id := td.nextTempAreaID(areaType)
+	for i := range areas {
+		areas[i].ID = id
+	}
+	switch areaType {
+	case TempDataClosedArea:
+		td.closedAreas = append(td.closedAreas, areas...)
+	case TempDataRestrictedArea:
+		td.restrictedAreas = append(td.restrictedAreas, areas...)
+	}
+	td.graphPreviewAreas = nil
+	return len(areas)
+}
+
+func buildGraphTempAreas(areaType TempDataType, polygons []graphAreaPolygon) []TempArea {
+	out := make([]TempArea, 0, len(polygons))
+	for _, polygon := range polygons {
+		points := polygon.Outer
+		if len(points) < 4 {
+			continue
+		}
+		rings := make([][]redsmath.Vec2, 0, len(polygon.Holes)+1)
+		rings = append(rings, polygon.Outer)
+		rings = append(rings, polygon.Holes...)
+		verts, indices := renderer.TessellateRings(rings)
+		if len(verts) == 0 || len(indices) == 0 {
+			continue
+		}
+		out = append(out, TempArea{
+			Type: areaType, Points: append([]redsmath.Vec2(nil), points...), Holes: polygon.Holes,
+			Bounds: boundsForTempPolygon(points), meshVertices: verts, meshIndices: indices,
+		})
+	}
+	return out
 }
 
 func boundsForTempPolygon(points []redsmath.Vec2) redsmath.Rect {
@@ -544,7 +615,15 @@ func tempAreaContains(area TempArea, world redsmath.Vec2) bool {
 		world.Y < area.Bounds.Min.Y || world.Y > area.Bounds.Max.Y {
 		return false
 	}
-	return pointInPolygon(area.Points, world)
+	if !pointInPolygon(area.Points, world) {
+		return false
+	}
+	for _, hole := range area.Holes {
+		if pointInPolygon(hole, world) {
+			return false
+		}
+	}
+	return true
 }
 
 func tempDistance2(a, b redsmath.Vec2) float32 {
@@ -569,13 +648,25 @@ func (td *TempData) ToggleHighlight(hit TempDataHit) bool {
 		if hit.Index >= len(td.closedAreas) {
 			return false
 		}
-		td.closedAreas[hit.Index].Highlighted = !td.closedAreas[hit.Index].Highlighted
+		id := td.closedAreas[hit.Index].ID
+		value := !td.closedAreas[hit.Index].Highlighted
+		for i := range td.closedAreas {
+			if td.closedAreas[i].ID == id {
+				td.closedAreas[i].Highlighted = value
+			}
+		}
 		return true
 	case TempDataHitRestrictedArea:
 		if hit.Index >= len(td.restrictedAreas) {
 			return false
 		}
-		td.restrictedAreas[hit.Index].Highlighted = !td.restrictedAreas[hit.Index].Highlighted
+		id := td.restrictedAreas[hit.Index].ID
+		value := !td.restrictedAreas[hit.Index].Highlighted
+		for i := range td.restrictedAreas {
+			if td.restrictedAreas[i].ID == id {
+				td.restrictedAreas[i].Highlighted = value
+			}
+		}
 		return true
 	default:
 		return false
@@ -678,6 +769,9 @@ func (td *TempData) DrawClosedAreas(
 	}
 
 	td.drawAreas(cb, transforms, td.closedAreas, monitorColors.TempClosedArea, brightness)
+	if len(td.graphPreviewAreas) > 0 && td.graphPreviewAreas[0].Type == TempDataClosedArea {
+		td.drawAreas(cb, transforms, td.graphPreviewAreas, monitorColors.TempClosedArea, brightness)
+	}
 }
 
 func (td *TempData) DrawRestrictedAreas(
@@ -690,6 +784,9 @@ func (td *TempData) DrawRestrictedAreas(
 	}
 
 	td.drawAreas(cb, transforms, td.restrictedAreas, monitorColors.TempRestrictedArea, brightness)
+	if len(td.graphPreviewAreas) > 0 && td.graphPreviewAreas[0].Type == TempDataRestrictedArea {
+		td.drawAreas(cb, transforms, td.graphPreviewAreas, monitorColors.TempRestrictedArea, brightness)
+	}
 }
 
 func (td *TempData) drawAreas(
@@ -710,11 +807,13 @@ func (td *TempData) drawAreas(
 
 		color := tempAreaColor(area, rgb, brightness)
 		lineBuilder := renderer.GetLinesBuilder()
-		points := make([]renderer.PointVertex, 0, len(area.Points))
-		for _, pt := range area.Points {
-			points = append(points, renderer.PointVertex{X: pt.X, Y: pt.Y})
+		for _, ring := range append([][]redsmath.Vec2{area.Points}, area.Holes...) {
+			points := make([]renderer.PointVertex, 0, len(ring))
+			for _, pt := range ring {
+				points = append(points, renderer.PointVertex{X: pt.X, Y: pt.Y})
+			}
+			lineBuilder.AddLineStrip(points)
 		}
-		lineBuilder.AddLineStrip(points)
 
 		cb.SetRGB(color)
 		cb.LineWidth(1)
@@ -1724,4 +1823,773 @@ func (p *ASDEXPane) handleDcbMenuKeyboard(ctx *panes.Context) bool {
 	}
 
 	return false
+}
+
+// -----------------------------------------------------------------------------
+// Graph-based temporary map area selection
+// -----------------------------------------------------------------------------
+// Graph-based temporary areas derived from the existing REDS surface file.
+// Graph topology selects which sections are affected. Actual twys polygons,
+// rather than buffer approximations of centerlines, supply the painted shape.
+
+// GraphAreaRequest describes a proposed temporary area in airport terms.
+// A blank From/To is "No Endpoint"; both blank means the whole named taxiway.
+// One blank is ambiguous (there can be several terminal branches) and rejected.
+type GraphAreaRequest struct {
+	AreaType string `json:"areaType"`
+	Taxiway  string `json:"taxiway"`
+	From     string `json:"from"`
+	To       string `json:"to"`
+}
+
+type surfaceTaxiwayPolygon struct {
+	ID      string      `json:"id"`
+	Polygon [][]float64 `json:"polygon"`
+}
+
+type surfaceRouteGraph struct {
+	Pavements []surfaceTaxiwayPolygon `json:"-"`
+	Nodes     [][]float64             `json:"nodes"`
+	Edges     []struct {
+		A     int         `json:"a"`
+		B     int         `json:"b"`
+		Names []string    `json:"names"`
+		Shape [][]float64 `json:"shape"`
+	} `json:"edges"`
+	Anchors []struct {
+		Type    string `json:"type"`
+		Runway  string `json:"runway"`
+		Taxiway string `json:"taxiway"`
+		Node    int    `json:"node"`
+	} `json:"anchors"`
+}
+
+func loadSurfaceRouteGraph(airport string) (*surfaceRouteGraph, error) {
+	path := filepath.ToSlash(filepath.Join("asdex", "surface", airport+".json.zst"))
+	if !util.ResourceExists(path) {
+		return nil, fmt.Errorf("surface data not found: %s", path)
+	}
+	var source struct {
+		Graph    surfaceRouteGraph       `json:"graph"`
+		Taxiways []surfaceTaxiwayPolygon `json:"twys"`
+	}
+	if err := json.Unmarshal(util.LoadResourceBytes(path), &source); err != nil {
+		return nil, fmt.Errorf("decode airport graph: %w", err)
+	}
+	g := &source.Graph
+	g.Pavements = source.Taxiways
+	if len(g.Nodes) == 0 || len(g.Edges) == 0 {
+		return nil, fmt.Errorf("airport %s has no inferred taxiway graph", airport)
+	}
+	for i, v := range g.Nodes {
+		if len(v) != 2 || stdmath.IsNaN(v[0]) || stdmath.IsNaN(v[1]) || stdmath.IsInf(v[0], 0) || stdmath.IsInf(v[1], 0) {
+			return nil, fmt.Errorf("invalid graph vertex %d", i)
+		}
+	}
+	for i, e := range g.Edges {
+		if e.A < 0 || e.B < 0 || e.A >= len(g.Nodes) || e.B >= len(g.Nodes) {
+			return nil, fmt.Errorf("edge %d has invalid endpoints", i)
+		}
+	}
+	return g, nil
+}
+
+func graphHasName(names []string, name string) bool {
+	for _, n := range names {
+		if strings.EqualFold(strings.TrimSpace(n), name) {
+			return true
+		}
+	}
+	return false
+}
+
+type graphBoundary struct {
+	kind, name string
+}
+
+func parseGraphBoundary(label string) (graphBoundary, error) {
+	label = strings.TrimSpace(label)
+	if label == "" || label == "No Endpoint" {
+		return graphBoundary{}, nil
+	}
+	if strings.HasPrefix(label, "TWY ") {
+		return graphBoundary{"taxiway", strings.TrimSpace(strings.TrimPrefix(label, "TWY "))}, nil
+	}
+	if strings.HasPrefix(label, "RWY ") {
+		return graphBoundary{"runway", strings.TrimSpace(strings.TrimPrefix(label, "RWY "))}, nil
+	}
+	return graphBoundary{}, fmt.Errorf("unknown boundary %q", label)
+}
+
+// ResolveEdges returns the exact edge indices in the inferred graph. Boundaries
+// must identify a single geographic junction each; multiple separate junctions
+// are refused rather than arbitrarily choosing one.
+func (g *surfaceRouteGraph) ResolveEdges(taxiway, from, to string) ([]int, error) {
+	taxiway = strings.TrimSpace(taxiway)
+	if taxiway == "" {
+		return nil, fmt.Errorf("select a taxiway")
+	}
+	a, err := parseGraphBoundary(from)
+	if err != nil {
+		return nil, err
+	}
+	b, err := parseGraphBoundary(to)
+	if err != nil {
+		return nil, err
+	}
+	if (a.kind == "") != (b.kind == "") {
+		return nil, fmt.Errorf("select both From and To, or leave both as No Endpoint for the entire taxiway")
+	}
+
+	adjacency := make([][]int, len(g.Nodes))
+	selected := make([]int, 0)
+	for i, e := range g.Edges {
+		if graphHasName(e.Names, taxiway) {
+			selected = append(selected, i)
+			adjacency[e.A] = append(adjacency[e.A], i)
+			adjacency[e.B] = append(adjacency[e.B], i)
+		}
+	}
+	if len(selected) == 0 {
+		return nil, fmt.Errorf("taxiway %s has no graph segments", taxiway)
+	}
+	if a.kind == "" {
+		return selected, nil
+	}
+	if a.kind == b.kind && strings.EqualFold(a.name, b.name) {
+		return nil, fmt.Errorf("From and To must identify different boundaries")
+	}
+
+	start, err := g.boundaryVertices(taxiway, a, adjacency)
+	if err != nil {
+		return nil, fmt.Errorf("From: %w", err)
+	}
+	end, err := g.boundaryVertices(taxiway, b, adjacency)
+	if err != nil {
+		return nil, fmt.Errorf("To: %w", err)
+	}
+
+	endNodes := make(map[int]bool, len(end))
+	for _, n := range end {
+		endNodes[n] = true
+	}
+	visited := make([]bool, len(g.Nodes))
+	parentNode := make([]int, len(g.Nodes))
+	parentEdge := make([]int, len(g.Nodes))
+	for i := range parentNode {
+		parentNode[i] = -1
+		parentEdge[i] = -1
+	}
+	queue := make([]int, 0, len(g.Nodes))
+	for _, v := range start {
+		if !visited[v] {
+			visited[v] = true
+			queue = append(queue, v)
+		}
+	}
+	target := -1
+	for head := 0; head < len(queue); head++ {
+		v := queue[head]
+		if endNodes[v] {
+			target = v
+			break
+		}
+		for _, i := range adjacency[v] {
+			e := g.Edges[i]
+			next := e.A
+			if next == v {
+				next = e.B
+			}
+			if !visited[next] {
+				visited[next] = true
+				parentNode[next] = v
+				parentEdge[next] = i
+				queue = append(queue, next)
+			}
+		}
+	}
+	if target < 0 {
+		return nil, fmt.Errorf("no connected route on TWY %s between %s and %s", taxiway, from, to)
+	}
+	path := make([]int, 0)
+	for v := target; parentEdge[v] >= 0; v = parentNode[v] {
+		path = append(path, parentEdge[v])
+	}
+	if len(path) == 0 {
+		return nil, fmt.Errorf("the selected boundaries meet at the same junction")
+	}
+	// Check that the chosen path is unique in the selected subgraph. A second
+	// equally valid branch should be resolved manually, not selected silently.
+	// (Cycles can otherwise produce a plausible but unintended shortcut.)
+	for _, i := range path {
+		e := g.Edges[i]
+		// Only endpoints with three or more A branches can create route ambiguity.
+		if len(adjacency[e.A]) > 2 || len(adjacency[e.B]) > 2 {
+			// Reject alternative paths to the same boundary if removing a path
+			// edge still allows both selected junction groups to connect.
+			if g.pathExistsSkipping(adjacency, start, endNodes, i) {
+				return nil, fmt.Errorf("TWY %s has multiple routes between these boundaries; refine the graph/selection", taxiway)
+			}
+		}
+	}
+	for i, j := 0, len(path)-1; i < j; i, j = i+1, j-1 {
+		path[i], path[j] = path[j], path[i]
+	}
+	return path, nil
+}
+
+func (g *surfaceRouteGraph) pathExistsSkipping(adjacency [][]int, starts []int, ends map[int]bool, omit int) bool {
+	visited := make([]bool, len(g.Nodes))
+	queue := make([]int, 0)
+	for _, v := range starts {
+		if !visited[v] {
+			visited[v] = true
+			queue = append(queue, v)
+		}
+	}
+	for h := 0; h < len(queue); h++ {
+		v := queue[h]
+		if ends[v] {
+			return true
+		}
+		for _, idx := range adjacency[v] {
+			if idx == omit {
+				continue
+			}
+			e := g.Edges[idx]
+			next := e.A
+			if next == v {
+				next = e.B
+			}
+			if !visited[next] {
+				visited[next] = true
+				queue = append(queue, next)
+			}
+		}
+	}
+	return false
+}
+
+func (g *surfaceRouteGraph) boundaryVertices(taxiway string, boundary graphBoundary, adjacency [][]int) ([]int, error) {
+	candidates := make(map[int]bool)
+	switch boundary.kind {
+	case "taxiway":
+		for _, e := range g.Edges {
+			if !graphHasName(e.Names, boundary.name) {
+				continue
+			}
+			if len(adjacency[e.A]) > 0 {
+				candidates[e.A] = true
+			}
+			if len(adjacency[e.B]) > 0 {
+				candidates[e.B] = true
+			}
+		}
+	case "runway":
+		for _, a := range g.Anchors {
+			if a.Type == "runway" && strings.EqualFold(a.Runway, boundary.name) && strings.EqualFold(a.Taxiway, taxiway) && a.Node >= 0 && a.Node < len(adjacency) && len(adjacency[a.Node]) > 0 {
+				candidates[a.Node] = true
+			}
+		}
+	}
+	if len(candidates) == 0 {
+		return nil, fmt.Errorf("%s %s does not have a validated connection to TWY %s", boundary.kind, boundary.name, taxiway)
+	}
+	// Nearby skeleton vertices belonging to a single physical intersection
+	// count as one boundary. Distinct positions are refused as ambiguous.
+	var values []int
+	for n := range candidates {
+		values = append(values, n)
+	}
+	// Rasterized polygon skeletons often spread one physical junction across
+	// several vertices. Accept a cluster at most 150 m across; anything
+	// larger may represent distinct intersections and needs disambiguation.
+	const maxJunctionSpanM = 150.0
+	for i := 0; i < len(values); i++ {
+		origin := g.Nodes[values[i]]
+		for j := i + 1; j < len(values); j++ {
+			p := g.Nodes[values[j]]
+			latRad := (p[1] + origin[1]) * stdmath.Pi / 360
+			east := (p[0] - origin[0]) * 111320 * stdmath.Cos(latRad)
+			north := (p[1] - origin[1]) * 111320
+			if stdmath.Hypot(east, north) > maxJunctionSpanM {
+				return nil, fmt.Errorf("%s %s intersects TWY %s at multiple locations", boundary.kind, boundary.name, taxiway)
+			}
+		}
+	}
+
+	return values, nil
+}
+
+// This is a spatial selection mask, never the visible geometry. The broad
+// width avoids cutting off actual pavement boundaries along the taxiway sides.
+// At the selected From/To graph vertices it terminates sharply, limiting a
+// bounded closure to the selected portion of the physical pavement polygon.
+const graphAreaMaskHalfWidthFeet = float32(360) // ~110 m
+
+func pavementHasTaxiway(id, taxiway string) bool {
+	for _, name := range strings.Split(id, "_") {
+		if strings.EqualFold(strings.TrimSpace(name), taxiway) {
+			return true
+		}
+	}
+	return false
+}
+
+func graphAreaMaskRectangle(a, b redsmath.Vec2, halfWidth float32) pavementRing {
+	d := b.Sub(a)
+	l := float32(stdmath.Hypot(float64(d.X), float64(d.Y)))
+	if l < 1 {
+		return nil
+	}
+	n := redsmath.Vec2{X: -d.Y * halfWidth / l, Y: d.X * halfWidth / l}
+	corners := []redsmath.Vec2{a.Add(n), b.Add(n), b.Sub(n), a.Sub(n)}
+	return paveReadRing(corners)
+}
+
+func graphAreaMaskSquare(center redsmath.Vec2, halfWidth float32) pavementRing {
+	corners := []redsmath.Vec2{
+		{X: center.X - halfWidth, Y: center.Y - halfWidth},
+		{X: center.X + halfWidth, Y: center.Y - halfWidth},
+		{X: center.X + halfWidth, Y: center.Y + halfWidth},
+		{X: center.X - halfWidth, Y: center.Y + halfWidth},
+	}
+	return paveReadRing(corners)
+}
+
+// graphAreaPolygons resolves a named section on the inferred graph, then
+// clips and unions the *original* taxiway pavement polygons. Adjacent source
+// polygons produce one outer contour, not overlapping artificial rectangles.
+func (p *ASDEXPane) graphAreaPolygons(req GraphAreaRequest) ([]graphAreaPolygon, error) {
+	if p.surfaceGraph == nil {
+		g, err := loadSurfaceRouteGraph(p.airport)
+		if err != nil {
+			return nil, err
+		}
+		p.surfaceGraph = g
+	}
+	g := p.surfaceGraph
+	indices, err := g.ResolveEdges(req.Taxiway, req.From, req.To)
+	if err != nil {
+		return nil, err
+	}
+
+	// Preserve the current named FAA/REDS pavement polygons, including
+	// junction features such as A_C that belong to both A and C.
+	var pavement []pavementRing
+	for _, feature := range g.Pavements {
+		if !pavementHasTaxiway(feature.ID, req.Taxiway) || len(feature.Polygon) < 3 {
+			continue
+		}
+		points := make([]redsmath.Vec2, 0, len(feature.Polygon))
+		for _, coord := range feature.Polygon {
+			if len(coord) != 2 {
+				continue
+			}
+			points = append(points, p.videomap.LonLatToFeet(coord[0], coord[1]))
+		}
+		if ring := paveReadRing(points); len(ring) >= 3 {
+			pavement = append(pavement, ring)
+		}
+	}
+	if len(pavement) == 0 {
+		return nil, fmt.Errorf("TWY %s has no associated pavement polygons", req.Taxiway)
+	}
+
+	// A whole-taxiway closure uses the original polygons without a spatial
+	// mask. A bounded closure uses the graph path only as a clipping mask.
+	// Neither case draws the centerline corridor itself.
+	var mask []pavementRing
+	if strings.TrimSpace(req.From) != "" && req.From != "No Endpoint" {
+		degrees := make(map[int]int)
+		for _, index := range indices {
+			edge := g.Edges[index]
+			degrees[edge.A]++
+			degrees[edge.B]++
+		}
+		for _, index := range indices {
+			edge := g.Edges[index]
+			coords := make([][]float64, 0, len(edge.Shape)+2)
+			coords = append(coords, g.Nodes[edge.A])
+			coords = append(coords, edge.Shape...)
+			coords = append(coords, g.Nodes[edge.B])
+			var path []redsmath.Vec2
+			for _, coord := range coords {
+				if len(coord) == 2 {
+					path = append(path, p.videomap.LonLatToFeet(coord[0], coord[1]))
+				}
+			}
+			for i := 1; i < len(path); i++ {
+				if rect := graphAreaMaskRectangle(path[i-1], path[i], graphAreaMaskHalfWidthFeet); len(rect) > 0 {
+					mask = append(mask, rect)
+				}
+			}
+			for i := 1; i < len(path)-1; i++ {
+				mask = append(mask, graphAreaMaskSquare(path[i], graphAreaMaskHalfWidthFeet))
+			}
+		}
+		for vertex, degree := range degrees {
+			if degree >= 2 {
+				pos := g.Nodes[vertex]
+				mask = append(mask, graphAreaMaskSquare(p.videomap.LonLatToFeet(pos[0], pos[1]), graphAreaMaskHalfWidthFeet))
+			}
+		}
+		if len(mask) == 0 {
+			return nil, fmt.Errorf("selected graph section has no drawable geometry")
+		}
+	}
+	polygons, err := pavementBooleanBoundary(pavement, mask)
+	if err == nil {
+		return polygons, nil
+	}
+	// A few airports contain coincident/touching sliver polygons that can
+	// defeat contour reconstruction. For a *whole* taxiway, drawing the
+	// original pavement is still better than inventing a centerline ribbon.
+	// For a bounded section, never fall back to drawing the entire taxiway.
+	if len(mask) != 0 {
+		return nil, fmt.Errorf("unable to build the bounded pavement outline for TWY %s: %w", req.Taxiway, err)
+	}
+	fallback := make([]graphAreaPolygon, 0, len(pavement))
+	for _, ring := range pavement {
+		fallback = append(fallback, graphAreaPolygon{Outer: paveWriteRing(ring)})
+	}
+	return fallback, nil
+}
+
+func (p *ASDEXPane) ApplyGraphArea(req GraphAreaRequest, preview bool) (int, error) {
+	var areaType TempDataType
+	switch req.AreaType {
+	case "Closed Area":
+		areaType = TempDataClosedArea
+	case "Restriction Area":
+		areaType = TempDataRestrictedArea
+	default:
+		return 0, fmt.Errorf("invalid map area type %q", req.AreaType)
+	}
+	polygons, err := p.graphAreaPolygons(req)
+	if err != nil {
+		return 0, err
+	}
+	var drawn int
+	if preview {
+		drawn = p.tempData.SetGraphAreaPreview(areaType, polygons)
+	} else {
+		drawn = p.tempData.CommitGraphAreas(areaType, polygons)
+	}
+	if drawn == 0 {
+		return 0, fmt.Errorf("graph segments could not be tessellated")
+	}
+	return drawn, nil
+}
+
+func (p *ASDEXPane) ClearGraphAreaPreview() {
+	if p != nil {
+		p.tempData.ClearGraphAreaPreview()
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Temporary map area pavement geometry
+// -----------------------------------------------------------------------------
+// Polygonal geometry used for rendering graph-selected temporary map areas.
+// The graph selects the longitudinal extent, while the actual airport surface
+// polygons determine the shape. No artificial taxiway-width ribbon is drawn.
+
+type graphAreaPolygon struct {
+	Outer []redsmath.Vec2
+	Holes [][]redsmath.Vec2
+}
+
+type pavementPoint struct{ x, y float64 }
+type pavementRing []pavementPoint
+
+type pavementSegment struct {
+	a, b pavementPoint
+	cuts []float64
+}
+
+type pavementLink struct {
+	from, to   pavementPoint
+	kfrom, kto pavementKey
+	used       bool
+}
+
+type pavementKey struct{ x, y int64 }
+
+func snapPavement(p pavementPoint) pavementKey {
+	// REDS works in feet. Snapping intersections to 1/100th foot makes the
+	// independently calculated crossing points share exact graph vertices.
+	return pavementKey{int64(stdmath.Round(p.x * 100)), int64(stdmath.Round(p.y * 100))}
+}
+func unsnapPavement(k pavementKey) pavementPoint {
+	return pavementPoint{float64(k.x) / 100, float64(k.y) / 100}
+}
+func psub(a, b pavementPoint) pavementPoint               { return pavementPoint{a.x - b.x, a.y - b.y} }
+func padd(a, b pavementPoint) pavementPoint               { return pavementPoint{a.x + b.x, a.y + b.y} }
+func pmul(a pavementPoint, t float64) pavementPoint       { return pavementPoint{a.x * t, a.y * t} }
+func pcross(a, b pavementPoint) float64                   { return a.x*b.y - a.y*b.x }
+func pdot(a, b pavementPoint) float64                     { return a.x*b.x + a.y*b.y }
+func pinterp(a, b pavementPoint, t float64) pavementPoint { return padd(a, pmul(psub(b, a), t)) }
+
+// pavePointInPolygon uses even-odd fill, with no dependence on ring winding.
+func pavePointInPolygon(p pavementPoint, polygon pavementRing) bool {
+	inside := false
+	for i, j := 0, len(polygon)-1; i < len(polygon); j, i = i, i+1 {
+		a, b := polygon[j], polygon[i]
+		if (a.y > p.y) != (b.y > p.y) && p.x < (b.x-a.x)*(p.y-a.y)/(b.y-a.y)+a.x {
+			inside = !inside
+		}
+	}
+	return inside
+}
+func paveInsideAny(p pavementPoint, polygons []pavementRing) bool {
+	for _, ring := range polygons {
+		if pavePointInPolygon(p, ring) {
+			return true
+		}
+	}
+	return false
+}
+func paveArea(r pavementRing) float64 {
+	a := 0.0
+	for i := range r {
+		j := (i + 1) % len(r)
+		a += pcross(r[i], r[j])
+	}
+	return a * 0.5
+}
+func paveReadRing(input []redsmath.Vec2) pavementRing {
+	ring := make(pavementRing, 0, len(input))
+	for _, p := range input {
+		v := pavementPoint{float64(p.X), float64(p.Y)}
+		if len(ring) > 0 && snapPavement(ring[len(ring)-1]) == snapPavement(v) {
+			continue
+		}
+		ring = append(ring, v)
+	}
+	if len(ring) > 1 && snapPavement(ring[0]) == snapPavement(ring[len(ring)-1]) {
+		ring = ring[:len(ring)-1]
+	}
+	if len(ring) < 3 || stdmath.Abs(paveArea(ring)) < 0.5 {
+		return nil
+	}
+	return ring
+}
+func paveWriteRing(input pavementRing) []redsmath.Vec2 {
+	out := make([]redsmath.Vec2, 0, len(input)+1)
+	for _, pt := range input {
+		out = append(out, redsmath.Vec2{X: float32(pt.x), Y: float32(pt.y)})
+	}
+	if len(out) > 0 {
+		out = append(out, out[0])
+	}
+	return out
+}
+
+func paveBetween(t float64) bool  { return t >= -1e-9 && t <= 1+1e-9 }
+func paveClamp(t float64) float64 { return stdmath.Max(0, stdmath.Min(1, t)) }
+
+func paveSplitSegments(segments []pavementSegment) {
+	// The geometry is small (one named taxiway), and bounding-box rejection
+	// avoids most intersection calculations. Identical and collinear edges
+	// are deliberately split at the same endpoints so overlaps disappear.
+	for i := range segments {
+		a := &segments[i]
+		av := psub(a.b, a.a)
+		for j := i + 1; j < len(segments); j++ {
+			b := &segments[j]
+			if stdmath.Max(a.a.x, a.b.x)+1e-7 < stdmath.Min(b.a.x, b.b.x) ||
+				stdmath.Max(b.a.x, b.b.x)+1e-7 < stdmath.Min(a.a.x, a.b.x) ||
+				stdmath.Max(a.a.y, a.b.y)+1e-7 < stdmath.Min(b.a.y, b.b.y) ||
+				stdmath.Max(b.a.y, b.b.y)+1e-7 < stdmath.Min(a.a.y, a.b.y) {
+				continue
+			}
+			bv := psub(b.b, b.a)
+			d := pcross(av, bv)
+			ab := psub(b.a, a.a)
+			if stdmath.Abs(d) > 1e-8 {
+				t := pcross(ab, bv) / d
+				u := pcross(ab, av) / d
+				if paveBetween(t) && paveBetween(u) {
+					a.cuts = append(a.cuts, paveClamp(t))
+					b.cuts = append(b.cuts, paveClamp(u))
+				}
+			} else if stdmath.Abs(pcross(ab, av)) < 1e-5*stdmath.Hypot(av.x, av.y) {
+				aa := pdot(av, av)
+				bb := pdot(bv, bv)
+				if aa < 0.01 || bb < 0.01 {
+					continue
+				}
+				for _, v := range []pavementPoint{b.a, b.b} {
+					t := pdot(psub(v, a.a), av) / aa
+					if paveBetween(t) {
+						a.cuts = append(a.cuts, paveClamp(t))
+					}
+				}
+				for _, v := range []pavementPoint{a.a, a.b} {
+					t := pdot(psub(v, b.a), bv) / bb
+					if paveBetween(t) {
+						b.cuts = append(b.cuts, paveClamp(t))
+					}
+				}
+			}
+		}
+	}
+}
+
+// pavementBooleanBoundary extracts the true union of the source polygons,
+// intersected with the optional selection mask. All input boundaries are kept
+// where they divide inside from outside, discarding shared/interior seams.
+// Both polygon sets are in local feet, not latitude/longitude.
+func pavementBooleanBoundary(source, mask []pavementRing) ([]graphAreaPolygon, error) {
+	if len(source) == 0 {
+		return nil, fmt.Errorf("no taxiway pavement polygons for selection")
+	}
+	var segments []pavementSegment
+	for _, set := range [][]pavementRing{source, mask} {
+		for _, ring := range set {
+			if len(ring) < 3 {
+				continue
+			}
+			for i := range ring {
+				a, b := ring[i], ring[(i+1)%len(ring)]
+				if pdot(psub(a, b), psub(a, b)) < 0.01 {
+					continue
+				}
+				segments = append(segments, pavementSegment{a: a, b: b, cuts: []float64{0, 1}})
+			}
+		}
+	}
+	if len(segments) > 2800 {
+		return nil, fmt.Errorf("taxiway selection has too many polygon edges (%d)", len(segments))
+	}
+	paveSplitSegments(segments)
+	links := make([]pavementLink, 0, len(segments))
+	dedup := make(map[[4]int64]bool)
+	for _, s := range segments {
+		sort.Float64s(s.cuts)
+		ab := psub(s.b, s.a)
+		lenAB := stdmath.Hypot(ab.x, ab.y)
+		if lenAB < 0.1 {
+			continue
+		}
+		offset := pavementPoint{-ab.y / lenAB * 0.04, ab.x / lenAB * 0.04}
+		for i := 0; i < len(s.cuts)-1; i++ {
+			l, r := s.cuts[i], s.cuts[i+1]
+			if (r-l)*lenAB < 0.02 {
+				continue
+			}
+			a, b := pinterp(s.a, s.b, l), pinterp(s.a, s.b, r)
+			m := pinterp(a, b, 0.5)
+			inside := func(v pavementPoint) bool {
+				return paveInsideAny(v, source) && (len(mask) == 0 || paveInsideAny(v, mask))
+			}
+			left, right := inside(padd(m, offset)), inside(psub(m, offset))
+			if left == right {
+				continue
+			}
+			if !left {
+				a, b = b, a
+			}
+			k1, k2 := snapPavement(a), snapPavement(b)
+			if k1 == k2 {
+				continue
+			}
+			key := [4]int64{k1.x, k1.y, k2.x, k2.y}
+			if dedup[key] {
+				continue
+			}
+			dedup[key] = true
+			links = append(links, pavementLink{from: unsnapPavement(k1), to: unsnapPavement(k2), kfrom: k1, kto: k2})
+		}
+	}
+	if len(links) == 0 {
+		return nil, fmt.Errorf("selection does not intersect taxiway pavement")
+	}
+	outgoing := make(map[pavementKey][]int)
+	for i, e := range links {
+		outgoing[e.kfrom] = append(outgoing[e.kfrom], i)
+	}
+	rings := make([]pavementRing, 0)
+	for start := range links {
+		if links[start].used {
+			continue
+		}
+		here := start
+		ring := make(pavementRing, 0, 16)
+		first := links[start].kfrom
+		closed := false
+		for n := 0; n <= len(links); n++ {
+			edge := &links[here]
+			if edge.used {
+				break
+			}
+			edge.used = true
+			ring = append(ring, edge.from)
+			if edge.kto == first {
+				closed = true
+				break
+			}
+			options := outgoing[edge.kto]
+			next := -1
+			best := stdmath.Inf(1)
+			reverse := stdmath.Atan2(edge.from.y-edge.to.y, edge.from.x-edge.to.x)
+			for _, k := range options {
+				if links[k].used {
+					continue
+				}
+				o := links[k]
+				a := stdmath.Atan2(o.to.y-o.from.y, o.to.x-o.from.x)
+				// Follow the most clockwise outgoing edge relative to the
+				// incoming reverse, keeping the filled region on our left.
+				turn := stdmath.Mod(reverse-a+2*stdmath.Pi, 2*stdmath.Pi)
+				if turn < best {
+					best = turn
+					next = k
+				}
+			}
+			if next < 0 {
+				break
+			}
+			here = next
+		}
+		if !closed {
+			return nil, fmt.Errorf("incomplete pavement boundary; input polygons may contain invalid geometry")
+		}
+		if len(ring) >= 3 && stdmath.Abs(paveArea(ring)) > 1 {
+			rings = append(rings, ring)
+		}
+	}
+	if len(rings) == 0 {
+		return nil, fmt.Errorf("no valid paved area boundaries")
+	}
+	sort.Slice(rings, func(i, j int) bool { return stdmath.Abs(paveArea(rings[i])) > stdmath.Abs(paveArea(rings[j])) })
+	var polys []graphAreaPolygon
+	var outerRings []pavementRing
+	var holes []pavementRing
+	for _, ring := range rings {
+		if paveArea(ring) > 0 {
+			outerRings = append(outerRings, ring)
+		} else {
+			holes = append(holes, ring)
+		}
+	}
+	for _, outer := range outerRings {
+		polys = append(polys, graphAreaPolygon{Outer: paveWriteRing(outer)})
+	}
+	for _, hole := range holes {
+		parent := -1
+		parentArea := stdmath.Inf(1)
+		for i, outer := range outerRings {
+			if pavePointInPolygon(hole[0], outer) && stdmath.Abs(paveArea(outer)) < parentArea {
+				parent = i
+				parentArea = stdmath.Abs(paveArea(outer))
+			}
+		}
+		if parent < 0 {
+			return nil, fmt.Errorf("unattached pavement hole; check source geometry")
+		}
+		polys[parent].Holes = append(polys[parent].Holes, paveWriteRing(hole))
+	}
+	return polys, nil
 }

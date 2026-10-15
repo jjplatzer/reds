@@ -11,6 +11,7 @@
 # Java / Maven
 server/smes/target/
 server/tais/target/
+server/sfdps/target/
 
 # Generated Windows resources
 cmd/reds/rsrc_windows_*.syso
@@ -18,3 +19,10 @@ cmd/reds/rsrc_windows_*.syso
 # macOS
 .DS_Store
 __MACOSX/
+
+# NOTAC runtime state (keep the saved delta cursor outside Git)
+/server/notac/notac-state.json
+/server/notac/.notac-*.tmp
+
+# NOTAC executable
+/reds-notac

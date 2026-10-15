@@ -74,6 +74,12 @@ const (
 // from the label (the visible label is drawn separately, like the Qt QLabel).
 // Returns true if the selection changed this frame.
 func dropdown(id string, st dropState, items []string, selected *int, enabled bool) bool {
+	return dropdownSized(id, st, items, selected, enabled, imgui.ContentRegionAvail().X)
+}
+
+// dropdownSized is the same styled selector at an explicit width. It is used
+// for the side-by-side endpoint fields in the temporary-area dialog.
+func dropdownSized(id string, st dropState, items []string, selected *int, enabled bool, width float32) bool {
 	frameBg := st.frameColor()
 	framePaddingY := (controlHeight - imgui.FontSize()) / 2
 	if framePaddingY < 0 {
@@ -108,7 +114,6 @@ func dropdown(id string, st dropState, items []string, selected *int, enabled bo
 	}
 
 	changed := false
-	width := imgui.ContentRegionAvail().X
 	popupID := id + "Popup"
 
 	if imgui.InvisibleButtonV(id, imgui.Vec2{X: width, Y: controlHeight}, imgui.ButtonFlagsMouseButtonLeft) && enabled {
@@ -142,21 +147,46 @@ func dropdown(id string, st dropState, items []string, selected *int, enabled bo
 	if visibleItems < 1 {
 		visibleItems = 1
 	}
-	popupH := itemH * float32(visibleItems)
+	// Reserve room for the popup border and, when needed, the vertical
+	// scrollbar. Only labels wider than this usable area need X scrolling.
+	const popupBorderSize float32 = 1
+	rowWidth := width - 2*popupBorderSize
+	if len(items) > visibleItems {
+		rowWidth -= imgui.CurrentStyle().ScrollbarSize()
+	}
+	if rowWidth < 1 {
+		rowWidth = 1
+	}
+	widestLabel := rowWidth
+	for _, it := range items {
+		if textWidth := imgui.CalcTextSize(it).X + 2*popupTextInset; textWidth > widestLabel {
+			widestLabel = textWidth
+		}
+	}
+	// Include the 1px borders in the height. When a short list needs a
+	// horizontal scrollbar, make room for it without adding vertical overflow.
+	popupH := itemH*float32(visibleItems) + 2*popupBorderSize
+	if widestLabel > rowWidth && len(items) <= visibleItems {
+		popupH += imgui.CurrentStyle().ScrollbarSize()
+	}
 	imgui.SetNextWindowPosV(imgui.Vec2{X: rmin.X, Y: rmax.Y + popupGap}, imgui.CondAlways, imgui.Vec2{})
 	imgui.SetNextWindowSizeV(imgui.Vec2{X: width, Y: popupH}, imgui.CondAlways)
 	popupFlags := imgui.WindowFlagsNoTitleBar | imgui.WindowFlagsNoResize |
-		imgui.WindowFlagsNoMove | imgui.WindowFlagsNoSavedSettings
+		imgui.WindowFlagsNoMove | imgui.WindowFlagsNoSavedSettings |
+		imgui.WindowFlagsHorizontalScrollbar
 	imgui.PushStyleVarVec2(imgui.StyleVarWindowPadding, imgui.Vec2{})
 	imgui.PushStyleVarVec2(imgui.StyleVarItemSpacing, imgui.Vec2{})
 	imgui.PushStyleVarVec2(imgui.StyleVarSelectableTextAlign, imgui.Vec2{X: 0, Y: 0.5})
 	imgui.PushStyleVarFloat(imgui.StyleVarPopupRounding, frameRounding)
 	imgui.PushStyleVarFloat(imgui.StyleVarPopupBorderSize, 1)
 	if imgui.BeginPopupV(popupID, popupFlags) {
+		// The previous implementation made every row as wide as the *outer*
+		// popup, so even short ARTCC codes caused horizontal overflow beside
+		// the vertical scrollbar. Extend rows only for genuinely long labels.
 		for i, it := range items {
 			rowID := it + "##" + id + strconv.Itoa(i)
 			imgui.SetCursorPosX(0)
-			clicked := imgui.InvisibleButtonV(rowID, imgui.Vec2{X: width, Y: itemH}, imgui.ButtonFlagsMouseButtonLeft)
+			clicked := imgui.InvisibleButtonV(rowID, imgui.Vec2{X: widestLabel, Y: itemH}, imgui.ButtonFlagsMouseButtonLeft)
 			rowMin, rowMax := imgui.ItemRectMin(), imgui.ItemRectMax()
 			if imgui.IsItemHovered() {
 				imgui.WindowDrawList().AddRectFilled(rowMin, rowMax, imgui.ColorU32Vec4(colSelection))

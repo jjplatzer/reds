@@ -31,6 +31,7 @@ const (
 	briteDCBColumns             = 9                  // TI 6191.409 Rev. 30, Figure 4-13.
 	charSizeStartColumn         = mainDCBColumns - 5 // VICE / Figure 4-9: submenu follows CHAR SIZE.
 	charSizeDCBColumns          = mainDCBColumns + 1 // six full buttons from column 14 through 19.
+	prefDCBColumns              = 20                 // 32 half-height slots + four two-button control columns.
 	ssaFilterStartColumn        = 2                  // VICE / Figure 4-7: overlay starts after two Main-DCB columns.
 	tpaStartColumn              = mainDCBColumns - 5 // VICE: TPA/ATPA submenu occupies the final five Main-DCB columns.
 )
@@ -105,6 +106,8 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		dcbColumns = mapsDCBColumns
 	} else if p.commandMode == CommandModeCharSize || p.commandMode == CommandModeCharSizeSpinner {
 		dcbColumns = charSizeDCBColumns
+	} else if p.commandMode == CommandModePref || p.commandMode == CommandModeSavePrefAs {
+		dcbColumns = prefDCBColumns
 	}
 	maxScroll := max(float32(0), float32(dcbColumns)*dcbButtonSize-w)
 	if ctx.Mouse != nil && p.mouseOverDCB(ctx) && ctx.Mouse.Wheel.Y != 0 &&
@@ -156,9 +159,10 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	mapsActive := p.commandMode == CommandModeMaps
 	briteActive := p.commandMode == CommandModeBrite || p.commandMode == CommandModeBriteSpinner
 	charSizeActive := p.commandMode == CommandModeCharSize || p.commandMode == CommandModeCharSizeSpinner
+	prefActive := p.commandMode == CommandModePref || p.commandMode == CommandModeSavePrefAs
 	ssaFilterActive := p.commandMode == CommandModeSSAFilter
 	tpaActive := p.commandMode == CommandModeTPA
-	mainSubmenuActive := mapsActive || briteActive || charSizeActive || ssaFilterActive
+	mainSubmenuActive := mapsActive || briteActive || charSizeActive || prefActive || ssaFilterActive
 
 	// Main-page submenus are drawn on top of a disabled Main DCB. TPA/ATPA
 	// follows the same VICE model, but its backing page is the Auxiliary DCB.
@@ -202,6 +206,13 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		}
 		p.adjustActiveCharSize(ctx)
 		d.drawCharSizePage()
+	}
+	if prefActive {
+		// TI 6191.409/VICE STARS place the 32 named sets and eight control
+		// buttons across twenty DCB columns. Keep the disabled Main DCB drawn
+		// underneath, then rewind to the start of the bar for the PREF overlay.
+		d.cursor = redsmath.Vec2{X: -p.dcbScroll, Y: 0}
+		d.drawPrefPage()
 	}
 	if ssaFilterActive {
 		// TI 6191.409 Rev. 30, Figure 4-7 overlays the SSA FILTER submenu on
@@ -359,7 +370,13 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 	})
 	d.button("MODE\nFSL", mainFlags(buttonFull)|buttonUnsupported, false, nil)
 	d.button("SITE\nFUSED", mainFlags(buttonFull), false, nil)
-	d.button("PREF", mainFlags(buttonFull), false, nil)
+	prefLabel := "PREF"
+	if selected := p.selectedPreferenceSet(); selected != nil {
+		prefLabel += "\n" + selected.Name
+	}
+	d.button(prefLabel, mainFlags(buttonFull), false, func() {
+		p.beginPrefMenu()
+	})
 	d.button("SSA\nFILTER", mainFlags(buttonHalfVertical), false, func() {
 		p.setCommandMode(CommandModeSSAFilter)
 	})
@@ -1007,6 +1024,116 @@ func (d *dcbDrawer) drawCharSizePage() {
 
 	d.button("DONE", buttonFull, false, func() {
 		p.setCommandMode(CommandModeNone)
+	})
+}
+
+func (p *STARSPane) beginPrefMenu() {
+	if p == nil {
+		return
+	}
+	restore := captureStarsPreferenceSnapshot(p.currentPrefs())
+	p.prefRestore = &restore
+	if p.prefSelected == nil {
+		p.prefRestoreSelected = nil
+	} else {
+		idx := *p.prefSelected
+		p.prefRestoreSelected = &idx
+	}
+	p.setCommandMode(CommandModePref)
+}
+
+func (p *STARSPane) closePrefMenu() {
+	if p == nil {
+		return
+	}
+	p.prefRestore = nil
+	p.prefRestoreSelected = nil
+	p.setCommandMode(CommandModeNone)
+}
+
+func (p *STARSPane) restorePreferencesFromPrefEntry() {
+	if p == nil || p.prefRestore == nil {
+		return
+	}
+	p.applyPreferenceSnapshot(*p.prefRestore)
+	if p.prefRestoreSelected == nil {
+		p.prefSelected = nil
+	} else {
+		idx := *p.prefRestoreSelected
+		p.prefSelected = &idx
+	}
+}
+
+// drawPrefPage implements the High Resolution (2K) STARS PREF menu used by
+// TI 6191.409, VICE, and CRC. Unlike ASDE-X, STARS does not page the 32 slots:
+// all 32 named sets are shown simultaneously as sixteen columns of two
+// half-height buttons. Four more columns contain DEFAULT/FSSTARS, RESTORE/SAVE,
+// CHG PIN/SAVE AS, and DELETE/DONE.
+func (d *dcbDrawer) drawPrefPage() {
+	p := d.pane
+
+	for i, saved := range p.prefSets.Saved {
+		text := strconv.Itoa(i+1) + "\n"
+		flags := buttonHalfVertical
+		selected := p.prefSelected != nil && *p.prefSelected == i
+		if saved == nil {
+			flags |= buttonDisabled
+		} else {
+			text += saved.Name
+		}
+		idx := i
+		d.button(text, flags, selected, func() {
+			_ = p.selectPreferenceSet(idx)
+		})
+	}
+
+	d.button("DEFAULT", buttonHalfVertical, false, func() {
+		p.resetDefaultPreferenceCharacteristics()
+	})
+	d.button("FSSTARS", buttonHalfVertical|buttonUnsupported, false, nil)
+
+	restoreFlags := buttonHalfVertical
+	if p.prefRestore == nil {
+		restoreFlags |= buttonDisabled
+	}
+	d.button("RESTORE", restoreFlags, false, func() {
+		p.restorePreferencesFromPrefEntry()
+	})
+
+	saveFlags := buttonHalfVertical
+	if p.selectedPreferenceSet() == nil {
+		saveFlags |= buttonDisabled
+	}
+	d.button("SAVE", saveFlags, false, func() {
+		p.saveSelectedPreferenceSet()
+	})
+
+	d.button("CHG PIN", buttonHalfVertical|buttonUnsupported, false, nil)
+
+	saveAsFlags := buttonHalfVertical
+	hasFreeSlot := false
+	for _, saved := range p.prefSets.Saved {
+		if saved == nil {
+			hasFreeSlot = true
+			break
+		}
+	}
+	if !hasFreeSlot {
+		saveAsFlags |= buttonDisabled
+	}
+	d.button("SAVE AS", saveAsFlags, p.commandMode == CommandModeSavePrefAs, func() {
+		p.setCommandMode(CommandModeSavePrefAs)
+	})
+
+	deleteFlags := buttonHalfVertical
+	if p.selectedPreferenceSet() == nil {
+		deleteFlags |= buttonDisabled
+	}
+	d.button("DELETE", deleteFlags, false, func() {
+		p.deleteSelectedPreferenceSet()
+	})
+	d.button("DONE", buttonHalfVertical, false, func() {
+		p.closePrefMenu()
 	})
 }
 

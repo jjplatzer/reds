@@ -62,6 +62,8 @@ var (
 		false,
 		"print REDS version and exit",
 	)
+	// Internal entry point for a separate, movable native temporary-area window.
+	tempAreaDialogAirport = flag.String("temp-area-dialog", "", "internal temporary area window")
 )
 
 type appMode int
@@ -80,6 +82,20 @@ func realMain() (exitCode int) {
 
 	if *showVersion {
 		fmt.Println(buildinfo.String())
+		return 0
+	}
+	if *notamWindowAirport != "" {
+		if err := runNOTAMWindow(*notamWindowAirport); err != nil {
+			fmt.Fprintf(os.Stderr, "reds: NOTAM viewer: %v\n", err)
+			return 1
+		}
+		return 0
+	}
+	if *tempAreaDialogAirport != "" {
+		if err := runTempAreaWindow(*tempAreaDialogAirport); err != nil {
+			fmt.Fprintf(os.Stderr, "reds: temporary map area window: %v\n", err)
+			return 1
+		}
 		return 0
 	}
 
@@ -204,8 +220,12 @@ func run(logger *redslog.Logger) error {
 	scopeTitle := ""
 	consumer := &smesConsumer{}
 	defer consumer.Stop()
+	var notamWindow notamWindowProcess
+	defer notamWindow.close()
 
 	bg := colDialogBg
+	var tempArea tempAreaWindowProcess
+	defer tempArea.close()
 	for !plat.ShouldStop() {
 		plat.ProcessEvents()
 		plat.NewFrame()
@@ -237,13 +257,23 @@ func run(logger *redslog.Logger) error {
 				active = pane
 				scopeTitle = m.selection.ScopeTitle()
 				mode = appModeScope
+				tempArea.close()
+				notamWindow.close()
 			case menuCancelled:
 				return nil
 			}
 
 		case appModeScope:
+			if pane, ok := active.(*asdex.ASDEXPane); ok {
+				tempArea.drain(pane)
+			}
 			menuOptions := titleBarMenuOptions{}
+			if _, ok := active.(*asdex.ASDEXPane); ok {
+				menuOptions.ShowASDEXSeparator = true
+			}
 			if starsPane, ok := active.(*stars.STARSPane); ok {
+				menuOptions.ShowStarsAssignedAltitudes = true
+				menuOptions.HideStarsAssignedAltitudes = starsPane.AssignedAltitudesHidden()
 				menuOptions.ShowStarsFontSetB = true
 				menuOptions.UseStarsFontSetB = starsPane.UseFontSetB()
 				menuOptions.ShowStarsFAAHFSTD010APalette = true
@@ -283,7 +313,29 @@ func run(logger *redslog.Logger) error {
 					)
 				}
 			case titleBarActionSwitchFacility:
+				if pane, ok := active.(*asdex.ASDEXPane); ok {
+					pane.ClearGraphAreaPreview()
+				}
+				tempArea.close()
+				notamWindow.close()
 				switchToMenu(&mode, &active, &scopeTitle, plat, consumer, m)
+			case titleBarActionDefineTemporaryArea:
+				if pane, isASDEX := active.(*asdex.ASDEXPane); isASDEX {
+					pane.ClearGraphAreaPreview()
+					if err := tempArea.show(m.selection.Facility); err != nil {
+						logger.Error("Unable to open temporary map area window", slog.Any("error", err))
+					}
+				}
+			case titleBarActionViewNOTAMs:
+				if _, isASDEX := active.(*asdex.ASDEXPane); isASDEX {
+					if err := notamWindow.show(m.selection.Facility); err != nil {
+						logger.Error("Unable to open NOTAM window", slog.Any("error", err))
+					}
+				}
+			case titleBarActionToggleStarsAssignedAltitudes:
+				if starsPane, ok := active.(*stars.STARSPane); ok {
+					starsPane.ToggleAssignedAltitudesHidden()
+				}
 			case titleBarActionToggleStarsFontSetB:
 				if starsPane, ok := active.(*stars.STARSPane); ok {
 					starsPane.ToggleFontSetB(r)

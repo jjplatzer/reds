@@ -10,8 +10,11 @@ import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.json.JsonObject;
 import store.TrackStore;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -125,7 +128,14 @@ public final class WebSocketPush extends AbstractVerticle {
             return;
         }
 
-        ClientConnection client = new ClientConnection(socket, config.pendingMax());
+        String facility = requestedFacility(socket.query());
+        if (facility == null) {
+            System.err.println("[TAIS ws] Rejected client: missing/invalid facility scope");
+            socket.reject(400);
+            return;
+        }
+
+        ClientConnection client = new ClientConnection(socket, facility, config.pendingMax());
         clients.add(client);
 
         socket.closeHandler(ignored -> remove(client));
@@ -137,7 +147,7 @@ public final class WebSocketPush extends AbstractVerticle {
 
         // The TrackStore owns mutable target state. Request its immutable
         // snapshot instead of reaching across Vert.x event-loop ownership.
-        vertx.eventBus().<JsonObject>request(TrackStore.SNAPSHOT_ADDRESS, "snapshot")
+        vertx.eventBus().<JsonObject>request(TrackStore.SNAPSHOT_ADDRESS, facility)
                 .onSuccess(reply -> {
                     if (clients.contains(client)) {
                         client.onSnapshot(reply.body());
@@ -149,7 +159,8 @@ public final class WebSocketPush extends AbstractVerticle {
                     remove(client);
                 });
 
-        System.out.println("[TAIS ws] Client connected; clients=" + clients.size());
+        System.out.println("[TAIS ws] Client connected; facility=" + facility +
+                " clients=" + clients.size());
     }
 
     private void broadcast(JsonObject frame) {
@@ -161,6 +172,25 @@ public final class WebSocketPush extends AbstractVerticle {
     private void remove(ClientConnection client) {
         if (!clients.remove(client)) return;
         client.markClosed();
-        System.out.println("[TAIS ws] Client disconnected; clients=" + clients.size());
+        System.out.println("[TAIS ws] Client disconnected; facility=" + client.facility() +
+                " clients=" + clients.size());
+    }
+
+    private static String requestedFacility(String query) {
+        if (query == null || query.isBlank()) return null;
+
+        for (String pair : query.split("&")) {
+            int equals = pair.indexOf('=');
+            String rawKey = equals >= 0 ? pair.substring(0, equals) : pair;
+            if (!"facility".equals(URLDecoder.decode(rawKey, StandardCharsets.UTF_8))) continue;
+
+            String rawValue = equals >= 0 ? pair.substring(equals + 1) : "";
+            String facility = URLDecoder.decode(rawValue, StandardCharsets.UTF_8)
+                    .strip()
+                    .toUpperCase(Locale.ROOT);
+            return facility.matches("[A-Z0-9]{1,16}") ? facility : null;
+        }
+
+        return null;
     }
 }

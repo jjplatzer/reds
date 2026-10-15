@@ -18,6 +18,35 @@ type commandTypeParser interface {
 	Parse(text string) (value any, remaining string, matched bool, err error)
 }
 
+type prefReferenceCommandParser struct{}
+
+func (prefReferenceCommandParser) Identifier() string { return "PREF_REFERENCE" }
+
+func (prefReferenceCommandParser) Parse(text string) (any, string, bool, error) {
+	text = strings.ToUpper(strings.TrimSpace(text))
+	if text == "" || len(text) > 7 {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	for _, r := range text {
+		if (r < 'A' || r > 'Z') && (r < '0' || r > '9') {
+			return nil, text, true, ErrSTARSCommandFormat
+		}
+	}
+	return text, "", true, nil
+}
+
+type prefNameCommandParser struct{}
+
+func (prefNameCommandParser) Identifier() string { return "PREF_NAME" }
+
+func (prefNameCommandParser) Parse(text string) (any, string, bool, error) {
+	text = strings.ToUpper(strings.TrimSpace(text))
+	if err := validateStarsPreferenceSetName(text); err != nil {
+		return nil, text, true, err
+	}
+	return text, "", true, nil
+}
+
 type rangeCommandParser struct{}
 
 func (rangeCommandParser) Identifier() string { return "RANGE" }
@@ -447,6 +476,8 @@ func (charSizeCommandParser) Parse(text string) (any, string, bool, error) {
 }
 
 var commandTypeParsers = map[string]commandTypeParser{
+	"PREF_REFERENCE":     prefReferenceCommandParser{},
+	"PREF_NAME":          prefNameCommandParser{},
 	"RANGE":              rangeCommandParser{},
 	"RANGE_RING_SPACING": rangeRingSpacingCommandParser{},
 	"LEADER_DIRECTION":   leaderDirectionCommandParser{},
