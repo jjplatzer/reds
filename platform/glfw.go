@@ -179,12 +179,12 @@ func (g *glfwPlatform) NewFrame() {
 	for _, ch := range g.keyboard.Text {
 		g.imguiIO.AddInputCharacter(uint32(ch))
 	}
-	// Likewise, SetScrollCallback receives wheel and trackpad events instead
-	// of the backend's callback. Give the same (possibly fractional) deltas
-	// to ImGui so scrollable popups and child windows work without dragging
-	// their scrollbars. REDS panes still receive g.mouse.Wheel as before.
+	// REDS captures GLFW wheel and trackpad events itself. Reduce the deltas
+	// forwarded to ImGui for less sensitive menu scrolling, without affecting
+	// radar zoom (which still uses the unscaled g.mouse.Wheel).
+	const menuWheelScale float32 = 0.35
 	if wheel := g.mouse.Wheel; wheel.X != 0 || wheel.Y != 0 {
-		g.imguiIO.AddMouseWheelEvent(wheel.X, wheel.Y)
+		g.imguiIO.AddMouseWheelEvent(wheel.X*menuWheelScale, wheel.Y*menuWheelScale)
 	}
 }
 
