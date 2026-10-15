@@ -27,6 +27,11 @@ const (
 	notamWindowWidth  = 820
 	notamWindowHeight = 620
 	notamFontPath     = "fonts/CourierPrime-Regular.ttf.zst"
+
+	notamDisclaimerTitle = "UNOFFICIAL NOTAM DATA - NOT FOR OPERATIONAL USE"
+	notamDisclaimerText  = "Source: NOTAC (https://notac.aero). The underlying NOTAMs originate from the FAA NOTAM Management System and other issuing authorities. REDS is an independent, unofficial simulation tool, not an authorized aeronautical information service or briefing provider, and is not affiliated with or endorsed by NOTAC, the FAA, or any issuing authority.\n\n" +
+		"Information is cached and may be delayed, incomplete, inaccurate, expired, superseded, cancelled, or unavailable. Keyword filtering may omit relevant notices. No guarantee of accuracy, completeness, timeliness, availability, or fitness for operational use is made.\n\n" +
+		"For simulation and informational use only. Do not rely on this display for flight planning, dispatch, air traffic control, airport surface operations, or other safety-critical decisions. Verify applicable NOTAMs and obtain a current official briefing from the responsible authority. Nothing here limits statutory rights or liabilities that cannot lawfully be excluded."
 )
 
 // Internal command-line entry point for the child process.
@@ -323,9 +328,20 @@ func drawNOTAMWindow(plat platform.Platform, airport string, loading bool, texts
 		plat.MoveWindowBy(delta.X, delta.Y)
 	}
 
+	// Reserve a persistent disclaimer at the bottom. Its text scrolls within
+	// the footer if the native window is too small to show it in full.
+	footerHeight := size[1] * 0.27
+	if footerHeight < 120 {
+		footerHeight = 120
+	} else if footerHeight > 180 {
+		footerHeight = 180
+	}
+	footerTop := size[1] - footerHeight
+	notamsTop := float32(scopeTitleBarHeight + 16 + controlHeight + 16)
+
 	// Keep the search bar visible even while the airport data is loading.
 	drawNOTAMKeywordSearch(size[0], searchKeyword)
-	imgui.SetCursorScreenPos(imgui.Vec2{X: 18, Y: scopeTitleBarHeight + 16 + controlHeight + 16})
+	imgui.SetCursorScreenPos(imgui.Vec2{X: 18, Y: notamsTop})
 	if loading {
 		imgui.TextUnformatted("Loading NOTAMs...")
 	} else if loadErr != nil {
@@ -337,8 +353,10 @@ func drawNOTAMWindow(plat platform.Platform, airport string, loading bool, texts
 		// Use the same background as the window and wrap the displayed raw
 		// text to the available child width (recomputed when resized).
 		imgui.PushStyleColorVec4(imgui.ColChildBg, colDialogBg)
-		// Leave room for the source attribution below the scrolling notices.
-		imgui.BeginChildStrV("##notams-scroll", imgui.Vec2{X: 0, Y: -28}, 0, 0)
+		// Keep the scrollable NOTAM area above the persistent disclaimer.
+		imgui.BeginChildStrV("##notams-scroll", imgui.Vec2{
+			X: size[0] - 36, Y: footerTop - notamsTop - 10,
+		}, 0, 0)
 		imgui.PushFont(notamFont, 16)
 		shown := 0
 		for _, text := range texts {
@@ -359,10 +377,25 @@ func drawNOTAMWindow(plat platform.Platform, airport string, loading bool, texts
 		imgui.EndChild()
 		imgui.PopStyleColor()
 	}
-	// NOTAC requires attribution and a clear statement that this is not an
-	// official aeronautical information source. The notices above stay raw.
-	imgui.SetCursorScreenPos(imgui.Vec2{X: 18, Y: size[1] - 28})
-	imgui.TextUnformatted("Source: NOTAC - unofficial information; not for flight planning")
+	// NOTAC requires visible attribution and a clear unofficial-source warning.
+	// Keep the warning visible while giving the longer legal notice its own
+	// wrapped, scrollable footer (independent of the NOTAM list).
+	imgui.SetCursorScreenPos(imgui.Vec2{X: 18, Y: footerTop})
+	imgui.Separator()
+	imgui.SetCursorScreenPos(imgui.Vec2{X: 18, Y: footerTop + 8})
+	imgui.PushStyleColorVec4(imgui.ColText, colText)
+	imgui.TextUnformatted(notamDisclaimerTitle)
+	imgui.PopStyleColor()
+	imgui.SetCursorScreenPos(imgui.Vec2{X: 18, Y: footerTop + 30})
+	imgui.PushStyleColorVec4(imgui.ColChildBg, colDialogBg)
+	imgui.BeginChildStrV("##notams-disclaimer", imgui.Vec2{
+		X: size[0] - 36, Y: footerHeight - 38,
+	}, 0, 0)
+	imgui.PushStyleColorVec4(imgui.ColText, colTextDisabled)
+	imgui.TextWrapped(notamDisclaimerText)
+	imgui.PopStyleColor()
+	imgui.EndChild()
+	imgui.PopStyleColor()
 	imgui.End()
 	imgui.PopStyleVarV(4)
 	imgui.PopStyleColor()
