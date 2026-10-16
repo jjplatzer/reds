@@ -264,6 +264,14 @@ type ASDEXPane struct {
 	vectorLength                    int
 	auralVolume                     int
 	prefPage                        int
+	prefStore                       *asdexPrefRepository
+	prefInitials                    string
+	prefActiveID                    string
+	prefEdit                        *asdexPrefEdit
+	storedGlobalTempDataPage        int
+	tempPresetRepository            *tempDataPresetRepository
+	tempPresetRevision              uint64
+	tempPresetEdit                  *tempPresetEdit
 	playbackHourOffset              int
 	playbackClient                  *redsnet.PlaybackClient
 	playbackSession                 *PlaybackSession
@@ -456,6 +464,12 @@ func NewPane(airport string, logger *redslog.Logger) (*ASDEXPane, error) {
 		showCoastList:             true,
 		rangeSetting:              asdexDefaultRangeSetting,
 		rangeFullHorizontalFeet:   rangeFullHorizontalFeetFromSetting(asdexDefaultRangeSetting),
+	}
+	if err := pane.loadAsdexPrefs(); err != nil {
+		logger.Warn("Unable to load local ASDE-X preferences", slog.Any("error", err))
+	}
+	if err := pane.loadTempDataPresets(); err != nil {
+		logger.Warn("Unable to load local ASDE-X TEMP DATA presets", slog.Any("error", err))
 	}
 	pane.refreshRunwayConfigPreviewLine()
 	pane.refreshTowerConfigPreviewLine()
@@ -693,6 +707,11 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		p.clearHighlightedTarget()
 		if !p.consumeDcbInput(ctx) {
 			p.consumeDataBlockAreaSelectionInput(ctx, referenceExtent)
+		}
+	} else if p.tempPresetEdit != nil && p.tempPresetEdit.Mode == tempPresetEditSaveSelect {
+		p.clearHighlightedTarget()
+		if !p.consumeDcbInput(ctx) {
+			p.consumeTempPresetSaveSelection(ctx, transforms)
 		}
 	} else if p.dcbMenuCommand != nil {
 		p.clearHighlightedTarget()
@@ -1239,7 +1258,8 @@ func (p *ASDEXPane) dcbSubmenuCursorCaptured() bool {
 		return false
 	}
 
-	if p.dbAreaSelection != nil ||
+	if (p.tempPresetEdit != nil && p.tempPresetEdit.Mode == tempPresetEditSaveSelect) ||
+		p.dbAreaSelection != nil ||
 		p.dbAreaDraft != nil ||
 		p.tempAreaDraft != nil ||
 		p.tempTextCommand != nil ||
@@ -1328,6 +1348,7 @@ func (p *ASDEXPane) dcbState() DcbState {
 		}
 	}
 
+	p.syncTempDataPresets()
 	active := p.activeDcbWindowState()
 	rangeSetting := active.View.RangeSetting
 	if rangeSetting == 0 {
@@ -1356,54 +1377,57 @@ func (p *ASDEXPane) dcbState() DcbState {
 	playbackHour := p.playbackHourStart()
 
 	state := DcbState{
-		Range:                  rangeSetting,
-		Mode:                   p.mode,
-		VectorOn:               active.ShowVectorLine,
-		VectorLength:           ClampedTargetVectorSeconds(p.vectorLength),
-		LeaderLength:           active.DB.LeaderLength,
-		DataBlocksOn:           active.DB.ShowDataBlocks,
-		DcbOn:                  p.dcb.On(),
-		RotationDeg:            int(normalizeRotation(active.View.Rotation)),
-		ShowHistory:            active.ShowHistory,
-		HistoryLength:          active.HistoryLength,
-		ShowCoastList:          p.showCoastList,
-		CursorSpeed:            1,
-		CursorHome:             false,
-		Volume:                 clampInt(p.auralVolume, minAuralVolume, maxAuralVolume),
-		OperatingInitials:      "OP",
-		PrefPage:               p.prefPage,
-		CurrentPrefTitle:       "",
-		DataBlockCharSize:      active.DB.FontSize,
-		DcbCharSize:            p.dcb.CharSize(),
-		CoastSuspendCharSize:   p.coastList.FontSize(),
-		TempDataCharSize:       active.TempDataCharSize,
-		PreviewAreaCharSize:    p.previewArea.FontSize(),
-		PlaybackHourStart:      playbackHour,
-		PlaybackHourOffset:     playbackHourOffset,
-		FullDataBlocks:         active.DB.FullDataBlocks,
-		ShowAltitude:           fields.ShowAltitude,
-		ShowTargetType:         fields.ShowTargetType,
-		ShowSensors:            fields.ShowSensors,
-		ShowCWT:                fields.ShowCWT,
-		ShowFix:                fields.ShowFix,
-		ShowVelocity:           fields.ShowVelocity,
-		ShowScratchpads:        fields.ShowScratchpads,
-		HoldBarsBrightness:     active.Brightness.HoldBars,
-		MovementAreaBrightness: active.Brightness.MovementArea,
-		BackgroundBrightness:   active.Brightness.Background,
-		TrackBrightness:        active.Brightness.Track,
-		DataBlocksBrightness:   active.DB.Brightness,
-		ListsBrightness:        p.listsBrightness,
-		TempMapAreasBrightness: active.Brightness.TempMapAreas,
-		TempMapTextBrightness:  active.Brightness.TempMapText,
-		DcbBrightness:          p.dcbBrightness,
-		ClosedRunways:          p.tempData.DcbRunwayClosureStates(&p.safetyLogic),
-		RunwayConfigs:          p.dcbRunwayConfigStates(),
-		RunwayConfigPage:       p.runwayConfigPage,
-		ActiveRunwayConfigID:   p.activeRunwayConfigID,
-		RunwayConfigName:       p.activeRunwayConfiguration().Name,
-		TowerConfigs:           p.dcbTowerConfigStates(),
-		ActiveSpinnerFunction:  activeSpinnerFunction,
+		Range:                    rangeSetting,
+		Mode:                     p.mode,
+		VectorOn:                 active.ShowVectorLine,
+		VectorLength:             ClampedTargetVectorSeconds(p.vectorLength),
+		LeaderLength:             active.DB.LeaderLength,
+		DataBlocksOn:             active.DB.ShowDataBlocks,
+		DcbOn:                    p.dcb.On(),
+		RotationDeg:              int(normalizeRotation(active.View.Rotation)),
+		ShowHistory:              active.ShowHistory,
+		HistoryLength:            active.HistoryLength,
+		ShowCoastList:            p.showCoastList,
+		CursorSpeed:              1,
+		CursorHome:               false,
+		Volume:                   clampInt(p.auralVolume, minAuralVolume, maxAuralVolume),
+		OperatingInitials:        p.prefInitials,
+		PrefSets:                 p.asdexPrefButtonStates(),
+		CurrentPrefTitle:         p.asdexCurrentPrefTitle(),
+		PrefPage:                 p.prefPage,
+		StoredGlobalTempDataPage: p.storedGlobalTempDataPage,
+		TempDataPresets:          p.tempDataPresetButtonStates(),
+		DataBlockCharSize:        active.DB.FontSize,
+		DcbCharSize:              p.dcb.CharSize(),
+		CoastSuspendCharSize:     p.coastList.FontSize(),
+		TempDataCharSize:         active.TempDataCharSize,
+		PreviewAreaCharSize:      p.previewArea.FontSize(),
+		PlaybackHourStart:        playbackHour,
+		PlaybackHourOffset:       playbackHourOffset,
+		FullDataBlocks:           active.DB.FullDataBlocks,
+		ShowAltitude:             fields.ShowAltitude,
+		ShowTargetType:           fields.ShowTargetType,
+		ShowSensors:              fields.ShowSensors,
+		ShowCWT:                  fields.ShowCWT,
+		ShowFix:                  fields.ShowFix,
+		ShowVelocity:             fields.ShowVelocity,
+		ShowScratchpads:          fields.ShowScratchpads,
+		HoldBarsBrightness:       active.Brightness.HoldBars,
+		MovementAreaBrightness:   active.Brightness.MovementArea,
+		BackgroundBrightness:     active.Brightness.Background,
+		TrackBrightness:          active.Brightness.Track,
+		DataBlocksBrightness:     active.DB.Brightness,
+		ListsBrightness:          p.listsBrightness,
+		TempMapAreasBrightness:   active.Brightness.TempMapAreas,
+		TempMapTextBrightness:    active.Brightness.TempMapText,
+		DcbBrightness:            p.dcbBrightness,
+		ClosedRunways:            p.tempData.DcbRunwayClosureStates(&p.safetyLogic),
+		RunwayConfigs:            p.dcbRunwayConfigStates(),
+		RunwayConfigPage:         p.runwayConfigPage,
+		ActiveRunwayConfigID:     p.activeRunwayConfigID,
+		RunwayConfigName:         p.activeRunwayConfiguration().Name,
+		TowerConfigs:             p.dcbTowerConfigStates(),
+		ActiveSpinnerFunction:    activeSpinnerFunction,
 	}
 
 	windowState := p.displayStateForWindow(active.WindowID)
@@ -1852,6 +1876,7 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 		p.runwayConfigCommand = nil
 		p.dcbSpinner = nil
 		p.dcbMenuCommand = nil
+		p.tempPresetEdit = nil
 		p.clearTrackAlertInhibitReturnContext()
 		p.towerReadout = nil
 		p.dbAreaDraft = nil
@@ -2200,6 +2225,7 @@ func (p *ASDEXPane) clearDcbModalConflicts() {
 	}
 
 	p.commandMode = CommandModeNone
+	p.prefEdit = nil
 	p.commandEntry.Clear()
 	p.datablockEdit = nil
 	p.editingTargetID = ""
@@ -2535,9 +2561,9 @@ func (p *ASDEXPane) openPrefsMenu() {
 	if p == nil {
 		return
 	}
-
 	p.clearDcbModalConflicts()
 	p.prefPage = 1
+	p.prefEdit = nil
 	p.dcb.SetMenu(DcbMenuPrefs)
 	p.dcbMenuCommand = NewDcbMenuCommand("PREFS")
 	p.previewArea.SetSystemResponse("")
@@ -2548,40 +2574,42 @@ func (p *ASDEXPane) activatePrefsDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	if p == nil || !hit.HasFunction {
 		return false
 	}
-
 	switch hit.Function {
 	case DcbFunctionPrefPage1:
 		p.prefPage = 1
-		p.previewArea.SetSystemResponse("")
-		p.clearHighlightedTarget()
 		return true
 	case DcbFunctionPrefPage2:
 		p.prefPage = 2
-		p.previewArea.SetSystemResponse("")
-		p.clearHighlightedTarget()
 		return true
-	case DcbFunctionPrefPreset,
-		DcbFunctionPrefOpInits,
-		DcbFunctionPrefSaveAs,
-		DcbFunctionPrefModify,
-		DcbFunctionPrefChangePin,
-		DcbFunctionPrefDelete:
-		p.previewArea.SetSystemResponse("")
-		p.clearHighlightedTarget()
+	case DcbFunctionPrefPreset:
+		p.activateAsdexPrefSlot(hit.ConfigID)
+		return true
+	case DcbFunctionPrefOpInits:
+		p.startAsdexPrefEdit(asdexPrefEditInitials)
+		return true
+	case DcbFunctionPrefSaveAs:
+		p.startAsdexPrefEdit(asdexPrefEditSave)
+		return true
+	case DcbFunctionPrefChangePin:
+		p.startAsdexPrefEdit(asdexPrefEditPin)
+		return true
+	case DcbFunctionPrefDelete:
+		p.startAsdexPrefEdit(asdexPrefEditDelete)
 		return true
 	case DcbFunctionDefault:
+		p.prefEdit = nil
 		p.applyCommandStatus(p.cmdDefault(ctx))
 		p.dcb.SetMenu(DcbMenuPrefs)
 		p.dcbMenuCommand = NewDcbMenuCommand("PREFS")
-		p.previewArea.SetSystemResponse("")
-		p.clearHighlightedTarget()
 		return true
 	case DcbFunctionUndo:
+		p.prefEdit = nil
 		p.executeUndoCommand(ctx)
 		p.dcb.SetMenu(DcbMenuPrefs)
 		p.dcbMenuCommand = NewDcbMenuCommand("PREFS")
 		return true
 	case DcbFunctionDone:
+		p.prefEdit = nil
 		p.closeDcbSubmenu()
 		return true
 	default:
@@ -4871,6 +4899,14 @@ func (p *ASDEXPane) activeCommandCursor() (line int, column int, ok bool) {
 	if p.tempTextCommand != nil {
 		return p.tempTextCommand.CursorLine(), p.tempTextCommand.CursorColumn(), true
 	}
+	if p.prefEdit != nil {
+		return p.prefEdit.cursor()
+	}
+	if p.tempPresetEdit != nil {
+		if line, col, ok := p.tempPresetEdit.cursor(); ok {
+			return line, col, true
+		}
+	}
 	if !p.commandEntry.Empty() {
 		return p.commandEntry.CursorLine(), p.commandEntry.CursorColumn(), true
 	}
@@ -4999,6 +5035,12 @@ func (p *ASDEXPane) consumeCommandKeyboard(ctx *panes.Context) bool {
 	}
 	if p.consumeTempDataSelectionKeyboard(ctx) {
 		return true
+	}
+	if p.tempPresetEdit != nil {
+		return p.handleTempPresetKeyboard(ctx)
+	}
+	if p.prefEdit != nil {
+		return p.handleAsdexPrefKeyboard(ctx)
 	}
 	if p.dcbMenuCommand != nil {
 		return p.handleDcbMenuKeyboard(ctx)
