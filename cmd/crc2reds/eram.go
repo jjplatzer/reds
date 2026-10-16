@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"go/format"
 	"os"
 	"path/filepath"
 	"sort"
@@ -671,5 +672,10 @@ func writeEramCursorGo(outPath string, cursors []cursorBitmap) error {
 	b.WriteString("\treturn c, ok\n")
 	b.WriteString("}\n")
 
-	return os.WriteFile(outPath, []byte(b.String()), 0o644)
+	// Keep generated cursor assets compliant with the repository gofmt check.
+	formatted, err := format.Source([]byte(b.String()))
+	if err != nil {
+		return fmt.Errorf("format generated ERAM cursors: %w", err)
+	}
+	return os.WriteFile(outPath, formatted, 0o644)
 }
