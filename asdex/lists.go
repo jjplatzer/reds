@@ -142,6 +142,43 @@ type RelativeScreenLocation struct {
 	bottom *float32
 }
 
+// The margins are private because a location anchors to exactly one side on
+// each axis. PREF sets persist this type as JSON, so encode the anchors
+// explicitly rather than letting encoding/json silently write "{}".
+func (r RelativeScreenLocation) MarshalJSON() ([]byte, error) {
+	return json.Marshal(struct {
+		Left   *float32 `json:"left,omitempty"`
+		Right  *float32 `json:"right,omitempty"`
+		Top    *float32 `json:"top,omitempty"`
+		Bottom *float32 `json:"bottom,omitempty"`
+	}{r.left, r.right, r.top, r.bottom})
+}
+
+func (r *RelativeScreenLocation) UnmarshalJSON(data []byte) error {
+	var anchors struct {
+		Left   *float32 `json:"left,omitempty"`
+		Right  *float32 `json:"right,omitempty"`
+		Top    *float32 `json:"top,omitempty"`
+		Bottom *float32 `json:"bottom,omitempty"`
+	}
+	if err := json.Unmarshal(data, &anchors); err != nil {
+		return err
+	}
+	// Old PREF sets serialized locations as "{}". Accept them so that other
+	// settings remain loadable; the PREF recall path keeps the current
+	// position when it encounters a location without anchors.
+	if (anchors.Left != nil || anchors.Right != nil || anchors.Top != nil || anchors.Bottom != nil) &&
+		((anchors.Left == nil) == (anchors.Right == nil) || (anchors.Top == nil) == (anchors.Bottom == nil)) {
+		return fmt.Errorf("invalid relative screen location anchors")
+	}
+	*r = RelativeScreenLocation{anchors.Left, anchors.Right, anchors.Top, anchors.Bottom}
+	return nil
+}
+
+func (r RelativeScreenLocation) hasAnchors() bool {
+	return (r.left != nil || r.right != nil) && (r.top != nil || r.bottom != nil)
+}
+
 func RelativeScreenLocationFromTopLeft(
 	topLeft redsmath.Vec2,
 	itemSize redsmath.Vec2,

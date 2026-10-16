@@ -956,6 +956,15 @@ func (p *ASDEXPane) applyAsdexPref(record asdexPrefRecord) error {
 	if _, ok := record.Snapshot.WindowStates[mainScopeWindowID]; !ok {
 		return errors.New("missing main window settings")
 	}
+	// Older PREF files stored these unexported location fields as "{}".
+	// Their original positions cannot be recovered; preserve the current
+	// layout rather than moving both lists to the upper-left corner.
+	if !record.Snapshot.PreviewLocation.hasAnchors() {
+		record.Snapshot.PreviewLocation = p.previewArea.location
+	}
+	if !record.Snapshot.CoastLocation.hasAnchors() {
+		record.Snapshot.CoastLocation = p.coastList.location
+	}
 	// Restoring a PREF can change the window topology. The ordinary UNDO
 	// snapshots do not carry topology, so discard them rather than offering
 	// a misleading partial undo after loading a preference set.
