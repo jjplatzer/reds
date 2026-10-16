@@ -773,7 +773,6 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	alertChanges := p.safetyLogic.Update(targets, SafetyLogicUpdateOptions{
 		RunwayConfiguration: p.currentSafetyRunwayConfiguration(),
 		RunwayClosed:        p.tempData.RunwayClosed,
-		TowerRunwayEnabled:  p.towerRunwayEnabledPredicate(),
 		TargetAlertsInhibited: func(targetID string) bool {
 			return p.targets.AlertsInhibited(targetID)
 		},
@@ -781,6 +780,10 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	targetAlertsInhibited := func(targetID string) bool {
 		return p.targets.AlertsInhibited(targetID)
 	}
+	// CRC stores all generated alerts, then scopes display and audio to the
+	// selected tower positions. A GC-only position can hide runway alerts
+	// without preventing them from being detected and retained.
+	p.alertRepository.SetRunwayEnabled(p.towerRunwayEnabledPredicate())
 	p.alertRepository.ApplyChanges(alertChanges, targetAlertsInhibited)
 	alertTargetIDs := p.alertRepository.AircraftIDsInAlertSet()
 	for targetID := range alertTargetIDs {
@@ -1550,7 +1553,7 @@ func (p *ASDEXPane) currentSafetyRunwayConfiguration() SafetyRunwayConfiguration
 func stringSet(values []string) map[string]bool {
 	out := make(map[string]bool, len(values))
 	for _, value := range values {
-		value = strings.ToUpper(strings.TrimSpace(value))
+		value = normalizeRunwayEndID(value)
 		if value != "" {
 			out[value] = true
 		}
