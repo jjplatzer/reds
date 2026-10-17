@@ -19,9 +19,10 @@ import (
 )
 
 const (
-	taisReconnectInitialDelay       = 1 * time.Second
-	taisReconnectMaxDelay           = 30 * time.Second
-	taisMaxMessageBytes       int64 = 16 << 20
+	taisReconnectInitialDelay         = 1 * time.Second
+	taisReconnectMaxDelay             = 30 * time.Second
+	taisReconnectStableDuration       = 30 * time.Second
+	taisMaxMessageBytes         int64 = 16 << 20
 )
 
 var errTaisClientClosed = errors.New("TAIS client closed")
@@ -169,7 +170,7 @@ func (c *TaisClient) run() {
 			return
 		}
 
-		connected, err := c.connectAndServe()
+		stable, err := c.connectAndServe()
 		if errors.Is(err, errTaisClientClosed) {
 			return
 		}
@@ -182,7 +183,7 @@ func (c *TaisClient) run() {
 			)
 		}
 
-		if connected {
+		if stable {
 			delay = taisReconnectInitialDelay
 		}
 		if !c.wait(delay) {
@@ -227,13 +228,22 @@ func (c *TaisClient) connectAndServe() (bool, error) {
 	}()
 
 	conn.SetReadLimit(taisMaxMessageBytes)
+	// A completed WebSocket handshake is not enough to reset retry backoff:
+	// the server may immediately reject us while its snapshot is queued.
 	c.state.markUnsynced()
 	c.setConnected()
+	connectedAt := time.Now()
+	err = c.readFrames(conn)
+	ready, _, _ := c.state.status()
+	stable := taisSessionStable(ready, time.Since(connectedAt))
+	return stable, err
+}
 
-	if err := c.readFrames(conn); err != nil {
-		return true, err
-	}
-	return true, nil
+// A handshake or an incomplete snapshot is not a healthy connection.
+// Do not reset exponential backoff until a synchronized session has lasted
+// long enough to rule out immediate snapshot/backpressure failures.
+func taisSessionStable(snapshotReady bool, duration time.Duration) bool {
+	return snapshotReady && duration >= taisReconnectStableDuration
 }
 
 func (c *TaisClient) readFrames(conn *websocket.Conn) error {

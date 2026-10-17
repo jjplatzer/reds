@@ -13,6 +13,8 @@ public record ServerConfig(
         String healthPath,
         int maxClients,
         int pendingMax,
+        int outboundMaxFrames,
+        long outboundMaxBytes,
         String bearerToken
 ) {
     public static ServerConfig fromEnv() {
@@ -23,6 +25,8 @@ public record ServerConfig(
                 pathValue("TAIS_HEALTH_PATH", "/tais/healthz"),
                 intValue("TAIS_WS_MAX_CLIENTS", 64, 1, 10_000),
                 intValue("TAIS_WS_PENDING_MAX", 4096, 128, 100_000),
+                intValue("TAIS_WS_OUTBOUND_MAX_FRAMES", 4096, 128, 100_000),
+                intValue("TAIS_WS_OUTBOUND_MAX_BYTES", 16 << 20, 16 << 20, 1 << 30),
                 trimToNull(Env.get("REDS_WS_TOKEN"))
         );
     }
