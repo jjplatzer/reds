@@ -4,6 +4,7 @@ import config.Env;
 import ingest.TaisBatch;
 import ingest.TaisObservation;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.json.JsonObject;
 import wire.TaisWire;
 
 import java.time.Duration;
@@ -56,13 +57,20 @@ public final class TrackStore extends AbstractVerticle {
         // connection. The revision lets the connection discard buffered live
         // frames that are already represented by the snapshot.
         vertx.eventBus().<String>localConsumer(SNAPSHOT_ADDRESS, message -> {
+            long started = System.nanoTime();
             String facility = normalizeFacility(message.body());
-            message.reply(TaisWire.snapshot(
-                    facilityRevision(facility),
-                    Instant.now(),
-                    facility,
-                    cache.snapshot(facility)
-            ));
+            var targets = cache.snapshot(facility);
+            JsonObject snapshot = TaisWire.snapshot(
+                    facilityRevision(facility), Instant.now(), facility, targets
+            );
+            long elapsedMs = (System.nanoTime() - started) / 1_000_000;
+            if (elapsedMs >= 250) {
+                // Building a large snapshot on the store event loop can delay
+                // ordinary ingest; record the cost independently of WS writes.
+                System.err.println("[TAIS store] Slow snapshot build; facility=" + facility +
+                        " targets=" + targets.size() + " durationMs=" + elapsedMs);
+            }
+            message.reply(snapshot);
         });
 
         vertx.eventBus().<TaisBatch>consumer(TaisBatch.ADDRESS, message -> {

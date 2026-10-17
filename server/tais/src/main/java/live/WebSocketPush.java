@@ -135,7 +135,8 @@ public final class WebSocketPush extends AbstractVerticle {
             return;
         }
 
-        ClientConnection client = new ClientConnection(socket, facility, config.pendingMax());
+        ClientConnection client = new ClientConnection(socket, facility, config.pendingMax(),
+                config.outboundMaxFrames(), config.outboundMaxBytes());
         clients.add(client);
 
         socket.closeHandler(ignored -> remove(client));
