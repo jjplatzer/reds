@@ -290,7 +290,7 @@ func (p *ASDEXPane) towerRunwayEnabledPredicate() func(string) bool {
 	}
 
 	return func(runwayID string) bool {
-		runwayID = strings.ToUpper(strings.TrimSpace(runwayID))
+		runwayID = normalizeRunwayEndID(runwayID)
 		return runwayID != "" && enabled[runwayID]
 	}
 }
@@ -308,7 +308,7 @@ func (p *ASDEXPane) enabledTowerRunwayIDs() (map[string]bool, bool) {
 
 		for _, group := range cfg.RunwayIDs {
 			for _, runwayID := range strings.Split(group, "-") {
-				runwayID = strings.ToUpper(strings.TrimSpace(runwayID))
+				runwayID = normalizeRunwayEndID(runwayID)
 				if runwayID != "" {
 					out[runwayID] = true
 				}
@@ -324,8 +324,6 @@ type SafetyLogicUpdateOptions struct {
 
 	// For now this comes from TempData.RunwayClosed.
 	RunwayClosed func(runwayID string) bool
-
-	TowerRunwayEnabled func(runwayID string) bool
 
 	TargetAlertsInhibited func(targetID string) bool
 }
@@ -732,9 +730,6 @@ func (sl *SafetyLogic) generateAlerts(
 		if !runwayConfigurationAllowsOperation(opts.RunwayConfiguration, operation) {
 			continue
 		}
-		if opts.TowerRunwayEnabled != nil && !opts.TowerRunwayEnabled(operation.RunwayID) {
-			continue
-		}
 		if !opts.RunwayClosed(operation.RunwayID) {
 			continue
 		}
@@ -765,7 +760,10 @@ func runwayConfigurationAllowsOperation(
 		return true
 	}
 
-	runwayID := strings.ToUpper(strings.TrimSpace(operation.RunwayID))
+	// Configurations use directional runway ends (e.g. "4L"), while the
+	// surface geometry uses a reciprocal pair (e.g. "04L/22R"). Match the
+	// end the aircraft is actually using, not either end of the same pavement.
+	runwayID := operationRunwayEndID(operation)
 	if runwayID == "" {
 		return false
 	}
@@ -778,6 +776,62 @@ func runwayConfigurationAllowsOperation(
 	default:
 		return false
 	}
+}
+
+// normalizeRunwayEndID compares FAA runway-end identifiers with and without
+// leading zeros. Keep nonstandard IDs unchanged rather than guessing.
+func normalizeRunwayEndID(id string) string {
+	id = strings.ToUpper(strings.TrimSpace(id))
+	i := 0
+	for i < len(id) && id[i] >= '0' && id[i] <= '9' {
+		i++
+	}
+	if i == 0 {
+		return id
+	}
+	number, err := strconv.Atoi(id[:i])
+	if err != nil || number < 1 || number > 36 {
+		return id
+	}
+	switch id[i:] {
+	case "", "L", "R", "C":
+		return strconv.Itoa(number) + id[i:]
+	default:
+		return id
+	}
+}
+
+// operationRunwayEndID chooses the reciprocal end aligned with the detected
+// landing/departure direction. Runway numbers approximate magnetic bearings;
+// only the relative choice between opposing ends is needed here.
+func operationRunwayEndID(operation activeRunwayOperation) string {
+	ends := strings.Split(strings.ToUpper(strings.TrimSpace(operation.RunwayID)), "/")
+	if len(ends) == 1 {
+		return normalizeRunwayEndID(ends[0])
+	}
+
+	bestEnd := ""
+	bestAlignment := float32(-2)
+	for _, end := range ends {
+		end = normalizeRunwayEndID(end)
+		i := 0
+		for i < len(end) && end[i] >= '0' && end[i] <= '9' {
+			i++
+		}
+		if i == 0 {
+			continue
+		}
+		number, err := strconv.Atoi(end[:i])
+		if err != nil || number < 1 || number > 36 {
+			continue
+		}
+		alignment := safetyDot(operation.DirectionFeet, headingUnitVector(float32(number*10)))
+		if alignment > bestAlignment {
+			bestAlignment = alignment
+			bestEnd = end
+		}
+	}
+	return bestEnd
 }
 
 func targetMapByID(targets []*Target) map[string]*Target {
@@ -804,7 +858,12 @@ func (sl *SafetyLogic) closedRunwayAlert(
 		alertType = SafetyAlertDepartureClosedRunway
 	}
 
-	runwayID := strings.ToUpper(strings.TrimSpace(operation.RunwayID))
+	// Keep the original combined ID for the closure lookup above, but scope
+	// the alert and its voice message to the actual operating runway end.
+	runwayID := operationRunwayEndID(operation)
+	if runwayID == "" {
+		return SafetyAlert{}, false
+	}
 	targetLabel := safetyAlertTargetLabel(target)
 
 	return SafetyAlert{

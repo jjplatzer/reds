@@ -1136,13 +1136,40 @@ func (p *ASDEXPane) activateTempDataDcbHit(hit DcbHit) bool {
 		p.openTempDataDcbMenu()
 		return true
 	case DcbFunctionDone:
+		if p.tempPresetEdit != nil {
+			p.stopTempPresetEdit()
+		}
 		switch p.dcb.Menu() {
-		case DcbMenuTempData, DcbMenuClosedRunway:
+		case DcbMenuTempData, DcbMenuClosedRunway, DcbMenuStoredGlobalTempData:
 			p.closeDcbCurrentSubmenu()
 			return true
 		default:
 			return false
 		}
+	case DcbFunctionStoredGlobalTempData:
+		p.openStoredGlobalTempDataDcbMenu()
+		return true
+	case DcbFunctionStoredGlobalPage1, DcbFunctionStoredGlobalPages1and2:
+		p.storedGlobalTempDataPage = 1
+		return true
+	case DcbFunctionStoredGlobalPage2:
+		p.storedGlobalTempDataPage = 2
+		return true
+	case DcbFunctionStoredGlobalPage3, DcbFunctionStoredGlobalPages3and4:
+		p.storedGlobalTempDataPage = 3
+		return true
+	case DcbFunctionStoredGlobalPage4:
+		p.storedGlobalTempDataPage = 4
+		return true
+	case DcbFunctionTempDataPreset:
+		p.tempPresetButton(hit.ConfigID)
+		return true
+	case DcbFunctionSaveTempDataPreset:
+		p.startSaveTempPreset()
+		return true
+	case DcbFunctionDeleteTempDataPreset:
+		p.startDeleteTempPreset()
+		return true
 	case DcbFunctionClosedRunway:
 		p.openTempDataClosedRunwayDcbMenu()
 		return true
@@ -1166,8 +1193,7 @@ func (p *ASDEXPane) activateTempDataDcbHit(hit DcbHit) bool {
 		p.previewArea.SetSystemResponse("")
 		p.clearHighlightedTarget()
 		return true
-	case DcbFunctionStoredGlobalTempData,
-		DcbFunctionShowHiddenTempData,
+	case DcbFunctionShowHiddenTempData,
 		DcbFunctionHideTempData:
 		return true
 	default:
@@ -1654,6 +1680,7 @@ func (p *ASDEXPane) clearTempDataCommandConflicts() {
 		return
 	}
 
+	p.tempPresetEdit = nil
 	p.dbAreaDraft = nil
 	p.dbAreaSelection = nil
 	p.tempAreaDraft = nil
@@ -1685,6 +1712,19 @@ func (p *ASDEXPane) openTempDataDcbMenu() {
 	p.dcb.SetMenu(DcbMenuTempData)
 	p.clearTempDataCommandConflicts()
 	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+// openStoredGlobalTempDataDcbMenu opens CRC's four-page local preset submenu.
+func (p *ASDEXPane) openStoredGlobalTempDataDcbMenu() {
+	if p == nil {
+		return
+	}
+	p.dcb.SetMenu(DcbMenuStoredGlobalTempData)
+	p.clearTempDataCommandConflicts()
+	p.storedGlobalTempDataPage = 1
+	p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA", "STORED GLOBAL TEMP DATA")
 	p.previewArea.SetSystemResponse("")
 	p.clearHighlightedTarget()
 }
@@ -1727,10 +1767,14 @@ func (p *ASDEXPane) closeDcbCurrentSubmenu() {
 	if p == nil {
 		return
 	}
+	p.tempPresetEdit = nil
 
 	switch p.dcb.Menu() {
 	case DcbMenuClosedRunway:
 		p.restoreClosedRunwayReturnMenu()
+	case DcbMenuStoredGlobalTempData:
+		p.dcb.SetMenu(DcbMenuTempData)
+		p.dcbMenuCommand = NewDcbMenuCommand("TEMP DATA")
 	case DcbMenuTempData:
 		p.dcb.SetMenu(DcbMenuMain)
 		p.dcbMenuCommand = nil
@@ -1786,6 +1830,7 @@ func (p *ASDEXPane) closeDcbSubmenu() {
 	if p == nil {
 		return
 	}
+	p.tempPresetEdit = nil
 
 	if p.dcb.Menu() != DcbMenuOff {
 		p.dcb.SetMenu(DcbMenuMain)

@@ -22,12 +22,37 @@ const (
 )
 
 type AlertRepository struct {
-	alerts []SafetyAlert
-	aural  *AuralAlertManager
+	alerts        []SafetyAlert
+	aural         *AuralAlertManager
+	runwayEnabled func(string) bool
 }
 
 func NewAlertRepository(aural *AuralAlertManager) AlertRepository {
 	return AlertRepository{aural: aural}
+}
+
+// SetRunwayEnabled controls presentation only. Hidden alerts remain stored so
+// that changing tower positions exposes them without generating a new alert.
+// A nil predicate means no tower-position filtering is configured.
+func (r *AlertRepository) SetRunwayEnabled(enabled func(string) bool) {
+	if r != nil {
+		r.runwayEnabled = enabled
+	}
+}
+
+func (r *AlertRepository) alertVisible(alert SafetyAlert) bool {
+	if r == nil {
+		return false
+	}
+	if r.runwayEnabled == nil || len(alert.RunwayIDs) == 0 {
+		return true
+	}
+	for _, runwayID := range alert.RunwayIDs {
+		if r.runwayEnabled(runwayID) {
+			return true
+		}
+	}
+	return false
 }
 
 func (r *AlertRepository) ApplyChanges(
@@ -63,7 +88,7 @@ func (r *AlertRepository) Upsert(alert SafetyAlert) {
 	}
 
 	r.alerts = append(r.alerts, alert)
-	if alert.PlayAuralAlert && r.aural != nil {
+	if alert.PlayAuralAlert && r.aural != nil && r.alertVisible(alert) {
 		r.aural.Play(alert.AuralAlerts)
 	}
 }
@@ -114,24 +139,44 @@ func (r *AlertRepository) ClearInhibitedAircraft(
 }
 
 func (r *AlertRepository) All() []SafetyAlert {
-	if r == nil || len(r.alerts) == 0 {
+	if r == nil {
 		return nil
 	}
-	return append([]SafetyAlert(nil), r.alerts...)
+	var visible []SafetyAlert
+	for _, alert := range r.alerts {
+		if r.alertVisible(alert) {
+			visible = append(visible, alert)
+		}
+	}
+	return visible
 }
 
 func (r *AlertRepository) FirstN(n int) []SafetyAlert {
-	if r == nil || n <= 0 || len(r.alerts) == 0 {
+	if r == nil || n <= 0 {
 		return nil
 	}
-	if len(r.alerts) < n {
-		n = len(r.alerts)
+	var visible []SafetyAlert
+	for _, alert := range r.alerts {
+		if r.alertVisible(alert) {
+			visible = append(visible, alert)
+			if len(visible) == n {
+				break
+			}
+		}
 	}
-	return append([]SafetyAlert(nil), r.alerts[:n]...)
+	return visible
 }
 
 func (r *AlertRepository) AlertInProgress() bool {
-	return r != nil && len(r.alerts) > 0
+	if r == nil {
+		return false
+	}
+	for _, alert := range r.alerts {
+		if r.alertVisible(alert) {
+			return true
+		}
+	}
+	return false
 }
 
 func (r *AlertRepository) AircraftIsInAlert(targetID string) bool {
@@ -140,6 +185,9 @@ func (r *AlertRepository) AircraftIsInAlert(targetID string) bool {
 	}
 
 	for _, alert := range r.alerts {
+		if !r.alertVisible(alert) {
+			continue
+		}
 		for _, id := range alert.AircraftIDs {
 			if id == targetID {
 				return true
@@ -156,6 +204,9 @@ func (r *AlertRepository) AircraftIDsInAlertSet() map[string]bool {
 	}
 
 	for _, alert := range r.alerts {
+		if !r.alertVisible(alert) {
+			continue
+		}
 		for _, id := range alert.AircraftIDs {
 			id = strings.TrimSpace(id)
 			if id != "" {

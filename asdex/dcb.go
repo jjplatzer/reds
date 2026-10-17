@@ -27,6 +27,7 @@ const (
 	DcbMenuMain DcbMenu = iota
 	DcbMenuPrefs
 	DcbMenuTempData
+	DcbMenuStoredGlobalTempData
 	DcbMenuClosedRunway
 	DcbMenuDbEdit
 	DcbMenuDbArea
@@ -89,6 +90,15 @@ const (
 	DcbFunctionClosedRunway
 	DcbFunctionCloseRunway
 	DcbFunctionStoredGlobalTempData
+	DcbFunctionTempDataPreset
+	DcbFunctionStoredGlobalPage1
+	DcbFunctionStoredGlobalPages1and2
+	DcbFunctionStoredGlobalPage2
+	DcbFunctionStoredGlobalPage3
+	DcbFunctionStoredGlobalPages3and4
+	DcbFunctionStoredGlobalPage4
+	DcbFunctionSaveTempDataPreset
+	DcbFunctionDeleteTempDataPreset
 	DcbFunctionDefineClosedArea
 	DcbFunctionDefineRestrictedArea
 	DcbFunctionDefineTempText
@@ -252,10 +262,12 @@ type DcbState struct {
 	CursorHome    bool
 	Volume        int
 
-	OperatingInitials string
-	PrefPage          int
-	PrefSets          []DcbPrefSetState
-	CurrentPrefTitle  string
+	OperatingInitials        string
+	PrefPage                 int
+	StoredGlobalTempDataPage int
+	TempDataPresets          []DcbPrefSetState
+	PrefSets                 []DcbPrefSetState
+	CurrentPrefTitle         string
 
 	DataBlockCharSize    int
 	DcbCharSize          int
@@ -979,6 +991,7 @@ func isLargeDcbFunction(function DcbFunction) bool {
 		DcbFunctionPrefPage1,
 		DcbFunctionPrefPage2,
 		DcbFunctionPrefOpInits,
+		DcbFunctionPrefSaveAs,
 		DcbFunctionDone,
 		DcbFunctionVacant:
 		return true
@@ -1162,7 +1175,7 @@ func (d *Dcb) prefsButtonSpecs(state DcbState) []DcbButtonSpec {
 		}
 	}
 
-	buttons := make([]DcbButtonSpec, 0, 27)
+	buttons := make([]DcbButtonSpec, 0, 25)
 	for i := 1; i <= 16; i++ {
 		buttons = append(buttons, prefButton(i))
 	}
@@ -1174,7 +1187,6 @@ func (d *Dcb) prefsButtonSpecs(state DcbState) []DcbButtonSpec {
 		button(DcbFunctionUndo, "UNDO"),
 		button(DcbFunctionPrefOpInits, "OP INITS", operatingInitials),
 		button(DcbFunctionPrefSaveAs, "SAVE AS"),
-		button(DcbFunctionPrefModify, "MODIFY"),
 		button(DcbFunctionPrefChangePin, "CHG", "PIN"),
 		button(DcbFunctionPrefDelete, "DELETE"),
 		button(DcbFunctionDone, "DONE"),
@@ -1233,6 +1245,67 @@ func (d *Dcb) tempDataButtonSpecs(state DcbState) []DcbButtonSpec {
 		vacant(),
 		vacant(),
 	}
+}
+
+// storedGlobalTempDataButtonSpecs mirrors CRC's four pages of 22 stored
+// global TEMP DATA slots. Names and active state will come from the preset
+// repository in a separate patch; for now all slots are unassigned.
+func (d *Dcb) storedGlobalTempDataButtonSpecs(state DcbState) []DcbButtonSpec {
+	page := clampInt(state.StoredGlobalTempDataPage, 1, 4)
+	buttons := make([]DcbButtonSpec, 0, 27)
+	for i := 1; i <= 22; i++ {
+		number := (page-1)*22 + i
+		var name string
+		var active bool
+		for _, saved := range state.TempDataPresets {
+			if saved.Number == number {
+				name, active = saved.Name, saved.Active
+				break
+			}
+		}
+		buttons = append(buttons, DcbButtonSpec{
+			Function:       DcbFunctionTempDataPreset,
+			Type:           DcbButtonPref,
+			Visible:        true,
+			ConfigID:       number,
+			PrefNumber:     number,
+			PrefNumberText: fmt.Sprintf("%02d", number),
+			PrefName:       name,
+			PrefActive:     active,
+		})
+	}
+
+	// CRC only displays the two relevant navigation buttons for each page;
+	// the other four are hidden rather than taking up vacant DCB columns.
+	pageButton := func(function DcbFunction, visible bool, label string) DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonMenu, // CRC DcbMenuButton: RGB(80,80,80), lighter than normal
+			Visible:  visible,
+			Lines:    []string{label},
+		}
+	}
+	button := func(function DcbFunction, lines ...string) DcbButtonSpec {
+		return DcbButtonSpec{
+			Function: function,
+			Type:     DcbButtonNormal,
+			Large:    isLargeDcbFunction(function),
+			Visible:  true,
+			Lines:    lines,
+		}
+	}
+	buttons = append(buttons,
+		pageButton(DcbFunctionStoredGlobalPage1, page == 2, "1-22"),
+		pageButton(DcbFunctionStoredGlobalPages1and2, page == 3 || page == 4, "1-44"),
+		pageButton(DcbFunctionStoredGlobalPage2, page == 1, "23-44"),
+		pageButton(DcbFunctionStoredGlobalPage3, page == 4, "45-66"),
+		pageButton(DcbFunctionStoredGlobalPages3and4, page == 1 || page == 2, "45-88"),
+		pageButton(DcbFunctionStoredGlobalPage4, page == 3, "67-88"),
+		button(DcbFunctionSaveTempDataPreset, "SAVE"),
+		button(DcbFunctionDeleteTempDataPreset, "DELETE", "PRESET"),
+		button(DcbFunctionDone, "DONE"),
+	)
+	return buttons
 }
 
 func (d *Dcb) closedRunwayButtonSpecs(state DcbState) []DcbButtonSpec {
@@ -1939,6 +2012,8 @@ func (d *Dcb) buttonSpecs(state DcbState) []DcbButtonSpec {
 		return d.prefsButtonSpecs(state)
 	case DcbMenuTempData:
 		return d.tempDataButtonSpecs(state)
+	case DcbMenuStoredGlobalTempData:
+		return d.storedGlobalTempDataButtonSpecs(state)
 	case DcbMenuClosedRunway:
 		return d.closedRunwayButtonSpecs(state)
 	case DcbMenuDbEdit:
@@ -2456,17 +2531,20 @@ func (d *Dcb) drawPrefButtonText(
 		numberText = strconv.Itoa(spec.PrefNumber)
 	}
 	nameText := strings.TrimSpace(spec.PrefName)
-	if nameText == "" {
+	if nameText == "" && spec.Function != DcbFunctionTempDataPreset {
 		nameText = " "
 	}
 
 	numberWidth, numberHeight := font.MeasureText(numberText, fontSize)
 	nameWidth, nameHeight := font.MeasureText(nameText, fontSize)
-	if numberHeight <= 0 || nameHeight <= 0 {
+	if numberHeight <= 0 {
 		return
 	}
 
-	totalHeight := numberHeight + dcbTextLineSpacing + nameHeight
+	totalHeight := numberHeight
+	if nameText != "" {
+		totalHeight += dcbTextLineSpacing + nameHeight
+	}
 	y := button.Bounds.Min.Y + (button.Bounds.Height()-float32(totalHeight))*0.5
 
 	color := d.primaryTextColor(spec, hovering)
@@ -2487,6 +2565,9 @@ func (d *Dcb) drawPrefButtonText(
 		style,
 	)
 
+	if nameText == "" {
+		return
+	}
 	y += float32(numberHeight + dcbTextLineSpacing)
 	td.AddText(
 		nameText,
