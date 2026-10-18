@@ -349,6 +349,7 @@ const (
 	DcbSpinnerDbAreaBrightness
 	DcbSpinnerDbAreaLeaderLength
 	DcbSpinnerDbAreaLeaderDirection
+	DcbSpinnerDbAreaDeleteAll
 	DcbSpinnerBrightness
 )
 
@@ -643,7 +644,11 @@ func (s *DcbSpinner) DisplayLines() []string {
 	if len(lines) == 0 && s.Title != "" {
 		lines = append(lines, s.Title)
 	}
-	lines = append(lines, s.InputText())
+	if s.Type == DcbSpinnerDbAreaDeleteAll {
+		lines = append(lines, "(1 OR 2): "+s.InputText())
+	} else {
+		lines = append(lines, s.InputText())
+	}
 	return lines
 }
 
@@ -660,6 +665,9 @@ func (s *DcbSpinner) CursorLine() int {
 func (s *DcbSpinner) CursorColumn() int {
 	if s == nil {
 		return 0
+	}
+	if s.Type == DcbSpinnerDbAreaDeleteAll {
+		return len("(1 OR 2): ") + s.cursor
 	}
 	return s.cursor
 }

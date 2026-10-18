@@ -646,7 +646,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	} else {
 		p.hoveredCoastListTarget = ""
 	}
-	if p.mapReposition == nil && p.mapRotate == nil && p.towerReadout == nil && p.dbAreaDraft == nil && p.dbAreaSelection == nil && p.tempAreaDraft == nil &&
+	if p.mapReposition == nil && p.mapRotate == nil && p.towerReadout == nil && p.dbAreaDraft == nil && (p.dbAreaSelection == nil || p.dbAreaSelection.Mode == DataBlockAreaSelectionDeleteOne) && p.tempAreaDraft == nil &&
 		p.tempTextCommand == nil && p.tempTextPlacement == nil &&
 		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil && p.deleteWindow == nil &&
 		p.windowReposition == nil && p.resizeWindow == nil {
@@ -1384,6 +1384,8 @@ func (p *ASDEXPane) dcbState() DcbState {
 		activeSpinnerFunction = DcbFunctionNewWindow
 	} else if p.deleteWindow != nil {
 		activeSpinnerFunction = DcbFunctionDeleteWindow
+	} else if p.dbAreaSelection != nil && p.dbAreaSelection.Mode == DataBlockAreaSelectionDeleteOne {
+		activeSpinnerFunction = DcbFunctionDeleteOneDbArea
 	} else if p.windowReposition != nil {
 		activeSpinnerFunction = DcbFunctionWindowReposition
 	} else if p.resizeWindow != nil {
@@ -1834,10 +1836,11 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	case DcbFunctionModifyDbTraitArea:
 		p.startModifyDbTraitArea()
 		return true
-	case DcbFunctionDeleteAllDbAreas,
-		DcbFunctionDeleteOneDbArea:
-		p.previewArea.SetSystemResponse("")
-		p.clearHighlightedTarget()
+	case DcbFunctionDeleteAllDbAreas:
+		p.startDeleteAllDbAreas()
+		return true
+	case DcbFunctionDeleteOneDbArea:
+		p.startDeleteOneDbArea()
 		return true
 	case DcbFunctionDbFullPart:
 		p.toggleDbFullPart()
@@ -3285,6 +3288,11 @@ func (p *ASDEXPane) consumeDcbSpinnerInput(ctx *panes.Context) bool {
 	if p == nil || p.dcbSpinner == nil || ctx == nil || ctx.Mouse == nil {
 		return false
 	}
+	// Confirmation is keyboard-only in CRC; mouse/wheel input must not
+	// implicitly choose a response.
+	if p.dcbSpinner.Type == DcbSpinnerDbAreaDeleteAll {
+		return true
+	}
 
 	mouse := ctx.Mouse
 	switch {
@@ -3342,6 +3350,10 @@ func (p *ASDEXPane) acceptActiveDcbSpinner() {
 
 func (p *ASDEXPane) cancelDcbSpinner() {
 	if p == nil {
+		return
+	}
+	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerDbAreaDeleteAll {
+		p.finishDeleteAllDbAreas("")
 		return
 	}
 	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerVectorLength {
@@ -3410,6 +3422,9 @@ func (p *ASDEXPane) commitDcbSpinner() {
 
 	spinner := p.dcbSpinner
 	switch spinner.Type {
+	case DcbSpinnerDbAreaDeleteAll:
+		p.commitDeleteAllDbAreas(spinner)
+		return
 	case DcbSpinnerRange:
 		if strings.TrimSpace(spinner.InputText()) == "" {
 			p.commitSpinnerUndoIfChanged(spinner)
