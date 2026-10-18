@@ -45,6 +45,16 @@ type Target struct {
 	HeadingDeg    float32
 	GroundSpeedKt float32
 
+	// Raw SMES movement components. Units/frame must be confirmed before
+	// using them for physical predictions; HasRaw* distinguishes absent and zero.
+	RawVX, RawVY, RawAX, RawAY             float32
+	HasRawVX, HasRawVY, HasRawAX, HasRawAY bool
+
+	// Derived from timestamped consecutive speed observations, in ft/s².
+	MotionAt        time.Time
+	AccelFtSec2     float32
+	HasAcceleration bool
+
 	AltitudeFt  int
 	HasAltitude bool
 
@@ -1097,9 +1107,63 @@ func (s *TargetStore) ApplySmesFrameAt(frame redsnet.SmesFrame, vm *VideoMap, no
 		target = *existing
 	}
 
+	oldSpeed, oldMotionAt := target.GroundSpeedKt, target.MotionAt
 	applySmesChanged(&target, frame.Changed, vm)
+	// A speed update is only one observation. Source timestamps, rather than
+	// render-frame intervals, determine the derivative. Partial reports do not
+	// invent an acceleration sample when the speed was absent.
+	if _, updated := frame.Changed["speed"]; updated && !frame.IsSnapshot {
+		stamp := target.PositionReportTime
+		if stamp.IsZero() {
+			stamp = now
+		}
+		if !oldMotionAt.IsZero() {
+			dt := stamp.Sub(oldMotionAt).Seconds()
+			if dt >= 0.2 && dt <= 15 {
+				a := float64(target.GroundSpeedKt-oldSpeed) * (6076.12 / 3600) / dt
+				target.AccelFtSec2 = float32(stdmath.Max(-8, stdmath.Min(12, a)))
+				target.HasAcceleration = true
+			} else {
+				target.HasAcceleration = false
+			}
+		}
+		if stamp.After(oldMotionAt) {
+			target.MotionAt = stamp
+		}
+	}
 	target.Live = true
-	target.LastSmesFrameTime = now
+
+	// A snapshot restores cached state; it does not constitute a new SMES
+	// observation. Use the server's last-observed timestamp, not the time
+	// this frame reached the client. Ordinary live diffs and playback frames
+	// continue to use their own evaluation time.
+	observedAt := now
+	if frame.IsSnapshot {
+		if stamp, err := time.Parse(time.RFC3339Nano, frame.UpdatedAt); err == nil {
+			observedAt = stamp.UTC()
+		} else if !target.PositionReportTime.IsZero() {
+			observedAt = target.PositionReportTime
+		}
+
+		// A late snapshot must not overwrite a newer live observation.
+		if existing := s.targets[frame.Key]; existing != nil &&
+			!existing.LastSmesFrameTime.IsZero() &&
+			observedAt.Before(existing.LastSmesFrameTime) {
+			return
+		}
+
+		// Do not insert expired raw unknowns just to remove them on the
+		// next draw. Apply manual overrides to the candidate first so
+		// manually tagged targets retain their normal treatment.
+		candidate := target
+		s.applyDatablockOverrides(&candidate)
+		s.applyManualAssociations(&candidate)
+		s.applyManualTags(&candidate)
+		if targetIsRawUnknown(&candidate) && now.Sub(observedAt) >= unknownTargetStaleLifetime {
+			return
+		}
+	}
+	target.LastSmesFrameTime = observedAt
 	if !target.Suspended && (target.Coasting || target.Dropped) {
 		target.Coasting = false
 		target.Dropped = false
@@ -1207,6 +1271,26 @@ func applySmesChanged(target *Target, changed map[string]json.RawMessage, vm *Vi
 			target.GroundSpeedKt = 0
 		} else {
 			target.GroundSpeedKt = float32(value)
+		}
+	}
+	// Preserve raw producer values without assuming units or coordinate axes.
+	for _, field := range []struct {
+		key string
+		val *float32
+		has *bool
+	}{
+		{"vx", &target.RawVX, &target.HasRawVX},
+		{"vy", &target.RawVY, &target.HasRawVY},
+		{"ax", &target.RawAX, &target.HasRawAX},
+		{"ay", &target.RawAY, &target.HasRawAY},
+	} {
+		if value, present, clear := changedFloat64(changed, field.key); present {
+			*field.has = !clear
+			if clear {
+				*field.val = 0
+			} else {
+				*field.val = float32(value)
+			}
 		}
 	}
 	if value, present, clear := changedFloat64(changed, "heading"); present {

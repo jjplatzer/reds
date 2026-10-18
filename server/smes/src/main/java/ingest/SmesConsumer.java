@@ -270,18 +270,22 @@ public final class SmesConsumer extends AbstractVerticle {
         }
 
         // Movement
-        Double speed = null, heading = null;
+        Double speed = null, heading = null, vx = null, vy = null, ax = null, ay = null;
         Element movement = child(el, "movement");
         if (movement != null) {
             speed   = parseDouble(text(child(movement, "speed")));
             heading = parseDouble(text(child(movement, "heading")));
+            vx = parseDouble(text(child(movement, "vx")));
+            vy = parseDouble(text(child(movement, "vy")));
+            ax = parseDouble(text(child(movement, "ax")));
+            ay = parseDouble(text(child(movement, "ay")));
         }
 
         return new SurfaceTarget(
                 airport, track, stid, isFull,
                 positionReportTime,
                 tgtType, callsign, acType, squawk, exitFix, wake, scratchpad1, scratchpad2,
-                lat, lon, altitude, speed, heading
+                lat, lon, altitude, speed, heading, vx, vy, ax, ay
         );
     }
 
@@ -318,7 +322,7 @@ public final class SmesConsumer extends AbstractVerticle {
                 airport, track, null, isFull,
                 positionReportTime,
                 isFull ? "unknown" : null, null, null, null, null, null, null, null,
-                lat, lon, altitude, speed, heading
+                lat, lon, altitude, speed, heading, null, null, null, null
         );
     }
 

@@ -218,6 +218,110 @@ func (p *ASDEXPane) startDefineDbTraitArea() {
 	p.clearHighlightedTarget()
 }
 
+// CRC's DELETE ALL AREAS is a keyboard confirmation, not an immediate action.
+// The DCB spinner provides the hidden mouse cursor and the preview-area caret.
+func (p *ASDEXPane) startDeleteAllDbAreas() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.dcb.SetMenu(DcbMenuDbArea)
+	p.dcbMenuCommand = nil
+	p.dcbSpinner = &DcbSpinner{
+		Type:           DcbSpinnerDbAreaDeleteAll,
+		Function:       DcbFunctionDeleteAllDbAreas,
+		WindowID:       p.activeWindowID(),
+		Lines:          []string{"DB AREA", "DELETE ALL AREAS?", "1 = NO", "2 = YES"},
+		Min:            1,
+		Max:            2,
+		MaxInputDigits: 1,
+	}
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) finishDeleteAllDbAreas(systemResponse string) {
+	if p == nil {
+		return
+	}
+	p.dcbSpinner = nil
+	p.dcb.SetMenu(DcbMenuDbArea)
+	p.dcbMenuCommand = NewDcbMenuCommand("DB AREA")
+	p.previewArea.SetSystemResponse(systemResponse)
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) commitDeleteAllDbAreas(spinner *DcbSpinner) {
+	if p == nil || spinner == nil {
+		return
+	}
+	choice, valid := spinner.ParsedValue()
+	if !valid {
+		p.finishDeleteAllDbAreas("INVALID ENTRY")
+		return
+	}
+	if choice == 2 {
+		state := p.displayStateForWindow(spinner.WindowID)
+		state.DataBlockAreas = nil
+		state.SelectedDBAreaID = ""
+		state.TargetTraitAreaByTarget = nil
+		state.TraitLeaderDirectionOverrides = nil
+		state.TraitLeaderLengthOverrides = nil
+	}
+	p.finishDeleteAllDbAreas("")
+}
+
+// CRC's DELETE ONE AREA remains in map-selection mode until a polygon is
+// selected. DB-off and DB-trait polygons are both eligible for deletion.
+func (p *ASDEXPane) startDeleteOneDbArea() {
+	if p == nil {
+		return
+	}
+
+	p.clearDcbModalConflicts()
+	p.dbAreaSelection = &DataBlockAreaSelection{
+		Mode:     DataBlockAreaSelectionDeleteOne,
+		WindowID: p.activeWindowID(),
+	}
+	p.dcb.SetMenu(DcbMenuDbArea)
+	p.dcbMenuCommand = NewDcbMenuCommand("DB AREA", "DELETE ONE AREA")
+	p.previewArea.SetSystemResponse("")
+	p.clearHighlightedTarget()
+}
+
+func (p *ASDEXPane) deleteOneDbArea(windowID ScopeWindowID, areaID string) {
+	if p == nil || areaID == "" {
+		return
+	}
+	state := p.displayStateForWindow(windowID)
+	for i := range state.DataBlockAreas {
+		if state.DataBlockAreas[i].ID != areaID {
+			continue
+		}
+		// Clear only overrides associated with this polygon; other areas and
+		// window-local settings are unaffected. Also drop references promptly.
+		for targetID, id := range state.TargetTraitAreaByTarget {
+			if id == areaID {
+				delete(state.TargetTraitAreaByTarget, targetID)
+				delete(state.TraitLeaderDirectionOverrides, targetID)
+				delete(state.TraitLeaderLengthOverrides, targetID)
+			}
+		}
+		if state.SelectedDBAreaID == areaID {
+			state.SelectedDBAreaID = ""
+		}
+		copy(state.DataBlockAreas[i:], state.DataBlockAreas[i+1:])
+		state.DataBlockAreas[len(state.DataBlockAreas)-1] = DataBlockArea{}
+		state.DataBlockAreas = state.DataBlockAreas[:len(state.DataBlockAreas)-1]
+		if len(state.DataBlockAreas) == 0 {
+			state.DataBlockAreas = nil
+		}
+		break
+	}
+	p.cancelDataBlockAreaSelection()
+}
+
 func (p *ASDEXPane) startModifyDbTraitArea() {
 	if p == nil {
 		return
@@ -481,6 +585,16 @@ func (p *ASDEXPane) consumeDataBlockAreaSelectionInput(
 	if !windowRect.Contains(ctx.Mouse.Pos) {
 		return true
 	}
+	if selection.Mode == DataBlockAreaSelectionDeleteOne && ctx.Mouse.IsDown(platform.MouseButtonRight) {
+		// Allow CRC-style right-drag panning while the delete selector is active.
+		view, ok := p.scopeViewForWindow(windowID)
+		if ok {
+			if updated, changed := p.consumeScopeMouseEvents(ctx, windowRect, view, transforms); changed {
+				p.setScopeView(windowID, updated)
+			}
+		}
+		return true
+	}
 	if ctx.Mouse.WasReleased(platform.MouseButtonRight) {
 		return true
 	}
@@ -501,6 +615,7 @@ func (p *ASDEXPane) consumeDataBlockAreaSelectionInput(
 		p.selectDataBlockTraitAreaForModify(windowID, area.ID)
 		return true
 	case DataBlockAreaSelectionDeleteOne:
+		p.deleteOneDbArea(windowID, area.ID)
 		return true
 	default:
 		return true

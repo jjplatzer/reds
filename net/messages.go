@@ -18,14 +18,15 @@ type SmesStatusEvent struct {
 }
 
 type SmesFrame struct {
-	Type      string                     `json:"type,omitempty"`
-	Key       string                     `json:"key,omitempty"`
-	Airport   string                     `json:"airport,omitempty"`
-	UpdatedAt string                     `json:"updatedAt,omitempty"`
-	IsFull    bool                       `json:"isFull,omitempty"`
-	Removed   bool                       `json:"removed,omitempty"`
-	Reason    string                     `json:"reason,omitempty"`
-	Changed   map[string]json.RawMessage `json:"changed,omitempty"`
+	Type       string                     `json:"type,omitempty"`
+	Key        string                     `json:"key,omitempty"`
+	Airport    string                     `json:"airport,omitempty"`
+	UpdatedAt  string                     `json:"updatedAt,omitempty"`
+	IsFull     bool                       `json:"isFull,omitempty"`
+	IsSnapshot bool                       `json:"isSnapshot,omitempty"`
+	Removed    bool                       `json:"removed,omitempty"`
+	Reason     string                     `json:"reason,omitempty"`
+	Changed    map[string]json.RawMessage `json:"changed,omitempty"`
 }
 
 type PlaybackBootstrapResponse struct {

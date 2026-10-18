@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	stdmath "math"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -234,6 +235,18 @@ func windowZ(stackIndex int, localZ renderer.Z) renderer.Z {
 func scopeWindowZ(stackIndex int, localZ renderer.Z) renderer.Z {
 	return renderer.Z(-20000 + stackIndex*1000 + int(localZ))
 }
+
+// Explicitly opt in until predictions have been calibrated on recorded SMES data.
+var occupiedRunwayAlertsEnabled = os.Getenv("REDS_ASDEX_OCCUPIED_ALERTS") == "1"
+
+// Read once: this configuration is constant for a running desktop process.
+var occupiedRunwayClearanceFeet = func() float64 {
+	v, err := strconv.ParseFloat(os.Getenv("REDS_ASDEX_CLEARANCE_FEET"), 64)
+	if err != nil || v <= 0 || v > 5000 {
+		return conflictClearanceFeet
+	}
+	return v
+}()
 
 type ASDEXPane struct {
 	logger            *redslog.Logger
@@ -633,7 +646,7 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	} else {
 		p.hoveredCoastListTarget = ""
 	}
-	if p.mapReposition == nil && p.mapRotate == nil && p.towerReadout == nil && p.dbAreaDraft == nil && p.dbAreaSelection == nil && p.tempAreaDraft == nil &&
+	if p.mapReposition == nil && p.mapRotate == nil && p.towerReadout == nil && p.dbAreaDraft == nil && (p.dbAreaSelection == nil || p.dbAreaSelection.Mode == DataBlockAreaSelectionDeleteOne) && p.tempAreaDraft == nil &&
 		p.tempTextCommand == nil && p.tempTextPlacement == nil &&
 		p.tempDataSelectMode == TempDataSelectNone && p.newWindow == nil && p.deleteWindow == nil &&
 		p.windowReposition == nil && p.resizeWindow == nil {
@@ -771,8 +784,11 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	targets := p.targets.All()
 	p.previewArea.SetTrackAlertsInhibited(p.targets.AnyAlertsInhibited())
 	alertChanges := p.safetyLogic.Update(targets, SafetyLogicUpdateOptions{
-		RunwayConfiguration: p.currentSafetyRunwayConfiguration(),
-		RunwayClosed:        p.tempData.RunwayClosed,
+		RunwayConfiguration:         p.currentSafetyRunwayConfiguration(),
+		RunwayClosed:                p.tempData.RunwayClosed,
+		OccupiedRunwayAlerts:        occupiedRunwayAlertsEnabled,
+		OccupiedRunwayClearanceFeet: occupiedRunwayClearanceFeet,
+		Now:                         scopeNow,
 		TargetAlertsInhibited: func(targetID string) bool {
 			return p.targets.AlertsInhibited(targetID)
 		},
@@ -1368,6 +1384,8 @@ func (p *ASDEXPane) dcbState() DcbState {
 		activeSpinnerFunction = DcbFunctionNewWindow
 	} else if p.deleteWindow != nil {
 		activeSpinnerFunction = DcbFunctionDeleteWindow
+	} else if p.dbAreaSelection != nil && p.dbAreaSelection.Mode == DataBlockAreaSelectionDeleteOne {
+		activeSpinnerFunction = DcbFunctionDeleteOneDbArea
 	} else if p.windowReposition != nil {
 		activeSpinnerFunction = DcbFunctionWindowReposition
 	} else if p.resizeWindow != nil {
@@ -1818,10 +1836,11 @@ func (p *ASDEXPane) activateDcbHit(ctx *panes.Context, hit DcbHit) bool {
 	case DcbFunctionModifyDbTraitArea:
 		p.startModifyDbTraitArea()
 		return true
-	case DcbFunctionDeleteAllDbAreas,
-		DcbFunctionDeleteOneDbArea:
-		p.previewArea.SetSystemResponse("")
-		p.clearHighlightedTarget()
+	case DcbFunctionDeleteAllDbAreas:
+		p.startDeleteAllDbAreas()
+		return true
+	case DcbFunctionDeleteOneDbArea:
+		p.startDeleteOneDbArea()
 		return true
 	case DcbFunctionDbFullPart:
 		p.toggleDbFullPart()
@@ -3269,6 +3288,11 @@ func (p *ASDEXPane) consumeDcbSpinnerInput(ctx *panes.Context) bool {
 	if p == nil || p.dcbSpinner == nil || ctx == nil || ctx.Mouse == nil {
 		return false
 	}
+	// Confirmation is keyboard-only in CRC; mouse/wheel input must not
+	// implicitly choose a response.
+	if p.dcbSpinner.Type == DcbSpinnerDbAreaDeleteAll {
+		return true
+	}
 
 	mouse := ctx.Mouse
 	switch {
@@ -3326,6 +3350,10 @@ func (p *ASDEXPane) acceptActiveDcbSpinner() {
 
 func (p *ASDEXPane) cancelDcbSpinner() {
 	if p == nil {
+		return
+	}
+	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerDbAreaDeleteAll {
+		p.finishDeleteAllDbAreas("")
 		return
 	}
 	if p.dcbSpinner != nil && p.dcbSpinner.Type == DcbSpinnerVectorLength {
@@ -3394,6 +3422,9 @@ func (p *ASDEXPane) commitDcbSpinner() {
 
 	spinner := p.dcbSpinner
 	switch spinner.Type {
+	case DcbSpinnerDbAreaDeleteAll:
+		p.commitDeleteAllDbAreas(spinner)
+		return
 	case DcbSpinnerRange:
 		if strings.TrimSpace(spinner.InputText()) == "" {
 			p.commitSpinnerUndoIfChanged(spinner)

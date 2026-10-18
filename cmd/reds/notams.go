@@ -8,6 +8,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"math"
 	"net"
 	"net/http"
 	"net/url"
@@ -24,9 +25,14 @@ import (
 )
 
 const (
-	notamWindowWidth  = 820
-	notamWindowHeight = 620
-	notamFontPath     = "fonts/CourierPrime-Regular.ttf.zst"
+	notamWindowWidth   = 820
+	notamWindowHeight  = 620
+	notamMinWidth      = 550
+	notamMinListHeight = 80
+	notamFontPath      = "fonts/CourierPrime-Regular.ttf.zst"
+
+	notamFooterTextOffset   = 30 // top of the disclaimer body, relative to the divider
+	notamFooterBottomMargin = 18
 
 	notamDisclaimerTitle = "UNOFFICIAL NOTAM DATA - NOT FOR OPERATIONAL USE"
 	notamDisclaimerText  = "Source: NOTAC (https://notac.aero). The underlying NOTAMs originate from the FAA NOTAM Management System and other issuing authorities. REDS is an independent, unofficial simulation tool, not an authorized aeronautical information service or briefing provider, and is not affiliated with or endorsed by NOTAC, the FAA, or any issuing authority.\n\n" +
@@ -210,7 +216,7 @@ func runNOTAMWindow(airport string) error {
 	plat, err := platform.New(&platform.Config{
 		Title:             "NOTAMs - " + airport,
 		InitialWindowSize: [2]int{notamWindowWidth, notamWindowHeight},
-		MinWindowSize:     [2]int{550, 360},
+		MinWindowSize:     [2]int{notamMinWidth, notamWindowHeight},
 		Resizable:         true,
 	})
 	if err != nil {
@@ -233,6 +239,7 @@ func runNOTAMWindow(airport string) error {
 	var loadErr error
 	var searchKeyword string
 	open := true
+	minHeightSet := false
 	for open && !plat.ShouldStop() {
 		select {
 		case res := <-results:
@@ -242,6 +249,16 @@ func runNOTAMWindow(airport string) error {
 		plat.ProcessEvents()
 		plat.NewFrame()
 		imgui.NewFrame()
+		if !minHeightSet {
+			// Measure at the narrowest allowed width: wrapping can only
+			// take more vertical space as the viewer becomes narrower.
+			minHeight := notamMinimumWindowHeight()
+			plat.SetWindowMinSize(notamMinWidth, minHeight)
+			if size := plat.WindowSize(); size[1] < minHeight {
+				plat.SetWindowSizeCentered(size[0], minHeight)
+			}
+			minHeightSet = true
+		}
 		drawNOTAMWindow(plat, airport, loading, texts, loadErr, &searchKeyword, &open)
 		imgui.Render()
 		bg := colDialogBg
@@ -289,6 +306,20 @@ func drawNOTAMKeywordSearch(windowWidth float32, keyword *string) {
 		imgui.Vec2{X: max.X - iconWidth, Y: y}, max, colBorder)
 }
 
+// notamDisclaimerFooterHeight measures exactly the font and wrapping used by
+// TextWrapped below, plus room for the heading and the bottom margin.
+func notamDisclaimerFooterHeight(windowWidth float32) float32 {
+	textWidth := windowWidth - 36 // 18 px left and right insets
+	return notamFooterTextOffset + imgui.CalcTextSizeV(notamDisclaimerText, false, textWidth).Y + notamFooterBottomMargin
+}
+
+// A native minimum height protects both the entire disclaimer and a usable
+// scrollable NOTAM area, including when the window is narrowed to 550 px.
+func notamMinimumWindowHeight() int {
+	notamsTop := float32(scopeTitleBarHeight + 16 + controlHeight + 16)
+	return int(math.Ceil(float64(notamsTop + notamMinListHeight + 10 + notamDisclaimerFooterHeight(notamMinWidth))))
+}
+
 func drawNOTAMWindow(plat platform.Platform, airport string, loading bool, texts []string, loadErr error, searchKeyword *string, open *bool) {
 	size := plat.DisplaySize()
 	imgui.SetNextWindowPosV(imgui.Vec2{}, imgui.CondAlways, imgui.Vec2{})
@@ -328,14 +359,9 @@ func drawNOTAMWindow(plat platform.Platform, airport string, loading bool, texts
 		plat.MoveWindowBy(delta.X, delta.Y)
 	}
 
-	// Reserve a persistent disclaimer at the bottom. Its text scrolls within
-	// the footer if the native window is too small to show it in full.
-	footerHeight := size[1] * 0.27
-	if footerHeight < 120 {
-		footerHeight = 120
-	} else if footerHeight > 180 {
-		footerHeight = 180
-	}
+	// Size the fixed footer from the *entire* wrapped disclaimer. The
+	// remainder of the window belongs to the independently scrollable list.
+	footerHeight := notamDisclaimerFooterHeight(size[0])
 	footerTop := size[1] - footerHeight
 	notamsTop := float32(scopeTitleBarHeight + 16 + controlHeight + 16)
 
@@ -377,24 +403,17 @@ func drawNOTAMWindow(plat platform.Platform, airport string, loading bool, texts
 		imgui.EndChild()
 		imgui.PopStyleColor()
 	}
-	// NOTAC requires visible attribution and a clear unofficial-source warning.
-	// Keep the warning visible while giving the longer legal notice its own
-	// wrapped, scrollable footer (independent of the NOTAM list).
+	// NOTAC requires the full disclaimer to stay on screen at all times.
+	// Render it directly in the root window, with no scrolling child.
 	imgui.SetCursorScreenPos(imgui.Vec2{X: 18, Y: footerTop})
 	imgui.Separator()
 	imgui.SetCursorScreenPos(imgui.Vec2{X: 18, Y: footerTop + 8})
 	imgui.PushStyleColorVec4(imgui.ColText, colText)
 	imgui.TextUnformatted(notamDisclaimerTitle)
 	imgui.PopStyleColor()
-	imgui.SetCursorScreenPos(imgui.Vec2{X: 18, Y: footerTop + 30})
-	imgui.PushStyleColorVec4(imgui.ColChildBg, colDialogBg)
-	imgui.BeginChildStrV("##notams-disclaimer", imgui.Vec2{
-		X: size[0] - 36, Y: footerHeight - 38,
-	}, 0, 0)
+	imgui.SetCursorScreenPos(imgui.Vec2{X: 18, Y: footerTop + notamFooterTextOffset})
 	imgui.PushStyleColorVec4(imgui.ColText, colTextDisabled)
 	imgui.TextWrapped(notamDisclaimerText)
-	imgui.PopStyleColor()
-	imgui.EndChild()
 	imgui.PopStyleColor()
 	imgui.End()
 	imgui.PopStyleVarV(4)

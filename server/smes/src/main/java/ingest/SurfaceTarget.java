@@ -32,7 +32,11 @@ public record SurfaceTarget(
         Double  lon,
         Double  altitude,
         Double  speed,
-        Double  heading
+        Double  heading,
+        Double  vx,
+        Double  vy,
+        Double  ax,
+        Double  ay
 ) {
     /** EventBus address for observations from all ingest sources. */
     public static final String ADDRESS = "faa.ingest.observation";

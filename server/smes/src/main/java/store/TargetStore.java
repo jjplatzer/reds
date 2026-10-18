@@ -95,11 +95,11 @@ public final class TargetStore extends AbstractVerticle {
     /**
      * Pushes a full-state diff for every target the new filter accepts, so a
      * freshly-(re)connected client doesn't have to wait for AT-full reports
-     * to populate its local cache. The frame shape matches handleObservation's
-     * normal diff, so the client reuses its existing parser path.
+     * to populate its local cache. A snapshot is NOT a new observation:
+     * keep each target's last ingestion time and label the frame so clients
+     * can discard expired unknown targets before rendering them.
      */
     private void snapshotTo(Set<String> active) {
-        Instant now = Instant.now();
         for (Map.Entry<String, TargetState> e : store.entrySet()) {
             TargetState s = e.getValue();
             if (s.airport == null || !active.contains(s.airport)) continue;
@@ -110,8 +110,9 @@ public final class TargetStore extends AbstractVerticle {
             vertx.eventBus().publish(DIFF_ADDRESS, new JsonObject()
                     .put("key",       e.getKey())
                     .put("airport",   s.airport)
-                    .put("updatedAt", now.toString())
+                    .put("updatedAt", s.updatedAt.toString())
                     .put("isFull",    true)
+                    .put("isSnapshot", true)
                     .put("changed",   changed));
         }
     }
@@ -239,7 +240,7 @@ public final class TargetStore extends AbstractVerticle {
         String tgtType, callsign, acType, squawk, exitFix, wake, scratchpad1, scratchpad2;
 
         // Position + kinematics
-        Double lat, lon, altitude, speed, heading;
+        Double lat, lon, altitude, speed, heading, vx, vy, ax, ay;
 
         TargetState(SurfaceTarget first) {
             this.updatedAt = Instant.now();
@@ -272,6 +273,10 @@ public final class TargetStore extends AbstractVerticle {
                 altitude = trackFull(changed, "altitude", altitude, obs.altitude());
                 speed    = trackFull(changed, "speed",    speed,    obs.speed());
                 heading  = trackFull(changed, "heading",  heading,  obs.heading());
+                vx      = trackFull(changed, "vx", vx, obs.vx());
+                vy      = trackFull(changed, "vy", vy, obs.vy());
+                ax      = trackFull(changed, "ax", ax, obs.ax());
+                ay      = trackFull(changed, "ay", ay, obs.ay());
             } else {
                 positionReportTime = track(changed, "positionReportTime", positionReportTime, obs.positionReportTime());
                 tgtType  = track(changed, "tgtType",  tgtType,  obs.tgtType());
@@ -287,6 +292,10 @@ public final class TargetStore extends AbstractVerticle {
                 altitude = track(changed, "altitude", altitude, obs.altitude());
                 speed    = track(changed, "speed",    speed,    obs.speed());
                 heading  = track(changed, "heading",  heading,  obs.heading());
+                vx      = track(changed, "vx", vx, obs.vx());
+                vy      = track(changed, "vy", vy, obs.vy());
+                ax      = track(changed, "ax", ax, obs.ax());
+                ay      = track(changed, "ay", ay, obs.ay());
             }
 
             return changed;
@@ -310,6 +319,10 @@ public final class TargetStore extends AbstractVerticle {
             if (altitude != null) out.put("altitude", altitude);
             if (speed    != null) out.put("speed",    speed);
             if (heading  != null) out.put("heading",  heading);
+            if (vx != null) out.put("vx", vx);
+            if (vy != null) out.put("vy", vy);
+            if (ax != null) out.put("ax", ax);
+            if (ay != null) out.put("ay", ay);
 
             return out;
         }
