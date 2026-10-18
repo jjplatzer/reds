@@ -8,15 +8,14 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	redsmath "github.com/juliusplatzer/reds/math"
 	"github.com/juliusplatzer/reds/renderer"
 	"github.com/juliusplatzer/reds/util"
 )
 
-// SafetyLogic currently implements holdbar illumination for landing and
-// departure runway operations. Alert messages and aural safety alerts are
-// intentionally left out for now.
+// SafetyLogic manages runway operations, hold-bar illumination and alerts.
 const (
 	landingFinalRangeFeet         = 6076.12
 	landingPastThresholdFeet      = 800.0
@@ -48,6 +47,8 @@ type SafetyLogic struct {
 	activeOperations map[string]activeRunwayOperation
 	litRunways       map[string]bool
 	activeAlerts     map[string]SafetyAlert
+	// Per-alert deactivation debounce for noisy predicted clearance.
+	alertClearSince map[string]time.Time
 }
 
 type SafetyAlertType int
@@ -56,6 +57,7 @@ const (
 	SafetyAlertNone SafetyAlertType = iota
 	SafetyAlertLandingClosedRunway
 	SafetyAlertDepartureClosedRunway
+	SafetyAlertLandingOccupiedRunway
 )
 
 type SafetyAuralAlert int
@@ -77,6 +79,8 @@ const (
 	SafetyAuralRight
 	SafetyAuralCenter
 	SafetyAuralClosed
+	SafetyAuralOccupied
+	SafetyAuralGoAround
 	SafetyAuralTestMessage
 )
 
@@ -326,6 +330,11 @@ type SafetyLogicUpdateOptions struct {
 	RunwayClosed func(runwayID string) bool
 
 	TargetAlertsInhibited func(targetID string) bool
+
+	// Occupied-runway prediction is experimental and must be enabled explicitly.
+	OccupiedRunwayAlerts        bool
+	OccupiedRunwayClearanceFeet float64   // additional prototype margin beyond both footprints
+	Now                         time.Time // simulation time, supports deterministic playback and tests
 }
 
 type surfaceRunway struct {
@@ -440,6 +449,7 @@ func LoadSafetyLogic(airport string, vm *VideoMap) (SafetyLogic, error) {
 		activeOperations:  make(map[string]activeRunwayOperation),
 		litRunways:        make(map[string]bool),
 		activeAlerts:      make(map[string]SafetyAlert),
+		alertClearSince:   make(map[string]time.Time),
 	}
 
 	runwayByID := make(map[string]int)
@@ -653,6 +663,9 @@ func (sl *SafetyLogic) Update(
 	if sl.activeAlerts == nil {
 		sl.activeAlerts = make(map[string]SafetyAlert)
 	}
+	if sl.alertClearSince == nil {
+		sl.alertClearSince = make(map[string]time.Time)
+	}
 	clear(sl.litRunways)
 
 	seen := make(map[string]bool, len(targets))
@@ -693,11 +706,29 @@ func (sl *SafetyLogic) updateAlerts(
 
 	var changes SafetyAlertChanges
 
-	for id := range sl.activeAlerts {
-		if _, stillActive := generated[id]; !stillActive {
-			delete(sl.activeAlerts, id)
-			changes.Deleted = append(changes.Deleted, id)
+	for id, previous := range sl.activeAlerts {
+		if _, stillActive := generated[id]; stillActive {
+			delete(sl.alertClearSince, id)
+			continue
 		}
+		// Preserve an occupied-runway alert briefly if *both* aircraft are
+		// still observed and neither is inhibited. An actual removal or manual
+		// inhibition must clear immediately. Playback can move time backward.
+		if previous.Type == SafetyAlertLandingOccupiedRunway && opts.OccupiedRunwayAlerts &&
+			len(previous.AircraftIDs) == 2 && !opts.Now.IsZero() &&
+			conflictPairStillPresent(previous, targetByID, opts) {
+			start, exists := sl.alertClearSince[id]
+			if !exists || opts.Now.Before(start) {
+				sl.alertClearSince[id] = opts.Now
+				continue
+			}
+			if opts.Now.Sub(start) < 2*time.Second {
+				continue
+			}
+		}
+		delete(sl.alertClearSince, id)
+		delete(sl.activeAlerts, id)
+		changes.Deleted = append(changes.Deleted, id)
 	}
 
 	for id, alert := range generated {
@@ -722,6 +753,11 @@ func (sl *SafetyLogic) generateAlerts(
 		return generated
 	}
 
+	if opts.OccupiedRunwayAlerts {
+		for id, alert := range sl.occupiedRunwayAlerts(targetByID, opts) {
+			generated[id] = alert
+		}
+	}
 	if opts.RunwayClosed == nil {
 		return generated
 	}
@@ -1474,4 +1510,295 @@ func abs32(v float32) float32 {
 		return -v
 	}
 	return v
+}
+
+// Predictive occupied-runway alerts and trajectory-based runway conflict logic.
+// Experimental ASDE-X display aid, NOT an operational runway-separation model.
+// All distances are in local map feet and prediction times in seconds. These
+// conservative *prototype* thresholds require validation against recordings.
+const (
+	conflictHorizonSeconds         = 90.0
+	conflictApproachRangeFeet      = 3 * 6076.12
+	conflictArrivalAlertSeconds    = 45.0
+	conflictStationaryAlertSeconds = 35.0
+	conflictPositionAgeSeconds     = 8.0
+	conflictStaleOccupantSeconds   = 30.0
+	conflictAccelerationAgeSeconds = 4.0
+	conflictClearanceFeet          = 300.0
+	conflictArrivalRadiusFeet      = 75.0
+	conflictAircraftRadiusFeet     = 75.0
+	conflictVehicleRadiusFeet      = 25.0
+	conflictRunwayBufferFeet       = 35.0
+	conflictSampleStepSeconds      = 0.5
+	conflictDepartureRollKnots     = 20.0
+	conflictDepartureAccelFtS2     = 1.0
+	conflictTaxiCoastSeconds       = 10.0
+	conflictMaxAccelSeconds        = 12.0
+	conflictKnotsToFeetPerSecond   = 6076.12 / 3600.0
+)
+
+// occupiedRunwayAlerts deliberately separates *current occupation* from a
+// predicted encounter. A lined-up stationary aircraft is not assumed to take
+// off at an unknown future time. Equally, a speculative takeoff does not cause
+// the runway to be classified as clear. The warning window is deliberately
+// shorter for a stationary occupant to avoid premature "GO AROUND" alerts.
+func (sl *SafetyLogic) occupiedRunwayAlerts(
+	targets map[string]*Target, opts SafetyLogicUpdateOptions,
+) map[string]SafetyAlert {
+	alerts := make(map[string]SafetyAlert)
+	if sl == nil || opts.Now.IsZero() {
+		return alerts
+	}
+
+	for _, operation := range sl.predictiveLandingOperations(targets) {
+		if operation.Type != activeRunwayOperationLanding || operation.StationFeet >= 0 ||
+			operation.RunwayIndex < 0 || operation.RunwayIndex >= len(sl.runways) ||
+			!runwayConfigurationAllowsOperation(opts.RunwayConfiguration, operation) {
+			continue
+		}
+		landing := targets[operation.TargetID]
+		if !validConflictTarget(landing, opts.Now, conflictPositionAgeSeconds) ||
+			(opts.TargetAlertsInhibited != nil && opts.TargetAlertsInhibited(landing.ID)) {
+			continue
+		}
+		runway := sl.runways[operation.RunwayIndex]
+		runwayEnd := operationRunwayEndID(operation)
+		if runwayEnd == "" {
+			continue
+		}
+
+		landingAlongSpeed := float64(landing.GroundSpeedKt) * conflictKnotsToFeetPerSecond *
+			float64(safetyDot(headingUnitVector(landing.HeadingDeg), operation.DirectionFeet))
+		if landingAlongSpeed < 40*conflictKnotsToFeetPerSecond {
+			continue
+		}
+
+		for _, other := range targets {
+			if other == nil || other.ID == landing.ID || !validConflictTarget(other, opts.Now, conflictStaleOccupantSeconds) ||
+				(opts.TargetAlertsInhibited != nil && opts.TargetAlertsInhibited(other.ID)) ||
+				!possibleRunwayOccupant(sl, runway, other) {
+				continue
+			}
+
+			// Time until the landing aircraft reaches the other object's runway
+			// station. This avoids warning far too early about an aircraft near
+			// the departure end of a long runway.
+			otherStation := float64(safetyDot(other.PosFeet.Sub(operation.StartThresholdFeet), operation.DirectionFeet))
+			tArrival := (otherStation - float64(operation.StationFeet)) / landingAlongSpeed
+			if tArrival < 0 || tArrival > conflictHorizonSeconds {
+				continue
+			}
+
+			stale := opts.Now.Sub(conflictObservationTime(other)).Seconds() > conflictPositionAgeSeconds
+			if !runwayConflictPredicted(landing, other, runway, operation, tArrival, stale, opts.OccupiedRunwayClearanceFeet) {
+				continue
+			}
+
+			id := fmt.Sprintf("SL:%d:%s:%s:%s", SafetyAlertLandingOccupiedRunway,
+				landing.ID, runwayEnd, other.ID)
+			audio := append([]SafetyAuralAlert{SafetyAuralWarning, SafetyAuralRunway},
+				runwayIDAuralTokens(runwayEnd)...)
+			audio = append(audio, SafetyAuralOccupied, SafetyAuralGoAround)
+			alerts[id] = SafetyAlert{
+				ID: id, Type: SafetyAlertLandingOccupiedRunway,
+				MessageLines: []string{
+					"RWY " + runwayEnd,
+					safetyAlertTargetLabel(landing) + ", " + safetyAlertTargetLabel(other),
+					"RWY OCCUPIED, GO AROUND",
+				},
+				AircraftIDs: []string{landing.ID, other.ID},
+				RunwayIDs:   []string{runwayEnd}, AuralAlerts: audio,
+			}
+		}
+	}
+	return alerts
+}
+
+// Predict arrivals up to 3 NM without expanding the range of the existing
+// runway-operation state machine (and therefore hold bars and closure alerts).
+// Exactly one runway-end candidate is chosen for each additional arrival.
+func (sl *SafetyLogic) predictiveLandingOperations(targets map[string]*Target) []activeRunwayOperation {
+	out := make([]activeRunwayOperation, 0, len(sl.activeOperations))
+	for _, op := range sl.activeOperations {
+		if op.Type == activeRunwayOperationLanding {
+			out = append(out, op)
+		}
+	}
+	for _, t := range targets {
+		if t == nil || !targetIsSafetyLogicAircraft(t) ||
+			t.GroundSpeedKt < landingSpeedThresholdKt ||
+			(t.HasAltitude && float64(t.AltitudeFt) > sl.airportAltitudeFt+landingMaxAGLFeet) {
+			continue
+		}
+		if _, exists := sl.activeOperations[t.ID]; exists {
+			continue
+		}
+		dir := headingUnitVector(t.HeadingDeg)
+		found := false
+		bestOffset := float32(0)
+		var best activeRunwayOperation
+		for i, r := range sl.runways {
+			for _, reverse := range []bool{false, true} {
+				threshold, axis := r.ThresholdMinFeet, r.AxisFeet
+				if reverse {
+					threshold, axis = r.ThresholdMaxFeet, r.AxisFeet.Mul(-1)
+				}
+				station := safetyDot(t.PosFeet.Sub(threshold), axis)
+				if station >= 0 || float64(station) < -conflictApproachRangeFeet ||
+					safetyDot(dir, axis) < landingAlignmentMinCos {
+					continue
+				}
+				offset := abs32(safetyDot(t.PosFeet.Sub(threshold), r.NormalFeet))
+				if offset > approachLateralLimitFeet(r) {
+					continue
+				}
+				if !found || offset < bestOffset {
+					found, bestOffset = true, offset
+					best = activeRunwayOperation{
+						TargetID: t.ID, RunwayID: r.ID, RunwayIndex: i,
+						Type: activeRunwayOperationLanding, DirectionFeet: axis,
+						StartThresholdFeet: threshold, StationFeet: station, SpeedKt: t.GroundSpeedKt,
+					}
+				}
+			}
+		}
+		if found {
+			out = append(out, best)
+		}
+	}
+	return out
+}
+
+func conflictPairStillPresent(alert SafetyAlert, targets map[string]*Target, opts SafetyLogicUpdateOptions) bool {
+	for i, id := range alert.AircraftIDs {
+		t := targets[id]
+		maxAge := conflictStaleOccupantSeconds
+		if i == 0 {
+			maxAge = conflictPositionAgeSeconds
+		}
+		if !validConflictTarget(t, opts.Now, maxAge) ||
+			(opts.TargetAlertsInhibited != nil && opts.TargetAlertsInhibited(id)) {
+			return false
+		}
+	}
+	return true
+}
+
+func validConflictTarget(t *Target, now time.Time, maxAge float64) bool {
+	if t == nil || t.ID == "" || t.Suspended || t.Dropped ||
+		t.Lat == 0 || t.Lon == 0 || !finiteConflictFloat(t.Lat) || !finiteConflictFloat(t.Lon) ||
+		!finiteConflictFloat(float64(t.PosFeet.X)) || !finiteConflictFloat(float64(t.PosFeet.Y)) ||
+		!finiteConflictFloat(float64(t.GroundSpeedKt)) {
+		return false
+	}
+	timestamp := conflictObservationTime(t)
+	if timestamp.IsZero() {
+		return false
+	}
+	age := now.Sub(timestamp).Seconds()
+	return age >= -2 && age <= maxAge
+}
+
+func conflictObservationTime(t *Target) time.Time {
+	if t == nil {
+		return time.Time{}
+	}
+	if !t.PositionReportTime.IsZero() {
+		return t.PositionReportTime
+	}
+	return t.LastSmesFrameTime
+}
+
+func finiteConflictFloat(v float64) bool { return !stdmath.IsNaN(v) && !stdmath.IsInf(v, 0) }
+
+func possibleRunwayOccupant(sl *SafetyLogic, r surfaceRunway, other *Target) bool {
+	// Exclude objects known airborne. Do not exclude those with missing
+	// altitude: many SMES ground targets lack a usable altitude.
+	if other.HasAltitude && float64(other.AltitudeFt) > sl.airportAltitudeFt+300 {
+		return false
+	}
+	if pointOnRunway(r, other.PosFeet) {
+		return true
+	}
+	// Include aircraft whose fuselage/wing footprint overlaps the edge,
+	// without treating a whole adjacent parallel taxiway as occupied.
+	return distanceToRunwayPolygonFeet(r, other.PosFeet) <= conflictRunwayBufferFeet
+}
+
+func distanceToRunwayPolygonFeet(r surfaceRunway, p redsmath.Vec2) float64 {
+	if pointOnRunway(r, p) {
+		return 0
+	}
+	return redsmath.DistanceToPolygonEdges(p, r.PolygonFeet)
+}
+
+func runwayConflictPredicted(landing, occupant *Target, r surfaceRunway,
+	op activeRunwayOperation, timeToStation float64, stale bool, clearanceFeet float64) bool {
+	speedKt := float64(occupant.GroundSpeedKt)
+	stationary := speedKt < 8 || stale
+	if stationary {
+		// Intent and brake release are unobservable. Do not speculate that a
+		// lined-up aircraft will depart, or command a go-around 90s early.
+		return timeToStation <= conflictStationaryAlertSeconds
+	}
+	if timeToStation > conflictArrivalAlertSeconds {
+		return false
+	}
+
+	otherRadius := conflictAircraftRadiusFeet
+	if classifyTarget(occupant) == targetClassVehicle {
+		otherRadius = conflictVehicleRadiusFeet
+	}
+	if clearanceFeet <= 0 || !finiteConflictFloat(clearanceFeet) {
+		clearanceFeet = conflictClearanceFeet
+	}
+	minimum := clearanceFeet + conflictArrivalRadiusFeet + otherRadius
+
+	// Sample the predicted closest approach only while the landing aircraft
+	// is near the runway and the occupant still intersects the protected area.
+	// A 0.5-second step is bounded by 180 samples per pair; add one sample
+	// radius worth of closing distance to avoid discretization false negatives.
+	landingVelocity := float64(landing.GroundSpeedKt) * conflictKnotsToFeetPerSecond
+	otherVelocity := speedKt * conflictKnotsToFeetPerSecond
+	minimum += (landingVelocity + otherVelocity + 12*conflictMaxAccelSeconds) * conflictSampleStepSeconds / 2
+
+	direction := headingUnitVector(landing.HeadingDeg)
+	for timeAhead := 0.0; timeAhead <= conflictHorizonSeconds; timeAhead += conflictSampleStepSeconds {
+		lp := redsmath.ProjectConstantAcceleration(landing.PosFeet, direction, landingVelocity, 0, 0, timeAhead)
+		station := float64(safetyDot(lp.Sub(op.StartThresholdFeet), op.DirectionFeet))
+		if station > float64(r.LengthFeet)+300 {
+			break
+		}
+		if station < -minimum {
+			continue
+		}
+		opos := projectedOccupantPoint(occupant, r, timeAhead)
+		if distanceToRunwayPolygonFeet(r, opos) > conflictRunwayBufferFeet {
+			continue
+		}
+		d := stdmath.Hypot(float64(lp.X-opos.X), float64(lp.Y-opos.Y))
+		if d < minimum {
+			return true
+		}
+	}
+	return false
+}
+
+// Projection is intentionally simple and bounded. Measured acceleration is
+// trusted only after a directional, accelerating takeoff roll is observed;
+// otherwise taxi/crossing velocities may be extrapolated for at most 10s.
+func projectedOccupantPoint(t *Target, r surfaceRunway, dt float64) redsmath.Vec2 {
+	dir := headingUnitVector(t.HeadingDeg)
+	accel := 0.0
+	coast := stdmath.Min(dt, conflictTaxiCoastSeconds)
+	if float64(t.GroundSpeedKt) >= conflictDepartureRollKnots &&
+		stdmath.Abs(float64(safetyDot(dir, r.AxisFeet))) > landingAlignmentMinCos &&
+		t.HasAcceleration && !t.MotionAt.IsZero() &&
+		!conflictObservationTime(t).Before(t.MotionAt) &&
+		conflictObservationTime(t).Sub(t.MotionAt).Seconds() <= conflictAccelerationAgeSeconds &&
+		float64(t.AccelFtSec2) >= conflictDepartureAccelFtS2 {
+		accel = stdmath.Min(8, float64(t.AccelFtSec2))
+		coast = dt
+	}
+	return redsmath.ProjectConstantAcceleration(t.PosFeet, dir, float64(t.GroundSpeedKt)*conflictKnotsToFeetPerSecond, accel, conflictMaxAccelSeconds, coast)
 }

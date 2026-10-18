@@ -481,6 +481,8 @@ func (m *AuralAlertManager) loadSounds() {
 		SafetyAuralRight,
 		SafetyAuralCenter,
 		SafetyAuralClosed,
+		SafetyAuralOccupied,
+		SafetyAuralGoAround,
 		SafetyAuralTestMessage,
 	} {
 		name := safetyAuralAlertResourceName(alert)
@@ -544,6 +546,10 @@ func safetyAuralAlertResourceName(alert SafetyAuralAlert) string {
 		return "Center.wav"
 	case SafetyAuralClosed:
 		return "Closed.wav"
+	case SafetyAuralOccupied:
+		return "Occupied.wav"
+	case SafetyAuralGoAround:
+		return "GoAround.wav"
 	case SafetyAuralTestMessage:
 		return "TestMessage.wav"
 	default:

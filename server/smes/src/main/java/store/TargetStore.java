@@ -239,7 +239,7 @@ public final class TargetStore extends AbstractVerticle {
         String tgtType, callsign, acType, squawk, exitFix, wake, scratchpad1, scratchpad2;
 
         // Position + kinematics
-        Double lat, lon, altitude, speed, heading;
+        Double lat, lon, altitude, speed, heading, vx, vy, ax, ay;
 
         TargetState(SurfaceTarget first) {
             this.updatedAt = Instant.now();
@@ -272,6 +272,10 @@ public final class TargetStore extends AbstractVerticle {
                 altitude = trackFull(changed, "altitude", altitude, obs.altitude());
                 speed    = trackFull(changed, "speed",    speed,    obs.speed());
                 heading  = trackFull(changed, "heading",  heading,  obs.heading());
+                vx      = trackFull(changed, "vx", vx, obs.vx());
+                vy      = trackFull(changed, "vy", vy, obs.vy());
+                ax      = trackFull(changed, "ax", ax, obs.ax());
+                ay      = trackFull(changed, "ay", ay, obs.ay());
             } else {
                 positionReportTime = track(changed, "positionReportTime", positionReportTime, obs.positionReportTime());
                 tgtType  = track(changed, "tgtType",  tgtType,  obs.tgtType());
@@ -287,6 +291,10 @@ public final class TargetStore extends AbstractVerticle {
                 altitude = track(changed, "altitude", altitude, obs.altitude());
                 speed    = track(changed, "speed",    speed,    obs.speed());
                 heading  = track(changed, "heading",  heading,  obs.heading());
+                vx      = track(changed, "vx", vx, obs.vx());
+                vy      = track(changed, "vy", vy, obs.vy());
+                ax      = track(changed, "ax", ax, obs.ax());
+                ay      = track(changed, "ay", ay, obs.ay());
             }
 
             return changed;
@@ -310,6 +318,10 @@ public final class TargetStore extends AbstractVerticle {
             if (altitude != null) out.put("altitude", altitude);
             if (speed    != null) out.put("speed",    speed);
             if (heading  != null) out.put("heading",  heading);
+            if (vx != null) out.put("vx", vx);
+            if (vy != null) out.put("vy", vy);
+            if (ax != null) out.put("ax", ax);
+            if (ay != null) out.put("ay", ay);
 
             return out;
         }

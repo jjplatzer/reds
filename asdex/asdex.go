@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	stdmath "math"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -234,6 +235,18 @@ func windowZ(stackIndex int, localZ renderer.Z) renderer.Z {
 func scopeWindowZ(stackIndex int, localZ renderer.Z) renderer.Z {
 	return renderer.Z(-20000 + stackIndex*1000 + int(localZ))
 }
+
+// Explicitly opt in until predictions have been calibrated on recorded SMES data.
+var occupiedRunwayAlertsEnabled = os.Getenv("REDS_ASDEX_OCCUPIED_ALERTS") == "1"
+
+// Read once: this configuration is constant for a running desktop process.
+var occupiedRunwayClearanceFeet = func() float64 {
+	v, err := strconv.ParseFloat(os.Getenv("REDS_ASDEX_CLEARANCE_FEET"), 64)
+	if err != nil || v <= 0 || v > 5000 {
+		return conflictClearanceFeet
+	}
+	return v
+}()
 
 type ASDEXPane struct {
 	logger            *redslog.Logger
@@ -771,8 +784,11 @@ func (p *ASDEXPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	targets := p.targets.All()
 	p.previewArea.SetTrackAlertsInhibited(p.targets.AnyAlertsInhibited())
 	alertChanges := p.safetyLogic.Update(targets, SafetyLogicUpdateOptions{
-		RunwayConfiguration: p.currentSafetyRunwayConfiguration(),
-		RunwayClosed:        p.tempData.RunwayClosed,
+		RunwayConfiguration:         p.currentSafetyRunwayConfiguration(),
+		RunwayClosed:                p.tempData.RunwayClosed,
+		OccupiedRunwayAlerts:        occupiedRunwayAlertsEnabled,
+		OccupiedRunwayClearanceFeet: occupiedRunwayClearanceFeet,
+		Now:                         scopeNow,
 		TargetAlertsInhibited: func(targetID string) bool {
 			return p.targets.AlertsInhibited(targetID)
 		},
