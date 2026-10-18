@@ -58,6 +58,7 @@ const (
 	SafetyAlertLandingClosedRunway
 	SafetyAlertDepartureClosedRunway
 	SafetyAlertLandingOccupiedRunway
+	SafetyAlertConvergingRunways
 )
 
 type SafetyAuralAlert int
@@ -714,7 +715,7 @@ func (sl *SafetyLogic) updateAlerts(
 		// Preserve an occupied-runway alert briefly if *both* aircraft are
 		// still observed and neither is inhibited. An actual removal or manual
 		// inhibition must clear immediately. Playback can move time backward.
-		if previous.Type == SafetyAlertLandingOccupiedRunway && opts.OccupiedRunwayAlerts &&
+		if (previous.Type == SafetyAlertLandingOccupiedRunway || previous.Type == SafetyAlertConvergingRunways) && opts.OccupiedRunwayAlerts &&
 			len(previous.AircraftIDs) == 2 && !opts.Now.IsZero() &&
 			conflictPairStillPresent(previous, targetByID, opts) {
 			start, exists := sl.alertClearSince[id]
@@ -754,7 +755,22 @@ func (sl *SafetyLogic) generateAlerts(
 	}
 
 	if opts.OccupiedRunwayAlerts {
+		converging := sl.convergingRunwayAlerts(targetByID, opts)
+		// A track on an intersecting runway can simultaneously occupy the
+		// arriving runway's polygon. Prefer the converging alert for that
+		// aircraft pair, rather than issuing two identical aural warnings.
+		convergingPairs := make(map[string]bool, len(converging))
+		for id, alert := range converging {
+			generated[id] = alert
+			if len(alert.AircraftIDs) == 2 {
+				convergingPairs[safetyAlertPairKey(alert.AircraftIDs[0], alert.AircraftIDs[1])] = true
+			}
+		}
 		for id, alert := range sl.occupiedRunwayAlerts(targetByID, opts) {
+			if len(alert.AircraftIDs) == 2 &&
+				convergingPairs[safetyAlertPairKey(alert.AircraftIDs[0], alert.AircraftIDs[1])] {
+				continue
+			}
 			generated[id] = alert
 		}
 	}
@@ -1673,7 +1689,7 @@ func conflictPairStillPresent(alert SafetyAlert, targets map[string]*Target, opt
 	for i, id := range alert.AircraftIDs {
 		t := targets[id]
 		maxAge := conflictStaleOccupantSeconds
-		if i == 0 {
+		if i == 0 || alert.Type == SafetyAlertConvergingRunways {
 			maxAge = conflictPositionAgeSeconds
 		}
 		if !validConflictTarget(t, opts.Now, maxAge) ||
@@ -1801,4 +1817,268 @@ func projectedOccupantPoint(t *Target, r surfaceRunway, dt float64) redsmath.Vec
 		coast = dt
 	}
 	return redsmath.ProjectConstantAcceleration(t.PosFeet, dir, float64(t.GroundSpeedKt)*conflictKnotsToFeetPerSecond, accel, conflictMaxAccelSeconds, coast)
+}
+
+// Safety alert identities use target IDs, not mutable callsigns.
+func safetyAlertPairKey(firstID, secondID string) string {
+	if firstID > secondID {
+		firstID, secondID = secondID, firstID
+	}
+	return firstID + "\x00" + secondID
+}
+
+// Converging-runway conflicts are different from runway occupancy: each aircraft
+// has its own operating runway, and their predicted paths must lose separation
+// at the SAME time. Handle arrival/arrival, arrival/departure and
+// departure/departure pairs. Restricting this to different physical runways
+// also prevents duplicate warnings from the existing same-runway detector.
+//
+// This is an experimental visualization, not an ATC separation or clearance
+// algorithm. SMES does not tell us when a lined-up departure will release its
+// brakes or when an aircraft will lift off. A stationary departure is therefore
+// modeled as stationary, never as a hypothetical future takeoff.
+func (sl *SafetyLogic) convergingRunwayAlerts(
+	targets map[string]*Target, opts SafetyLogicUpdateOptions,
+) map[string]SafetyAlert {
+	alerts := make(map[string]SafetyAlert)
+	if sl == nil || opts.Now.IsZero() || len(sl.runways) < 2 {
+		return alerts
+	}
+
+	operations := sl.convergingRunwayOperations(targets, opts)
+	// One stable unordered pair per two tracks, independent of map iteration.
+	sort.Slice(operations, func(i, j int) bool {
+		return operations[i].TargetID < operations[j].TargetID
+	})
+
+	for i, first := range operations {
+		for _, second := range operations[i+1:] {
+			// Compare distinct aircraft using distinct physical runways. In
+			// particular, do not exclude two departure operations: their
+			// ground rolls can converge before either aircraft lifts off.
+			if first.TargetID == second.TargetID || first.RunwayIndex == second.RunwayIndex {
+				continue
+			}
+			r1, r2 := sl.runways[first.RunwayIndex], sl.runways[second.RunwayIndex]
+			// Adjacent parallel runways are not converging runways.
+			// Exclude only near-identical axes; small but genuine
+			// convergence angles must still be evaluated by the CPA.
+			if stdmath.Abs(float64(safetyDot(r1.AxisFeet, r2.AxisFeet))) > 0.999999 {
+				continue
+			}
+			a, b := targets[first.TargetID], targets[second.TargetID]
+			if !convergingRunwayConflictPredicted(first, second, a, b, r1, r2, opts.OccupiedRunwayClearanceFeet) {
+				continue
+			}
+
+			// For mixed operations, the departure MUST be first in both the
+			// message and the datablock-highlight list. For two departures
+			// (or two arrivals), target ID order is stable across updates.
+			leading, following := first, second
+			if first.Type != activeRunwayOperationDeparture && second.Type == activeRunwayOperationDeparture {
+				leading, following = second, first
+			}
+			leadingTarget, followingTarget := targets[leading.TargetID], targets[following.TargetID]
+
+			// Prefer the arrival runway for the headline, if present. For
+			// departure/departure, use the first (ID-sorted) departure's
+			// runway. Retain BOTH directional runway IDs for TOWER filtering.
+			headline := first
+			if first.Type != activeRunwayOperationLanding && second.Type == activeRunwayOperationLanding {
+				headline = second
+			}
+			headlineEnd := operationRunwayEndID(headline)
+			firstEnd, secondEnd := operationRunwayEndID(first), operationRunwayEndID(second)
+			if headlineEnd == "" || firstEnd == "" || secondEnd == "" {
+				continue
+			}
+
+			id := fmt.Sprintf("SL:%d:%s:%s:%s:%s", SafetyAlertConvergingRunways,
+				first.TargetID, second.TargetID, firstEnd, secondEnd)
+			audio := append([]SafetyAuralAlert{SafetyAuralWarning, SafetyAuralRunway},
+				runwayIDAuralTokens(headlineEnd)...)
+			audio = append(audio, SafetyAuralOccupied, SafetyAuralGoAround)
+			alerts[id] = SafetyAlert{
+				ID: id, Type: SafetyAlertConvergingRunways,
+				MessageLines: []string{
+					"RWY " + headlineEnd,
+					safetyAlertTargetLabel(leadingTarget) + ", " + safetyAlertTargetLabel(followingTarget),
+					"RWY OCCUPIED, GO AROUND",
+				},
+				AircraftIDs: []string{leading.TargetID, following.TargetID},
+				RunwayIDs:   []string{firstEnd, secondEnd},
+				AuralAlerts: audio,
+			}
+		}
+	}
+	return alerts
+}
+
+// Construct exactly one runway operation per aircraft. Existing detected
+// operations take precedence; predictions extend the arrival look-ahead to
+// 3 NM without changing hold-bar behavior or the closed-runway state machine.
+// A stationary/slow aircraft near the start of a configured departure runway
+// is treated as a possible lined-up departure, not an imminent takeoff.
+func (sl *SafetyLogic) convergingRunwayOperations(
+	targets map[string]*Target, opts SafetyLogicUpdateOptions,
+) []activeRunwayOperation {
+	ops := make(map[string]activeRunwayOperation)
+	for _, op := range sl.predictiveLandingOperations(targets) {
+		if runwayConfigurationAllowsOperation(opts.RunwayConfiguration, op) {
+			ops[op.TargetID] = op
+		}
+	}
+	for _, op := range sl.activeOperations {
+		if op.Type == activeRunwayOperationDeparture &&
+			runwayConfigurationAllowsOperation(opts.RunwayConfiguration, op) {
+			ops[op.TargetID] = op
+		}
+	}
+
+	for _, t := range targets {
+		if t == nil || !targetIsSafetyLogicAircraft(t) || t.GroundSpeedKt >= departureSpeedThresholdKt {
+			continue
+		}
+		if _, exists := ops[t.ID]; exists {
+			continue
+		}
+		// Never reinterpret an existing operation on a disallowed runway
+		// as an inferred departure on a second crossing runway.
+		if _, exists := sl.activeOperations[t.ID]; exists {
+			continue
+		}
+		// A known high-altitude aircraft cannot be a lined-up departure.
+		// Missing altitude is common for SMES surface targets.
+		if t.HasAltitude && float64(t.AltitudeFt) > sl.airportAltitudeFt+departureMaxAGLFeet {
+			continue
+		}
+		var best activeRunwayOperation
+		bestAlignment := float32(landingAlignmentMinCos)
+		for runwayIndex, r := range sl.runways {
+			if !pointOnRunway(r, t.PosFeet) {
+				continue
+			}
+			direction := headingUnitVector(t.HeadingDeg)
+			for _, reverse := range []bool{false, true} {
+				axis, threshold := r.AxisFeet, r.ThresholdMinFeet
+				if reverse {
+					axis, threshold = axis.Mul(-1), r.ThresholdMaxFeet
+				}
+				alignment := safetyDot(direction, axis)
+				station := safetyDot(t.PosFeet.Sub(threshold), axis)
+				// Restrict pre-roll inference to the departure end. This
+				// avoids treating unrelated taxi traffic or landing rollouts
+				// farther down a runway as departures.
+				if alignment <= bestAlignment || station < -100 ||
+					float64(station) > stdmath.Min(2500, 0.35*float64(r.LengthFeet)) {
+					continue
+				}
+				op := activeRunwayOperation{
+					TargetID: t.ID, RunwayID: r.ID, RunwayIndex: runwayIndex,
+					Type: activeRunwayOperationDeparture, DirectionFeet: axis,
+					StartThresholdFeet: threshold, StationFeet: station, SpeedKt: t.GroundSpeedKt,
+				}
+				if !runwayConfigurationAllowsOperation(opts.RunwayConfiguration, op) {
+					continue
+				}
+				best, bestAlignment = op, alignment
+			}
+		}
+		if best.RunwayID != "" {
+			ops[t.ID] = best
+		}
+	}
+
+	result := make([]activeRunwayOperation, 0, len(ops))
+	for id, op := range ops {
+		if op.RunwayIndex < 0 || op.RunwayIndex >= len(sl.runways) ||
+			!validConflictTarget(targets[id], opts.Now, conflictPositionAgeSeconds) ||
+			(opts.TargetAlertsInhibited != nil && opts.TargetAlertsInhibited(id)) {
+			continue
+		}
+		result = append(result, op)
+	}
+	return result
+}
+
+// Determine whether two runway operations have a simultaneous closest point
+// of approach inside the protected runway/approach corridors. The per-segment
+// minimum is continuous in time (rather than relying on discrete sample hits).
+func convergingRunwayConflictPredicted(
+	aOp, bOp activeRunwayOperation, a, b *Target,
+	aRunway, bRunway surfaceRunway, clearanceFeet float64,
+) bool {
+	if a == nil || b == nil {
+		return false
+	}
+	if clearanceFeet <= 0 || !finiteConflictFloat(clearanceFeet) {
+		clearanceFeet = conflictClearanceFeet
+	}
+	minimum := clearanceFeet + 2*conflictAircraftRadiusFeet
+	horizon := conflictArrivalAlertSeconds
+	// No inference of brake release for a lined-up aircraft. Restrict the
+	// imminent warning horizon until there is actual observed movement.
+	if (aOp.Type == activeRunwayOperationDeparture && a.GroundSpeedKt < 8) ||
+		(bOp.Type == activeRunwayOperationDeparture && b.GroundSpeedKt < 8) {
+		horizon = stdmath.Min(horizon, conflictStationaryAlertSeconds)
+	}
+
+	for t := 0.0; t < horizon; t += conflictSampleStepSeconds {
+		dt := stdmath.Min(conflictSampleStepSeconds, horizon-t)
+		a0 := projectedConvergingOperationPoint(aOp, a, aRunway, t)
+		b0 := projectedConvergingOperationPoint(bOp, b, bRunway, t)
+		a1 := projectedConvergingOperationPoint(aOp, a, aRunway, t+dt)
+		b1 := projectedConvergingOperationPoint(bOp, b, bRunway, t+dt)
+		d, u := redsmath.ClosestApproachOnLinearSegments(a0, a1, b0, b1)
+		if d >= minimum {
+			continue
+		}
+
+		// Check the operation's own corridor at the actual CPA time. This
+		// prevents projections from creating runway conflicts far past the
+		// threshold or after an aircraft has vacated its own runway.
+		tau := t + u*dt
+		if convergingPointOnOperation(aOp, aRunway,
+			projectedConvergingOperationPoint(aOp, a, aRunway, tau)) &&
+			convergingPointOnOperation(bOp, bRunway,
+				projectedConvergingOperationPoint(bOp, b, bRunway, tau)) {
+			return true
+		}
+	}
+	return false
+}
+
+func projectedConvergingOperationPoint(
+	op activeRunwayOperation, target *Target, r surfaceRunway, dt float64,
+) redsmath.Vec2 {
+	speed := float64(target.GroundSpeedKt) * conflictKnotsToFeetPerSecond
+	if op.Type == activeRunwayOperationLanding {
+		return redsmath.ProjectConstantAcceleration(target.PosFeet, op.DirectionFeet, speed, 0, 0, dt)
+	}
+	acceleration := 0.0
+	if speed >= conflictDepartureRollKnots*conflictKnotsToFeetPerSecond &&
+		target.HasAcceleration && !target.MotionAt.IsZero() &&
+		!conflictObservationTime(target).Before(target.MotionAt) &&
+		conflictObservationTime(target).Sub(target.MotionAt).Seconds() <= conflictAccelerationAgeSeconds &&
+		float64(target.AccelFtSec2) >= conflictDepartureAccelFtS2 &&
+		stdmath.Abs(float64(safetyDot(headingUnitVector(target.HeadingDeg), r.AxisFeet))) >= landingAlignmentMinCos {
+		acceleration = stdmath.Min(8, float64(target.AccelFtSec2))
+	}
+	return redsmath.ProjectConstantAcceleration(target.PosFeet, op.DirectionFeet,
+		speed, acceleration, conflictMaxAccelSeconds, dt)
+}
+
+func convergingPointOnOperation(op activeRunwayOperation, r surfaceRunway, p redsmath.Vec2) bool {
+	station := float64(safetyDot(p.Sub(op.StartThresholdFeet), op.DirectionFeet))
+	if op.Type == activeRunwayOperationLanding {
+		if station < -conflictApproachRangeFeet || station > float64(r.LengthFeet)+300 {
+			return false
+		}
+	} else if station < -100 || station > float64(r.LengthFeet)+300 {
+		return false
+	}
+	// Reject projections that have left their own runway corridor (or final
+	// approach lane). The margin here is *not* the aircraft-clearance margin.
+	lateral := stdmath.Abs(float64(safetyDot(p.Sub(r.CenterFeet), r.NormalFeet)))
+	return lateral <= stdmath.Max(300, float64(r.HalfWidthFeet)+conflictRunwayBufferFeet)
 }
