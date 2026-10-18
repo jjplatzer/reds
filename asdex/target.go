@@ -1112,7 +1112,7 @@ func (s *TargetStore) ApplySmesFrameAt(frame redsnet.SmesFrame, vm *VideoMap, no
 	// A speed update is only one observation. Source timestamps, rather than
 	// render-frame intervals, determine the derivative. Partial reports do not
 	// invent an acceleration sample when the speed was absent.
-	if _, updated := frame.Changed["speed"]; updated {
+	if _, updated := frame.Changed["speed"]; updated && !frame.IsSnapshot {
 		stamp := target.PositionReportTime
 		if stamp.IsZero() {
 			stamp = now
@@ -1132,7 +1132,38 @@ func (s *TargetStore) ApplySmesFrameAt(frame redsnet.SmesFrame, vm *VideoMap, no
 		}
 	}
 	target.Live = true
-	target.LastSmesFrameTime = now
+
+	// A snapshot restores cached state; it does not constitute a new SMES
+	// observation. Use the server's last-observed timestamp, not the time
+	// this frame reached the client. Ordinary live diffs and playback frames
+	// continue to use their own evaluation time.
+	observedAt := now
+	if frame.IsSnapshot {
+		if stamp, err := time.Parse(time.RFC3339Nano, frame.UpdatedAt); err == nil {
+			observedAt = stamp.UTC()
+		} else if !target.PositionReportTime.IsZero() {
+			observedAt = target.PositionReportTime
+		}
+
+		// A late snapshot must not overwrite a newer live observation.
+		if existing := s.targets[frame.Key]; existing != nil &&
+			!existing.LastSmesFrameTime.IsZero() &&
+			observedAt.Before(existing.LastSmesFrameTime) {
+			return
+		}
+
+		// Do not insert expired raw unknowns just to remove them on the
+		// next draw. Apply manual overrides to the candidate first so
+		// manually tagged targets retain their normal treatment.
+		candidate := target
+		s.applyDatablockOverrides(&candidate)
+		s.applyManualAssociations(&candidate)
+		s.applyManualTags(&candidate)
+		if targetIsRawUnknown(&candidate) && now.Sub(observedAt) >= unknownTargetStaleLifetime {
+			return
+		}
+	}
+	target.LastSmesFrameTime = observedAt
 	if !target.Suspended && (target.Coasting || target.Dropped) {
 		target.Coasting = false
 		target.Dropped = false

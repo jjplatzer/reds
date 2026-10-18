@@ -83,6 +83,7 @@ const (
 	SafetyAuralOccupied
 	SafetyAuralGoAround
 	SafetyAuralTestMessage
+	SafetyAuralConverging
 )
 
 type SafetyAlert struct {
@@ -1897,13 +1898,13 @@ func (sl *SafetyLogic) convergingRunwayAlerts(
 				first.TargetID, second.TargetID, firstEnd, secondEnd)
 			audio := append([]SafetyAuralAlert{SafetyAuralWarning, SafetyAuralRunway},
 				runwayIDAuralTokens(headlineEnd)...)
-			audio = append(audio, SafetyAuralOccupied, SafetyAuralGoAround)
+			audio = append(audio, SafetyAuralConverging, SafetyAuralGoAround)
 			alerts[id] = SafetyAlert{
 				ID: id, Type: SafetyAlertConvergingRunways,
 				MessageLines: []string{
 					"RWY " + headlineEnd,
 					safetyAlertTargetLabel(leadingTarget) + ", " + safetyAlertTargetLabel(followingTarget),
-					"RWY OCCUPIED, GO AROUND",
+					"RWY CONVERGING, GO AROUND",
 				},
 				AircraftIDs: []string{leading.TargetID, following.TargetID},
 				RunwayIDs:   []string{firstEnd, secondEnd},

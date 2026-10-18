@@ -95,11 +95,11 @@ public final class TargetStore extends AbstractVerticle {
     /**
      * Pushes a full-state diff for every target the new filter accepts, so a
      * freshly-(re)connected client doesn't have to wait for AT-full reports
-     * to populate its local cache. The frame shape matches handleObservation's
-     * normal diff, so the client reuses its existing parser path.
+     * to populate its local cache. A snapshot is NOT a new observation:
+     * keep each target's last ingestion time and label the frame so clients
+     * can discard expired unknown targets before rendering them.
      */
     private void snapshotTo(Set<String> active) {
-        Instant now = Instant.now();
         for (Map.Entry<String, TargetState> e : store.entrySet()) {
             TargetState s = e.getValue();
             if (s.airport == null || !active.contains(s.airport)) continue;
@@ -110,8 +110,9 @@ public final class TargetStore extends AbstractVerticle {
             vertx.eventBus().publish(DIFF_ADDRESS, new JsonObject()
                     .put("key",       e.getKey())
                     .put("airport",   s.airport)
-                    .put("updatedAt", now.toString())
+                    .put("updatedAt", s.updatedAt.toString())
                     .put("isFull",    true)
+                    .put("isSnapshot", true)
                     .put("changed",   changed));
         }
     }
