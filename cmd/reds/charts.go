@@ -1,0 +1,377 @@
+// cmd/reds/charts.go
+// STARS IAP chart lookup window. PDF download, rendering, and scope overlays
+// are intentionally deferred; this window only checks chart availability.
+package main
+
+import (
+	"encoding/json"
+	"flag"
+	"fmt"
+	"net/http"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/AllenDang/cimgui-go/imgui"
+	implogl3 "github.com/AllenDang/cimgui-go/impl/opengl3"
+	"github.com/juliusplatzer/reds/platform"
+)
+
+const (
+	iapWindowWidth  = 820
+	iapWindowHeight = 620
+	iapMinWidth     = 550
+	iapMinHeight    = 360
+
+	// Window-content positions: cycle label, then search field, then lookup result.
+	iapCycleLabelTop = scopeTitleBarHeight + 16
+	iapSearchTop     = scopeTitleBarHeight + 46
+	iapResultTop     = iapSearchTop + controlHeight + 18
+
+	// First iteration targets the FAA cycle used for the chart examples.
+	// Automatic cycle discovery and selection will be added with PDF support.
+	iapDTPPCycle = "2611"
+)
+
+var iapChartWindow = flag.Bool("iap-chart-window", false, "internal STARS IAP chart lookup window")
+var iapChartOwnerPID = flag.Int("iap-chart-owner", 0, "internal chart overlay parent PID")
+
+type iapOverlayChoice struct {
+	ChartID        string `json:"chart_id"`
+	Enabled        bool   `json:"enabled"`
+	OpacityPercent int32  `json:"opacity_percent"`
+}
+
+const defaultIAPOpacityPercent int32 = 40
+
+func clampIAPOpacityPercent(n int32) int32 {
+	if n < 0 {
+		return 0
+	}
+	if n > 100 {
+		return 100
+	}
+	return n
+}
+
+func iapOverlayPath(pid int) string {
+	return filepath.Join(os.TempDir(), fmt.Sprintf("reds-iap-overlay-%d.json", pid))
+}
+
+func readIAPOverlayChoice(pid int) (iapOverlayChoice, error) {
+	// Nonzero initialization also handles older selection files that have
+	// no opacity_percent field, while retaining an explicit value of 0.
+	choice := iapOverlayChoice{OpacityPercent: defaultIAPOpacityPercent}
+	data, err := os.ReadFile(iapOverlayPath(pid))
+	if os.IsNotExist(err) {
+		return choice, nil
+	}
+	if err != nil {
+		return choice, err
+	}
+	if err := json.Unmarshal(data, &choice); err != nil {
+		return choice, err
+	}
+	choice.OpacityPercent = clampIAPOpacityPercent(choice.OpacityPercent)
+	return choice, nil
+}
+
+func writeIAPOverlayChoice(pid int, choice iapOverlayChoice) error {
+	choice.OpacityPercent = clampIAPOpacityPercent(choice.OpacityPercent)
+	data, err := json.Marshal(choice)
+	if err != nil {
+		return err
+	}
+	// Owner and child are same-user processes; prevent other users from writing.
+	return os.WriteFile(iapOverlayPath(pid), data, 0600)
+}
+
+func clearIAPOverlayChoice(pid int) { _ = os.Remove(iapOverlayPath(pid)) }
+
+// Each scope owns at most one chart viewer, mirroring the NOTAM viewer.
+type iapChartWindowProcess struct {
+	cmd  *exec.Cmd
+	done chan struct{}
+}
+
+func (w *iapChartWindowProcess) show(parentPID int) error {
+	w.close()
+	executable, err := os.Executable()
+	if err != nil {
+		return fmt.Errorf("locate REDS executable: %w", err)
+	}
+	cmd := exec.Command(executable, "-iap-chart-window", "-iap-chart-owner="+strconv.Itoa(parentPID))
+	cmd.Env = os.Environ()
+	cmd.Stderr = os.Stderr
+	if err := cmd.Start(); err != nil {
+		return fmt.Errorf("launch IAP chart viewer: %w", err)
+	}
+	w.cmd = cmd
+	w.done = make(chan struct{})
+	done := w.done
+	go func() {
+		_ = cmd.Wait()
+		close(done)
+	}()
+	return nil
+}
+
+func (w *iapChartWindowProcess) close() {
+	if w.cmd != nil && w.cmd.Process != nil {
+		select {
+		case <-w.done:
+		default:
+			_ = w.cmd.Process.Kill()
+		}
+	}
+	w.cmd, w.done = nil, nil
+}
+
+// FAA PDF filenames are opaque chart identifiers, not search queries or paths.
+func normalizeIAPChartID(raw string) (string, error) {
+	id := strings.ToUpper(strings.TrimSpace(raw))
+	if id == "" || len(id) > 32 {
+		return "", fmt.Errorf("enter a valid FAA chart ID (e.g. 00610IL22R)")
+	}
+	for _, c := range id {
+		if (c < 'A' || c > 'Z') && (c < '0' || c > '9') {
+			return "", fmt.Errorf("chart IDs must contain only letters and numbers")
+		}
+	}
+	return id, nil
+}
+
+type iapChartLookup struct {
+	id  string
+	url string
+	err error
+}
+
+// Only check availability. The response body is never read or retained.
+func lookupIAPChart(id string) iapChartLookup {
+	url := "https://aeronav.faa.gov/d-tpp/" + iapDTPPCycle + "/" + id + ".PDF"
+	client := &http.Client{Timeout: 12 * time.Second}
+	resp, err := client.Head(url)
+	if err != nil {
+		return iapChartLookup{id: id, err: fmt.Errorf("FAA lookup failed: %w", err)}
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode == http.StatusNotFound {
+		return iapChartLookup{id: id, err: fmt.Errorf("chart %s not found in cycle %s", id, iapDTPPCycle)}
+	}
+	if resp.StatusCode != http.StatusOK {
+		return iapChartLookup{id: id, err: fmt.Errorf("FAA returned HTTP %d", resp.StatusCode)}
+	}
+	if strings.HasPrefix(strings.ToLower(resp.Header.Get("Content-Type")), "text/html") {
+		return iapChartLookup{id: id, err: fmt.Errorf("FAA returned HTML instead of a PDF")}
+	}
+	return iapChartLookup{id: id, url: url}
+}
+
+func runIAPChartWindow() error {
+	imgui.CreateContext()
+	defer imgui.DestroyContext()
+	imgui.CurrentIO().SetIniFilename("")
+	plat, err := platform.New(&platform.Config{
+		Title:             "IAP Charts",
+		InitialWindowSize: [2]int{iapWindowWidth, iapWindowHeight},
+		MinWindowSize:     [2]int{iapMinWidth, iapMinHeight},
+		Resizable:         true,
+	})
+	if err != nil {
+		return fmt.Errorf("initialize IAP chart viewer: %w", err)
+	}
+	defer plat.Dispose()
+	plat.SetWindowDecorated(false)
+	loadFont()
+
+	choice, _ := readIAPOverlayChoice(*iapChartOwnerPID)
+	var searchID string
+	selectedID := choice.ChartID
+	overlayEnabled := choice.Enabled
+	opacityPercent := choice.OpacityPercent
+	var result iapChartLookup
+	var resultCh <-chan iapChartLookup
+	open := true
+	for open && !plat.ShouldStop() {
+		// A buffered channel per request prevents old searches from blocking
+		// when a newer search supersedes them.
+		if resultCh != nil {
+			select {
+			case result = <-resultCh:
+				resultCh = nil
+			default:
+			}
+		}
+		plat.ProcessEvents()
+		plat.NewFrame()
+		imgui.NewFrame()
+		previousID, previousEnabled, previousOpacity := selectedID, overlayEnabled, opacityPercent
+		if drawIAPChartWindow(plat, &searchID, &result, resultCh != nil, &selectedID, &overlayEnabled, &opacityPercent, &open) {
+			id, err := normalizeIAPChartID(searchID)
+			result = iapChartLookup{err: err}
+			resultCh = nil
+			if err == nil {
+				result = iapChartLookup{id: id}
+				ch := make(chan iapChartLookup, 1)
+				resultCh = ch
+				go func() { ch <- lookupIAPChart(id) }()
+			}
+		}
+		if previousID != selectedID || previousEnabled != overlayEnabled || previousOpacity != opacityPercent {
+			if err := writeIAPOverlayChoice(*iapChartOwnerPID, iapOverlayChoice{
+				ChartID: selectedID, Enabled: overlayEnabled, OpacityPercent: opacityPercent,
+			}); err != nil {
+				fmt.Fprintf(os.Stderr, "reds: save IAP chart selection: %v\n", err)
+			}
+		}
+		imgui.Render()
+		bg := colDialogBg
+		plat.Clear(bg.X, bg.Y, bg.Z)
+		implogl3.RenderDrawData(imgui.CurrentDrawData())
+		plat.PostRender()
+	}
+	return nil
+}
+
+// The search field is styled exactly like the NOTAM keyword field: same
+// spacing, transparent fill, outlined input, and right-aligned search glyph.
+func drawIAPChartSearch(width float32, value *string) bool {
+	const (
+		inset     float32 = 20
+		iconWidth float32 = 34
+	)
+	x, y := inset, float32(iapSearchTop)
+	w := width - 2*inset
+	min := imgui.Vec2{X: x, Y: y}
+	max := imgui.Vec2{X: x + w, Y: y + controlHeight}
+	imgui.SetCursorScreenPos(min)
+	imgui.SetNextItemWidth(w)
+	imgui.PushStyleVarFloat(imgui.StyleVarFrameRounding, frameRounding)
+	imgui.PushStyleVarFloat(imgui.StyleVarFrameBorderSize, 1)
+	imgui.PushStyleVarVec2(imgui.StyleVarFramePadding,
+		imgui.Vec2{X: controlPaddingX, Y: (controlHeight - imgui.FontSize()) / 2})
+	imgui.PushStyleColorVec4(imgui.ColFrameBg, imgui.Vec4{})
+	imgui.PushStyleColorVec4(imgui.ColFrameBgHovered, imgui.Vec4{})
+	imgui.PushStyleColorVec4(imgui.ColFrameBgActive, imgui.Vec4{})
+	imgui.PushStyleColorVec4(imgui.ColBorder, colBorder)
+	imgui.PushStyleColorVec4(imgui.ColText, colText)
+	imgui.PushStyleColorVec4(imgui.ColTextDisabled, colBorder)
+	entered := imgui.InputTextWithHint("##iap-chart-search", "Search Chart ID...", value,
+		imgui.InputTextFlagsEnterReturnsTrue, nil)
+	imgui.PopStyleColorV(6)
+	imgui.PopStyleVarV(3)
+	drawTitleBarSymbolGlyph("\ue721", symbolsFont12, 12,
+		imgui.Vec2{X: max.X - iconWidth, Y: y}, max, colBorder)
+	return entered
+}
+
+func drawIAPChartWindow(plat platform.Platform, searchID *string, result *iapChartLookup,
+	loading bool, selectedID *string, overlayEnabled *bool, opacityPercent *int32, open *bool) bool {
+	size := plat.DisplaySize()
+	imgui.SetNextWindowPosV(imgui.Vec2{}, imgui.CondAlways, imgui.Vec2{})
+	imgui.SetNextWindowSizeV(imgui.Vec2{X: size[0], Y: size[1]}, imgui.CondAlways)
+	flags := imgui.WindowFlagsNoTitleBar | imgui.WindowFlagsNoResize |
+		imgui.WindowFlagsNoMove | imgui.WindowFlagsNoCollapse |
+		imgui.WindowFlagsNoScrollbar | imgui.WindowFlagsNoSavedSettings
+	imgui.PushStyleColorVec4(imgui.ColWindowBg, colDialogBg)
+	imgui.PushStyleVarVec2(imgui.StyleVarWindowPadding, imgui.Vec2{X: 18, Y: 16})
+	imgui.PushStyleVarVec2(imgui.StyleVarWindowMinSize, imgui.Vec2{})
+	imgui.PushStyleVarFloat(imgui.StyleVarWindowRounding, 0)
+	imgui.PushStyleVarFloat(imgui.StyleVarWindowBorderSize, 0)
+	imgui.BeginV("##iap-charts-root", nil, flags)
+
+	barMax := imgui.Vec2{X: size[0], Y: scopeTitleBarHeight}
+	imgui.WindowDrawList().AddRectFilledV(imgui.Vec2{}, barMax,
+		imgui.ColorU32Vec4(titleBarBg), 0, imgui.DrawFlagsNone)
+	imgui.WindowDrawList().AddTextVec2(
+		imgui.Vec2{X: 18, Y: (scopeTitleBarHeight - imgui.FontSize()) / 2},
+		imgui.ColorU32Vec4(titleBarFg), "IAP Charts")
+	closeMin := imgui.Vec2{X: size[0] - titleBarButtonWidth, Y: 0}
+	imgui.SetCursorScreenPos(closeMin)
+	if imgui.InvisibleButtonV("##iap-chart-close", imgui.Vec2{X: titleBarButtonWidth, Y: scopeTitleBarHeight},
+		imgui.ButtonFlagsMouseButtonLeft) {
+		*open = false
+	}
+	if imgui.IsItemHovered() {
+		imgui.WindowDrawList().AddRectFilledV(closeMin, barMax,
+			imgui.ColorU32Vec4(titleBarCloseHover), 0, imgui.DrawFlagsNone)
+	}
+	drawTitleBarSymbolGlyph(titleBarGlyphClose, symbolsFont8, titleBarButtonSymbolSize, closeMin, barMax, titleBarFg)
+	imgui.SetCursorScreenPos(imgui.Vec2{})
+	imgui.InvisibleButtonV("##iap-chart-drag", imgui.Vec2{X: size[0] - titleBarButtonWidth, Y: scopeTitleBarHeight},
+		imgui.ButtonFlagsMouseButtonLeft)
+	if imgui.IsItemActive() && imgui.IsMouseDragging(imgui.MouseButtonLeft) {
+		delta := imgui.CurrentIO().MouseDelta()
+		plat.MoveWindowBy(delta.X, delta.Y)
+	}
+
+	imgui.SetCursorScreenPos(imgui.Vec2{X: 20, Y: float32(iapCycleLabelTop)})
+	imgui.PushStyleColorVec4(imgui.ColText, colText)
+	if menuBoldFont != nil {
+		imgui.PushFont(menuBoldFont, uiFontSize)
+	}
+	imgui.TextUnformatted("FAA d-TPP - Cycle " + iapDTPPCycle)
+	if menuBoldFont != nil {
+		imgui.PopFont()
+	}
+	imgui.PopStyleColor()
+
+	// InputTextFlagsEnterReturnsTrue makes Enter the only search trigger.
+	search := drawIAPChartSearch(size[0], searchID)
+	imgui.SetCursorScreenPos(imgui.Vec2{X: 20, Y: float32(iapResultTop)})
+	switch {
+	case loading:
+		imgui.TextUnformatted("Searching FAA charts...")
+	case result.err != nil:
+		imgui.TextWrapped(result.err.Error())
+	case result.url != "":
+		imgui.TextUnformatted(result.id + ".PDF - Available")
+		imgui.Spacing()
+		if button("Select Chart", false) {
+			*selectedID = result.id
+			*overlayEnabled = true
+		}
+	case result.id == "":
+		imgui.TextUnformatted("Enter a chart ID and press Enter.")
+	}
+	if *selectedID != "" {
+		// Keep this control above the persistent enable/disable button.
+		// InputIntV with zero steps is an editable numeric field without +/- buttons.
+		imgui.SetCursorScreenPos(imgui.Vec2{X: 20, Y: size[1] - 164})
+		imgui.TextUnformatted("Chart opacity (%)")
+		imgui.SetCursorScreenPos(imgui.Vec2{X: 20, Y: size[1] - 141})
+		imgui.SetNextItemWidth(120)
+		imgui.PushStyleVarFloat(imgui.StyleVarFrameRounding, frameRounding)
+		imgui.PushStyleVarFloat(imgui.StyleVarFrameBorderSize, 1)
+		imgui.PushStyleColorVec4(imgui.ColFrameBg, colComboBg)
+		imgui.PushStyleColorVec4(imgui.ColBorder, colBorder)
+		if imgui.InputIntV("##iap-chart-opacity", opacityPercent, 0, 0, 0) {
+			*opacityPercent = clampIAPOpacityPercent(*opacityPercent)
+		}
+		imgui.PopStyleColorV(2)
+		imgui.PopStyleVarV(2)
+
+		imgui.SetCursorScreenPos(imgui.Vec2{X: 20, Y: size[1] - 94})
+		if *overlayEnabled {
+			imgui.TextUnformatted("Overlay: " + *selectedID)
+			imgui.Spacing()
+			if button("Disable Chart Overlay", false) {
+				*overlayEnabled = false
+			}
+		} else {
+			imgui.TextUnformatted("Overlay disabled: " + *selectedID)
+			imgui.Spacing()
+			if button("Enable Chart Overlay", false) {
+				*overlayEnabled = true
+			}
+		}
+	}
+	imgui.End()
+	imgui.PopStyleVarV(4)
+	imgui.PopStyleColor()
+	return search
+}

@@ -85,6 +85,7 @@ const (
 	KeyW
 	KeyM // Appended to preserve existing platform-independent key values.
 	KeyN // Appended to preserve existing platform-independent key values.
+	KeyV // Appended to preserve existing platform-independent key values.
 )
 
 // KeyboardState is the keyboard input for one frame.

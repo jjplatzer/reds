@@ -77,6 +77,7 @@ const (
 	titleBarActionSwitchFacility
 	titleBarActionDefineTemporaryArea
 	titleBarActionViewNOTAMs
+	titleBarActionViewIAPChart
 	titleBarActionToggleStarsAssignedAltitudes
 	titleBarActionToggleStarsFontSetB
 	titleBarActionToggleStarsFAAHFSTD010APalette
@@ -84,6 +85,7 @@ const (
 
 type titleBarMenuOptions struct {
 	ShowASDEXSeparator           bool
+	ShowStarsIAPChart            bool
 	ShowStarsAssignedAltitudes   bool
 	HideStarsAssignedAltitudes   bool
 	ShowStarsFontSetB            bool
@@ -241,6 +243,9 @@ func drawTitleBarMenuPopup(
 		menuHeight += titleBarMenuSeparatorHeight + 2*titleBarMenuItemHeight
 	}
 	popupWidth := float32(titleBarMenuPopupWidth)
+	if menuOptions.ShowStarsIAPChart {
+		menuHeight += float32(titleBarMenuSeparatorHeight + titleBarMenuItemHeight)
+	}
 	if menuOptions.ShowStarsAssignedAltitudes {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
@@ -250,7 +255,7 @@ func drawTitleBarMenuPopup(
 	if menuOptions.ShowStarsFAAHFSTD010APalette {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
-	if menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+	if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
 		popupWidth = titleBarStarsMenuPopupWidth
 	}
 	imgui.SetNextWindowSizeV(
@@ -276,7 +281,7 @@ func drawTitleBarMenuPopup(
 		// Right-align each complete shortcut; modifier glyphs need not share a left edge.
 		shortcutRightX := popupWidth - titleBarMenuShortcutPadRight
 		textPadX := float32(titleBarMenuTextPadX)
-		if menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+		if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
 			// Reserve the same check gutter as the STARS checked rows so all
 			// labels start on the same vertical axis.
 			textPadX = titleBarMenuCheckedTextPadX
@@ -350,8 +355,8 @@ func drawTitleBarMenuPopup(
 		}
 
 		rowY += float32(titleBarMenuItemHeight)
-		if menuOptions.ShowASDEXSeparator {
-			// Match CRC's Fluent separator without adding another menu item.
+		if menuOptions.ShowASDEXSeparator || menuOptions.ShowStarsIAPChart {
+			// Match the existing ASDE-X separator before display-specific actions.
 			lineY := switchFacilityRowMax.Y + float32(titleBarMenuSeparatorHeight)*0.5
 			imgui.WindowDrawList().AddLineV(
 				imgui.Vec2{X: switchFacilityRowMin.X + titleBarMenuSeparatorInsetX, Y: lineY},
@@ -359,9 +364,9 @@ func drawTitleBarMenuPopup(
 				imgui.ColorU32Vec4(titleBarMenuSeparator),
 				titleBarMenuSeparatorWidth,
 			)
+			rowY += titleBarMenuSeparatorHeight
 		}
 		if menuOptions.ShowASDEXSeparator {
-			rowY += titleBarMenuSeparatorHeight
 			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
 			defineTemporaryAreaClicked := imgui.InvisibleButtonV(
 				"##asdex-define-temporary-area-menu-item",
@@ -426,6 +431,33 @@ func drawTitleBarMenuPopup(
 
 			if viewNOTAMsClicked {
 				action = titleBarActionViewNOTAMs
+				imgui.CloseCurrentPopup()
+			}
+			rowY += float32(titleBarMenuItemHeight)
+		}
+
+		if menuOptions.ShowStarsIAPChart {
+			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
+			clicked := imgui.InvisibleButtonV(
+				"##stars-view-iap-chart-menu-item",
+				imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
+				imgui.ButtonFlagsMouseButtonLeft,
+			)
+			rowMin := imgui.ItemRectMin()
+			rowMax := imgui.ItemRectMax()
+			if imgui.IsItemHovered() {
+				imgui.WindowDrawList().AddRectFilledV(
+					rowMin, rowMax, imgui.ColorU32Vec4(titleBarMenuHover),
+					titleBarMenuPopupRounding, imgui.DrawFlagsRoundCornersAll,
+				)
+			}
+			drawTitleBarMenuItemTextWithPad(
+				rowMin, titleBarMenuItemHeight, shortcutRightX,
+				titleBarMenuCheckedTextPadX,
+				"View IAP Chart", titleBarViewIAPChartShortcutParts(),
+			)
+			if clicked {
+				action = titleBarActionViewIAPChart
 				imgui.CloseCurrentPopup()
 			}
 			rowY += float32(titleBarMenuItemHeight)
@@ -683,6 +715,23 @@ func titleBarViewNOTAMsShortcutParts() []titleBarShortcutPart {
 	}
 }
 
+func titleBarViewIAPChartShortcutParts() []titleBarShortcutPart {
+	if runtime.GOOS == "darwin" {
+		return []titleBarShortcutPart{
+			{Text: shortcutCommandSymbol},
+			{Text: "+"},
+			{Text: shortcutShiftSymbol},
+			{Text: "+V"},
+		}
+	}
+	return []titleBarShortcutPart{
+		{Text: shortcutControlSymbol},
+		{Text: "+"},
+		{Text: shortcutShiftSymbol},
+		{Text: "+V"},
+	}
+}
+
 func titleBarHideAssignedAltitudesShortcutParts() []titleBarShortcutPart {
 	if runtime.GOOS == "darwin" {
 		return []titleBarShortcutPart{
@@ -849,6 +898,9 @@ func titleBarShortcutAction(
 	}
 	if menuOptions.ShowASDEXSeparator && keyboard.WasPressed(platform.KeyN) {
 		return titleBarActionViewNOTAMs
+	}
+	if menuOptions.ShowStarsIAPChart && keyboard.WasPressed(platform.KeyV) {
+		return titleBarActionViewIAPChart
 	}
 	if menuOptions.ShowStarsAssignedAltitudes && keyboard.WasPressed(platform.KeyA) {
 		return titleBarActionToggleStarsAssignedAltitudes
