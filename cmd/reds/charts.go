@@ -48,8 +48,8 @@ type iapOverlayChoice struct {
 const defaultIAPOpacityPercent int32 = 40
 
 func clampIAPOpacityPercent(n int32) int32 {
-	if n < 0 {
-		return 0
+	if n < 1 {
+		return 1
 	}
 	if n > 100 {
 		return 100
@@ -63,7 +63,7 @@ func iapOverlayPath(pid int) string {
 
 func readIAPOverlayChoice(pid int) (iapOverlayChoice, error) {
 	// Nonzero initialization also handles older selection files that have
-	// no opacity_percent field, while retaining an explicit value of 0.
+	// no opacity_percent field. The slider's supported range is 1-100%.
 	choice := iapOverlayChoice{OpacityPercent: defaultIAPOpacityPercent}
 	data, err := os.ReadFile(iapOverlayPath(pid))
 	if os.IsNotExist(err) {
@@ -323,55 +323,117 @@ func drawIAPChartWindow(plat platform.Platform, searchID *string, result *iapCha
 	// InputTextFlagsEnterReturnsTrue makes Enter the only search trigger.
 	search := drawIAPChartSearch(size[0], searchID)
 	imgui.SetCursorScreenPos(imgui.Vec2{X: 20, Y: float32(iapResultTop)})
+	// Search feedback stays directly beneath the search bar. Selecting a result
+	// removes the search-result row, leaving the chart controls immediately below.
+	controlsY := float32(iapResultTop)
 	switch {
 	case loading:
 		imgui.TextUnformatted("Searching FAA charts...")
+		controlsY += 46
 	case result.err != nil:
 		imgui.TextWrapped(result.err.Error())
+		controlsY += 62
 	case result.url != "":
 		imgui.TextUnformatted(result.id + ".PDF - Available")
 		imgui.Spacing()
 		if button("Select Chart", false) {
 			*selectedID = result.id
 			*overlayEnabled = true
+			// The chart is now selected; the search result is no longer needed.
+			*result = iapChartLookup{}
 		}
-	case result.id == "":
+		controlsY += 82
+	case *selectedID == "":
 		imgui.TextUnformatted("Enter a chart ID and press Enter.")
 	}
-	if *selectedID != "" {
-		// Keep this control above the persistent enable/disable button.
-		// InputIntV with zero steps is an editable numeric field without +/- buttons.
-		imgui.SetCursorScreenPos(imgui.Vec2{X: 20, Y: size[1] - 164})
-		imgui.TextUnformatted("Chart opacity (%)")
-		imgui.SetCursorScreenPos(imgui.Vec2{X: 20, Y: size[1] - 141})
-		imgui.SetNextItemWidth(120)
-		imgui.PushStyleVarFloat(imgui.StyleVarFrameRounding, frameRounding)
-		imgui.PushStyleVarFloat(imgui.StyleVarFrameBorderSize, 1)
-		imgui.PushStyleColorVec4(imgui.ColFrameBg, colComboBg)
-		imgui.PushStyleColorVec4(imgui.ColBorder, colBorder)
-		if imgui.InputIntV("##iap-chart-opacity", opacityPercent, 0, 0, 0) {
-			*opacityPercent = clampIAPOpacityPercent(*opacityPercent)
-		}
-		imgui.PopStyleColorV(2)
-		imgui.PopStyleVarV(2)
 
-		imgui.SetCursorScreenPos(imgui.Vec2{X: 20, Y: size[1] - 94})
+	if *selectedID != "" {
+		// Keep the selected-chart label and its controls together, regardless
+		// of window height. At the minimum width the slider still has room.
+		imgui.SetCursorScreenPos(imgui.Vec2{X: 20, Y: controlsY})
 		if *overlayEnabled {
-			imgui.TextUnformatted("Overlay: " + *selectedID)
-			imgui.Spacing()
-			if button("Disable Chart Overlay", false) {
-				*overlayEnabled = false
-			}
+			imgui.TextUnformatted("Displaying IAP Chart: " + *selectedID)
 		} else {
-			imgui.TextUnformatted("Overlay disabled: " + *selectedID)
-			imgui.Spacing()
-			if button("Enable Chart Overlay", false) {
-				*overlayEnabled = true
-			}
+			imgui.TextUnformatted("Selected IAP Chart: " + *selectedID)
+		}
+
+		const (
+			margin          float32 = 20
+			labelSliderGap  float32 = 15
+			sliderButtonGap float32 = 20
+		)
+		rowY := controlsY + imgui.FontSize() + 18
+		label := "Adjust Opacity:"
+		labelWidth := imgui.CalcTextSize(label).X
+		buttonLabel := "Disable Chart Overlay"
+		if !*overlayEnabled {
+			buttonLabel = "Enable Chart Overlay"
+		}
+		buttonW := buttonWidth(buttonLabel)
+		buttonX := size[0] - margin - buttonW
+		sliderX := margin + labelWidth + labelSliderGap
+		sliderW := buttonX - sliderButtonGap - sliderX
+
+		imgui.SetCursorScreenPos(imgui.Vec2{
+			X: margin, Y: rowY + (buttonHeight-imgui.FontSize())*0.5,
+		})
+		imgui.TextUnformatted(label)
+		drawIAPOpacitySlider(sliderX, rowY, sliderW, opacityPercent)
+
+		imgui.SetCursorScreenPos(imgui.Vec2{X: buttonX, Y: rowY})
+		if button(buttonLabel, false) {
+			*overlayEnabled = !*overlayEnabled
 		}
 	}
 	imgui.End()
 	imgui.PopStyleVarV(4)
 	imgui.PopStyleColor()
 	return search
+}
+
+// drawIAPOpacitySlider implements a minimal line-and-circle slider. The
+// invisible hit region is taller than the track for comfortable dragging;
+// the visible slider never displays a percentage or value label.
+func drawIAPOpacitySlider(x, y, width float32, percent *int32) {
+	const (
+		knobRadius  float32 = 8
+		trackRadius float32 = 2
+	)
+	if width <= 2*knobRadius {
+		return
+	}
+	imgui.SetCursorScreenPos(imgui.Vec2{X: x, Y: y})
+	imgui.InvisibleButtonV("##iap-chart-opacity-slider",
+		imgui.Vec2{X: width, Y: buttonHeight}, imgui.ButtonFlagsMouseButtonLeft)
+
+	startX := x + knobRadius
+	endX := x + width - knobRadius
+	if imgui.IsItemActive() {
+		// ImGui retains the active item while dragging beyond its hit area.
+		// Clamping also makes clicking either end select exactly 1% or 100%.
+		mouseX := imgui.CurrentIO().MousePos().X
+		t := (mouseX - startX) / (endX - startX)
+		if t < 0 {
+			t = 0
+		} else if t > 1 {
+			t = 1
+		}
+		*percent = clampIAPOpacityPercent(1 + int32(t*99+0.5))
+	}
+
+	value := clampIAPOpacityPercent(*percent)
+	t := float32(value-1) / 99
+	midY := y + buttonHeight*0.5
+	dl := imgui.WindowDrawList()
+	track := imgui.ColorU32Vec4(rgb(170, 172, 179))
+	fill := imgui.ColorU32Vec4(rgb(235, 237, 240))
+	outline := imgui.ColorU32Vec4(rgb(65, 68, 76))
+	dl.AddRectFilledV(
+		imgui.Vec2{X: startX, Y: midY - trackRadius},
+		imgui.Vec2{X: endX, Y: midY + trackRadius},
+		track, trackRadius, imgui.DrawFlagsRoundCornersAll,
+	)
+	knob := imgui.Vec2{X: startX + t*(endX-startX), Y: midY}
+	dl.AddCircleFilledV(knob, knobRadius, fill, 24)
+	dl.AddCircleV(knob, knobRadius, outline, 24, 1.5)
 }
