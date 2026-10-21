@@ -186,13 +186,6 @@ cp -R \
 	"fonts" \
 	"$RESOURCES/fonts"
 
-mkdir -p \
-	"$RESOURCES/asdex"
-
-cp -R \
-	"asdex/surface" \
-	"$RESOURCES/asdex/surface"
-
 cp \
 	"LICENSE" \
 	"$RESOURCES/LICENSE.txt"
@@ -234,7 +227,7 @@ test -d \
 	"$RESOURCES/fonts"
 
 test -d \
-	"$RESOURCES/asdex/surface"
+	"$RESOURCES/resources/surface"
 
 test -f \
 	"$RESOURCES/LICENSE.txt"

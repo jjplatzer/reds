@@ -108,7 +108,7 @@ jobs:
             "$RESOURCES/fonts"
 
           test -d \
-            "$RESOURCES/asdex/surface"
+            "$RESOURCES/resources/surface"
 
           file \
             "$BINARY"

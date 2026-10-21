@@ -1910,7 +1910,7 @@ type surfaceRouteGraph struct {
 }
 
 func loadSurfaceRouteGraph(airport string) (*surfaceRouteGraph, error) {
-	path := filepath.ToSlash(filepath.Join("asdex", "surface", airport+".json.zst"))
+	path := filepath.ToSlash(filepath.Join("resources", "surface", airport+".json.zst"))
 	if !util.ResourceExists(path) {
 		return nil, fmt.Errorf("surface data not found: %s", path)
 	}

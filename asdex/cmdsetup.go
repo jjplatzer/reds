@@ -516,7 +516,7 @@ func LoadTowerReference(airport string, vm *VideoMap) (TowerReference, bool, err
 		return TowerReference{}, false, nil
 	}
 
-	path := filepath.ToSlash(filepath.Join("asdex", "surface", airport+".json.zst"))
+	path := filepath.ToSlash(filepath.Join("resources", "surface", airport+".json.zst"))
 	if !util.ResourceExists(path) {
 		return TowerReference{}, false, nil
 	}
