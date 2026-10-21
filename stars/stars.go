@@ -65,6 +65,7 @@ type STARSPane struct {
 	nexrad                [6]starsNexradLevelCmdBuffers
 
 	videoMaps map[int]*starsVideoMap
+	iapChart  iapChartOverlay
 
 	commandMode               CommandMode
 	commandInput              string
@@ -527,6 +528,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawNexrad(ctx, zcb, transforms)
 	p.drawRangeRings(ctx, zcb, transforms)
 	p.drawVideoMaps(ctx, zcb, transforms)
+	p.drawIAPChartOverlay(ctx, zcb, transforms)
 	p.drawCompass(ctx, zcb, transforms)
 
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
@@ -566,6 +568,7 @@ func (p *STARSPane) Dispose() {
 	}
 	p.releaseNexradCmdBuffers()
 	p.releaseVideoMaps()
+	p.iapChart.release()
 	p.wxGrid = nil
 }
 

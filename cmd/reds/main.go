@@ -84,6 +84,13 @@ func realMain() (exitCode int) {
 		fmt.Println(buildinfo.String())
 		return 0
 	}
+	if *iapChartWindow {
+		if err := runIAPChartWindow(); err != nil {
+			fmt.Fprintf(os.Stderr, "reds: IAP chart viewer: %v\n", err)
+			return 1
+		}
+		return 0
+	}
 	if *notamWindowAirport != "" {
 		if err := runNOTAMWindow(*notamWindowAirport); err != nil {
 			fmt.Fprintf(os.Stderr, "reds: NOTAM viewer: %v\n", err)
@@ -222,6 +229,10 @@ func run(logger *redslog.Logger) error {
 	defer consumer.Stop()
 	var notamWindow notamWindowProcess
 	defer notamWindow.close()
+	var iapWindow iapChartWindowProcess
+	defer iapWindow.close()
+	clearIAPOverlayChoice(os.Getpid())
+	defer clearIAPOverlayChoice(os.Getpid())
 
 	bg := colDialogBg
 	var tempArea tempAreaWindowProcess
@@ -259,6 +270,8 @@ func run(logger *redslog.Logger) error {
 				mode = appModeScope
 				tempArea.close()
 				notamWindow.close()
+				iapWindow.close()
+				clearIAPOverlayChoice(os.Getpid())
 			case menuCancelled:
 				return nil
 			}
@@ -272,6 +285,7 @@ func run(logger *redslog.Logger) error {
 				menuOptions.ShowASDEXSeparator = true
 			}
 			if starsPane, ok := active.(*stars.STARSPane); ok {
+				menuOptions.ShowStarsIAPChart = true
 				menuOptions.ShowStarsAssignedAltitudes = true
 				menuOptions.HideStarsAssignedAltitudes = starsPane.AssignedAltitudesHidden()
 				menuOptions.ShowStarsFontSetB = true
@@ -287,6 +301,12 @@ func run(logger *redslog.Logger) error {
 				menuOptions,
 			)
 
+			if starPane, ok := active.(*stars.STARSPane); ok {
+				choice, err := readIAPOverlayChoice(os.Getpid())
+				if err == nil {
+					starPane.SetIAPChartSelection(choice.ChartID, iapDTPPCycle, choice.Enabled, choice.OpacityPercent)
+				}
+			}
 			io := imgui.CurrentIO()
 			panes.DrawPane(active, plat, r, panes.DrawOptions{
 				MenuBarHeight:    scopeTitleBarHeight,
@@ -318,12 +338,20 @@ func run(logger *redslog.Logger) error {
 				}
 				tempArea.close()
 				notamWindow.close()
+				iapWindow.close()
+				clearIAPOverlayChoice(os.Getpid())
 				switchToMenu(&mode, &active, &scopeTitle, plat, consumer, m)
 			case titleBarActionDefineTemporaryArea:
 				if pane, isASDEX := active.(*asdex.ASDEXPane); isASDEX {
 					pane.ClearGraphAreaPreview()
 					if err := tempArea.show(m.selection.Facility); err != nil {
 						logger.Error("Unable to open temporary map area window", slog.Any("error", err))
+					}
+				}
+			case titleBarActionViewIAPChart:
+				if _, isSTARS := active.(*stars.STARSPane); isSTARS {
+					if err := iapWindow.show(os.Getpid()); err != nil {
+						logger.Error("Unable to open IAP chart window", slog.Any("error", err))
 					}
 				}
 			case titleBarActionViewNOTAMs:
