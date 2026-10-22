@@ -59,6 +59,8 @@ const (
 	SafetyAlertDepartureClosedRunway
 	SafetyAlertLandingOccupiedRunway
 	SafetyAlertConvergingRunways
+	// Appended to keep the numeric identities of existing alert types stable.
+	SafetyAlertDepartureOccupiedRunway
 )
 
 type SafetyAuralAlert int
@@ -716,7 +718,8 @@ func (sl *SafetyLogic) updateAlerts(
 		// Preserve an occupied-runway alert briefly if *both* aircraft are
 		// still observed and neither is inhibited. An actual removal or manual
 		// inhibition must clear immediately. Playback can move time backward.
-		if (previous.Type == SafetyAlertLandingOccupiedRunway || previous.Type == SafetyAlertConvergingRunways) && opts.OccupiedRunwayAlerts &&
+		if (previous.Type == SafetyAlertLandingOccupiedRunway || previous.Type == SafetyAlertConvergingRunways ||
+			previous.Type == SafetyAlertDepartureOccupiedRunway) && opts.OccupiedRunwayAlerts &&
 			len(previous.AircraftIDs) == 2 && !opts.Now.IsZero() &&
 			conflictPairStillPresent(previous, targetByID, opts) {
 			start, exists := sl.alertClearSince[id]
@@ -768,6 +771,13 @@ func (sl *SafetyLogic) generateAlerts(
 			}
 		}
 		for id, alert := range sl.occupiedRunwayAlerts(targetByID, opts) {
+			if len(alert.AircraftIDs) == 2 &&
+				convergingPairs[safetyAlertPairKey(alert.AircraftIDs[0], alert.AircraftIDs[1])] {
+				continue
+			}
+			generated[id] = alert
+		}
+		for id, alert := range sl.departureOccupiedRunwayAlerts(targetByID, opts) {
 			if len(alert.AircraftIDs) == 2 &&
 				convergingPairs[safetyAlertPairKey(alert.AircraftIDs[0], alert.AircraftIDs[1])] {
 				continue
@@ -1092,32 +1102,36 @@ func (sl *SafetyLogic) updateOperationForTarget(target *Target) {
 		return
 	}
 
-	if target.GroundSpeedKt >= landingSpeedThresholdKt {
-		if landing, ok := sl.detectApproachLanding(target); ok {
-			sl.activeOperations[target.ID] = landing
-			return
+	// Maintain a previously observed approach through touchdown and rollout.
+	// Otherwise, a target observed accelerating on the runway could be
+	// classified as a landing within 800 ft of the threshold, because the
+	// approach corridor also includes the first part of the runway.
+	previous, tracked := sl.activeOperations[target.ID]
+	if tracked {
+		switch previous.Type {
+		case activeRunwayOperationLanding:
+			if sl.continueLandingRollout(target, previous) {
+				sl.activeOperations[target.ID] = sl.updatedOperation(target, previous)
+				return
+			}
+		case activeRunwayOperationDeparture:
+			if sl.continueDepartureRoll(target, previous) {
+				sl.activeOperations[target.ID] = sl.updatedOperation(target, previous)
+				return
+			}
 		}
 	}
 
+	// An untracked ground target on the runway rolling at takeoff speed is a
+	// departure candidate from the beginning of its roll, not only after it
+	// passes the first 800 ft. An already tracked landing keeps its identity.
 	if departure, ok := sl.detectDeparture(target); ok {
 		sl.activeOperations[target.ID] = departure
 		return
 	}
-
-	previous, ok := sl.activeOperations[target.ID]
-	if !ok {
-		return
-	}
-
-	switch previous.Type {
-	case activeRunwayOperationLanding:
-		if sl.continueLandingRollout(target, previous) {
-			sl.activeOperations[target.ID] = sl.updatedOperation(target, previous)
-			return
-		}
-	case activeRunwayOperationDeparture:
-		if sl.continueDepartureRoll(target, previous) {
-			sl.activeOperations[target.ID] = sl.updatedOperation(target, previous)
+	if target.GroundSpeedKt >= landingSpeedThresholdKt {
+		if landing, ok := sl.detectApproachLanding(target); ok {
+			sl.activeOperations[target.ID] = landing
 			return
 		}
 	}
@@ -1552,6 +1566,10 @@ const (
 	conflictTaxiCoastSeconds       = 10.0
 	conflictMaxAccelSeconds        = 12.0
 	conflictKnotsToFeetPerSecond   = 6076.12 / 3600.0
+	// Only project taxiing runway entry, not an indefinite future clearance.
+	conflictEntryLookaheadSeconds = 10.0
+	conflictEntryMaxDistanceFeet  = 300.0
+	conflictEntryMinSpeedKnots    = 3.0
 )
 
 // occupiedRunwayAlerts deliberately separates *current occupation* from a
@@ -1631,6 +1649,114 @@ func (sl *SafetyLogic) occupiedRunwayAlerts(
 	return alerts
 }
 
+// departureOccupiedRunwayAlerts detects a takeoff roll conflicting with an
+// aircraft already intruding on, or observably taxiing into, the same runway.
+// The first aircraft in AircraftIDs and in the message is always the infringer.
+// No clearance or intention is inferred from a parked aircraft near a holdbar.
+func (sl *SafetyLogic) departureOccupiedRunwayAlerts(
+	targets map[string]*Target, opts SafetyLogicUpdateOptions,
+) map[string]SafetyAlert {
+	alerts := make(map[string]SafetyAlert)
+	if sl == nil || opts.Now.IsZero() {
+		return alerts
+	}
+	for _, operation := range sl.activeOperations {
+		if operation.Type != activeRunwayOperationDeparture ||
+			operation.RunwayIndex < 0 || operation.RunwayIndex >= len(sl.runways) ||
+			!runwayConfigurationAllowsOperation(opts.RunwayConfiguration, operation) {
+			continue
+		}
+		departure := targets[operation.TargetID]
+		if !validConflictTarget(departure, opts.Now, conflictPositionAgeSeconds) ||
+			(opts.TargetAlertsInhibited != nil && opts.TargetAlertsInhibited(operation.TargetID)) {
+			continue
+		}
+		runway := sl.runways[operation.RunwayIndex]
+		runwayEnd := operationRunwayEndID(operation)
+		if runwayEnd == "" {
+			continue
+		}
+		for _, infringer := range targets {
+			if infringer == nil || infringer.ID == departure.ID ||
+				!targetIsSafetyLogicAircraft(infringer) ||
+				!validConflictTarget(infringer, opts.Now, conflictPositionAgeSeconds) ||
+				(opts.TargetAlertsInhibited != nil && opts.TargetAlertsInhibited(infringer.ID)) ||
+				(infringer.HasAltitude && float64(infringer.AltitudeFt) > sl.airportAltitudeFt+departureMaxAGLFeet) ||
+				!finiteConflictFloat(float64(infringer.HeadingDeg)) ||
+				distanceToRunwayPolygonFeet(runway, infringer.PosFeet) > conflictEntryMaxDistanceFeet {
+				continue
+			}
+			// A slow target wholly outside the runway is waiting, not entering.
+			if !pointOnRunway(runway, infringer.PosFeet) &&
+				infringer.GroundSpeedKt < conflictEntryMinSpeedKnots {
+				continue
+			}
+			if !departureRunwayEntryConflictPredicted(operation, departure, infringer, runway,
+				opts.OccupiedRunwayClearanceFeet) {
+				continue
+			}
+			id := fmt.Sprintf("SL:%d:%s:%s:%s", SafetyAlertDepartureOccupiedRunway,
+				departure.ID, runwayEnd, infringer.ID)
+			audio := append([]SafetyAuralAlert{SafetyAuralWarning, SafetyAuralRunway},
+				runwayIDAuralTokens(runwayEnd)...)
+			audio = append(audio, SafetyAuralOccupied)
+			alerts[id] = SafetyAlert{
+				ID: id, Type: SafetyAlertDepartureOccupiedRunway,
+				MessageLines: []string{
+					"RWY " + runwayEnd,
+					safetyAlertTargetLabel(infringer) + ", " + safetyAlertTargetLabel(departure),
+					"RWY OCCUPIED",
+				},
+				AircraftIDs: []string{infringer.ID, departure.ID},
+				RunwayIDs:   []string{runwayEnd}, AuralAlerts: audio,
+			}
+		}
+	}
+	return alerts
+}
+
+// Compare the two extrapolated ground paths at the same time, accepting only
+// times when BOTH centers are actually on the runway. For an approaching
+// infringer its motion is extrapolated for at most ten seconds (the existing
+// taxi projection model); thus a stationary hold-short target cannot trigger.
+func departureRunwayEntryConflictPredicted(
+	op activeRunwayOperation, departure, infringer *Target,
+	runway surfaceRunway, clearanceFeet float64,
+) bool {
+	if departure == nil || infringer == nil {
+		return false
+	}
+	if clearanceFeet <= 0 || !finiteConflictFloat(clearanceFeet) {
+		clearanceFeet = conflictClearanceFeet
+	}
+	minimum := clearanceFeet + 2*conflictAircraftRadiusFeet
+	// A target outside the runway must enter during the short, observed taxi
+	// projection window. Otherwise a distant crossing route is speculative.
+	initiallyOnRunway := pointOnRunway(runway, infringer.PosFeet)
+	entryObserved := initiallyOnRunway
+	for t := 0.0; t <= conflictStationaryAlertSeconds; t += conflictSampleStepSeconds {
+		otherPosition := projectedOccupantPoint(infringer, runway, t)
+		if !pointOnRunway(runway, otherPosition) {
+			continue
+		}
+		if !entryObserved {
+			if t > conflictEntryLookaheadSeconds {
+				return false
+			}
+			entryObserved = true
+		}
+		depPosition := projectedConvergingOperationPoint(op, departure, runway, t)
+		if !pointOnRunway(runway, depPosition) {
+			continue
+		}
+		if stdmath.Hypot(float64(depPosition.X-otherPosition.X),
+			float64(depPosition.Y-otherPosition.Y)) < minimum {
+			return true
+		}
+	}
+	return false
+}
+
 // Predict arrivals up to 3 NM without expanding the range of the existing
 // runway-operation state machine (and therefore hold bars and closure alerts).
 // Exactly one runway-end candidate is chosen for each additional arrival.
@@ -1690,7 +1816,8 @@ func conflictPairStillPresent(alert SafetyAlert, targets map[string]*Target, opt
 	for i, id := range alert.AircraftIDs {
 		t := targets[id]
 		maxAge := conflictStaleOccupantSeconds
-		if i == 0 || alert.Type == SafetyAlertConvergingRunways {
+		if i == 0 || alert.Type == SafetyAlertConvergingRunways ||
+			alert.Type == SafetyAlertDepartureOccupiedRunway {
 			maxAge = conflictPositionAgeSeconds
 		}
 		if !validConflictTarget(t, opts.Now, maxAge) ||
