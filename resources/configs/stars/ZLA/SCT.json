@@ -5085,6 +5085,146 @@
       ]
     }
   ],
+  "rpcs": [
+    {
+      "id": "01G57NBPP0EMTK4ZA1R24Y17KB",
+      "index": 1,
+      "airportId": "LAX",
+      "positionSymbolTie": "T",
+      "positionSymbolStagger": "/",
+      "masterRunway": {
+        "runwayId": "25L",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 3,
+        "farSideHalfWidth": 6,
+        "nearSideDistance": 5.5,
+        "regionLength": 32,
+        "targetReferencePoint": {
+          "lat": 33.937358,
+          "lon": -118.379772
+        },
+        "targetReferenceLineHeading": 252,
+        "targetReferenceLineLength": 50,
+        "targetReferencePointAltitude": 20,
+        "imageReferencePoint": {
+          "lat": 33.95209952,
+          "lon": -118.4019442
+        },
+        "imageReferenceLineHeading": 252,
+        "imageReferenceLineLength": 50,
+        "tieModeOffset": 2,
+        "descentPointDistance": 6,
+        "descentPointAltitude": 35,
+        "abovePathTolerance": 9,
+        "belowPathTolerance": 9,
+        "defaultLeaderDirection": "NE",
+        "scratchpadPatterns": [
+          "5L",
+          "5V"
+        ]
+      },
+      "slaveRunway": {
+        "runwayId": "24R",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 3,
+        "farSideHalfWidth": 6,
+        "nearSideDistance": 6.5,
+        "regionLength": 32,
+        "targetReferencePoint": {
+          "lat": 33.95209952,
+          "lon": 118.4019442
+        },
+        "targetReferenceLineHeading": 252,
+        "targetReferenceLineLength": 50,
+        "targetReferencePointAltitude": 20,
+        "imageReferencePoint": {
+          "lat": 33.937358,
+          "lon": 118.3827092
+        },
+        "imageReferenceLineHeading": 252,
+        "imageReferenceLineLength": 50,
+        "tieModeOffset": 3,
+        "descentPointDistance": 6,
+        "descentPointAltitude": 35,
+        "abovePathTolerance": 9,
+        "belowPathTolerance": 9,
+        "defaultLeaderDirection": "NW",
+        "scratchpadPatterns": [
+          "4R",
+          "4V"
+        ]
+      }
+    },
+    {
+      "id": "01G57NBPP3R2DZV6HBQDV29A7T",
+      "index": 2,
+      "airportId": "LAX",
+      "positionSymbolTie": "/",
+      "positionSymbolStagger": "0",
+      "masterRunway": {
+        "runwayId": "07R",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 3,
+        "farSideHalfWidth": 6,
+        "nearSideDistance": 4,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 33.9336445,
+          "lon": -118.4190136
+        },
+        "targetReferenceLineHeading": 72,
+        "targetReferenceLineLength": 25,
+        "targetReferencePointAltitude": 1,
+        "imageReferencePoint": {
+          "lat": 33.94910817,
+          "lon": -118.43115
+        },
+        "imageReferenceLineHeading": 72,
+        "imageReferenceLineLength": 24.5,
+        "tieModeOffset": 3,
+        "descentPointDistance": 8,
+        "descentPointAltitude": 35,
+        "abovePathTolerance": 9,
+        "belowPathTolerance": 9,
+        "defaultLeaderDirection": "SW",
+        "scratchpadPatterns": [
+          "7R",
+          "7V"
+        ]
+      },
+      "slaveRunway": {
+        "runwayId": "06L",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 3,
+        "farSideHalfWidth": 6,
+        "nearSideDistance": 4,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 33.94910817,
+          "lon": -118.4311544
+        },
+        "targetReferenceLineHeading": 72,
+        "targetReferenceLineLength": 24.5,
+        "targetReferencePointAltitude": 1,
+        "imageReferencePoint": {
+          "lat": 33.9336445,
+          "lon": -118.4190136
+        },
+        "imageReferenceLineHeading": 72,
+        "imageReferenceLineLength": 25,
+        "tieModeOffset": 3,
+        "descentPointDistance": 8,
+        "descentPointAltitude": 35,
+        "abovePathTolerance": 9,
+        "belowPathTolerance": 9,
+        "defaultLeaderDirection": "NW",
+        "scratchpadPatterns": [
+          "6L",
+          "6V"
+        ]
+      }
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

@@ -54,7 +54,9 @@
       "id": "01K2NF1ED82ACSMQJHAR9XNPDD",
       "code": "1N",
       "subset": 1,
-      "sectorId": "N"
+      "sectorId": "N",
+      "parentTcpId": "01K2NF1ED8NV9ERBY3HYAGG3CX",
+      "parentTcp": "1H"
     },
     {
       "id": "01K2NF1ED8JDP827GP8983JNEB",
@@ -123,6 +125,23 @@
       },
       "range": 150,
       "freq": 124.8
+    },
+    {
+      "id": "01M4GWNR9VHWN0SMS8XT755NZ7",
+      "physicalFacility": "HNL",
+      "name": "Local Assist (Event Only)",
+      "radioName": "Honolulu CIC",
+      "callsign": "HNL_A_TWR",
+      "colorSet": "tdw",
+      "areaId": "01KXNQ0FHD30Y44C3PYMS0HTXD",
+      "tcpId": "01K2NF1ED82ACSMQJHAR9XNPDD",
+      "tcp": "1N",
+      "visualCenter": {
+        "lat": 21.31783,
+        "lon": -157.92026
+      },
+      "range": 150,
+      "freq": 118.1
     },
     {
       "id": "01GF264YG50JAF61FDZ8FECBP9",
@@ -242,6 +261,139 @@
       },
       "range": 150,
       "freq": 126.3
+    }
+  ],
+  "rpcs": [
+    {
+      "id": "01GF25FBQ3VMWKCN350510A4J7",
+      "index": 1,
+      "airportId": "HNL",
+      "positionSymbolTie": "/",
+      "positionSymbolStagger": "0",
+      "masterRunway": {
+        "runwayId": "08L",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 3,
+        "farSideHalfWidth": 6,
+        "nearSideDistance": 5,
+        "regionLength": 30,
+        "targetReferencePoint": {
+          "lat": 21.32512,
+          "lon": -157.9435
+        },
+        "targetReferenceLineHeading": 80.4,
+        "targetReferenceLineLength": 40,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 21.31362,
+          "lon": -157.9273
+        },
+        "imageReferenceLineHeading": 43.4,
+        "imageReferenceLineLength": 40,
+        "tieModeOffset": 2,
+        "descentPointDistance": 10,
+        "descentPointAltitude": 30,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "N",
+        "scratchpadPatterns": [
+          "8"
+        ]
+      },
+      "slaveRunway": {
+        "runwayId": "04R",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 3,
+        "farSideHalfWidth": 6,
+        "nearSideDistance": 5,
+        "regionLength": 30,
+        "targetReferencePoint": {
+          "lat": 21.31362,
+          "lon": -157.9273
+        },
+        "targetReferenceLineHeading": 43.4,
+        "targetReferenceLineLength": 40,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 21.32512,
+          "lon": -157.9435
+        },
+        "imageReferenceLineHeading": 80.4,
+        "imageReferenceLineLength": 40,
+        "tieModeOffset": 2,
+        "descentPointDistance": 10,
+        "descentPointAltitude": 30,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "SE",
+        "scratchpadPatterns": [
+          "4"
+        ]
+      }
+    },
+    {
+      "id": "01GYZ42GZ9W0SW12R7JEM12FRW",
+      "index": 2,
+      "airportId": "HNL",
+      "positionSymbolTie": "/",
+      "positionSymbolStagger": "O",
+      "masterRunway": {
+        "runwayId": "08L",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 3,
+        "farSideHalfWidth": 6,
+        "nearSideDistance": 5,
+        "regionLength": 30,
+        "targetReferencePoint": {
+          "lat": 21.32512,
+          "lon": -157.9435
+        },
+        "targetReferenceLineHeading": 80.4,
+        "targetReferenceLineLength": 40,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 21.31362,
+          "lon": -157.9273
+        },
+        "imageReferenceLineHeading": 43.4,
+        "imageReferenceLineLength": 40,
+        "tieModeOffset": 2,
+        "descentPointDistance": 10,
+        "descentPointAltitude": 30,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "N",
+        "scratchpadPatterns": [
+          "8"
+        ]
+      },
+      "slaveRunway": {
+        "runwayId": "04L",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 3,
+        "farSideHalfWidth": 6,
+        "nearSideDistance": 5,
+        "regionLength": 30,
+        "targetReferencePoint": {
+          "lat": 21.3135,
+          "lon": -157.9337
+        },
+        "targetReferenceLineHeading": 43.4,
+        "targetReferenceLineLength": 30,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 0,
+          "lon": 0
+        },
+        "imageReferenceLineHeading": 90,
+        "imageReferenceLineLength": 30,
+        "tieModeOffset": 2,
+        "descentPointDistance": 10,
+        "descentPointAltitude": 30,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "SE"
+      }
     }
   ],
   "mapGroups": [
