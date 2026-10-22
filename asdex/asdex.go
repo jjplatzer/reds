@@ -236,8 +236,8 @@ func scopeWindowZ(stackIndex int, localZ renderer.Z) renderer.Z {
 	return renderer.Z(-20000 + stackIndex*1000 + int(localZ))
 }
 
-// Explicitly opt in until predictions have been calibrated on recorded SMES data.
-var occupiedRunwayAlertsEnabled = os.Getenv("REDS_ASDEX_OCCUPIED_ALERTS") == "1"
+// Enabled by default; set REDS_ASDEX_OCCUPIED_ALERTS=0 to disable.
+var occupiedRunwayAlertsEnabled = os.Getenv("REDS_ASDEX_OCCUPIED_ALERTS") != "0"
 
 // Read once: this configuration is constant for a running desktop process.
 var occupiedRunwayClearanceFeet = func() float64 {

@@ -52,7 +52,7 @@ type tempAreaDialog struct {
 // graph may be inferred and imperfect, so names here are NOT a claim that a
 // proposed closure is physically valid or that two endpoints are connected.
 func loadTempAreaNames(airport string) ([]string, []string, error) {
-	path := filepath.ToSlash(filepath.Join("asdex", "surface", airport+".json.zst"))
+	path := filepath.ToSlash(filepath.Join("resources", "surface", airport+".json.zst"))
 	if !util.ResourceExists(path) {
 		return nil, nil, fmt.Errorf("surface file not found: %s", path)
 	}

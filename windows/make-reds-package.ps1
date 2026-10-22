@@ -62,9 +62,6 @@ Write-Host "[package] Copying REDS resources..."
 Copy-Item -Recurse -Force "resources" (Join-Path $OutputPath "resources")
 Copy-Item -Recurse -Force "fonts" (Join-Path $OutputPath "fonts")
 
-New-Item -ItemType Directory -Force (Join-Path $OutputPath "asdex") | Out-Null
-Copy-Item -Recurse -Force "asdex\surface" (Join-Path $OutputPath "asdex\surface")
-
 Copy-Item -Force "LICENSE" (Join-Path $OutputPath "LICENSE.txt")
 
 function Get-ImportedDlls {
@@ -136,7 +133,7 @@ $RequiredPaths = @(
     (Join-Path $OutputPath "resources\audio\asdex"),
     (Join-Path $OutputPath "resources\audio\eram"),
     (Join-Path $OutputPath "fonts"),
-    (Join-Path $OutputPath "asdex\surface"),
+    (Join-Path $OutputPath "resources\surface"),
     (Join-Path $OutputPath "LICENSE.txt")
 )
 
