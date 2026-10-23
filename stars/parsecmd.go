@@ -492,6 +492,7 @@ var commandTypeParsers = map[string]commandTypeParser{
 	"RBL_FIELD":          rblFieldCommandParser{},
 	"TPA_DISTANCE":       tpaDistanceCommandParser{},
 	"ATPA_VOLUME_ACTION": atpaVolumeActionCommandParser{},
+	"CRDA_CONTROL":       crdaControlParser{},
 }
 
 type commandMatcher interface {

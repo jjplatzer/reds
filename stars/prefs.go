@@ -68,6 +68,7 @@ type starsPreferenceSnapshot struct {
 	CoastSuspendList    basicSTARSListPreferences    `json:"coastSuspendList"`
 	TowerLists          [3]basicSTARSListPreferences `json:"towerLists"`
 	SSAFilter           ssaFilterPreferences         `json:"ssaFilter"`
+	CRDAStatusList      crdaStatusListPreferences    `json:"crdaStatusList"`
 }
 
 type starsSavedPreferenceSet struct {
@@ -131,6 +132,7 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 		CoastSuspendList:        p.CoastSuspendList,
 		TowerLists:              p.TowerLists,
 		SSAFilter:               p.SSAFilter,
+		CRDAStatusList:          p.CRDAStatusList,
 	}
 }
 
@@ -159,6 +161,7 @@ func (s starsPreferenceSnapshot) apply(p *Preferences) {
 	p.CoastSuspendList = s.CoastSuspendList
 	p.TowerLists = s.TowerLists
 	p.SSAFilter = s.SSAFilter
+	p.CRDAStatusList = s.CRDAStatusList
 }
 
 // applyPreferenceSnapshot restores a saved STARS display preference and makes
@@ -607,6 +610,13 @@ func leaderLineDirectionFromKeypad(key int) (leaderLineDirection, bool) {
 	}
 }
 
+// crdaStatusListPreferences are the only CRDA characteristics saved in a
+// preference set; active runway modes and per-track overrides are runtime state.
+type crdaStatusListPreferences struct {
+	Visible  bool       `json:"visible"`
+	Position [2]float32 `json:"position"`
+}
+
 // Preferences contains the per-position STARS display state. The names mirror
 // VICE's STARS Preferences; the display-characteristic subset defined in
 // prefsets.go is persisted by the STARS PREF function.
@@ -638,6 +648,7 @@ type Preferences struct {
 	CoastSuspendList        basicSTARSListPreferences
 	TowerLists              [3]basicSTARSListPreferences
 	SSAFilter               ssaFilterPreferences
+	CRDAStatusList          crdaStatusListPreferences
 	AltitudeFilters         altitudeFilterPreferences
 	QuickLookAll            bool
 	QuickLookAllIsPlus      bool
@@ -762,7 +773,9 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// TI 6191.409 does not prescribe a power-up filter state. VICE starts
 		// with ALL selected, which also preserves REDS' pre-filter behavior of
 		// showing every SSA field it currently knows how to render.
-		SSAFilter:       ssaFilterPreferences{All: true},
+		SSAFilter: ssaFilterPreferences{All: true},
+		// VICE uses (.05,.7) with bottom-left origin.
+		CRDAStatusList:  crdaStatusListPreferences{Position: [2]float32{0.05, 0.30}},
 		AltitudeFilters: defaultAltitudeFilterPreferences(),
 		// The operator manual defines how this state is changed but does not
 		// prescribe a startup value. Preserve REDS's existing presentation,

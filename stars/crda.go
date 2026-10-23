@@ -1,15 +1,22 @@
 package stars
 
-// CRC-compatible CRDA geometry and target qualification. This file intentionally
-// has no dependency on live TAIS snapshots, renderer state, or controller input:
-// a subsequent integration patch owns conversion and display preferences.
+// CRC-compatible CRDA geometry, target qualification, and display rendering.
+// Runtime state and controller commands remain in their own files.
 //
-// Reference: CRC Stars.Crda/CrdaManager.cs, GeoPoint.cs, GeoCalc.cs, NavCalc.cs.
+// References: CRC Stars.Crda/CrdaManager.cs, GeoPoint.cs, GeoCalc.cs,
+// NavCalc.cs, DisplayElementGhostTracks, DisplayElementCrdaDiagrams,
+// SystemListCrda; STARS TI 6191.409 CRDA and BRITE sections.
 
 import (
 	"fmt"
 	"math"
 	"strings"
+
+	redsmath "github.com/juliusplatzer/reds/math"
+	redsnet "github.com/juliusplatzer/reds/net"
+	"github.com/juliusplatzer/reds/panes"
+	"github.com/juliusplatzer/reds/radar"
+	"github.com/juliusplatzer/reds/renderer"
 )
 
 const (
@@ -315,4 +322,256 @@ func (e *crdaEngine) ghostForTrack(track crdaTrack, states []crdaPairState, forc
 		}
 	}
 	return best, found
+}
+
+// CRDA display rendering. Geographic positions are projected at draw time.
+
+const (
+	// Course lines and qualifying trapezoids are scope overlays, not UI.
+	zCRDADiagrams renderer.Z = -110
+	// CRC renders ghosts above ordinary surveillance and below floating lists.
+	zCRDAGhostLeader    renderer.Z = -74
+	zCRDAGhostPosition  renderer.Z = -73
+	zCRDAGhostDatablock renderer.Z = -72
+)
+
+// crdaCourseLineEndpoints follows CRC's RenderCourseLines: each reference
+// point has a line extending outbound (reciprocal magnetic heading).  The
+// common target-reference longitude scale is intentional CRC behavior.
+func crdaCourseLineEndpoints(runway rpcRunwayConfig, magVar float64) (targetEnd, imageEnd configPoint) {
+	scale := crdaLongitudeScale(runway.TargetReferencePoint.Lat)
+	targetEnd = crdaVector(runway.TargetReferencePoint, runway.TargetReferenceLineLength/60,
+		crdaNormalizeHeading(runway.TargetReferenceLineHeading+180), scale, magVar)
+	imageEnd = crdaVector(runway.ImageReferencePoint, runway.ImageReferenceLineLength/60,
+		crdaNormalizeHeading(runway.ImageReferenceLineHeading+180), scale, magVar)
+	return
+}
+
+// drawCRDADiagrams draws each individually enabled runway's qualification
+// trapezoid and the two course-line segments (plus reference-point rings).
+// CRC uses the TLS/LINES brightness, not the ghosts' OTH brightness.
+func (p *STARSPane) drawCRDADiagrams(ctx *panes.Context, zcb *renderer.ZCmdBuffer, transforms radar.LatLonTransformations) {
+	if p == nil || ctx == nil || zcb == nil || !p.crdaAvailable() || p.crda.inhibited ||
+		p.currentPrefs().Brightness.Lines == 0 {
+		return
+	}
+
+	lines := renderer.GetLinesBuilder()
+	defer renderer.ReturnLinesBuilder(lines)
+	point := func(loc configPoint) renderer.PointVertex {
+		window := transforms.WindowFromLatLon(loc.Lat, loc.Lon)
+		return renderer.PointVertex{X: window.X, Y: window.Y}
+	}
+
+	for i, pair := range p.crda.engine.pairs {
+		if p.crda.pairs[i].Mode == crdaDisabled {
+			continue
+		}
+		for side := 0; side < 2; side++ {
+			state := p.crda.runways[i][side]
+			if state.DisplayQualificationRegion {
+				// Fixed four-point array: no polygon allocation per frame.
+				var corners [4]renderer.PointVertex
+				for j, corner := range pair.regions[side].Points {
+					corners[j] = point(corner)
+				}
+				lines.AddLineLoop(corners[:])
+			}
+			if state.DisplayCourseLines {
+				runway := pair.adaptation.MasterRunway
+				if side == 1 {
+					runway = pair.adaptation.SlaveRunway
+				}
+				targetEnd, imageEnd := crdaCourseLineEndpoints(runway, p.crda.engine.magVar)
+				lines.AddLine(point(runway.TargetReferencePoint), point(targetEnd))
+				lines.AddLine(point(runway.ImageReferencePoint), point(imageEnd))
+				// CRC's reference-point circle radius is 2.25 screen pixels.
+				lines.AddCircle(point(runway.TargetReferencePoint), 2.25, 16)
+				lines.AddCircle(point(runway.ImageReferencePoint), 2.25, 16)
+			}
+		}
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zCRDADiagrams)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.SetRGB(p.currentPrefs().Brightness.Lines.ScaleRGB(p.colors.GhostDatablock))
+	cb.LineWidth(max(float32(1), ctx.DPIScale))
+	lines.GenerateCommands(cb)
+	cb.DisableScissor()
+}
+
+// crdaGhostDatablockLines contains exactly the information CRC presents for
+// an associated ghost: the parent ACID in an FDB, followed by ground speed
+// in tens of knots, flight-rules indicator and wake-turbulence category.
+// A PDB omits the ACID. No pseudo-track data is synthesized for the ghost.
+func crdaGhostDatablockLines(parent *redsnet.TaisTarget, full bool) (first, second string) {
+	if parent == nil || parent.FlightPlan == nil || parent.FlightPlan.Deleted {
+		return "", ""
+	}
+	if full {
+		first = strings.TrimSpace(parent.FlightPlan.ACID)
+	}
+	groundSpeed := math.Hypot(float64(parent.Track.VX), float64(parent.Track.VY))
+	if !math.IsNaN(groundSpeed) && !math.IsInf(groundSpeed, 0) {
+		second = fmt.Sprintf("%02d", int(groundSpeed/10))
+	}
+	second = strings.TrimRight(second+targetDatablockFlightRulesIndicator(parent.FlightPlan)+
+		targetDatablockCategory(parent.FlightPlan), " ")
+	return
+}
+
+// crdaGhostLeaderGeometry derives all three positions from the same leader
+// direction. The position symbol is not offset; the line starts outside it.
+func crdaGhostLeaderGeometry(center redsmath.Vec2, direction leaderLineDirection, length float32) (start, end redsmath.Vec2) {
+	unit := leaderLineUnitVector(direction)
+	start = redsmath.Vec2{X: center.X + 7*unit.X, Y: center.Y + 7*unit.Y}
+	end = redsmath.Vec2{X: center.X + length*unit.X, Y: center.Y + length*unit.Y}
+	return
+}
+
+// drawCRDAGhosts renders CRC-style ghost symbols, leaders and full/partial
+// data blocks. It walks the live parent snapshot once, using the Step 2 ghost
+// map directly; no ghost copy or O(tracks * ghosts) lookup is required.
+func (p *STARSPane) drawCRDAGhosts(ctx *panes.Context, zcb *renderer.ZCmdBuffer,
+	transforms radar.LatLonTransformations, parents redsnet.TaisSnapshot) {
+	if p == nil || ctx == nil || zcb == nil || !parents.Ready ||
+		p.crda.inhibited || len(p.crda.ghosts) == 0 ||
+		p.currentPrefs().Brightness.OtherTracks == 0 ||
+		p.systemFont == nil || p.systemOutlineFont == nil {
+		return
+	}
+
+	positionSize, datablockSize := p.positionSymbolFontSize(), p.datablockFontSize()
+	positionTexture := p.systemFontTexture(ctx.Renderer, positionSize)
+	outlineTexture := p.systemOutlineFontTexture(ctx.Renderer, positionSize)
+	datablockTexture := p.systemFontTexture(ctx.Renderer, datablockSize)
+	if positionTexture == 0 || outlineTexture == 0 || datablockTexture == 0 {
+		return
+	}
+	lineHeight := p.systemFont.LineHeight(datablockSize)
+	if lineHeight <= 0 {
+		return
+	}
+
+	fill := renderer.GetTextDrawBuilder()
+	defer renderer.ReturnTextDrawBuilder(fill)
+	fill.SetFont(p.systemFont)
+	outline := renderer.GetTextDrawBuilder()
+	defer renderer.ReturnTextDrawBuilder(outline)
+	outline.SetFont(p.systemOutlineFont)
+	labels := renderer.GetTextDrawBuilder()
+	defer renderer.ReturnTextDrawBuilder(labels)
+	labels.SetFont(p.systemFont)
+	leaders := renderer.GetLinesBuilder()
+	defer renderer.ReturnLinesBuilder(leaders)
+
+	ps := p.currentPrefs()
+	color := ps.Brightness.OtherTracks.ScaleRGB(p.colors.GhostDatablock)
+	positionStyle := renderer.TextStyle{Size: positionSize, Color: color.ToRGBA()}
+	outlineStyle := renderer.TextStyle{Size: positionSize, Color: p.colors.PositionSymbolOutline.ToRGBA()}
+	labelStyle := renderer.TextStyle{Size: datablockSize, Color: color.ToRGBA()}
+	length := starsLeaderLineLengthPixels(ps.LeaderLineLength)
+
+	for i := range parents.Targets {
+		parent := &parents.Targets[i]
+		ghost, exists := p.crda.ghosts[targetDisplayStateKey(parent)]
+		if !exists || ghost.Suppressed || ghost.Identity != crdaIdentity(parent) ||
+			parent.FlightPlan == nil || parent.FlightPlan.Deleted || ghost.Ghost.Symbol == "" {
+			continue
+		}
+		center := transforms.WindowFromLatLon(ghost.Ghost.Position.Lat, ghost.Ghost.Position.Lon)
+		if !targetCenterNearPane(ctx, center, length+220) {
+			continue
+		}
+		center.X += 0.5 // consistent with regular outlined target symbols
+		center.Y -= 0.5
+		addCenteredTargetGlyph(outline, p.systemOutlineFont, ghost.Ghost.Symbol, positionSize, center, outlineStyle)
+		addCenteredTargetGlyph(fill, p.systemFont, ghost.Ghost.Symbol, positionSize, center, positionStyle)
+
+		direction := p.crdaGhostLeaderDirection(ghost)
+		start, end := crdaGhostLeaderGeometry(center, direction, length)
+		if length > 7 { // CRC draws a line only when the leader has positive extent
+			leaders.AddLine(renderer.PointVertex{X: start.X, Y: start.Y},
+				renderer.PointVertex{X: end.X, Y: end.Y})
+		}
+
+		first, second := crdaGhostDatablockLines(parent, ghost.FullDataBlock)
+		// CRC anchors a zero-length ghost leader at the symbol itself; do
+		// not use the ordinary track's larger no-leader clearance offset.
+		anchor := end
+		if ghost.FullDataBlock && first != "" {
+			p.addDatablockLine(labels, first, anchor, direction, 0, 0, lineHeight, labelStyle)
+			p.addDatablockLine(labels, second, anchor, direction, 1, 0, lineHeight, labelStyle)
+		} else {
+			p.addDatablockLine(labels, second, anchor, direction, 0, 0, lineHeight, labelStyle)
+		}
+	}
+
+	x, y, width, height := ctx.PaneFramebufferRect()
+	leaderCB := zcb.At(zCRDAGhostLeader)
+	leaderCB.Viewport(x, y, width, height)
+	leaderCB.Scissor(x, y, width, height)
+	leaderCB.LoadProjectionMatrix(ctx.ScreenProjection())
+	leaderCB.LineWidth(max(float32(1), ctx.DPIScale))
+	leaderCB.SetRGB(color)
+	leaders.GenerateCommands(leaderCB)
+	leaderCB.DisableScissor()
+
+	positionCB := zcb.At(zCRDAGhostPosition)
+	positionCB.Viewport(x, y, width, height)
+	positionCB.Scissor(x, y, width, height)
+	positionCB.LoadProjectionMatrix(ctx.ScreenProjection())
+	outline.GenerateCommands(positionCB, outlineTexture)
+	fill.GenerateCommands(positionCB, positionTexture)
+	positionCB.DisableScissor()
+
+	textCB := zcb.At(zCRDAGhostDatablock)
+	textCB.Viewport(x, y, width, height)
+	textCB.Scissor(x, y, width, height)
+	textCB.LoadProjectionMatrix(ctx.ScreenProjection())
+	labels.GenerateCommands(textCB, datablockTexture)
+	textCB.DisableScissor()
+}
+
+// drawCRDAStatusList shares the STARS list font, LISTS brightness and normal
+// pane-relative positioning used by other system lists. The lines themselves
+// come from the Step 2 runtime (CRC SystemListCrda ordering and S/T markers).
+func (p *STARSPane) drawCRDAStatusList(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil ||
+		!p.crdaAvailable() || !p.currentPrefs().CRDAStatusList.Visible ||
+		p.currentPrefs().Brightness.Lists == 0 {
+		return
+	}
+	lines := p.crdaStatusLines()
+	if len(lines) == 0 {
+		return
+	}
+	w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+	if w <= 0 || h <= 0 {
+		return
+	}
+	fontSize := p.listFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
+	if texture == 0 {
+		return
+	}
+	ps := p.currentPrefs()
+	position := redsmath.Vec2{X: ps.CRDAStatusList.Position[0] * w, Y: ps.CRDAStatusList.Position[1] * h}
+
+	td := renderer.GetTextDrawBuilder()
+	defer renderer.ReturnTextDrawBuilder(td)
+	td.SetFont(p.systemFont)
+	td.AddText("CRDA STATUS\n"+strings.Join(lines, "\n"), position, renderer.TextStyle{
+		Size: fontSize, Color: ps.Brightness.Lists.ScaleRGB(p.colors.List).ToRGBA(),
+	})
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zLists)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	td.GenerateCommands(cb, texture)
+	cb.DisableScissor()
 }
