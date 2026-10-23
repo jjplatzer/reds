@@ -86,6 +86,11 @@ type STARSPane struct {
 	// reselected. This is transient display state, not a saved preference.
 	singleTrackQuickLook map[string]struct{}
 
+	// highlightedTracks implements TI 6191.409 Rev. 30, 6.20.  The toggle
+	// is local to this TCW/TDW (not a global track or saved preference). A
+	// signature prevents a recycled TAIS track key from inheriting cyan.
+	highlightedTracks map[string]starsTrackHighlightIdentity
+
 	// singleTrackLeaderDirections records TI 6191.409 6.13.1 / 6.13.17
 	// manual data-block orientations. These overrides are local to this
 	// TCW/TDW and apply only to the selected associated track. Entering 5
@@ -529,6 +534,10 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	// excluded from the radar-facing snapshot below.
 	p.pruneSPCAcknowledgements(allTargets)
 	targets := p.radarTargetSnapshot(allTargets)
+	// Preserve a highlighted coast-phase-2 SPC target for as long as it
+	// remains on-screen; discard local cyan only after the displayed track
+	// disappears, is suspended, or is replaced by another aircraft.
+	p.pruneTrackHighlights(targets)
 	targets = p.applyTrackRepositions(targets)
 	if err := p.refreshCRDAEngine(); err != nil {
 		// Keep the last valid regions; a malformed facility update must not
@@ -664,6 +673,22 @@ func (p *STARSPane) consumeMouseEvents(
 
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
+
+	// TI 6191.409 Rev. 30, 6.20: slew to a track and release the
+	// middle trackball button to toggle its cyan highlight. CRC/VICE use
+	// the target position (not the detached data-block text) for picking.
+	// An ordinary highlight must not consume another active command.
+	if p.commandMode == CommandModeNone && p.commandInput == "" &&
+		mouse.WasReleased(platform.MouseButtonMiddle) {
+		if target := closestSlewTarget(targets, mouse.Pos, transforms); target != nil {
+			if err := p.toggleTrackHighlight(target, time.Now()); err != nil {
+				p.commandResponse = err.Error()
+			} else {
+				p.commandResponse = ""
+			}
+			return
+		}
+	}
 
 	// TI 6191.409 6.5: N+slew on a ghost suppresses it, N+slew on
 	// its parent forces/restores ghosting, and N*+slew toggles the parent's

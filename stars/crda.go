@@ -1,7 +1,7 @@
 package stars
 
-// CRC-compatible CRDA geometry, target qualification, and display rendering.
-// Runtime state and controller commands remain in their own files.
+// CRC-compatible CRDA geometry, target qualification, runtime state, and rendering.
+// Controller commands remain in cmdtools.go.
 //
 // References: CRC Stars.Crda/CrdaManager.cs, GeoPoint.cs, GeoCalc.cs,
 // NavCalc.cs, DisplayElementGhostTracks, DisplayElementCrdaDiagrams,
@@ -10,6 +10,7 @@ package stars
 import (
 	"fmt"
 	"math"
+	"strconv"
 	"strings"
 
 	redsmath "github.com/juliusplatzer/reds/math"
@@ -322,6 +323,548 @@ func (e *crdaEngine) ghostForTrack(track crdaTrack, states []crdaPairState, forc
 		}
 	}
 	return best, found
+}
+
+// CRDA runtime state and operations. The geometry above is immutable; this
+// section owns the per-display runway controls, overrides, and live ghosts.
+// References: CRC CrdaManager/InputManager, TI 6191.409 §6.5, VICE
+// stars/cmdtools.go.
+
+type crdaRunwayState struct {
+	DisplayQualificationRegion bool
+	DisplayCourseLines         bool
+	// nil selects the adapted/default leader direction (CRC LeaderDirection.Default).
+	LeaderDirection *leaderLineDirection
+}
+
+type crdaTrackOverride struct {
+	Identity           string
+	ForceGhost         bool
+	ForceQualification bool
+	Suppressed         bool
+	FullDataBlock      bool
+}
+
+// crdaDisplayGhost is the renderer-facing, display-local ghost. ParentKey
+// resolves the original TAIS target; its position is never fed back to TAIS.
+// Suppressed ghosts are retained, so N + parent slew can restore them.
+type crdaDisplayGhost struct {
+	ParentKey     string
+	Identity      string
+	Ghost         crdaGhost
+	FullDataBlock bool
+	Suppressed    bool
+}
+
+type crdaRuntime struct {
+	engine     *crdaEngine
+	pairs      []crdaPairState
+	runways    [][2]crdaRunwayState // [master, slave], same order as adaptation
+	inhibited  bool
+	forceAll   bool
+	ghosts     map[string]crdaDisplayGhost
+	overrides  map[string]crdaTrackOverride
+	seen       map[string]uint64 // reusable per-frame presence marks
+	generation uint64
+}
+
+func newCRDARuntime(rpcs []rpcConfig) crdaRuntime {
+	return crdaRuntime{
+		pairs:     make([]crdaPairState, len(rpcs)),
+		runways:   make([][2]crdaRunwayState, len(rpcs)),
+		ghosts:    make(map[string]crdaDisplayGhost),
+		overrides: make(map[string]crdaTrackOverride),
+		seen:      make(map[string]uint64),
+	}
+}
+
+// refreshCRDAEngine reprojects the adapted trapezoids if the display crosses
+// a magnetic-variation tile; operator-selected runway modes are not reset.
+func (p *STARSPane) refreshCRDAEngine() error {
+	if p == nil || len(p.config.Facility.RPCs) == 0 {
+		return nil
+	}
+	center := p.currentCenter()
+	variation, err := radar.MagneticVariationAt(center.Lat, center.Lon)
+	if err != nil {
+		variation = 0 // same true-north fallback as scopeTransformations
+	}
+	if p.crda.engine != nil && p.crda.engine.magVar == variation {
+		return nil
+	}
+	engine, err := newCRDAEngine(p.config.Facility.RPCs, variation)
+	if err != nil {
+		return err
+	}
+	p.crda.engine = engine
+	return nil
+}
+
+func (p *STARSPane) crdaAvailable() bool {
+	return p != nil && p.crda.engine != nil && len(p.crda.pairs) > 0
+}
+
+func (p *STARSPane) crdaReady() error {
+	if !p.crdaAvailable() {
+		return ErrSTARSIllegalFunction
+	}
+	if p.crda.inhibited {
+		return ErrSTARSCRDAOff
+	}
+	return nil
+}
+
+func (p *STARSPane) crdaDisablePair(index int) {
+	p.crda.pairs[index] = crdaPairState{}
+	p.crda.runways[index] = [2]crdaRunwayState{}
+	for key, ghost := range p.crda.ghosts {
+		if ghost.Ghost.RPCIndex == p.config.Facility.RPCs[index].Index &&
+			ghost.Ghost.RPCID == p.config.Facility.RPCs[index].ID {
+			delete(p.crda.ghosts, key)
+			state := p.crda.overrides[key]
+			state.Suppressed = false
+			state.FullDataBlock = true
+			p.crda.overrides[key] = state
+		}
+	}
+}
+
+func (p *STARSPane) crdaToggleInhibited() error {
+	if !p.crdaAvailable() {
+		return ErrSTARSIllegalFunction
+	}
+	p.crda.inhibited = !p.crda.inhibited
+	if p.crda.inhibited {
+		clear(p.crda.ghosts)
+		for key, state := range p.crda.overrides {
+			// CRC deletes its ghost repository on inhibition. Track-level
+			// qualification overrides belong to the parent and survive.
+			state.Suppressed = false
+			state.FullDataBlock = true
+			p.crda.overrides[key] = state
+		}
+		for i := range p.crda.pairs {
+			p.crdaDisablePair(i)
+		}
+	}
+	return nil
+}
+
+// CRC indexes RPCs by 1-based adaptation ORDER, not the RPC's numeric label.
+func (p *STARSPane) crdaSetPairMode(airport string, oneBasedIndex int, mode crdaMode) (string, error) {
+	if err := p.crdaReady(); err != nil {
+		return "", err
+	}
+	index := oneBasedIndex - 1
+	if index < 0 || index >= len(p.crda.pairs) ||
+		!strings.EqualFold(p.config.Facility.RPCs[index].AirportID, airport) {
+		return "", ErrSTARSCommandFormat
+	}
+	pair := p.config.Facility.RPCs[index]
+	if mode == crdaDisabled {
+		p.crdaDisablePair(index)
+	} else {
+		state := &p.crda.pairs[index]
+		if state.Mode == crdaDisabled {
+			state.MasterEnabled = true // CRC enables master on initial activation.
+		}
+		state.Mode = mode
+	}
+	verb := "ENABLED"
+	if mode == crdaDisabled {
+		verb = "INHIBITED"
+	}
+	return fmt.Sprintf("%s %s/%s %s", pair.AirportID, pair.MasterRunway.RunwayID, pair.SlaveRunway.RunwayID, verb), nil
+}
+
+func (p *STARSPane) crdaFindRunway(airport, runway string, activeOnly bool) (int, int, error) {
+	if err := p.crdaReady(); err != nil {
+		return 0, 0, err
+	}
+	for i, pair := range p.config.Facility.RPCs {
+		if !strings.EqualFold(pair.AirportID, airport) ||
+			(activeOnly && p.crda.pairs[i].Mode == crdaDisabled) {
+			continue
+		}
+		if strings.EqualFold(pair.MasterRunway.RunwayID, runway) {
+			return i, 0, nil
+		}
+		if strings.EqualFold(pair.SlaveRunway.RunwayID, runway) {
+			return i, 1, nil
+		}
+	}
+	return 0, 0, ErrSTARSCommandFormat
+}
+
+func (p *STARSPane) crdaSetRunwayGhosting(airport, runway string, requested *bool) (bool, error) {
+	i, side, err := p.crdaFindRunway(airport, runway, false)
+	if err != nil {
+		return false, err
+	}
+	state := &p.crda.pairs[i]
+	enabled := state.MasterEnabled
+	if side == 1 {
+		enabled = state.SlaveEnabled
+	}
+	if requested == nil {
+		enabled = !enabled
+	} else {
+		enabled = *requested
+	}
+	if side == 0 {
+		state.MasterEnabled = enabled
+	} else {
+		state.SlaveEnabled = enabled
+	}
+	if enabled && state.Mode == crdaDisabled {
+		state.Mode = crdaStagger
+	}
+	if !state.MasterEnabled && !state.SlaveEnabled {
+		p.crdaDisablePair(i)
+	}
+	return enabled, nil
+}
+
+func (p *STARSPane) crdaToggleRunwayOverlay(airport, runway string, courseLines bool) error {
+	i, side, err := p.crdaFindRunway(airport, runway, true)
+	if err != nil {
+		return err
+	}
+	state := &p.crda.runways[i][side]
+	if courseLines {
+		state.DisplayCourseLines = !state.DisplayCourseLines
+	} else {
+		state.DisplayQualificationRegion = !state.DisplayQualificationRegion
+	}
+	return nil
+}
+
+func (p *STARSPane) crdaSetRunwayLeader(airport, runway string, direction leaderLineDirection) error {
+	i, side, err := p.crdaFindRunway(airport, runway, true)
+	if err != nil {
+		return err
+	}
+	p.crda.runways[i][side].LeaderDirection = &direction
+	return nil
+}
+
+// crdaIdentity prevents a reused TAIS key/track number inheriting operator
+// overrides from a different aircraft. An associated track's SFPN and ACID
+// are stable enough for this display-only state; no extra feed copies needed.
+func crdaIdentity(t *redsnet.TaisTarget) string {
+	if t == nil {
+		return ""
+	}
+	if t.FlightPlan == nil {
+		return strings.TrimSpace(t.Track.TrackNum)
+	}
+	return fmt.Sprintf("%d:%s:%s", t.FlightPlan.SFPN,
+		strings.ToUpper(strings.TrimSpace(t.FlightPlan.ACID)), strings.TrimSpace(t.Track.TrackNum))
+}
+
+// crdaInputTrack converts the TAIS field units exactly once. TAIS VX/VY are
+// knots east/north, altitude is feet; CRC expects degrees true and hundreds
+// of feet. TAIS has no nullable velocity or altitude indicators, so a zero
+// velocity vector cannot provide a reliable course and is not qualified.
+func crdaInputTrack(t *redsnet.TaisTarget, override crdaTrackOverride) crdaTrack {
+	vx, vy := float64(t.Track.VX), float64(t.Track.VY)
+	hasCourse := vx != 0 || vy != 0
+	course := 0.0
+	if hasCourse {
+		course = crdaNormalizeHeading(math.Atan2(vx, vy) * 180 / math.Pi)
+	}
+	track := crdaTrack{
+		Position:                 configPoint{Lat: t.Track.Lat, Lon: t.Track.Lon},
+		CourseTrue:               course,
+		GroundSpeedKnots:         math.Hypot(vx, vy),
+		AdjustedAltitudeHundreds: int(math.Round(float64(t.Track.ReportedAltitude) / 100)),
+		Associated:               t.FlightPlan != nil && !t.FlightPlan.Deleted,
+		CoastPhase2:              t.CoastPhase >= redsnet.TaisCoastPhase2,
+		HasCourse:                hasCourse,
+		HasSpeed:                 true,
+		HasAltitude:              true,
+		ForceQualification:       override.ForceQualification,
+		ForceGhost:               override.ForceGhost,
+	}
+	if t.FlightPlan != nil {
+		track.Scratchpad1 = t.FlightPlan.ScratchPad1
+		track.Scratchpad2 = t.FlightPlan.ScratchPad2
+	}
+	return track
+}
+
+// updateCRDA is pure display processing: it never alters TAIS/client state or
+// uses RPOS coordinates. It is called after commands each frame. Ghost FDB /
+// suppression settings survive a position update, but not a track deletion or
+// a TAIS key reallocation to another aircraft.
+func (p *STARSPane) updateCRDA(snapshot redsnet.TaisSnapshot) {
+	if p == nil {
+		return
+	}
+	if !snapshot.Ready || !p.crdaAvailable() || p.crda.inhibited {
+		clear(p.crda.ghosts)
+		if !snapshot.Ready {
+			clear(p.crda.overrides)
+			clear(p.crda.seen)
+		}
+		return
+	}
+	// Reuse the presence map instead of allocating an O(target-count) map on
+	// every draw. Only live keys remain after the sweep below.
+	p.crda.generation++
+	if p.crda.generation == 0 {
+		clear(p.crda.seen) // extremely rare uint64 wraparound
+		p.crda.generation = 1
+	}
+	generation := p.crda.generation
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		key := targetDisplayStateKey(target)
+		if key == "" {
+			continue
+		}
+		p.crda.seen[key] = generation
+		identity := crdaIdentity(target)
+		override, hasOverride := p.crda.overrides[key]
+		if hasOverride && override.Identity != identity {
+			delete(p.crda.overrides, key)
+			override, hasOverride = crdaTrackOverride{}, false
+		}
+		ghost, found := p.crda.engine.ghostForTrack(crdaInputTrack(target, override), p.crda.pairs, p.crda.forceAll)
+		if !found {
+			delete(p.crda.ghosts, key)
+			// CRC discards a disqualified ghost. Its temporary FDB and
+			// suppression state must not reappear when it requalifies.
+			if hasOverride && (override.Suppressed || !override.FullDataBlock) {
+				override.Suppressed = false
+				override.FullDataBlock = true
+				p.crda.overrides[key] = override
+			}
+			continue
+		}
+		if !hasOverride {
+			override = crdaTrackOverride{Identity: identity, FullDataBlock: true}
+		}
+		// Update the entire geometry without losing the controller's FDB or
+		// suppression selection; do not retain a second copy of the parent.
+		p.crda.ghosts[key] = crdaDisplayGhost{
+			ParentKey: key, Identity: identity, Ghost: ghost,
+			FullDataBlock: override.FullDataBlock, Suppressed: override.Suppressed,
+		}
+	}
+	for key := range p.crda.ghosts {
+		if p.crda.seen[key] != generation {
+			delete(p.crda.ghosts, key)
+		}
+	}
+	for key := range p.crda.overrides {
+		if p.crda.seen[key] != generation {
+			delete(p.crda.overrides, key)
+		}
+	}
+	for key, lastSeen := range p.crda.seen {
+		if lastSeen != generation {
+			delete(p.crda.seen, key)
+		}
+	}
+}
+
+func (p *STARSPane) crdaOverrideFor(t *redsnet.TaisTarget) (string, crdaTrackOverride) {
+	key := targetDisplayStateKey(t)
+	identity := crdaIdentity(t)
+	state, ok := p.crda.overrides[key]
+	if !ok || state.Identity != identity {
+		state = crdaTrackOverride{Identity: identity, FullDataBlock: true}
+	}
+	return key, state
+}
+
+// Called by the N and N* slew handlers. Ghost suppression is separate from
+// force qualification; selecting a parent with N restores a suppressed ghost.
+func (p *STARSPane) crdaSlewParent(t *redsnet.TaisTarget, forceQualification bool) error {
+	if err := p.crdaReady(); err != nil {
+		return err
+	}
+	if t == nil {
+		return ErrSTARSNoTrack
+	}
+	if t.FlightPlan == nil || t.FlightPlan.Deleted {
+		return ErrSTARSIllegalTrack
+	}
+	key, state := p.crdaOverrideFor(t)
+	if forceQualification {
+		state.ForceQualification = !state.ForceQualification
+	} else {
+		if ghost, ok := p.crda.ghosts[key]; ok && !ghost.Suppressed {
+			return ErrSTARSIllegalTrack
+		}
+		state.Suppressed = false
+		state.ForceGhost = true
+	}
+	p.crda.overrides[key] = state
+	return nil
+}
+
+func (p *STARSPane) crdaSlewGhost(key string, suppress bool) error {
+	if err := p.crdaReady(); err != nil {
+		return err
+	}
+	ghost, ok := p.crda.ghosts[key]
+	if !ok || ghost.Suppressed {
+		return ErrSTARSIllegalTrack
+	}
+	state, exists := p.crda.overrides[key]
+	if !exists || state.Identity != ghost.Identity {
+		state = crdaTrackOverride{Identity: ghost.Identity, FullDataBlock: true}
+	}
+	if suppress {
+		state.Suppressed = true
+		state.ForceGhost = false
+	} else {
+		state.FullDataBlock = !state.FullDataBlock
+	}
+	p.crda.overrides[key] = state
+	ghost.Suppressed = state.Suppressed
+	ghost.FullDataBlock = state.FullDataBlock
+	p.crda.ghosts[key] = ghost
+	return nil
+}
+
+// closestCRDAGhost selects the nearest visible ghost position symbol.
+// CRC DisplayElementGhostTracks uses a 7-pixel click spot, not the 20-pixel
+// real-target slew tolerance. Rendering may extend this to its FDB hitboxes.
+func (p *STARSPane) closestCRDAGhost(mouse redsmath.Vec2, transforms radar.LatLonTransformations) (string, bool) {
+	if !p.crdaAvailable() || p.crda.inhibited {
+		return "", false
+	}
+	const radius = float32(7)
+	best2 := radius * radius
+	best := ""
+	for key, ghost := range p.crda.ghosts {
+		if ghost.Suppressed {
+			continue
+		}
+		point := transforms.WindowFromLatLon(ghost.Ghost.Position.Lat, ghost.Ghost.Position.Lon)
+		dx, dy := point.X-mouse.X, point.Y-mouse.Y
+		if d2 := dx*dx + dy*dy; d2 < best2 {
+			best2, best = d2, key
+		}
+	}
+	return best, best != ""
+}
+
+// crdaStatusLines is the status-list data required by the future renderer.
+// Match CRC SystemListCrda: one-based numbering among pairs whose airports
+// belong to the selected area's SSA airport set; S/T marks active modes.
+func (p *STARSPane) crdaStatusLines() []string {
+	if !p.crdaAvailable() {
+		return nil
+	}
+	visibleAirports := make(map[string]bool, len(p.config.Area.SSAAirports))
+	for _, airport := range p.config.Area.SSAAirports {
+		visibleAirports[strings.ToUpper(airport)] = true
+	}
+	lines := make([]string, 0, len(p.crda.pairs))
+	for i, pair := range p.config.Facility.RPCs {
+		if !visibleAirports[strings.ToUpper(pair.AirportID)] {
+			continue
+		}
+		mode := " "
+		owner := ""
+		switch p.crda.pairs[i].Mode {
+		case crdaStagger:
+			mode, owner = "S", p.ownTCP()
+		case crdaTie:
+			mode, owner = "T", p.ownTCP()
+		}
+		lines = append(lines, fmt.Sprintf("%s%d %s %-7s %s", mode, len(lines)+1,
+			pair.AirportID, pair.MasterRunway.RunwayID+"/"+pair.SlaveRunway.RunwayID, owner))
+	}
+	return lines
+}
+
+// crdaParentReadout approximates CRC InputManager.DisplayParentTrackInfo using
+// the available TAIS fields (ACID, type/suffix, beacon and current TCP). It
+// does not invent fields missing from the feed.
+func (p *STARSPane) crdaParentReadout(snapshot redsnet.TaisSnapshot, key string) string {
+	for i := range snapshot.Targets {
+		t := &snapshot.Targets[i]
+		if targetDisplayStateKey(t) != key {
+			continue
+		}
+		fields := make([]string, 0, 4)
+		if t.FlightPlan != nil {
+			if acid := strings.TrimSpace(t.FlightPlan.ACID); acid != "" {
+				fields = append(fields, acid)
+			}
+			if typ := strings.TrimSpace(t.FlightPlan.ACType); typ != "" {
+				if suffix := strings.TrimSpace(t.FlightPlan.EquipmentSuffix); suffix != "" {
+					typ += "/" + suffix
+				}
+				fields = append(fields, typ)
+			}
+		}
+		code := strings.TrimSpace(t.Track.ReportedBeaconCode)
+		if code == "" && t.FlightPlan != nil {
+			code = strings.TrimSpace(t.FlightPlan.AssignedBeaconCode)
+		}
+		if code != "" {
+			fields = append(fields, code)
+		}
+		if tcp, ok := p.targetOwnerTCP(t); ok {
+			fields = append(fields, tcp)
+		}
+		return strings.Join(fields, " ")
+	}
+	return ""
+}
+
+// crdaGhostLeaderDirection resolves the same precedence as CRC's ghost
+// renderer: explicit per-runway N/L setting, then adapted runway default,
+// then the entering TCW/TDW's tracked leader direction. JSON adaptations
+// contain string compass directions; numeric vNAS enum values are supported.
+func (p *STARSPane) crdaGhostLeaderDirection(ghost crdaDisplayGhost) leaderLineDirection {
+	fallback := p.currentPrefs().LeaderLineDirection
+	for i, pair := range p.config.Facility.RPCs {
+		if pair.ID != ghost.Ghost.RPCID || pair.Index != ghost.Ghost.RPCIndex {
+			continue
+		}
+		side := 0
+		runway := pair.MasterRunway
+		if !ghost.Ghost.MasterSource {
+			side = 1
+			runway = pair.SlaveRunway
+		}
+		if direction := p.crda.runways[i][side].LeaderDirection; direction != nil {
+			return *direction
+		}
+		adapted := strings.ToUpper(strings.Trim(string(runway.DefaultLeaderDirection), `"`))
+		switch adapted {
+		case "N":
+			return leaderLineDirectionNorth
+		case "NE":
+			return leaderLineDirectionNorthEast
+		case "E":
+			return leaderLineDirectionEast
+		case "SE":
+			return leaderLineDirectionSouthEast
+		case "S":
+			return leaderLineDirectionSouth
+		case "SW":
+			return leaderLineDirectionSouthWest
+		case "W":
+			return leaderLineDirectionWest
+		case "NW":
+			return leaderLineDirectionNorthWest
+		}
+		if value, err := strconv.Atoi(adapted); err == nil {
+			if direction, ok := leaderLineDirectionFromKeypad(value); ok {
+				return direction
+			}
+		}
+		break
+	}
+	return fallback
 }
 
 // CRDA display rendering. Geographic positions are projected at draw time.

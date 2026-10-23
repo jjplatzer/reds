@@ -296,6 +296,20 @@ func (p *STARSPane) targetDatablockPresentation(target *redsnet.TaisTarget) (tar
 	}
 
 	ps := p.currentPrefs()
+	if p.trackHighlighted(target) {
+		// CRC BuildLdb/BuildPdb/BuildFdb and VICE track rendering all
+		// use FDB brightness for selected text, without changing its
+		// underlying Full/Partial/Limited data-block format.
+		baseType, _, _ := p.targetDatablockPresentationUnhighlighted(target)
+		return baseType, p.colors.SelectedDatablock, ps.Brightness.FullDatablocks
+	}
+	return p.targetDatablockPresentationUnhighlighted(target)
+}
+
+// targetDatablockPresentationUnhighlighted is shared by the highlighted
+// formatting path so toggling cyan cannot inadvertently turn a PDB into an FDB.
+func (p *STARSPane) targetDatablockPresentationUnhighlighted(target *redsnet.TaisTarget) (targetDatablockType, renderer.RGB, Brightness) {
+	ps := p.currentPrefs()
 	if target.FlightPlan == nil {
 		return targetDatablockLimited, p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 	}

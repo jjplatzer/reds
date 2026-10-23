@@ -255,6 +255,34 @@ func (p *STARSPane) ssaSystemOffText() string {
 	return ""
 }
 
+// ssaTerminalOffText returns SSA field R (TCW/TDW Off Indicators).
+// Table 2-19 lists CRDA when it is inhibited at this particular TCW/TDW.
+// This is distinct from field J, which reports *system-wide* inhibition.
+func (p *STARSPane) ssaTerminalOffText() string {
+	if p != nil && p.crdaAvailable() && p.crda.inhibited {
+		return "TW OFF: CRDA"
+	}
+	return ""
+}
+
+// ssaCRDAStatusText returns SSA field W (CRDA Indicators).
+// TI 6191.409 Rev. 30, Table 2-15 (p. 2-80) specifies exactly one
+// "CRDA ENABLED" line whenever at least one runway-pair configuration
+// is enabled at this TCW/TDW. Pair details belong to the separate CRDA
+// STATUS list. CRC and VICE print per-pair summaries in their SSA instead;
+// use the operator manual's documented field W presentation here.
+func (p *STARSPane) ssaCRDAStatusText() string {
+	if p == nil || !p.crdaAvailable() || p.crda.inhibited {
+		return ""
+	}
+	for _, state := range p.crda.pairs {
+		if state.Mode != crdaDisabled {
+			return "CRDA ENABLED"
+		}
+	}
+	return ""
+}
+
 // ssaChopLong applies the Table 2-15 continuation modality used by the ATPA
 // M2/M3 fields: if the line cannot fit, terminate the visible list with '+'.
 // VICE uses the STARS 32-character SSA field width, so mirror it here.
@@ -596,6 +624,13 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			}
 		}
 
+		// Field R - TCW/TDW Off Indicators (Table 2-19). CRDA's
+		// MULTI FUNC N local inhibition reports TW OFF: CRDA here.
+		// The SSA filter affects presentation, not processing state.
+		if filter.All || filter.DisabledTerminal {
+			addLine(p.ssaTerminalOffText(), p.colors.List)
+		}
+
 		// Fields S-U - Keyboard Consolidation/Coupling status. Table 2-15
 		// assigns these fields to the three TCW/TDW keyboards and makes all
 		// of them subject to the single SSA FILTER <CON/CPL> selection. REDS'
@@ -608,6 +643,13 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			for _, line := range p.ssaConsolidationCouplingLines() {
 				addLine(line, p.colors.List)
 			}
+		}
+
+		// Field W - CRDA Indicators. Suppress the line when no runway
+		// pair is active or CRDA is locally inhibited. The <CRDA> SSA
+		// FILTER selection is independent of the CRDA STATUS list.
+		if filter.All || filter.ActiveCRDAPairs {
+			addLine(p.ssaCRDAStatusText(), p.colors.List)
 		}
 
 		td.GenerateCommands(cb, texture)
