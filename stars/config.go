@@ -25,6 +25,7 @@ type facilityConfig struct {
 	Areas            []areaConfig            `json:"areas"`
 	ControlPositions []controlPositionConfig `json:"controlPositions"`
 	ATPAVolumes      []atpaVolumeConfig      `json:"atpaVolumes"`
+	RPCs             []rpcConfig             `json:"rpcs"`
 	MapGroups        []mapGroupConfig        `json:"mapGroups"`
 	VideoMaps        []videoMapConfig        `json:"videoMaps"`
 }
@@ -52,6 +53,47 @@ type atpaVolumeConfig struct {
 	Scratchpads                  []atpaScratchpadConfig `json:"scratchpads"`
 	TCPs                         []atpaTCPDisplayConfig `json:"tcps"`
 	ExcludedTCPIDs               []string               `json:"excludedTcpIds"`
+}
+
+// rpcConfig mirrors the CRC/vNAS Runway Pair Configuration (RPC) adaptation.
+// The ordered slice of RPCs is not sorted: CRC references entries by position.
+// CRDA activation, modes, and force-ghost state are runtime preferences, not
+// parts of the facility adaptation.
+type rpcConfig struct {
+	ID                    string          `json:"id"`
+	Index                 int             `json:"index"`
+	AirportID             string          `json:"airportId"`
+	PositionSymbolTie     string          `json:"positionSymbolTie"`
+	PositionSymbolStagger string          `json:"positionSymbolStagger"`
+	MasterRunway          rpcRunwayConfig `json:"masterRunway"`
+	SlaveRunway           rpcRunwayConfig `json:"slaveRunway"`
+}
+
+// Widths, distances and headings stay in CRC adaptation units. Converting
+// them for calculations is the responsibility of the future CRDA engine.
+// Preserve direction as raw JSON: CRC/vNAS uses both numeric and string enums.
+type rpcRunwayConfig struct {
+	RunwayID                     string          `json:"runwayId"`
+	HeadingTolerance             int             `json:"headingTolerance"`
+	NearSideHalfWidth            float64         `json:"nearSideHalfWidth"`
+	FarSideHalfWidth             float64         `json:"farSideHalfWidth"`
+	NearSideDistance             float64         `json:"nearSideDistance"`
+	RegionLength                 float64         `json:"regionLength"`
+	TargetReferencePoint         configPoint     `json:"targetReferencePoint"`
+	TargetReferenceLineHeading   float64         `json:"targetReferenceLineHeading"`
+	TargetReferenceLineLength    float64         `json:"targetReferenceLineLength"`
+	TargetReferencePointAltitude int             `json:"targetReferencePointAltitude"`
+	ImageReferencePoint          configPoint     `json:"imageReferencePoint"`
+	ImageReferenceLineHeading    float64         `json:"imageReferenceLineHeading"`
+	ImageReferenceLineLength     float64         `json:"imageReferenceLineLength"`
+	TieModeOffset                float64         `json:"tieModeOffset"`
+	DescentPointDistance         float64         `json:"descentPointDistance"`
+	DescentPointAltitude         int             `json:"descentPointAltitude"`
+	AbovePathTolerance           int             `json:"abovePathTolerance"`
+	BelowPathTolerance           int             `json:"belowPathTolerance"`
+	DefaultLeaderDirection       json.RawMessage `json:"defaultLeaderDirection"`
+	ScratchpadPatterns           []string        `json:"scratchpadPatterns"`
+	SecondaryScratchpadPatterns  []string        `json:"secondaryScratchpadPatterns"`
 }
 
 type atpaTCPDisplayConfig struct {

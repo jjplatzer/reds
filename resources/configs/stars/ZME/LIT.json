@@ -1537,6 +1537,142 @@
       ]
     }
   ],
+  "rpcs": [
+    {
+      "id": "01KKT4PXZRYRKSPSAGMESQ693W",
+      "index": 1,
+      "airportId": "LIT",
+      "positionSymbolTie": "Y",
+      "positionSymbolStagger": "X",
+      "masterRunway": {
+        "runwayId": "04L",
+        "headingTolerance": 45,
+        "nearSideHalfWidth": 0.5,
+        "farSideHalfWidth": 5,
+        "nearSideDistance": 0.5,
+        "regionLength": 25,
+        "targetReferencePoint": {
+          "lat": 34.722011468373566,
+          "lon": -92.23866165697693
+        },
+        "targetReferenceLineHeading": 46.5,
+        "targetReferenceLineLength": 25,
+        "targetReferencePointAltitude": 2,
+        "imageReferencePoint": {
+          "lat": 34.722011468373566,
+          "lon": -92.23866165697693
+        },
+        "imageReferenceLineHeading": 1.5,
+        "imageReferenceLineLength": 25,
+        "tieModeOffset": 3,
+        "descentPointDistance": 25,
+        "descentPointAltitude": 80,
+        "abovePathTolerance": 30,
+        "belowPathTolerance": 80,
+        "defaultLeaderDirection": "SE",
+        "scratchpadPatterns": [
+          "L"
+        ]
+      },
+      "slaveRunway": {
+        "runwayId": "36",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 0.5,
+        "farSideHalfWidth": 5,
+        "nearSideDistance": 0.5,
+        "regionLength": 25,
+        "targetReferencePoint": {
+          "lat": 34.722011468373566,
+          "lon": -92.23866165697693
+        },
+        "targetReferenceLineHeading": 1.5,
+        "targetReferenceLineLength": 25,
+        "targetReferencePointAltitude": 2,
+        "imageReferencePoint": {
+          "lat": 34.722011468373566,
+          "lon": -92.23866165697693
+        },
+        "imageReferenceLineHeading": 46.5,
+        "imageReferenceLineLength": 25,
+        "tieModeOffset": 3,
+        "descentPointDistance": 25,
+        "descentPointAltitude": 80,
+        "abovePathTolerance": 30,
+        "belowPathTolerance": 80,
+        "defaultLeaderDirection": "W",
+        "scratchpadPatterns": [
+          "6"
+        ]
+      }
+    },
+    {
+      "id": "01KKT59WFQZ099Y10WG2MGBZ2G",
+      "index": 2,
+      "airportId": "LIT",
+      "positionSymbolTie": "Y",
+      "positionSymbolStagger": "X",
+      "masterRunway": {
+        "runwayId": "04R",
+        "headingTolerance": 45,
+        "nearSideHalfWidth": 0.5,
+        "farSideHalfWidth": 5,
+        "nearSideDistance": 0.5,
+        "regionLength": 25,
+        "targetReferencePoint": {
+          "lat": 34.70528478830777,
+          "lon": -92.23919446546579
+        },
+        "targetReferenceLineHeading": 46.5,
+        "targetReferenceLineLength": 25,
+        "targetReferencePointAltitude": 2,
+        "imageReferencePoint": {
+          "lat": 34.70528478830777,
+          "lon": -92.23919446546579
+        },
+        "imageReferenceLineHeading": 1.5,
+        "imageReferenceLineLength": 25,
+        "tieModeOffset": 3,
+        "descentPointDistance": 25,
+        "descentPointAltitude": 80,
+        "abovePathTolerance": 30,
+        "belowPathTolerance": 80,
+        "defaultLeaderDirection": "SE",
+        "scratchpadPatterns": [
+          "R"
+        ]
+      },
+      "slaveRunway": {
+        "runwayId": "36",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 0.5,
+        "farSideHalfWidth": 5,
+        "nearSideDistance": 0.5,
+        "regionLength": 25,
+        "targetReferencePoint": {
+          "lat": 34.70528478830777,
+          "lon": -92.23919446546579
+        },
+        "targetReferenceLineHeading": 1.5,
+        "targetReferenceLineLength": 25,
+        "targetReferencePointAltitude": 2,
+        "imageReferencePoint": {
+          "lat": 34.70528478830777,
+          "lon": -92.23919446546579
+        },
+        "imageReferenceLineHeading": 46.5,
+        "imageReferenceLineLength": 25,
+        "tieModeOffset": 3,
+        "descentPointDistance": 25,
+        "descentPointAltitude": 80,
+        "abovePathTolerance": 30,
+        "belowPathTolerance": 80,
+        "defaultLeaderDirection": "W",
+        "scratchpadPatterns": [
+          "6"
+        ]
+      }
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

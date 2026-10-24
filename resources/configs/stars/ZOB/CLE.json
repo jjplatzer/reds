@@ -1563,6 +1563,142 @@
       ]
     }
   ],
+  "rpcs": [
+    {
+      "id": "01G90GK5SD4PX72ARM7DQP58KN",
+      "index": 1,
+      "airportId": "CAK",
+      "positionSymbolTie": "/",
+      "positionSymbolStagger": "0",
+      "masterRunway": {
+        "runwayId": "23",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 1.5,
+        "farSideHalfWidth": 3,
+        "nearSideDistance": 3,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 40.92262,
+          "lon": -81.43616
+        },
+        "targetReferenceLineHeading": 234,
+        "targetReferenceLineLength": 25,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 40.93208,
+          "lon": -81.44216
+        },
+        "imageReferenceLineHeading": 189,
+        "imageReferenceLineLength": 25,
+        "tieModeOffset": 2.5,
+        "descentPointDistance": 5.4,
+        "descentPointAltitude": 30,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "SE",
+        "scratchpadPatterns": [
+          "23"
+        ]
+      },
+      "slaveRunway": {
+        "runwayId": "19",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 1.5,
+        "farSideHalfWidth": 3,
+        "nearSideDistance": 3,
+        "regionLength": 15,
+        "targetReferencePoint": {
+          "lat": 40.93208,
+          "lon": -81.44216
+        },
+        "targetReferenceLineHeading": 189,
+        "targetReferenceLineLength": 25,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 40.92262,
+          "lon": -81.43616
+        },
+        "imageReferenceLineHeading": 234,
+        "imageReferenceLineLength": 25,
+        "tieModeOffset": 2.5,
+        "descentPointDistance": 5.4,
+        "descentPointAltitude": 30,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "W",
+        "scratchpadPatterns": [
+          "19"
+        ]
+      }
+    },
+    {
+      "id": "01G90GK5SD709QZSZ2BBJ1EBE4",
+      "index": 2,
+      "airportId": "CAK",
+      "positionSymbolTie": "/",
+      "positionSymbolStagger": "0",
+      "masterRunway": {
+        "runwayId": "05",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 1.5,
+        "farSideHalfWidth": 3,
+        "nearSideDistance": 3,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 40.90474,
+          "lon": -81.46188
+        },
+        "targetReferenceLineHeading": 54,
+        "targetReferenceLineLength": 25,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 40.91019,
+          "lon": -81.44555
+        },
+        "imageReferenceLineHeading": 9,
+        "imageReferenceLineLength": 25,
+        "tieModeOffset": 2.5,
+        "descentPointDistance": 5.5,
+        "descentPointAltitude": 30,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "NW",
+        "scratchpadPatterns": [
+          "5"
+        ]
+      },
+      "slaveRunway": {
+        "runwayId": "01",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 1.5,
+        "farSideHalfWidth": 3,
+        "nearSideDistance": 3,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 40.91019,
+          "lon": -81.44555
+        },
+        "targetReferenceLineHeading": 9,
+        "targetReferenceLineLength": 25,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 40.90474,
+          "lon": -81.46188
+        },
+        "imageReferenceLineHeading": 54,
+        "imageReferenceLineLength": 25,
+        "tieModeOffset": 2.5,
+        "descentPointDistance": 5.5,
+        "descentPointAltitude": 30,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "NW",
+        "scratchpadPatterns": [
+          "1"
+        ]
+      }
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

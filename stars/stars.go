@@ -86,6 +86,11 @@ type STARSPane struct {
 	// reselected. This is transient display state, not a saved preference.
 	singleTrackQuickLook map[string]struct{}
 
+	// highlightedTracks implements TI 6191.409 Rev. 30, 6.20.  The toggle
+	// is local to this TCW/TDW (not a global track or saved preference). A
+	// signature prevents a recycled TAIS track key from inheriting cyan.
+	highlightedTracks map[string]starsTrackHighlightIdentity
+
 	// singleTrackLeaderDirections records TI 6191.409 6.13.1 / 6.13.17
 	// manual data-block orientations. These overrides are local to this
 	// TCW/TDW and apply only to the selected associated track. Entering 5
@@ -147,6 +152,9 @@ type STARSPane struct {
 	atpaSite               *atpaSiteRuntimeState
 	atpaTrackSettingsReset uint64
 	atpaWarnAlertReset     uint64
+
+	// CRDA modes/ghosts belong to this TCW; no TAIS state is mutated.
+	crda crdaRuntime
 
 	// trackRepositions stores TI 6191.409 5.7.3 TRK RPOS presentation state.
 	// TAIS itself is read-only, so the local TCW/TDW snapshot is rewritten for
@@ -434,6 +442,7 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 			slog.Any("error", prefSetsErr))
 	}
 	pane.atpaSite = sharedATPASiteRuntimeState(cfg)
+	pane.crda = newCRDARuntime(cfg.Facility.RPCs)
 	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()
 	// Validate the magnetic-adaptation resource once at startup. The actual
 	// value is selected from the tile containing the current display center in
@@ -446,6 +455,9 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 			slog.Float64("lat", center.Lat),
 			slog.Float64("lon", center.Lon),
 			slog.Any("error", lookupErr))
+	}
+	if err := pane.refreshCRDAEngine(); err != nil {
+		logger.Warn("Unable to initialize STARS CRDA adaptation", slog.Any("error", err))
 	}
 	pane.initializeSystemAltimeter(cfg.systemAltimeterAirport())
 	pane.initializeSSAAirportWeather(cfg.Area.SSAAirports)
@@ -522,13 +534,25 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	// excluded from the radar-facing snapshot below.
 	p.pruneSPCAcknowledgements(allTargets)
 	targets := p.radarTargetSnapshot(allTargets)
+	// Preserve a highlighted coast-phase-2 SPC target for as long as it
+	// remains on-screen; discard local cyan only after the displayed track
+	// disappears, is suspended, or is replaced by another aircraft.
+	p.pruneTrackHighlights(targets)
 	targets = p.applyTrackRepositions(targets)
-	p.consumeMouseEvents(ctx, transforms, targets)
+	if err := p.refreshCRDAEngine(); err != nil {
+		// Keep the last valid regions; a malformed facility update must not
+		// take down the radar pane.
+		p.logger.Warn("Unable to update STARS CRDA regions", slog.Any("error", err))
+	}
+	p.updateCRDA(allTargets) // live, pre-RPOS source locations
+	// Ghost picking must use the same frame's projected positions as drawing.
+	p.consumeMouseEvents(ctx, transforms, targets, allTargets)
 
 	p.drawNexrad(ctx, zcb, transforms)
 	p.drawRangeRings(ctx, zcb, transforms)
 	p.drawVideoMaps(ctx, zcb, transforms)
 	p.drawIAPChartOverlay(ctx, zcb, transforms)
+	p.drawCRDADiagrams(ctx, zcb, transforms)
 	p.drawCompass(ctx, zcb, transforms)
 
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
@@ -541,6 +565,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawTargetLeaderLines(ctx, zcb, transforms, targets, now)
 	p.drawTargetPositionSymbols(ctx, zcb, transforms, targets, now)
 	p.drawDatablocks(ctx, zcb, transforms, targets, now)
+	p.drawCRDAGhosts(ctx, zcb, transforms, allTargets)
 
 	if p.currentPrefs().DisplayDCB {
 		p.drawDCB(ctx, zcb)
@@ -550,6 +575,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawCoastSuspendList(ctx, zcb, allTargets)
 	p.drawTowerLists(ctx, zcb, activeTargets)
 	p.drawVideoMapsList(ctx, zcb)
+	p.drawCRDAStatusList(ctx, zcb)
 	p.applyCursor(ctx)
 	p.renderCursor(ctx, zcb)
 }
@@ -603,6 +629,7 @@ func (p *STARSPane) consumeMouseEvents(
 	ctx *panes.Context,
 	transforms radar.LatLonTransformations,
 	targets redsnet.TaisSnapshot,
+	crdaParents redsnet.TaisSnapshot,
 ) {
 	if p == nil || ctx == nil || ctx.Mouse == nil {
 		return
@@ -647,6 +674,69 @@ func (p *STARSPane) consumeMouseEvents(
 
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
+
+	// TI 6191.409 Rev. 30, 6.20: slew to a track and release the
+	// middle trackball button to toggle its cyan highlight. CRC/VICE use
+	// the target position (not the detached data-block text) for picking.
+	// An ordinary highlight must not consume another active command.
+	if p.commandMode == CommandModeNone && p.commandInput == "" &&
+		mouse.WasReleased(platform.MouseButtonMiddle) {
+		if target := closestSlewTarget(targets, mouse.Pos, transforms); target != nil {
+			if err := p.toggleTrackHighlight(target, time.Now()); err != nil {
+				p.commandResponse = err.Error()
+			} else {
+				p.commandResponse = ""
+			}
+			return
+		}
+	}
+
+	// TI 6191.409 6.5: N+slew on a ghost suppresses it, N+slew on
+	// its parent forces/restores ghosting, and N*+slew toggles the parent's
+	// qualification override. A plain slew to the ghost DATA BLOCK toggles
+	// FDB/PDB (§6.5.7); the symbol alone is selectable only with N/N*.
+	// Prefer the nearest ghost to a real track when both occupy a hit radius.
+	if mouse.WasReleased(platform.MouseButtonLeft) {
+		entry := strings.ToUpper(p.multiFuncPrefix + p.commandInput)
+		isMultiN := p.commandMode == CommandModeMultiFunc && (entry == "N" || entry == "N*")
+		if isMultiN || (p.commandMode == CommandModeNone && p.commandInput == "") {
+			if key, ok := p.closestCRDAGhost(mouse.Pos, transforms, crdaParents, isMultiN); ok {
+				if isMultiN && entry == "N*" {
+					// CRC N*+ghost queries the parent track's live readout.
+					p.commandResponse = p.crdaParentReadout(targets, key)
+					return
+				}
+				if err := p.crdaSlewGhost(key, isMultiN); err != nil {
+					p.commandResponse = err.Error()
+				} else if isMultiN {
+					p.resetCommand()
+				}
+				return
+			}
+			if isMultiN {
+				target := closestSlewTarget(targets, mouse.Pos, transforms)
+				if err := p.crdaSlewParent(target, entry == "N*"); err != nil {
+					p.commandResponse = err.Error()
+				} else {
+					p.resetCommand()
+				}
+				return
+			}
+		}
+	}
+
+	// VICE 6.5.12: TN + scope click moves and shows the CRDA status list.
+	if p.commandMode == CommandModeMultiFunc &&
+		strings.EqualFold(p.multiFuncPrefix+p.commandInput, "TN") &&
+		mouse.WasPressed(platform.MouseButtonLeft) {
+		w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+		if w > 0 && h > 0 && p.crdaAvailable() {
+			ps.CRDAStatusList.Position = [2]float32{mouse.Pos.X / w, mouse.Pos.Y / h}
+			ps.CRDAStatusList.Visible = true
+		}
+		p.resetCommand()
+		return
+	}
 
 	// TI 6191.409 Rev. 30, 4.4.2 PLACE CNTR. After the Main DCB
 	// selection, ordinary trackball/cursor motion pans the radar picture; the

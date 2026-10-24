@@ -190,6 +190,118 @@ func targetDisplayStateKey(target *redsnet.TaisTarget) string {
 	return strings.TrimSpace(target.Facility) + ":T" + track
 }
 
+// starsTrackHighlightIdentity describes the flight occupying a TAIS track
+// key. This remains stable across ordinary track position updates, unlike
+// MRTTime, but changes when a key is reassigned to a different aircraft/plan.
+// The server's NewTrack flag additionally clears a previously highlighted
+// track on a new-track event (via the sequence marker, if available).
+type starsTrackHighlightIdentity struct {
+	aircraftAddress string
+	flightPlanIndex int
+	aircraftID      string
+	newTrackSeq     int64
+}
+
+func trackHighlightIdentity(target *redsnet.TaisTarget) starsTrackHighlightIdentity {
+	if target == nil {
+		return starsTrackHighlightIdentity{}
+	}
+	id := starsTrackHighlightIdentity{aircraftAddress: target.Track.ACAddress}
+	if target.FlightPlan != nil {
+		id.flightPlanIndex = target.FlightPlan.SFPN
+		id.aircraftID = target.FlightPlan.ACID
+	}
+	if target.Track.NewTrack && target.RecordMeta != nil {
+		id.newTrackSeq = target.RecordMeta.SequenceNumber
+	}
+	return id
+}
+
+// trackHighlightIdentityMatches ignores the one-time NewTrack marker in
+// ordinary follow-up reports, but rejects a different nonzero NewTrack event.
+func trackHighlightIdentityMatches(stored, current starsTrackHighlightIdentity) bool {
+	if stored.aircraftAddress != current.aircraftAddress ||
+		stored.flightPlanIndex != current.flightPlanIndex ||
+		stored.aircraftID != current.aircraftID {
+		return false
+	}
+	return current.newTrackSeq == 0 || current.newTrackSeq == stored.newTrackSeq
+}
+
+func (p *STARSPane) trackHighlighted(target *redsnet.TaisTarget) bool {
+	if p == nil || target == nil || len(p.highlightedTracks) == 0 {
+		return false
+	}
+	key := targetDisplayStateKey(target)
+	stored, ok := p.highlightedTracks[key]
+	return ok && trackHighlightIdentityMatches(stored, trackHighlightIdentity(target))
+}
+
+// toggleTrackHighlight executes manual 6.20's implied middle-trackball
+// command. Selection is only allowed when a data block is actually displayed.
+func (p *STARSPane) toggleTrackHighlight(target *redsnet.TaisTarget, now time.Time) error {
+	if p == nil || target == nil || !taisTargetHasPosition(target) {
+		return ErrSTARSIllegalTrack
+	}
+	if target.FlightPlan != nil && target.FlightPlan.Suspended {
+		return ErrSTARSIllegalTrack
+	}
+	// Inbound TAIS handoffs are observable via OCR=PENDING and CPS=self.
+	// TAIS currently carries no pointout-to-TCP state, so that part of the
+	// manual's ILL FNCT restriction cannot yet be enforced here.
+	if p.targetInboundHandoff(target) {
+		return ErrSTARSIllegalFunction
+	}
+	if !p.targetAltitudeFilterAllowsDatablock(target, now) {
+		return ErrSTARSIllegalTrack
+	}
+	_, _, brightness := p.targetDatablockPresentation(target)
+	if brightness == 0 {
+		return ErrSTARSIllegalTrack
+	}
+	key := targetDisplayStateKey(target)
+	if key == "" {
+		return ErrSTARSIllegalTrack
+	}
+	if p.trackHighlighted(target) {
+		delete(p.highlightedTracks, key)
+		return nil
+	}
+	if p.highlightedTracks == nil {
+		p.highlightedTracks = make(map[string]starsTrackHighlightIdentity)
+	}
+	p.highlightedTracks[key] = trackHighlightIdentity(target)
+	return nil
+}
+
+// pruneTrackHighlights drops departed or ineligible targets and guards track
+// number reuse, while leaving local state intact during network disconnects.
+func (p *STARSPane) pruneTrackHighlights(snapshot redsnet.TaisSnapshot) {
+	if p == nil || !snapshot.Ready || len(p.highlightedTracks) == 0 {
+		return
+	}
+	// There are normally only one or two selected tracks, so scanning the
+	// snapshot for each selected key avoids an ephemeral map allocation on
+	// every rendered frame. Ordinary (non-highlighted) frames are O(1).
+	for key := range p.highlightedTracks {
+		found := false
+		for i := range snapshot.Targets {
+			target := &snapshot.Targets[i]
+			if targetDisplayStateKey(target) != key {
+				continue
+			}
+			if (target.FlightPlan == nil || !target.FlightPlan.Suspended) &&
+				p.trackHighlighted(target) {
+				found = true
+			}
+			break
+		}
+		if !found {
+			delete(p.highlightedTracks, key)
+		}
+	}
+}
+
 type taisOwnershipState struct {
 	ownerTCP     string
 	seenRevision uint64
@@ -713,6 +825,17 @@ func (p *STARSPane) targetPositionSymbol(target *redsnet.TaisTarget) (string, re
 	}
 
 	ps := p.currentPrefs()
+	if p.trackHighlighted(target) {
+		// CRC colors highlighted position symbols cyan at POS brightness,
+		// even for unassociated tracks and unowned PDBs.
+		symbol, _, _ := p.targetPositionSymbolUnhighlighted(target)
+		return symbol, p.colors.SelectedDatablock, ps.Brightness.Positions
+	}
+	return p.targetPositionSymbolUnhighlighted(target)
+}
+
+func (p *STARSPane) targetPositionSymbolUnhighlighted(target *redsnet.TaisTarget) (string, renderer.RGB, Brightness) {
+	ps := p.currentPrefs()
 	if symbol, _, ok := p.targetPositionSymbolForOwnership(target); ok {
 		if p.targetOwnedByCurrentTCP(target) || p.targetInboundHandoff(target) || p.targetOutboundHandoffAccepted(target) {
 			return symbol, p.colors.PositionSymbolOwned, ps.Brightness.Positions
@@ -1142,6 +1265,9 @@ func (p *STARSPane) targetLeaderPresentation(target *redsnet.TaisTarget) (render
 	}
 
 	ps := p.currentPrefs()
+	if p.trackHighlighted(target) {
+		return p.colors.SelectedDatablock, ps.Brightness.FullDatablocks
+	}
 	if _, _, ok := p.targetPositionSymbolForOwnership(target); ok {
 		if p.targetOwnedByCurrentTCP(target) || p.targetInboundHandoff(target) || p.targetOutboundHandoffAccepted(target) {
 			return p.colors.OwnedDatablock, ps.Brightness.FullDatablocks

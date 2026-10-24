@@ -744,6 +744,81 @@
       ]
     }
   ],
+  "rpcs": [
+    {
+      "id": "01H5WZGXCAY82RSWKXHWE9R1A9",
+      "index": 1,
+      "airportId": "SJU",
+      "positionSymbolTie": "/",
+      "positionSymbolStagger": "0",
+      "masterRunway": {
+        "runwayId": "10",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 1.5,
+        "farSideHalfWidth": 5,
+        "nearSideDistance": 3,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 18.4335,
+          "lon": -66.010556
+        },
+        "targetReferenceLineHeading": 101,
+        "targetReferenceLineLength": 20,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 18.439889,
+          "lon": -66.011944
+        },
+        "imageReferenceLineHeading": 78,
+        "imageReferenceLineLength": 20,
+        "tieModeOffset": 2.5,
+        "descentPointDistance": 12,
+        "descentPointAltitude": 20,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "E",
+        "scratchpadPatterns": [
+          "I10",
+          "R10",
+          "V10",
+          "VR1"
+        ]
+      },
+      "slaveRunway": {
+        "runwayId": "08",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 1.5,
+        "farSideHalfWidth": 5,
+        "nearSideDistance": 3,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 18.439889,
+          "lon": -66.011944
+        },
+        "targetReferenceLineHeading": 78,
+        "targetReferenceLineLength": 20,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 18.4335,
+          "lon": -66.010556
+        },
+        "imageReferenceLineHeading": 101,
+        "imageReferenceLineLength": 20,
+        "tieModeOffset": 2.5,
+        "descentPointDistance": 12,
+        "descentPointAltitude": 20,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "E",
+        "scratchpadPatterns": [
+          "I08",
+          "V08",
+          "R08",
+          "VR8"
+        ]
+      }
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

@@ -141,6 +141,75 @@
       "freq": 118.3
     }
   ],
+  "rpcs": [
+    {
+      "id": "01G98N18KZ7N89M7B5TN5SVKMA",
+      "index": 1,
+      "airportId": "AMA",
+      "positionSymbolTie": "/",
+      "positionSymbolStagger": "0",
+      "masterRunway": {
+        "runwayId": "22",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 1.5,
+        "farSideHalfWidth": 5,
+        "nearSideDistance": 2,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 35.230894,
+          "lon": -101.700192
+        },
+        "targetReferenceLineHeading": 214,
+        "targetReferenceLineLength": 20,
+        "targetReferencePointAltitude": 36,
+        "imageReferencePoint": {
+          "lat": 35.229694,
+          "lon": -101.679008
+        },
+        "imageReferenceLineHeading": 129,
+        "imageReferenceLineLength": 20,
+        "tieModeOffset": 2,
+        "descentPointDistance": 4.1,
+        "descentPointAltitude": 50,
+        "abovePathTolerance": 3,
+        "belowPathTolerance": 1,
+        "defaultLeaderDirection": "E",
+        "scratchpadPatterns": [
+          "22"
+        ]
+      },
+      "slaveRunway": {
+        "runwayId": "13",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 1.5,
+        "farSideHalfWidth": 5,
+        "nearSideDistance": 2,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 35.229694,
+          "lon": -101.679008
+        },
+        "targetReferenceLineHeading": 129,
+        "targetReferenceLineLength": 20,
+        "targetReferencePointAltitude": 36,
+        "imageReferencePoint": {
+          "lat": 35.230894,
+          "lon": -101.700192
+        },
+        "imageReferenceLineHeading": 214,
+        "imageReferenceLineLength": 20,
+        "tieModeOffset": 2,
+        "descentPointDistance": 4.1,
+        "descentPointAltitude": 50,
+        "abovePathTolerance": 3,
+        "belowPathTolerance": 1,
+        "defaultLeaderDirection": "E",
+        "scratchpadPatterns": [
+          "13"
+        ]
+      }
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

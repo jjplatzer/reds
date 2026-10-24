@@ -151,6 +151,12 @@
       "code": "1W",
       "subset": 1,
       "sectorId": "W"
+    },
+    {
+      "id": "01M3B237RQ02ZB0QDAZ5J38C85",
+      "code": "1X",
+      "subset": 1,
+      "sectorId": "X"
     }
   ],
   "controlPositions": [
@@ -325,23 +331,6 @@
       "freq": 120.4
     },
     {
-      "id": "01GPWG4DB262K0XQC6K69P1QTE",
-      "physicalFacility": "CVG",
-      "name": "Ground Control East",
-      "radioName": "Cincinnati Ground",
-      "callsign": "CVG_E_GND",
-      "colorSet": "tdw",
-      "areaId": "01GPWFPVZND4FGA7C29QP5KMN5",
-      "tcpId": "01K2NF1CN2KE0FV5EYFKZ64S4P",
-      "tcp": "1T",
-      "visualCenter": {
-        "lat": 39.0405894,
-        "lon": -84.6587992
-      },
-      "range": 50,
-      "freq": 121.3
-    },
-    {
       "id": "01GPWG3DVZKCBGJ3WF4KC91TYC",
       "physicalFacility": "CVG",
       "name": "Ground Control West",
@@ -408,6 +397,40 @@
       },
       "range": 150,
       "freq": 126.65
+    },
+    {
+      "id": "01M3B21474N5HAKQM83QPKTK30",
+      "physicalFacility": "CVG",
+      "name": "Controller In Charge",
+      "radioName": "Cincinnati Approach",
+      "callsign": "CVG_C_APP",
+      "colorSet": "tcw",
+      "areaId": "01GPWFGYMDHR17BJYE0N56FB0E",
+      "tcpId": "01M3B237RQ02ZB0QDAZ5J38C85",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 39.0488375,
+        "lon": -84.6678208
+      },
+      "range": 150,
+      "freq": 122.45
+    },
+    {
+      "id": "01GPWG4DB262K0XQC6K69P1QTE",
+      "physicalFacility": "CVG",
+      "name": "Ground Control East",
+      "radioName": "Cincinnati Ground",
+      "callsign": "CVG_E_GND",
+      "colorSet": "tdw",
+      "areaId": "01GPWFPVZND4FGA7C29QP5KMN5",
+      "tcpId": "01M3B237RQ02ZB0QDAZ5J38C85",
+      "tcp": "1X",
+      "visualCenter": {
+        "lat": 39.0405894,
+        "lon": -84.6587992
+      },
+      "range": 50,
+      "freq": 121.3
     }
   ],
   "atpaVolumes": [
@@ -1548,6 +1571,69 @@
       ]
     }
   ],
+  "rpcs": [
+    {
+      "id": "01KM3G842MWVZF8Q66BED061GB",
+      "index": 1,
+      "airportId": "CVG",
+      "positionSymbolTie": "/",
+      "positionSymbolStagger": "!",
+      "masterRunway": {
+        "runwayId": "01",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 1,
+        "farSideHalfWidth": 1,
+        "nearSideDistance": 1,
+        "regionLength": 1,
+        "targetReferencePoint": {
+          "lat": 39.184444,
+          "lon": -84.697778
+        },
+        "targetReferenceLineHeading": 170,
+        "targetReferenceLineLength": 5,
+        "targetReferencePointAltitude": 40,
+        "imageReferencePoint": {
+          "lat": 39.188333,
+          "lon": -84.683333
+        },
+        "imageReferenceLineHeading": 180,
+        "imageReferenceLineLength": 5,
+        "tieModeOffset": 2,
+        "descentPointDistance": 0.01,
+        "descentPointAltitude": 40,
+        "abovePathTolerance": 10,
+        "belowPathTolerance": 10,
+        "defaultLeaderDirection": "NW"
+      },
+      "slaveRunway": {
+        "runwayId": "02",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 1,
+        "farSideHalfWidth": 1,
+        "nearSideDistance": 1,
+        "regionLength": 1,
+        "targetReferencePoint": {
+          "lat": 39.188333,
+          "lon": -84.683333
+        },
+        "targetReferenceLineHeading": 180,
+        "targetReferenceLineLength": 5,
+        "targetReferencePointAltitude": 40,
+        "imageReferencePoint": {
+          "lat": 39.184444,
+          "lon": -84.697778
+        },
+        "imageReferenceLineHeading": 170,
+        "imageReferenceLineLength": 5,
+        "tieModeOffset": 2,
+        "descentPointDistance": 0.01,
+        "descentPointAltitude": 40,
+        "abovePathTolerance": 10,
+        "belowPathTolerance": 10,
+        "defaultLeaderDirection": "NW"
+      }
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [
@@ -1561,7 +1647,8 @@
         "1T",
         "1U",
         "1V",
-        "1W"
+        "1W",
+        "1X"
       ],
       "mapIds": [
         147,

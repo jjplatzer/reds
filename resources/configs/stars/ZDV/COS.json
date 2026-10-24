@@ -151,6 +151,252 @@
       "freq": 119.9
     }
   ],
+  "rpcs": [
+    {
+      "id": "01KZRJ2NE1CQ26F03GFKKX4A0P",
+      "index": 1,
+      "airportId": "COS",
+      "positionSymbolTie": "T",
+      "positionSymbolStagger": "S",
+      "masterRunway": {
+        "runwayId": "35L",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 0.5,
+        "farSideHalfWidth": 1.5,
+        "nearSideDistance": 1,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 38.79389,
+          "lon": -104.715833
+        },
+        "targetReferenceLineHeading": 351.05,
+        "targetReferenceLineLength": 20,
+        "targetReferencePointAltitude": 50,
+        "imageReferencePoint": {
+          "lat": 38.80778,
+          "lon": -104.695833
+        },
+        "imageReferenceLineHeading": 306.09,
+        "imageReferenceLineLength": 20,
+        "tieModeOffset": 2,
+        "descentPointDistance": 10,
+        "descentPointAltitude": 90,
+        "abovePathTolerance": 99,
+        "belowPathTolerance": 10,
+        "defaultLeaderDirection": "SW"
+      },
+      "slaveRunway": {
+        "runwayId": "31",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 0.5,
+        "farSideHalfWidth": 1.5,
+        "nearSideDistance": 1,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 38.80778,
+          "lon": -104.695833
+        },
+        "targetReferenceLineHeading": 306.09,
+        "targetReferenceLineLength": 20,
+        "targetReferencePointAltitude": 50,
+        "imageReferencePoint": {
+          "lat": 38.79389,
+          "lon": -104.715833
+        },
+        "imageReferenceLineHeading": 351.05,
+        "imageReferenceLineLength": 20,
+        "tieModeOffset": 2,
+        "descentPointDistance": 10,
+        "descentPointAltitude": 90,
+        "abovePathTolerance": 99,
+        "belowPathTolerance": 10,
+        "defaultLeaderDirection": "E"
+      }
+    },
+    {
+      "id": "01M1D908JYMC5CN1ZWW7S2YVN8",
+      "index": 2,
+      "airportId": "COS",
+      "positionSymbolTie": "T",
+      "positionSymbolStagger": "S",
+      "masterRunway": {
+        "runwayId": "17R",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 0.5,
+        "farSideHalfWidth": 1.5,
+        "nearSideDistance": 1,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 38.82417,
+          "lon": -104.715833
+        },
+        "targetReferenceLineHeading": 171.06,
+        "targetReferenceLineLength": 20,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 38.82306,
+          "lon": -104.715278
+        },
+        "imageReferenceLineHeading": 126.08,
+        "imageReferenceLineLength": 20,
+        "tieModeOffset": 2,
+        "descentPointDistance": 10,
+        "descentPointAltitude": 0,
+        "abovePathTolerance": 99,
+        "belowPathTolerance": 10,
+        "defaultLeaderDirection": "N"
+      },
+      "slaveRunway": {
+        "runwayId": "13",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 0.5,
+        "farSideHalfWidth": 1.5,
+        "nearSideDistance": 1,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 38.82306,
+          "lon": -104.715278
+        },
+        "targetReferenceLineHeading": 126.08,
+        "targetReferenceLineLength": 20,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 38.82417,
+          "lon": -104.715833
+        },
+        "imageReferenceLineHeading": 171.06,
+        "imageReferenceLineLength": 20,
+        "tieModeOffset": 2,
+        "descentPointDistance": 10,
+        "descentPointAltitude": 0,
+        "abovePathTolerance": 99,
+        "belowPathTolerance": 10,
+        "defaultLeaderDirection": "W"
+      }
+    },
+    {
+      "id": "01M1D9BQPTTW9QG7Z43C498PBC",
+      "index": 3,
+      "airportId": "COS",
+      "positionSymbolTie": "T",
+      "positionSymbolStagger": "S",
+      "masterRunway": {
+        "runwayId": "17L",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 0.5,
+        "farSideHalfWidth": 1.5,
+        "nearSideDistance": 1,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 38.81611,
+          "lon": -104.685833
+        },
+        "targetReferenceLineHeading": 171.08,
+        "targetReferenceLineLength": 20,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 38.82306,
+          "lon": -104.715278
+        },
+        "imageReferenceLineHeading": 126.08,
+        "imageReferenceLineLength": 20,
+        "tieModeOffset": 2,
+        "descentPointDistance": 10,
+        "descentPointAltitude": 0,
+        "abovePathTolerance": 99,
+        "belowPathTolerance": 10,
+        "defaultLeaderDirection": "NE"
+      },
+      "slaveRunway": {
+        "runwayId": "13",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 0.5,
+        "farSideHalfWidth": 1.5,
+        "nearSideDistance": 1,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 38.82306,
+          "lon": -104.715278
+        },
+        "targetReferenceLineHeading": 128.08,
+        "targetReferenceLineLength": 20,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 38.81611,
+          "lon": -104.685833
+        },
+        "imageReferenceLineHeading": 171.08,
+        "imageReferenceLineLength": 20,
+        "tieModeOffset": 2,
+        "descentPointDistance": 10,
+        "descentPointAltitude": 0,
+        "abovePathTolerance": 99,
+        "belowPathTolerance": 10,
+        "defaultLeaderDirection": "W"
+      }
+    },
+    {
+      "id": "01M1D9HPH7GP38YC1J36BH9DAX",
+      "index": 4,
+      "airportId": "COS",
+      "positionSymbolTie": "T",
+      "positionSymbolStagger": "S",
+      "masterRunway": {
+        "runwayId": "35L",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 0.5,
+        "farSideHalfWidth": 1.5,
+        "nearSideDistance": 1,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 38.79944,
+          "lon": -104.685556
+        },
+        "targetReferenceLineHeading": 351.07,
+        "targetReferenceLineLength": 20,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 38.79944,
+          "lon": -104.685556
+        },
+        "imageReferenceLineHeading": 306.09,
+        "imageReferenceLineLength": 20,
+        "tieModeOffset": 2,
+        "descentPointDistance": 10,
+        "descentPointAltitude": 0,
+        "abovePathTolerance": 99,
+        "belowPathTolerance": 10,
+        "defaultLeaderDirection": "SW"
+      },
+      "slaveRunway": {
+        "runwayId": "31",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 0.5,
+        "farSideHalfWidth": 1.5,
+        "nearSideDistance": 1,
+        "regionLength": 20,
+        "targetReferencePoint": {
+          "lat": 38.79944,
+          "lon": -104.685556
+        },
+        "targetReferenceLineHeading": 306.09,
+        "targetReferenceLineLength": 20,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 38.79944,
+          "lon": -104.685556
+        },
+        "imageReferenceLineHeading": 351.07,
+        "imageReferenceLineLength": 20,
+        "tieModeOffset": 2,
+        "descentPointDistance": 10,
+        "descentPointAltitude": 0,
+        "abovePathTolerance": 99,
+        "belowPathTolerance": 10,
+        "defaultLeaderDirection": "E"
+      }
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [

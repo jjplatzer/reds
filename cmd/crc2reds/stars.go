@@ -74,6 +74,7 @@ type crcSTARSConfiguration struct {
 	MapGroups   []crcSTARSMapGroup   `json:"mapGroups"`
 	TCPs        []crcSTARSTCP        `json:"tcps"`
 	ATPAVolumes []crcSTARSATPAVolume `json:"atpaVolumes"`
+	RPCs        []crcSTARSRPC        `json:"rpcs"`
 }
 
 type crcSTARSMapGroup struct {
@@ -100,6 +101,45 @@ type crcSTARSATPAVolume struct {
 	TCPs                         []crcSTARSATPATCPDisplay `json:"tcps"`
 	ExcludedTCPIDs               []string                 `json:"excludedTcpIds"`
 	LeaderDirections             []json.RawMessage        `json:"leaderDirections"`
+}
+
+// CRC's StarsConfiguration.Rpcs is the ordered list of runway-pair
+// configurations. Preserve that order: the STARS CRDA operator controls refer
+// to RPCs by their configured list position.
+type crcSTARSRPC struct {
+	ID                    string             `json:"id"`
+	Index                 int                `json:"index"`
+	AirportID             string             `json:"airportId"`
+	PositionSymbolTie     *string            `json:"positionSymbolTie"`
+	PositionSymbolStagger *string            `json:"positionSymbolStagger"`
+	MasterRunway          *crcSTARSRPCRunway `json:"masterRunway"`
+	SlaveRunway           *crcSTARSRPCRunway `json:"slaveRunway"`
+}
+
+// Use pointers for fields with nonzero C# constructor defaults. In particular,
+// an explicitly adapted zero must not be mistaken for an absent property.
+type crcSTARSRPCRunway struct {
+	RunwayID                     string          `json:"runwayId"`
+	HeadingTolerance             *int            `json:"headingTolerance"`
+	NearSideHalfWidth            *float64        `json:"nearSideHalfWidth"`
+	FarSideHalfWidth             *float64        `json:"farSideHalfWidth"`
+	NearSideDistance             *float64        `json:"nearSideDistance"`
+	RegionLength                 *float64        `json:"regionLength"`
+	TargetReferencePoint         json.RawMessage `json:"targetReferencePoint"`
+	TargetReferenceLineHeading   *float64        `json:"targetReferenceLineHeading"`
+	TargetReferenceLineLength    *float64        `json:"targetReferenceLineLength"`
+	TargetReferencePointAltitude int             `json:"targetReferencePointAltitude"`
+	ImageReferencePoint          json.RawMessage `json:"imageReferencePoint"`
+	ImageReferenceLineHeading    *float64        `json:"imageReferenceLineHeading"`
+	ImageReferenceLineLength     *float64        `json:"imageReferenceLineLength"`
+	TieModeOffset                *float64        `json:"tieModeOffset"`
+	DescentPointDistance         *float64        `json:"descentPointDistance"`
+	DescentPointAltitude         *int            `json:"descentPointAltitude"`
+	AbovePathTolerance           *int            `json:"abovePathTolerance"`
+	BelowPathTolerance           *int            `json:"belowPathTolerance"`
+	DefaultLeaderDirection       json.RawMessage `json:"defaultLeaderDirection"`
+	ScratchpadPatterns           []string        `json:"scratchpadPatterns"`
+	SecondaryScratchpadPatterns  []string        `json:"secondaryScratchpadPatterns"`
 }
 
 type crcSTARSATPAScratchpad struct {
@@ -226,6 +266,123 @@ type redsSTARSATPAVolume struct {
 	LeaderDirections             []json.RawMessage         `json:"leaderDirections,omitempty"`
 }
 
+// Only facility adaptation is stored here; controller CRDA mode, ghost
+// suppression, and per-window visibility are separate runtime state.
+type redsSTARSRPC struct {
+	ID                    string             `json:"id"`
+	Index                 int                `json:"index"`
+	AirportID             string             `json:"airportId"`
+	PositionSymbolTie     string             `json:"positionSymbolTie"`
+	PositionSymbolStagger string             `json:"positionSymbolStagger"`
+	MasterRunway          redsSTARSRPCRunway `json:"masterRunway"`
+	SlaveRunway           redsSTARSRPCRunway `json:"slaveRunway"`
+}
+
+type redsSTARSRPCRunway struct {
+	RunwayID                     string          `json:"runwayId"`
+	HeadingTolerance             int             `json:"headingTolerance"`
+	NearSideHalfWidth            float64         `json:"nearSideHalfWidth"`
+	FarSideHalfWidth             float64         `json:"farSideHalfWidth"`
+	NearSideDistance             float64         `json:"nearSideDistance"`
+	RegionLength                 float64         `json:"regionLength"`
+	TargetReferencePoint         redsSTARSLatLon `json:"targetReferencePoint"`
+	TargetReferenceLineHeading   float64         `json:"targetReferenceLineHeading"`
+	TargetReferenceLineLength    float64         `json:"targetReferenceLineLength"`
+	TargetReferencePointAltitude int             `json:"targetReferencePointAltitude"`
+	ImageReferencePoint          redsSTARSLatLon `json:"imageReferencePoint"`
+	ImageReferenceLineHeading    float64         `json:"imageReferenceLineHeading"`
+	ImageReferenceLineLength     float64         `json:"imageReferenceLineLength"`
+	TieModeOffset                float64         `json:"tieModeOffset"`
+	DescentPointDistance         float64         `json:"descentPointDistance"`
+	DescentPointAltitude         int             `json:"descentPointAltitude"`
+	AbovePathTolerance           int             `json:"abovePathTolerance"`
+	BelowPathTolerance           int             `json:"belowPathTolerance"`
+	DefaultLeaderDirection       json.RawMessage `json:"defaultLeaderDirection"`
+	ScratchpadPatterns           []string        `json:"scratchpadPatterns,omitempty"`
+	SecondaryScratchpadPatterns  []string        `json:"secondaryScratchpadPatterns,omitempty"`
+}
+
+func starsStringDefault(value *string, fallback string) string {
+	if value == nil {
+		return fallback
+	}
+	return *value
+}
+
+// starsRPCsFromCRC exports every RPC and its runway adaptation without
+// guessing runway geometry or reordering the CRC configuration.
+func starsRPCsFromCRC(rpcs []crcSTARSRPC) ([]redsSTARSRPC, error) {
+	if len(rpcs) == 0 {
+		return nil, nil
+	}
+	result := make([]redsSTARSRPC, 0, len(rpcs))
+	for i, rpc := range rpcs {
+		airport := strings.TrimSpace(rpc.AirportID)
+		if airport == "" {
+			return nil, fmt.Errorf("RPC %d (%q): missing airportId", i+1, rpc.ID)
+		}
+		master, err := starsRPCRunwayFromCRC(rpc.MasterRunway)
+		if err != nil {
+			return nil, fmt.Errorf("RPC %d (%q) master runway: %w", i+1, rpc.ID, err)
+		}
+		slave, err := starsRPCRunwayFromCRC(rpc.SlaveRunway)
+		if err != nil {
+			return nil, fmt.Errorf("RPC %d (%q) slave runway: %w", i+1, rpc.ID, err)
+		}
+		result = append(result, redsSTARSRPC{
+			ID: strings.TrimSpace(rpc.ID), Index: rpc.Index, AirportID: airport,
+			PositionSymbolTie:     starsStringDefault(rpc.PositionSymbolTie, "/"),
+			PositionSymbolStagger: starsStringDefault(rpc.PositionSymbolStagger, "O"),
+			MasterRunway:          master, SlaveRunway: slave,
+		})
+	}
+	return result, nil
+}
+
+func starsRPCRunwayFromCRC(src *crcSTARSRPCRunway) (redsSTARSRPCRunway, error) {
+	if src == nil {
+		return redsSTARSRPCRunway{}, fmt.Errorf("missing runway configuration")
+	}
+	id := strings.TrimSpace(src.RunwayID)
+	if id == "" {
+		return redsSTARSRPCRunway{}, fmt.Errorf("missing runwayId")
+	}
+	target := starsDecodeLatLon(src.TargetReferencePoint)
+	image := starsDecodeLatLon(src.ImageReferencePoint)
+	if !starsValidRPCPoint(target) || !starsValidRPCPoint(image) {
+		return redsSTARSRPCRunway{}, fmt.Errorf("runway %q: invalid or missing target/image reference point", id)
+	}
+	return redsSTARSRPCRunway{
+		RunwayID:                     id,
+		HeadingTolerance:             starsIntDefault(src.HeadingTolerance, 90),
+		NearSideHalfWidth:            starsFloat64Default(src.NearSideHalfWidth, 3),
+		FarSideHalfWidth:             starsFloat64Default(src.FarSideHalfWidth, 6),
+		NearSideDistance:             starsFloat64Default(src.NearSideDistance, 5),
+		RegionLength:                 starsFloat64Default(src.RegionLength, 30),
+		TargetReferencePoint:         *target,
+		TargetReferenceLineHeading:   starsFloat64Default(src.TargetReferenceLineHeading, 360),
+		TargetReferenceLineLength:    starsFloat64Default(src.TargetReferenceLineLength, 30),
+		TargetReferencePointAltitude: src.TargetReferencePointAltitude,
+		ImageReferencePoint:          *image,
+		ImageReferenceLineHeading:    starsFloat64Default(src.ImageReferenceLineHeading, 90),
+		ImageReferenceLineLength:     starsFloat64Default(src.ImageReferenceLineLength, 30),
+		TieModeOffset:                starsFloat64Default(src.TieModeOffset, 2),
+		DescentPointDistance:         starsFloat64Default(src.DescentPointDistance, 10),
+		DescentPointAltitude:         starsIntDefault(src.DescentPointAltitude, 30),
+		AbovePathTolerance:           starsIntDefault(src.AbovePathTolerance, 8),
+		BelowPathTolerance:           starsIntDefault(src.BelowPathTolerance, 5),
+		// CRC's LeaderDirection.N enum is 8. Retain the original JSON if
+		// supplied (vNAS/CRC may encode enums as either strings or integers).
+		DefaultLeaderDirection:      starsRawMessageDefault(src.DefaultLeaderDirection, `8`),
+		ScratchpadPatterns:          append([]string(nil), src.ScratchpadPatterns...),
+		SecondaryScratchpadPatterns: append([]string(nil), src.SecondaryScratchpadPatterns...),
+	}, nil
+}
+
+func starsValidRPCPoint(p *redsSTARSLatLon) bool {
+	return p != nil && p.Lat >= -90 && p.Lat <= 90 && p.Lon >= -180 && p.Lon <= 180
+}
+
 type redsSTARSATPAScratchpad struct {
 	ID               string          `json:"id,omitempty"`
 	Entry            string          `json:"entry"`
@@ -260,6 +417,7 @@ type redsSTARSFacilityConfig struct {
 	TCPs             []redsSTARSTCP             `json:"tcps,omitempty"`
 	ControlPositions []redsSTARSControlPosition `json:"controlPositions"`
 	ATPAVolumes      []redsSTARSATPAVolume      `json:"atpaVolumes,omitempty"`
+	RPCs             []redsSTARSRPC             `json:"rpcs,omitempty"`
 
 	MapGroups []redsSTARSMapGroup `json:"mapGroups,omitempty"`
 	VideoMaps []redsSTARSVideoMap `json:"videoMaps,omitempty"`
@@ -743,10 +901,11 @@ func convertSTARSConfig(root, artcc, outDir string) (int, error) {
 		}
 
 		fmt.Printf(
-			"wrote %s: %d positions, %d ATPA volumes, %d map groups, %d maps, %d boundary candidates\n",
+			"wrote %s: %d positions, %d ATPA volumes, %d RPCs, %d map groups, %d maps, %d boundary candidates\n",
 			dst,
 			len(cfg.ControlPositions),
 			len(cfg.ATPAVolumes),
+			len(cfg.RPCs),
 			len(cfg.MapGroups),
 			len(cfg.VideoMaps),
 			len(cfg.BoundaryMapCandidates),
@@ -924,6 +1083,14 @@ func buildSTARSFacilityConfig(
 		}
 		return a.ID < b.ID
 	})
+
+	// Unlike ATPA volumes, RPC order is observable in STARS CRDA commands;
+	// do not sort by airport/index/runway after conversion.
+	rpcs, err := starsRPCsFromCRC(stars.RPCs)
+	if err != nil {
+		return redsSTARSFacilityConfig{}, err
+	}
+	cfg.RPCs = rpcs
 
 	for _, fp := range starsPositionsForRadarFacility(facility) {
 		p := fp.Position

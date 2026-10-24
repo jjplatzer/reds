@@ -1,10 +1,77 @@
 package stars
 
 import (
+	"fmt"
+	"regexp"
+	"strconv"
 	"strings"
 
 	redsnet "github.com/juliusplatzer/reds/net"
 )
+
+// CRDA <MULTI FUNC> N commands from CRC InputManager.ProcessMultiFuncN and
+// STARS TI 6191.409 section 6.5. Rendering and ghost hit tests use the same
+// runtime state rather than maintaining a second command-only model.
+
+type crdaControl struct {
+	kind      string
+	airport   string
+	runway    string
+	pairIndex int
+	mode      crdaMode
+	action    byte
+	direction leaderLineDirection
+}
+
+type crdaControlParser struct{}
+
+func (crdaControlParser) Identifier() string { return "CRDA_CONTROL" }
+
+var (
+	crdaPairCommand    = regexp.MustCompile(`^([A-Z0-9]{3})([1-9])([TSD])$`)
+	crdaRunwayCommand  = regexp.MustCompile(`^([A-Z0-9]{3})(0[1-9]|[12][0-9]|3[0-6])[LRC]?([EI])?$`)
+	crdaOverlayCommand = regexp.MustCompile(`^([A-Z0-9]{3})((?:0[1-9]|[12][0-9]|3[0-6])[LRC]?) ([BL])$`)
+	crdaLeaderCommand  = regexp.MustCompile(`^L([A-Z0-9]{3})((?:0[1-9]|[12][0-9]|3[0-6])[LRC]?)([1-9])$`)
+)
+
+func (crdaControlParser) Parse(text string) (any, string, bool, error) {
+	text = strings.ToUpper(text)
+	if text == "*ALL" {
+		return crdaControl{kind: "force-all"}, "", true, nil
+	}
+	if m := crdaPairCommand.FindStringSubmatch(text); m != nil {
+		i, _ := strconv.Atoi(m[2]) // regexp restricts to one digit 1..9
+		mode := crdaDisabled
+		switch m[3] {
+		case "T":
+			mode = crdaTie
+		case "S":
+			mode = crdaStagger
+		}
+		return crdaControl{kind: "pair", airport: m[1], pairIndex: i, mode: mode}, "", true, nil
+	}
+	if m := crdaOverlayCommand.FindStringSubmatch(text); m != nil {
+		return crdaControl{kind: "overlay", airport: m[1], runway: m[2], action: m[3][0]}, "", true, nil
+	}
+	if m := crdaLeaderCommand.FindStringSubmatch(text); m != nil {
+		direction, ok := leaderLineDirectionFromKeypad(int(m[3][0] - '0'))
+		if !ok {
+			return nil, text, true, ErrSTARSCommandFormat
+		}
+		return crdaControl{kind: "leader", airport: m[1], runway: m[2], direction: direction}, "", true, nil
+	}
+	if m := crdaRunwayCommand.FindStringSubmatch(text); m != nil {
+		// Extract runway separately: optional L/R/C is part of its identifier.
+		runway := strings.TrimPrefix(text, m[1])
+		action := byte(0)
+		if m[3] != "" {
+			action = m[3][0]
+			runway = strings.TrimSuffix(runway, m[3])
+		}
+		return crdaControl{kind: "runway", airport: m[1], runway: runway, action: action}, "", true, nil
+	}
+	return nil, text, false, nil
+}
 
 type requestedAltitudeDisplayOverride struct {
 	SFPN    int
@@ -120,6 +187,61 @@ func (p *STARSPane) applyRequestedAltitudeDisplayCommand(target *redsnet.TaisTar
 }
 
 func init() {
+	// N with no parameter inhibits all CRDA processing at this TCW, or
+	// restores processing (without re-enabling previously disabled RPCs).
+	registerCommand(CommandModeMultiFunc, "N", func(p *STARSPane, _ []any) (CommandStatus, error) {
+		return CommandStatus{}, p.crdaToggleInhibited()
+	})
+	registerCommand(CommandModeMultiFunc, "N[CRDA_CONTROL]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		if err := p.crdaReady(); err != nil {
+			return CommandStatus{}, err
+		}
+		c := args[0].(crdaControl)
+		switch c.kind {
+		case "force-all":
+			p.crda.forceAll = !p.crda.forceAll
+		case "pair":
+			output, err := p.crdaSetPairMode(c.airport, c.pairIndex, c.mode)
+			if err != nil {
+				return CommandStatus{}, err
+			}
+			if c.mode != crdaDisabled {
+				p.currentPrefs().CRDAStatusList.Visible = true
+			}
+			return CommandStatus{Output: output}, nil
+		case "runway":
+			var enable *bool
+			if c.action != 0 {
+				b := c.action == 'E'
+				enable = &b
+			}
+			active, err := p.crdaSetRunwayGhosting(c.airport, c.runway, enable)
+			if err != nil {
+				return CommandStatus{}, err
+			}
+			status := "DISABLED"
+			if active {
+				status = "ENABLED"
+			}
+			return CommandStatus{Output: fmt.Sprintf("%s %s GHOSTING %s", c.airport, c.runway, status)}, nil
+		case "overlay":
+			return CommandStatus{}, p.crdaToggleRunwayOverlay(c.airport, c.runway, c.action == 'L')
+		case "leader":
+			return CommandStatus{}, p.crdaSetRunwayLeader(c.airport, c.runway, c.direction)
+		}
+		return CommandStatus{}, ErrSTARSCommandFormat
+	})
+	// CRDA status-list visibility; the corresponding click/move is handled
+	// in consumeMouseEvents. VICE/STARS 6.5.11-6.5.12.
+	registerCommand(CommandModeMultiFunc, "TN", func(p *STARSPane, _ []any) (CommandStatus, error) {
+		if !p.crdaAvailable() {
+			return CommandStatus{}, ErrSTARSIllegalFunction
+		}
+		ps := p.currentPrefs()
+		ps.CRDAStatusList.Visible = !ps.CRDAStatusList.Visible
+		return CommandStatus{}, nil
+	})
+
 	// TI 6191.409 Rev. 30, 6.13.23. These keyboard-only commands change the
 	// entering TCW/TDW's fallback requested-altitude display state. Explicit
 	// single-track RAE/RAI overrides remain in force, matching VICE/STARS.

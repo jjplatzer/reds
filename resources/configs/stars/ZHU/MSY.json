@@ -586,6 +586,130 @@
       ]
     }
   ],
+  "rpcs": [
+    {
+      "id": "01HWQW9BR4ZM9JFZV5B5260SX1",
+      "index": 1,
+      "airportId": "MSY",
+      "positionSymbolTie": "/",
+      "positionSymbolStagger": "O",
+      "masterRunway": {
+        "runwayId": "02",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 3,
+        "farSideHalfWidth": 6,
+        "nearSideDistance": 2,
+        "regionLength": 30,
+        "targetReferencePoint": {
+          "lat": 29.984534505782985,
+          "lon": -90.25141537728977
+        },
+        "targetReferenceLineHeading": 16.5,
+        "targetReferenceLineLength": 30,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 29.99662350323703,
+          "lon": -90.28170872667492
+        },
+        "imageReferenceLineHeading": 106.5,
+        "imageReferenceLineLength": 30,
+        "tieModeOffset": 2,
+        "descentPointDistance": 6.1,
+        "descentPointAltitude": 20,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "N"
+      },
+      "slaveRunway": {
+        "runwayId": "11",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 3,
+        "farSideHalfWidth": 6,
+        "nearSideDistance": 2,
+        "regionLength": 30,
+        "targetReferencePoint": {
+          "lat": 29.99662350323703,
+          "lon": -90.28170872667492
+        },
+        "targetReferenceLineHeading": 106.5,
+        "targetReferenceLineLength": 30,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 29.984534505782985,
+          "lon": -90.25141537728977
+        },
+        "imageReferenceLineHeading": 16.5,
+        "imageReferenceLineLength": 30,
+        "tieModeOffset": 2,
+        "descentPointDistance": 6.5,
+        "descentPointAltitude": 40,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "E"
+      }
+    },
+    {
+      "id": "01K63PHAR0GNZTDT3GM22S585T",
+      "index": 2,
+      "airportId": "MSY",
+      "positionSymbolTie": "/",
+      "positionSymbolStagger": "O",
+      "masterRunway": {
+        "runwayId": "20",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 2,
+        "farSideHalfWidth": 4,
+        "nearSideDistance": 2,
+        "regionLength": 30,
+        "targetReferencePoint": {
+          "lat": 30.003030685133833,
+          "lon": -90.24553124886145
+        },
+        "targetReferenceLineHeading": 196.5,
+        "targetReferenceLineLength": 30,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 29.99662350323703,
+          "lon": -90.28170872667492
+        },
+        "imageReferenceLineHeading": 106.5,
+        "imageReferenceLineLength": 30,
+        "tieModeOffset": 2,
+        "descentPointDistance": 13.1,
+        "descentPointAltitude": 40,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "N"
+      },
+      "slaveRunway": {
+        "runwayId": "11",
+        "headingTolerance": 90,
+        "nearSideHalfWidth": 3,
+        "farSideHalfWidth": 6,
+        "nearSideDistance": 2,
+        "regionLength": 30,
+        "targetReferencePoint": {
+          "lat": 29.99662350323703,
+          "lon": -90.28170872667492
+        },
+        "targetReferenceLineHeading": 106.5,
+        "targetReferenceLineLength": 30,
+        "targetReferencePointAltitude": 0,
+        "imageReferencePoint": {
+          "lat": 30.003030685133833,
+          "lon": -90.24553124886145
+        },
+        "imageReferenceLineHeading": 196.5,
+        "imageReferenceLineLength": 30,
+        "tieModeOffset": 2,
+        "descentPointDistance": 13.2,
+        "descentPointAltitude": 40,
+        "abovePathTolerance": 8,
+        "belowPathTolerance": 5,
+        "defaultLeaderDirection": "E"
+      }
+    }
+  ],
   "mapGroups": [
     {
       "tcps": [
