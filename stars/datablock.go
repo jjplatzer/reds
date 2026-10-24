@@ -236,9 +236,9 @@ func (p *STARSPane) drawDatablocks(
 			// VICE/CRC extension (not part of the Rev. 30 standard LDB): while
 			// Beacon Code Readout is held, or this one LDB has been expanded
 			// by the five-second implied readout, display a *verified* ADS-B
-			// Flight ID under the altitude/groundspeed line. Its provenance
-			// must be ADS-B; the flight-plan ACID and ICAO address are not
-			// interchangeable with an aircraft-transmitted Flight ID.
+			// identification below altitude/groundspeed: actual ADS-B Flight
+			// ID first, FAA registration fallback. Neither is inferred from
+			// flight-plan ACID or the hex address alone.
 			if flightID := p.targetLDBADSBFlightID(target, now); flightID != "" {
 				p.addDatablockLine(td, flightID, anchor, direction, 2, 1, lineHeight, style)
 			}
@@ -257,7 +257,7 @@ func (p *STARSPane) drawDatablocks(
 // targetLDBADSBFlightID is a simulator-compatible optional extension, not a
 // normative TI 6191.409 Rev. 30 LDB field. It is deliberately independent
 // of the reported beacon code: ADS-B Flight IDs can accompany any squawk.
-// No additional line is shown when TAIS does not provide a verified Flight ID.
+// A verified ADS-B Flight ID wins over a known FAA registration fallback.
 func (p *STARSPane) targetLDBADSBFlightID(target *redsnet.TaisTarget, now time.Time) string {
 	if p == nil || target == nil || target.FlightPlan != nil || !target.Track.ADSB {
 		return ""
@@ -265,7 +265,11 @@ func (p *STARSPane) targetLDBADSBFlightID(target *redsnet.TaisTarget, now time.T
 	if !p.beaconCodeReadoutHeld && !p.targetLDBBeaconReadoutActive(target, now) {
 		return ""
 	}
-	return normalizeADSBFlightID(target.Track.ADSBFlightID)
+	// A transmitted Flight ID, if we later receive one, always takes precedence.
+	if flightID := normalizeADSBFlightID(target.Track.ADSBFlightID); flightID != "" {
+		return flightID
+	}
+	return normalizeADSBFlightID(target.Track.Registration)
 }
 
 // STARS/VICE's additional LDB line is eight character cells wide. Reject
