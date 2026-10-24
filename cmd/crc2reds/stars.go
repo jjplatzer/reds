@@ -162,6 +162,9 @@ type crcSTARSArea struct {
 	SurveillanceRange  int             `json:"surveillanceRange"`
 	UnderlyingAirports []string        `json:"underlyingAirports"`
 	SSAAirports        []string        `json:"ssaAirports"`
+	// CRC's StarsArea defaults this property to true. A pointer distinguishes
+	// absent JSON (constructor default) from an explicitly adapted false.
+	UseVfrPositionSymbol *bool `json:"useVfrPositionSymbol"`
 }
 
 type crcSTARSTCP struct {
@@ -218,12 +221,13 @@ type redsSTARSControlPosition struct {
 }
 
 type redsSTARSArea struct {
-	ID                 string           `json:"id"`
-	Name               string           `json:"name,omitempty"`
-	VisibilityCenter   *redsSTARSLatLon `json:"visibilityCenter,omitempty"`
-	SurveillanceRange  int              `json:"surveillanceRange"`
-	UnderlyingAirports []string         `json:"underlyingAirports,omitempty"`
-	SSAAirports        []string         `json:"ssaAirports,omitempty"`
+	ID                   string           `json:"id"`
+	Name                 string           `json:"name,omitempty"`
+	VisibilityCenter     *redsSTARSLatLon `json:"visibilityCenter,omitempty"`
+	SurveillanceRange    int              `json:"surveillanceRange"`
+	UnderlyingAirports   []string         `json:"underlyingAirports,omitempty"`
+	SSAAirports          []string         `json:"ssaAirports,omitempty"`
+	UseVfrPositionSymbol bool             `json:"useVfrPositionSymbol"`
 }
 
 type redsSTARSTCP struct {
@@ -963,12 +967,13 @@ func buildSTARSFacilityConfig(
 		areaByID[id] = area
 
 		cfg.Areas = append(cfg.Areas, redsSTARSArea{
-			ID:                 id,
-			Name:               area.Name,
-			VisibilityCenter:   starsDecodeLatLon(area.VisibilityCenter),
-			SurveillanceRange:  starsAreaRange(area),
-			UnderlyingAirports: append([]string(nil), area.UnderlyingAirports...),
-			SSAAirports:        append([]string(nil), area.SSAAirports...),
+			ID:                   id,
+			Name:                 area.Name,
+			VisibilityCenter:     starsDecodeLatLon(area.VisibilityCenter),
+			SurveillanceRange:    starsAreaRange(area),
+			UnderlyingAirports:   append([]string(nil), area.UnderlyingAirports...),
+			SSAAirports:          append([]string(nil), area.SSAAirports...),
+			UseVfrPositionSymbol: area.UseVfrPositionSymbol == nil || *area.UseVfrPositionSymbol,
 		})
 	}
 	sort.Slice(cfg.Areas, func(i, j int) bool { return cfg.Areas[i].ID < cfg.Areas[j].ID })
