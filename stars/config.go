@@ -116,6 +116,13 @@ type areaConfig struct {
 	SurveillanceRange  float32     `json:"surveillanceRange"`
 	UnderlyingAirports []string    `json:"underlyingAirports"`
 	SSAAirports        []string    `json:"ssaAirports"`
+	// Nil means an older generated configuration. CRC's StarsArea constructor
+	// defaults this setting to true; preserve that for existing resources.
+	UseVfrPositionSymbol *bool `json:"useVfrPositionSymbol"`
+}
+
+func (a areaConfig) vfrPositionSymbolEnabled() bool {
+	return a.UseVfrPositionSymbol == nil || *a.UseVfrPositionSymbol
 }
 
 type controlPositionConfig struct {

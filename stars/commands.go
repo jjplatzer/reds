@@ -189,6 +189,32 @@ func init() {
 		return CommandStatus{}, nil
 	})
 
+	// TI 6191.409 Rev. 30, 6.13.11: select/deselect a Mode 3/A code
+	// (B1200) or its entire two-digit bank (B12). A second selection removes
+	// the entry; B* clears the entire list. This selection is separate from
+	// the B / BE / BI LDB beacon-code *visibility* commands above.
+	registerCommand(CommandModeMultiFunc, "B*", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().SelectedBeacons = nil
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "B[BEACON_SELECTION]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		code := args[0].(string) // Already validated as 2 or 4 octal digits.
+		prefs := p.currentPrefs()
+		for i, existing := range prefs.SelectedBeacons {
+			if existing == code {
+				prefs.SelectedBeacons = append(prefs.SelectedBeacons[:i], prefs.SelectedBeacons[i+1:]...)
+				return CommandStatus{}, nil
+			}
+		}
+		// The manual limits the selected-code SSA list to ten code/bank
+		// entries; avoid silently truncating extra selections.
+		if len(prefs.SelectedBeacons) >= 10 {
+			return CommandStatus{}, ErrSTARSCapacity
+		}
+		prefs.SelectedBeacons = append(prefs.SelectedBeacons, code)
+		return CommandStatus{}, nil
+	})
+
 	// TI 6191.409 Rev. 30, 4.11.1-4.11.3 Altitude Filter Commands.
 	//
 	//   <MULTI FUNC> F <ENTER>

@@ -18,6 +18,20 @@ type commandTypeParser interface {
 	Parse(text string) (value any, remaining string, matched bool, err error)
 }
 
+// beaconSelectionCommandParser validates an individual Mode 3/A squawk (four
+// octal digits) or a selected beacon bank (two octal digits), per 6.13.11.
+// Reject partial and malformed values instead of silently choosing a bank.
+type beaconSelectionCommandParser struct{}
+
+func (beaconSelectionCommandParser) Identifier() string { return "BEACON_SELECTION" }
+
+func (beaconSelectionCommandParser) Parse(text string) (any, string, bool, error) {
+	if (len(text) != 2 && len(text) != 4) || normalizeBeaconCode(text) != text {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	return text, "", true, nil
+}
+
 type prefReferenceCommandParser struct{}
 
 func (prefReferenceCommandParser) Identifier() string { return "PREF_REFERENCE" }
@@ -476,6 +490,7 @@ func (charSizeCommandParser) Parse(text string) (any, string, bool, error) {
 }
 
 var commandTypeParsers = map[string]commandTypeParser{
+	"BEACON_SELECTION":   beaconSelectionCommandParser{},
 	"PREF_REFERENCE":     prefReferenceCommandParser{},
 	"PREF_NAME":          prefNameCommandParser{},
 	"RANGE":              rangeCommandParser{},

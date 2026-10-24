@@ -9,6 +9,7 @@ import (
 	redsmath "github.com/juliusplatzer/reds/math"
 	redsnet "github.com/juliusplatzer/reds/net"
 	"github.com/juliusplatzer/reds/panes"
+	"github.com/juliusplatzer/reds/platform"
 	"github.com/juliusplatzer/reds/radar"
 	"github.com/juliusplatzer/reds/renderer"
 )
@@ -82,6 +83,14 @@ const (
 	targetDatablockLimited
 )
 
+// starsBeaconCodeReadoutHeld maps the ABC keyboard's top-left, unlabeled
+// Beacon Code Readout key (TI 6191.409 Rev. 30, §6.13.12) to Ctrl+F1 on
+// desktop, matching VICE. This is strictly a held-key function: the original
+// datablock display returns on release, without changing preferences/state.
+func starsBeaconCodeReadoutHeld(keyboard *platform.KeyboardState) bool {
+	return keyboard != nil && keyboard.IsDown(platform.KeyControl) && keyboard.IsDown(platform.KeyF1)
+}
+
 // drawDatablocks renders the STARS data-block subset REDS can derive from
 // TAIS today. The field layout follows TI 6191.409 Rev. 30 figures 2-20, 2-22,
 // and 2-23. In addition to the surveillance fields, TAIS supplies both
@@ -139,9 +148,10 @@ func (p *STARSPane) drawDatablocks(
 		if !taisTargetHasPosition(target) {
 			continue
 		}
-		// Suspended tracks have a separate suspended data-block presentation in
-		// STARS/VICE. Do not show a normal F/PDB until that presentation exists.
-		if target.FlightPlan != nil && target.FlightPlan.Suspended {
+		// §6.13.12 explicitly forces suspended tracks into FDB presentation
+		// for the duration of the Beacon Code Readout key. Otherwise leave
+		// them to the Coast/Suspend List (no ordinary datablock).
+		if target.FlightPlan != nil && target.FlightPlan.Suspended && !p.beaconCodeReadoutHeld {
 			continue
 		}
 		if !p.targetAltitudeFilterAllowsDatablock(target, now) {
@@ -185,7 +195,7 @@ func (p *STARSPane) drawDatablocks(
 			if hasSPC && (spcAcknowledged || specialConditionBlinkVisible(now)) {
 				p.addDatablockLine(td, spc.Abbreviation, anchor, direction, -1, 0, lineHeight, spcStyle)
 			}
-			line1 := targetDatablockACID(target)
+			line1 := p.targetDisplayedFullDatablockACID(target)
 			line2 := p.targetFullDatablockLine2(target, clockPhase)
 			field6, atpaStatus, line3Suffix := p.targetFullDatablockLine3Parts(target, direction, clockPhase)
 			p.addDatablockLine(td, line1, anchor, direction, 0, 0, lineHeight, style)
@@ -216,12 +226,22 @@ func (p *STARSPane) drawDatablocks(
 			if hasSPC && (spcAcknowledged || specialConditionBlinkVisible(now)) {
 				p.addDatablockLine(td, spc.Abbreviation, anchor, direction, -1, 1, lineHeight, spcStyle)
 			}
-			if hasSPC || p.currentPrefs().DisplayLDBBeaconCodes || p.targetLDBBeaconReadoutActive(target, now) {
+			if p.beaconCodeReadoutHeld || hasSPC || p.currentPrefs().DisplayLDBBeaconCodes || p.targetLDBBeaconReadoutActive(target, now) {
 				line1 := normalizeBeaconCode(target.Track.ReportedBeaconCode)
 				p.addDatablockLine(td, line1, anchor, direction, 0, 1, lineHeight, style)
 			}
 			line2 := targetDatablockAltitudeGroundSpeed(target)
 			p.addDatablockLine(td, line2, anchor, direction, 1, 1, lineHeight, style)
+
+			// VICE/CRC extension (not part of the Rev. 30 standard LDB): while
+			// Beacon Code Readout is held, or this one LDB has been expanded
+			// by the five-second implied readout, display a *verified* ADS-B
+			// Flight ID under the altitude/groundspeed line. Its provenance
+			// must be ADS-B; the flight-plan ACID and ICAO address are not
+			// interchangeable with an aircraft-transmitted Flight ID.
+			if flightID := p.targetLDBADSBFlightID(target, now); flightID != "" {
+				p.addDatablockLine(td, flightID, anchor, direction, 2, 1, lineHeight, style)
+			}
 		}
 	}
 
@@ -232,6 +252,36 @@ func (p *STARSPane) drawDatablocks(
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 	td.GenerateCommands(cb, fontTexture)
 	cb.DisableScissor()
+}
+
+// targetLDBADSBFlightID is a simulator-compatible optional extension, not a
+// normative TI 6191.409 Rev. 30 LDB field. It is deliberately independent
+// of the reported beacon code: ADS-B Flight IDs can accompany any squawk.
+// No additional line is shown when TAIS does not provide a verified Flight ID.
+func (p *STARSPane) targetLDBADSBFlightID(target *redsnet.TaisTarget, now time.Time) string {
+	if p == nil || target == nil || target.FlightPlan != nil || !target.Track.ADSB {
+		return ""
+	}
+	if !p.beaconCodeReadoutHeld && !p.targetLDBBeaconReadoutActive(target, now) {
+		return ""
+	}
+	return normalizeADSBFlightID(target.Track.ADSBFlightID)
+}
+
+// STARS/VICE's additional LDB line is eight character cells wide. Reject
+// control/non-ASCII characters (rather than sending them to the bitmap font),
+// then truncate to exactly the number of available character cells.
+func normalizeADSBFlightID(raw string) string {
+	id := strings.ToUpper(strings.TrimSpace(raw))
+	for i := 0; i < len(id); i++ {
+		if id[i] < ' ' || id[i] > '~' {
+			return ""
+		}
+	}
+	if len(id) > 8 {
+		id = id[:8]
+	}
+	return id
 }
 
 func altitudeWithinFilter(altitudeFeet int, filter [2]int) bool {
@@ -257,6 +307,11 @@ func (p *STARSPane) targetAltitudeFilterAllowsDatablock(target *redsnet.TaisTarg
 	}
 
 	if target.FlightPlan == nil && p.targetLDBBeaconReadoutActive(target, now) {
+		return true
+	}
+	// §6.13.12 temporarily exposes data blocks for tracks outside their
+	// normal altitude filters, including otherwise hidden unassociated LDBs.
+	if p.beaconCodeReadoutHeld {
 		return true
 	}
 	if targetHasAltitudeFilterSPC(target) {
@@ -329,6 +384,12 @@ func (p *STARSPane) targetDatablockPresentationUnhighlighted(target *redsnet.Tai
 	// If another controller owns it, retain the normal unowned FDB color and
 	// OTH brightness; only the SPC abbreviation itself is alert/caution color.
 	if _, ok := targetSpecialConditionIndicator(target); ok {
+		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
+	}
+	// §6.13.12: while Beacon Code Readout is held, unowned associated
+	// PDBs become full blocks. Preserve their unowned color/OTH brightness
+	// (the ordinary FDB brightness is for owned or highlighted tracks).
+	if p.beaconCodeReadoutHeld {
 		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 	}
 	return targetDatablockPartial, p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
@@ -441,6 +502,19 @@ func (p *STARSPane) datablockCellWidth(text string, size int) float32 {
 // direction enum uses the same clockwise ordering as REDS.
 func datablockRightJustified(direction leaderLineDirection) bool {
 	return direction >= leaderLineDirectionSouth
+}
+
+// targetDisplayedFullDatablockACID implements §6.13.12's temporary field-1
+// substitution. Beacon Code Readout shows the REPORTED squawk (never the
+// assigned code) when available; otherwise keep the original display rather
+// than manufacturing a code. This also works for PDBs temporarily made FDBs.
+func (p *STARSPane) targetDisplayedFullDatablockACID(target *redsnet.TaisTarget) string {
+	if p != nil && p.beaconCodeReadoutHeld && target != nil {
+		if code := normalizeBeaconCode(target.Track.ReportedBeaconCode); code != "" {
+			return code
+		}
+	}
+	return targetDatablockACID(target)
 }
 
 func targetDatablockACID(target *redsnet.TaisTarget) string {

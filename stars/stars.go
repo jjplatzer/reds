@@ -97,6 +97,12 @@ type STARSPane struct {
 	// removes the override and returns the track to its applicable default.
 	singleTrackLeaderDirections map[string]leaderLineDirection
 
+	// beaconCodeReadoutHeld is the frame-local, momentary 6.13.12
+	// Beacon Code Readout (physical ABC top-left unlabeled key, mapped to
+	// Ctrl+F1 as in VICE). It is sampled from keyboard state each Draw, not
+	// toggled or persisted in a preference set.
+	beaconCodeReadoutHeld bool
+
 	// ldbBeaconReadoutUntil records TI 6191.409 6.13.2 implied-command
 	// beacon readouts. Slew + left trackball on an unassociated track forces
 	// its reported beacon code into LDB field 1 for five seconds.
@@ -501,6 +507,10 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.ensureNexradCoverage(ctx)
 	p.rebuildNexradIfNeeded()
 
+	// Sample before any target filtering/drawing so the FDB/PDB/LDB
+	// presentation and altitude-filter bypass agree for the whole frame.
+	// A missing/captured keyboard or key release immediately restores STARS.
+	p.beaconCodeReadoutHeld = starsBeaconCodeReadoutHeld(ctx.Keyboard)
 	p.processKeyboardInput(ctx)
 	transforms := p.scopeTransformations(ctx)
 	allTargets := p.targetSnapshot()
