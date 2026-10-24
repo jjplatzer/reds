@@ -546,7 +546,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	}
 	p.updateCRDA(allTargets) // live, pre-RPOS source locations
 	// Ghost picking must use the same frame's projected positions as drawing.
-	p.consumeMouseEvents(ctx, transforms, targets)
+	p.consumeMouseEvents(ctx, transforms, targets, allTargets)
 
 	p.drawNexrad(ctx, zcb, transforms)
 	p.drawRangeRings(ctx, zcb, transforms)
@@ -629,6 +629,7 @@ func (p *STARSPane) consumeMouseEvents(
 	ctx *panes.Context,
 	transforms radar.LatLonTransformations,
 	targets redsnet.TaisSnapshot,
+	crdaParents redsnet.TaisSnapshot,
 ) {
 	if p == nil || ctx == nil || ctx.Mouse == nil {
 		return
@@ -692,13 +693,14 @@ func (p *STARSPane) consumeMouseEvents(
 
 	// TI 6191.409 6.5: N+slew on a ghost suppresses it, N+slew on
 	// its parent forces/restores ghosting, and N*+slew toggles the parent's
-	// qualification override. A plain ghost slew toggles FDB/PDB mode.
+	// qualification override. A plain slew to the ghost DATA BLOCK toggles
+	// FDB/PDB (§6.5.7); the symbol alone is selectable only with N/N*.
 	// Prefer the nearest ghost to a real track when both occupy a hit radius.
 	if mouse.WasReleased(platform.MouseButtonLeft) {
 		entry := strings.ToUpper(p.multiFuncPrefix + p.commandInput)
 		isMultiN := p.commandMode == CommandModeMultiFunc && (entry == "N" || entry == "N*")
 		if isMultiN || (p.commandMode == CommandModeNone && p.commandInput == "") {
-			if key, ok := p.closestCRDAGhost(mouse.Pos, transforms); ok {
+			if key, ok := p.closestCRDAGhost(mouse.Pos, transforms, crdaParents, isMultiN); ok {
 				if isMultiN && entry == "N*" {
 					// CRC N*+ghost queries the parent track's live readout.
 					p.commandResponse = p.crdaParentReadout(targets, key)

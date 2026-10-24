@@ -730,23 +730,74 @@ func (p *STARSPane) crdaSlewGhost(key string, suppress bool) error {
 	return nil
 }
 
-// closestCRDAGhost selects the nearest visible ghost position symbol.
-// CRC DisplayElementGhostTracks uses a 7-pixel click spot, not the 20-pixel
-// real-target slew tolerance. Rendering may extend this to its FDB hitboxes.
-func (p *STARSPane) closestCRDAGhost(mouse redsmath.Vec2, transforms radar.LatLonTransformations) (string, bool) {
-	if !p.crdaAvailable() || p.crda.inhibited {
+// crdaGhostDatablockLineHit uses the same anchor, fixed character-cell width,
+// and line-height placement as addDatablockLine. The two-pixel tolerance covers
+// the blank margin around bitmap glyphs without swallowing adjacent targets.
+// It has no renderer dependency, so hit-testing never requires GPU readback.
+func crdaGhostDatablockLineHit(mouse, anchor redsmath.Vec2, direction leaderLineDirection,
+	row, lineHeight int, width float32) bool {
+	if width <= 0 || lineHeight <= 0 {
+		return false
+	}
+	x := anchor.X + 4
+	if datablockRightJustified(direction) {
+		x = anchor.X - 4 - width
+	}
+	y := anchor.Y - float32(lineHeight)/2 + float32(row*lineHeight)
+	const margin float32 = 2
+	return mouse.X >= x-margin && mouse.X <= x+width+margin &&
+		mouse.Y >= y-margin && mouse.Y <= y+float32(lineHeight)+margin
+}
+
+// closestCRDAGhost tests the actual full/partial ghost data block, and the
+// position symbol only when a CRDA command explicitly permits that selection. TI 6191.409 Rev. 30 §6.5.7 explicitly
+// instructs the operator to slew to the ghost DATA BLOCK and left-click;
+// position-symbol selection is retained only for N/N* ghost commands.
+// Iterate the existing snapshot once: only live parents with rendered ghosts
+// can be selected, and there are no per-frame hitbox allocations.
+func (p *STARSPane) closestCRDAGhost(mouse redsmath.Vec2,
+	transforms radar.LatLonTransformations, parents redsnet.TaisSnapshot,
+	allowSymbol bool) (string, bool) {
+	if !p.crdaAvailable() || p.crda.inhibited || !parents.Ready ||
+		p.currentPrefs().Brightness.OtherTracks == 0 || p.systemFont == nil ||
+		p.systemOutlineFont == nil {
 		return "", false
 	}
-	const radius = float32(7)
-	best2 := radius * radius
+	const radius = float32(7) // CRC position-symbol slew tolerance
+	best2 := float32(math.MaxFloat32)
 	best := ""
-	for key, ghost := range p.crda.ghosts {
-		if ghost.Suppressed {
+	lineHeight := p.systemFont.LineHeight(p.datablockFontSize())
+	leaderLength := starsLeaderLineLengthPixels(p.currentPrefs().LeaderLineLength)
+	for i := range parents.Targets {
+		parent := &parents.Targets[i]
+		key := targetDisplayStateKey(parent)
+		ghost, ok := p.crda.ghosts[key]
+		if !ok || ghost.Suppressed || ghost.Identity != crdaIdentity(parent) ||
+			parent.FlightPlan == nil || parent.FlightPlan.Deleted || ghost.Ghost.Symbol == "" {
 			continue
 		}
-		point := transforms.WindowFromLatLon(ghost.Ghost.Position.Lat, ghost.Ghost.Position.Lon)
-		dx, dy := point.X-mouse.X, point.Y-mouse.Y
-		if d2 := dx*dx + dy*dy; d2 < best2 {
+		center := transforms.WindowFromLatLon(ghost.Ghost.Position.Lat, ghost.Ghost.Position.Lon)
+		center.X += 0.5
+		center.Y -= 0.5
+		dx, dy := center.X-mouse.X, center.Y-mouse.Y
+		d2 := dx*dx + dy*dy
+		selected := allowSymbol && d2 <= radius*radius
+		if !selected && lineHeight > 0 {
+			direction := p.crdaGhostLeaderDirection(ghost)
+			_, anchor := crdaGhostLeaderGeometry(center, direction, leaderLength)
+			first, second := crdaGhostDatablockLines(parent, ghost.FullDataBlock)
+			fontSize := p.datablockFontSize()
+			if ghost.FullDataBlock && first != "" {
+				selected = crdaGhostDatablockLineHit(mouse, anchor, direction, 0, lineHeight,
+					p.datablockCellWidth(first, fontSize)) ||
+					crdaGhostDatablockLineHit(mouse, anchor, direction, 1, lineHeight,
+						p.datablockCellWidth(second, fontSize))
+			} else {
+				selected = crdaGhostDatablockLineHit(mouse, anchor, direction, 0, lineHeight,
+					p.datablockCellWidth(second, fontSize))
+			}
+		}
+		if selected && d2 < best2 {
 			best2, best = d2, key
 		}
 	}
@@ -946,24 +997,28 @@ func (p *STARSPane) drawCRDADiagrams(ctx *panes.Context, zcb *renderer.ZCmdBuffe
 	cb.DisableScissor()
 }
 
-// crdaGhostDatablockLines contains exactly the information CRC presents for
-// an associated ghost: the parent ACID in an FDB, followed by ground speed
-// in tens of knots, flight-rules indicator and wake-turbulence category.
-// A PDB omits the ACID. No pseudo-track data is synthesized for the ghost.
+// crdaGhostDatablockLines implements the field content illustrated by
+// TI 6191.409 Rev. 30 Figure 6-2 (p. 6-20), subject to the site's Display
+// Rules adaptation: FDB = ACID over ground speed; PDB = ground speed plus
+// category/RNAV indication. The feed exposes the category but neither the
+// site's RECAT enablement nor its adapted RNAV symbol. Do not invent either;
+// emit the category when available and leave RNAV substitution for when
+// crc2reds exports those display rules. Unlike CRC, do not append ordinary
+// track flight-rules indicators to ghost data blocks without adaptation.
 func crdaGhostDatablockLines(parent *redsnet.TaisTarget, full bool) (first, second string) {
 	if parent == nil || parent.FlightPlan == nil || parent.FlightPlan.Deleted {
 		return "", ""
 	}
+	speed := targetDatablockGroundSpeed(parent.Track.VX, parent.Track.VY)
 	if full {
-		first = strings.TrimSpace(parent.FlightPlan.ACID)
+		if acid := strings.TrimSpace(parent.FlightPlan.ACID); acid != "" {
+			return acid, speed
+		}
+		// An unidentified track has no ACID to show in a ghost FDB.
+		// Render a PDB instead of a blank first line.
 	}
-	groundSpeed := math.Hypot(float64(parent.Track.VX), float64(parent.Track.VY))
-	if !math.IsNaN(groundSpeed) && !math.IsInf(groundSpeed, 0) {
-		second = fmt.Sprintf("%02d", int(groundSpeed/10))
-	}
-	second = strings.TrimRight(second+targetDatablockFlightRulesIndicator(parent.FlightPlan)+
-		targetDatablockCategory(parent.FlightPlan), " ")
-	return
+	category := strings.TrimSpace(targetDatablockCategory(parent.FlightPlan))
+	return "", speed + category
 }
 
 // crdaGhostLeaderGeometry derives all three positions from the same leader
