@@ -5,6 +5,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import store.HistoryPosition;
 import store.TrackCache;
+import registry.FaaRegistry;
 
 import java.time.Instant;
 import java.util.List;
@@ -27,11 +28,12 @@ public final class TaisWire {
             long revision,
             Instant generatedAt,
             String facility,
-            List<TrackCache.SnapshotTarget> targets
+            List<TrackCache.SnapshotTarget> targets,
+            FaaRegistry registry
     ) {
         JsonArray array = new JsonArray();
         for (TrackCache.SnapshotTarget target : targets) {
-            array.add(target(target, true));
+            array.add(target(target, true, registry));
         }
 
         return envelope("snapshot", revision)
@@ -40,10 +42,10 @@ public final class TaisWire {
                 .put("targets", array);
     }
 
-    public static JsonObject update(long revision, TrackCache.SnapshotTarget target) {
+    public static JsonObject update(long revision, TrackCache.SnapshotTarget target, FaaRegistry registry) {
         return envelope("update", revision)
                 .put("facility", target.target().facility())
-                .put("target", target(target, false));
+                .put("target", target(target, false, registry));
     }
 
     public static JsonObject remove(long revision, String facility, String key) {
@@ -60,7 +62,7 @@ public final class TaisWire {
                 .put("revision", revision);
     }
 
-    private static JsonObject target(TrackCache.SnapshotTarget snapshot, boolean includeHistory) {
+    private static JsonObject target(TrackCache.SnapshotTarget snapshot, boolean includeHistory, FaaRegistry registry) {
         TaisObservation observation = snapshot.target();
         List<HistoryPosition> history = snapshot.history();
         JsonObject out = new JsonObject()
@@ -107,6 +109,11 @@ public final class TaisWire {
         put(trackJson, "adsb", track.adsb());
         put(trackJson, "reportedBeaconCode", track.reportedBeaconCode());
         put(trackJson, "reportedAltitude", track.reportedAltitude());
+        // Optional, non-TAIS metadata: a registry lookup is not a received
+        // ADS-B Flight ID. Send it in a distinct field; only for ADS-B tracks.
+        if (Boolean.TRUE.equals(track.adsb())) {
+            put(trackJson, "registration", registry.lookup(track.acAddress()));
+        }
         out.put("track", trackJson);
 
         TaisObservation.FlightPlan fp = observation.flightPlan();
