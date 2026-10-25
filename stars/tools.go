@@ -1358,6 +1358,15 @@ func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdB
 	labels := renderer.GetTextDrawBuilder()
 	defer renderer.ReturnTextDrawBuilder(labels)
 	labels.SetFont(p.systemFont)
+	// VICE STARS uses a 32x32 OpenGL polygon-stipple pattern for shaded
+	// restriction areas, with a separate doubled-pixel mask on high-DPI displays.
+	shadeMode := renderer.DrawStippleRestrictionArea
+	if ctx.DPIScale > 1.5 {
+		shadeMode = renderer.DrawStippleRestrictionAreaHighDPI
+	}
+	// Match VICE: 500 ms normal/50%-brightness text phases; no off phase.
+	blinkDim := restrictionAreaBlinkDim(time.Now().UnixMilli())
+	textColor := ps.Brightness.VideoGroupB.ScaleRGB(p.colors.RestrictionAreaText)
 	for _, ra := range areas {
 		colorIndex := ra.Color - 1
 		if colorIndex < 0 || colorIndex >= len(p.colors.RestrictionAreaGeom) {
@@ -1382,7 +1391,7 @@ func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdB
 				shaded := renderer.GetTrianglesBuilder()
 				shaded.AddCircle(renderer.PointVertex{X: center.X, Y: center.Y}, radius, 96)
 				cb.SetRGB(color)
-				shaded.GenerateCommands(cb, renderer.DrawHatched, 0)
+				shaded.GenerateCommands(cb, shadeMode, 0)
 				renderer.ReturnTrianglesBuilder(shaded)
 			}
 		} else if ra.Kind == starsRestrictionClosed {
@@ -1393,7 +1402,7 @@ func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdB
 						shaded.AddTriangle(tri[0], tri[1], tri[2])
 					}
 					cb.SetRGB(color)
-					shaded.GenerateCommands(cb, renderer.DrawHatched, 0)
+					shaded.GenerateCommands(cb, shadeMode, 0)
 					renderer.ReturnTrianglesBuilder(shaded)
 				}
 				outline.AddLineLoop(vertices)
@@ -1417,14 +1426,12 @@ func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdB
 			continue
 		}
 		label := fmt.Sprintf("[%d]", ra.ID)
-		if !ra.Blink || time.Now().UnixMilli()/500%2 == 0 {
-			for i, line := range ra.Text {
-				if line != "" {
-					if i == 0 {
-						label += " " + line
-					} else {
-						label += "\n" + line
-					}
+		for i, line := range ra.Text {
+			if line != "" {
+				if i == 0 {
+					label += " " + line
+				} else {
+					label += "\n" + line
 				}
 			}
 		}
@@ -1439,12 +1446,27 @@ func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdB
 		}
 		pt.X -= labelWidth / 2
 		pt.Y -= float32(fs.LineHeight) / 2
-		labels.AddText(label, pt, renderer.TextStyle{Size: fontSize, Color: ps.Brightness.VideoGroupB.ScaleRGB(p.colors.RestrictionAreaText).ToRGBA()})
+		labels.AddText(label, pt, renderer.TextStyle{Size: fontSize, Color: restrictionAreaBlinkColor(textColor, ra.Blink && blinkDim).ToRGBA()})
 	}
 	if texture != 0 {
 		labels.GenerateCommands(cb, texture)
 	}
 	cb.DisableScissor()
+}
+
+// VICE's restriction text alternates half- and full-brightness every 500 ms.
+func restrictionAreaBlinkDim(unixMilli int64) bool {
+	return unixMilli/500&1 == 0
+}
+
+// VICE dims the *entire* label, including the bracketed ID, instead of
+// removing just the text during the blink's dim phase. Keep BRITE scaling
+// separate so this adjustment also works at reduced Video Group B brightness.
+func restrictionAreaBlinkColor(color renderer.RGB, dim bool) renderer.RGB {
+	if !dim {
+		return color
+	}
+	return renderer.RGB{R: color.R * 0.5, G: color.G * 0.5, B: color.B * 0.5}
 }
 
 // Ear clipping supports concave polygons without filling across their voids.

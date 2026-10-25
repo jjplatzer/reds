@@ -31,7 +31,6 @@ const (
 	CommandModeSavePrefAs
 	CommandModeMin
 	CommandModeRestrictionArea
-	CommandModeRestrictionArea
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -631,6 +630,9 @@ func (p *STARSPane) resetCommand() {
 	p.leaderLengthDragAccumY = 0
 	p.ptlLengthDragAccumY = 0
 	p.wipRBL = nil
+	// A completed or cancelled GEO RESTRICTION must not survive into the
+	// next F12 command (e.g. changing from G text to C/P/A geometry).
+	p.wipRestrictionArea = nil
 	p.minSepPendingKey = ""
 	p.rposPendingSourceKey = ""
 }
