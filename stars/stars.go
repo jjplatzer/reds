@@ -47,6 +47,7 @@ type STARSPane struct {
 	useFontSetB                  bool
 	useFAAHFSTD010APalette       bool
 	hideAssignedAltitudes        bool
+	useTAISLeaderDirection       bool // REDS display override, off by default; not a STARS preference set.
 	systemFont                   *renderer.BitmapFont
 	systemFontTextures           map[int]renderer.TextureID
 	systemOutlineFont            *renderer.BitmapFont
@@ -188,6 +189,26 @@ func (p *STARSPane) AssignedAltitudesHidden() bool {
 func (p *STARSPane) ToggleAssignedAltitudesHidden() {
 	if p != nil {
 		p.hideAssignedAltitudes = !p.hideAssignedAltitudes
+	}
+}
+
+// UseTAISLeaderDirection reports the REDS-only burger-menu display override.
+// It is local to this TCW/TDW and is deliberately not persisted in a STARS
+// preference set. The zero value is off (normal <LDR DIR> behavior).
+func (p *STARSPane) UseTAISLeaderDirection() bool {
+	return p != nil && p.useTAISLeaderDirection
+}
+
+// ToggleTAISLeaderDirection uses the TAIS flightPlan.lld even on locally owned
+// tracks when it is enabled. Explicit single-track leader positioning still
+// takes precedence. Turning it on cancels an active DCB LDR DIR adjustment.
+func (p *STARSPane) ToggleTAISLeaderDirection() {
+	if p == nil {
+		return
+	}
+	p.useTAISLeaderDirection = !p.useTAISLeaderDirection
+	if p.useTAISLeaderDirection && p.commandMode == CommandModeLDRDir {
+		p.resetCommand()
 	}
 }
 

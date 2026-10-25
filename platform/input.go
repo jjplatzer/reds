@@ -87,6 +87,7 @@ const (
 	KeyN   // Appended to preserve existing platform-independent key values.
 	KeyV   // Appended to preserve existing platform-independent key values.
 	KeyEnd // VICE maps the STARS <MIN> key to End.
+	KeyL   // REDS-only TAIS-derived leader-direction display toggle.
 )
 
 // KeyboardState is the keyboard input for one frame.

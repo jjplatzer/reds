@@ -1297,12 +1297,10 @@ func (p *STARSPane) targetLeaderPresentation(target *redsnet.TaisTarget) (render
 	return p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 }
 
-// targetLeaderLineDirection applies the local <LDR DIR> setting exactly where
-// TI 6191.409 4.14.5 says it applies: current/future tracks owned by the
-// entering TCW/TDW. For other associated tracks, TAIS's LLD field provides the
-// source STARS leader direction; if it is unavailable, use the normal north
-// fallback also used by VICE. Unassociated tracks likewise default north until
-// REDS implements the separate unassociated/other-owner positioning commands.
+// targetLeaderLineDirection normally applies <LDR DIR> to tracks owned by this
+// TCP, per TI 6191.409 4.14.5. REDS' optional TAIS-derived direction override
+// extends TAIS flightPlan.lld to owned tracks as well; it is not a documented
+// operational STARS control. Explicit per-track positioning has precedence.
 func (p *STARSPane) targetLeaderLineDirection(target *redsnet.TaisTarget) leaderLineDirection {
 	if p == nil || target == nil {
 		return leaderLineDirectionNorth
@@ -1315,7 +1313,8 @@ func (p *STARSPane) targetLeaderLineDirection(target *redsnet.TaisTarget) leader
 		return direction
 	}
 
-	if p.targetOwnedByCurrentTCP(target) {
+	owned := p.targetOwnedByCurrentTCP(target)
+	if owned && !p.UseTAISLeaderDirection() {
 		return p.currentPrefs().LeaderLineDirection
 	}
 
@@ -1323,6 +1322,12 @@ func (p *STARSPane) targetLeaderLineDirection(target *redsnet.TaisTarget) leader
 		if direction, ok := parseLeaderLineDirection(target.FlightPlan.LLD); ok {
 			return direction
 		}
+	}
+	// An owned track whose TAIS LLD is absent/invalid retains the local
+	// preference rather than silently jumping to north. For unowned and
+	// unassociated tracks, preserve the existing north fallback.
+	if owned {
+		return p.currentPrefs().LeaderLineDirection
 	}
 	return leaderLineDirectionNorth
 }
