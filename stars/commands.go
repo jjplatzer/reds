@@ -341,6 +341,9 @@ func init() {
 	// TI 6191.409 Rev. 30, 4.14.5. After selecting <LDR DIR xx>, the
 	// operator may enter one of the numeric-keypad directions and press ENTER.
 	registerCommand(CommandModeLDRDir, "[LEADER_DIRECTION]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		if p.UseTAISLeaderDirection() {
+			return CommandStatus{}, nil
+		}
 		p.currentPrefs().LeaderLineDirection = args[0].(leaderLineDirection)
 		return CommandStatus{}, nil
 	})

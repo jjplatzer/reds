@@ -45,6 +45,7 @@ const (
 
 const (
 	shortcutCommandSymbol = "\u2318"
+	shortcutOptionSymbol  = "\u2325"
 	shortcutControlSymbol = "\u2303"
 	shortcutShiftSymbol   = "\u21e7"
 )
@@ -79,6 +80,7 @@ const (
 	titleBarActionViewNOTAMs
 	titleBarActionViewIAPChart
 	titleBarActionToggleStarsAssignedAltitudes
+	titleBarActionToggleStarsTAISLeaderDirection
 	titleBarActionToggleStarsFontSetB
 	titleBarActionToggleStarsFAAHFSTD010APalette
 )
@@ -88,6 +90,8 @@ type titleBarMenuOptions struct {
 	ShowStarsIAPChart            bool
 	ShowStarsAssignedAltitudes   bool
 	HideStarsAssignedAltitudes   bool
+	ShowStarsTAISLeaderDirection bool
+	UseStarsTAISLeaderDirection  bool
 	ShowStarsFontSetB            bool
 	UseStarsFontSetB             bool
 	ShowStarsFAAHFSTD010APalette bool
@@ -249,13 +253,16 @@ func drawTitleBarMenuPopup(
 	if menuOptions.ShowStarsAssignedAltitudes {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
+	if menuOptions.ShowStarsTAISLeaderDirection {
+		menuHeight += float32(titleBarMenuItemHeight)
+	}
 	if menuOptions.ShowStarsFontSetB {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
 	if menuOptions.ShowStarsFAAHFSTD010APalette {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
-	if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+	if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsTAISLeaderDirection || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
 		popupWidth = titleBarStarsMenuPopupWidth
 	}
 	imgui.SetNextWindowSizeV(
@@ -281,7 +288,7 @@ func drawTitleBarMenuPopup(
 		// Right-align each complete shortcut; modifier glyphs need not share a left edge.
 		shortcutRightX := popupWidth - titleBarMenuShortcutPadRight
 		textPadX := float32(titleBarMenuTextPadX)
-		if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+		if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsTAISLeaderDirection || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
 			// Reserve the same check gutter as the STARS checked rows so all
 			// labels start on the same vertical axis.
 			textPadX = titleBarMenuCheckedTextPadX
@@ -497,6 +504,35 @@ func drawTitleBarMenuPopup(
 
 			if hideAssignedAltitudeClicked {
 				action = titleBarActionToggleStarsAssignedAltitudes
+			}
+			rowY += float32(titleBarMenuItemHeight)
+		}
+
+		if menuOptions.ShowStarsTAISLeaderDirection {
+			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
+			clicked := imgui.InvisibleButtonV(
+				"##stars-use-tais-leader-direction-menu-item",
+				imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
+				imgui.ButtonFlagsMouseButtonLeft,
+			)
+			rowMin := imgui.ItemRectMin()
+			rowMax := imgui.ItemRectMax()
+			if imgui.IsItemHovered() {
+				imgui.WindowDrawList().AddRectFilledV(
+					rowMin, rowMax, imgui.ColorU32Vec4(titleBarMenuHover),
+					titleBarMenuPopupRounding, imgui.DrawFlagsRoundCornersAll,
+				)
+			}
+			if menuOptions.UseStarsTAISLeaderDirection {
+				drawTitleBarMenuCheck(rowMin, titleBarMenuItemHeight)
+			}
+			drawTitleBarMenuItemTextWithPad(
+				rowMin, titleBarMenuItemHeight, shortcutRightX,
+				titleBarMenuCheckedTextPadX,
+				"Use TAIS-derived LDR DIR", titleBarTAISLeaderDirectionShortcutParts(),
+			)
+			if clicked {
+				action = titleBarActionToggleStarsTAISLeaderDirection
 			}
 			rowY += float32(titleBarMenuItemHeight)
 		}
@@ -750,6 +786,18 @@ func titleBarHideAssignedAltitudesShortcutParts() []titleBarShortcutPart {
 	}
 }
 
+// REDS-only leader-direction override: macOS Command+Option+L, otherwise
+// Control+Alt+L. Render it in the same right-aligned shortcut column.
+func titleBarTAISLeaderDirectionShortcutParts() []titleBarShortcutPart {
+	if runtime.GOOS == "darwin" {
+		return []titleBarShortcutPart{
+			{Text: shortcutCommandSymbol}, {Text: "+"},
+			{Text: shortcutOptionSymbol}, {Text: "+L"},
+		}
+	}
+	return []titleBarShortcutPart{{Text: "Ctrl+Alt+L"}}
+}
+
 func titleBarFontSetBShortcutParts() []titleBarShortcutPart {
 	if runtime.GOOS == "darwin" {
 		return []titleBarShortcutPart{
@@ -875,6 +923,12 @@ func titleBarShortcutAction(
 	}
 
 	keyboard := plat.GetKeyboard()
+	// This shortcut has Option/Alt instead of Shift, unlike the other
+	// title-bar shortcuts. Check it before the existing Shift guard.
+	if menuOptions.ShowStarsTAISLeaderDirection &&
+		titleBarTAISLeaderDirectionShortcutPressed(keyboard, runtime.GOOS) {
+		return titleBarActionToggleStarsTAISLeaderDirection
+	}
 	if !keyboard.IsDown(platform.KeyShift) {
 		return titleBarActionNone
 	}
@@ -913,6 +967,18 @@ func titleBarShortcutAction(
 	}
 
 	return titleBarActionNone
+}
+
+// The key event is edge-triggered, so holding the chord never repeatedly
+// toggles the setting. Distinguish Command on macOS from Control elsewhere.
+func titleBarTAISLeaderDirectionShortcutPressed(keyboard platform.KeyboardState, goos string) bool {
+	if !keyboard.WasPressed(platform.KeyL) || !keyboard.IsDown(platform.KeyAlt) || keyboard.IsDown(platform.KeyShift) {
+		return false
+	}
+	if goos == "darwin" {
+		return keyboard.IsDown(platform.KeyCommand) && !keyboard.IsDown(platform.KeyControl)
+	}
+	return keyboard.IsDown(platform.KeyControl) && !keyboard.IsDown(platform.KeyCommand)
 }
 
 func drawTitleBarButtons(plat platform.Platform, windowWidth float32) bool {

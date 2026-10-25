@@ -403,6 +403,7 @@ var trackedKeys = []trackedKey{
 	{KeyS, glfw.KeyS},
 	{KeyW, glfw.KeyW},
 	{KeyM, glfw.KeyM},
+	{KeyL, glfw.KeyL},
 	{KeyN, glfw.KeyN},
 	{KeyV, glfw.KeyV},
 }

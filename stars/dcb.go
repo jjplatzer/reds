@@ -350,7 +350,12 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 	// TI 6191.409 Rev. 30, Table 2-6 / 4.14.5: LDR DIR is an adjustment
 	// button and its second line always displays the current orientation.
 	ldrDirSelected := p.commandMode == CommandModeLDRDir
-	d.button("LDR DIR\n"+ps.LeaderLineDirection.String(), mainFlags(buttonHalfVertical), ldrDirSelected, func() {
+	ldrDirFlags := mainFlags(buttonHalfVertical)
+	if p.UseTAISLeaderDirection() {
+		// Match the MODE FSL gray/inert presentation while the menu override is active.
+		ldrDirFlags |= buttonUnsupported
+	}
+	d.button("LDR DIR\n"+ps.LeaderLineDirection.String(), ldrDirFlags, ldrDirSelected, func() {
 		if ldrDirSelected {
 			p.resetCommand()
 			return
@@ -369,7 +374,7 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 		p.setCommandMode(CommandModeCharSize)
 	})
 	d.button("MODE\nFSL", mainFlags(buttonFull)|buttonUnsupported, false, nil)
-	d.button("SITE\nFUSED", mainFlags(buttonFull), false, nil)
+	d.button("SITE\nFUSED", mainFlags(buttonFull)|buttonUnsupported, false, nil)
 	prefLabel := "PREF"
 	if selected := p.selectedPreferenceSet(); selected != nil {
 		prefLabel += "\n" + selected.Name
@@ -622,7 +627,7 @@ const starsLeaderDirectionMouseDelta = float32(10)
 // toward the controller advances counterclockwise. A left click freezes the
 // displayed orientation and exits the command.
 func (p *STARSPane) adjustLeaderLineDirection(ctx *panes.Context) {
-	if p == nil || ctx == nil || ctx.Mouse == nil || p.commandMode != CommandModeLDRDir {
+	if p == nil || ctx == nil || ctx.Mouse == nil || p.commandMode != CommandModeLDRDir || p.UseTAISLeaderDirection() {
 		return
 	}
 
