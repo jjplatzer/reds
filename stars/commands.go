@@ -29,6 +29,7 @@ const (
 	CommandModePlaceCenter
 	CommandModePref
 	CommandModeSavePrefAs
+	CommandModeMin
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -66,6 +67,8 @@ func (m CommandMode) PreviewString() string {
 		return "PREF"
 	case CommandModeSavePrefAs:
 		return "PREF SET NAME"
+	case CommandModeMin:
+		return "MIN"
 	default:
 		return ""
 	}
@@ -186,6 +189,32 @@ func init() {
 	})
 	registerCommand(CommandModeMultiFunc, "BI", func(p *STARSPane, args []any) (CommandStatus, error) {
 		p.currentPrefs().DisplayLDBBeaconCodes = false
+		return CommandStatus{}, nil
+	})
+
+	// TI 6191.409 Rev. 30, 6.13.11: select/deselect a Mode 3/A code
+	// (B1200) or its entire two-digit bank (B12). A second selection removes
+	// the entry; B* clears the entire list. This selection is separate from
+	// the B / BE / BI LDB beacon-code *visibility* commands above.
+	registerCommand(CommandModeMultiFunc, "B*", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().SelectedBeacons = nil
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "B[BEACON_SELECTION]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		code := args[0].(string) // Already validated as 2 or 4 octal digits.
+		prefs := p.currentPrefs()
+		for i, existing := range prefs.SelectedBeacons {
+			if existing == code {
+				prefs.SelectedBeacons = append(prefs.SelectedBeacons[:i], prefs.SelectedBeacons[i+1:]...)
+				return CommandStatus{}, nil
+			}
+		}
+		// The manual limits the selected-code SSA list to ten code/bank
+		// entries; avoid silently truncating extra selections.
+		if len(prefs.SelectedBeacons) >= 10 {
+			return CommandStatus{}, ErrSTARSCapacity
+		}
+		prefs.SelectedBeacons = append(prefs.SelectedBeacons, code)
 		return CommandStatus{}, nil
 	})
 
@@ -364,6 +393,14 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		return
 	}
 	keyboard := ctx.Keyboard
+
+	// VICE maps the physical STARS <MIN> key to End on a desktop keyboard.
+	// The manual (6.4) only permits keyboard-initiated MIN + two slews or
+	// MIN + ENTER to clear the graphic. This is independent of DCB state.
+	if keyboard.WasPressed(platform.KeyEnd) {
+		p.setCommandMode(CommandModeMin)
+		return
+	}
 
 	// TI 6191.409 Rev. 30, 4.4.2: PLACE CNTR is a Main-DCB-only
 	// trackball mode. Keyboard entry is not applicable; Escape abandons the
@@ -580,6 +617,7 @@ func (p *STARSPane) resetCommand() {
 	p.leaderLengthDragAccumY = 0
 	p.ptlLengthDragAccumY = 0
 	p.wipRBL = nil
+	p.minSepPendingKey = ""
 	p.rposPendingSourceKey = ""
 }
 

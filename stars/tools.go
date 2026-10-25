@@ -675,6 +675,194 @@ func (p *STARSPane) drawRangeBearingLines(
 	cb.DisableScissor()
 }
 
+// Minimum separation prediction and rendering (VICE: stars/tools.go).
+// minSepApproach is a two-dimensional constant-ground-velocity prediction.
+// Altitudes are deliberately not considered: TI 6191.409 Rev. 30, Fig. 6-1
+// defines MIN as horizontal separation irrespective of vertical separation.
+type minSepApproach struct {
+	PointA, PointB configPoint
+	DistanceNM     float64
+	Converging     bool
+	Valid          bool
+}
+
+// minSepClosestApproach computes CPA in the local east/north tangent plane.
+// TAIS VX/VY are ground-velocity components in knots (east/north). Using one
+// shared longitude scale for both aircraft preserves relative motion. Unlike
+// CRC's five-second iterative sampling, the analytic minimum is not quantized
+// to a polling interval; positions are nevertheless updated every render frame.
+func minSepClosestApproach(a, b redsnet.TaisTrack) minSepApproach {
+	latMean := (a.Lat + b.Lat) / 2
+	lonScale := stdmath.Cos(latMean * stdmath.Pi / 180)
+	if lonScale <= 1e-6 {
+		return minSepApproach{}
+	}
+
+	deltaEast := longitudeDelta(b.Lon, a.Lon) * 60 * lonScale
+	deltaNorth := (b.Lat - a.Lat) * 60
+	relEast := float64(b.VX - a.VX)
+	relNorth := float64(b.VY - a.VY)
+	relativeSpeed2 := relEast*relEast + relNorth*relNorth
+
+	// A positive time means the current distance is decreasing. If time is
+	// nonpositive (or both ground velocities are equal), STARS draws the
+	// current separation with NO XING rather than extrapolating backwards.
+	hours := 0.0
+	if relativeSpeed2 > 0 {
+		hours = -(deltaEast*relEast + deltaNorth*relNorth) / relativeSpeed2
+	}
+	if hours <= 0 || stdmath.IsNaN(hours) || stdmath.IsInf(hours, 0) {
+		return minSepApproach{
+			PointA:     configPoint{Lat: a.Lat, Lon: a.Lon},
+			PointB:     configPoint{Lat: b.Lat, Lon: b.Lon},
+			DistanceNM: stdmath.Hypot(deltaEast, deltaNorth),
+			Valid:      true,
+		}
+	}
+
+	pA := configPoint{
+		Lat: a.Lat + float64(a.VY)*hours/60,
+		Lon: normalizeLongitude(a.Lon + float64(a.VX)*hours/(60*lonScale)),
+	}
+	pB := configPoint{
+		Lat: b.Lat + float64(b.VY)*hours/60,
+		Lon: normalizeLongitude(b.Lon + float64(b.VX)*hours/(60*lonScale)),
+	}
+	return minSepApproach{
+		PointA:     pA,
+		PointB:     pB,
+		DistanceNM: stdmath.Hypot(deltaEast+relEast*hours, deltaNorth+relNorth*hours),
+		Converging: true,
+		Valid:      true,
+	}
+}
+
+// drawMinSep is the graphic defined in TI 6191.409 Rev. 30, 6.4 and Fig. 6-1.
+// Its base color, tools font, and LIN brightness follow CRC and VICE. The
+// operator manual places "NO XING" BELOW the distance; both simulators place
+// it above, so here the manual takes precedence.
+func (p *STARSPane) drawMinSep(
+	ctx *panes.Context,
+	zcb *renderer.ZCmdBuffer,
+	transforms radar.LatLonTransformations,
+	snapshot redsnet.TaisSnapshot,
+) {
+	if p == nil || !snapshot.Ready {
+		return
+	}
+	// Track deletion can happen between frames. Prune here, using the exact
+	// snapshot used for the graphic, without coupling MIN to Draw ordering.
+	p.pruneMinSepTracks(snapshot)
+	if ctx == nil || zcb == nil || p.systemFont == nil ||
+		p.minSepTracks[0] == "" || p.minSepTracks[1] == "" || !snapshot.Ready {
+		return
+	}
+	ps := p.currentPrefs()
+	if ps.Brightness.Lines == 0 {
+		return
+	}
+	a := rangeBearingTargetByKey(snapshot, p.minSepTracks[0])
+	b := rangeBearingTargetByKey(snapshot, p.minSepTracks[1])
+	if a == nil || b == nil {
+		return
+	}
+
+	approach := minSepClosestApproach(a.Track, b.Track)
+	// A degenerate polar geometry is not representable in the pane's local
+	// tangent-plane projection. The US terminal facilities never reach it.
+	if !approach.Valid {
+		return
+	}
+
+	fontSize := p.toolsFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
+	fs := p.systemFont.Size(fontSize)
+	if texture == 0 || fs == nil {
+		return
+	}
+	color := ps.Brightness.Lines.ScaleRGB(p.colors.PTL)
+	startA := transforms.WindowFromLatLon(a.Track.Lat, a.Track.Lon)
+	startB := transforms.WindowFromLatLon(b.Track.Lat, b.Track.Lon)
+	endA := transforms.WindowFromLatLon(approach.PointA.Lat, approach.PointA.Lon)
+	endB := transforms.WindowFromLatLon(approach.PointB.Lat, approach.PointB.Lon)
+	point := func(v redsmath.Vec2) renderer.PointVertex { return renderer.PointVertex{X: v.X, Y: v.Y} }
+
+	segments := renderer.GetColoredLinesBuilder()
+	defer renderer.ReturnColoredLinesBuilder(segments)
+	markers := renderer.GetColoredTrianglesBuilder()
+	defer renderer.ReturnColoredTrianglesBuilder(markers)
+	backing := renderer.GetColoredTrianglesBuilder()
+	defer renderer.ReturnColoredTrianglesBuilder(backing)
+	border := renderer.GetColoredLinesBuilder()
+	defer renderer.ReturnColoredLinesBuilder(border)
+	label := renderer.GetTextDrawBuilder()
+	defer renderer.ReturnTextDrawBuilder(label)
+	label.SetFont(p.systemFont)
+
+	if approach.Converging {
+		segments.AddLineRGB(point(startA), point(endA), color)
+		segments.AddLineRGB(point(endA), point(endB), color)
+		segments.AddLineRGB(point(endB), point(startB), color)
+		// STARS filled triangle glyph, represented geometrically because the
+		// CRC bitmap font glyph is not guaranteed in every REDS font atlas.
+		for _, at := range []redsmath.Vec2{endA, endB} {
+			markers.AddTriangleRGB(
+				renderer.PointVertex{X: at.X, Y: at.Y - 6},
+				renderer.PointVertex{X: at.X - 5, Y: at.Y + 4},
+				renderer.PointVertex{X: at.X + 5, Y: at.Y + 4}, color)
+		}
+	} else {
+		segments.AddLineRGB(point(startA), point(startB), color)
+	}
+
+	separationLabel := fmt.Sprintf("%.2f NM", approach.DistanceNM)
+	lines := []string{separationLabel}
+	if !approach.Converging {
+		lines = append(lines, "NO XING")
+	}
+	widest := float32(0)
+	for _, line := range lines {
+		widest = max(widest, starsRBLTextWidth(fs, line))
+	}
+	lineHeight := float32(fs.LineHeight)
+	width := widest + 8
+	height := lineHeight*float32(len(lines)) + 8
+	midpoint := endA.Add(endB).Mul(0.5)
+	left, top := midpoint.X-width/2, midpoint.Y-height/2
+	right, bottom := left+width, top+height
+
+	backing.AddQuad(renderer.PointVertex{X: left, Y: top},
+		renderer.PointVertex{X: right, Y: top},
+		renderer.PointVertex{X: right, Y: bottom},
+		renderer.PointVertex{X: left, Y: bottom}, p.colors.Background)
+	corners := []renderer.PointVertex{
+		{X: left, Y: top}, {X: right, Y: top},
+		{X: right, Y: bottom}, {X: left, Y: bottom},
+	}
+	for i := 0; i < len(corners); i++ {
+		border.AddLineRGB(corners[i], corners[(i+1)%len(corners)], color)
+	}
+	for i, line := range lines {
+		label.AddText(line, redsmath.Vec2{
+			X: midpoint.X - starsRBLTextWidth(fs, line)/2,
+			Y: top + 4 + float32(i)*lineHeight,
+		}, renderer.TextStyle{Size: fontSize, Color: color.ToRGBA()})
+	}
+
+	x, y, w, h := ctx.PaneFramebufferRect()
+	cb := zcb.At(zMinimumSeparation)
+	cb.Viewport(x, y, w, h)
+	cb.Scissor(x, y, w, h)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.LineWidth(max(float32(1), ctx.DPIScale))
+	segments.GenerateCommands(cb)
+	markers.GenerateCommands(cb)
+	backing.GenerateCommands(cb)
+	border.GenerateCommands(cb)
+	label.GenerateCommands(cb, texture)
+	cb.DisableScissor()
+}
+
 func formatTPADistance(v float32) string {
 	if v == float32(int(v)) {
 		return strconv.Itoa(int(v))

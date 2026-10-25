@@ -678,9 +678,8 @@ type Preferences struct {
 
 	// SelectedBeacons contains Mode 3/A codes or two-digit beacon-code banks
 	// selected for enhanced unassociated-track presentation. TI 6191.409
-	// section 6.13.11 defines this as an operator selection. Until REDS exposes
-	// that command, start with 1200 selected so unassociated valid-Mode-C
-	// tracks squawking 1200 get the selected-code position-symbol presentation.
+	// section 6.13.11 defines this as an operator selection. No code or bank
+	// is implicitly selected simply because an aircraft squawks VFR/1200.
 	SelectedBeacons []string
 }
 
@@ -788,7 +787,6 @@ func newPreferences(cfg selectedConfig) Preferences {
 		DisplayATPAInTrailDist:       true,
 		DisplayATPAWarningAlertCones: true,
 		DisplayATPAMonitorCones:      false,
-		SelectedBeacons:              []string{"1200"},
 	}
 	for i := range prefs.DisplayWeatherLevel {
 		prefs.DisplayWeatherLevel[i] = true

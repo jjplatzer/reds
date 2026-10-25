@@ -855,10 +855,14 @@ func (p *STARSPane) targetPositionSymbolUnhighlighted(target *redsnet.TaisTarget
 		return symbol, p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 	}
 
-	// TI 6191.409's unassociated Mode-C presentation is keyed to whether the
-	// reported beacon code has been selected by the operator: selected codes
-	// use the open-square position symbol; otherwise use an asterisk. This is
-	// independent of IFR/VFR flight rules.
+	// CRC's area adaptation can enable a separate symbol for ordinary VFR
+	// 1200 targets. This check precedes selected-code presentation in CRC:
+	// a 1200 target remains 'V' even when the controller selects 1200 or 12xx.
+	// Other unassociated tracks use the selected-code square or ordinary '*'.
+	// TI 6191.409 6.13.11 leaves special symbol presentation to adaptation.
+	if p.config.Area.vfrPositionSymbolEnabled() && normalizeBeaconCode(target.Track.ReportedBeaconCode) == "1200" {
+		return "V", p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
+	}
 	if p.beaconCodeSelected(target.Track.ReportedBeaconCode) {
 		return string(rune(129)), p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 	}
@@ -1177,7 +1181,8 @@ func (p *STARSPane) drawTargets(
 // associated Partial and unassociated Limited presentation is green/LDB. OTH
 // is used only when an unowned track is promoted to an FDB, which REDS does
 // not yet model.
-// Suspended associated tracks intentionally have no leader, matching VICE.
+// Suspended associated tracks normally have no leader, except while the
+// manual's Beacon Code Readout (§6.13.12) temporarily forces an FDB.
 func (p *STARSPane) drawTargetLeaderLines(
 	ctx *panes.Context,
 	zcb *renderer.ZCmdBuffer,
@@ -1203,7 +1208,7 @@ func (p *STARSPane) drawTargetLeaderLines(
 		if !taisTargetHasPosition(target) {
 			continue
 		}
-		if target.FlightPlan != nil && target.FlightPlan.Suspended {
+		if target.FlightPlan != nil && target.FlightPlan.Suspended && !p.beaconCodeReadoutHeld {
 			continue
 		}
 		if !p.targetAltitudeFilterAllowsDatablock(target, now) {
@@ -1278,6 +1283,11 @@ func (p *STARSPane) targetLeaderPresentation(target *redsnet.TaisTarget) (render
 			if plus {
 				return p.colors.OwnedDatablock, ps.Brightness.OtherTracks
 			}
+			return p.colors.UnownedDatablock, ps.Brightness.OtherTracks
+		}
+		// Beacon Code Readout temporarily forces every associated PDB to
+		// FDB (§6.13.12). Its leader follows that unowned FDB's OTH brightness.
+		if p.beaconCodeReadoutHeld {
 			return p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 		}
 		// Other-owner associated tracks normally carry a Partial data block,

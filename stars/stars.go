@@ -17,12 +17,13 @@ import (
 )
 
 const (
-	zBackground       renderer.Z = -1000
-	zWeather          renderer.Z = -950
-	zRangeRings       renderer.Z = -925
-	zCompass          renderer.Z = -850
-	zRangeBearingLine renderer.Z = -92
-	zTargetTPA        renderer.Z = -91
+	zBackground        renderer.Z = -1000
+	zWeather           renderer.Z = -950
+	zRangeRings        renderer.Z = -925
+	zCompass           renderer.Z = -850
+	zRangeBearingLine  renderer.Z = -92
+	zMinimumSeparation renderer.Z = -93
+	zTargetTPA         renderer.Z = -91
 )
 
 // STARSPane is the STARS TCW/TDW display surface. Facility adaptation feeds
@@ -97,6 +98,12 @@ type STARSPane struct {
 	// removes the override and returns the track to its applicable default.
 	singleTrackLeaderDirections map[string]leaderLineDirection
 
+	// beaconCodeReadoutHeld is the frame-local, momentary 6.13.12
+	// Beacon Code Readout (physical ABC top-left unlabeled key, mapped to
+	// Ctrl+F1 as in VICE). It is sampled from keyboard state each Draw, not
+	// toggled or persisted in a preference set.
+	beaconCodeReadoutHeld bool
+
 	// ldbBeaconReadoutUntil records TI 6191.409 6.13.2 implied-command
 	// beacon readouts. Slew + left trackball on an unassociated track forces
 	// its reported beacon code into LDB field 1 for five seconds.
@@ -120,6 +127,13 @@ type STARSPane struct {
 	// matching VICE rather than a saved preference.
 	rangeBearingLines []starsRangeBearingLine
 	wipRBL            *starsRangeBearingLine
+
+	// MIN graphics are transient TCW/TDW state, not a preference. Pair keys
+	// identify TAIS tracks rather than callsigns (unassociated 1200 targets
+	// have no flight-plan ACID). A new selection does not erase the old pair
+	// until both new targets are selected.
+	minSepTracks     [2]string
+	minSepPendingKey string
 
 	// taisOwnership retains the last known controlling TCP while TAIS reports
 	// OCR=PENDING. In AIG200, CPS changes meaning in that state: it names the
@@ -501,6 +515,10 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.ensureNexradCoverage(ctx)
 	p.rebuildNexradIfNeeded()
 
+	// Sample before any target filtering/drawing so the FDB/PDB/LDB
+	// presentation and altitude-filter bypass agree for the whole frame.
+	// A missing/captured keyboard or key release immediately restores STARS.
+	p.beaconCodeReadoutHeld = starsBeaconCodeReadoutHeld(ctx.Keyboard)
 	p.processKeyboardInput(ctx)
 	transforms := p.scopeTransformations(ctx)
 	allTargets := p.targetSnapshot()
@@ -558,6 +576,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
 	p.drawPredictedTrackLines(ctx, zcb, transforms, targets)
 	p.drawRangeBearingLines(ctx, zcb, transforms, targets)
+	p.drawMinSep(ctx, zcb, transforms, targets)
 	// TPA graphics are suppressed while a track is in the Coast/Suspend List,
 	// while their local state is retained above for automatic redisplay.
 	p.drawTPA(ctx, zcb, transforms, targetOutsideCoastSuspendList(targets))
@@ -674,6 +693,16 @@ func (p *STARSPane) consumeMouseEvents(
 
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
+
+	// TI 6191.409 Rev. 30, 6.4: MIN uses two consecutive trackball
+	// designations, and must consume the click before normal implied
+	// commands (including CRDA ghost/data-block selection).
+	if p.commandMode == CommandModeMin {
+		if mouse.WasReleased(platform.MouseButtonLeft) {
+			p.selectMinSepTarget(closestSlewTarget(targets, mouse.Pos, transforms), targets)
+		}
+		return
+	}
 
 	// TI 6191.409 Rev. 30, 6.20: slew to a track and release the
 	// middle trackball button to toggle its cyan highlight. CRC/VICE use

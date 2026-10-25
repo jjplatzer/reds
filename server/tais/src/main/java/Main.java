@@ -3,6 +3,7 @@ import ingest.TaisBatch;
 import ingest.TaisConsumer;
 import io.vertx.core.Vertx;
 import live.WebSocketPush;
+import registry.FaaRegistry;
 import store.TrackStore;
 
 /**
@@ -22,6 +23,14 @@ public final class Main {
     private Main() {}
 
     public static void main(String[] args) {
+        // Load once before creating Vert.x event loops. Invalid configured
+        // registry files must not silently turn enrichment off.
+        final FaaRegistry registry;
+        try {
+            registry = FaaRegistry.loadConfigured();
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to load FAA registration index", e);
+        }
         Vertx vertx = Vertx.vertx();
 
         // TaisBatch is only sent inside this JVM, so pass it by reference rather
@@ -34,7 +43,7 @@ public final class Main {
         // Store first so snapshots always have an authoritative owner. Start
         // the WebSocket listener before the JMS consumer, then no live update
         // can arrive before the push layer is subscribed.
-        vertx.deployVerticle(new TrackStore())
+        vertx.deployVerticle(new TrackStore(registry))
                 .compose(ignored -> vertx.deployVerticle(new WebSocketPush()))
                 .compose(ignored -> vertx.deployVerticle(new TaisConsumer()))
                 .onSuccess(ignored -> System.out.println("[TAIS] Service started"))

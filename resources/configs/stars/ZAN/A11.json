@@ -19,7 +19,8 @@
       "ssaAirports": [
         "ANC",
         "PAQ"
-      ]
+      ],
+      "useVfrPositionSymbol": true
     },
     {
       "id": "01GEX57R52BC24JV0ZPWJW8474",
@@ -31,7 +32,8 @@
       "surveillanceRange": 75,
       "ssaAirports": [
         "ANC"
-      ]
+      ],
+      "useVfrPositionSymbol": false
     },
     {
       "id": "01HBSWMHAAT19QPRXEVQBGEJP8",
@@ -43,7 +45,8 @@
       "surveillanceRange": 75,
       "ssaAirports": [
         "MRI"
-      ]
+      ],
+      "useVfrPositionSymbol": true
     },
     {
       "id": "01HDPKB3M00CD4RXTGPXG8KD7M",
@@ -55,7 +58,8 @@
       "surveillanceRange": 50,
       "ssaAirports": [
         "ENA"
-      ]
+      ],
+      "useVfrPositionSymbol": false
     }
   ],
   "tcps": [

@@ -118,6 +118,13 @@ type TaisTrack struct {
 	ADSB               bool      `json:"adsb,omitempty"`
 	ReportedBeaconCode string    `json:"reportedBeaconCode,omitempty"`
 	ReportedAltitude   int       `json:"reportedAltitude,omitempty"`
+
+	// Aircraft-transmitted ADS-B Flight ID from a verified source, when available.
+	// Not populated by the current TAIS-only upstream.
+	ADSBFlightID string `json:"adsbFlightId,omitempty"`
+
+	// FAA ICAO-to-N-number association (not an ADS-B-transmitted Flight ID).
+	Registration string `json:"registration,omitempty"`
 }
 
 type TaisFlightPlan struct {

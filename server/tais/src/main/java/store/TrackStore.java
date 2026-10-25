@@ -5,6 +5,7 @@ import ingest.TaisBatch;
 import ingest.TaisObservation;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
+import registry.FaaRegistry;
 import wire.TaisWire;
 
 import java.time.Duration;
@@ -26,6 +27,12 @@ public final class TrackStore extends AbstractVerticle {
 
     private static final int DEFAULT_TOTAL_COAST_TIME_MS = 30_000;
     private static final int DEFAULT_COAST_SWEEP_INTERVAL_MS = 1_000;
+
+    private final FaaRegistry registry;
+
+    public TrackStore(FaaRegistry registry) {
+        this.registry = java.util.Objects.requireNonNull(registry);
+    }
 
     private TrackCache cache;
     private Duration totalCoastTime;
@@ -61,7 +68,7 @@ public final class TrackStore extends AbstractVerticle {
             String facility = normalizeFacility(message.body());
             var targets = cache.snapshot(facility);
             JsonObject snapshot = TaisWire.snapshot(
-                    facilityRevision(facility), Instant.now(), facility, targets
+                    facilityRevision(facility), Instant.now(), facility, targets, registry
             );
             long elapsedMs = (System.nanoTime() - started) / 1_000_000;
             if (elapsedMs >= 250) {
@@ -112,7 +119,7 @@ public final class TrackStore extends AbstractVerticle {
                                 EVENT_ADDRESS,
                                 TaisWire.update(
                                         nextFacilityRevision(target.target().facility()),
-                                        target
+                                        target, registry
                                 )
                         );
                     }
@@ -135,7 +142,7 @@ public final class TrackStore extends AbstractVerticle {
                     EVENT_ADDRESS,
                     TaisWire.update(
                             nextFacilityRevision(target.target().facility()),
-                            target
+                            target, registry
                     )
             );
         }
