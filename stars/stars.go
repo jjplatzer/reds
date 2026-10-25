@@ -88,6 +88,11 @@ type STARSPane struct {
 	// reselected. This is transient display state, not a saved preference.
 	singleTrackQuickLook map[string]struct{}
 
+	// TI 6191.409 Rev. 30, 6.3.1: MULTI FUNC R toggles an individual
+	// track's predicted track line. This state is local to the TCW/TDW and
+	// not stored in a preference set. Track identity guards against reuse.
+	singleTrackPTLs map[string]starsTrackHighlightIdentity
+
 	// highlightedTracks implements TI 6191.409 Rev. 30, 6.20.  The toggle
 	// is local to this TCW/TDW (not a global track or saved preference). A
 	// signature prevents a recycled TAIS track key from inheriting cyan.
@@ -578,6 +583,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	// disappears, is suspended, or is replaced by another aircraft.
 	p.pruneTrackHighlights(targets)
 	targets = p.applyTrackRepositions(targets)
+	p.pruneSingleTrackPTLs(targets)
 	if err := p.refreshCRDAEngine(); err != nil {
 		// Keep the last valid regions; a malformed facility update must not
 		// take down the radar pane.
@@ -721,6 +727,20 @@ func (p *STARSPane) consumeMouseEvents(
 	if p.commandMode == CommandModeMin {
 		if mouse.WasReleased(platform.MouseButtonLeft) {
 			p.selectMinSepTarget(closestSlewTarget(targets, mouse.Pos, transforms), targets)
+		}
+		return
+	}
+
+	// TI 6191.409 Rev. 30, 6.3.1: <MULTI FUNC> <R> then slew and
+	// left-trackball toggles one PTL. Repetitive mode is allowed; leave
+	// FR in the Preview Area after each designation (including ILL TRK).
+	// Consume this selection before bare-slew quick look or CRDA handling.
+	if p.commandMode == CommandModeMultiFunc &&
+		strings.EqualFold(p.multiFuncPrefix+p.commandInput, "R") &&
+		mouse.WasReleased(platform.MouseButtonLeft) {
+		p.commandResponse = ""
+		if err := p.toggleSingleTrackPTL(closestSlewTarget(targets, mouse.Pos, transforms)); err != nil {
+			p.commandResponse = err.Error()
 		}
 		return
 	}
