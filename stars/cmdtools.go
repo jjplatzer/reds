@@ -619,3 +619,57 @@ func (p *STARSPane) applyTPAImpliedCommand(target *redsnet.TaisTarget, op byte, 
 
 	return ErrSTARSCommandFormat
 }
+
+// toggleSingleTrackPTL implements the keyboard-only, repetitive MULTI FUNC R
+// designation in TI 6191.409 Rev. 30, 6.3.1 (p. 6-13). An individually
+// toggled PTL is forbidden if PTL ALL / PTL OWN already displays that track's
+// PTL. Only active radar tracks are eligible (never ghosts, pseudo tracks,
+// unsupported data blocks, or coasted/dropped tracks).
+func (p *STARSPane) toggleSingleTrackPTL(target *redsnet.TaisTarget) error {
+	if p == nil || !singleTrackPTLEligible(target) {
+		return ErrSTARSIllegalTrack
+	}
+	if p.automaticPTLForTarget(target) {
+		return ErrSTARSIllegalTrack
+	}
+	key := targetDisplayStateKey(target)
+	if key == "" {
+		return ErrSTARSIllegalTrack
+	}
+	if p.singleTrackPTLs == nil {
+		p.singleTrackPTLs = make(map[string]starsTrackHighlightIdentity)
+	}
+	id := trackHighlightIdentity(target)
+	if stored, ok := p.singleTrackPTLs[key]; ok && trackHighlightIdentityMatches(stored, id) {
+		delete(p.singleTrackPTLs, key)
+	} else {
+		p.singleTrackPTLs[key] = id
+	}
+	return nil
+}
+
+func singleTrackPTLEligible(target *redsnet.TaisTarget) bool {
+	return taisTargetHasPosition(target) && !isRPOSUnsupportedTarget(target) &&
+		target.CoastPhase < redsnet.TaisCoastPhase1 &&
+		strings.EqualFold(strings.TrimSpace(target.Track.Status), "active")
+}
+
+func (p *STARSPane) pruneSingleTrackPTLs(snapshot redsnet.TaisSnapshot) {
+	if p == nil || !snapshot.Ready || len(p.singleTrackPTLs) == 0 {
+		return
+	}
+	live := make(map[string]starsTrackHighlightIdentity, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		if singleTrackPTLEligible(target) {
+			if key := targetDisplayStateKey(target); key != "" {
+				live[key] = trackHighlightIdentity(target)
+			}
+		}
+	}
+	for key, id := range p.singleTrackPTLs {
+		if current, ok := live[key]; !ok || !trackHighlightIdentityMatches(id, current) {
+			delete(p.singleTrackPTLs, key)
+		}
+	}
+}

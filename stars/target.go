@@ -1039,6 +1039,29 @@ func (p *STARSPane) drawTargetHistory(
 	cb.DisableScissor()
 }
 
+// automaticPTLForTarget reflects the global PTL selection exactly as rendered:
+// PTL ALL applies only to associated tracks; PTL OWN also covers inbound
+// handoffs and retained post-acceptance outgoing ownership. This same rule
+// decides whether MULTI FUNC R must return ILL TRK under manual 6.3.1.
+func (p *STARSPane) automaticPTLForTarget(target *redsnet.TaisTarget) bool {
+	if p == nil || target == nil || target.FlightPlan == nil {
+		return false
+	}
+	ps := p.currentPrefs()
+	return ps.PTLAll || (ps.PTLOwn && (p.targetOwnedByCurrentTCP(target) ||
+		p.targetInboundHandoff(target) || p.targetOutboundHandoffAccepted(target)))
+}
+
+func (p *STARSPane) singleTrackPTLForTarget(target *redsnet.TaisTarget) bool {
+	if p == nil || target == nil || len(p.singleTrackPTLs) == 0 {
+		return false
+	}
+	key := targetDisplayStateKey(target)
+	id, ok := p.singleTrackPTLs[key]
+	return ok && singleTrackPTLEligible(target) &&
+		trackHighlightIdentityMatches(id, trackHighlightIdentity(target))
+}
+
 // drawPredictedTrackLines renders the PTLs selected by the Auxiliary DCB.
 // TI 6191.409 Rev. 30, 6.3.2-6.3.4 defines PTL ALL for all associated
 // tracks, PTL OWN for tracks owned by the entering position as well as tracks
@@ -1062,7 +1085,10 @@ func (p *STARSPane) drawPredictedTrackLines(
 	}
 
 	ps := p.currentPrefs()
-	if ps.PTLLength <= 0 || (!ps.PTLAll && !ps.PTLOwn) || ps.Brightness.Lines == 0 {
+	if ps.PTLLength <= 0 || ps.Brightness.Lines == 0 {
+		return
+	}
+	if !ps.PTLAll && !ps.PTLOwn && len(p.singleTrackPTLs) == 0 {
 		return
 	}
 
@@ -1072,12 +1098,12 @@ func (p *STARSPane) drawPredictedTrackLines(
 
 	for i := range snapshot.Targets {
 		target := &snapshot.Targets[i]
-		if !taisTargetHasPosition(target) || target.FlightPlan == nil || isRPOSUnsupportedTarget(target) {
+		if !taisTargetHasPosition(target) || isRPOSUnsupportedTarget(target) {
 			continue
 		}
-		if !ps.PTLAll && !(ps.PTLOwn && (p.targetOwnedByCurrentTCP(target) ||
-			p.targetInboundHandoff(target) ||
-			p.targetOutboundHandoffAccepted(target))) {
+		// Preserve 6.3.2/6.3.3 global PTL rendering; only 6.3.1's
+		// single-track toggle requires an active radar track.
+		if !p.automaticPTLForTarget(target) && !p.singleTrackPTLForTarget(target) {
 			continue
 		}
 		if target.Track.VX == 0 && target.Track.VY == 0 {
