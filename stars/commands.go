@@ -29,6 +29,7 @@ const (
 	CommandModePlaceCenter
 	CommandModePref
 	CommandModeSavePrefAs
+	CommandModeMin
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -66,6 +67,8 @@ func (m CommandMode) PreviewString() string {
 		return "PREF"
 	case CommandModeSavePrefAs:
 		return "PREF SET NAME"
+	case CommandModeMin:
+		return "MIN"
 	default:
 		return ""
 	}
@@ -391,6 +394,14 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	}
 	keyboard := ctx.Keyboard
 
+	// VICE maps the physical STARS <MIN> key to End on a desktop keyboard.
+	// The manual (6.4) only permits keyboard-initiated MIN + two slews or
+	// MIN + ENTER to clear the graphic. This is independent of DCB state.
+	if keyboard.WasPressed(platform.KeyEnd) {
+		p.setCommandMode(CommandModeMin)
+		return
+	}
+
 	// TI 6191.409 Rev. 30, 4.4.2: PLACE CNTR is a Main-DCB-only
 	// trackball mode. Keyboard entry is not applicable; Escape abandons the
 	// in-progress display-center operation.
@@ -606,6 +617,7 @@ func (p *STARSPane) resetCommand() {
 	p.leaderLengthDragAccumY = 0
 	p.ptlLengthDragAccumY = 0
 	p.wipRBL = nil
+	p.minSepPendingKey = ""
 	p.rposPendingSourceKey = ""
 }
 

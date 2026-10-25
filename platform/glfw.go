@@ -379,6 +379,7 @@ var trackedKeys = []trackedKey{
 	{KeyDown, glfw.KeyDown},
 	{KeyPageUp, glfw.KeyPageUp},
 	{KeyPageDown, glfw.KeyPageDown},
+	{KeyEnd, glfw.KeyEnd},
 	{KeyF1, glfw.KeyF1},
 	{KeyF2, glfw.KeyF2},
 	{KeyF3, glfw.KeyF3},

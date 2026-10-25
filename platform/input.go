@@ -83,9 +83,10 @@ const (
 	KeyP
 	KeyS
 	KeyW
-	KeyM // Appended to preserve existing platform-independent key values.
-	KeyN // Appended to preserve existing platform-independent key values.
-	KeyV // Appended to preserve existing platform-independent key values.
+	KeyM   // Appended to preserve existing platform-independent key values.
+	KeyN   // Appended to preserve existing platform-independent key values.
+	KeyV   // Appended to preserve existing platform-independent key values.
+	KeyEnd // VICE maps the STARS <MIN> key to End.
 )
 
 // KeyboardState is the keyboard input for one frame.

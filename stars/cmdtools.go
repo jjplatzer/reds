@@ -186,7 +186,57 @@ func (p *STARSPane) applyRequestedAltitudeDisplayCommand(target *redsnet.TaisTar
 	return nil
 }
 
+// Minimum separation selection and lifecycle (VICE: stars/cmdtools.go).
+// pruneMinSepTracks removes a graphic as soon as either selected aircraft is
+// no longer on the radar scope, matching section 6.4 and CRC's track manager.
+func (p *STARSPane) pruneMinSepTracks(snapshot redsnet.TaisSnapshot) {
+	if p == nil || (p.minSepTracks[0] == "" && p.minSepTracks[1] == "") {
+		return
+	}
+	for _, key := range p.minSepTracks {
+		if key == "" || rangeBearingTargetByKey(snapshot, key) == nil {
+			p.minSepTracks = [2]string{}
+			return
+		}
+	}
+}
+
+// selectMinSepTarget handles the two trackball designations after <MIN>.
+// Input errors leave the operator in MIN mode so another track can be slewed.
+func (p *STARSPane) selectMinSepTarget(target *redsnet.TaisTarget, snapshot redsnet.TaisSnapshot) {
+	if p == nil || target == nil {
+		return
+	}
+	key := targetDisplayStateKey(target)
+	if key == "" {
+		return
+	}
+	if p.minSepPendingKey == "" {
+		p.minSepPendingKey = key
+		p.commandResponse = ""
+		return
+	}
+	if p.minSepPendingKey == key {
+		p.commandResponse = "DUP TRK"
+		return
+	}
+	if rangeBearingTargetByKey(snapshot, p.minSepPendingKey) == nil {
+		p.minSepPendingKey = ""
+		p.commandResponse = ErrSTARSIllegalTrack.Error()
+		return
+	}
+	p.minSepTracks = [2]string{p.minSepPendingKey, key}
+	p.resetCommand()
+}
+
 func init() {
+	// TI 6191.409 Rev. 30, 6.4: <MIN><ENTER> clears the displayed pair.
+	// Track designation is handled by selectMinSepTarget after each slew.
+	registerCommand(CommandModeMin, "", func(p *STARSPane, _ []any) (CommandStatus, error) {
+		p.minSepTracks = [2]string{}
+		return CommandStatus{}, nil
+	})
+
 	// N with no parameter inhibits all CRDA processing at this TCW, or
 	// restores processing (without re-enabling previously disabled RPCs).
 	registerCommand(CommandModeMultiFunc, "N", func(p *STARSPane, _ []any) (CommandStatus, error) {
