@@ -2,8 +2,11 @@ package stars
 
 import (
 	"fmt"
+	"github.com/juliusplatzer/reds/radar"
+	"math"
 	"strconv"
 	"strings"
+	"unicode/utf8"
 )
 
 // Command Processing System
@@ -508,6 +511,9 @@ var commandTypeParsers = map[string]commandTypeParser{
 	"TPA_DISTANCE":       tpaDistanceCommandParser{},
 	"ATPA_VOLUME_ACTION": atpaVolumeActionCommandParser{},
 	"CRDA_CONTROL":       crdaControlParser{},
+	"RA_TEXT":            restrictionAreaClauseParser{},
+	"RA_CIRCLE":          restrictionAreaClauseParser{circle: true},
+	"RA_LOCATION":        restrictionAreaLocationParser{},
 }
 
 type commandMatcher interface {
@@ -617,4 +623,219 @@ func (p *STARSPane) executeCommand(mode CommandMode, input string) (CommandStatu
 		return CommandStatus{}, firstErr
 	}
 	return CommandStatus{}, ErrSTARSCommandFormat
+}
+
+// §6.6 geographic command types are parsed independently of the drawing code.
+// The manual distinguishes fix/bearing/range, DMS coordinates and cursor slews.
+type restrictionAreaClauseParser struct{ circle bool }
+
+func (r restrictionAreaClauseParser) Identifier() string {
+	if r.circle {
+		return "RA_CIRCLE"
+	}
+	return "RA_TEXT"
+}
+func (r restrictionAreaClauseParser) Parse(input string) (any, string, bool, error) {
+	c, err := parseRestrictionAreaClause(input, r.circle)
+	return c, "", true, err
+}
+
+type restrictionAreaLocationParser struct{}
+
+func (restrictionAreaLocationParser) Identifier() string { return "RA_LOCATION" }
+func (restrictionAreaLocationParser) Parse(input string) (any, string, bool, error) {
+	pt, err := parseRestrictionAreaLocation(input)
+	return pt, "", true, err
+}
+
+// starsRestrictionClause carries §6.6 text, modifiers and optional input
+// location. Any supplied geographic position is resolved before construction.
+type starsRestrictionClause struct {
+	Text          [2]string
+	Blink, Shaded bool
+	Color         int
+	Radius        float64
+	Location      *configPoint
+}
+
+func parseRestrictionAreaClause(input string, circle bool) (starsRestrictionClause, error) {
+	c := starsRestrictionClause{Color: 1}
+	input = strings.TrimSpace(input)
+	if circle {
+		// When SPACE is omitted, the first period after an integer radius
+		// can already belong to the text (C10. = a 10-NM textless circle).
+		idx := 0
+		for idx < len(input) && input[idx] >= '0' && input[idx] <= '9' {
+			idx++
+		}
+		if idx+1 < len(input) && input[idx] == '.' && input[idx+1] >= '0' && input[idx+1] <= '9' {
+			idx++
+			for idx < len(input) && input[idx] >= '0' && input[idx] <= '9' {
+				idx++
+			}
+		}
+		if idx == 0 {
+			return c, ErrSTARSCommandFormat
+		}
+		rad, err := strconv.ParseFloat(input[:idx], 64)
+		if err != nil {
+			return c, ErrSTARSCommandFormat
+		}
+		if rad < 1 || rad > 125 {
+			return c, fmt.Errorf("ILL RANGE")
+		}
+		c.Radius = rad
+		input = strings.TrimSpace(input[idx:])
+	}
+	fields := strings.Fields(input)
+	// The only legal optional geographic suffix is DMS/fix or fix + bearing + range.
+	// Do not confuse the ordinary text token with a fix unless a text token
+	// precedes it, as required by the keyboard creation procedure.
+	if len(fields) > 1 {
+		for _, count := range []int{3, 1} {
+			if len(fields) <= count {
+				continue
+			}
+			pt, err := parseRestrictionAreaLocation(strings.Join(fields[len(fields)-count:], " "))
+			if err == nil {
+				c.Location = &pt
+				fields = fields[:len(fields)-count]
+				break
+			}
+		}
+	}
+	parsed, err := parseRestrictionAreaText(strings.Join(fields, " "), circle)
+	if err != nil {
+		return c, err
+	}
+	c.Text, c.Blink, c.Shaded, c.Color = parsed.Text, parsed.Blink, parsed.Shaded, parsed.Color
+	return c, nil
+}
+
+// parseRestrictionAreaText accepts one or two periods-as-spaces text fields,
+// followed by the manual's optional delta (blinking), plus (shading), and
+// *1 through *8 (graphic color, not text color). Open polygons/text-only
+// cannot be shaded. VICE uses exactly the same modifier split.
+func parseRestrictionAreaText(input string, closed bool) (starsRestrictionClause, error) {
+	c := starsRestrictionClause{Color: 1}
+	parts := strings.Fields(strings.ToUpper(strings.TrimSpace(input)))
+	if len(parts) == 0 {
+		return c, ErrSTARSCommandFormat
+	}
+	line := 0
+	seenOptions := false
+	for _, part := range parts {
+		if part == "△" || part == "∆" || part == "Δ" || part == "+" || strings.HasPrefix(part, "*") || strings.HasPrefix(part, "△") || strings.HasPrefix(part, "∆") || strings.HasPrefix(part, "Δ") {
+			seenOptions = true
+			for len(part) > 0 {
+				switch {
+				case strings.HasPrefix(part, "△"), strings.HasPrefix(part, "∆"), strings.HasPrefix(part, "Δ"):
+					c.Blink = true
+					_, size := utf8.DecodeRuneInString(part)
+					part = part[size:]
+				case part[0] == '+':
+					if !closed {
+						return c, ErrSTARSCommandFormat
+					}
+					c.Shaded = true
+					part = part[1:]
+				case part[0] == '*':
+					if !closed || len(part) < 2 || part[1] < '1' || part[1] > '8' {
+						return c, fmt.Errorf("ILL COLOR")
+					}
+					c.Color = int(part[1] - '0')
+					part = part[2:]
+				default:
+					return c, ErrSTARSCommandFormat
+				}
+			}
+			continue
+		}
+		if seenOptions || line >= 2 {
+			return c, ErrSTARSCommandFormat
+		}
+		if len(part) > 32 {
+			part = part[:32]
+		} // manual CAPACITY: excess final chars ignored
+		c.Text[line] = strings.TrimSpace(strings.ReplaceAll(part, ".", " "))
+		line++
+	}
+	if line == 0 {
+		return c, ErrSTARSCommandFormat
+	}
+	return c, nil
+}
+
+// parseRestrictionAreaLocation follows TI 6191.409 §6.6:
+// DDMMSSN/DDDMMSSW, named CIFP fix, or fix + magnetic bearing + NM range.
+func parseRestrictionAreaLocation(input string) (configPoint, error) {
+	parts := strings.Fields(strings.ToUpper(strings.TrimSpace(input)))
+	if len(parts) == 0 {
+		return configPoint{}, ErrSTARSCommandFormat
+	}
+	if len(parts) == 1 {
+		if lat, lon, ok := parseRestrictionAreaDMS(parts[0]); ok {
+			return configPoint{Lat: lat, Lon: lon}, nil
+		}
+		if pt, ok := starsRBLStationaryPoint(parts[0]); ok {
+			return pt, nil
+		}
+		return configPoint{}, fmt.Errorf("ILL GEO LOC")
+	}
+	if len(parts) != 3 {
+		return configPoint{}, ErrSTARSCommandFormat
+	}
+	pt, ok := starsRBLStationaryPoint(parts[0])
+	if !ok {
+		return configPoint{}, fmt.Errorf("ILL GEO LOC")
+	}
+	bearing, errB := strconv.ParseFloat(parts[1], 64)
+	rangeNM, errR := strconv.ParseFloat(parts[2], 64)
+	if errB != nil || errR != nil || bearing < 1 || bearing > 360 || rangeNM < .01 || rangeNM > 125 {
+		return configPoint{}, ErrSTARSCommandFormat
+	}
+	variation, _ := radar.MagneticVariationAt(pt.Lat, pt.Lon)
+	return restrictionAreaOffset(pt, bearing+variation, rangeNM), nil
+}
+
+func parseRestrictionAreaDMS(s string) (float64, float64, bool) {
+	lat, lon, ok := strings.Cut(s, "/")
+	if !ok || len(lat) != 7 || len(lon) != 8 {
+		return 0, 0, false
+	}
+	decode := func(s string, degreeDigits int, maxDegree int, first, second byte) (float64, bool) {
+		if s[len(s)-1] != first && s[len(s)-1] != second {
+			return 0, false
+		}
+		for _, b := range []byte(s[:len(s)-1]) {
+			if b < '0' || b > '9' {
+				return 0, false
+			}
+		}
+		deg, _ := strconv.Atoi(s[:degreeDigits])
+		min, _ := strconv.Atoi(s[degreeDigits : degreeDigits+2])
+		sec, _ := strconv.Atoi(s[degreeDigits+2 : degreeDigits+4])
+		if deg > maxDegree || min > 59 || sec > 59 || (deg == maxDegree && (min != 0 || sec != 0)) {
+			return 0, false
+		}
+		value := float64(deg) + float64(min)/60 + float64(sec)/3600
+		if s[len(s)-1] == second {
+			value = -value
+		}
+		return value, true
+	}
+	a, okA := decode(lat, 2, 90, 'N', 'S')
+	b, okB := decode(lon, 3, 180, 'E', 'W')
+	return a, b, okA && okB
+}
+
+func restrictionAreaOffset(start configPoint, heading, nm float64) configPoint {
+	const earthNM = 3440.065
+	lat1 := start.Lat * math.Pi / 180
+	lon1 := start.Lon * math.Pi / 180
+	brg := heading * math.Pi / 180
+	theta := nm / earthNM
+	lat2 := math.Asin(math.Sin(lat1)*math.Cos(theta) + math.Cos(lat1)*math.Sin(theta)*math.Cos(brg))
+	lon2 := lon1 + math.Atan2(math.Sin(brg)*math.Sin(theta)*math.Cos(lat1), math.Cos(theta)-math.Sin(lat1)*math.Sin(lat2))
+	return configPoint{Lat: lat2 * 180 / math.Pi, Lon: normalizeLongitude(lon2 * 180 / math.Pi)}
 }

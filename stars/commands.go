@@ -30,6 +30,8 @@ const (
 	CommandModePref
 	CommandModeSavePrefAs
 	CommandModeMin
+	CommandModeRestrictionArea
+	CommandModeRestrictionArea
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -39,6 +41,8 @@ func (m CommandMode) PreviewString() string {
 	switch m {
 	case CommandModeMultiFunc:
 		return "F"
+	case CommandModeRestrictionArea:
+		return "RESTR AREA"
 	case CommandModeRange:
 		return "RANGE"
 	case CommandModeRangeRings:
@@ -415,6 +419,13 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		return
 	}
 
+	// TI 6191.409 Rev. 30, 6.6.1-6.6.4: the STARS restriction-area
+	// function key is F12; Ctrl+F12 remains the PREF SET shortcut.
+	if !keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF12) {
+		p.setCommandMode(CommandModeRestrictionArea)
+		return
+	}
+
 	// TI 6191.409 Rev. 30, 5.7.3: TRK RPOS is the F2 function and is
 	// repetitive until another function is selected. VICE uses the same mapping.
 	if !keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF2) {
@@ -629,6 +640,15 @@ func (p *STARSPane) commitCommand() {
 		return
 	}
 
+	if p.commandMode == CommandModeRestrictionArea && p.wipRestrictionArea != nil {
+		if err := p.commitRestrictionAreaStep(p.commandInput); err != nil {
+			p.commandResponse = err.Error()
+		} else {
+			p.commandInput = ""
+			p.commandResponse = ""
+		}
+		return
+	}
 	input := p.commandInput
 	if p.commandMode == CommandModeMultiFunc {
 		input = p.multiFuncPrefix + input

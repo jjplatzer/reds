@@ -673,3 +673,174 @@ func (p *STARSPane) pruneSingleTrackPTLs(snapshot redsnet.TaisSnapshot) {
 		}
 	}
 }
+
+// VICE places §6.6 restriction-area creation under cmdtools.go. Keep the
+// controller's F12 commands here; location and text decoding is in parsecmd.go,
+// and geometry drawing is in tools.go.
+func init() {
+	registerCommand(CommandModeRestrictionArea, "G[RA_TEXT]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		c := args[0].(starsRestrictionClause)
+		r := &starsRestrictionArea{Kind: starsRestrictionText, Text: c.Text, Blink: c.Blink, Color: 1}
+		if c.Location != nil {
+			r.Label = *c.Location
+			return CommandStatus{}, p.finishRestrictionArea(r)
+		}
+		p.wipRestrictionArea = r
+		return CommandStatus{Clear: ClearInput}, nil
+	})
+	registerCommand(CommandModeRestrictionArea, "C[RA_CIRCLE]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		c := args[0].(starsRestrictionClause)
+		r := &starsRestrictionArea{Kind: starsRestrictionCircle, RadiusNM: c.Radius, Text: c.Text, Blink: c.Blink, Shaded: c.Shaded, Color: c.Color}
+		if c.Location != nil {
+			r.Center = *c.Location
+			r.Label = r.Center
+			return CommandStatus{}, p.finishRestrictionArea(r)
+		}
+		p.wipRestrictionArea = r
+		return CommandStatus{Clear: ClearInput}, nil
+	})
+	for _, shape := range []struct {
+		prefix string
+		kind   starsRestrictionKind
+	}{{"P", starsRestrictionClosed}, {"A", starsRestrictionOpen}} {
+		kind := shape.kind
+		registerCommand(CommandModeRestrictionArea, shape.prefix+"[RA_LOCATION]", func(p *STARSPane, args []any) (CommandStatus, error) {
+			p.wipRestrictionArea = &starsRestrictionArea{Kind: kind, Color: 1, Vertices: []configPoint{args[0].(configPoint)}}
+			return CommandStatus{Clear: ClearInput}, nil
+		})
+		registerCommand(CommandModeRestrictionArea, shape.prefix, func(p *STARSPane, _ []any) (CommandStatus, error) {
+			p.wipRestrictionArea = &starsRestrictionArea{Kind: kind, Color: 1}
+			return CommandStatus{Clear: ClearInput}, nil
+		})
+	}
+}
+
+func (p *STARSPane) finishRestrictionArea(r *starsRestrictionArea) error {
+	if r.Kind == starsRestrictionClosed && len(r.Vertices) < 3 {
+		return fmt.Errorf("ILL FNCT - MIN 3 VERTICES")
+	}
+	if r.Kind == starsRestrictionOpen && len(r.Vertices) < 2 {
+		return fmt.Errorf("ILL FNCT - MIN 2 VERTICES")
+	}
+	if p.restrictionAreas == nil {
+		p.restrictionAreas = starsRestrictionStoreForSite(p.config.Facility.Facility)
+	}
+	if err := p.restrictionAreas.create(*r); err != nil {
+		return err
+	}
+	p.resetCommand()
+	return nil
+}
+
+// A polygon accepts successive cursor or keyboard vertices, then a text entry
+// and a *final* cursor designation for the label (6.6.3-6.6.4). A text-only
+// or circular restriction instead uses the first cursor designation for its
+// location. Empty polygon input always adds a vertex, not a label.
+func (p *STARSPane) restrictionAreaClick(pos configPoint) error {
+	r := p.wipRestrictionArea
+	if r == nil {
+		// The manual permits G/C command text followed directly by a left
+		// trackball designation, without an intervening ENTER.
+		entry := strings.ToUpper(strings.TrimSpace(p.commandInput))
+		if strings.HasPrefix(entry, "G") || strings.HasPrefix(entry, "C") {
+			_, err := p.executeCommand(CommandModeRestrictionArea, entry)
+			if err != nil {
+				return err
+			}
+			if p.wipRestrictionArea == nil {
+				// An explicit keyboard location already completed the command.
+				return nil
+			}
+			p.commandInput = ""
+			return p.restrictionAreaClick(pos)
+		}
+		// VICE allows the first polygon vertex by trackball without ENTER.
+		switch entry {
+		case "P", "A":
+			kind := starsRestrictionClosed
+			if entry == "A" {
+				kind = starsRestrictionOpen
+			}
+			p.wipRestrictionArea = &starsRestrictionArea{Kind: kind, Color: 1, Vertices: []configPoint{pos}}
+			p.commandInput = ""
+			return nil
+		}
+		return ErrSTARSCommandFormat
+	}
+
+	switch r.Kind {
+	case starsRestrictionText, starsRestrictionCircle:
+		if r.Kind == starsRestrictionCircle {
+			r.Center = pos
+		}
+		r.Label = pos
+		return p.finishRestrictionArea(r)
+	case starsRestrictionOpen, starsRestrictionClosed:
+		if r.LabelPending {
+			r.Label = pos
+			return p.finishRestrictionArea(r)
+		}
+		if strings.TrimSpace(p.commandInput) != "" {
+			c, err := parseRestrictionAreaText(p.commandInput, r.Kind == starsRestrictionClosed)
+			if err != nil {
+				return err
+			}
+			r.Text, r.Blink, r.Shaded, r.Color = c.Text, c.Blink, c.Shaded, c.Color
+			r.Label = pos
+			return p.finishRestrictionArea(r)
+		}
+		return p.appendRestrictionVertex(pos)
+	}
+	return ErrSTARSCommandFormat
+}
+
+func (p *STARSPane) appendRestrictionVertex(pos configPoint) error {
+	if len(p.wipRestrictionArea.Vertices) >= 10 {
+		return fmt.Errorf("CAPACITY - MAX 10 VERTICES")
+	}
+	p.wipRestrictionArea.Vertices = append(p.wipRestrictionArea.Vertices, pos)
+	return nil
+}
+
+func (p *STARSPane) commitRestrictionAreaStep(input string) error {
+	r := p.wipRestrictionArea
+	if r == nil {
+		return ErrSTARSCommandFormat
+	}
+	if r.Kind == starsRestrictionCircle || r.Kind == starsRestrictionText {
+		pt, err := parseRestrictionAreaLocation(input)
+		if err != nil {
+			return err
+		}
+		if r.Kind == starsRestrictionCircle {
+			r.Center = pt
+		}
+		r.Label = pt
+		return p.finishRestrictionArea(r)
+	}
+	if r.LabelPending {
+		pt, err := parseRestrictionAreaLocation(input)
+		if err != nil {
+			return err
+		}
+		r.Label = pt
+		return p.finishRestrictionArea(r)
+	}
+	if pt, err := parseRestrictionAreaLocation(input); err == nil {
+		return p.appendRestrictionVertex(pt)
+	}
+	minVertices := 2
+	if r.Kind == starsRestrictionClosed {
+		minVertices = 3
+	}
+	if len(r.Vertices) < minVertices {
+		return fmt.Errorf("ILL FNCT - MIN %d VERTICES", minVertices)
+	}
+	c, err := parseRestrictionAreaText(input, r.Kind == starsRestrictionClosed)
+	if err != nil {
+		return err
+	}
+	r.Text, r.Blink, r.Shaded, r.Color = c.Text, c.Blink, c.Shaded, c.Color
+	r.LabelPending = true
+	return nil
+}

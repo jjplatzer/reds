@@ -134,6 +134,11 @@ type STARSPane struct {
 	rangeBearingLines []starsRangeBearingLine
 	wipRBL            *starsRangeBearingLine
 
+	// §6.6 restriction areas: current construction is window-local, completed
+	// geometry is stored at the STARS site level (shared by panes at that site).
+	wipRestrictionArea *starsRestrictionArea
+	restrictionAreas   *starsRestrictionAreaStore
+
 	// MIN graphics are transient TCW/TDW state, not a preference. Pair keys
 	// identify TAIS tracks rather than callsigns (unassociated 1200 targets
 	// have no flight-plan ACID). A new selection does not erase the old pair
@@ -603,6 +608,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
 	p.drawPredictedTrackLines(ctx, zcb, transforms, targets)
 	p.drawRangeBearingLines(ctx, zcb, transforms, targets)
+	p.drawRestrictionAreas(ctx, zcb, transforms)
 	p.drawMinSep(ctx, zcb, transforms, targets)
 	// TPA graphics are suppressed while a track is in the Coast/Suspend List,
 	// while their local state is retained above for automatic redisplay.
@@ -715,6 +721,19 @@ func (p *STARSPane) consumeMouseEvents(
 		return
 	}
 	if p.mouseOverDCB(ctx) {
+		return
+	}
+
+	// Restriction-area construction consumes trackball clicks before ordinary
+	// target slews, CRDA ghost picks and scope-center gestures.
+	if p.commandMode == CommandModeRestrictionArea &&
+		ctx.Mouse.WasReleased(platform.MouseButtonLeft) {
+		lat, lon := transforms.LatLonFromWindow(ctx.Mouse.Pos)
+		if err := p.restrictionAreaClick(configPoint{Lat: lat, Lon: normalizeLongitude(lon)}); err != nil {
+			p.commandResponse = err.Error()
+		} else {
+			p.commandResponse = ""
+		}
 		return
 	}
 

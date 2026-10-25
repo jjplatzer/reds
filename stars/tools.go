@@ -5,6 +5,8 @@ import (
 	stdmath "math"
 	"strconv"
 	"strings"
+	"sync"
+	"time"
 
 	"github.com/juliusplatzer/reds/aviation"
 	redsmath "github.com/juliusplatzer/reds/math"
@@ -1259,4 +1261,247 @@ func tpaTextInkBounds(font *renderer.BitmapFont, size int, label string) (redsma
 		}
 	}
 	return minInk, maxInk, found
+}
+
+// Restriction-area geometry (§6.6) stays in tools.go, like VICE's STARS tools.
+// It is kept independent of command parsing so a future read-only TFR importer
+// can pass arbitrary-length geographic rings to the same drawing primitives.
+type starsRestrictionKind uint8
+
+const (
+	starsRestrictionText starsRestrictionKind = iota
+	starsRestrictionCircle
+	starsRestrictionClosed
+	starsRestrictionOpen
+)
+
+type starsRestrictionArea struct {
+	ID            int
+	Kind          starsRestrictionKind
+	Text          [2]string
+	Label, Center configPoint
+	RadiusNM      float64
+	Vertices      []configPoint
+	Color         int
+	Blink, Shaded bool
+	LabelPending  bool // in-progress polygon, awaiting label location
+}
+
+type starsRestrictionAreaStore struct {
+	mu    sync.RWMutex
+	areas map[int]starsRestrictionArea
+}
+
+var starsRestrictionStores sync.Map // same-site panes in this client process
+
+func starsRestrictionStoreForSite(site string) *starsRestrictionAreaStore {
+	if site == "" {
+		site = "unknown"
+	}
+	v, _ := starsRestrictionStores.LoadOrStore(site, &starsRestrictionAreaStore{areas: make(map[int]starsRestrictionArea)})
+	return v.(*starsRestrictionAreaStore)
+}
+func (s *starsRestrictionAreaStore) create(area starsRestrictionArea) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	// §6.6 site-created IDs 1..100; reserved 101..200 belong to adaptation.
+	for id := 1; id <= 100; id++ {
+		if _, used := s.areas[id]; !used {
+			area.ID = id
+			area.Vertices = append([]configPoint(nil), area.Vertices...)
+			area.LabelPending = false
+			s.areas[id] = area
+			return nil
+		}
+	}
+	return ErrSTARSCapacity
+}
+func (s *starsRestrictionAreaStore) snapshot() []starsRestrictionArea {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	result := make([]starsRestrictionArea, 0, len(s.areas))
+	for id := 1; id <= 100; id++ {
+		if area, ok := s.areas[id]; ok {
+			result = append(result, area)
+		}
+	}
+	return result
+}
+
+func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdBuffer, t radar.LatLonTransformations) {
+	if p == nil || p.systemFont == nil {
+		return
+	}
+	if p.restrictionAreas == nil {
+		p.restrictionAreas = starsRestrictionStoreForSite(p.config.Facility.Facility)
+	}
+	areas := p.restrictionAreas.snapshot()
+	if p.wipRestrictionArea != nil {
+		areas = append(areas, *p.wipRestrictionArea)
+	}
+	if len(areas) == 0 {
+		return
+	}
+	ps := p.currentPrefs()
+	if ps.Brightness.VideoGroupB == 0 {
+		return
+	}
+	fontSize := p.toolsFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
+	fs := p.systemFont.Size(fontSize)
+	x, y, w, h := ctx.PaneFramebufferRect()
+	cb := zcb.At(zRangeBearingLine - 1)
+	cb.Viewport(x, y, w, h)
+	cb.Scissor(x, y, w, h)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	cb.LineWidth(max(ctx.DPIScale, 1))
+	labels := renderer.GetTextDrawBuilder()
+	defer renderer.ReturnTextDrawBuilder(labels)
+	labels.SetFont(p.systemFont)
+	for _, ra := range areas {
+		colorIndex := ra.Color - 1
+		if colorIndex < 0 || colorIndex >= len(p.colors.RestrictionAreaGeom) {
+			colorIndex = 0
+		}
+		color := ps.Brightness.VideoGroupB.ScaleRGB(p.colors.RestrictionAreaGeom[colorIndex])
+		outline := renderer.GetLinesBuilder()
+		vertices := make([]renderer.PointVertex, 0, len(ra.Vertices))
+		for _, pt := range ra.Vertices {
+			wp := t.WindowFromLatLon(pt.Lat, pt.Lon)
+			vertices = append(vertices, renderer.PointVertex{X: wp.X, Y: wp.Y})
+		}
+		if ra.Kind == starsRestrictionCircle {
+			center := t.WindowFromLatLon(ra.Center.Lat, ra.Center.Lon)
+			scale := ctx.PaneRect.Width()
+			if ctx.PaneRect.Height() < scale {
+				scale = ctx.PaneRect.Height()
+			}
+			radius := float32(ra.RadiusNM) * scale / (2 * ps.Range)
+			outline.AddCircle(renderer.PointVertex{X: center.X, Y: center.Y}, radius, 96)
+			if ra.Shaded {
+				shaded := renderer.GetTrianglesBuilder()
+				shaded.AddCircle(renderer.PointVertex{X: center.X, Y: center.Y}, radius, 96)
+				cb.SetRGB(color)
+				shaded.GenerateCommands(cb, renderer.DrawHatched, 0)
+				renderer.ReturnTrianglesBuilder(shaded)
+			}
+		} else if ra.Kind == starsRestrictionClosed {
+			if len(vertices) >= 3 {
+				if ra.Shaded {
+					shaded := renderer.GetTrianglesBuilder()
+					for _, tri := range restrictionAreaTriangulate(vertices) {
+						shaded.AddTriangle(tri[0], tri[1], tri[2])
+					}
+					cb.SetRGB(color)
+					shaded.GenerateCommands(cb, renderer.DrawHatched, 0)
+					renderer.ReturnTrianglesBuilder(shaded)
+				}
+				outline.AddLineLoop(vertices)
+			} else {
+				outline.AddLineStrip(vertices)
+			}
+		} else if ra.Kind == starsRestrictionOpen {
+			outline.AddLineStrip(vertices)
+		}
+		// Preview the next segment, matching VICE's in-progress polygon.
+		if ra.ID == 0 && (ra.Kind == starsRestrictionClosed || ra.Kind == starsRestrictionOpen) && len(vertices) > 0 &&
+			!ra.LabelPending && ctx.Mouse != nil && p.commandInput == "" {
+			mouse := ctx.Mouse.Pos
+			last := vertices[len(vertices)-1]
+			outline.AddLine(last, renderer.PointVertex{X: mouse.X, Y: mouse.Y})
+		}
+		cb.SetRGB(color)
+		outline.GenerateCommands(cb)
+		renderer.ReturnLinesBuilder(outline)
+		if ra.ID == 0 || texture == 0 || fs == nil {
+			continue
+		}
+		label := fmt.Sprintf("[%d]", ra.ID)
+		if !ra.Blink || time.Now().UnixMilli()/500%2 == 0 {
+			for i, line := range ra.Text {
+				if line != "" {
+					if i == 0 {
+						label += " " + line
+					} else {
+						label += "\n" + line
+					}
+				}
+			}
+		}
+		pt := t.WindowFromLatLon(ra.Label.Lat, ra.Label.Lon)
+		// The bracketed ID remains visible independently of blinking text.
+		labelWidth := float32(0)
+		for _, line := range strings.Split(label, "\n") {
+			width := starsRBLTextWidth(fs, line)
+			if width > labelWidth {
+				labelWidth = width
+			}
+		}
+		pt.X -= labelWidth / 2
+		pt.Y -= float32(fs.LineHeight) / 2
+		labels.AddText(label, pt, renderer.TextStyle{Size: fontSize, Color: ps.Brightness.VideoGroupB.ScaleRGB(p.colors.RestrictionAreaText).ToRGBA()})
+	}
+	if texture != 0 {
+		labels.GenerateCommands(cb, texture)
+	}
+	cb.DisableScissor()
+}
+
+// Ear clipping supports concave polygons without filling across their voids.
+// Manual input permits up to ten vertices; the algorithm has no ten-vertex cap.
+func restrictionAreaTriangulate(points []renderer.PointVertex) [][3]renderer.PointVertex {
+	if len(points) < 3 {
+		return nil
+	}
+	idx := make([]int, len(points))
+	for i := range idx {
+		idx[i] = i
+	}
+	cross := func(a, b, c renderer.PointVertex) float64 {
+		return float64(b.X-a.X)*float64(c.Y-a.Y) - float64(b.Y-a.Y)*float64(c.X-a.X)
+	}
+	area := 0.0
+	for i := range points {
+		j := (i + 1) % len(points)
+		area += float64(points[i].X)*float64(points[j].Y) - float64(points[j].X)*float64(points[i].Y)
+	}
+	sign := 1.0
+	if area < 0 {
+		sign = -1
+	}
+	var tris [][3]renderer.PointVertex
+	for len(idx) > 3 {
+		clipped := false
+		for j := range idx {
+			a, b, c := points[idx[(j+len(idx)-1)%len(idx)]], points[idx[j]], points[idx[(j+1)%len(idx)]]
+			if sign*cross(a, b, c) <= 0 {
+				continue
+			}
+			contains := false
+			for _, k := range idx {
+				q := points[k]
+				if q == a || q == b || q == c {
+					continue
+				}
+				if sign*cross(a, b, q) >= 0 && sign*cross(b, c, q) >= 0 && sign*cross(c, a, q) >= 0 {
+					contains = true
+					break
+				}
+			}
+			if contains {
+				continue
+			}
+			tris = append(tris, [3]renderer.PointVertex{a, b, c})
+			idx = append(idx[:j], idx[j+1:]...)
+			clipped = true
+			break
+		}
+		if !clipped {
+			return tris
+		} // degeneracy/self-intersection: do not invent fill
+	}
+	if len(idx) == 3 {
+		tris = append(tris, [3]renderer.PointVertex{points[idx[0]], points[idx[1]], points[idx[2]]})
+	}
+	return tris
 }
