@@ -785,19 +785,31 @@ func parseRestrictionAreaClause(input string, circle bool) (starsRestrictionClau
 		input = strings.TrimSpace(input[idx:])
 	}
 	fields := strings.Fields(input)
-	// The only legal optional geographic suffix is DMS/fix or fix + bearing + range.
-	// Do not confuse the ordinary text token with a fix unless a text token
-	// precedes it, as required by the keyboard creation procedure.
-	if len(fields) > 1 {
-		for _, count := range []int{3, 1} {
-			if len(fields) <= count {
-				continue
+	// The §6.6 keyboard location follows the (possibly empty) text and
+	// modifiers. A period is used to request no text, e.g. G. <DMS>.
+	// Ordinary fix names are ambiguous with text, so only treat a final fix
+	// as a location when another field precedes it. A DMS-looking field is
+	// unambiguous: reject invalid DMS rather than displaying it as text.
+	if len(fields) > 0 {
+		last := fields[len(fields)-1]
+		if looksLikeRestrictionDMS(last) {
+			pt, err := parseRestrictionAreaLocation(last)
+			if err != nil {
+				return c, err
 			}
-			pt, err := parseRestrictionAreaLocation(strings.Join(fields[len(fields)-count:], " "))
-			if err == nil {
-				c.Location = &pt
-				fields = fields[:len(fields)-count]
-				break
+			c.Location = &pt
+			fields = fields[:len(fields)-1]
+		} else if len(fields) > 1 {
+			for _, count := range []int{3, 1} {
+				if len(fields) <= count {
+					continue
+				}
+				pt, err := parseRestrictionAreaLocation(strings.Join(fields[len(fields)-count:], " "))
+				if err == nil {
+					c.Location = &pt
+					fields = fields[:len(fields)-count]
+					break
+				}
 			}
 		}
 	}
@@ -893,6 +905,18 @@ func parseRestrictionAreaLocation(input string) (configPoint, error) {
 	}
 	variation, _ := radar.MagneticVariationAt(pt.Lat, pt.Lon)
 	return restrictionAreaOffset(pt, bearing+variation, rangeNM), nil
+}
+
+// looksLikeRestrictionDMS identifies an attempted keyboard coordinate even
+// when its length or digits are wrong. This prevents a typo in a latitude/
+// longitude from silently becoming a restriction-area text line.
+// Ordinary text like a NOTAM number (6/9169) is deliberately not DMS-like.
+func looksLikeRestrictionDMS(input string) bool {
+	lat, lon, ok := strings.Cut(strings.ToUpper(strings.TrimSpace(input)), "/")
+	if !ok || len(lat) == 0 || len(lon) == 0 || lat[0] < '0' || lat[0] > '9' || lon[0] < '0' || lon[0] > '9' {
+		return false
+	}
+	return strings.HasSuffix(lat, "N") || strings.HasSuffix(lat, "S") || strings.HasSuffix(lon, "E") || strings.HasSuffix(lon, "W")
 }
 
 func parseRestrictionAreaDMS(s string) (float64, float64, bool) {

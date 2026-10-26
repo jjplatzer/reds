@@ -1094,15 +1094,17 @@ func (p *STARSPane) commitRestrictionAreaStep(input string) error {
 		return p.finishRestrictionArea(r)
 	}
 	if r.LabelPending {
-		pt, err := parseRestrictionAreaLocation(input)
-		if err != nil {
-			return err
-		}
-		r.Label = pt
-		return p.finishRestrictionArea(r)
+		// TI 6191.409 §§6.6.3–6.6.4, step 12: polygon text is
+		// positioned by a final left-trackball designation, not keyboard
+		// coordinates (which are permitted for vertices in step 3).
+		return ErrSTARSCommandFormat
 	}
 	if pt, err := parseRestrictionAreaLocation(input); err == nil {
 		return p.appendRestrictionVertex(pt)
+	} else if looksLikeRestrictionDMS(input) {
+		// Do not turn a mistyped keyboard vertex into the polygon label.
+		// Preserve the in-progress geometry so the operator can correct it.
+		return err
 	}
 	minVertices := 2
 	if r.Kind == starsRestrictionClosed {
