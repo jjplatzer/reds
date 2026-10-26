@@ -759,6 +759,19 @@ func (p *STARSPane) consumeMouseEvents(
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
 
+	// TI 6191.409 Rev. 30, 6.9: D* is a cursor-position readout, not
+	// a target slew. Left trackball designates the precise scope location;
+	// clear command-entry state before publishing the Preview Area result.
+	// No ENTER is required (and D* + ENTER is FORMAT).
+	if p.commandMode == CommandModeMultiFunc &&
+		strings.EqualFold(p.multiFuncPrefix+p.commandInput, "D*") &&
+		mouse.WasReleased(platform.MouseButtonLeft) {
+		lat, lon := transforms.LatLonFromWindow(mouse.Pos)
+		p.resetCommand()
+		p.commandResponse = starsCursorLatLonReadout(lat, normalizeLongitude(lon))
+		return
+	}
+
 	// TI 6191.409 Rev. 30, 6.4: MIN uses two consecutive trackball
 	// designations, and must consume the click before normal implied
 	// commands (including CRDA ghost/data-block selection).

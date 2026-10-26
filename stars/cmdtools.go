@@ -2,6 +2,7 @@ package stars
 
 import (
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -184,6 +185,33 @@ func (p *STARSPane) applyRequestedAltitudeDisplayCommand(target *redsnet.TaisTar
 	}
 	p.setRequestedAltitudeDisplayForTarget(target, display)
 	return nil
+}
+
+// TI 6191.409 Rev. 30, 6.9: <MULTI FUNC>, <D>, <*>, left trackball.
+// The actual designation is performed in consumeMouseEvents, as with VICE's
+// D*[POS] command. The result goes to the Preview Area; there is no persistent
+// geographic graphic or track association.
+// West and north are implicit in the STARS readout. South and east are marked
+// by S and E; the manual's Figure 6-7 uses two-digit minimum degree fields.
+func starsCursorLatLonReadout(lat, lon float64) string {
+	formatDMS := func(degrees float64) string {
+		// Round to the nearest displayed arcsecond, carrying through a
+		// minute/degree boundary rather than ever printing 60 seconds.
+		seconds := int(math.Round(math.Abs(degrees) * 3600))
+		d := seconds / 3600
+		m := (seconds / 60) % 60
+		s := seconds % 60
+		return fmt.Sprintf("%02d %02d %02d", d, m, s)
+	}
+	latitude := formatDMS(lat)
+	if lat < 0 {
+		latitude += "S"
+	}
+	longitude := formatDMS(lon)
+	if lon > 0 {
+		longitude += "E"
+	}
+	return latitude + "/" + longitude
 }
 
 // Minimum separation selection and lifecycle (VICE: stars/cmdtools.go).
