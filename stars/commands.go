@@ -583,6 +583,30 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		}
 	}
 
+	// §6.6.12: while waiting for the second ENTER, each '+' steps through
+	// the eight geometry colors immediately, as on a DoD TCW/TDW.
+	if p.commandMode == CommandModeRestrictionArea && p.restrictionColorPendingID != 0 {
+		for _, r := range keyboard.Text {
+			if r == '+' {
+				if err := p.stepRestrictionAreaColor(); err != nil {
+					p.commandResponse = err.Error()
+				}
+				continue
+			}
+			if r >= '1' && r <= '8' {
+				p.commandInput = string(r)
+			}
+		}
+		if keyboard.WasPressed(platform.KeyEnter) || keyboard.WasPressed(platform.KeyKeypadEnter) {
+			if err := p.finishRestrictionAreaColor(p.commandInput); err != nil {
+				p.commandResponse = err.Error()
+			} else {
+				p.resetCommand()
+			}
+		}
+		return
+	}
+
 	// Echo printable operator input exactly into the Preview Area. VICE/STARS
 	// treats the first Multi Func character as a prefix displayed beside the
 	// "F" mode indicator (so <MULTI FUNC>, T, X displays "FT" then "X").
@@ -637,6 +661,8 @@ func (p *STARSPane) resetCommand() {
 	// next F12 command (e.g. changing from G text to C/P/A geometry).
 	p.wipRestrictionArea = nil
 	p.wipRestrictionMove = nil
+	p.restrictionColorPendingID = 0
+	p.restrictionColorChanged = false
 	p.minSepPendingKey = ""
 	p.rposPendingSourceKey = ""
 }

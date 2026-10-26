@@ -739,6 +739,42 @@ func init() {
 	registerCommand(CommandModeRestrictionArea, "[RA_INDEX]T", func(p *STARSPane, args []any) (CommandStatus, error) {
 		return CommandStatus{}, p.toggleRestrictionAreaText(args[0].(int), false)
 	})
+	// §6.6.9: an unmodified ID stops blinking when currently blinking;
+	// otherwise it toggles all graphics and text. E explicitly displays,
+	// I explicitly hides. All three commands are local to this TCW/TDW.
+	registerCommand(CommandModeRestrictionArea, "[RA_INDEX]E", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{}, p.setRestrictionAreaVisibility(args[0].(int), restrictionAreaShow)
+	})
+	registerCommand(CommandModeRestrictionArea, "[RA_INDEX]I", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{}, p.setRestrictionAreaVisibility(args[0].(int), restrictionAreaHide)
+	})
+	registerCommand(CommandModeRestrictionArea, "[RA_INDEX]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{}, p.setRestrictionAreaVisibility(args[0].(int), restrictionAreaToggle)
+	})
+
+	// §6.6.10: MULTI FUNC, T, R, A, ENTER toggles this display's list.
+	registerCommand(CommandModeMultiFunc, "TRA", func(p *STARSPane, _ []any) (CommandStatus, error) {
+		p.currentPrefs().RestrictionAreaList.Visible = !p.currentPrefs().RestrictionAreaList.Visible
+		return CommandStatus{}, nil
+	})
+
+	// §6.6.12: DoD-Only SITE rule, controller-defined area (1–100),
+	// F12 ID T * ENTER, then a number / '+' / ENTER, finally ENTER.
+	// Do not derive the permission from the position's visual color set.
+	registerCommand(CommandModeRestrictionArea, "[USER_RA_INDEX]T*", func(p *STARSPane, args []any) (CommandStatus, error) {
+		if !p.config.Facility.DoDOnly {
+			return CommandStatus{}, ErrSTARSIllegalFunction
+		}
+		id := args[0].(int)
+		if _, err := p.restrictionAreaStore().get(id); err != nil {
+			return CommandStatus{}, err
+		}
+		p.showRestrictionAreaLocally(id)
+		p.restrictionColorPendingID = id
+		p.restrictionColorChanged = false
+		return CommandStatus{Clear: ClearInput}, nil
+	})
+
 	for _, shape := range []struct {
 		prefix string
 		kind   starsRestrictionKind
@@ -753,6 +789,94 @@ func init() {
 			return CommandStatus{Clear: ClearInput}, nil
 		})
 	}
+}
+
+// §6.6.9 display state is per pane; the area itself stays in the site store.
+type restrictionAreaVisibilityAction uint8
+
+const (
+	restrictionAreaToggle restrictionAreaVisibilityAction = iota
+	restrictionAreaShow
+	restrictionAreaHide
+)
+
+func (p *STARSPane) setRestrictionAreaVisibility(id int, action restrictionAreaVisibilityAction) error {
+	area, err := p.restrictionAreaStore().get(id)
+	if err != nil {
+		return err
+	}
+	ps := p.currentPrefs()
+	setting := restrictionAreaSettingsFor(ps, area)
+	switch action {
+	case restrictionAreaShow:
+		setting.Hidden = false
+		setting.HideText = false // manual: newly displayed text shows regardless of §6.6.8
+	case restrictionAreaHide:
+		setting.Hidden = true
+	default:
+		// When visible and blinking, ENTER stops the blink instead of hiding.
+		if !setting.Hidden && !setting.HideText && (area.Blink || setting.ForceBlinkingText) && !setting.StopBlinkingText {
+			setting.StopBlinkingText = true
+			setting.ForceBlinkingText = false
+		} else {
+			setting.Hidden = !setting.Hidden
+			if !setting.Hidden {
+				setting.HideText = false
+			}
+		}
+	}
+	if ps.RestrictionAreaSettings == nil {
+		ps.RestrictionAreaSettings = make(map[int]restrictionAreaDisplaySettings)
+	}
+	ps.RestrictionAreaSettings[id] = setting
+	return nil
+}
+
+// A color update is common to all same-site panes, unlike visibility.
+func (p *STARSPane) setRestrictionAreaColor(id, color int) error {
+	if !p.config.Facility.DoDOnly {
+		return ErrSTARSIllegalFunction
+	}
+	if color < 1 || color > 8 {
+		return ErrSTARSCommandFormat
+	}
+	return p.restrictionAreaStore().update(id, func(a *starsRestrictionArea) error {
+		a.Color = color
+		return nil
+	})
+}
+
+func (p *STARSPane) stepRestrictionAreaColor() error {
+	if p.restrictionColorPendingID == 0 {
+		return ErrSTARSCommandFormat
+	}
+	area, err := p.restrictionAreaStore().get(p.restrictionColorPendingID)
+	if err != nil {
+		return err
+	}
+	next := area.Color%8 + 1
+	if err := p.setRestrictionAreaColor(area.ID, next); err != nil {
+		return err
+	}
+	p.restrictionColorChanged = true
+	p.commandInput = ""
+	return nil
+}
+
+func (p *STARSPane) finishRestrictionAreaColor(input string) error {
+	if p.restrictionColorPendingID == 0 {
+		return ErrSTARSCommandFormat
+	}
+	color := 1 // manual: omitting step 5 resets to the adapted default (1)
+	if input != "" {
+		if len(input) != 1 || input[0] < '1' || input[0] > '8' {
+			return ErrSTARSCommandFormat
+		}
+		color = int(input[0] - '0')
+	} else if p.restrictionColorChanged {
+		return nil // the chosen '+' cycle value is already shared
+	}
+	return p.setRestrictionAreaColor(p.restrictionColorPendingID, color)
 }
 
 // The pending cursor relocation belongs to the entering STARS pane;
@@ -777,7 +901,9 @@ func (p *STARSPane) showRestrictionAreaLocally(id int) {
 	if ps.RestrictionAreaSettings == nil {
 		ps.RestrictionAreaSettings = make(map[int]restrictionAreaDisplaySettings)
 	}
-	ps.RestrictionAreaSettings[id] = restrictionAreaSettingsFor(ps, area) // text visibility unchanged
+	settings := restrictionAreaSettingsFor(ps, area)
+	settings.Hidden = false // §6.6.5 and §6.6.12 bring a hidden area onto the display
+	ps.RestrictionAreaSettings[id] = settings
 }
 func (p *STARSPane) completeRestrictionAreaMove(spec restrictionAreaPendingMove, pos configPoint) error {
 	err := p.restrictionAreaStore().update(spec.ID, func(a *starsRestrictionArea) error {
@@ -809,6 +935,9 @@ func (p *STARSPane) toggleRestrictionAreaText(id int, delta bool) error {
 	}
 	old.HideText = !old.HideText
 	old.ForceBlinkingText = delta && !old.HideText
+	if old.ForceBlinkingText {
+		old.StopBlinkingText = false
+	}
 	if ps.RestrictionAreaSettings == nil {
 		ps.RestrictionAreaSettings = make(map[int]restrictionAreaDisplaySettings)
 	}

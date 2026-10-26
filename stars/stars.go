@@ -139,7 +139,10 @@ type STARSPane struct {
 	// geometry is stored at the STARS site level (shared by panes at that site).
 	wipRestrictionArea *starsRestrictionArea
 	wipRestrictionMove *restrictionAreaPendingMove
-	restrictionAreas   *starsRestrictionAreaStore
+	// §6.6.12: the two-ENTER DoD color-selection sequence.
+	restrictionColorPendingID int
+	restrictionColorChanged   bool
+	restrictionAreas          *starsRestrictionAreaStore
 
 	// MIN graphics are transient TCW/TDW state, not a preference. Pair keys
 	// identify TAIS tracks rather than callsigns (unassociated 1200 targets
@@ -642,6 +645,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawCoastSuspendList(ctx, zcb, allTargets)
 	p.drawTowerLists(ctx, zcb, activeTargets)
 	p.drawVideoMapsList(ctx, zcb)
+	p.drawRestrictionAreasList(ctx, zcb)
 	p.drawCRDAStatusList(ctx, zcb)
 	p.applyCursor(ctx)
 	p.renderCursor(ctx, zcb)
@@ -1073,6 +1077,22 @@ func (p *STARSPane) consumeMouseEvents(
 					mouse.Pos.X / w,
 					mouse.Pos.Y / h,
 				}
+			}
+			p.resetCommand()
+		}
+		return
+	}
+
+	// TI 6191.409 Rev. 30, §6.6.11: MULTI FUNC T R A, then
+	// designate the new upper-left list corner. Unlike TRA + ENTER, this
+	// makes the list visible even if it was hidden.
+	if p.commandMode == CommandModeMultiFunc &&
+		strings.EqualFold(p.multiFuncPrefix+p.commandInput, "TRA") {
+		if mouse.WasPressed(platform.MouseButtonLeft) {
+			w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+			if w > 0 && h > 0 {
+				ps.RestrictionAreaList.Position = [2]float32{mouse.Pos.X / w, mouse.Pos.Y / h}
+				ps.RestrictionAreaList.Visible = true
 			}
 			p.resetCommand()
 		}

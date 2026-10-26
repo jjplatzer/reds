@@ -162,6 +162,58 @@ func (p *STARSPane) drawVideoMapsList(ctx *panes.Context, zcb *renderer.ZCmdBuff
 	cb.DisableScissor()
 }
 
+// §6.6.10 Figure 6-5: all defined restrictions in ascending ID order, whether
+// hidden or displayed on this pane. User-created descriptors are text line 1.
+func (p *STARSPane) restrictionAreasListText() string {
+	if p == nil || !p.currentPrefs().RestrictionAreaList.Visible {
+		return ""
+	}
+	areas := p.restrictionAreaStore().snapshot() // already sorted 1..200
+	var b strings.Builder
+	b.WriteString("GEO RESTRICTIONS")
+	for _, a := range areas {
+		descriptor := strings.ToUpper(a.Text[0])
+		if len(descriptor) > 32 {
+			descriptor = descriptor[:32]
+		}
+		fmt.Fprintf(&b, "\n%-3d %s", a.ID, descriptor)
+	}
+	return b.String()
+}
+
+// Same standard list font, color and BRITE/LISTS intensity as the other lists.
+func (p *STARSPane) drawRestrictionAreasList(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
+		return
+	}
+	text := p.restrictionAreasListText()
+	if text == "" {
+		return
+	}
+	w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+	if w <= 0 || h <= 0 {
+		return
+	}
+	fontSize := p.listFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
+	if texture == 0 {
+		return
+	}
+	ps := p.currentPrefs()
+	pos := redsmath.Vec2{X: ps.RestrictionAreaList.Position[0] * w, Y: ps.RestrictionAreaList.Position[1] * h}
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zLists)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	td := renderer.GetTextDrawBuilder()
+	td.SetFont(p.systemFont)
+	td.AddText(text, pos, renderer.TextStyle{Size: fontSize, Color: ps.Brightness.Lists.ScaleRGB(p.colors.List).ToRGBA()})
+	td.GenerateCommands(cb, texture)
+	renderer.ReturnTextDrawBuilder(td)
+	cb.DisableScissor()
+}
+
 func formatSSAWeatherLevelStatus(available, displayed [6]bool) string {
 	// TI 6191.409 Rev. 30, Figure 2-24 and Table 2-15, field D:
 	// weather levels occupy fixed three-character positions. A received level

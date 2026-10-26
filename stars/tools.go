@@ -1472,6 +1472,10 @@ func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdB
 	blinkDim := restrictionAreaBlinkDim(time.Now().UnixMilli())
 	textColor := ps.Brightness.VideoGroupB.ScaleRGB(p.colors.RestrictionAreaText)
 	for _, ra := range areas {
+		local := restrictionAreaSettingsFor(ps, ra)
+		if ra.ID != 0 && local.Hidden {
+			continue
+		}
 		color := ps.Brightness.VideoGroupB.ScaleRGB(p.restrictionAreaGeometryColor(ra.Color - 1))
 		outline := renderer.GetLinesBuilder()
 		vertices := make([]renderer.PointVertex, 0, len(ra.Vertices))
@@ -1525,7 +1529,6 @@ func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdB
 		if ra.ID == 0 || texture == 0 || fs == nil {
 			continue
 		}
-		local := restrictionAreaSettingsFor(ps, ra)
 		label := fmt.Sprintf("[%d]", ra.ID)
 		for i, line := range ra.Text {
 			if local.HideText {
@@ -1550,7 +1553,7 @@ func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdB
 		}
 		pt.X -= labelWidth / 2
 		pt.Y -= float32(fs.LineHeight) / 2
-		labels.AddText(label, pt, renderer.TextStyle{Size: fontSize, Color: restrictionAreaBlinkColor(textColor, (ra.Blink || local.ForceBlinkingText) && blinkDim).ToRGBA()})
+		labels.AddText(label, pt, renderer.TextStyle{Size: fontSize, Color: restrictionAreaBlinkColor(textColor, (ra.Blink || local.ForceBlinkingText) && !local.StopBlinkingText && blinkDim).ToRGBA()})
 	}
 	if texture != 0 {
 		labels.GenerateCommands(cb, texture)
