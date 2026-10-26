@@ -20,7 +20,7 @@ const (
 
 const (
 	titleBarMenuPopupWidth         = 300
-	titleBarStarsMenuPopupWidth    = 330
+	titleBarStarsMenuPopupWidth    = 395 // Accommodate the restriction-color label and shortcut.
 	titleBarMenuItemHeight         = 30
 	titleBarMenuTextPadX           = 13
 	titleBarMenuCheckedTextPadX    = 40
@@ -81,21 +81,24 @@ const (
 	titleBarActionViewIAPChart
 	titleBarActionToggleStarsAssignedAltitudes
 	titleBarActionToggleStarsTAISLeaderDirection
+	titleBarActionToggleStarsYellowRestrictionColor1
 	titleBarActionToggleStarsFontSetB
 	titleBarActionToggleStarsFAAHFSTD010APalette
 )
 
 type titleBarMenuOptions struct {
-	ShowASDEXSeparator           bool
-	ShowStarsIAPChart            bool
-	ShowStarsAssignedAltitudes   bool
-	HideStarsAssignedAltitudes   bool
-	ShowStarsTAISLeaderDirection bool
-	UseStarsTAISLeaderDirection  bool
-	ShowStarsFontSetB            bool
-	UseStarsFontSetB             bool
-	ShowStarsFAAHFSTD010APalette bool
-	UseStarsFAAHFSTD010APalette  bool
+	ShowASDEXSeparator               bool
+	ShowStarsIAPChart                bool
+	ShowStarsAssignedAltitudes       bool
+	HideStarsAssignedAltitudes       bool
+	ShowStarsTAISLeaderDirection     bool
+	UseStarsTAISLeaderDirection      bool
+	ShowStarsYellowRestrictionColor1 bool
+	UseStarsYellowRestrictionColor1  bool
+	ShowStarsFontSetB                bool
+	UseStarsFontSetB                 bool
+	ShowStarsFAAHFSTD010APalette     bool
+	UseStarsFAAHFSTD010APalette      bool
 }
 
 type titleBarButtonType int
@@ -256,13 +259,16 @@ func drawTitleBarMenuPopup(
 	if menuOptions.ShowStarsTAISLeaderDirection {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
+	if menuOptions.ShowStarsYellowRestrictionColor1 {
+		menuHeight += float32(titleBarMenuItemHeight)
+	}
 	if menuOptions.ShowStarsFontSetB {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
 	if menuOptions.ShowStarsFAAHFSTD010APalette {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
-	if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsTAISLeaderDirection || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+	if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsTAISLeaderDirection || menuOptions.ShowStarsYellowRestrictionColor1 || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
 		popupWidth = titleBarStarsMenuPopupWidth
 	}
 	imgui.SetNextWindowSizeV(
@@ -288,7 +294,7 @@ func drawTitleBarMenuPopup(
 		// Right-align each complete shortcut; modifier glyphs need not share a left edge.
 		shortcutRightX := popupWidth - titleBarMenuShortcutPadRight
 		textPadX := float32(titleBarMenuTextPadX)
-		if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsTAISLeaderDirection || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+		if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsTAISLeaderDirection || menuOptions.ShowStarsYellowRestrictionColor1 || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
 			// Reserve the same check gutter as the STARS checked rows so all
 			// labels start on the same vertical axis.
 			textPadX = titleBarMenuCheckedTextPadX
@@ -610,6 +616,35 @@ func drawTitleBarMenuPopup(
 			if wxClicked {
 				action = titleBarActionToggleStarsFAAHFSTD010APalette
 			}
+			rowY += float32(titleBarMenuItemHeight)
+		}
+
+		if menuOptions.ShowStarsYellowRestrictionColor1 {
+			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
+			clicked := imgui.InvisibleButtonV(
+				"##stars-yellow-restriction-color-one-menu-item",
+				imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
+				imgui.ButtonFlagsMouseButtonLeft,
+			)
+			rowMin, rowMax := imgui.ItemRectMin(), imgui.ItemRectMax()
+			if imgui.IsItemHovered() {
+				imgui.WindowDrawList().AddRectFilledV(
+					rowMin, rowMax, imgui.ColorU32Vec4(titleBarMenuHover),
+					titleBarMenuPopupRounding, imgui.DrawFlagsRoundCornersAll,
+				)
+			}
+			if menuOptions.UseStarsYellowRestrictionColor1 {
+				drawTitleBarMenuCheck(rowMin, titleBarMenuItemHeight)
+			}
+			drawTitleBarMenuItemTextWithPad(
+				rowMin, titleBarMenuItemHeight, shortcutRightX,
+				titleBarMenuCheckedTextPadX,
+				"Use Yellow for Restriction Color 1",
+				titleBarYellowRestrictionColorShortcutParts(),
+			)
+			if clicked {
+				action = titleBarActionToggleStarsYellowRestrictionColor1
+			}
 		}
 
 		imgui.EndPopup()
@@ -798,6 +833,16 @@ func titleBarTAISLeaderDirectionShortcutParts() []titleBarShortcutPart {
 	return []titleBarShortcutPart{{Text: "Ctrl+Alt+L"}}
 }
 
+func titleBarYellowRestrictionColorShortcutParts() []titleBarShortcutPart {
+	if runtime.GOOS == "darwin" {
+		return []titleBarShortcutPart{
+			{Text: shortcutCommandSymbol}, {Text: "+"},
+			{Text: shortcutOptionSymbol}, {Text: "+Y"},
+		}
+	}
+	return []titleBarShortcutPart{{Text: "Ctrl+Alt+Y"}}
+}
+
 func titleBarFontSetBShortcutParts() []titleBarShortcutPart {
 	if runtime.GOOS == "darwin" {
 		return []titleBarShortcutPart{
@@ -929,6 +974,10 @@ func titleBarShortcutAction(
 		titleBarTAISLeaderDirectionShortcutPressed(keyboard, runtime.GOOS) {
 		return titleBarActionToggleStarsTAISLeaderDirection
 	}
+	if menuOptions.ShowStarsYellowRestrictionColor1 &&
+		titleBarYellowRestrictionColorShortcutPressed(keyboard, runtime.GOOS) {
+		return titleBarActionToggleStarsYellowRestrictionColor1
+	}
 	if !keyboard.IsDown(platform.KeyShift) {
 		return titleBarActionNone
 	}
@@ -973,6 +1022,18 @@ func titleBarShortcutAction(
 // toggles the setting. Distinguish Command on macOS from Control elsewhere.
 func titleBarTAISLeaderDirectionShortcutPressed(keyboard platform.KeyboardState, goos string) bool {
 	if !keyboard.WasPressed(platform.KeyL) || !keyboard.IsDown(platform.KeyAlt) || keyboard.IsDown(platform.KeyShift) {
+		return false
+	}
+	if goos == "darwin" {
+		return keyboard.IsDown(platform.KeyCommand) && !keyboard.IsDown(platform.KeyControl)
+	}
+	return keyboard.IsDown(platform.KeyControl) && !keyboard.IsDown(platform.KeyCommand)
+}
+
+// The toggle is edge-triggered and cannot interfere with ordinary typed Y
+// commands in a STARS input field. macOS: Command+Option+Y. Others: Ctrl+Alt+Y.
+func titleBarYellowRestrictionColorShortcutPressed(keyboard platform.KeyboardState, goos string) bool {
+	if !keyboard.WasPressed(platform.KeyY) || !keyboard.IsDown(platform.KeyAlt) || keyboard.IsDown(platform.KeyShift) {
 		return false
 	}
 	if goos == "darwin" {

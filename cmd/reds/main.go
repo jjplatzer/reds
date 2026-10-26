@@ -290,6 +290,8 @@ func run(logger *redslog.Logger) error {
 				menuOptions.HideStarsAssignedAltitudes = starsPane.AssignedAltitudesHidden()
 				menuOptions.ShowStarsTAISLeaderDirection = true
 				menuOptions.UseStarsTAISLeaderDirection = starsPane.UseTAISLeaderDirection()
+				menuOptions.ShowStarsYellowRestrictionColor1 = true
+				menuOptions.UseStarsYellowRestrictionColor1 = starsPane.UseYellowRestrictionColor1()
 				menuOptions.ShowStarsFontSetB = true
 				menuOptions.UseStarsFontSetB = starsPane.UseFontSetB()
 				menuOptions.ShowStarsFAAHFSTD010APalette = true
@@ -311,9 +313,11 @@ func run(logger *redslog.Logger) error {
 			}
 			io := imgui.CurrentIO()
 			panes.DrawPane(active, plat, r, panes.DrawOptions{
-				MenuBarHeight:    scopeTitleBarHeight,
-				MouseCaptured:    io.WantCaptureMouse() || titlebarCaptured,
-				KeyboardCaptured: io.WantCaptureKeyboard() || titlebarAction == titleBarActionToggleStarsTAISLeaderDirection,
+				MenuBarHeight: scopeTitleBarHeight,
+				MouseCaptured: io.WantCaptureMouse() || titlebarCaptured,
+				KeyboardCaptured: io.WantCaptureKeyboard() ||
+					titlebarAction == titleBarActionToggleStarsTAISLeaderDirection ||
+					titlebarAction == titleBarActionToggleStarsYellowRestrictionColor1,
 			})
 
 			imgui.Render()
@@ -369,6 +373,10 @@ func run(logger *redslog.Logger) error {
 			case titleBarActionToggleStarsTAISLeaderDirection:
 				if starsPane, ok := active.(*stars.STARSPane); ok {
 					starsPane.ToggleTAISLeaderDirection()
+				}
+			case titleBarActionToggleStarsYellowRestrictionColor1:
+				if starsPane, ok := active.(*stars.STARSPane); ok {
+					starsPane.ToggleYellowRestrictionColor1()
 				}
 			case titleBarActionToggleStarsFontSetB:
 				if starsPane, ok := active.(*stars.STARSPane); ok {
