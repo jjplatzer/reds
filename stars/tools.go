@@ -1284,12 +1284,14 @@ type starsRestrictionArea struct {
 	Vertices      []configPoint
 	Color         int
 	Blink, Shaded bool
-	LabelPending  bool // in-progress polygon, awaiting label location
+	LabelPending  bool   // in-progress polygon, awaiting label location
+	Serial        uint64 // distinguishes a deleted/reused site ID for local settings
 }
 
 type starsRestrictionAreaStore struct {
-	mu    sync.RWMutex
-	areas map[int]starsRestrictionArea
+	mu         sync.RWMutex
+	areas      map[int]starsRestrictionArea
+	nextSerial uint64
 }
 
 var starsRestrictionStores sync.Map // same-site panes in this client process
@@ -1307,6 +1309,8 @@ func (s *starsRestrictionAreaStore) create(area starsRestrictionArea) error {
 	// §6.6 site-created IDs 1..100; reserved 101..200 belong to adaptation.
 	for id := 1; id <= 100; id++ {
 		if _, used := s.areas[id]; !used {
+			s.nextSerial++
+			area.Serial = s.nextSerial
 			area.ID = id
 			area.Vertices = append([]configPoint(nil), area.Vertices...)
 			area.LabelPending = false
@@ -1320,12 +1324,112 @@ func (s *starsRestrictionAreaStore) snapshot() []starsRestrictionArea {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	result := make([]starsRestrictionArea, 0, len(s.areas))
-	for id := 1; id <= 100; id++ {
+	for id := 1; id <= 200; id++ {
 		if area, ok := s.areas[id]; ok {
 			result = append(result, area)
 		}
 	}
 	return result
+}
+
+// All modifications to controller-defined geometry are shared by the same
+// facility's displays, while per-display visibility lives in Preferences.
+// Copy slices before mutation, so snapshots and failed edits remain immutable.
+func (s *starsRestrictionAreaStore) get(id int) (starsRestrictionArea, error) {
+	if id < 1 || id > 200 {
+		return starsRestrictionArea{}, ErrSTARSIllegalGeoID
+	}
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	area, ok := s.areas[id]
+	if !ok {
+		return starsRestrictionArea{}, ErrSTARSIllegalGeoID
+	}
+	area.Vertices = append([]configPoint(nil), area.Vertices...)
+	return area, nil
+}
+func (s *starsRestrictionAreaStore) update(id int, fn func(*starsRestrictionArea) error) error {
+	if id < 1 || id > 100 {
+		return ErrSTARSIllegalGeoID
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	area, ok := s.areas[id]
+	if !ok {
+		return ErrSTARSIllegalGeoID
+	}
+	area.Vertices = append([]configPoint(nil), area.Vertices...)
+	if err := fn(&area); err != nil {
+		return err
+	}
+	s.areas[id] = area
+	return nil
+}
+func (s *starsRestrictionAreaStore) delete(id int) error {
+	if id < 1 || id > 100 {
+		return ErrSTARSIllegalGeoID
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if _, ok := s.areas[id]; !ok {
+		return ErrSTARSIllegalGeoID
+	}
+	delete(s.areas, id)
+	return nil
+}
+
+// §6.6.5: move the text/ID to the designated point and translate *all*
+// graphics by the same offset. Circle radius, polygon shape and label-to-
+// geometry offsets remain unchanged. Longitude uses the shortest displacement
+// through the antimeridian; invalid resulting geographic points are rejected.
+func moveRestrictionArea(area *starsRestrictionArea, destination configPoint) error {
+	if !validRestrictionPoint(destination) {
+		return fmt.Errorf("ILL GEO LOC")
+	}
+	dlat := destination.Lat - area.Label.Lat
+	dlon := normalizeLongitude(destination.Lon - area.Label.Lon)
+	relocate := func(pt configPoint) (configPoint, error) {
+		result := configPoint{Lat: pt.Lat + dlat, Lon: normalizeLongitude(pt.Lon + dlon)}
+		if !validRestrictionPoint(result) {
+			return configPoint{}, fmt.Errorf("ILL GEO LOC")
+		}
+		return result, nil
+	}
+	shifted := append([]configPoint(nil), area.Vertices...)
+	for i, pt := range shifted {
+		var err error
+		if shifted[i], err = relocate(pt); err != nil {
+			return err
+		}
+	}
+	center, err := relocate(area.Center)
+	if err != nil && area.Kind == starsRestrictionCircle {
+		return err
+	}
+	area.Vertices = shifted
+	if area.Kind == starsRestrictionCircle {
+		area.Center = center
+	}
+	area.Label = destination
+	return nil
+}
+func validRestrictionPoint(p configPoint) bool {
+	return !stdmath.IsNaN(p.Lat) && !stdmath.IsNaN(p.Lon) &&
+		p.Lat >= -90 && p.Lat <= 90 && p.Lon >= -180 && p.Lon <= 180
+}
+
+// restrictionAreaGeometryColor resolves the operator's 1-based restriction
+// color number (received here as a zero-based index). The REDS-only override
+// changes both boundary and stippled fill for color 1, but never the yellow
+// text color or any other restriction color.
+func (p *STARSPane) restrictionAreaGeometryColor(index int) renderer.RGB {
+	if index < 0 || index >= len(p.colors.RestrictionAreaGeom) {
+		index = 0
+	}
+	if index == 0 && p.useYellowRestrictionColor1 {
+		return starsYellow
+	}
+	return p.colors.RestrictionAreaGeom[index]
 }
 
 func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdBuffer, t radar.LatLonTransformations) {
@@ -1368,11 +1472,7 @@ func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdB
 	blinkDim := restrictionAreaBlinkDim(time.Now().UnixMilli())
 	textColor := ps.Brightness.VideoGroupB.ScaleRGB(p.colors.RestrictionAreaText)
 	for _, ra := range areas {
-		colorIndex := ra.Color - 1
-		if colorIndex < 0 || colorIndex >= len(p.colors.RestrictionAreaGeom) {
-			colorIndex = 0
-		}
-		color := ps.Brightness.VideoGroupB.ScaleRGB(p.colors.RestrictionAreaGeom[colorIndex])
+		color := ps.Brightness.VideoGroupB.ScaleRGB(p.restrictionAreaGeometryColor(ra.Color - 1))
 		outline := renderer.GetLinesBuilder()
 		vertices := make([]renderer.PointVertex, 0, len(ra.Vertices))
 		for _, pt := range ra.Vertices {
@@ -1425,8 +1525,12 @@ func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdB
 		if ra.ID == 0 || texture == 0 || fs == nil {
 			continue
 		}
+		local := restrictionAreaSettingsFor(ps, ra)
 		label := fmt.Sprintf("[%d]", ra.ID)
 		for i, line := range ra.Text {
+			if local.HideText {
+				break
+			}
 			if line != "" {
 				if i == 0 {
 					label += " " + line
@@ -1446,7 +1550,7 @@ func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdB
 		}
 		pt.X -= labelWidth / 2
 		pt.Y -= float32(fs.LineHeight) / 2
-		labels.AddText(label, pt, renderer.TextStyle{Size: fontSize, Color: restrictionAreaBlinkColor(textColor, ra.Blink && blinkDim).ToRGBA()})
+		labels.AddText(label, pt, renderer.TextStyle{Size: fontSize, Color: restrictionAreaBlinkColor(textColor, (ra.Blink || local.ForceBlinkingText) && blinkDim).ToRGBA()})
 	}
 	if texture != 0 {
 		labels.GenerateCommands(cb, texture)

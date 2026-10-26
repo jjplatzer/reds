@@ -48,6 +48,7 @@ type STARSPane struct {
 	useFAAHFSTD010APalette       bool
 	hideAssignedAltitudes        bool
 	useTAISLeaderDirection       bool // REDS display override, off by default; not a STARS preference set.
+	useYellowRestrictionColor1   bool // REDS display-only override; retains the official palette by default.
 	systemFont                   *renderer.BitmapFont
 	systemFontTextures           map[int]renderer.TextureID
 	systemOutlineFont            *renderer.BitmapFont
@@ -137,6 +138,7 @@ type STARSPane struct {
 	// §6.6 restriction areas: current construction is window-local, completed
 	// geometry is stored at the STARS site level (shared by panes at that site).
 	wipRestrictionArea *starsRestrictionArea
+	wipRestrictionMove *restrictionAreaPendingMove
 	restrictionAreas   *starsRestrictionAreaStore
 
 	// MIN graphics are transient TCW/TDW state, not a preference. Pair keys
@@ -219,6 +221,19 @@ func (p *STARSPane) ToggleTAISLeaderDirection() {
 	p.useTAISLeaderDirection = !p.useTAISLeaderDirection
 	if p.useTAISLeaderDirection && p.commandMode == CommandModeLDRDir {
 		p.resetCommand()
+	}
+}
+
+// UseYellowRestrictionColor1 reports the local REDS display override for
+// restriction geometry color 1. The zero value leaves the official dim-gray
+// palette unchanged, including all stored restriction-area color numbers.
+func (p *STARSPane) UseYellowRestrictionColor1() bool {
+	return p != nil && p.useYellowRestrictionColor1
+}
+
+func (p *STARSPane) ToggleYellowRestrictionColor1() {
+	if p != nil {
+		p.useYellowRestrictionColor1 = !p.useYellowRestrictionColor1
 	}
 }
 

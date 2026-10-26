@@ -1,11 +1,14 @@
 package stars
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/platform"
 )
+
+var ErrSTARSIllegalGeoID = fmt.Errorf("ILL GEO ID")
 
 type CommandMode int
 
@@ -633,6 +636,7 @@ func (p *STARSPane) resetCommand() {
 	// A completed or cancelled GEO RESTRICTION must not survive into the
 	// next F12 command (e.g. changing from G text to C/P/A geometry).
 	p.wipRestrictionArea = nil
+	p.wipRestrictionMove = nil
 	p.minSepPendingKey = ""
 	p.rposPendingSourceKey = ""
 }

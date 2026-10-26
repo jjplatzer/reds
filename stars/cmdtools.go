@@ -674,7 +674,7 @@ func (p *STARSPane) pruneSingleTrackPTLs(snapshot redsnet.TaisSnapshot) {
 	}
 }
 
-// VICE places §6.6 restriction-area creation under cmdtools.go. Keep the
+// VICE places §6.6 restriction-area commands under cmdtools.go. Keep the
 // controller's F12 commands here; location and text decoding is in parsecmd.go,
 // and geometry drawing is in tools.go.
 func init() {
@@ -699,6 +699,46 @@ func init() {
 		p.wipRestrictionArea = r
 		return CommandStatus{Clear: ClearInput}, nil
 	})
+	// §§6.6.5–6.6.8: VICE's typed ID commands, with the manual's
+	// keyboard-only procedure and per-TCW/TDW text visibility.
+	registerCommand(CommandModeRestrictionArea, "[USER_RA_INDEX]*[RA_MOVE]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		id := args[0].(int)
+		move := args[1].(restrictionAreaMoveSpec)
+		if _, err := p.restrictionAreaStore().get(id); err != nil {
+			return CommandStatus{}, err
+		}
+		if move.Position == nil {
+			p.wipRestrictionMove = &restrictionAreaPendingMove{ID: id, Blink: move.Blink}
+			return CommandStatus{Clear: ClearInput}, nil
+		}
+		return CommandStatus{}, p.completeRestrictionAreaMove(restrictionAreaPendingMove{ID: id, Blink: move.Blink}, *move.Position)
+	})
+	registerCommand(CommandModeRestrictionArea, "[USER_RA_INDEX]DEL", func(p *STARSPane, args []any) (CommandStatus, error) {
+		id := args[0].(int)
+		if err := p.restrictionAreaStore().delete(id); err != nil {
+			return CommandStatus{}, err
+		}
+		delete(p.currentPrefs().RestrictionAreaSettings, id)
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeRestrictionArea, "[USER_RA_INDEX]T[RA_EDIT_TEXT]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		id, c := args[0].(int), args[1].(starsRestrictionClause)
+		err := p.restrictionAreaStore().update(id, func(a *starsRestrictionArea) error {
+			a.Text, a.Blink = c.Text, c.Blink
+			return nil
+		})
+		if err != nil {
+			return CommandStatus{}, err
+		}
+		p.showRestrictionAreaLocally(id)
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeRestrictionArea, "[RA_INDEX]T [RA_DELTA]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{}, p.toggleRestrictionAreaText(args[0].(int), true)
+	})
+	registerCommand(CommandModeRestrictionArea, "[RA_INDEX]T", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{}, p.toggleRestrictionAreaText(args[0].(int), false)
+	})
 	for _, shape := range []struct {
 		prefix string
 		kind   starsRestrictionKind
@@ -713,6 +753,67 @@ func init() {
 			return CommandStatus{Clear: ClearInput}, nil
 		})
 	}
+}
+
+// The pending cursor relocation belongs to the entering STARS pane;
+// the completed geometry change is applied to the site-wide store.
+type restrictionAreaPendingMove struct {
+	ID    int
+	Blink bool
+}
+
+func (p *STARSPane) restrictionAreaStore() *starsRestrictionAreaStore {
+	if p.restrictionAreas == nil {
+		p.restrictionAreas = starsRestrictionStoreForSite(p.config.Facility.Facility)
+	}
+	return p.restrictionAreas
+}
+func (p *STARSPane) showRestrictionAreaLocally(id int) {
+	area, err := p.restrictionAreaStore().get(id)
+	if err != nil {
+		return
+	}
+	ps := p.currentPrefs()
+	if ps.RestrictionAreaSettings == nil {
+		ps.RestrictionAreaSettings = make(map[int]restrictionAreaDisplaySettings)
+	}
+	ps.RestrictionAreaSettings[id] = restrictionAreaSettingsFor(ps, area) // text visibility unchanged
+}
+func (p *STARSPane) completeRestrictionAreaMove(spec restrictionAreaPendingMove, pos configPoint) error {
+	err := p.restrictionAreaStore().update(spec.ID, func(a *starsRestrictionArea) error {
+		if err := moveRestrictionArea(a, pos); err != nil {
+			return err
+		}
+		if spec.Blink {
+			a.Blink = true
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	p.showRestrictionAreaLocally(spec.ID)
+	p.resetCommand()
+	return nil
+}
+func (p *STARSPane) toggleRestrictionAreaText(id int, delta bool) error {
+	area, err := p.restrictionAreaStore().get(id)
+	if err != nil {
+		return err
+	}
+	ps := p.currentPrefs()
+	old := restrictionAreaSettingsFor(ps, area)
+	if delta && !old.HideText {
+		// §6.6.8: delta applies *only* when causing hidden text to show.
+		return ErrSTARSCommandFormat
+	}
+	old.HideText = !old.HideText
+	old.ForceBlinkingText = delta && !old.HideText
+	if ps.RestrictionAreaSettings == nil {
+		ps.RestrictionAreaSettings = make(map[int]restrictionAreaDisplaySettings)
+	}
+	ps.RestrictionAreaSettings[id] = old
+	return nil
 }
 
 func (p *STARSPane) finishRestrictionArea(r *starsRestrictionArea) error {
@@ -737,6 +838,23 @@ func (p *STARSPane) finishRestrictionArea(r *starsRestrictionArea) error {
 // or circular restriction instead uses the first cursor designation for its
 // location. Empty polygon input always adds a vertex, not a label.
 func (p *STARSPane) restrictionAreaClick(pos configPoint) error {
+	if p.wipRestrictionMove != nil {
+		return p.completeRestrictionAreaMove(*p.wipRestrictionMove, pos)
+	}
+	// F12 ID * [DELTA] followed by a left-trackball designation is
+	// valid without an intervening ENTER, as in the manual.
+	if p.wipRestrictionArea == nil && strings.Contains(p.commandInput, "*") &&
+		len(p.commandInput) > 0 && p.commandInput[0] >= '0' && p.commandInput[0] <= '9' {
+		_, err := p.executeCommand(CommandModeRestrictionArea, p.commandInput)
+		if err != nil {
+			return err
+		}
+		p.commandInput = ""
+		if p.wipRestrictionMove == nil {
+			return ErrSTARSCommandFormat
+		}
+		return p.completeRestrictionAreaMove(*p.wipRestrictionMove, pos)
+	}
 	r := p.wipRestrictionArea
 	if r == nil {
 		// The manual permits G/C command text followed directly by a left

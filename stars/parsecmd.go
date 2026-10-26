@@ -514,6 +514,11 @@ var commandTypeParsers = map[string]commandTypeParser{
 	"RA_TEXT":            restrictionAreaClauseParser{},
 	"RA_CIRCLE":          restrictionAreaClauseParser{circle: true},
 	"RA_LOCATION":        restrictionAreaLocationParser{},
+	"USER_RA_INDEX":      restrictionAreaIDParser{userOnly: true},
+	"RA_INDEX":           restrictionAreaIDParser{},
+	"RA_MOVE":            restrictionAreaMoveParser{},
+	"RA_EDIT_TEXT":       restrictionAreaEditTextParser{},
+	"RA_DELTA":           restrictionAreaDeltaParser{},
 }
 
 type commandMatcher interface {
@@ -623,6 +628,98 @@ func (p *STARSPane) executeCommand(mode CommandMode, input string) (CommandStatu
 		return CommandStatus{}, firstErr
 	}
 	return CommandStatus{}, ErrSTARSCommandFormat
+}
+
+// Restriction commands use the same ID/typed matcher organization as VICE.
+// Only user-defined IDs (1-100) can be changed or deleted. Adapted IDs
+// (101-200) may be used for per-display text visibility (§6.6.8).
+type restrictionAreaIDParser struct{ userOnly bool }
+
+func (p restrictionAreaIDParser) Identifier() string {
+	if p.userOnly {
+		return "USER_RA_INDEX"
+	}
+	return "RA_INDEX"
+}
+func (p restrictionAreaIDParser) Parse(input string) (any, string, bool, error) {
+	n := 0
+	for n < len(input) && input[n] >= '0' && input[n] <= '9' {
+		n++
+	}
+	if n == 0 {
+		return nil, input, false, nil
+	}
+	id, err := strconv.Atoi(input[:n])
+	maxID := 200
+	if p.userOnly {
+		maxID = 100
+	}
+	if err != nil || id < 1 || id > maxID {
+		return nil, input[n:], true, ErrSTARSIllegalGeoID
+	}
+	return id, input[n:], true, nil
+}
+
+type restrictionAreaMoveSpec struct {
+	Blink    bool
+	Position *configPoint // nil means trackball designation to follow
+}
+type restrictionAreaMoveParser struct{}
+
+func (restrictionAreaMoveParser) Identifier() string { return "RA_MOVE" }
+func (restrictionAreaMoveParser) Parse(input string) (any, string, bool, error) {
+	spec := restrictionAreaMoveSpec{}
+	input = strings.TrimSpace(input)
+	if strings.HasPrefix(input, "△") || strings.HasPrefix(input, "∆") || strings.HasPrefix(input, "Δ") {
+		_, n := utf8.DecodeRuneInString(input)
+		input = strings.TrimSpace(input[n:])
+		spec.Blink = true
+	}
+	if input != "" {
+		pos, err := parseRestrictionAreaLocation(input)
+		if err != nil {
+			return nil, "", true, err // FORMAT and ILL GEO LOC remain distinct
+		}
+		spec.Position = &pos
+	}
+	return spec, "", true, nil
+}
+
+type restrictionAreaEditTextParser struct{}
+
+func (restrictionAreaEditTextParser) Identifier() string { return "RA_EDIT_TEXT" }
+func (restrictionAreaEditTextParser) Parse(input string) (any, string, bool, error) {
+	if input == "" {
+		return nil, input, false, nil
+	}
+	// F12 ID T <SPACE> DELTA belongs to §6.6.8, not an edit.
+	if isRestrictionDelta(strings.TrimSpace(input)) {
+		return nil, input, false, nil
+	}
+	maxFirst := 30
+	if input[0] == ' ' {
+		maxFirst = 32
+	}
+	parsed, err := parseRestrictionAreaText(strings.TrimSpace(input), false)
+	if err != nil {
+		return nil, "", true, err
+	}
+	if len(parsed.Text[0]) > maxFirst {
+		parsed.Text[0] = parsed.Text[0][:maxFirst]
+	}
+	return parsed, "", true, nil
+}
+
+func isRestrictionDelta(s string) bool { return s == "△" || s == "∆" || s == "Δ" }
+
+type restrictionAreaDeltaParser struct{}
+
+func (restrictionAreaDeltaParser) Identifier() string { return "RA_DELTA" }
+func (restrictionAreaDeltaParser) Parse(input string) (any, string, bool, error) {
+	if !isRestrictionDelta(strings.TrimSpace(input)) {
+		return nil, input, false, nil
+	}
+	return true, "", true, nil
 }
 
 // §6.6 geographic command types are parsed independently of the drawing code.

@@ -620,6 +620,25 @@ type crdaStatusListPreferences struct {
 // Preferences contains the per-position STARS display state. The names mirror
 // VICE's STARS Preferences; the display-characteristic subset defined in
 // prefsets.go is persisted by the STARS PREF function.
+// §6.6.8 keeps text visibility local to the entering TCW/TDW. Serial
+// guards against inheriting a previous area's state when its ID is reused.
+type restrictionAreaDisplaySettings struct {
+	Serial            uint64
+	HideText          bool
+	ForceBlinkingText bool
+}
+
+func restrictionAreaSettingsFor(ps *Preferences, area starsRestrictionArea) restrictionAreaDisplaySettings {
+	if ps == nil {
+		return restrictionAreaDisplaySettings{}
+	}
+	setting, ok := ps.RestrictionAreaSettings[area.ID]
+	if !ok || setting.Serial != area.Serial {
+		return restrictionAreaDisplaySettings{Serial: area.Serial}
+	}
+	return setting
+}
+
 type Preferences struct {
 	// DisplayDCB is controlled by the physical STARS <DCB> key. TI 6191.409
 	// Rev. 30 section 2.5 defines it as a toggle of the Display Control Bar.
@@ -642,6 +661,7 @@ type Preferences struct {
 	CharSize                CharacterSizePreferences
 	DisplayWeatherLevel     [6]bool
 	VideoMapVisible         map[int]bool
+	RestrictionAreaSettings map[int]restrictionAreaDisplaySettings // local to this TCW/TDW
 	VideoMapsList           videoMapsListPreferences
 	PreviewAreaPosition     [2]float32
 	SSAListPosition         [2]float32
