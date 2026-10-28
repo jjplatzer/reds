@@ -56,6 +56,7 @@ type STARSPane struct {
 	systemAltimeter              systemAltimeterState
 	ssaAirportWeather            ssaAirportWeatherState
 	tais                         *redsnet.TaisClient
+	tfr                          *redsnet.TFRClient
 
 	wxDomain              wx.Domain
 	wxLogger              *redslog.Logger
@@ -541,6 +542,15 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	)
 	pane.tais.Start()
 
+	// The TFR client caches published FAA geometry in the background. Rendering
+	// and user-facing visibility controls are introduced separately.
+	if tfr, err := redsnet.NewTFRClient(redsnet.TFRGeoJSONURL(), redsnet.TFRPollInterval); err != nil {
+		logger.Warn("Unable to configure FAA TFR client", slog.Any("error", err))
+	} else {
+		pane.tfr = tfr
+		pane.tfr.Start()
+	}
+
 	return pane, nil
 }
 
@@ -658,6 +668,10 @@ func (p *STARSPane) Dispose() {
 	if p.tais != nil {
 		p.tais.Close()
 		p.tais = nil
+	}
+	if p.tfr != nil {
+		p.tfr.Close()
+		p.tfr = nil
 	}
 	if p.wxStream != nil {
 		p.wxStream.Close()
