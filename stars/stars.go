@@ -140,6 +140,8 @@ type STARSPane struct {
 	// geometry is stored at the STARS site level (shared by panes at that site).
 	wipRestrictionArea *starsRestrictionArea
 	wipRestrictionMove *restrictionAreaPendingMove
+	// Last TFR client revision merged into the shared GEO RESTRICTIONS store.
+	tfrListRevision uint64
 	// §6.6.12: the two-ENTER DoD color-selection sequence.
 	restrictionColorPendingID int
 	restrictionColorChanged   bool
@@ -633,6 +635,9 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawCRDADiagrams(ctx, zcb, transforms)
 	p.drawCompass(ctx, zcb, transforms)
 
+	// Apply new FAA snapshots before both geometry and GEO RESTRICTIONS list
+	// are rendered. Fetching itself remains on TFRClient's background goroutine.
+	p.syncTFRRestrictionList()
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
 	p.drawPredictedTrackLines(ctx, zcb, transforms, targets)
 	p.drawRangeBearingLines(ctx, zcb, transforms, targets)

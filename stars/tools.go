@@ -1284,13 +1284,19 @@ type starsRestrictionArea struct {
 	Vertices      []configPoint
 	Color         int
 	Blink, Shaded bool
-	LabelPending  bool   // in-progress polygon, awaiting label location
-	Serial        uint64 // distinguishes a deleted/reused site ID for local settings
+	LabelPending  bool              // in-progress polygon, awaiting label location
+	IsFAA         bool              // read-only imported FAA TFR; not a controller-defined area
+	NOTAM         string            // source identity; features may share GeoJSON IDs
+	TFRParts      int               // number of polygon features sharing this NOTAM
+	TFRPolygons   []starsTFRPolygon // closed exterior rings plus holes, read-only
+	Serial        uint64            // distinguishes a deleted/reused site ID for local settings
 }
 
 type starsRestrictionAreaStore struct {
 	mu         sync.RWMutex
 	areas      map[int]starsRestrictionArea
+	tfrSlots   map[string]int // stable NOTAM -> system restriction ID
+	tfrAsOf    time.Time      // prevent out-of-order pane snapshots
 	nextSerial uint64
 }
 
@@ -1474,6 +1480,10 @@ func (p *STARSPane) drawRestrictionAreas(ctx *panes.Context, zcb *renderer.ZCmdB
 	for _, ra := range areas {
 		local := restrictionAreaSettingsFor(ps, ra)
 		if ra.ID != 0 && local.Hidden {
+			continue
+		}
+		if ra.IsFAA {
+			p.drawFAARestrictionArea(ctx, cb, t, ra, local, shadeMode, labels, fontSize, textColor, blinkDim)
 			continue
 		}
 		color := ps.Brightness.VideoGroupB.ScaleRGB(p.restrictionAreaGeometryColor(ra.Color - 1))

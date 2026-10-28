@@ -176,7 +176,11 @@ func (p *STARSPane) restrictionAreasListText() string {
 		if len(descriptor) > 32 {
 			descriptor = descriptor[:32]
 		}
-		fmt.Fprintf(&b, "\n%-3d %s", a.ID, descriptor)
+		marker := '>'
+		if restrictionAreaSettingsFor(p.currentPrefs(), a).Hidden {
+			marker = ' '
+		}
+		fmt.Fprintf(&b, "\n%c%-3d %s", marker, a.ID, descriptor)
 	}
 	return b.String()
 }
