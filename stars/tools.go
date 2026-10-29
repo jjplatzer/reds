@@ -1692,12 +1692,15 @@ func decodeTFRRestrictionSummaries(raw []byte) ([]tfrRestrictionSummary, error) 
 		Features []struct {
 			Type       string `json:"type"`
 			Properties struct {
-				NOTAM    string `json:"NOTAM_KEY"`
-				Title    string `json:"TITLE"`
-				ARTCC    string `json:"ARTCC"`
-				ARTCCID  string `json:"ARTCC_ID"`
-				Center   string `json:"CENTER"`
-				CenterID string `json:"CENTER_ID"`
+				NOTAM         string                  `json:"NOTAM_KEY"`
+				Title         string                  `json:"TITLE"`
+				LocalName     string                  `json:"TFR_LOCAL_NAME"`
+				ARTCC         string                  `json:"ARTCC"`
+				ARTCCID       string                  `json:"ARTCC_ID"`
+				Center        string                  `json:"CENTER"`
+				CenterID      string                  `json:"CENTER_ID"`
+				Schedule      tfrActivationSchedule   `json:"TFR_SCHEDULE"`
+				PartSchedules []tfrActivationSchedule `json:"TFR_PART_SCHEDULES"`
 			} `json:"properties"`
 			Geometry struct {
 				Type        string          `json:"type"`
@@ -1734,13 +1737,22 @@ func decodeTFRRestrictionSummaries(raw []byte) ([]tfrRestrictionSummary, error) 
 		if center != "" {
 			entry.artcc = strings.ToUpper(strings.TrimSpace(center))
 		}
+		for i := range polygons {
+			// Ignore old mirror snapshots lacking per-part metadata.
+			// Never apply a combined schedule to all MultiPolygon parts.
+			if i < len(feature.Properties.PartSchedules) {
+				polygons[i].Schedule = feature.Properties.PartSchedules[i]
+			} else if len(polygons) == 1 {
+				polygons[i].Schedule = feature.Properties.Schedule
+			}
+		}
 		entry.polygons = append(entry.polygons, polygons...)
 		entry.featureCount++
 		// Use the FAA TITLE, falling back to NOTAM_KEY. Do not parse the
 		// CNS_LOCATION_ID as a string: that property can be numeric.
 		// GeoJSON feature IDs are not unique across polygon parts.
 		if entry.title == "" {
-			entry.title = strings.TrimSpace(feature.Properties.Title)
+			entry.title = strings.TrimSpace(firstNonempty(feature.Properties.LocalName, feature.Properties.Title))
 		}
 	}
 	result := make([]tfrRestrictionSummary, 0, len(byKey))
@@ -1759,7 +1771,43 @@ func decodeTFRRestrictionSummaries(raw []byte) ([]tfrRestrictionSummary, error) 
 // A polygon consists of one exterior ring followed by any interior holes.
 // Never flatten rings: the shading must not cover excluded areas.
 type starsTFRPolygon struct {
-	Rings [][]configPoint
+	Rings    [][]configPoint
+	Schedule tfrActivationSchedule // each WFS feature may have its own schedule
+}
+
+type tfrActivationInterval struct {
+	Start time.Time `json:"start"`
+	End   time.Time `json:"end"`
+}
+type tfrActivationSchedule struct {
+	Known      bool                    `json:"known"`
+	Indefinite bool                    `json:"indefinite"`
+	Intervals  []tfrActivationInterval `json:"intervals"`
+}
+
+// Only a positively established interval or standing/indefinite restriction
+// is drawable. No schedule metadata (older mirror snapshots) means unknown.
+func (s tfrActivationSchedule) active(at time.Time) bool {
+	if !s.Known {
+		return false
+	}
+	if s.Indefinite {
+		return true
+	}
+	for _, interval := range s.Intervals {
+		if !at.Before(interval.Start) && at.Before(interval.End) {
+			return true
+		}
+	}
+	return false
+}
+func tfrHasActivePolygon(area starsRestrictionArea, at time.Time) bool {
+	for _, polygon := range area.TFRPolygons {
+		if polygon.Schedule.active(at) {
+			return true
+		}
+	}
+	return false
 }
 
 func decodeTFRPolygons(kind string, raw json.RawMessage) ([]starsTFRPolygon, error) {
@@ -1919,7 +1967,7 @@ func (s *starsRestrictionAreaStore) updateTFRList(entries []tfrRestrictionSummar
 		a.Shaded = true
 		a.TFRPolygons = entry.polygons
 		a.Label = tfrLabelPosition(entry.polygons)
-		a.Text = [2]string{tfrDisplayID(entry.key)}
+		a.Text = [2]string{tfrListLabel(firstNonempty(entry.title, tfrDisplayID(entry.key)))}
 		a.Color = 1
 		s.areas[id] = a
 		s.tfrSlots[entry.key] = id
@@ -1972,7 +2020,7 @@ func (p *STARSPane) ensureTFRRestrictionVisibility() {
 			continue
 		}
 		if existing, ok := ps.RestrictionAreaSettings[a.ID]; !ok || existing.Serial != a.Serial {
-			ps.RestrictionAreaSettings[a.ID] = restrictionAreaDisplaySettings{Serial: a.Serial, Hidden: true}
+			ps.RestrictionAreaSettings[a.ID] = restrictionAreaDisplaySettings{Serial: a.Serial, Hidden: true, HideText: true}
 		}
 	}
 }

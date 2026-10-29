@@ -1656,7 +1656,17 @@ func (p *STARSPane) drawFAARestrictionArea(
 	fontSize int, textColor renderer.RGB, blinkDim bool,
 ) {
 	color := p.currentPrefs().Brightness.VideoGroupB.ScaleRGB(p.restrictionAreaGeometryColor(ra.Color - 1))
+	activePolygons := make([]starsTFRPolygon, 0, len(ra.TFRPolygons))
+	now := time.Now().UTC()
 	for _, polygon := range ra.TFRPolygons {
+		if polygon.Schedule.active(now) {
+			activePolygons = append(activePolygons, polygon)
+		}
+	}
+	if len(activePolygons) == 0 {
+		return
+	}
+	for _, polygon := range activePolygons {
 		lines, rings := tfrProjectedPolygon(t, polygon)
 		if len(lines) == 0 || !tfrPolygonInViewport(lines[0], ctx.PaneRect.Width(), ctx.PaneRect.Height()) {
 			continue
@@ -1690,11 +1700,12 @@ func (p *STARSPane) drawFAARestrictionArea(
 	// even when the optional restriction text is hidden.
 	text := fmt.Sprintf("[%d]", ra.ID)
 	if !settings.HideText {
-		if notam := tfrDisplayID(ra.NOTAM); notam != "" {
-			text += " " + notam
+		if name := strings.TrimSpace(ra.Text[0]); name != "" {
+			text += " " + name
 		}
 	}
-	point := t.WindowFromLatLonWrapped(ra.Label.Lat, ra.Label.Lon)
+	labelPosition := tfrLabelPosition(activePolygons)
+	point := t.WindowFromLatLonWrapped(labelPosition.Lat, labelPosition.Lon)
 	fs := p.systemFont.Size(fontSize)
 	if fs == nil {
 		return
