@@ -1649,6 +1649,21 @@ func tfrPolygonInViewport(outer []renderer.PointVertex, w, h float32) bool {
 // (including the optional yellow-color-1 override) instead of VICE's palette.
 // This is only called for a locally visible FAA entry; it does not mutate any
 // controller-defined areas or the cached FAA GeoJSON.
+// FAA scope text uses the same two display lines as GEO RESTRICTIONS.
+// A hidden description must still leave the restriction's numeric ID visible.
+func tfrScopeLabelText(a starsRestrictionArea, hideText bool) string {
+	text := fmt.Sprintf("[%d]", a.ID)
+	if !hideText {
+		if title := strings.TrimSpace(a.Text[0]); title != "" {
+			text += " " + title
+			if notam := strings.TrimSpace(a.Text[1]); notam != "" {
+				text += "\n      " + notam
+			}
+		}
+	}
+	return text
+}
+
 func (p *STARSPane) drawFAARestrictionArea(
 	ctx *panes.Context, cb *renderer.CmdBuffer, t radar.LatLonTransformations,
 	ra starsRestrictionArea, settings restrictionAreaDisplaySettings,
@@ -1698,20 +1713,22 @@ func (p *STARSPane) drawFAARestrictionArea(
 	}
 	// Match controller-defined restrictions: the numeric ID remains visible
 	// even when the optional restriction text is hidden.
-	text := fmt.Sprintf("[%d]", ra.ID)
-	if !settings.HideText {
-		if name := strings.TrimSpace(ra.Text[0]); name != "" {
-			text += " " + name
-		}
-	}
+	text := tfrScopeLabelText(ra, settings.HideText)
 	labelPosition := tfrLabelPosition(activePolygons)
 	point := t.WindowFromLatLonWrapped(labelPosition.Lat, labelPosition.Lon)
 	fs := p.systemFont.Size(fontSize)
 	if fs == nil {
 		return
 	}
-	point.X -= starsRBLTextWidth(fs, text) / 2
-	point.Y -= float32(fs.LineHeight) / 2
+	// A multi-line label must be measured by its widest line, not by the
+	// sum of glyph advances across the newline.
+	maxWidth := float32(0)
+	lines := strings.Split(text, "\n")
+	for _, line := range lines {
+		maxWidth = max(maxWidth, starsRBLTextWidth(fs, line))
+	}
+	point.X -= maxWidth / 2
+	point.Y -= float32(len(lines)*fs.LineHeight) / 2
 	labelColor := restrictionAreaBlinkColor(textColor,
 		(ra.Blink || settings.ForceBlinkingText) && !settings.StopBlinkingText && blinkDim)
 	labels.AddText(text, point, renderer.TextStyle{Size: fontSize, Color: labelColor.ToRGBA()})
