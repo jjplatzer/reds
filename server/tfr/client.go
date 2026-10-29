@@ -63,6 +63,42 @@ func (m *mirror) sync(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("reject FAA WFS response: %w", err)
 	}
+	// The WFS geometry does not supply ARTCC assignments. Join the separate
+	// FAA TFR list on the short NOTAM ID. Never publish an unassigned snapshot
+	// as a successful refresh: doing so would silently empty facility lists.
+	listURL := m.cfg.ListURL
+	if listURL == "" {
+		listURL = defaultListURL
+	}
+	listReq, err := http.NewRequestWithContext(ctx, http.MethodGet, listURL, nil)
+	if err != nil {
+		return err
+	}
+	listReq.Header.Set("Accept", "application/json")
+	listReq.Header.Set("User-Agent", "REDS-TFR-Mirror/1.0")
+	listResp, err := m.httpClient.Do(listReq)
+	if err != nil {
+		return fmt.Errorf("fetch FAA TFR facility list: %w", err)
+	}
+	defer listResp.Body.Close()
+	if listResp.StatusCode != http.StatusOK {
+		return fmt.Errorf("FAA TFR facility list HTTP status %s", listResp.Status)
+	}
+	listRaw, err := io.ReadAll(io.LimitReader(listResp.Body, 4<<20+1))
+	if err != nil {
+		return fmt.Errorf("read FAA TFR facility list: %w", err)
+	}
+	if len(listRaw) > 4<<20 {
+		return errors.New("FAA TFR facility list exceeds 4 MiB")
+	}
+	facilities, err := decodeTFRFacilities(listRaw)
+	if err != nil {
+		return err
+	}
+	raw, err = annotateTFRFacilities(raw, facilities)
+	if err != nil {
+		return err
+	}
 	s := snapshotFile{
 		Version:      1,
 		Source:       m.cfg.SourceURL,

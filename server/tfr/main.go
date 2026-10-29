@@ -18,12 +18,15 @@ import (
 	"time"
 )
 
+const defaultListURL = "https://tfr.faa.gov/tfrapi/exportTfrList"
+
 const defaultWFSURL = "https://tfr.faa.gov/geoserver/TFR/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=TFR%3AV_TFR_LOC&outputFormat=application%2Fjson&srsname=EPSG%3A4326"
 
 const maxResponseBytes int64 = 32 << 20
 
 type config struct {
 	SourceURL  string
+	ListURL    string
 	StatePath  string
 	HTTPAddr   string
 	Interval   time.Duration
@@ -108,6 +111,7 @@ func run() error {
 func configFromEnv() (config, error) {
 	cfg := config{
 		SourceURL:  envOr("TFR_SOURCE_URL", defaultWFSURL),
+		ListURL:    envOr("TFR_LIST_URL", defaultListURL),
 		StatePath:  envOr("TFR_STATE_PATH", "server/tfr/tfr-state.json"),
 		HTTPAddr:   envOr("TFR_HTTP_ADDR", "127.0.0.1:8790"),
 		AllowEmpty: strings.EqualFold(os.Getenv("TFR_ALLOW_EMPTY"), "true"),
@@ -129,6 +133,10 @@ func configFromEnv() (config, error) {
 		!strings.EqualFold(q.Get("typeName"), "TFR:V_TFR_LOC") || !strings.EqualFold(q.Get("outputFormat"), "application/json") ||
 		!strings.EqualFold(q.Get("srsname"), "EPSG:4326") {
 		return cfg, errors.New("TFR_SOURCE_URL must request the FAA TFR WFS layer as EPSG:4326 GeoJSON")
+	}
+	listURL, err := url.Parse(cfg.ListURL)
+	if err != nil || listURL.Scheme != "https" || listURL.Host != "tfr.faa.gov" || listURL.User != nil || listURL.Fragment != "" || listURL.Path != "/tfrapi/exportTfrList" {
+		return cfg, errors.New("TFR_LIST_URL must be the official FAA TFR list URL")
 	}
 	return cfg, nil
 }
