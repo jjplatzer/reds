@@ -172,6 +172,9 @@ func (p *STARSPane) restrictionAreasListText() string {
 	var b strings.Builder
 	b.WriteString("GEO RESTRICTIONS")
 	for _, a := range areas {
+		if a.IsFAA && !strings.EqualFold(a.TFRARTCC, p.config.Facility.ARTCC) {
+			continue
+		}
 		descriptor := strings.ToUpper(a.Text[0])
 		if len(descriptor) > 32 {
 			descriptor = descriptor[:32]
