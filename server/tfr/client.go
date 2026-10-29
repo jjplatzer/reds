@@ -99,9 +99,24 @@ func (m *mirror) sync(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	// Reuse the same FAA list response for its official category and state.
+	categories, err := decodeTFRCategories(listRaw)
+	if err != nil {
+		return err
+	}
+	raw, err = annotateTFRCategories(raw, categories)
+	if err != nil {
+		return err
+	}
 	raw, err = m.annotateSchedules(ctx, raw)
 	if err != nil {
 		return fmt.Errorf("enrich FAA TFR activation schedules: %w", err)
+	}
+	// Match the extracted FAA city and state to a unique three-character
+	// UN/LOCODE. Ambiguous or unknown matches keep the original city.
+	raw, err = annotateTFRCityCodes(raw)
+	if err != nil {
+		return fmt.Errorf("enrich FAA TFR city codes: %w", err)
 	}
 	s := snapshotFile{
 		Version:      1,

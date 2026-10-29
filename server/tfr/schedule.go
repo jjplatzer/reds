@@ -61,6 +61,7 @@ type xmlNoticeEntry struct {
 	Start     string    `xml:"dateEffective"`
 	End       string    `xml:"dateExpire"`
 	LocalName string    `xml:"NotUid>txtLocalName"`
+	City      string    `xml:"AffLocGroup>txtNameCity"`
 	Areas     []xmlArea `xml:"TfrNot>TFRAreaGroup"`
 }
 
@@ -308,18 +309,27 @@ func extractAreaSchedules(raw []byte) (map[string]activation, error) {
 // extractTFRLocalName reads the FAA's operator-facing name independently
 // of its activation areas. Missing names are permitted (use client fallback).
 func extractTFRLocalName(raw []byte) (string, error) {
+	name, _, err := extractTFRNames(raw)
+	return name, err
+}
+
+// The FAA's txtLocalName can be a date code (e.g. 261020-261030), so use
+// the actual AffLocGroup city for the operator-facing location instead.
+func extractTFRNames(raw []byte) (localName, city string, err error) {
 	raw = []byte(strings.TrimPrefix(string(raw), "\ufeff"))
 	var doc xmlDocument
 	if err := xml.Unmarshal(raw, &doc); err != nil {
-		return "", err
+		return "", "", err
 	}
 	if doc.XMLName.Local != "XNOTAM-Update" {
-		return "", errors.New("not XNOTAM XML")
+		return "", "", errors.New("not XNOTAM XML")
 	}
 	for _, notice := range doc.Notices {
-		if name := strings.TrimSpace(notice.LocalName); name != "" {
-			return name, nil
+		localName = strings.TrimSpace(notice.LocalName)
+		city = strings.TrimSpace(notice.City)
+		if localName != "" || city != "" {
+			return localName, city, nil
 		}
 	}
-	return "", nil
+	return "", "", nil
 }
