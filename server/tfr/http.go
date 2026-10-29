@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -24,7 +25,7 @@ func (m *mirror) status(s snapshotFile) statusResponse {
 		Ready: ready, Stale: stale,
 		Source: m.cfg.SourceURL, FeatureCount: s.FeatureCount,
 		NOTAMCount: s.NOTAMCount, PollInterval: m.cfg.Interval.String(),
-		GeometryOnly: true,
+		GeometryOnly: !bytes.Contains(s.GeoJSON, []byte(`"TFR_PART_SCHEDULES"`)),
 	}
 	if ready {
 		t := s.LastSuccess

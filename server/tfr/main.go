@@ -27,6 +27,7 @@ const maxResponseBytes int64 = 32 << 20
 type config struct {
 	SourceURL  string
 	ListURL    string
+	DetailURL  string
 	StatePath  string
 	HTTPAddr   string
 	Interval   time.Duration
@@ -112,6 +113,7 @@ func configFromEnv() (config, error) {
 	cfg := config{
 		SourceURL:  envOr("TFR_SOURCE_URL", defaultWFSURL),
 		ListURL:    envOr("TFR_LIST_URL", defaultListURL),
+		DetailURL:  envOr("TFR_DETAIL_URL", defaultDetailURL),
 		StatePath:  envOr("TFR_STATE_PATH", "server/tfr/tfr-state.json"),
 		HTTPAddr:   envOr("TFR_HTTP_ADDR", "127.0.0.1:8790"),
 		AllowEmpty: strings.EqualFold(os.Getenv("TFR_ALLOW_EMPTY"), "true"),
@@ -137,6 +139,10 @@ func configFromEnv() (config, error) {
 	listURL, err := url.Parse(cfg.ListURL)
 	if err != nil || listURL.Scheme != "https" || listURL.Host != "tfr.faa.gov" || listURL.User != nil || listURL.Fragment != "" || listURL.Path != "/tfrapi/exportTfrList" {
 		return cfg, errors.New("TFR_LIST_URL must be the official FAA TFR list URL")
+	}
+	detailURL, err := url.Parse(strings.ReplaceAll(cfg.DetailURL, "%s", "EXAMPLE"))
+	if err != nil || detailURL.Scheme != "https" || detailURL.Host != "tfr.faa.gov" || detailURL.User != nil || detailURL.Fragment != "" || detailURL.Path != "/download/detail_EXAMPLE.xml" {
+		return cfg, errors.New("TFR_DETAIL_URL must be the official FAA detail XML URL template")
 	}
 	return cfg, nil
 }

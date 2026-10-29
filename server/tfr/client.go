@@ -99,6 +99,10 @@ func (m *mirror) sync(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	raw, err = m.annotateSchedules(ctx, raw)
+	if err != nil {
+		return fmt.Errorf("enrich FAA TFR activation schedules: %w", err)
+	}
 	s := snapshotFile{
 		Version:      1,
 		Source:       m.cfg.SourceURL,
