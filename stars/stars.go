@@ -1,6 +1,7 @@
 package stars
 
 import (
+	"fmt"
 	"log/slog"
 	"sort"
 	"strings"
@@ -48,6 +49,7 @@ type STARSPane struct {
 	useFAAHFSTD010APalette       bool
 	hideAssignedAltitudes        bool
 	useTAISLeaderDirection       bool // REDS display override, off by default; not a STARS preference set.
+	useYellowRestrictionColor1   bool // REDS display-only override; retains the official palette by default.
 	systemFont                   *renderer.BitmapFont
 	systemFontTextures           map[int]renderer.TextureID
 	systemOutlineFont            *renderer.BitmapFont
@@ -55,6 +57,7 @@ type STARSPane struct {
 	systemAltimeter              systemAltimeterState
 	ssaAirportWeather            ssaAirportWeatherState
 	tais                         *redsnet.TaisClient
+	tfr                          *redsnet.TFRClient
 
 	wxDomain              wx.Domain
 	wxLogger              *redslog.Logger
@@ -133,6 +136,17 @@ type STARSPane struct {
 	// matching VICE rather than a saved preference.
 	rangeBearingLines []starsRangeBearingLine
 	wipRBL            *starsRangeBearingLine
+
+	// §6.6 restriction areas: current construction is window-local, completed
+	// geometry is stored at the STARS site level (shared by panes at that site).
+	wipRestrictionArea *starsRestrictionArea
+	wipRestrictionMove *restrictionAreaPendingMove
+	// Last TFR client revision merged into the shared GEO RESTRICTIONS store.
+	tfrListRevision uint64
+	// §6.6.12: the two-ENTER DoD color-selection sequence.
+	restrictionColorPendingID int
+	restrictionColorChanged   bool
+	restrictionAreas          *starsRestrictionAreaStore
 
 	// MIN graphics are transient TCW/TDW state, not a preference. Pair keys
 	// identify TAIS tracks rather than callsigns (unassociated 1200 targets
@@ -214,6 +228,19 @@ func (p *STARSPane) ToggleTAISLeaderDirection() {
 	p.useTAISLeaderDirection = !p.useTAISLeaderDirection
 	if p.useTAISLeaderDirection && p.commandMode == CommandModeLDRDir {
 		p.resetCommand()
+	}
+}
+
+// UseYellowRestrictionColor1 reports the local REDS display override for
+// restriction geometry color 1. The zero value leaves the official dim-gray
+// palette unchanged, including all stored restriction-area color numbers.
+func (p *STARSPane) UseYellowRestrictionColor1() bool {
+	return p != nil && p.useYellowRestrictionColor1
+}
+
+func (p *STARSPane) ToggleYellowRestrictionColor1() {
+	if p != nil {
+		p.useYellowRestrictionColor1 = !p.useYellowRestrictionColor1
 	}
 }
 
@@ -518,6 +545,15 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	)
 	pane.tais.Start()
 
+	// The TFR client caches published FAA geometry in the background. Rendering
+	// and user-facing visibility controls are introduced separately.
+	if tfr, err := redsnet.NewTFRClient(redsnet.TFRGeoJSONURL(), redsnet.TFRPollInterval); err != nil {
+		logger.Warn("Unable to configure FAA TFR client", slog.Any("error", err))
+	} else {
+		pane.tfr = tfr
+		pane.tfr.Start()
+	}
+
 	return pane, nil
 }
 
@@ -600,9 +636,13 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawCRDADiagrams(ctx, zcb, transforms)
 	p.drawCompass(ctx, zcb, transforms)
 
+	// Apply new FAA snapshots before both geometry and GEO RESTRICTIONS list
+	// are rendered. Fetching itself remains on TFRClient's background goroutine.
+	p.syncTFRRestrictionList()
 	p.drawTargetHistory(ctx, zcb, transforms, targets)
 	p.drawPredictedTrackLines(ctx, zcb, transforms, targets)
 	p.drawRangeBearingLines(ctx, zcb, transforms, targets)
+	p.drawRestrictionAreas(ctx, zcb, transforms)
 	p.drawMinSep(ctx, zcb, transforms, targets)
 	// TPA graphics are suppressed while a track is in the Coast/Suspend List,
 	// while their local state is retained above for automatic redisplay.
@@ -621,6 +661,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawCoastSuspendList(ctx, zcb, allTargets)
 	p.drawTowerLists(ctx, zcb, activeTargets)
 	p.drawVideoMapsList(ctx, zcb)
+	p.drawRestrictionAreasList(ctx, zcb)
 	p.drawCRDAStatusList(ctx, zcb)
 	p.applyCursor(ctx)
 	p.renderCursor(ctx, zcb)
@@ -633,6 +674,10 @@ func (p *STARSPane) Dispose() {
 	if p.tais != nil {
 		p.tais.Close()
 		p.tais = nil
+	}
+	if p.tfr != nil {
+		p.tfr.Close()
+		p.tfr = nil
 	}
 	if p.wxStream != nil {
 		p.wxStream.Close()
@@ -718,8 +763,34 @@ func (p *STARSPane) consumeMouseEvents(
 		return
 	}
 
+	// Restriction-area construction consumes trackball clicks before ordinary
+	// target slews, CRDA ghost picks and scope-center gestures.
+	if p.commandMode == CommandModeRestrictionArea &&
+		ctx.Mouse.WasReleased(platform.MouseButtonLeft) {
+		lat, lon := transforms.LatLonFromWindow(ctx.Mouse.Pos)
+		if err := p.restrictionAreaClick(configPoint{Lat: lat, Lon: normalizeLongitude(lon)}); err != nil {
+			p.commandResponse = err.Error()
+		} else {
+			p.commandResponse = ""
+		}
+		return
+	}
+
 	mouse := ctx.Mouse
 	ps := p.currentPrefs()
+
+	// TI 6191.409 Rev. 30, 6.9: D* is a cursor-position readout, not
+	// a target slew. Left trackball designates the precise scope location;
+	// clear command-entry state before publishing the Preview Area result.
+	// No ENTER is required (and D* + ENTER is FORMAT).
+	if p.commandMode == CommandModeMultiFunc &&
+		strings.EqualFold(p.multiFuncPrefix+p.commandInput, "D*") &&
+		mouse.WasReleased(platform.MouseButtonLeft) {
+		lat, lon := transforms.LatLonFromWindow(mouse.Pos)
+		p.resetCommand()
+		p.commandResponse = starsCursorLatLonReadout(lat, normalizeLongitude(lon))
+		return
+	}
 
 	// TI 6191.409 Rev. 30, 6.4: MIN uses two consecutive trackball
 	// designations, and must consume the click before normal implied
@@ -1039,6 +1110,22 @@ func (p *STARSPane) consumeMouseEvents(
 					mouse.Pos.X / w,
 					mouse.Pos.Y / h,
 				}
+			}
+			p.resetCommand()
+		}
+		return
+	}
+
+	// TI 6191.409 Rev. 30, §6.6.11: MULTI FUNC T R A, then
+	// designate the new upper-left list corner. Unlike TRA + ENTER, this
+	// makes the list visible even if it was hidden.
+	if p.commandMode == CommandModeMultiFunc &&
+		strings.EqualFold(p.multiFuncPrefix+p.commandInput, "TRA") {
+		if mouse.WasPressed(platform.MouseButtonLeft) {
+			w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+			if w > 0 && h > 0 {
+				ps.RestrictionAreaList.Position = [2]float32{mouse.Pos.X / w, mouse.Pos.Y / h}
+				ps.RestrictionAreaList.Visible = true
 			}
 			p.resetCommand()
 		}
@@ -1506,3 +1593,126 @@ var defaultTDWColors = func() MonitorColors {
 
 	return c
 }()
+
+// FAA TFR projection and rendering (alongside VICE-style STARS draw methods).
+
+// tfrProjectedPolygon converts one FAA polygon (exterior ring and optional
+// holes) into the existing scope projection. A GeoJSON ring repeats its first
+// vertex; remove that closure before calling AddLineLoop/earcut. Longitude is
+// wrapped relative to the scope center for TFRs around the antimeridian.
+func tfrProjectedPolygon(t radar.LatLonTransformations, polygon starsTFRPolygon) ([][]renderer.PointVertex, [][]redsmath.Vec2) {
+	lines := make([][]renderer.PointVertex, 0, len(polygon.Rings))
+	rings := make([][]redsmath.Vec2, 0, len(polygon.Rings))
+	for _, ring := range polygon.Rings {
+		if len(ring) < 4 {
+			continue
+		}
+		points := ring
+		if ring[0] == ring[len(ring)-1] {
+			points = ring[:len(ring)-1]
+		}
+		if len(points) < 3 {
+			continue
+		}
+		line := make([]renderer.PointVertex, 0, len(points))
+		xy := make([]redsmath.Vec2, 0, len(points))
+		for _, pt := range points {
+			pos := t.WindowFromLatLonWrapped(pt.Lat, pt.Lon)
+			line = append(line, renderer.PointVertex{X: pos.X, Y: pos.Y})
+			xy = append(xy, pos)
+		}
+		lines = append(lines, line)
+		rings = append(rings, xy)
+	}
+	return lines, rings
+}
+
+// Cheap bounding-box rejection avoids tessellating distant national TFRs on
+// every scope redraw. The first ring is the exterior, per RFC 7946.
+func tfrPolygonInViewport(outer []renderer.PointVertex, w, h float32) bool {
+	if len(outer) == 0 || w <= 0 || h <= 0 {
+		return false
+	}
+	minX, maxX, minY, maxY := outer[0].X, outer[0].X, outer[0].Y, outer[0].Y
+	for _, pt := range outer[1:] {
+		minX = min(minX, pt.X)
+		maxX = max(maxX, pt.X)
+		minY = min(minY, pt.Y)
+		maxY = max(maxY, pt.Y)
+	}
+	return maxX >= 0 && maxY >= 0 && minX <= w && minY <= h
+}
+
+// VICE converts each TFR to a closed, shaded restriction area, with its title
+// positioned at the average of the geographic vertices and HideId=true.
+// REDS follows those choices, but uses the Rev.30 restriction-area palette
+// (including the optional yellow-color-1 override) instead of VICE's palette.
+// This is only called for a locally visible FAA entry; it does not mutate any
+// controller-defined areas or the cached FAA GeoJSON.
+func (p *STARSPane) drawFAARestrictionArea(
+	ctx *panes.Context, cb *renderer.CmdBuffer, t radar.LatLonTransformations,
+	ra starsRestrictionArea, settings restrictionAreaDisplaySettings,
+	shadeMode renderer.DrawMode, labels *renderer.TextDrawBuilder,
+	fontSize int, textColor renderer.RGB, blinkDim bool,
+) {
+	color := p.currentPrefs().Brightness.VideoGroupB.ScaleRGB(p.restrictionAreaGeometryColor(ra.Color - 1))
+	activePolygons := make([]starsTFRPolygon, 0, len(ra.TFRPolygons))
+	now := time.Now().UTC()
+	for _, polygon := range ra.TFRPolygons {
+		if polygon.Schedule.active(now) {
+			activePolygons = append(activePolygons, polygon)
+		}
+	}
+	if len(activePolygons) == 0 {
+		return
+	}
+	for _, polygon := range activePolygons {
+		lines, rings := tfrProjectedPolygon(t, polygon)
+		if len(lines) == 0 || !tfrPolygonInViewport(lines[0], ctx.PaneRect.Width(), ctx.PaneRect.Height()) {
+			continue
+		}
+		outline := renderer.GetLinesBuilder()
+		for _, line := range lines {
+			outline.AddLineLoop(line) // holes also have visible boundaries
+		}
+		if ra.Shaded {
+			// Shared renderer earcut supports holes and arbitrary vertex counts;
+			// triangulating each polygon separately preserves multipart NOTAMs.
+			vertices, indices := renderer.TessellateRings(rings)
+			if len(indices) > 0 {
+				shaded := renderer.GetTrianglesBuilder()
+				for i := 0; i+2 < len(indices); i += 3 {
+					shaded.AddTriangle(vertices[indices[i]], vertices[indices[i+1]], vertices[indices[i+2]])
+				}
+				cb.SetRGB(color)
+				shaded.GenerateCommands(cb, shadeMode, 0)
+				renderer.ReturnTrianglesBuilder(shaded)
+			}
+		}
+		cb.SetRGB(color)
+		outline.GenerateCommands(cb)
+		renderer.ReturnLinesBuilder(outline)
+	}
+	if labels == nil {
+		return
+	}
+	// Match controller-defined restrictions: the numeric ID remains visible
+	// even when the optional restriction text is hidden.
+	text := fmt.Sprintf("[%d]", ra.ID)
+	if !settings.HideText {
+		if name := strings.TrimSpace(ra.Text[0]); name != "" {
+			text += " " + name
+		}
+	}
+	labelPosition := tfrLabelPosition(activePolygons)
+	point := t.WindowFromLatLonWrapped(labelPosition.Lat, labelPosition.Lon)
+	fs := p.systemFont.Size(fontSize)
+	if fs == nil {
+		return
+	}
+	point.X -= starsRBLTextWidth(fs, text) / 2
+	point.Y -= float32(fs.LineHeight) / 2
+	labelColor := restrictionAreaBlinkColor(textColor,
+		(ra.Blink || settings.ForceBlinkingText) && !settings.StopBlinkingText && blinkDim)
+	labels.AddText(text, point, renderer.TextStyle{Size: fontSize, Color: labelColor.ToRGBA()})
+}

@@ -130,6 +130,14 @@ func (st LatLonTransformations) WindowFromLatLon(lat, lon float64) redsmath.Vec2
 	}
 }
 
+// WindowFromLatLonWrapped is for globally sourced geometries such as FAA TFRs
+// whose GeoJSON ring may cross the antimeridian. Standard STARS/TAIS targets
+// continue to use WindowFromLatLon unchanged.
+func (st LatLonTransformations) WindowFromLatLonWrapped(lat, lon float64) redsmath.Vec2 {
+	lon -= 360 * stdmath.Floor((lon-st.centerLon+180)/360)
+	return st.WindowFromLatLon(lat, lon)
+}
+
 func (st LatLonTransformations) LatLonFromWindow(pos redsmath.Vec2) (lat, lon float64) {
 	if st.paneExtent.Empty() || st.rangeNM <= 0 {
 		return st.centerLat, st.centerLon

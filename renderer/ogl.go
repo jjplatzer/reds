@@ -335,6 +335,17 @@ func (r *OpenGLRenderer) ReadPixels(x, y, w, h int, outRGBA []byte) {
 	gl.ReadPixels(int32(x), int32(y), int32(w), int32(h), gl.RGBA, gl.UNSIGNED_BYTE, gl.Ptr(outRGBA))
 }
 
+// isStippleDrawMode keeps the shader selection in sync with the draw modes.
+func isStippleDrawMode(mode DrawMode) bool {
+	switch mode {
+	case DrawStippleLight, DrawStippleDense, DrawStippleFAAHFSTD010A,
+		DrawStippleRestrictionArea, DrawStippleRestrictionAreaHighDPI:
+		return true
+	default:
+		return false
+	}
+}
+
 func (r *OpenGLRenderer) drawPoints(vertices []PointVertex, indices []uint32, triangles bool, mode DrawMode, hatchOffset float32) RendererStats {
 	var stats RendererStats
 	if len(vertices) == 0 || len(indices) == 0 {
@@ -345,8 +356,7 @@ func (r *OpenGLRenderer) drawPoints(vertices []PointVertex, indices []uint32, tr
 		shader = r.hatchShader
 	} else if triangles && mode == DrawCheckered {
 		shader = r.checkerShader
-	} else if triangles && (mode == DrawStippleLight || mode == DrawStippleDense ||
-		mode == DrawStippleFAAHFSTD010A) {
+	} else if triangles && isStippleDrawMode(mode) {
 		shader = r.stippleShader
 	}
 	shader.use()
@@ -356,14 +366,17 @@ func (r *OpenGLRenderer) drawPoints(vertices []PointVertex, indices []uint32, tr
 		shader.setFloat("u_offset", hatchOffset)
 	} else if triangles && mode == DrawCheckered {
 		shader.setVec2("u_offset", r.checkerX, r.checkerY)
-	} else if triangles && (mode == DrawStippleLight || mode == DrawStippleDense ||
-		mode == DrawStippleFAAHFSTD010A) {
+	} else if triangles && isStippleDrawMode(mode) {
 		pattern := int32(1)
 		switch mode {
 		case DrawStippleDense:
 			pattern = 2
 		case DrawStippleFAAHFSTD010A:
 			pattern = 3
+		case DrawStippleRestrictionArea:
+			pattern = 4
+		case DrawStippleRestrictionAreaHighDPI:
+			pattern = 5
 		}
 		shader.setInt("u_pattern", pattern)
 	}

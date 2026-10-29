@@ -59,9 +59,10 @@ type starsPreferenceSnapshot struct {
 	Brightness BrightnessPreferences    `json:"brightness"`
 	CharSize   CharacterSizePreferences `json:"charSize"`
 
-	DisplayWeatherLevel [6]bool                  `json:"displayWeatherLevel"`
-	VideoMapVisible     map[int]bool             `json:"videoMapVisible"`
-	VideoMapsList       videoMapsListPreferences `json:"videoMapsList"`
+	DisplayWeatherLevel [6]bool                   `json:"displayWeatherLevel"`
+	VideoMapVisible     map[int]bool              `json:"videoMapVisible"`
+	VideoMapsList       videoMapsListPreferences  `json:"videoMapsList"`
+	RestrictionAreaList basicSTARSListPreferences `json:"restrictionAreaList"`
 
 	PreviewAreaPosition [2]float32                   `json:"previewAreaPosition"`
 	SSAListPosition     [2]float32                   `json:"ssaListPosition"`
@@ -127,6 +128,7 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 		DisplayWeatherLevel:     p.DisplayWeatherLevel,
 		VideoMapVisible:         cloneBoolMap(p.VideoMapVisible),
 		VideoMapsList:           p.VideoMapsList,
+		RestrictionAreaList:     p.RestrictionAreaList,
 		PreviewAreaPosition:     p.PreviewAreaPosition,
 		SSAListPosition:         p.SSAListPosition,
 		CoastSuspendList:        p.CoastSuspendList,
@@ -156,6 +158,7 @@ func (s starsPreferenceSnapshot) apply(p *Preferences) {
 	p.DisplayWeatherLevel = s.DisplayWeatherLevel
 	p.VideoMapVisible = cloneBoolMap(s.VideoMapVisible)
 	p.VideoMapsList = s.VideoMapsList
+	p.RestrictionAreaList = s.RestrictionAreaList
 	p.PreviewAreaPosition = s.PreviewAreaPosition
 	p.SSAListPosition = s.SSAListPosition
 	p.CoastSuspendList = s.CoastSuspendList
@@ -620,6 +623,27 @@ type crdaStatusListPreferences struct {
 // Preferences contains the per-position STARS display state. The names mirror
 // VICE's STARS Preferences; the display-characteristic subset defined in
 // prefsets.go is persisted by the STARS PREF function.
+// §6.6.8 keeps text visibility local to the entering TCW/TDW. Serial
+// guards against inheriting a previous area's state when its ID is reused.
+type restrictionAreaDisplaySettings struct {
+	Serial            uint64
+	HideText          bool
+	ForceBlinkingText bool
+	Hidden            bool // §6.6.9: hide geometry, ID and text on this display
+	StopBlinkingText  bool // §6.6.9: stop blinking only on this display
+}
+
+func restrictionAreaSettingsFor(ps *Preferences, area starsRestrictionArea) restrictionAreaDisplaySettings {
+	if ps == nil {
+		return restrictionAreaDisplaySettings{}
+	}
+	setting, ok := ps.RestrictionAreaSettings[area.ID]
+	if !ok || setting.Serial != area.Serial {
+		return restrictionAreaDisplaySettings{Serial: area.Serial}
+	}
+	return setting
+}
+
 type Preferences struct {
 	// DisplayDCB is controlled by the physical STARS <DCB> key. TI 6191.409
 	// Rev. 30 section 2.5 defines it as a toggle of the Display Control Bar.
@@ -642,6 +666,8 @@ type Preferences struct {
 	CharSize                CharacterSizePreferences
 	DisplayWeatherLevel     [6]bool
 	VideoMapVisible         map[int]bool
+	RestrictionAreaSettings map[int]restrictionAreaDisplaySettings // local to this TCW/TDW
+	RestrictionAreaList     basicSTARSListPreferences              // §6.6.10–11 local TRA list
 	VideoMapsList           videoMapsListPreferences
 	PreviewAreaPosition     [2]float32
 	SSAListPosition         [2]float32
@@ -739,6 +765,9 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// coordinates. REDS draws in top-left-origin screen coordinates, so
 		// the equivalent Preview Area position is (0.05, 0.25).
 		VideoMapVisible: make(map[int]bool),
+		// VICE starts the GEO RESTRICTIONS list at (.8,.575) in bottom-left
+		// pane coordinates; REDS uses top-left coordinates. It starts hidden.
+		RestrictionAreaList: basicSTARSListPreferences{Position: [2]float32{0.80, 0.425}},
 		VideoMapsList: videoMapsListPreferences{
 			// VICE's STARS default is (.85, .5). TI 6191.409 defines the list
 			// contents/modality but leaves the initial adapted position to the

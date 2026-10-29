@@ -1,11 +1,14 @@
 package stars
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/platform"
 )
+
+var ErrSTARSIllegalGeoID = fmt.Errorf("ILL GEO ID")
 
 type CommandMode int
 
@@ -30,6 +33,7 @@ const (
 	CommandModePref
 	CommandModeSavePrefAs
 	CommandModeMin
+	CommandModeRestrictionArea
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -39,6 +43,8 @@ func (m CommandMode) PreviewString() string {
 	switch m {
 	case CommandModeMultiFunc:
 		return "F"
+	case CommandModeRestrictionArea:
+		return "RESTR AREA"
 	case CommandModeRange:
 		return "RANGE"
 	case CommandModeRangeRings:
@@ -415,6 +421,13 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		return
 	}
 
+	// TI 6191.409 Rev. 30, 6.6.1-6.6.4: the STARS restriction-area
+	// function key is F12; Ctrl+F12 remains the PREF SET shortcut.
+	if !keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF12) {
+		p.setCommandMode(CommandModeRestrictionArea)
+		return
+	}
+
 	// TI 6191.409 Rev. 30, 5.7.3: TRK RPOS is the F2 function and is
 	// repetitive until another function is selected. VICE uses the same mapping.
 	if !keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF2) {
@@ -570,6 +583,30 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		}
 	}
 
+	// §6.6.12: while waiting for the second ENTER, each '+' steps through
+	// the eight geometry colors immediately, as on a DoD TCW/TDW.
+	if p.commandMode == CommandModeRestrictionArea && p.restrictionColorPendingID != 0 {
+		for _, r := range keyboard.Text {
+			if r == '+' {
+				if err := p.stepRestrictionAreaColor(); err != nil {
+					p.commandResponse = err.Error()
+				}
+				continue
+			}
+			if r >= '1' && r <= '8' {
+				p.commandInput = string(r)
+			}
+		}
+		if keyboard.WasPressed(platform.KeyEnter) || keyboard.WasPressed(platform.KeyKeypadEnter) {
+			if err := p.finishRestrictionAreaColor(p.commandInput); err != nil {
+				p.commandResponse = err.Error()
+			} else {
+				p.resetCommand()
+			}
+		}
+		return
+	}
+
 	// Echo printable operator input exactly into the Preview Area. VICE/STARS
 	// treats the first Multi Func character as a prefix displayed beside the
 	// "F" mode indicator (so <MULTI FUNC>, T, X displays "FT" then "X").
@@ -620,6 +657,12 @@ func (p *STARSPane) resetCommand() {
 	p.leaderLengthDragAccumY = 0
 	p.ptlLengthDragAccumY = 0
 	p.wipRBL = nil
+	// A completed or cancelled GEO RESTRICTION must not survive into the
+	// next F12 command (e.g. changing from G text to C/P/A geometry).
+	p.wipRestrictionArea = nil
+	p.wipRestrictionMove = nil
+	p.restrictionColorPendingID = 0
+	p.restrictionColorChanged = false
 	p.minSepPendingKey = ""
 	p.rposPendingSourceKey = ""
 }
@@ -629,6 +672,15 @@ func (p *STARSPane) commitCommand() {
 		return
 	}
 
+	if p.commandMode == CommandModeRestrictionArea && p.wipRestrictionArea != nil {
+		if err := p.commitRestrictionAreaStep(p.commandInput); err != nil {
+			p.commandResponse = err.Error()
+		} else {
+			p.commandInput = ""
+			p.commandResponse = ""
+		}
+		return
+	}
 	input := p.commandInput
 	if p.commandMode == CommandModeMultiFunc {
 		input = p.multiFuncPrefix + input

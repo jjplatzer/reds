@@ -18,6 +18,9 @@ type configPoint struct {
 // Keep the JSON-facing types here so scope, list, map, and target rendering do
 // not each decode the generated CRC facility config independently.
 type facilityConfig struct {
+	// §6.6.12 is available only when the facility has an explicit DoD-Only
+	// SITE rule. This is deliberately independent of a position color set.
+	DoDOnly          bool                    `json:"dodOnly"`
 	ARTCC            string                  `json:"artcc"`
 	Facility         string                  `json:"facility"`
 	Name             string                  `json:"name"`

@@ -1,6 +1,6 @@
 #version 330 core
 
-uniform int u_pattern; // 1=light, 2=dense, 3=FAA-HF-STD010A
+uniform int u_pattern; // 1=light WX, 2=dense WX, 3=FAA WX, 4=VICE RA, 5=VICE RA high-DPI
 uniform vec4 u_color;
 
 out vec4 fragColor;
@@ -47,12 +47,38 @@ const uint faaHFSTD010APattern[32] = uint[32](
     0xF0000000u, 0xF0000000u, 0xF0000000u, 0xF0000000u
 );
 
+// Exact restrictionAreaStipple bitmap from VICE STARS (OpenGL polygon stipple).
+const uint restrictionAreaPattern[32] = uint[32](
+    0x88888888u, 0x00000000u, 0x22222222u, 0x00000000u,
+    0x88888888u, 0x00000000u, 0x22222222u, 0x00000000u,
+    0x88888888u, 0x00000000u, 0x22222222u, 0x00000000u,
+    0x88888888u, 0x00000000u, 0x22222222u, 0x00000000u,
+    0x88888888u, 0x00000000u, 0x22222222u, 0x00000000u,
+    0x88888888u, 0x00000000u, 0x22222222u, 0x00000000u,
+    0x88888888u, 0x00000000u, 0x22222222u, 0x00000000u,
+    0x88888888u, 0x00000000u, 0x22222222u, 0x00000000u
+);
+
+// Exact restrictionAreaHighDPIStipple bitmap from VICE STARS (OpenGL polygon stipple).
+const uint restrictionAreaHighDPIPattern[32] = uint[32](
+    0xC0C0C0C0u, 0xC0C0C0C0u, 0x00000000u, 0x00000000u,
+    0x0C0C0C0Cu, 0x0C0C0C0Cu, 0x00000000u, 0x00000000u,
+    0xC0C0C0C0u, 0xC0C0C0C0u, 0x00000000u, 0x00000000u,
+    0x0C0C0C0Cu, 0x0C0C0C0Cu, 0x00000000u, 0x00000000u,
+    0xC0C0C0C0u, 0xC0C0C0C0u, 0x00000000u, 0x00000000u,
+    0x0C0C0C0Cu, 0x0C0C0C0Cu, 0x00000000u, 0x00000000u,
+    0xC0C0C0C0u, 0xC0C0C0C0u, 0x00000000u, 0x00000000u,
+    0x0C0C0C0Cu, 0x0C0C0C0Cu, 0x00000000u, 0x00000000u
+);
+
 void main() {
     int x = int(floor(gl_FragCoord.x)) & 31;
     int y = int(floor(gl_FragCoord.y)) & 31;
     uint row = u_pattern == 1 ? lightPattern[y] :
                u_pattern == 2 ? densePattern[y] :
-                                faaHFSTD010APattern[y];
+               u_pattern == 3 ? faaHFSTD010APattern[y] :
+               u_pattern == 4 ? restrictionAreaPattern[y] :
+                                restrictionAreaHighDPIPattern[y];
     uint mask = 1u << uint(31 - x);
     if ((row & mask) == 0u) {
         discard;

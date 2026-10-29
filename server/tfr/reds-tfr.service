@@ -1,0 +1,26 @@
+[Unit]
+Description=REDS FAA TFR GeoJSON mirror
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=reds
+Group=reds
+WorkingDirectory=/opt/reds
+ExecStart=/opt/reds/bin/reds-tfr
+Environment="TFR_HTTP_ADDR=127.0.0.1:8790"
+Environment="TFR_POLL_INTERVAL=10m"
+Environment="TFR_STATE_PATH=/var/lib/reds-tfr/snapshot.json"
+StateDirectory=reds-tfr
+StateDirectoryMode=0700
+UMask=0077
+Restart=always
+RestartSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

@@ -2,6 +2,7 @@ package stars
 
 import (
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -184,6 +185,33 @@ func (p *STARSPane) applyRequestedAltitudeDisplayCommand(target *redsnet.TaisTar
 	}
 	p.setRequestedAltitudeDisplayForTarget(target, display)
 	return nil
+}
+
+// TI 6191.409 Rev. 30, 6.9: <MULTI FUNC>, <D>, <*>, left trackball.
+// The actual designation is performed in consumeMouseEvents, as with VICE's
+// D*[POS] command. The result goes to the Preview Area; there is no persistent
+// geographic graphic or track association.
+// West and north are implicit in the STARS readout. South and east are marked
+// by S and E; the manual's Figure 6-7 uses two-digit minimum degree fields.
+func starsCursorLatLonReadout(lat, lon float64) string {
+	formatDMS := func(degrees float64) string {
+		// Round to the nearest displayed arcsecond, carrying through a
+		// minute/degree boundary rather than ever printing 60 seconds.
+		seconds := int(math.Round(math.Abs(degrees) * 3600))
+		d := seconds / 3600
+		m := (seconds / 60) % 60
+		s := seconds % 60
+		return fmt.Sprintf("%02d %02d %02d", d, m, s)
+	}
+	latitude := formatDMS(lat)
+	if lat < 0 {
+		latitude += "S"
+	}
+	longitude := formatDMS(lon)
+	if lon > 0 {
+		longitude += "E"
+	}
+	return latitude + "/" + longitude
 }
 
 // Minimum separation selection and lifecycle (VICE: stars/cmdtools.go).
@@ -672,4 +700,424 @@ func (p *STARSPane) pruneSingleTrackPTLs(snapshot redsnet.TaisSnapshot) {
 			delete(p.singleTrackPTLs, key)
 		}
 	}
+}
+
+// VICE places §6.6 restriction-area commands under cmdtools.go. Keep the
+// controller's F12 commands here; location and text decoding is in parsecmd.go,
+// and geometry drawing is in tools.go.
+func init() {
+	registerCommand(CommandModeRestrictionArea, "G[RA_TEXT]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		c := args[0].(starsRestrictionClause)
+		r := &starsRestrictionArea{Kind: starsRestrictionText, Text: c.Text, Blink: c.Blink, Color: 1}
+		if c.Location != nil {
+			r.Label = *c.Location
+			return CommandStatus{}, p.finishRestrictionArea(r)
+		}
+		p.wipRestrictionArea = r
+		return CommandStatus{Clear: ClearInput}, nil
+	})
+	registerCommand(CommandModeRestrictionArea, "C[RA_CIRCLE]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		c := args[0].(starsRestrictionClause)
+		r := &starsRestrictionArea{Kind: starsRestrictionCircle, RadiusNM: c.Radius, Text: c.Text, Blink: c.Blink, Shaded: c.Shaded, Color: c.Color}
+		if c.Location != nil {
+			r.Center = *c.Location
+			r.Label = r.Center
+			return CommandStatus{}, p.finishRestrictionArea(r)
+		}
+		p.wipRestrictionArea = r
+		return CommandStatus{Clear: ClearInput}, nil
+	})
+	// §§6.6.5–6.6.8: VICE's typed ID commands, with the manual's
+	// keyboard-only procedure and per-TCW/TDW text visibility.
+	registerCommand(CommandModeRestrictionArea, "[USER_RA_INDEX]*[RA_MOVE]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		id := args[0].(int)
+		move := args[1].(restrictionAreaMoveSpec)
+		if _, err := p.restrictionAreaStore().get(id); err != nil {
+			return CommandStatus{}, err
+		}
+		if move.Position == nil {
+			p.wipRestrictionMove = &restrictionAreaPendingMove{ID: id, Blink: move.Blink}
+			return CommandStatus{Clear: ClearInput}, nil
+		}
+		return CommandStatus{}, p.completeRestrictionAreaMove(restrictionAreaPendingMove{ID: id, Blink: move.Blink}, *move.Position)
+	})
+	registerCommand(CommandModeRestrictionArea, "[USER_RA_INDEX]DEL", func(p *STARSPane, args []any) (CommandStatus, error) {
+		id := args[0].(int)
+		if err := p.restrictionAreaStore().delete(id); err != nil {
+			return CommandStatus{}, err
+		}
+		delete(p.currentPrefs().RestrictionAreaSettings, id)
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeRestrictionArea, "[USER_RA_INDEX]T[RA_EDIT_TEXT]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		id, c := args[0].(int), args[1].(starsRestrictionClause)
+		err := p.restrictionAreaStore().update(id, func(a *starsRestrictionArea) error {
+			a.Text, a.Blink = c.Text, c.Blink
+			return nil
+		})
+		if err != nil {
+			return CommandStatus{}, err
+		}
+		p.showRestrictionAreaLocally(id)
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeRestrictionArea, "[RA_INDEX]T [RA_DELTA]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{}, p.toggleRestrictionAreaText(args[0].(int), true)
+	})
+	registerCommand(CommandModeRestrictionArea, "[RA_INDEX]T", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{}, p.toggleRestrictionAreaText(args[0].(int), false)
+	})
+	// §6.6.9: an unmodified ID stops blinking when currently blinking;
+	// otherwise it toggles all graphics and text. E explicitly displays,
+	// I explicitly hides. All three commands are local to this TCW/TDW.
+	registerCommand(CommandModeRestrictionArea, "[RA_INDEX]E", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{}, p.setRestrictionAreaVisibility(args[0].(int), restrictionAreaShow)
+	})
+	registerCommand(CommandModeRestrictionArea, "[RA_INDEX]I", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{}, p.setRestrictionAreaVisibility(args[0].(int), restrictionAreaHide)
+	})
+	registerCommand(CommandModeRestrictionArea, "[RA_INDEX]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{}, p.setRestrictionAreaVisibility(args[0].(int), restrictionAreaToggle)
+	})
+
+	// §6.6.10: MULTI FUNC, T, R, A, ENTER toggles this display's list.
+	registerCommand(CommandModeMultiFunc, "TRA", func(p *STARSPane, _ []any) (CommandStatus, error) {
+		p.currentPrefs().RestrictionAreaList.Visible = !p.currentPrefs().RestrictionAreaList.Visible
+		return CommandStatus{}, nil
+	})
+
+	// §6.6.12: DoD-Only SITE rule, controller-defined area (1–100),
+	// F12 ID T * ENTER, then a number / '+' / ENTER, finally ENTER.
+	// Do not derive the permission from the position's visual color set.
+	registerCommand(CommandModeRestrictionArea, "[USER_RA_INDEX]T*", func(p *STARSPane, args []any) (CommandStatus, error) {
+		if !p.config.Facility.DoDOnly {
+			return CommandStatus{}, ErrSTARSIllegalFunction
+		}
+		id := args[0].(int)
+		if _, err := p.restrictionAreaStore().get(id); err != nil {
+			return CommandStatus{}, err
+		}
+		p.showRestrictionAreaLocally(id)
+		p.restrictionColorPendingID = id
+		p.restrictionColorChanged = false
+		return CommandStatus{Clear: ClearInput}, nil
+	})
+
+	for _, shape := range []struct {
+		prefix string
+		kind   starsRestrictionKind
+	}{{"P", starsRestrictionClosed}, {"A", starsRestrictionOpen}} {
+		kind := shape.kind
+		registerCommand(CommandModeRestrictionArea, shape.prefix+"[RA_LOCATION]", func(p *STARSPane, args []any) (CommandStatus, error) {
+			p.wipRestrictionArea = &starsRestrictionArea{Kind: kind, Color: 1, Vertices: []configPoint{args[0].(configPoint)}}
+			return CommandStatus{Clear: ClearInput}, nil
+		})
+		registerCommand(CommandModeRestrictionArea, shape.prefix, func(p *STARSPane, _ []any) (CommandStatus, error) {
+			p.wipRestrictionArea = &starsRestrictionArea{Kind: kind, Color: 1}
+			return CommandStatus{Clear: ClearInput}, nil
+		})
+	}
+}
+
+// §6.6.9 display state is per pane; the area itself stays in the site store.
+type restrictionAreaVisibilityAction uint8
+
+const (
+	restrictionAreaToggle restrictionAreaVisibilityAction = iota
+	restrictionAreaShow
+	restrictionAreaHide
+)
+
+func (p *STARSPane) setRestrictionAreaVisibility(id int, action restrictionAreaVisibilityAction) error {
+	area, err := p.restrictionAreaStore().get(id)
+	if err != nil {
+		return err
+	}
+	ps := p.currentPrefs()
+	setting := restrictionAreaSettingsFor(ps, area)
+	switch action {
+	case restrictionAreaShow:
+		setting.Hidden = false
+		setting.HideText = false // manual: newly displayed text shows regardless of §6.6.8
+	case restrictionAreaHide:
+		setting.Hidden = true
+	default:
+		// When visible and blinking, ENTER stops the blink instead of hiding.
+		if !setting.Hidden && !setting.HideText && (area.Blink || setting.ForceBlinkingText) && !setting.StopBlinkingText {
+			setting.StopBlinkingText = true
+			setting.ForceBlinkingText = false
+		} else {
+			setting.Hidden = !setting.Hidden
+			if !setting.Hidden {
+				setting.HideText = false
+			}
+		}
+	}
+	if ps.RestrictionAreaSettings == nil {
+		ps.RestrictionAreaSettings = make(map[int]restrictionAreaDisplaySettings)
+	}
+	ps.RestrictionAreaSettings[id] = setting
+	return nil
+}
+
+// A color update is common to all same-site panes, unlike visibility.
+func (p *STARSPane) setRestrictionAreaColor(id, color int) error {
+	if !p.config.Facility.DoDOnly {
+		return ErrSTARSIllegalFunction
+	}
+	if color < 1 || color > 8 {
+		return ErrSTARSCommandFormat
+	}
+	return p.restrictionAreaStore().update(id, func(a *starsRestrictionArea) error {
+		a.Color = color
+		return nil
+	})
+}
+
+func (p *STARSPane) stepRestrictionAreaColor() error {
+	if p.restrictionColorPendingID == 0 {
+		return ErrSTARSCommandFormat
+	}
+	area, err := p.restrictionAreaStore().get(p.restrictionColorPendingID)
+	if err != nil {
+		return err
+	}
+	next := area.Color%8 + 1
+	if err := p.setRestrictionAreaColor(area.ID, next); err != nil {
+		return err
+	}
+	p.restrictionColorChanged = true
+	p.commandInput = ""
+	return nil
+}
+
+func (p *STARSPane) finishRestrictionAreaColor(input string) error {
+	if p.restrictionColorPendingID == 0 {
+		return ErrSTARSCommandFormat
+	}
+	color := 1 // manual: omitting step 5 resets to the adapted default (1)
+	if input != "" {
+		if len(input) != 1 || input[0] < '1' || input[0] > '8' {
+			return ErrSTARSCommandFormat
+		}
+		color = int(input[0] - '0')
+	} else if p.restrictionColorChanged {
+		return nil // the chosen '+' cycle value is already shared
+	}
+	return p.setRestrictionAreaColor(p.restrictionColorPendingID, color)
+}
+
+// The pending cursor relocation belongs to the entering STARS pane;
+// the completed geometry change is applied to the site-wide store.
+type restrictionAreaPendingMove struct {
+	ID    int
+	Blink bool
+}
+
+func (p *STARSPane) restrictionAreaStore() *starsRestrictionAreaStore {
+	if p.restrictionAreas == nil {
+		p.restrictionAreas = starsRestrictionStoreForSite(p.config.Facility.Facility)
+	}
+	return p.restrictionAreas
+}
+func (p *STARSPane) showRestrictionAreaLocally(id int) {
+	area, err := p.restrictionAreaStore().get(id)
+	if err != nil {
+		return
+	}
+	ps := p.currentPrefs()
+	if ps.RestrictionAreaSettings == nil {
+		ps.RestrictionAreaSettings = make(map[int]restrictionAreaDisplaySettings)
+	}
+	settings := restrictionAreaSettingsFor(ps, area)
+	settings.Hidden = false // §6.6.5 and §6.6.12 bring a hidden area onto the display
+	ps.RestrictionAreaSettings[id] = settings
+}
+func (p *STARSPane) completeRestrictionAreaMove(spec restrictionAreaPendingMove, pos configPoint) error {
+	err := p.restrictionAreaStore().update(spec.ID, func(a *starsRestrictionArea) error {
+		if err := moveRestrictionArea(a, pos); err != nil {
+			return err
+		}
+		if spec.Blink {
+			a.Blink = true
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	p.showRestrictionAreaLocally(spec.ID)
+	p.resetCommand()
+	return nil
+}
+func (p *STARSPane) toggleRestrictionAreaText(id int, delta bool) error {
+	area, err := p.restrictionAreaStore().get(id)
+	if err != nil {
+		return err
+	}
+	ps := p.currentPrefs()
+	old := restrictionAreaSettingsFor(ps, area)
+	if delta && !old.HideText {
+		// §6.6.8: delta applies *only* when causing hidden text to show.
+		return ErrSTARSCommandFormat
+	}
+	old.HideText = !old.HideText
+	old.ForceBlinkingText = delta && !old.HideText
+	if old.ForceBlinkingText {
+		old.StopBlinkingText = false
+	}
+	if ps.RestrictionAreaSettings == nil {
+		ps.RestrictionAreaSettings = make(map[int]restrictionAreaDisplaySettings)
+	}
+	ps.RestrictionAreaSettings[id] = old
+	return nil
+}
+
+func (p *STARSPane) finishRestrictionArea(r *starsRestrictionArea) error {
+	if r.Kind == starsRestrictionClosed && len(r.Vertices) < 3 {
+		return fmt.Errorf("ILL FNCT - MIN 3 VERTICES")
+	}
+	if r.Kind == starsRestrictionOpen && len(r.Vertices) < 2 {
+		return fmt.Errorf("ILL FNCT - MIN 2 VERTICES")
+	}
+	if p.restrictionAreas == nil {
+		p.restrictionAreas = starsRestrictionStoreForSite(p.config.Facility.Facility)
+	}
+	if err := p.restrictionAreas.create(*r); err != nil {
+		return err
+	}
+	p.resetCommand()
+	return nil
+}
+
+// A polygon accepts successive cursor or keyboard vertices, then a text entry
+// and a *final* cursor designation for the label (6.6.3-6.6.4). A text-only
+// or circular restriction instead uses the first cursor designation for its
+// location. Empty polygon input always adds a vertex, not a label.
+func (p *STARSPane) restrictionAreaClick(pos configPoint) error {
+	if p.wipRestrictionMove != nil {
+		return p.completeRestrictionAreaMove(*p.wipRestrictionMove, pos)
+	}
+	// F12 ID * [DELTA] followed by a left-trackball designation is
+	// valid without an intervening ENTER, as in the manual.
+	if p.wipRestrictionArea == nil && strings.Contains(p.commandInput, "*") &&
+		len(p.commandInput) > 0 && p.commandInput[0] >= '0' && p.commandInput[0] <= '9' {
+		_, err := p.executeCommand(CommandModeRestrictionArea, p.commandInput)
+		if err != nil {
+			return err
+		}
+		p.commandInput = ""
+		if p.wipRestrictionMove == nil {
+			return ErrSTARSCommandFormat
+		}
+		return p.completeRestrictionAreaMove(*p.wipRestrictionMove, pos)
+	}
+	r := p.wipRestrictionArea
+	if r == nil {
+		// The manual permits G/C command text followed directly by a left
+		// trackball designation, without an intervening ENTER.
+		entry := strings.ToUpper(strings.TrimSpace(p.commandInput))
+		if strings.HasPrefix(entry, "G") || strings.HasPrefix(entry, "C") {
+			_, err := p.executeCommand(CommandModeRestrictionArea, entry)
+			if err != nil {
+				return err
+			}
+			if p.wipRestrictionArea == nil {
+				// An explicit keyboard location already completed the command.
+				return nil
+			}
+			p.commandInput = ""
+			return p.restrictionAreaClick(pos)
+		}
+		// VICE allows the first polygon vertex by trackball without ENTER.
+		switch entry {
+		case "P", "A":
+			kind := starsRestrictionClosed
+			if entry == "A" {
+				kind = starsRestrictionOpen
+			}
+			p.wipRestrictionArea = &starsRestrictionArea{Kind: kind, Color: 1, Vertices: []configPoint{pos}}
+			p.commandInput = ""
+			return nil
+		}
+		return ErrSTARSCommandFormat
+	}
+
+	switch r.Kind {
+	case starsRestrictionText, starsRestrictionCircle:
+		if r.Kind == starsRestrictionCircle {
+			r.Center = pos
+		}
+		r.Label = pos
+		return p.finishRestrictionArea(r)
+	case starsRestrictionOpen, starsRestrictionClosed:
+		if r.LabelPending {
+			r.Label = pos
+			return p.finishRestrictionArea(r)
+		}
+		if strings.TrimSpace(p.commandInput) != "" {
+			c, err := parseRestrictionAreaText(p.commandInput, r.Kind == starsRestrictionClosed)
+			if err != nil {
+				return err
+			}
+			r.Text, r.Blink, r.Shaded, r.Color = c.Text, c.Blink, c.Shaded, c.Color
+			r.Label = pos
+			return p.finishRestrictionArea(r)
+		}
+		return p.appendRestrictionVertex(pos)
+	}
+	return ErrSTARSCommandFormat
+}
+
+func (p *STARSPane) appendRestrictionVertex(pos configPoint) error {
+	if len(p.wipRestrictionArea.Vertices) >= 10 {
+		return fmt.Errorf("CAPACITY - MAX 10 VERTICES")
+	}
+	p.wipRestrictionArea.Vertices = append(p.wipRestrictionArea.Vertices, pos)
+	return nil
+}
+
+func (p *STARSPane) commitRestrictionAreaStep(input string) error {
+	r := p.wipRestrictionArea
+	if r == nil {
+		return ErrSTARSCommandFormat
+	}
+	if r.Kind == starsRestrictionCircle || r.Kind == starsRestrictionText {
+		pt, err := parseRestrictionAreaLocation(input)
+		if err != nil {
+			return err
+		}
+		if r.Kind == starsRestrictionCircle {
+			r.Center = pt
+		}
+		r.Label = pt
+		return p.finishRestrictionArea(r)
+	}
+	if r.LabelPending {
+		// TI 6191.409 §§6.6.3–6.6.4, step 12: polygon text is
+		// positioned by a final left-trackball designation, not keyboard
+		// coordinates (which are permitted for vertices in step 3).
+		return ErrSTARSCommandFormat
+	}
+	if pt, err := parseRestrictionAreaLocation(input); err == nil {
+		return p.appendRestrictionVertex(pt)
+	} else if looksLikeRestrictionDMS(input) {
+		// Do not turn a mistyped keyboard vertex into the polygon label.
+		// Preserve the in-progress geometry so the operator can correct it.
+		return err
+	}
+	minVertices := 2
+	if r.Kind == starsRestrictionClosed {
+		minVertices = 3
+	}
+	if len(r.Vertices) < minVertices {
+		return fmt.Errorf("ILL FNCT - MIN %d VERTICES", minVertices)
+	}
+	c, err := parseRestrictionAreaText(input, r.Kind == starsRestrictionClosed)
+	if err != nil {
+		return err
+	}
+	r.Text, r.Blink, r.Shaded, r.Color = c.Text, c.Blink, c.Shaded, c.Color
+	r.LabelPending = true
+	return nil
 }
