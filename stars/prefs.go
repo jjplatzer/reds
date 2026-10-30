@@ -33,9 +33,10 @@ const (
 
 // starsPreferenceSnapshot contains the display characteristics that STARS
 // stores in a preference set. Keep this deliberately narrower than Preferences:
-// operational/transient state such as quick looks, altitude filters, selected
-// beacon codes, and per-track state must not be changed merely by loading a
-// display preference set.
+// operational/transient state such as quick looks, selected beacon codes,
+// and per-track state must not be changed merely by loading a display
+// preference set. Altitude filters and DWELL are saved display characteristics
+// (TI 6191.409 Rev. 30, section 4.1).
 //
 // TI 6191.409 4.1.5 describes preference sets as display characteristics.
 // CRC documents the saved items as display center/range, range rings, default
@@ -56,6 +57,9 @@ type starsPreferenceSnapshot struct {
 	PTLOwn              bool                `json:"ptlOwn"`
 	PTLAll              bool                `json:"ptlAll"`
 	DwellMode           dwellMode           `json:"dwellMode"`
+	// A pointer distinguishes legacy preference files, which omitted this
+	// field, from an explicitly saved altitude-filter configuration.
+	AltitudeFilters *altitudeFilterPreferences `json:"altitudeFilters,omitempty"`
 
 	Brightness BrightnessPreferences    `json:"brightness"`
 	CharSize   CharacterSizePreferences `json:"charSize"`
@@ -112,6 +116,10 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 	if p == nil {
 		return starsPreferenceSnapshot{}
 	}
+	// A separate value prevents later changes to the live filter from altering
+	// a saved preference set. The pointer also marks the field as present in
+	// version-1 JSON; legacy files have no altitudeFilters member.
+	filters := p.AltitudeFilters
 	return starsPreferenceSnapshot{
 		UserCenter:              p.UserCenter,
 		UseUserCenter:           p.UseUserCenter,
@@ -125,6 +133,7 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 		PTLOwn:                  p.PTLOwn,
 		PTLAll:                  p.PTLAll,
 		DwellMode:               p.DwellMode,
+		AltitudeFilters:         &filters,
 		Brightness:              p.Brightness,
 		CharSize:                p.CharSize,
 		DisplayWeatherLevel:     p.DisplayWeatherLevel,
@@ -156,6 +165,14 @@ func (s starsPreferenceSnapshot) apply(p *Preferences) {
 	p.PTLOwn = s.PTLOwn
 	p.PTLAll = s.PTLAll
 	p.DwellMode = s.DwellMode
+	if s.AltitudeFilters != nil {
+		p.AltitudeFilters = *s.AltitudeFilters
+	} else {
+		// Existing version-1 JSON prefsets predate altitude-filter storage.
+		// Recall and DEFAULT must not inherit stale filter limits from the
+		// currently active display or silently turn both limits into zero.
+		p.AltitudeFilters = defaultAltitudeFilterPreferences()
+	}
 	p.Brightness = s.Brightness
 	p.CharSize = s.CharSize
 	p.DisplayWeatherLevel = s.DisplayWeatherLevel
