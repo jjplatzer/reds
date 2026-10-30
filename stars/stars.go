@@ -84,6 +84,15 @@ type STARSPane struct {
 	leaderDirectionDragAccumY float32
 	leaderLengthDragAccumY    float32
 	ptlLengthDragAccumY       float32
+	dwellDragAccumY           float32
+
+	// DWELL is a temporary single-track brightness override, not the manual
+	// cyan highlight or an aircraft selection. LOCK retains the target while
+	// the pointer is stationary; the identity guards against recycled tracks.
+	dwellTrackKey      string
+	dwellTrackIdentity starsTrackHighlightIdentity
+	dwellCursor        redsmath.Vec2
+	dwellCursorValid   bool
 
 	// singleTrackQuickLook records TI 6191.409 6.13.4 implied-command
 	// quick looks. An unowned associated track normally presents a PDB; a
@@ -628,6 +637,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.updateCRDA(allTargets) // live, pre-RPOS source locations
 	// Ghost picking must use the same frame's projected positions as drawing.
 	p.consumeMouseEvents(ctx, transforms, targets, allTargets)
+	p.updateDwell(ctx, targets, transforms)
 
 	p.drawNexrad(ctx, zcb, transforms)
 	p.drawRangeRings(ctx, zcb, transforms)
@@ -757,6 +767,10 @@ func (p *STARSPane) consumeMouseEvents(
 	}
 	if p.commandMode == CommandModePTLLength {
 		p.adjustPTLLength(ctx)
+		return
+	}
+	if p.commandMode == CommandModeDwell {
+		p.adjustDwell(ctx)
 		return
 	}
 	if p.mouseOverDCB(ctx) {

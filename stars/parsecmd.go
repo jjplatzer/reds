@@ -158,6 +158,21 @@ func (leaderLengthCommandParser) Parse(text string) (any, string, bool, error) {
 	return value, "", true, nil
 }
 
+type dwellModeCommandParser struct{}
+
+func (dwellModeCommandParser) Identifier() string { return "DWELL_MODE" }
+
+func (dwellModeCommandParser) Parse(text string) (any, string, bool, error) {
+	if len(text) != 1 {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	mode, ok := parseDwellMode(text)
+	if !ok {
+		return nil, "", true, ErrSTARSIllegalValue
+	}
+	return mode, "", true, nil
+}
+
 type ptlLengthCommandParser struct{}
 
 func (ptlLengthCommandParser) Identifier() string { return "PTL_LENGTH" }
@@ -501,6 +516,7 @@ var commandTypeParsers = map[string]commandTypeParser{
 	"LEADER_DIRECTION":   leaderDirectionCommandParser{},
 	"LEADER_LENGTH":      leaderLengthCommandParser{},
 	"PTL_LENGTH":         ptlLengthCommandParser{},
+	"DWELL_MODE":         dwellModeCommandParser{},
 	"BRIGHTNESS":         brightnessCommandParser{},
 	"CHAR_SIZE":          charSizeCommandParser{},
 	"ALT_FILTER_6":       altitudeFilter6CommandParser{},

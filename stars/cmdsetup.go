@@ -138,6 +138,21 @@ func (coastSuspendListLinesCommandParser) Parse(text string) (any, string, bool,
 }
 
 func init() {
+	// TI 6191.409 Rev. 30, 4.15.5. Keyboard DWELL selections are
+	// repetitive MULTI FUNC D E/L/I commands, independent of the AUX spinner.
+	registerCommand(CommandModeMultiFunc, "DE", func(p *STARSPane, _ []any) (CommandStatus, error) {
+		p.setDwellMode(dwellOn)
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "DL", func(p *STARSPane, _ []any) (CommandStatus, error) {
+		p.setDwellMode(dwellLock)
+		return CommandStatus{}, nil
+	})
+	registerCommand(CommandModeMultiFunc, "DI", func(p *STARSPane, _ []any) (CommandStatus, error) {
+		p.setDwellMode(dwellOff)
+		return CommandStatus{}, nil
+	})
+
 	// TI 6191.409 Rev. 30, 4.1.3: after selecting PREF SET the operator may
 	// identify one of the 32 stored sets by number or by its saved name.
 	registerCommand(CommandModePref, "[PREF_REFERENCE]", func(p *STARSPane, args []any) (CommandStatus, error) {

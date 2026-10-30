@@ -113,7 +113,8 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if ctx.Mouse != nil && p.mouseOverDCB(ctx) && ctx.Mouse.Wheel.Y != 0 &&
 		p.commandMode != CommandModeBriteSpinner &&
 		p.commandMode != CommandModeCharSizeSpinner &&
-		p.commandMode != CommandModeRangeRings && maxScroll > 0 {
+		p.commandMode != CommandModeRangeRings &&
+		p.commandMode != CommandModeDwell && maxScroll > 0 {
 		if ctx.Mouse.Wheel.Y > 0 {
 			p.dcbScroll += dcbButtonSize
 		} else {
@@ -456,7 +457,14 @@ func (d *dcbDrawer) drawAuxPage(disabled bool) {
 			ps.PTLOwn = false
 		}
 	})
-	d.button("DWELL\nON", auxFlags(buttonFull), false, nil)
+	dwellSelected := p.commandMode == CommandModeDwell
+	d.button("DWELL\n"+ps.DwellMode.String(), auxFlags(buttonFull), dwellSelected, func() {
+		if dwellSelected {
+			p.resetCommand()
+			return
+		}
+		p.setCommandMode(CommandModeDwell)
+	})
 	d.button("TPA/\nATPA", auxFlags(buttonFull), false, func() {
 		p.setCommandMode(CommandModeTPA)
 	})
@@ -681,6 +689,39 @@ func (p *STARSPane) adjustLeaderLineLength(ctx *panes.Context) {
 			p.currentPrefs().LeaderLineLength--
 		}
 		p.leaderLengthDragAccumY -= starsLeaderLengthMouseDelta
+	}
+}
+
+const starsDwellMouseDelta = float32(10)
+
+// adjustDwell implements the three-state AUX DCB adjustment. Mouse movement
+// up advances OFF -> ON -> LOCK; down reverses it. The keyboard can enter
+// 0/1/2 while selected, and a left click off the DCB commits the setting.
+func (p *STARSPane) adjustDwell(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Mouse == nil || p.commandMode != CommandModeDwell {
+		return
+	}
+	mouse := ctx.Mouse
+	if mouse.WasPressed(platform.MouseButtonLeft) && !p.mouseOverDCB(ctx) {
+		p.resetCommand()
+		return
+	}
+	if mouse.Wheel.Y != 0 {
+		if mouse.Wheel.Y > 0 {
+			p.setDwellMode(p.currentPrefs().DwellMode.step(1))
+		} else {
+			p.setDwellMode(p.currentPrefs().DwellMode.step(-1))
+		}
+		return
+	}
+	p.dwellDragAccumY += mouse.Delta.Y
+	for p.dwellDragAccumY <= -starsDwellMouseDelta {
+		p.setDwellMode(p.currentPrefs().DwellMode.step(1))
+		p.dwellDragAccumY += starsDwellMouseDelta
+	}
+	for p.dwellDragAccumY >= starsDwellMouseDelta {
+		p.setDwellMode(p.currentPrefs().DwellMode.step(-1))
+		p.dwellDragAccumY -= starsDwellMouseDelta
 	}
 }
 
