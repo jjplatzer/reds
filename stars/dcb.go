@@ -1275,7 +1275,7 @@ func (d *dcbDrawer) button(text string, flags dcbFlags, selected bool, onClick f
 		renderer.ReturnColoredTrianglesBuilder(fill)
 
 		d.drawButtonBevel(rect, pushedIn && !disabled && !unsupported)
-		d.drawButtonText(rect, text, textColor)
+		d.drawButtonText(rect, text, textColor, flags)
 		setDCBScissor(d.ctx, d.cb, d.bar)
 	}
 
@@ -1321,7 +1321,7 @@ func (d *dcbDrawer) drawButtonBevel(rect redsmath.Rect, depressed bool) {
 	renderer.ReturnColoredLinesBuilder(lines)
 }
 
-func (d *dcbDrawer) drawButtonText(rect redsmath.Rect, text string, color renderer.RGB) {
+func (d *dcbDrawer) drawButtonText(rect redsmath.Rect, text string, color renderer.RGB, flags dcbFlags) {
 	text = strings.TrimSpace(text)
 	if text == "" {
 		return
@@ -1336,7 +1336,13 @@ func (d *dcbDrawer) drawButtonText(rect redsmath.Rect, text string, color render
 		return
 	}
 	lineHeight := float32(fs.LineHeight)
-	totalHeight := lineHeight * float32(len(lines))
+	// WX buttons reserve two text rows even when AVL is absent, so the
+	// WX level stays in the top row instead of recentering vertically.
+	lineCount := len(lines)
+	if flags&buttonHalfHorizontal != 0 {
+		lineCount = max(lineCount, 2)
+	}
+	totalHeight := lineHeight * float32(lineCount)
 	y := rect.Min.Y + max(float32(0), (rect.Height()-totalHeight)/2)
 
 	td := renderer.GetTextDrawBuilder()
