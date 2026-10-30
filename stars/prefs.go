@@ -54,9 +54,11 @@ type starsPreferenceSnapshot struct {
 	LeaderLineDirection leaderLineDirection `json:"leaderLineDirection"`
 	LeaderLineLength    int                 `json:"leaderLineLength"`
 	PTLLength           float32             `json:"ptlLength"`
-	PTLOwn              bool                `json:"ptlOwn"`
-	PTLAll              bool                `json:"ptlAll"`
-	DwellMode           dwellMode           `json:"dwellMode"`
+	// Pointer distinguishes pre-HISTORY saved sets from explicit operator values.
+	RadarTrackHistory *int      `json:"radarTrackHistory,omitempty"`
+	PTLOwn            bool      `json:"ptlOwn"`
+	PTLAll            bool      `json:"ptlAll"`
+	DwellMode         dwellMode `json:"dwellMode"`
 	// A pointer distinguishes legacy preference files, which omitted this
 	// field, from an explicitly saved altitude-filter configuration.
 	AltitudeFilters *altitudeFilterPreferences `json:"altitudeFilters,omitempty"`
@@ -112,6 +114,19 @@ func cloneBoolMap(src map[int]bool) map[int]bool {
 	return out
 }
 
+// validTargetHistoryCount bounds legacy/corrupt preference values to the
+// legal HISTORY range. Zero from an old in-memory preference means default.
+func validTargetHistoryCount(count int) int {
+	if count == 0 {
+		return starsDefaultTargetHistoryCount
+	}
+	return min(max(count, 1), starsMaxTargetHistoryCount)
+}
+
+func historyCountPointer(count int) *int {
+	return &count
+}
+
 func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 	if p == nil {
 		return starsPreferenceSnapshot{}
@@ -130,6 +145,7 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 		LeaderLineDirection:     p.LeaderLineDirection,
 		LeaderLineLength:        p.LeaderLineLength,
 		PTLLength:               p.PTLLength,
+		RadarTrackHistory:       historyCountPointer(validTargetHistoryCount(p.RadarTrackHistory)),
 		PTLOwn:                  p.PTLOwn,
 		PTLAll:                  p.PTLAll,
 		DwellMode:               p.DwellMode,
@@ -162,6 +178,10 @@ func (s starsPreferenceSnapshot) apply(p *Preferences) {
 	p.LeaderLineDirection = s.LeaderLineDirection
 	p.LeaderLineLength = s.LeaderLineLength
 	p.PTLLength = s.PTLLength
+	p.RadarTrackHistory = starsDefaultTargetHistoryCount
+	if s.RadarTrackHistory != nil {
+		p.RadarTrackHistory = validTargetHistoryCount(*s.RadarTrackHistory)
+	}
 	p.PTLOwn = s.PTLOwn
 	p.PTLAll = s.PTLAll
 	p.DwellMode = s.DwellMode
@@ -736,6 +756,7 @@ type Preferences struct {
 	LeaderLineDirection     leaderLineDirection
 	LeaderLineLength        int
 	PTLLength               float32
+	RadarTrackHistory       int
 	PTLOwn                  bool
 	PTLAll                  bool
 	DwellMode               dwellMode
@@ -806,7 +827,9 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// increments but does not prescribe a startup value. Match VICE's
 		// established STARS default of 1.0 minute.
 		PTLLength: 1.0,
-		DwellMode: dwellOn,
+		// VICE's established default is five marks; the operator selects 1-10.
+		RadarTrackHistory: starsDefaultTargetHistoryCount,
+		DwellMode:         dwellOn,
 		Brightness: BrightnessPreferences{
 			// The operator manual defines the allowable ranges but not startup
 			// values. Use VICE's STARS defaults so the initial presentation and

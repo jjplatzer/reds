@@ -114,7 +114,8 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		p.commandMode != CommandModeBriteSpinner &&
 		p.commandMode != CommandModeCharSizeSpinner &&
 		p.commandMode != CommandModeRangeRings &&
-		p.commandMode != CommandModeDwell && maxScroll > 0 {
+		p.commandMode != CommandModeDwell &&
+		p.commandMode != CommandModeHistory && maxScroll > 0 {
 		if ctx.Mouse.Wheel.Y > 0 {
 			p.dcbScroll += dcbButtonSize
 		} else {
@@ -411,8 +412,17 @@ func (d *dcbDrawer) drawAuxPage(disabled bool) {
 	// <VOL n>.
 	d.button("VOL\n2", auxFlags(buttonFull), false, nil)
 
-	// <HISTORY n> / <H_RATE n.n>.
-	d.button("HISTORY\n5", auxFlags(buttonHalfVertical), false, nil)
+	// TI 6191.409 Rev. 30, 4.14.1: HISTORY is an AUX adjustment button.
+	// The separate H_RATE setting is still fixed at 4.5 seconds.
+	historySelected := p.commandMode == CommandModeHistory
+	d.button(fmt.Sprintf("HISTORY\n%d", validTargetHistoryCount(ps.RadarTrackHistory)),
+		auxFlags(buttonHalfVertical), historySelected, func() {
+			if historySelected {
+				p.resetCommand()
+			} else {
+				p.setCommandMode(CommandModeHistory)
+			}
+		})
 	d.button("H_RATE\n4.5", auxFlags(buttonHalfVertical), false, nil)
 
 	// Cursor controls and uncorrelated-target presentation.
@@ -723,6 +733,45 @@ func (p *STARSPane) adjustDwell(ctx *panes.Context) {
 		p.setDwellMode(p.currentPrefs().DwellMode.step(-1))
 		p.dwellDragAccumY -= starsDwellMouseDelta
 	}
+}
+
+const starsHistoryMouseDelta = float32(10)
+
+// adjustHistory follows section 4.14.1: moving the trackball up increases
+// the number of history symbols (up to ten), down decreases (to one).
+// Changes update the scope immediately; a left click off the DCB commits.
+func (p *STARSPane) adjustHistory(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Mouse == nil || p.commandMode != CommandModeHistory {
+		return
+	}
+	mouse := ctx.Mouse
+	if mouse.WasPressed(platform.MouseButtonLeft) && !p.mouseOverDCB(ctx) {
+		p.resetCommand()
+		return
+	}
+	// The wheel is an additional desktop input; vertical trackball motion is
+	// the manual-prescribed control. Both use the same bounded step function.
+	if mouse.Wheel.Y != 0 {
+		step := -1
+		if mouse.Wheel.Y > 0 {
+			step = 1
+		}
+		p.currentPrefs().RadarTrackHistory = stepHistoryCount(p.currentPrefs().RadarTrackHistory, step)
+		return
+	}
+	p.historyDragAccumY += mouse.Delta.Y
+	for p.historyDragAccumY <= -starsHistoryMouseDelta {
+		p.currentPrefs().RadarTrackHistory = stepHistoryCount(p.currentPrefs().RadarTrackHistory, 1)
+		p.historyDragAccumY += starsHistoryMouseDelta
+	}
+	for p.historyDragAccumY >= starsHistoryMouseDelta {
+		p.currentPrefs().RadarTrackHistory = stepHistoryCount(p.currentPrefs().RadarTrackHistory, -1)
+		p.historyDragAccumY -= starsHistoryMouseDelta
+	}
+}
+
+func stepHistoryCount(count, delta int) int {
+	return min(max(validTargetHistoryCount(count)+delta, 1), starsMaxTargetHistoryCount)
 }
 
 const starsPTLLengthMouseDelta = float32(10)

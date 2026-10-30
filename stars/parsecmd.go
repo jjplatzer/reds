@@ -158,6 +158,31 @@ func (leaderLengthCommandParser) Parse(text string) (any, string, bool, error) {
 	return value, "", true, nil
 }
 
+// HISTORY is numeric entry on the selected AUX DCB control, not an
+// independent keyboard command (TI 6191.409 Rev. 30, 4.14.1).
+type historyCountCommandParser struct{}
+
+func (historyCountCommandParser) Identifier() string { return "HISTORY_COUNT" }
+
+func (historyCountCommandParser) Parse(text string) (any, string, bool, error) {
+	if text == "" {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	for _, c := range text {
+		if c < '0' || c > '9' {
+			return nil, text, true, ErrSTARSCommandFormat
+		}
+	}
+	count, err := strconv.Atoi(text)
+	if err != nil {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	if count < 1 || count > starsMaxTargetHistoryCount {
+		return nil, "", true, ErrSTARSIllegalValue
+	}
+	return count, "", true, nil
+}
+
 type dwellModeCommandParser struct{}
 
 func (dwellModeCommandParser) Identifier() string { return "DWELL_MODE" }
@@ -516,6 +541,7 @@ var commandTypeParsers = map[string]commandTypeParser{
 	"LEADER_DIRECTION":   leaderDirectionCommandParser{},
 	"LEADER_LENGTH":      leaderLengthCommandParser{},
 	"PTL_LENGTH":         ptlLengthCommandParser{},
+	"HISTORY_COUNT":      historyCountCommandParser{},
 	"DWELL_MODE":         dwellModeCommandParser{},
 	"BRIGHTNESS":         brightnessCommandParser{},
 	"CHAR_SIZE":          charSizeCommandParser{},
