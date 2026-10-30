@@ -33,9 +33,10 @@ const (
 
 // starsPreferenceSnapshot contains the display characteristics that STARS
 // stores in a preference set. Keep this deliberately narrower than Preferences:
-// operational/transient state such as quick looks, altitude filters, selected
-// beacon codes, and per-track state must not be changed merely by loading a
-// display preference set.
+// operational/transient state such as quick looks, selected beacon codes,
+// and per-track state must not be changed merely by loading a display
+// preference set. Altitude filters and DWELL are saved display characteristics
+// (TI 6191.409 Rev. 30, section 4.1).
 //
 // TI 6191.409 4.1.5 describes preference sets as display characteristics.
 // CRC documents the saved items as display center/range, range rings, default
@@ -53,9 +54,14 @@ type starsPreferenceSnapshot struct {
 	LeaderLineDirection leaderLineDirection `json:"leaderLineDirection"`
 	LeaderLineLength    int                 `json:"leaderLineLength"`
 	PTLLength           float32             `json:"ptlLength"`
-	PTLOwn              bool                `json:"ptlOwn"`
-	PTLAll              bool                `json:"ptlAll"`
-	DwellMode           dwellMode           `json:"dwellMode"`
+	// Pointer distinguishes pre-HISTORY saved sets from explicit operator values.
+	RadarTrackHistory *int      `json:"radarTrackHistory,omitempty"`
+	PTLOwn            bool      `json:"ptlOwn"`
+	PTLAll            bool      `json:"ptlAll"`
+	DwellMode         dwellMode `json:"dwellMode"`
+	// A pointer distinguishes legacy preference files, which omitted this
+	// field, from an explicitly saved altitude-filter configuration.
+	AltitudeFilters *altitudeFilterPreferences `json:"altitudeFilters,omitempty"`
 
 	Brightness BrightnessPreferences    `json:"brightness"`
 	CharSize   CharacterSizePreferences `json:"charSize"`
@@ -108,10 +114,27 @@ func cloneBoolMap(src map[int]bool) map[int]bool {
 	return out
 }
 
+// validTargetHistoryCount bounds legacy/corrupt preference values to the
+// legal HISTORY range. Zero from an old in-memory preference means default.
+func validTargetHistoryCount(count int) int {
+	if count == 0 {
+		return starsDefaultTargetHistoryCount
+	}
+	return min(max(count, 1), starsMaxTargetHistoryCount)
+}
+
+func historyCountPointer(count int) *int {
+	return &count
+}
+
 func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 	if p == nil {
 		return starsPreferenceSnapshot{}
 	}
+	// A separate value prevents later changes to the live filter from altering
+	// a saved preference set. The pointer also marks the field as present in
+	// version-1 JSON; legacy files have no altitudeFilters member.
+	filters := p.AltitudeFilters
 	return starsPreferenceSnapshot{
 		UserCenter:              p.UserCenter,
 		UseUserCenter:           p.UseUserCenter,
@@ -122,9 +145,11 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 		LeaderLineDirection:     p.LeaderLineDirection,
 		LeaderLineLength:        p.LeaderLineLength,
 		PTLLength:               p.PTLLength,
+		RadarTrackHistory:       historyCountPointer(validTargetHistoryCount(p.RadarTrackHistory)),
 		PTLOwn:                  p.PTLOwn,
 		PTLAll:                  p.PTLAll,
 		DwellMode:               p.DwellMode,
+		AltitudeFilters:         &filters,
 		Brightness:              p.Brightness,
 		CharSize:                p.CharSize,
 		DisplayWeatherLevel:     p.DisplayWeatherLevel,
@@ -153,9 +178,21 @@ func (s starsPreferenceSnapshot) apply(p *Preferences) {
 	p.LeaderLineDirection = s.LeaderLineDirection
 	p.LeaderLineLength = s.LeaderLineLength
 	p.PTLLength = s.PTLLength
+	p.RadarTrackHistory = starsDefaultTargetHistoryCount
+	if s.RadarTrackHistory != nil {
+		p.RadarTrackHistory = validTargetHistoryCount(*s.RadarTrackHistory)
+	}
 	p.PTLOwn = s.PTLOwn
 	p.PTLAll = s.PTLAll
 	p.DwellMode = s.DwellMode
+	if s.AltitudeFilters != nil {
+		p.AltitudeFilters = *s.AltitudeFilters
+	} else {
+		// Existing version-1 JSON prefsets predate altitude-filter storage.
+		// Recall and DEFAULT must not inherit stale filter limits from the
+		// currently active display or silently turn both limits into zero.
+		p.AltitudeFilters = defaultAltitudeFilterPreferences()
+	}
 	p.Brightness = s.Brightness
 	p.CharSize = s.CharSize
 	p.DisplayWeatherLevel = s.DisplayWeatherLevel
@@ -719,6 +756,7 @@ type Preferences struct {
 	LeaderLineDirection     leaderLineDirection
 	LeaderLineLength        int
 	PTLLength               float32
+	RadarTrackHistory       int
 	PTLOwn                  bool
 	PTLAll                  bool
 	DwellMode               dwellMode
@@ -789,7 +827,9 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// increments but does not prescribe a startup value. Match VICE's
 		// established STARS default of 1.0 minute.
 		PTLLength: 1.0,
-		DwellMode: dwellOn,
+		// VICE's established default is five marks; the operator selects 1-10.
+		RadarTrackHistory: starsDefaultTargetHistoryCount,
+		DwellMode:         dwellOn,
 		Brightness: BrightnessPreferences{
 			// The operator manual defines the allowable ranges but not startup
 			// values. Use VICE's STARS defaults so the initial presentation and

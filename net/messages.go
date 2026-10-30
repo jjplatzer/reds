@@ -84,6 +84,19 @@ type TaisTarget struct {
 	FlightPlan    *TaisFlightPlan   `json:"flightPlan,omitempty"`
 	EnhancedData  *TaisEnhancedData `json:"enhancedData,omitempty"`
 	History       []TaisHistory     `json:"history,omitempty"`
+
+	// AlertState is optional, authoritative STARS alert state. The current
+	// TAIS TATrackAndFlightPlan feed does not supply CA/MSAW status, so it
+	// must not be inferred from altitude or aircraft proximity.
+	AlertState *TaisAlertState `json:"alertState,omitempty"`
+}
+
+// TaisAlertState is reserved for CA/MSAW indications received from a real
+// alert-state source. An absent state means no *known* alert, not an assertion
+// that the real STARS system has no alerts.
+type TaisAlertState struct {
+	ConflictAlert bool `json:"conflictAlert,omitempty"`
+	MSAW          bool `json:"msaw,omitempty"`
 }
 
 type TaisRecordMeta struct {
@@ -119,12 +132,59 @@ type TaisTrack struct {
 	ReportedBeaconCode string    `json:"reportedBeaconCode,omitempty"`
 	ReportedAltitude   int       `json:"reportedAltitude,omitempty"`
 
+	// ReportedAltitudeValid, when set by an authoritative upstream source,
+	// overrides mere field presence. Current TAIS delivers an altitude value
+	// but does not explicitly report Mode-C validity.
+	ReportedAltitudeValid *bool `json:"reportedAltitudeValid,omitempty"`
+	// HasReportedAltitude distinguishes an omitted/null altitude from a
+	// legitimate reported altitude of exactly zero feet. It is derived at
+	// decode time rather than serialized or guessed from the numeric value.
+	HasReportedAltitude bool `json:"-"`
+
 	// Aircraft-transmitted ADS-B Flight ID from a verified source, when available.
 	// Not populated by the current TAIS-only upstream.
 	ADSBFlightID string `json:"adsbFlightId,omitempty"`
 
 	// FAA ICAO-to-N-number association (not an ADS-B-transmitted Flight ID).
 	Registration string `json:"registration,omitempty"`
+}
+
+// UnmarshalJSON remembers whether the TAIS wire message actually carried a
+// reported altitude. The usual int zero value cannot distinguish missing
+// Mode-C data from a real 0-ft altitude. Explicit null is treated as absent.
+// The shadowed pointer is used only for decoding and does not change the
+// existing int-based interfaces or allocate a map for every aircraft.
+func (t *TaisTrack) UnmarshalJSON(data []byte) error {
+	type trackAlias TaisTrack
+	var parsed trackAlias
+	wire := struct {
+		*trackAlias
+		ReportedAltitude *int `json:"reportedAltitude"`
+	}{trackAlias: &parsed}
+	if err := json.Unmarshal(data, &wire); err != nil {
+		return err
+	}
+	*t = TaisTrack(parsed)
+	if wire.ReportedAltitude != nil {
+		t.ReportedAltitude = *wire.ReportedAltitude
+		t.HasReportedAltitude = true
+	}
+	return nil
+}
+
+// UsableReportedAltitude is a conservative proxy for Mode-C availability.
+// An explicit validity flag (if supplied) takes precedence. The current TAIS
+// wire format has only an optional altitude: absent means "do not filter";
+// present means it can be tested against altitude limits. For programmatic
+// targets not decoded from JSON, a nonzero altitude is treated as present.
+func (t *TaisTrack) UsableReportedAltitude() bool {
+	if t == nil {
+		return false
+	}
+	if t.ReportedAltitudeValid != nil {
+		return *t.ReportedAltitudeValid
+	}
+	return t.HasReportedAltitude || t.ReportedAltitude != 0
 }
 
 type TaisFlightPlan struct {

@@ -301,6 +301,15 @@ func targetHasAltitudeFilterSPC(target *redsnet.TaisTarget) bool {
 	return ok
 }
 
+// A real, active CA or MSAW indication overrides the normal altitude limits
+// (TI 6191.409 Rev. 30, §4.11, p. 4-75). TAIS does not currently include
+// these indications, so only explicit upstream alert-state data may trigger
+// this exception; we must not synthesize safety alerts from track geometry.
+func targetHasAltitudeFilterAlert(target *redsnet.TaisTarget) bool {
+	return target != nil && target.AlertState != nil &&
+		(target.AlertState.ConflictAlert || target.AlertState.MSAW)
+}
+
 // targetAltitudeFilterAllowsDatablock mirrors VICE's placement of altitude
 // filtering in datablock presentation rather than in a standalone subsystem.
 // The target symbol remains visible outside the filter; the ordinary data
@@ -319,7 +328,14 @@ func (p *STARSPane) targetAltitudeFilterAllowsDatablock(target *redsnet.TaisTarg
 	if p.beaconCodeReadoutHeld {
 		return true
 	}
-	if targetHasAltitudeFilterSPC(target) {
+	if targetHasAltitudeFilterSPC(target) || targetHasAltitudeFilterAlert(target) {
+		return true
+	}
+
+	// Without a reported altitude, the track cannot be proven to lie
+	// outside the limits. Do not accidentally treat missing Mode-C data
+	// as an actual altitude of 0 ft and suppress its data block.
+	if !target.Track.UsableReportedAltitude() {
 		return true
 	}
 
@@ -388,7 +404,7 @@ func (p *STARSPane) targetDatablockPresentationUnhighlighted(target *redsnet.Tai
 	// Condition is presented as an FDB so its line-zero warning is visible.
 	// If another controller owns it, retain the normal unowned FDB color and
 	// OTH brightness; only the SPC abbreviation itself is alert/caution color.
-	if _, ok := targetSpecialConditionIndicator(target); ok {
+	if _, ok := targetSpecialConditionIndicator(target); ok || targetHasAltitudeFilterAlert(target) {
 		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 	}
 	// §6.13.12: while Beacon Code Readout is held, unowned associated

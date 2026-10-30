@@ -29,13 +29,11 @@ const (
 	zTargetPosition  renderer.Z = -80
 	zTargetDatablock renderer.Z = -75
 
-	// The active AUX DCB currently presents HISTORY 5 / H_RATE 4.5. TI 6191.409
-	// defines HISTORY as the number of target-history positions and H_RATE as
-	// their update interval. Until those AUX controls are made interactive,
-	// render their displayed values exactly rather than using every TAIS report
-	// as a history mark.
-	starsTargetHistoryCount = 5
-	starsTargetHistoryRate  = 4500 * time.Millisecond
+	// TI 6191.409 Rev. 30, 4.14.1: the AUX HISTORY control allows 1-10
+	// positions. The separate H_RATE control is currently fixed at 4.5 seconds.
+	starsDefaultTargetHistoryCount = 5
+	starsMaxTargetHistoryCount     = 10
+	starsTargetHistoryRate         = 4500 * time.Millisecond
 
 	// TI 6191.409 Rev. 30, 6.13.2 specifies a five-second beacon readout
 	// after an unassociated track is slewed and the left trackball selected.
@@ -54,10 +52,10 @@ const (
 	starsTargetDiameterPixels  float32 = 13
 	starsHistoryDiameterPixels float32 = 8
 
-	// TAIS reports can arrive more frequently than H_RATE. Retain enough recent
-	// raw positions in the per-frame snapshot to select five 4.5-second history
-	// marks without copying the full 64-position client trail every frame.
-	starsTargetHistorySourcePoints = 32
+	// Allow the full bounded TAIS history to be considered for ten positions;
+	// this avoids truncating the history before the display-side time sampler.
+	// The upstream TAIS client caps the history at 64 reports per track.
+	starsTargetHistorySourcePoints = 64
 
 	// VICE/STARS accepts a slew to the nearest surveillance track within 20
 	// display pixels. Use the same screen-space radius for implied target-click
@@ -1099,18 +1097,20 @@ func (p *STARSPane) drawTargetHistory(
 		return
 	}
 
-	var builders [starsTargetHistoryCount]*renderer.TrianglesBuilder
-	for i := range builders {
+	count := validTargetHistoryCount(ps.RadarTrackHistory)
+	var builders [starsMaxTargetHistoryCount]*renderer.TrianglesBuilder
+	for i := 0; i < count; i++ {
 		builders[i] = renderer.GetTrianglesBuilder()
 		defer renderer.ReturnTrianglesBuilder(builders[i])
 	}
 	now := time.Now()
 
-	// Sample each target once per frame, then batch geometry by age/color. This
-	// avoids allocating/re-scanning the same history five times per target.
+	// Sample each target once per frame, then batch geometry by age/color.
+	// Only allocate builders for the operator-selected count (at most ten).
 	for i := range snapshot.Targets {
 		target := &snapshot.Targets[i]
-		if !taisTargetHasPosition(target) || isRPOSUnsupportedTarget(target) {
+		if !taisTargetHasPosition(target) || isRPOSUnsupportedTarget(target) ||
+			target.CoastPhase != redsnet.TaisCoastPhaseNone {
 			continue
 		}
 		// VICE suppresses history whenever the ordinary data-block
@@ -1120,7 +1120,7 @@ func (p *STARSPane) drawTargetHistory(
 			continue
 		}
 
-		history, historyCount := sampledTargetHistory(target)
+		history, historyCount := sampledTargetHistory(target, count)
 		for age := 0; age < historyCount; age++ {
 			point := history[age]
 			center := transforms.WindowFromLatLon(point.Lat, point.Lon)
@@ -1140,7 +1140,7 @@ func (p *STARSPane) drawTargetHistory(
 	cb.Viewport(x, y, width, height)
 	cb.Scissor(x, y, width, height)
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
-	for age := range builders {
+	for age := 0; age < count; age++ {
 		colorIndex := age
 		if colorIndex >= len(p.colors.TrackHistory) {
 			colorIndex = len(p.colors.TrackHistory) - 1
@@ -1572,20 +1572,20 @@ func validTargetLatLon(lat, lon float64) bool {
 		!(lat == 0 && lon == 0)
 }
 
-// sampledTargetHistory converts TAIS's raw sensor/track reports into the five
-// history marks represented by the current HISTORY/H_RATE settings. It selects
-// the most recent real report at or before each 4.5-second history epoch; no
-// synthetic/interpolated surveillance position is invented by the display.
-// Results are newest-to-oldest so index 0 maps to TrackHistory[0].
-func sampledTargetHistory(target *redsnet.TaisTarget) ([starsTargetHistoryCount]redsnet.TaisHistory, int) {
-	var out [starsTargetHistoryCount]redsnet.TaisHistory
+// sampledTargetHistory converts raw TAIS reports into up to the selected
+// number of historical marks (1-10). It selects the latest real report at or
+// before each 4.5-second epoch, without inventing interpolated positions.
+// A fixed stack array avoids per-track allocations on the rendering path.
+// Results are newest-to-oldest; index zero uses TrackHistory[0].
+func sampledTargetHistory(target *redsnet.TaisTarget, requested int) ([starsMaxTargetHistoryCount]redsnet.TaisHistory, int) {
+	var out [starsMaxTargetHistoryCount]redsnet.TaisHistory
 	if target == nil || target.Track.MRTTime.IsZero() || len(target.History) == 0 {
 		return out, 0
 	}
 
 	count := 0
 	searchBefore := len(target.History)
-	for age := 1; age <= starsTargetHistoryCount; age++ {
+	for age := 1; age <= validTargetHistoryCount(requested); age++ {
 		epoch := target.Track.MRTTime.Add(time.Duration(-age) * starsTargetHistoryRate)
 		selected := -1
 

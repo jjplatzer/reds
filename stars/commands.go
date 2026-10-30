@@ -26,6 +26,7 @@ const (
 	CommandModeLDRDir
 	CommandModeLDRLen
 	CommandModePTLLength
+	CommandModeHistory
 	CommandModeDwell
 	CommandModeSSAFilter
 	CommandModeTPA
@@ -64,6 +65,8 @@ func (m CommandMode) PreviewString() string {
 		return "LDR"
 	case CommandModePTLLength:
 		return "PTL"
+	case CommandModeHistory:
+		return "HISTORY"
 	case CommandModeDwell:
 		return "DWELL"
 	case CommandModeSSAFilter:
@@ -372,6 +375,13 @@ func init() {
 		return CommandStatus{}, nil
 	})
 
+	// TI 6191.409 Rev. 30, 4.14.1: select AUX HISTORY and type 1-10.
+	// There is no independent MULTI FUNC keyboard command for HISTORY.
+	registerCommand(CommandModeHistory, "[HISTORY_COUNT]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.currentPrefs().RadarTrackHistory = args[0].(int)
+		return CommandStatus{}, nil
+	})
+
 	// TI 6191.409 4.15.5: after selecting AUX <DWELL>, enter 0/1/2.
 	registerCommand(CommandModeDwell, "[DWELL_MODE]", func(p *STARSPane, args []any) (CommandStatus, error) {
 		p.setDwellMode(args[0].(dwellMode))
@@ -665,6 +675,7 @@ func (p *STARSPane) resetCommand() {
 	p.leaderDirectionDragAccumY = 0
 	p.leaderLengthDragAccumY = 0
 	p.ptlLengthDragAccumY = 0
+	p.historyDragAccumY = 0
 	p.dwellDragAccumY = 0
 	p.wipRBL = nil
 	// A completed or cancelled GEO RESTRICTION must not survive into the

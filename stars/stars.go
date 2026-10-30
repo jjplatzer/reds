@@ -84,6 +84,7 @@ type STARSPane struct {
 	leaderDirectionDragAccumY float32
 	leaderLengthDragAccumY    float32
 	ptlLengthDragAccumY       float32
+	historyDragAccumY         float32
 	dwellDragAccumY           float32
 
 	// DWELL is a temporary single-track brightness override, not the manual
@@ -767,6 +768,10 @@ func (p *STARSPane) consumeMouseEvents(
 	}
 	if p.commandMode == CommandModePTLLength {
 		p.adjustPTLLength(ctx)
+		return
+	}
+	if p.commandMode == CommandModeHistory {
+		p.adjustHistory(ctx)
 		return
 	}
 	if p.commandMode == CommandModeDwell {
