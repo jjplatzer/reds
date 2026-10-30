@@ -1663,6 +1663,10 @@ const (
 type tfrRestrictionSummary struct {
 	key          string
 	title        string
+	category     string
+	city         string
+	cityCode     string
+	state        string
 	featureCount int
 	artcc        string
 	polygons     []starsTFRPolygon
@@ -1686,6 +1690,32 @@ func tfrDisplayID(key string) string {
 	return key
 }
 
+// Name the restriction with FAA classification and city; the NOTAM number
+// remains its own second line. Never use the long date-heavy GeoJSON TITLE
+// or the often numeric txtLocalName as an operator-facing descriptor.
+func tfrDisplayDescription(category, city, state string) string {
+	category = strings.ToUpper(strings.Join(strings.Fields(category), " "))
+	switch category {
+	case "AIR SHOWS/SPORTS":
+		category = "AIRSHOW"
+	case "SPACE OPERATIONS":
+		category = "SPACE OPS"
+	case "UAS PUBLIC GATHERING":
+		category = "UAS"
+	}
+	if category == "" {
+		category = "TFR"
+	}
+	location := strings.ToUpper(strings.Join(strings.Fields(city), " "))
+	if location == "" {
+		location = strings.ToUpper(strings.Join(strings.Fields(state), " "))
+	}
+	if location == "" {
+		return tfrListLabel(category)
+	}
+	return tfrListLabel(category + " " + location)
+}
+
 func decodeTFRRestrictionSummaries(raw []byte) ([]tfrRestrictionSummary, error) {
 	var fc struct {
 		Type     string `json:"type"`
@@ -1695,6 +1725,10 @@ func decodeTFRRestrictionSummaries(raw []byte) ([]tfrRestrictionSummary, error) 
 				NOTAM         string                  `json:"NOTAM_KEY"`
 				Title         string                  `json:"TITLE"`
 				LocalName     string                  `json:"TFR_LOCAL_NAME"`
+				Category      string                  `json:"TFR_CATEGORY"`
+				City          string                  `json:"TFR_CITY"`
+				CityCode      string                  `json:"TFR_CITY_CODE"`
+				State         string                  `json:"TFR_STATE"`
 				ARTCC         string                  `json:"ARTCC"`
 				ARTCCID       string                  `json:"ARTCC_ID"`
 				Center        string                  `json:"CENTER"`
@@ -1748,18 +1782,25 @@ func decodeTFRRestrictionSummaries(raw []byte) ([]tfrRestrictionSummary, error) 
 		}
 		entry.polygons = append(entry.polygons, polygons...)
 		entry.featureCount++
-		// Use the FAA TITLE, falling back to NOTAM_KEY. Do not parse the
-		// CNS_LOCATION_ID as a string: that property can be numeric.
 		// GeoJSON feature IDs are not unique across polygon parts.
-		if entry.title == "" {
-			entry.title = strings.TrimSpace(firstNonempty(feature.Properties.LocalName, feature.Properties.Title))
+		// Keep display metadata separate from the NOTAM identity. FAA's
+		// txtLocalName can be a date code, so it is not used for this label.
+		if entry.category == "" {
+			entry.category = feature.Properties.Category
+		}
+		if entry.city == "" {
+			entry.city = feature.Properties.City
+		}
+		if entry.cityCode == "" {
+			entry.cityCode = feature.Properties.CityCode
+		}
+		if entry.state == "" {
+			entry.state = feature.Properties.State
 		}
 	}
 	result := make([]tfrRestrictionSummary, 0, len(byKey))
 	for _, entry := range byKey {
-		if entry.title == "" {
-			entry.title = entry.key
-		}
+		entry.title = tfrDisplayDescription(entry.category, firstNonempty(entry.cityCode, entry.city), entry.state)
 		result = append(result, *entry)
 	}
 	// Deterministic startup order; subsequently an existing NOTAM keeps its
@@ -1967,7 +2008,7 @@ func (s *starsRestrictionAreaStore) updateTFRList(entries []tfrRestrictionSummar
 		a.Shaded = true
 		a.TFRPolygons = entry.polygons
 		a.Label = tfrLabelPosition(entry.polygons)
-		a.Text = [2]string{tfrListLabel(firstNonempty(entry.title, tfrDisplayID(entry.key)))}
+		a.Text = [2]string{tfrListLabel(firstNonempty(entry.title, "TFR")), tfrDisplayID(entry.key)}
 		a.Color = 1
 		s.areas[id] = a
 		s.tfrSlots[entry.key] = id

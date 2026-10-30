@@ -175,17 +175,27 @@ func (p *STARSPane) restrictionAreasListText() string {
 		if a.IsFAA && (!strings.EqualFold(a.TFRARTCC, p.config.Facility.ARTCC) || !tfrHasActivePolygon(a, time.Now().UTC())) {
 			continue
 		}
-		descriptor := strings.ToUpper(a.Text[0])
-		if len(descriptor) > 32 {
-			descriptor = descriptor[:32]
-		}
-		marker := '>'
-		if restrictionAreaSettingsFor(p.currentPrefs(), a).Hidden {
-			marker = ' '
-		}
-		fmt.Fprintf(&b, "\n%c%-3d %s", marker, a.ID, descriptor)
+		b.WriteByte('\n')
+		b.WriteString(restrictionAreaListEntryText(a, restrictionAreaSettingsFor(p.currentPrefs(), a).Hidden))
 	}
 	return b.String()
+}
+
+// GEO RESTRICTIONS uses one row per area, including FAA TFRs. The radar
+// scope separately renders the description and NOTAM on two lines.
+func restrictionAreaListEntryText(a starsRestrictionArea, hidden bool) string {
+	descriptor := strings.ToUpper(a.Text[0])
+	if a.IsFAA && strings.TrimSpace(a.Text[1]) != "" {
+		descriptor += " " + strings.ToUpper(strings.TrimSpace(a.Text[1]))
+	}
+	if len(descriptor) > 32 {
+		descriptor = descriptor[:32]
+	}
+	marker := '>'
+	if hidden {
+		marker = ' '
+	}
+	return fmt.Sprintf("%c%-3d %s", marker, a.ID, descriptor)
 }
 
 // Same standard list font, color and BRITE/LISTS intensity as the other lists.
