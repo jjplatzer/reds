@@ -176,6 +176,117 @@ func closestSlewTarget(
 	return &snapshot.Targets[best]
 }
 
+// setDwellMode updates the per-window DCB setting. This never changes the
+// target's normal presentation color or any persistent track selection.
+func (p *STARSPane) setDwellMode(mode dwellMode) {
+	if p == nil {
+		return
+	}
+	if p.currentPrefs().DwellMode == mode {
+		return
+	}
+	p.currentPrefs().DwellMode = mode
+	if mode == dwellOff {
+		p.dwellTrackKey = ""
+		p.dwellTrackIdentity = starsTrackHighlightIdentity{}
+	}
+	// Re-evaluate the mouse after any transition, including ON -> LOCK.
+	p.dwellCursorValid = false
+}
+
+func (p *STARSPane) clearDwell() {
+	p.dwellTrackKey = ""
+	p.dwellTrackIdentity = starsTrackHighlightIdentity{}
+}
+
+// The site-adapted dwell delay is not present in REDS facility data yet;
+// use VICE's immediate nearest-track acquisition as the fallback.
+// updateDwell is called once per frame after target filtering/RPOS and before
+// rendering. A LOCKed target remains bright if the track moves while the
+// cursor stays still; moving the cursor away releases the lock. Memory use
+// stays O(1) per display, regardless of the number of live targets.
+func (p *STARSPane) updateDwell(
+	ctx *panes.Context,
+	snapshot redsnet.TaisSnapshot,
+	transforms radar.LatLonTransformations,
+) {
+	if p == nil {
+		return
+	}
+	mode := p.currentPrefs().DwellMode
+	if mode == dwellOff || !snapshot.Ready {
+		p.clearDwell()
+		p.dwellCursorValid = false
+		return
+	}
+
+	// Discard stale identity even if the pointer never moves, so a reused
+	// surveillance key cannot inherit the previous aircraft's highlight.
+	if p.dwellTrackKey != "" {
+		live := false
+		for i := range snapshot.Targets {
+			target := &snapshot.Targets[i]
+			if targetDisplayStateKey(target) == p.dwellTrackKey &&
+				trackHighlightIdentityMatches(p.dwellTrackIdentity, trackHighlightIdentity(target)) &&
+				taisTargetHasPosition(target) {
+				live = true
+				break
+			}
+		}
+		if !live {
+			p.clearDwell()
+		}
+	}
+	if ctx == nil || ctx.Mouse == nil {
+		if mode == dwellOn {
+			p.clearDwell()
+		}
+		return
+	}
+
+	pos := ctx.Mouse.Pos
+	moved := !p.dwellCursorValid || pos != p.dwellCursor
+	p.dwellCursor = pos
+	p.dwellCursorValid = true
+
+	// Don't brighten a track underneath the DCB; a stationary LOCK still
+	// releases on mouse movement over a DCB control.
+	if p.mouseOverDCB(ctx) || !ctx.PaneRect.Contains(pos) {
+		if mode == dwellOn || moved {
+			p.clearDwell()
+		}
+		return
+	}
+	if mode == dwellLock && !moved && p.dwellTrackKey != "" {
+		return
+	}
+
+	target := closestSlewTarget(snapshot, pos, transforms)
+	if target == nil {
+		if mode == dwellOn || moved {
+			p.clearDwell()
+		}
+		return
+	}
+	p.dwellTrackKey = targetDisplayStateKey(target)
+	p.dwellTrackIdentity = trackHighlightIdentity(target)
+}
+
+func (p *STARSPane) targetDwelled(target *redsnet.TaisTarget) bool {
+	return p != nil && target != nil && p.currentPrefs().DwellMode != dwellOff &&
+		p.dwellTrackKey != "" && targetDisplayStateKey(target) == p.dwellTrackKey &&
+		trackHighlightIdentityMatches(p.dwellTrackIdentity, trackHighlightIdentity(target))
+}
+
+// DWELL boosts both position and data-block illumination to full intensity
+// without changing ownership, SPC, handoff, or selected/cyan colors.
+func (p *STARSPane) dwellBrightness(target *redsnet.TaisTarget, ordinary Brightness) Brightness {
+	if p.targetDwelled(target) {
+		return Brightness(100)
+	}
+	return ordinary
+}
+
 func targetDisplayStateKey(target *redsnet.TaisTarget) string {
 	if target == nil {
 		return ""
@@ -764,6 +875,7 @@ func (p *STARSPane) drawTargetPositionSymbols(
 
 		symbol, color, brightness := p.targetPositionSymbol(target)
 		brightness = p.targetHandoffBrightness(target, brightness, now)
+		brightness = p.dwellBrightness(target, brightness)
 		if symbol == "" || brightness == 0 {
 			continue
 		}
@@ -1157,12 +1269,14 @@ func (p *STARSPane) drawTargets(
 	}
 
 	ps := p.currentPrefs()
-	if ps.Brightness.PrimarySymbols == 0 {
+	if ps.Brightness.PrimarySymbols == 0 && p.dwellTrackKey == "" {
 		return
 	}
 
 	builder := renderer.GetTrianglesBuilder()
 	defer renderer.ReturnTrianglesBuilder(builder)
+	dwellBuilder := renderer.GetTrianglesBuilder()
+	defer renderer.ReturnTrianglesBuilder(dwellBuilder)
 
 	for i := range snapshot.Targets {
 		target := &snapshot.Targets[i]
@@ -1179,8 +1293,12 @@ func (p *STARSPane) drawTargets(
 		// plot/extent information needed to reproduce single- or multi-sensor
 		// primary/beacon glyphs. Render only the fused-track target geometry here;
 		// do not invent a sensor-specific target modality from TAIS fields.
+		fillBuilder := builder
+		if p.targetDwelled(target) {
+			fillBuilder = dwellBuilder
+		}
 		addFilledTargetOctagon(
-			builder,
+			fillBuilder,
 			renderer.PointVertex{X: center.X, Y: center.Y},
 			starsTargetDiameterPixels,
 		)
@@ -1193,6 +1311,8 @@ func (p *STARSPane) drawTargets(
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 	cb.SetRGB(ps.Brightness.PrimarySymbols.ScaleRGB(p.colors.TrackGeometry))
 	builder.GenerateCommands(cb, renderer.DrawSolid, 0)
+	cb.SetRGB(p.colors.TrackGeometry) // DWELL: full intensity, same hue.
+	dwellBuilder.GenerateCommands(cb, renderer.DrawSolid, 0)
 	cb.DisableScissor()
 }
 
@@ -1243,6 +1363,7 @@ func (p *STARSPane) drawTargetLeaderLines(
 
 		color, brightness := p.targetLeaderPresentation(target)
 		brightness = p.targetHandoffBrightness(target, brightness, now)
+		brightness = p.dwellBrightness(target, brightness)
 		if brightness == 0 {
 			continue
 		}

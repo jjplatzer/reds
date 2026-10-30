@@ -55,6 +55,7 @@ type starsPreferenceSnapshot struct {
 	PTLLength           float32             `json:"ptlLength"`
 	PTLOwn              bool                `json:"ptlOwn"`
 	PTLAll              bool                `json:"ptlAll"`
+	DwellMode           dwellMode           `json:"dwellMode"`
 
 	Brightness BrightnessPreferences    `json:"brightness"`
 	CharSize   CharacterSizePreferences `json:"charSize"`
@@ -123,6 +124,7 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 		PTLLength:               p.PTLLength,
 		PTLOwn:                  p.PTLOwn,
 		PTLAll:                  p.PTLAll,
+		DwellMode:               p.DwellMode,
 		Brightness:              p.Brightness,
 		CharSize:                p.CharSize,
 		DisplayWeatherLevel:     p.DisplayWeatherLevel,
@@ -153,6 +155,7 @@ func (s starsPreferenceSnapshot) apply(p *Preferences) {
 	p.PTLLength = s.PTLLength
 	p.PTLOwn = s.PTLOwn
 	p.PTLAll = s.PTLAll
+	p.DwellMode = s.DwellMode
 	p.Brightness = s.Brightness
 	p.CharSize = s.CharSize
 	p.DisplayWeatherLevel = s.DisplayWeatherLevel
@@ -644,6 +647,62 @@ func restrictionAreaSettingsFor(ps *Preferences, area starsRestrictionArea) rest
 	return setting
 }
 
+// dwellMode is a per-TCW/TDW setting (TI 6191.409 Rev. 30, 4.15.5).
+// Keep ON as the zero value so preference sets saved before DWELL was
+// implemented restore to the existing ON default.
+type dwellMode uint8
+
+const (
+	dwellOn dwellMode = iota
+	dwellLock
+	dwellOff
+)
+
+func (m dwellMode) String() string {
+	switch m {
+	case dwellLock:
+		return "LOCK"
+	case dwellOff:
+		return "OFF"
+	default:
+		return "ON"
+	}
+}
+
+// The numeric keypad values are 0=Inhibit, 1=Enable, 2=Lock, not
+// the internal enum order. Invalid input must not change the setting.
+func parseDwellMode(s string) (dwellMode, bool) {
+	switch s {
+	case "0":
+		return dwellOff, true
+	case "1":
+		return dwellOn, true
+	case "2":
+		return dwellLock, true
+	default:
+		return dwellOff, false
+	}
+}
+
+func (m dwellMode) step(delta int) dwellMode {
+	if delta > 0 { // up/forward: OFF -> ON -> LOCK
+		switch m {
+		case dwellOff:
+			return dwellOn
+		case dwellOn:
+			return dwellLock
+		}
+	} else if delta < 0 { // down/back: LOCK -> ON -> OFF
+		switch m {
+		case dwellLock:
+			return dwellOn
+		case dwellOn:
+			return dwellOff
+		}
+	}
+	return m
+}
+
 type Preferences struct {
 	// DisplayDCB is controlled by the physical STARS <DCB> key. TI 6191.409
 	// Rev. 30 section 2.5 defines it as a toggle of the Display Control Bar.
@@ -662,6 +721,7 @@ type Preferences struct {
 	PTLLength               float32
 	PTLOwn                  bool
 	PTLAll                  bool
+	DwellMode               dwellMode
 	Brightness              BrightnessPreferences
 	CharSize                CharacterSizePreferences
 	DisplayWeatherLevel     [6]bool
@@ -729,6 +789,7 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// increments but does not prescribe a startup value. Match VICE's
 		// established STARS default of 1.0 minute.
 		PTLLength: 1.0,
+		DwellMode: dwellOn,
 		Brightness: BrightnessPreferences{
 			// The operator manual defines the allowable ranges but not startup
 			// values. Use VICE's STARS defaults so the initial presentation and

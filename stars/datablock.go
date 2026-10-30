@@ -160,6 +160,7 @@ func (p *STARSPane) drawDatablocks(
 
 		dbType, color, brightness := p.targetDatablockPresentation(target)
 		brightness = p.targetHandoffBrightness(target, brightness, now)
+		brightness = p.dwellBrightness(target, brightness)
 		if brightness == 0 {
 			continue
 		}

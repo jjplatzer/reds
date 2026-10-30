@@ -26,6 +26,7 @@ const (
 	CommandModeLDRDir
 	CommandModeLDRLen
 	CommandModePTLLength
+	CommandModeDwell
 	CommandModeSSAFilter
 	CommandModeTPA
 	CommandModeTrackReposition
@@ -63,6 +64,8 @@ func (m CommandMode) PreviewString() string {
 		return "LDR"
 	case CommandModePTLLength:
 		return "PTL"
+	case CommandModeDwell:
+		return "DWELL"
 	case CommandModeSSAFilter:
 		return ""
 	case CommandModeTrackReposition:
@@ -369,6 +372,12 @@ func init() {
 		return CommandStatus{}, nil
 	})
 
+	// TI 6191.409 4.15.5: after selecting AUX <DWELL>, enter 0/1/2.
+	registerCommand(CommandModeDwell, "[DWELL_MODE]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		p.setDwellMode(args[0].(dwellMode))
+		return CommandStatus{}, nil
+	})
+
 	// TI 6191.409 Rev. 30, 4.10 Change brightness of display objects.
 	// Once a BRITE submenu control is selected, a numeric value may be entered
 	// from the keyboard and committed with <ENTER>.
@@ -656,6 +665,7 @@ func (p *STARSPane) resetCommand() {
 	p.leaderDirectionDragAccumY = 0
 	p.leaderLengthDragAccumY = 0
 	p.ptlLengthDragAccumY = 0
+	p.dwellDragAccumY = 0
 	p.wipRBL = nil
 	// A completed or cancelled GEO RESTRICTION must not survive into the
 	// next F12 command (e.g. changing from G text to C/P/A geometry).
