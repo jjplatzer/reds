@@ -1637,5 +1637,28 @@
       "starsId": 135,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "PITNOCA",
+        "description": "PIT CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 4000,
+        "center": "N040.29.37.491,W080.14.19.515",
+        "radius": 6
+      },
+      {
+        "id": "AGCNOCA",
+        "description": "AGC CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 4000,
+        "center": "N040.21.17.806,W079.55.36.575",
+        "radius": 3
+      }
+    ],
+    "msaw": []
+  }
 }

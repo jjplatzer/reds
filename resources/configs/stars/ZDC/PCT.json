@@ -8502,5 +8502,141 @@
       "starsId": 999,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "DCANOCA",
+        "description": "DCA CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1500,
+        "radius": 5,
+        "center": "N38.51.34.118,W77.02.10.979"
+      },
+      {
+        "id": "IADNOCA",
+        "description": "IAD CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 5000,
+        "vertices": [
+          "N038.56.59.316,W077.28.51.829",
+          "N038.59.45.813,W077.35.43.624",
+          "N038.57.32.549,W077.36.42.456",
+          "N038.55.44.210,W077.29.11.083",
+          "N038.55.27.456,W077.28.36.860",
+          "N038.40.33.279,W077.28.55.647",
+          "N038.40.36.424,W077.25.38.772",
+          "N038.55.32.400,W077.25.57.614",
+          "N039.12.59.095,W077.25.41.381",
+          "N039.12.54.742,W077.28.29.143",
+          "N038.56.52.875,W077.28.37.108",
+          "N038.56.59.316,W077.28.51.829"
+        ]
+      },
+      {
+        "id": "BWINOCA",
+        "description": "BWI CONFLICT SUPPRESS",
+        "center": "KBWI",
+        "type": "circle",
+        "radius": 5,
+        "floor": 0,
+        "ceiling": 5000
+      },
+      {
+        "id": "I NOCA",
+        "description": "RICHMOND NO CA",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 5000,
+        "vertices": [
+          "N038.56.59.316,W077.28.51.829",
+          "N038.59.45.813,W077.35.43.624",
+          "N038.57.32.549,W077.36.42.456",
+          "N038.55.44.210,W077.29.11.083",
+          "N038.55.27.456,W077.28.36.860",
+          "N038.40.33.279,W077.28.55.647",
+          "N038.40.36.424,W077.25.38.772",
+          "N038.55.32.400,W077.25.57.614",
+          "N039.12.59.095,W077.25.41.381",
+          "N039.12.54.742,W077.28.29.143",
+          "N038.56.52.875,W077.28.37.108",
+          "N038.56.59.316,W077.28.51.829"
+        ]
+      }
+    ],
+    "msaw": [
+      {
+        "id": "DCAMSAW",
+        "description": "DCA MSAW SUPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 3000,
+        "vertices": "N038.49.38.530,W077.05.15.197 N038.53.56.160,W077.09.48.262 N038.56.35.077,W077.06.42.868 N038.52.14.495,W077.02.29.798 N038.52.10.114,W077.00.52.212 N038.48.44.972,W076.57.58.134 N038.39.52.753,W076.58.02.940 N038.39.32.813,W077.03.01.466"
+      },
+      {
+        "id": "IADMSAW",
+        "description": "IAD MSAW SUPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 2500,
+        "vertices": "N038.53.00.267,W077.26.31.864 N038.55.08.203,W077.33.55.656 N038.59.32.135,W077.32.44.245 N039.00.42.860,W077.25.41.629 N039.00.35.774,W077.23.13.121 N038.52.25.578,W077.23.51.710"
+      },
+      {
+        "id": "BWIMSAW",
+        "description": "BWI MSAW SUPRESS",
+        "type": "circle",
+        "center": "KBWI",
+        "radius": 5,
+        "floor": 0,
+        "ceiling": 2500
+      },
+      {
+        "id": "RICMSAW",
+        "description": "RIC MSAW SUPRESS",
+        "type": "circle",
+        "center": "KRIC",
+        "radius": 5,
+        "floor": 0,
+        "ceiling": 2000
+      },
+      {
+        "id": "HEFMSAW",
+        "description": "HEF MSAW SUPRESS",
+        "type": "circle",
+        "center": "KHEF",
+        "radius": 5,
+        "floor": 0,
+        "ceiling": 2500
+      },
+      {
+        "id": "DAAMSAW",
+        "description": "DAA MSAW SUPRESS",
+        "type": "circle",
+        "center": "KDAA",
+        "radius": 5,
+        "floor": 0,
+        "ceiling": 1700
+      },
+      {
+        "id": "ADWMSAW",
+        "description": "ADW MSAW SUPRESS",
+        "type": "circle",
+        "center": "KADW",
+        "radius": 5,
+        "floor": 0,
+        "ceiling": 2000
+      },
+      {
+        "id": "CHOMSAW",
+        "description": "CHO MSAW SUPRESS",
+        "type": "circle",
+        "center": "KCHO",
+        "radius": 10,
+        "floor": 0,
+        "ceiling": 3000
+      }
+    ]
+  }
 }

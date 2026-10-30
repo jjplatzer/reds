@@ -663,5 +663,28 @@
       "starsId": 999,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "MDTNOCA",
+        "description": "MDT CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1300,
+        "center": "N040.11.37.357,W076.45.01.483",
+        "radius": 4
+      },
+      {
+        "id": "CXYNOCA",
+        "description": "CXY CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1300,
+        "center": "N040.12.51.253,W076.50.48.403",
+        "radius": 4
+      }
+    ],
+    "msaw": []
+  }
 }

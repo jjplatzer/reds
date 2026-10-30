@@ -1808,5 +1808,36 @@
       "starsId": 8,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "19RNOCA",
+        "description": "MKE 19R CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 7000,
+        "vertices": [
+          "N043.16.33.164,W088.05.53.375",
+          "N043.15.16.520,W087.38.30.671",
+          "N042.57.14.449,W088.01.27.149",
+          "N042.56.48.686,W087.42.51.5697"
+        ]
+      },
+      {
+        "id": "1LNOCA",
+        "description": "MKE 1L CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 7000,
+        "vertices": [
+          "N042.56.39.650,W088.03.59.254",
+          "N042.54.27.443,W087.43.54.164",
+          "N042.30.04.655,W087.44.59.505",
+          "N042.30.03.240,W088.08.32.127"
+        ]
+      }
+    ],
+    "msaw": []
+  }
 }

@@ -398,5 +398,19 @@
       "starsId": 999,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "ABENOCA",
+        "description": "ABE CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1200,
+        "radius": 7,
+        "center": "40.65236,-75.4404"
+      }
+    ],
+    "msaw": []
+  }
 }

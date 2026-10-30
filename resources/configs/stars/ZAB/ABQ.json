@@ -2091,5 +2091,19 @@
       "starsId": 13,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "ABQNOCA",
+        "description": "ABQ CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 9500,
+        "radius": 10,
+        "center": "KABQ"
+      }
+    ],
+    "msaw": []
+  }
 }

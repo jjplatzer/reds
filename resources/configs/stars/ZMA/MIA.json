@@ -12402,7 +12402,7 @@
     },
     {
       "id": "01KQA4PG54FNN3YNC5JJS1RT68",
-      "name": "FLL-031S FLL_C\u0026D",
+      "name": "FLL-031S FLL_C&D",
       "shortName": "FLL_C_D",
       "starsId": 86,
       "brightnessCategory": "A"
@@ -13305,5 +13305,63 @@
       "starsId": 121,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "MIANOCA",
+        "description": "MIA CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 3000,
+        "vertices": [
+          "N25.48.37.085,W80.35.06.374",
+          "N25.44.07.170,W80.35.01.151",
+          "N25.45.22.666,W79.57.13.907",
+          "N25.51.23.540,W79.56.40.533"
+        ]
+      },
+      {
+        "id": "FLLNOCA",
+        "description": "FLL CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 3000,
+        "vertices": [
+          "N26.05.42.838,W80.20.03.890",
+          "N26.06.05.183,W79.55.58.486",
+          "N26.02.45.551,W79.58.18.903",
+          "N26.03.17.401,W80.24.50.474"
+        ]
+      },
+      {
+        "id": "FXENOCA",
+        "description": "FXE CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1200,
+        "radius": 5,
+        "center": "N26.11.49.540,W80.10.13.363"
+      },
+      {
+        "id": "OPFNOCA",
+        "description": "OPF CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1200,
+        "radius": 7,
+        "center": "N25.54.25.166,W80.16.29.327"
+      },
+      {
+        "id": "TMVNOCA",
+        "description": "TMV CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1200,
+        "radius": 7,
+        "center": "N25.38.53.381,W80.25.49.415"
+      }
+    ],
+    "msaw": []
+  }
 }

@@ -1702,5 +1702,19 @@
       "starsId": 44,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "MCINOCA",
+        "description": "MCI CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 1000,
+        "ceiling": 3000,
+        "radius": 3,
+        "center": "KMCI"
+      }
+    ],
+    "msaw": []
+  }
 }

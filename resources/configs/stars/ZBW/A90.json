@@ -4338,5 +4338,37 @@
       "starsId": 901,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "MHTNOCA",
+        "description": "MHT CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 2000,
+        "radius": 5,
+        "center": "KMHT"
+      },
+      {
+        "id": "PSMNOCA",
+        "description": "PSM CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 2000,
+        "radius": 5,
+        "center": "KPSM"
+      },
+      {
+        "id": "BOSNOCA",
+        "description": "BOS CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 2000,
+        "radius": 7,
+        "center": "N042.23.05.581,W071.00.43.615"
+      }
+    ],
+    "msaw": []
+  }
 }

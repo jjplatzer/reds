@@ -1136,5 +1136,23 @@
       "starsId": 2,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "OKCNOCA",
+        "description": "OKC CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 5000,
+        "vertices": [
+          "N035.36.52.893,W097.38.44.569",
+          "N035.36.59.458,W097.32.38.065",
+          "N035.13.02.597,W097.33.13.716",
+          "N035.13.33.331,W097.38.58.934"
+        ]
+      }
+    ],
+    "msaw": []
+  }
 }

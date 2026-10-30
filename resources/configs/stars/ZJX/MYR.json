@@ -636,5 +636,19 @@
       "starsId": 500,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "B NOCA1",
+        "description": "MYR CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 3500,
+        "radius": 10,
+        "center": "KMYR"
+      }
+    ],
+    "msaw": []
+  }
 }

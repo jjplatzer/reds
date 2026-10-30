@@ -1673,14 +1673,14 @@
     },
     {
       "id": "01HB9MKBPNH4YJDD2FDT73Z29Z",
-      "name": "NPA07/PNS \u0026 NSE",
+      "name": "NPA07/PNS & NSE",
       "shortName": "MAIN 07",
       "starsId": 11,
       "brightnessCategory": "A"
     },
     {
       "id": "01HB9MKBPP4M88Y7RQ10M7YRKT",
-      "name": "NPA25/PNS \u0026 NSE",
+      "name": "NPA25/PNS & NSE",
       "shortName": "MAIN 25",
       "starsId": 12,
       "brightnessCategory": "A"
@@ -1911,5 +1911,19 @@
       "starsId": 19,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "PNSNOCA",
+        "description": "PNS CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 3000,
+        "radius": 7,
+        "center": "KPNS"
+      }
+    ],
+    "msaw": []
+  }
 }

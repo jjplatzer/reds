@@ -1574,7 +1574,7 @@
     },
     {
       "id": "01GGFQA873F3RDFN5N1REV5X5N",
-      "name": "RSW-124S RSW RNAV 6\u002624",
+      "name": "RSW-124S RSW RNAV 6&24",
       "shortName": "G_RSW",
       "starsId": 100,
       "brightnessCategory": "B"
@@ -2267,5 +2267,9 @@
       "starsId": 424,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [],
+    "msaw": []
+  }
 }

@@ -889,5 +889,36 @@
       "starsId": 29,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "B NOCA1",
+        "description": "BHM CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 3500,
+        "vertices": [
+          "33.532504,-86.897208",
+          "33.677967,-86.641151",
+          "33.611529,-86.584176",
+          "33.462847,-86.839472"
+        ]
+      },
+      {
+        "id": "B NOCA2",
+        "description": "BHM CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 3500,
+        "vertices": [
+          "33.672883,-86.695616",
+          "33.453065,-86.695274",
+          "33.453311,-86.79461",
+          "33.672271,-86.794879"
+        ]
+      }
+    ],
+    "msaw": []
+  }
 }

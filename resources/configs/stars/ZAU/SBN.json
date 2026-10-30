@@ -580,5 +580,19 @@
       "starsId": 24,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "SBNNOCA",
+        "description": "SBN CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "radius": 4,
+        "ceiling": 3000,
+        "center": "KSBN"
+      }
+    ],
+    "msaw": []
+  }
 }

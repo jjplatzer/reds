@@ -273,5 +273,19 @@
       "starsId": 902,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "LBBNOCA",
+        "description": "LBB CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 5300,
+        "radius": 5,
+        "center": "KLBB"
+      }
+    ],
+    "msaw": []
+  }
 }

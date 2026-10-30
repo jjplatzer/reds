@@ -5676,5 +5676,32 @@
       "starsId": 5,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "D01NOCA",
+        "description": "D01 CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 5000,
+        "ceiling": 13000,
+        "vertices": [
+          "N039.18.01.727,W104.33.48.707",
+          "N039.18.14.375,W104.45.11.370",
+          "N040.24.47.562,W104.45.01.098",
+          "N040.24.22.019,W104.31.03.253"
+        ]
+      },
+      {
+        "id": "CYSNOCA",
+        "description": "CYS CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 9500,
+        "radius": 10,
+        "center": "N041.09.19.519,W104.48.39.012"
+      }
+    ],
+    "msaw": []
+  }
 }
