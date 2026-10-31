@@ -180,6 +180,9 @@ func (p *STARSPane) drawDatablocks(
 		spc, hasSPC := targetSpecialConditionIndicator(target)
 		spcAck, spcAcknowledged := p.targetSPCAcknowledgement(target)
 		spcStyle := style
+		msaw, hasMSAW := p.msawAlert(target)
+		msawStyle := style
+		msawStyle.Color = brightness.ScaleRGB(p.colors.AlertDatablock).ToRGBA()
 		if hasSPC {
 			spcColor := p.colors.AlertDatablock
 			if spc.Class == specialConditionSecondary && !(spcAcknowledged && spcAck.ForceAlertColor) {
@@ -193,7 +196,9 @@ func (p *STARSPane) drawDatablocks(
 			// Figure 2-20 / section 2.16.2: line zero is immediately above
 			// the ACID line and carries Special Condition alert/caution text.
 			// The leader remains aligned with the ACID line.
-			if hasSPC && (spcAcknowledged || specialConditionBlinkVisible(now)) {
+			if hasMSAW && (msaw.Acknowledged || specialConditionBlinkVisible(now)) {
+				p.addDatablockLine(td, "LA", anchor, direction, -1, 0, lineHeight, msawStyle)
+			} else if hasSPC && (spcAcknowledged || specialConditionBlinkVisible(now)) {
 				p.addDatablockLine(td, spc.Abbreviation, anchor, direction, -1, 0, lineHeight, spcStyle)
 			}
 			line1 := p.targetDisplayedFullDatablockACID(target)
@@ -389,7 +394,6 @@ func (p *STARSPane) targetDatablockPresentationUnhighlighted(target *redsnet.Tai
 	if target.FlightPlan == nil {
 		return targetDatablockLimited, p.colors.UnownedDatablock, ps.Brightness.LimitedDatablocks
 	}
-
 	if p.targetOwnedByCurrentTCP(target) || p.targetInboundHandoff(target) || p.targetOutboundHandoffAccepted(target) {
 		return targetDatablockFull, p.colors.OwnedDatablock, ps.Brightness.FullDatablocks
 	}
@@ -404,6 +408,12 @@ func (p *STARSPane) targetDatablockPresentationUnhighlighted(target *redsnet.Tai
 	// Condition is presented as an FDB so its line-zero warning is visible.
 	// If another controller owns it, retain the normal unowned FDB color and
 	// OTH brightness; only the SPC abbreviation itself is alert/caution color.
+	if _, hasLA := p.msawAlert(target); hasLA {
+		// An LA may make an associated datablock Full, but it MUST NOT
+		// turn a track controlled by another TCP into a white/owned FDB.
+		// Ownership, quick-look, and handoff presentation take precedence.
+		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
+	}
 	if _, ok := targetSpecialConditionIndicator(target); ok || targetHasAltitudeFilterAlert(target) {
 		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 	}
@@ -535,7 +545,16 @@ func (p *STARSPane) targetDisplayedFullDatablockACID(target *redsnet.TaisTarget)
 			return code
 		}
 	}
-	return targetDatablockACID(target)
+	acid := targetDatablockACID(target)
+	if p != nil && acid != "" {
+		// Automatic inhibition is indicated on an actual flight-plan ACID,
+		// not on a synthesized beacon-code fallback for unassociated tracks.
+		if p.msawManuallyInhibited(target) || (target != nil && target.FlightPlan != nil &&
+			strings.TrimSpace(target.FlightPlan.ACID) != "" && msawAutomaticVFRInhibited(target)) {
+			return acid + "*"
+		}
+	}
+	return acid
 }
 
 func targetDatablockACID(target *redsnet.TaisTarget) string {

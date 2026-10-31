@@ -1309,3 +1309,97 @@ func (p *STARSPane) drawPreviewArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer
 
 	cb.DisableScissor()
 }
+
+// The list is permanently displayed while local MSAW processing is available.
+// TI 6191.409 Rev. 30 §2.15.3 fixes capacity to 50 and requires newest first.
+// REDS currently supplies LA entries only; reserve the combined title for CA/MCI.
+const msawAlertListCapacity = 50
+
+func defaultAlertListPosition() [2]float32 { return [2]float32{0.80, 0.75} }
+
+type msawAlertListEntry struct {
+	target *redsnet.TaisTarget
+	since  time.Time
+}
+
+func (p *STARSPane) msawAlertListEntries(snapshot redsnet.TaisSnapshot) []msawAlertListEntry {
+	if p == nil || p.msawAirspace == nil {
+		return nil
+	}
+	entries := make([]msawAlertListEntry, 0, min(len(p.msawAlerts), msawAlertListCapacity))
+	for i := range snapshot.Targets {
+		target := &snapshot.Targets[i]
+		state, active := p.msawAlert(target)
+		if !active || target.FlightPlan == nil || target.FlightPlan.ACID == "" || !p.targetOwnedByCurrentTCP(target) {
+			continue
+		}
+		// §2.15.3: a Full data block must appear locally. Only show entries
+		// whose rendered presentation is FDB and not suppressed by brightness.
+		dbType, _, brightness := p.targetDatablockPresentation(target)
+		if dbType != targetDatablockFull || brightness == 0 {
+			continue
+		}
+		entries = append(entries, msawAlertListEntry{target: target, since: state.Since})
+	}
+	sort.Slice(entries, func(i, j int) bool {
+		if entries[i].since.Equal(entries[j].since) {
+			return entries[i].target.FlightPlan.ACID < entries[j].target.FlightPlan.ACID
+		}
+		return entries[i].since.After(entries[j].since)
+	})
+	return entries
+}
+
+func (p *STARSPane) msawAlertListText(snapshot redsnet.TaisSnapshot) string {
+	if p == nil || p.msawAirspace == nil {
+		return ""
+	}
+	entries := p.msawAlertListEntries(snapshot)
+	var text strings.Builder
+	text.WriteString("LA/CA/MCI")
+	if len(entries) > msawAlertListCapacity {
+		fmt.Fprintf(&text, "\nMORE: %d/%d", msawAlertListCapacity, len(entries))
+	}
+	for i := 0; i < len(entries) && i < msawAlertListCapacity; i++ {
+		t := entries[i].target
+		acid := strings.ToUpper(strings.TrimSpace(t.FlightPlan.ACID))
+		// STARS displays Mode-C altitude in hundreds of feet; VICE rounds
+		// to nearest hundred for LA list rows. TAIS has no pilot altitude.
+		alt := (t.Track.ReportedAltitude + 50) / 100
+		fmt.Fprintf(&text, "\n%-13s%4d LA", acid, alt)
+	}
+	return text.String()
+}
+
+func (p *STARSPane) drawMSAWAlertList(ctx *panes.Context, zcb *renderer.ZCmdBuffer, snapshot redsnet.TaisSnapshot) {
+	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
+		return
+	}
+	text := p.msawAlertListText(snapshot)
+	if text == "" {
+		return
+	}
+	w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+	if w <= 0 || h <= 0 {
+		return
+	}
+	fontSize := p.listFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
+	if texture == 0 {
+		return
+	}
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zLists)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	td := renderer.GetTextDrawBuilder()
+	td.SetFont(p.systemFont)
+	td.AddText(text, redsmath.Vec2{
+		X: p.currentPrefs().AlertListPosition[0] * w,
+		Y: p.currentPrefs().AlertListPosition[1] * h,
+	}, renderer.TextStyle{Size: fontSize, Color: p.currentPrefs().Brightness.Lists.ScaleRGB(p.colors.List).ToRGBA()})
+	td.GenerateCommands(cb, texture)
+	renderer.ReturnTextDrawBuilder(td)
+	cb.DisableScissor()
+}

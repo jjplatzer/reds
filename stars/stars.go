@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/juliusplatzer/reds/aviation"
 	"github.com/juliusplatzer/reds/cmd/wx"
 	redslog "github.com/juliusplatzer/reds/log"
 	redsmath "github.com/juliusplatzer/reds/math"
@@ -189,6 +190,18 @@ type STARSPane struct {
 	// approach volumes. It holds pairing, minimum separation, and current
 	// Monitor/Warning/Alert state.
 	atpaTracks map[string]atpaTrackState
+
+	// Locally computed MSAW. Q/V overrides are shared among STARS panes in
+	// this process; the alert acknowledgments and list position remain local.
+	msawAudio               *msawAudioManager
+	msawAirspace            *msawAirspace
+	msawRunways             *msawRunwayIndex
+	msawSite                *msawSiteRuntimeState
+	msawAlerts              map[string]msawAlertState
+	msawGeneration          uint64
+	msawApproaches          map[string][]aviation.CIFPFinalApproach
+	msawApproachTracks      map[string]msawApproachObservation
+	msawApproachIndexLogged bool
 
 	// atpaSite is shared by every pane for the same STARS facility. ATPA
 	// system/volume/2.5 enable state is supervisor-controlled site state, not
@@ -519,7 +532,31 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 			slog.Any("error", prefSetsErr))
 	}
 	pane.atpaSite = sharedATPASiteRuntimeState(cfg)
+	pane.msawSite = sharedMSAWSite(cfg)
 	pane.crda = newCRDARuntime(cfg.Facility.RPCs)
+	if airspace, err := loadMSAWAirspace(cfg); err != nil {
+		logger.Warn("MSAW unavailable: missing or invalid airspace adaptation", slog.String("facility", cfg.Facility.Facility), slog.Any("error", err))
+	} else {
+		pane.msawAirspace = airspace
+		pane.msawAudio = newMSAWAudioManager(logger)
+		startMSAWApproachIndex()
+		if runways, e := loadMSAWRunways(); e != nil {
+			logger.Warn("MSAW departure suppression unavailable: invalid runway resource",
+				slog.String("resource", msawRunwayResource), slog.Any("error", e))
+		} else {
+			pane.msawRunways = runways
+			logger.Info("MSAW runway proximity data loaded",
+				slog.Int("runways", len(runways.runways)),
+				slog.Int("airport_keys", len(runways.byAirport)))
+		}
+		// Log the decoded counts once per pane, not on the rendering path.
+		// The inhibit geometry is facility-specific: e.g. the N90 CA zones
+		// are NOT substitutes for its separate MSAW inhibit adaptation.
+		logger.Info("MSAW airspace loaded",
+			slog.String("facility", cfg.Facility.Facility),
+			slog.Int("mva_polygons", len(airspace.polygons)),
+			slog.Int("msaw_inhibit_zones", len(airspace.inhibit)))
+	}
 	pane.longitudeScaleFactor = pane.initialLongitudeScaleFactor()
 	// Validate the magnetic-adaptation resource once at startup. The actual
 	// value is selected from the tile containing the current display center in
@@ -596,6 +633,9 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	allTargets := p.targetSnapshot()
 	now := time.Now()
 	p.updateTaisOwnership(allTargets, now)
+	// Compute from authoritative live positions, before any local TRK RPOS.
+	p.updateMSAWApproachIndex()
+	p.updateMSAW(allTargets, now)
 
 	// Coast Phase 2 removes an ordinary track from the radar display and its
 	// TPA/ATPA processing, but the retained server record is still needed for
@@ -638,6 +678,9 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.updateCRDA(allTargets) // live, pre-RPOS source locations
 	// Ghost picking must use the same frame's projected positions as drawing.
 	p.consumeMouseEvents(ctx, transforms, targets, allTargets)
+	// Update after mouse handling so a slew-click acknowledgment immediately
+	// silences the alarm, even if the LA itself remains active on screen.
+	p.updateMSAWAudio(allTargets, now)
 	p.updateDwell(ctx, targets, transforms)
 
 	p.drawNexrad(ctx, zcb, transforms)
@@ -670,6 +713,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
 	p.drawCoastSuspendList(ctx, zcb, allTargets)
+	p.drawMSAWAlertList(ctx, zcb, activeTargets)
 	p.drawTowerLists(ctx, zcb, activeTargets)
 	p.drawVideoMapsList(ctx, zcb)
 	p.drawRestrictionAreasList(ctx, zcb)
@@ -681,6 +725,10 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 func (p *STARSPane) Dispose() {
 	if p == nil {
 		return
+	}
+	if p.msawAudio != nil {
+		p.msawAudio.Stop()
+		p.msawAudio = nil
 	}
 	if p.tais != nil {
 		p.tais.Close()
@@ -986,6 +1034,29 @@ func (p *STARSPane) consumeMouseEvents(
 		return
 	}
 
+	// TI 6191.409 Rev. 30, §§7.14-7.15: Q suppresses only the current
+	// MSAW event; V toggles MSAW processing for an owned associated track.
+	// Both commands consume a track slew, not ENTER, and allow repetition.
+	if p.commandMode == CommandModeMultiFunc && mouse.WasReleased(platform.MouseButtonLeft) {
+		command := strings.ToUpper(strings.TrimSpace(p.multiFuncPrefix + p.commandInput))
+		if command == "Q" || command == "V" {
+			target := closestSlewTarget(targets, mouse.Pos, transforms)
+			var err error
+			if command == "Q" {
+				err = p.inhibitCurrentMSAW(target)
+			} else {
+				err = p.toggleTrackMSAW(target)
+			}
+			if err != nil {
+				p.commandResponse = err.Error()
+			} else {
+				p.commandResponse = ""
+			}
+			// Repetitive command remains armed for another track.
+			return
+		}
+	}
+
 	// TI 6191.409 Rev. 30, 7.16: <MULTI FUNC>, <G>, slew + left
 	// trackball acknowledges an SPC on an unassociated track system-wide. This
 	// is distinct from the bare-slew 7.3 acknowledgement, which is local for an
@@ -1171,6 +1242,18 @@ func (p *STARSPane) consumeMouseEvents(
 		return
 	}
 
+	// §4.9.6: MULTI FUNC T M + slew moves the non-resizable alert list.
+	if p.commandMode == CommandModeMultiFunc && strings.EqualFold(p.multiFuncPrefix+p.commandInput, "TM") {
+		if mouse.WasPressed(platform.MouseButtonLeft) {
+			w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+			if w > 0 && h > 0 {
+				p.currentPrefs().AlertListPosition = [2]float32{mouse.Pos.X / w, mouse.Pos.Y / h}
+			}
+			p.resetCommand()
+		}
+		return
+	}
+
 	// TI 6191.409 Rev. 30, 4.9.6 Move and show aircraft list. After
 	// <MULTI FUNC>, T, C, a left-trackball click relocates the top-left
 	// corner of the Coast/Suspend list and makes it visible. TC<ENTER> is the
@@ -1262,6 +1345,9 @@ func (p *STARSPane) consumeMouseEvents(
 			// TI 6191.409 Rev. 30, 7.3: bare slew + left trackball
 			// acknowledges an unacknowledged SPC (among the alert types handled
 			// by the real system) and leaves its abbreviation steady.
+			if p.acknowledgeMSAWBySlew(target) {
+				return
+			}
 			if p.acknowledgeSPCBySlew(target) {
 				return
 			}

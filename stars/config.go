@@ -31,6 +31,7 @@ type facilityConfig struct {
 	RPCs             []rpcConfig             `json:"rpcs"`
 	MapGroups        []mapGroupConfig        `json:"mapGroups"`
 	VideoMaps        []videoMapConfig        `json:"videoMaps"`
+	InhibitZones     msawInhibitConfig       `json:"inhibitZones"`
 }
 
 // atpaVolumeConfig is the CRC/vNAS STARS ATPA approach-volume adaptation
