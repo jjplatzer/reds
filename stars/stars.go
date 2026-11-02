@@ -186,6 +186,19 @@ type STARSPane struct {
 	// tpaTracks stores manual TPA J-Ring/Cone state local to this TCW/TDW.
 	tpaTracks map[string]tpaTrackState
 
+	// CA/MCI pairs are current VICE-style detection results; the corresponding
+	// pair events drive datablocks, acknowledgment, the list, and audio.
+	caPairs       []caPair
+	caAlerts      map[caPair]caAlertState // active events / TCW-local acknowledgments
+	caGeneration  uint64
+	caSite        *caSiteRuntimeState // shared inhibits / owned acknowledgments
+	caZones       []msawRegion
+	caZonesLoaded bool
+	caZonesValid  bool
+	mciPairs      []mciPair
+	mciAlerts     map[mciPair]mciAlertState
+	mciGeneration uint64
+
 	// atpaTracks is rebuilt from the current TAIS snapshot and adapted ATPA
 	// approach volumes. It holds pairing, minimum separation, and current
 	// Monitor/Warning/Alert state.
@@ -194,6 +207,8 @@ type STARSPane struct {
 	// Locally computed MSAW. Q/V overrides are shared among STARS panes in
 	// this process; the alert acknowledgments and list position remain local.
 	msawAudio               *msawAudioManager
+	caAudio                 *msawAudioManager
+	mciAudio                *msawAudioManager
 	msawAirspace            *msawAirspace
 	msawRunways             *msawRunwayIndex
 	msawSite                *msawSiteRuntimeState
@@ -534,6 +549,9 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	pane.atpaSite = sharedATPASiteRuntimeState(cfg)
 	pane.msawSite = sharedMSAWSite(cfg)
 	pane.crda = newCRDARuntime(cfg.Facility.RPCs)
+	// CA/MCI are independent of MSAW airspace availability.
+	pane.caAudio = newSTARSAlertAudioManager(logger, caAudioResource)
+	pane.mciAudio = newSTARSAlertAudioManager(logger, mciAudioResource)
 	if airspace, err := loadMSAWAirspace(cfg); err != nil {
 		logger.Warn("MSAW unavailable: missing or invalid airspace adaptation", slog.String("facility", cfg.Facility.Facility), slog.Any("error", err))
 	} else {
@@ -645,6 +663,11 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	// ATPA is system processing derived from the authoritative surveillance
 	// positions, not from any local TRK RPOS display relocation.
 	p.updateATPAInTrail(activeTargets)
+	// Compute associated/associated CA pairs only; presentation comes later.
+	p.updateCADetection(activeTargets, now)
+	p.updateCAEvents(activeTargets, now)
+	p.updateMCIDetection(activeTargets, now)
+	p.updateMCIEvents(activeTargets, allTargets, now)
 	// TRK RPOS is local display state layered on top of the authoritative TAIS
 	// snapshot. Entering Coast Phase 2 also removes local display-only target
 	// state such as TPA, quick-look, and manual leader direction.
@@ -680,7 +703,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.consumeMouseEvents(ctx, transforms, targets, allTargets)
 	// Update after mouse handling so a slew-click acknowledgment immediately
 	// silences the alarm, even if the LA itself remains active on screen.
-	p.updateMSAWAudio(allTargets, now)
+	p.updateSTARSAlertAudio(allTargets, now)
 	p.updateDwell(ctx, targets, transforms)
 
 	p.drawNexrad(ctx, zcb, transforms)
@@ -729,6 +752,14 @@ func (p *STARSPane) Dispose() {
 	if p.msawAudio != nil {
 		p.msawAudio.Stop()
 		p.msawAudio = nil
+	}
+	if p.caAudio != nil {
+		p.caAudio.Stop()
+		p.caAudio = nil
+	}
+	if p.mciAudio != nil {
+		p.mciAudio.Stop()
+		p.mciAudio = nil
 	}
 	if p.tais != nil {
 		p.tais.Close()
@@ -857,6 +888,35 @@ func (p *STARSPane) consumeMouseEvents(
 		p.resetCommand()
 		p.commandResponse = starsCursorLatLonReadout(lat, normalizeLongitude(lon))
 		return
+	}
+
+	// §§7.9-7.10: CA+K+slew toggles system-wide track CA inhibition;
+	// CA+slew toggles the unique current/pairwise inhibited conflict.
+	// This dedicated CA command must consume the slew before quick-look and
+	// the implied 7.3 acknowledgment. Ctrl+F8 substitutes for the ABC CA key.
+	if p.commandMode == CommandModeCA {
+		if mouse.WasReleased(platform.MouseButtonLeft) {
+			target := closestSlewTarget(targets, mouse.Pos, transforms)
+			var err error
+			switch strings.ToUpper(strings.TrimSpace(p.commandInput)) {
+			case "K":
+				err = p.toggleCATrackInhibit(target)
+			case "":
+				err = p.toggleCAPairInhibit(target)
+			default:
+				if code, ok := parseMCISlewCode(p.commandInput); ok {
+					err = p.toggleMCIBeaconInhibit(target, code)
+				} else {
+					err = ErrSTARSCommandFormat
+				}
+			}
+			if err != nil {
+				p.commandResponse = err.Error()
+			} else {
+				p.commandResponse = ""
+			}
+		}
+		return // §7.9/7.10 commands are repetitive
 	}
 
 	// TI 6191.409 Rev. 30, 6.4: MIN uses two consecutive trackball
@@ -1340,6 +1400,12 @@ func (p *STARSPane) consumeMouseEvents(
 			// retained until that controller slews/selects the track. Consume
 			// the click here so it cannot also become a single-track quick look.
 			if p.acknowledgeOutboundHandoff(target) {
+				return
+			}
+			// CA acknowledgement is pair-scoped, independent of LA and SPC.
+			caAcknowledged := p.acknowledgeCABySlew(target)
+			mciAcknowledged := p.acknowledgeMCIBySlew(target)
+			if caAcknowledged || mciAcknowledged {
 				return
 			}
 			// TI 6191.409 Rev. 30, 7.3: bare slew + left trackball

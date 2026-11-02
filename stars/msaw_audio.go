@@ -34,23 +34,29 @@ type msawAudioManager struct {
 }
 
 func newMSAWAudioManager(logger *redslog.Logger) *msawAudioManager {
-	if !util.ResourceExists(msawAudioResource) {
+	return newSTARSAlertAudioManager(logger, msawAudioResource)
+}
+
+// Every alert tone uses the same short, nonblocking PCM playback mechanism.
+// The Oto context is shared internally by platform.NewAudioPlayer.
+func newSTARSAlertAudioManager(logger *redslog.Logger, resource string) *msawAudioManager {
+	if !util.ResourceExists(resource) {
 		if logger != nil {
-			logger.Warn("STARS MSAW sound unavailable", slog.String("resource", msawAudioResource))
+			logger.Warn("STARS alert sound unavailable", slog.String("resource", resource))
 		}
 		return nil
 	}
-	pcm, err := platform.DecodeWAV(util.LoadResourceBytes(msawAudioResource))
+	pcm, err := platform.DecodeWAV(util.LoadResourceBytes(resource))
 	if err != nil {
 		if logger != nil {
-			logger.Warn("STARS MSAW sound cannot be decoded", slog.String("resource", msawAudioResource), slog.Any("error", err))
+			logger.Warn("STARS alert sound cannot be decoded", slog.String("resource", resource), slog.Any("error", err))
 		}
 		return nil
 	}
 	player, err := platform.NewAudioPlayer()
 	if err != nil {
 		if logger != nil {
-			logger.Warn("STARS MSAW audio output unavailable", slog.Any("error", err))
+			logger.Warn("STARS alert audio output unavailable", slog.Any("error", err))
 		}
 		return nil
 	}
@@ -94,7 +100,7 @@ func (m *msawAudioManager) repeat(ctx context.Context) {
 			m.disabled = true // avoid retrying every rendered frame
 			m.mu.Unlock()
 			if m.logger != nil {
-				m.logger.Warn("STARS MSAW audio playback failed", slog.Any("error", err))
+				m.logger.Warn("STARS alert audio playback failed", slog.Any("error", err))
 			}
 			return
 		}

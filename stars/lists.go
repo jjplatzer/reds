@@ -1310,63 +1310,129 @@ func (p *STARSPane) drawPreviewArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer
 	cb.DisableScissor()
 }
 
-// The list is permanently displayed while local MSAW processing is available.
-// TI 6191.409 Rev. 30 §2.15.3 fixes capacity to 50 and requires newest first.
-// REDS currently supplies LA entries only; reserve the combined title for CA/MCI.
+// TI 6191.409 Rev. 30 §2.15.3: LA, CA and MCI share one non-resizable,
+// newest-first list with a maximum of 50 displayed alert entries. Pair alerts
+// appear ONCE per conflict, rather than once for each displayed datablock.
 const msawAlertListCapacity = 50
 
 func defaultAlertListPosition() [2]float32 { return [2]float32{0.80, 0.75} }
 
-type msawAlertListEntry struct {
-	target *redsnet.TaisTarget
-	since  time.Time
+type starsAlertListEntry struct {
+	line  string
+	since time.Time
 }
 
-func (p *STARSPane) msawAlertListEntries(snapshot redsnet.TaisSnapshot) []msawAlertListEntry {
-	if p == nil || p.msawAirspace == nil {
+// alertListFullDatablock respects the actual local FDB presentation (including
+// brightness). An unassociated MCI intruder's LDB never qualifies by itself.
+func (p *STARSPane) alertListFullDatablock(t *redsnet.TaisTarget) bool {
+	if t == nil || t.FlightPlan == nil || t.FlightPlan.Deleted || t.FlightPlan.Suspended {
+		return false
+	}
+	kind, _, brightness := p.targetDatablockPresentation(t)
+	return kind == targetDatablockFull && brightness != 0
+}
+
+func starsAlertACID(t *redsnet.TaisTarget) string {
+	if t == nil || t.FlightPlan == nil {
+		return ""
+	}
+	return strings.ToUpper(strings.TrimSpace(t.FlightPlan.ACID))
+}
+
+func (p *STARSPane) starsAlertListEntries(snapshot redsnet.TaisSnapshot) []starsAlertListEntry {
+	if p == nil || !snapshot.Ready {
 		return nil
 	}
-	entries := make([]msawAlertListEntry, 0, min(len(p.msawAlerts), msawAlertListCapacity))
+	// Build the track lookup once per frame, even with many simultaneous pairs.
+	byKey := make(map[string]*redsnet.TaisTarget, len(snapshot.Targets))
 	for i := range snapshot.Targets {
-		target := &snapshot.Targets[i]
-		state, active := p.msawAlert(target)
-		if !active || target.FlightPlan == nil || target.FlightPlan.ACID == "" || !p.targetOwnedByCurrentTCP(target) {
+		t := &snapshot.Targets[i]
+		if key := targetDisplayStateKey(t); key != "" {
+			byKey[key] = t
+		}
+	}
+	entries := make([]starsAlertListEntry, 0, min(len(p.msawAlerts)+len(p.caAlerts)+len(p.mciAlerts), msawAlertListCapacity))
+	if p.msawAirspace != nil {
+		for i := range snapshot.Targets {
+			t := &snapshot.Targets[i]
+			event, ok := p.msawAlert(t)
+			if !ok || !p.targetOwnedByCurrentTCP(t) || !p.alertListFullDatablock(t) {
+				continue
+			}
+			acid := starsAlertACID(t)
+			if acid == "" {
+				continue
+			}
+			// As in the original LA list, display reported altitude in hundreds.
+			alt := (t.Track.ReportedAltitude + 50) / 100
+			entries = append(entries, starsAlertListEntry{line: fmt.Sprintf("%-13s%4d LA", acid, alt), since: event.Since})
+		}
+	}
+	for pair, event := range p.caAlerts {
+		a, b := byKey[pair.A], byKey[pair.B]
+		if a == nil || b == nil || starsAlertACID(a) == "" || starsAlertACID(b) == "" {
 			continue
 		}
-		// §2.15.3: a Full data block must appear locally. Only show entries
-		// whose rendered presentation is FDB and not suppressed by brightness.
-		dbType, _, brightness := p.targetDatablockPresentation(target)
-		if dbType != targetDatablockFull || brightness == 0 {
+		ids, ok := caPairIdentity(pair, byKey)
+		if !ok || !caIdentitiesMatch(ids, caIdentityPair{event.AIdentity, event.BIdentity}) {
 			continue
 		}
-		entries = append(entries, msawAlertListEntry{target: target, since: state.Since})
+		// Inhibits may be changed by slew *after* pair detection this frame.
+		if p.caTrackInhibited(a) || p.caTrackInhibited(b) {
+			continue
+		}
+		if !p.alertListFullDatablock(a) && !p.alertListFullDatablock(b) {
+			continue
+		}
+		entries = append(entries, starsAlertListEntry{
+			line: fmt.Sprintf("%s*%s CA", starsAlertACID(a), starsAlertACID(b)), since: event.Since,
+		})
+	}
+	for pair, event := range p.mciAlerts {
+		a, b := byKey[pair.Associated], byKey[pair.Intruder]
+		if a == nil || b == nil || starsAlertACID(a) == "" || b.FlightPlan != nil {
+			continue
+		}
+		if !trackHighlightIdentityMatches(event.AssociatedIdentity, trackHighlightIdentity(a)) ||
+			!trackHighlightIdentityMatches(event.IntruderIdentity, trackHighlightIdentity(b)) ||
+			event.IntruderCode != mciBeaconCode(b.Track.ReportedBeaconCode) {
+			continue
+		}
+		// MCI suppression is specific to a beacon code, not all intruders.
+		if p.mciAlertInhibitedFor(a, event.IntruderCode) {
+			continue
+		}
+		if !p.alertListFullDatablock(a) {
+			continue
+		}
+		entries = append(entries, starsAlertListEntry{
+			line: fmt.Sprintf("%s*%s MCI", starsAlertACID(a), event.IntruderCode), since: event.Since,
+		})
 	}
 	sort.Slice(entries, func(i, j int) bool {
 		if entries[i].since.Equal(entries[j].since) {
-			return entries[i].target.FlightPlan.ACID < entries[j].target.FlightPlan.ACID
+			return entries[i].line < entries[j].line
 		}
 		return entries[i].since.After(entries[j].since)
 	})
 	return entries
 }
 
+// Retain the original method name to keep existing LA tests and pane rendering
+// intact. Its contents now include the CA and MCI event streams as well.
 func (p *STARSPane) msawAlertListText(snapshot redsnet.TaisSnapshot) string {
-	if p == nil || p.msawAirspace == nil {
+	if p == nil || (p.msawAirspace == nil && !p.caZonesValid) {
 		return ""
 	}
-	entries := p.msawAlertListEntries(snapshot)
+	entries := p.starsAlertListEntries(snapshot)
 	var text strings.Builder
 	text.WriteString("LA/CA/MCI")
 	if len(entries) > msawAlertListCapacity {
 		fmt.Fprintf(&text, "\nMORE: %d/%d", msawAlertListCapacity, len(entries))
 	}
 	for i := 0; i < len(entries) && i < msawAlertListCapacity; i++ {
-		t := entries[i].target
-		acid := strings.ToUpper(strings.TrimSpace(t.FlightPlan.ACID))
-		// STARS displays Mode-C altitude in hundreds of feet; VICE rounds
-		// to nearest hundred for LA list rows. TAIS has no pilot altitude.
-		alt := (t.Track.ReportedAltitude + 50) / 100
-		fmt.Fprintf(&text, "\n%-13s%4d LA", acid, alt)
+		text.WriteByte('\n')
+		text.WriteString(entries[i].line)
 	}
 	return text.String()
 }

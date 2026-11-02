@@ -183,6 +183,10 @@ func (p *STARSPane) drawDatablocks(
 		msaw, hasMSAW := p.msawAlert(target)
 		msawStyle := style
 		msawStyle.Color = brightness.ScaleRGB(p.colors.AlertDatablock).ToRGBA()
+		caActive, caUnacknowledged := p.caTrackAlertPresentation(target)
+		mciActive, mciUnacknowledged := p.mciTrackAlertPresentation(target)
+		caActive = caActive || mciActive
+		caUnacknowledged = caUnacknowledged || mciUnacknowledged
 		if hasSPC {
 			spcColor := p.colors.AlertDatablock
 			if spc.Class == specialConditionSecondary && !(spcAcknowledged && spcAck.ForceAlertColor) {
@@ -196,12 +200,26 @@ func (p *STARSPane) drawDatablocks(
 			// Figure 2-20 / section 2.16.2: line zero is immediately above
 			// the ACID line and carries Special Condition alert/caution text.
 			// The leader remains aligned with the ACID line.
-			if hasMSAW && (msaw.Acknowledged || specialConditionBlinkVisible(now)) {
-				p.addDatablockLine(td, "LA", anchor, direction, -1, 0, lineHeight, msawStyle)
-			} else if hasSPC && (spcAcknowledged || specialConditionBlinkVisible(now)) {
-				p.addDatablockLine(td, spc.Abbreviation, anchor, direction, -1, 0, lineHeight, spcStyle)
+			// Each CA pair retains its own acknowledgment; if any conflict is
+			// unacknowledged, the CA abbreviation flashes. LA and CA occupy
+			// separate cells, so neither can overwrite the other.
+			spcText := ""
+			spcVisible := false
+			if hasSPC {
+				spcText = spc.Abbreviation
+				spcVisible = spcAcknowledged || specialConditionBlinkVisible(now)
 			}
+			redAlerts, spcSuffix := caLineZeroText(hasMSAW, msaw.Acknowledged, caActive, caUnacknowledged,
+				spcText, spcVisible, specialConditionBlinkVisible(now))
+			p.addDatablockLineSegments(td, redAlerts, spcSuffix, anchor, direction, -1, 0, lineHeight, msawStyle, spcStyle)
 			line1 := p.targetDisplayedFullDatablockACID(target)
+			if p.caTrackInhibited(target) || p.mciTrackInhibited(target) {
+				if strings.HasSuffix(line1, "*") { // simultaneous MSAW+CA inhibit
+					line1 = strings.TrimSuffix(line1, "*") + "+"
+				} else {
+					line1 += string(rune(0x80)) // STARS bitmap-font triangle glyph
+				}
+			}
 			line2 := p.targetFullDatablockLine2(target, clockPhase)
 			field6, atpaStatus, line3Suffix := p.targetFullDatablockLine3Parts(target, direction, clockPhase)
 			p.addDatablockLine(td, line1, anchor, direction, 0, 0, lineHeight, style)
@@ -229,10 +247,20 @@ func (p *STARSPane) drawDatablocks(
 			// line. An active Special Condition occupies fixed line zero and,
 			// as in STARS/VICE, also expands the LDB so the current beacon code
 			// is visible in field 1 even when normal LDB beacon display is off.
-			if hasSPC && (spcAcknowledged || specialConditionBlinkVisible(now)) {
-				p.addDatablockLine(td, spc.Abbreviation, anchor, direction, -1, 1, lineHeight, spcStyle)
+			// VICE field 0: the intruder displays CA even in an LDB.
+			// Compose with SPC instead of overprinting both at line zero.
+			if mciActive || hasSPC {
+				spcText := ""
+				spcVisible := false
+				if hasSPC {
+					spcText = spc.Abbreviation
+					spcVisible = spcAcknowledged || specialConditionBlinkVisible(now)
+				}
+				redAlert, spcSuffix := caLineZeroText(false, false, mciActive, mciUnacknowledged,
+					spcText, spcVisible, specialConditionBlinkVisible(now))
+				p.addDatablockLineSegments(td, redAlert, spcSuffix, anchor, direction, -1, 1, lineHeight, msawStyle, spcStyle)
 			}
-			if p.beaconCodeReadoutHeld || hasSPC || p.currentPrefs().DisplayLDBBeaconCodes || p.targetLDBBeaconReadoutActive(target, now) {
+			if p.beaconCodeReadoutHeld || mciActive || hasSPC || p.currentPrefs().DisplayLDBBeaconCodes || p.targetLDBBeaconReadoutActive(target, now) {
 				line1 := normalizeBeaconCode(target.Track.ReportedBeaconCode)
 				p.addDatablockLine(td, line1, anchor, direction, 0, 1, lineHeight, style)
 			}
@@ -333,7 +361,7 @@ func (p *STARSPane) targetAltitudeFilterAllowsDatablock(target *redsnet.TaisTarg
 	if p.beaconCodeReadoutHeld {
 		return true
 	}
-	if targetHasAltitudeFilterSPC(target) || targetHasAltitudeFilterAlert(target) {
+	if targetHasAltitudeFilterSPC(target) || targetHasAltitudeFilterAlert(target) || p.caTrackAlertActive(target) || p.caTrackInhibited(target) || p.mciTrackAlertActive(target) || p.mciTrackInhibited(target) {
 		return true
 	}
 
@@ -415,6 +443,11 @@ func (p *STARSPane) targetDatablockPresentationUnhighlighted(target *redsnet.Tai
 		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 	}
 	if _, ok := targetSpecialConditionIndicator(target); ok || targetHasAltitudeFilterAlert(target) {
+		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
+	}
+	// Active or explicitly inhibited CA must remain visible in the FDB of
+	// an unowned associated track, without changing its ownership color.
+	if p.caTrackAlertActive(target) || p.caTrackInhibited(target) || p.mciTrackInhibited(target) || p.mciTrackAlertActive(target) {
 		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 	}
 	// §6.13.12: while Beacon Code Readout is held, unowned associated
