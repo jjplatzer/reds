@@ -25,11 +25,12 @@ const (
 )
 
 // ARINC424Result is the subset of the FAA CIFP parsed by VICE's
-// StaticDatabase.LookupWaypoint: radio navaids/localizers plus en-route,
-// airport-terminal, and heliport-terminal waypoints.
+// StaticDatabase: radio navaids/localizers, en-route/terminal waypoints and
+// individual runway thresholds. Runway records never enter waypoint lookup.
 type ARINC424Result struct {
 	Navaids map[string]Navaid
 	Fixes   map[string]Fix
+	Runways map[string][]Runway
 }
 
 func parseCIFPInt(field []byte) (int, error) {
@@ -122,13 +123,14 @@ func parseCIFPStationDeclination(field []byte) (float64, bool, error) {
 	}
 }
 
-// ParseARINC424 parses the waypoint/navaid records from an FAA FAACIFP18 file.
+// ParseARINC424 parses navigation and runway records from an FAA FAACIFP18 file.
 // The byte offsets intentionally mirror VICE's ARINC424 parser. Parsing is
 // streaming: the 50+ MB source file is never retained in memory.
 func ParseARINC424(r io.Reader) (ARINC424Result, error) {
 	result := ARINC424Result{
 		Navaids: make(map[string]Navaid),
 		Fixes:   make(map[string]Fix),
+		Runways: make(map[string][]Runway),
 	}
 
 	br := bufio.NewReaderSize(r, 64*1024)
@@ -268,6 +270,26 @@ func ParseARINC424(r io.Reader) (ARINC424Result, error) {
 
 		case 'P':
 			switch line[12] {
+			case 'G': // Runway record, ARINC 424 section 4.1.10 (VICE offsets).
+				if line[21] != '0' && line[21] != '1' {
+					break
+				}
+				id := strings.TrimSpace(string(line[13:18]))
+				if !strings.HasPrefix(id, "RW") || cifpFieldEmpty(line[32:51]) {
+					break
+				}
+				at, parseErr := parseCIFPLatLong(line[32:41], line[41:51])
+				if parseErr != nil || math.Abs(at.Lat) > 90 || math.Abs(at.Lon) > 180 || (at.Lat == 0 && at.Lon == 0) {
+					break // Missing/corrupt runway data cannot justify reduced CA.
+				}
+				elevation, elevationErr := strconv.Atoi(strings.TrimSpace(string(line[66:71])))
+				airport := strings.TrimSpace(string(line[6:10]))
+				if airport != "" {
+					result.Runways[airport] = append(result.Runways[airport], Runway{
+						ID: strings.TrimPrefix(id, "RW"), Threshold: at,
+						Elevation: elevation, HasElevation: elevationErr == nil,
+					})
+				}
 			case 'C': // airport terminal waypoint
 				id := strings.TrimSpace(string(line[13:18]))
 				location, parseErr := parseCIFPLatLong(line[32:41], line[41:51])
@@ -335,7 +357,7 @@ func LoadCIFPDatabase() (StaticDatabase, error) {
 			cifpDatabaseErr = err
 			return
 		}
-		cifpDatabase = StaticDatabase{Navaids: result.Navaids, Fixes: result.Fixes}
+		cifpDatabase = StaticDatabase{Navaids: result.Navaids, Fixes: result.Fixes, Runways: result.Runways}
 	})
 	return cifpDatabase, cifpDatabaseErr
 }
