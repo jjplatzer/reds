@@ -71,10 +71,11 @@ type starsPreferenceSnapshot struct {
 	VideoMapsList       videoMapsListPreferences  `json:"videoMapsList"`
 	RestrictionAreaList basicSTARSListPreferences `json:"restrictionAreaList"`
 
-	PreviewAreaPosition [2]float32                 `json:"previewAreaPosition"`
-	SSAListPosition     [2]float32                 `json:"ssaListPosition"`
-	CoastSuspendList    basicSTARSListPreferences  `json:"coastSuspendList"`
-	MCISuppressionList  *basicSTARSListPreferences `json:"mciSuppressionList,omitempty"`
+	PreviewAreaPosition  [2]float32                 `json:"previewAreaPosition"`
+	SSAListPosition      [2]float32                 `json:"ssaListPosition"`
+	CoastSuspendList     basicSTARSListPreferences  `json:"coastSuspendList"`
+	MCISuppressionList   *basicSTARSListPreferences `json:"mciSuppressionList,omitempty"`
+	AltimeterStationList *basicSTARSListPreferences `json:"altimeterStationList,omitempty"`
 	// The LA/CA/MCI list is not hideable/resizable, only movable (§4.9.6).
 	AlertListPosition *[2]float32                  `json:"alertListPosition,omitempty"`
 	TowerLists        [3]basicSTARSListPreferences `json:"towerLists"`
@@ -140,6 +141,7 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 	filters := p.AltitudeFilters
 	alertListPosition := p.AlertListPosition
 	mciSuppressionList := p.MCISuppressionList
+	altimeterStationList := p.AltimeterStationList
 	return starsPreferenceSnapshot{
 		UserCenter:              p.UserCenter,
 		UseUserCenter:           p.UseUserCenter,
@@ -165,6 +167,7 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 		SSAListPosition:         p.SSAListPosition,
 		CoastSuspendList:        p.CoastSuspendList,
 		MCISuppressionList:      &mciSuppressionList,
+		AltimeterStationList:    &altimeterStationList,
 		AlertListPosition:       &alertListPosition,
 		TowerLists:              p.TowerLists,
 		SSAFilter:               p.SSAFilter,
@@ -212,6 +215,10 @@ func (s starsPreferenceSnapshot) apply(p *Preferences) {
 	p.MCISuppressionList = basicSTARSListPreferences{Position: [2]float32{.05, .55}}
 	if s.MCISuppressionList != nil {
 		p.MCISuppressionList = *s.MCISuppressionList
+	}
+	p.AltimeterStationList = defaultAltimeterStationList()
+	if s.AltimeterStationList != nil {
+		p.AltimeterStationList = *s.AltimeterStationList
 	}
 	p.AlertListPosition = defaultAlertListPosition()
 	if s.AlertListPosition != nil {
@@ -557,6 +564,10 @@ type basicSTARSListPreferences struct {
 	Lines    int
 }
 
+func defaultAltimeterStationList() basicSTARSListPreferences {
+	return basicSTARSListPreferences{Position: [2]float32{.80, .15}}
+}
+
 // ssaFilterPreferences is the per-position state controlled by the Main DCB
 // <SSA FILTER> submenu in TI 6191.409 Rev. 30, 4.7 / Figure 4-7. The ALL
 // bit is intentionally independent of the individual bits: while ALL is on,
@@ -787,6 +798,7 @@ type Preferences struct {
 	AlertListPosition       [2]float32 // fixed-capacity LA/CA/MCI list, location only
 	CoastSuspendList        basicSTARSListPreferences
 	MCISuppressionList      basicSTARSListPreferences
+	AltimeterStationList    basicSTARSListPreferences
 	TowerLists              [3]basicSTARSListPreferences
 	SSAFilter               ssaFilterPreferences
 	CRDAStatusList          crdaStatusListPreferences
@@ -898,8 +910,9 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// coordinates. REDS screen coordinates use a top-left origin, so the
 		// equivalent default is (.05, .10). TI 6191.409 4.9.4 allows the
 		// entering keyboard to relocate this position independently.
-		SSAListPosition:    [2]float32{ssaDefaultX, ssaDefaultY},
-		MCISuppressionList: basicSTARSListPreferences{Position: [2]float32{.05, .55}},
+		SSAListPosition:      [2]float32{ssaDefaultX, ssaDefaultY},
+		MCISuppressionList:   basicSTARSListPreferences{Position: [2]float32{.05, .55}},
+		AltimeterStationList: defaultAltimeterStationList(),
 		// TI 6191.409 does not prescribe an initial Coast/Suspend-list location,
 		// size, or visibility; these are saved preference-set characteristics.
 		// Match VICE's established fallback: five aircraft lines, hidden, at

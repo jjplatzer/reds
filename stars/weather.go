@@ -11,6 +11,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/url"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -24,6 +25,13 @@ const (
 	starsAWCMETAREndpoint        = "https://aviationweather.gov/api/data/metar"
 	starsMETARRefreshInterval    = time.Minute
 	starsMETARHTTPTimeout        = 10 * time.Second
+	// §4.9.19 permits an adapted stale interval (FAA default 45 seconds).
+	// AWC is polled once/minute rather than being a continuous sensor feed:
+	// allow two polling intervals before M, and retain the ten-minute missing
+	// interval. Freshness measures successful pressure retrieval, not the age
+	// of the hourly METAR's observation timestamp.
+	starsAltimeterStaleAfter   = 2 * starsMETARRefreshInterval
+	starsAltimeterMissingAfter = 10 * time.Minute
 )
 
 var (
@@ -55,16 +63,21 @@ type starsMETARUpdate struct {
 type starsMETARBatchUpdate struct {
 	METARs map[string]starsMETAR
 	Err    error
+	ReadAt time.Time
 }
 
 type ssaAirportWeatherStation struct {
 	display string
 	icao    string
+	adapted bool // adapted to this TCW/TDW's SSA, including entries beyond field N's six
 }
 
 type ssaAirportWeatherState struct {
 	stations    []ssaAirportWeatherStation
+	allStations []ssaAirportWeatherStation // alphabetical, de-duplicated TRACON union
 	metars      map[string]starsMETAR
+	lastRead    map[string]time.Time
+	startedAt   time.Time
 	updates     chan starsMETARBatchUpdate
 	fetching    bool
 	lastAttempt time.Time
@@ -220,34 +233,49 @@ func (p *STARSPane) initializeSystemAltimeter(airport string) {
 // when a single pressure unit is displayed. Preserve CRC's adaptation order,
 // de-duplicate by resolved ICAO station, and keep the three-character display
 // identifier separate from the station identifier used by AviationWeather.
+// The fetch and independent §4.9.19 list cover the union of all facility areas.
 func (p *STARSPane) initializeSSAAirportWeather(airports []string) {
 	if p == nil {
 		return
 	}
 
 	state := ssaAirportWeatherState{
-		metars:  make(map[string]starsMETAR),
-		updates: make(chan starsMETARBatchUpdate, 1),
+		metars: make(map[string]starsMETAR), lastRead: make(map[string]time.Time),
+		updates: make(chan starsMETARBatchUpdate, 1), startedAt: time.Now(),
 	}
 	seen := make(map[string]struct{})
-	for _, airport := range airports {
-		if len(state.stations) == 6 {
-			break
-		}
+	add := func(airport string, adapted bool) {
 		display := starsAirportDisplayID(airport)
 		icao := strings.ToUpper(strings.TrimSpace(resolveSTARSAltimeterAirport(airport)))
 		if display == "" || icao == "" {
-			continue
+			return
 		}
 		if _, ok := seen[icao]; ok {
-			continue
+			return
 		}
 		seen[icao] = struct{}{}
-		state.stations = append(state.stations, ssaAirportWeatherStation{
-			display: display,
-			icao:    icao,
-		})
+		station := ssaAirportWeatherStation{display: display, icao: icao, adapted: adapted}
+		state.allStations = append(state.allStations, station)
+		if adapted && len(state.stations) < 6 {
+			state.stations = append(state.stations, station)
+		}
 	}
+	// Preserve the current area's field-N selection/order. Only the independent
+	// station list uses the complete facility union, without a six-airport cap.
+	for _, airport := range airports {
+		add(airport, true)
+	}
+	for _, area := range p.config.Facility.Areas {
+		for _, airport := range area.SSAAirports {
+			add(airport, false)
+		}
+	}
+	sort.Slice(state.allStations, func(i, j int) bool {
+		if state.allStations[i].display != state.allStations[j].display {
+			return state.allStations[i].display < state.allStations[j].display
+		}
+		return state.allStations[i].icao < state.allStations[j].icao
+	})
 	p.ssaAirportWeather = state
 }
 
@@ -301,7 +329,7 @@ func (p *STARSPane) consumeSystemAltimeterUpdates() {
 }
 
 func (p *STARSPane) refreshSSAAirportWeather() {
-	if p == nil || len(p.ssaAirportWeather.stations) == 0 || p.ssaAirportWeather.updates == nil || p.ssaAirportWeather.fetching {
+	if p == nil || len(p.ssaAirportWeather.allStations) == 0 || p.ssaAirportWeather.updates == nil || p.ssaAirportWeather.fetching {
 		return
 	}
 	now := time.Now()
@@ -311,15 +339,15 @@ func (p *STARSPane) refreshSSAAirportWeather() {
 
 	p.ssaAirportWeather.lastAttempt = now
 	p.ssaAirportWeather.fetching = true
-	icaos := make([]string, 0, len(p.ssaAirportWeather.stations))
-	for _, station := range p.ssaAirportWeather.stations {
+	icaos := make([]string, 0, len(p.ssaAirportWeather.allStations))
+	for _, station := range p.ssaAirportWeather.allStations {
 		icaos = append(icaos, station.icao)
 	}
 	updates := p.ssaAirportWeather.updates
 	go func() {
 		metars, err := fetchSTARSAWCMETARs(context.Background(), icaos)
 		select {
-		case updates <- starsMETARBatchUpdate{METARs: metars, Err: err}:
+		case updates <- starsMETARBatchUpdate{METARs: metars, Err: err, ReadAt: time.Now()}:
 		default:
 		}
 	}()
@@ -342,45 +370,91 @@ func (p *STARSPane) consumeSSAAirportWeatherUpdates() {
 				}
 				continue
 			}
-			// A successful batch replaces the prior snapshot. This avoids
-			// continuing to label an airport "A" if the current response no
-			// longer supplies an altimeter for it.
-			p.ssaAirportWeather.metars = update.METARs
+			readAt := update.ReadAt
+			if readAt.IsZero() {
+				readAt = time.Now()
+			}
+			// Retain the last pressure on omissions/errors. Its last successful
+			// read stops advancing, so the display becomes M instead of silently
+			// disappearing or continuing to advertise an automatic A setting.
+			for _, station := range p.ssaAirportWeather.allStations {
+				if metar, ok := update.METARs[station.icao]; ok && metar.HasAltimeter {
+					p.ssaAirportWeather.metars[station.icao] = metar
+					p.ssaAirportWeather.lastRead[station.icao] = readAt
+				}
+			}
 		default:
 			return
 		}
 	}
 }
 
-func formatSSAAirportWeatherLines(stations []ssaAirportWeatherStation, metars map[string]starsMETAR) []string {
-	entries := make([]string, 0, min(len(stations), 6))
-	for _, station := range stations[:min(len(stations), 6)] {
-		metar, ok := metars[station.icao]
-		if !ok || !metar.HasAltimeter {
-			continue
-		}
-		entries = append(entries, fmt.Sprintf(
-			"%s %02d.%02dA",
-			station.display,
-			metar.Altimeter/100,
-			metar.Altimeter%100,
-		))
-	}
-
-	lines := make([]string, 0, 2)
-	for len(entries) > 0 {
-		n := min(3, len(entries))
-		lines = append(lines, strings.Join(entries[:n], " "))
-		entries = entries[n:]
-	}
-	return lines
-}
-
-func (p *STARSPane) ssaAirportWeatherLines() []string {
+func (p *STARSPane) ssaAltimeterEntries(now time.Time, normalVisible bool) []starsListLine {
 	if p == nil {
 		return nil
 	}
-	return formatSSAAirportWeatherLines(p.ssaAirportWeather.stations, p.ssaAirportWeather.metars)
+	state := &p.ssaAirportWeather
+	var entries []starsListLine
+	selected := make(map[string]bool, len(state.stations))
+	add := func(station ssaAirportWeatherStation, setting string, missing bool) {
+		color := p.colors.List
+		if missing {
+			color = p.colors.TextWarning
+		}
+		entries = append(entries, starsListLine{text: station.display + " " + setting, color: color, blink: missing})
+	}
+	for _, station := range state.stations {
+		selected[station.icao] = true
+		setting, missing := state.altimeterStatus(station, now)
+		if missing || (normalVisible && state.metars[station.icao].HasAltimeter) {
+			add(station, setting, missing)
+		}
+	}
+	// The normal field-N selection is limited to six. Missing stations that
+	// are adapted to this area beyond that limit must still be forced into SSA.
+	for _, station := range state.allStations {
+		if station.adapted && !selected[station.icao] {
+			if setting, missing := state.altimeterStatus(station, now); missing {
+				add(station, setting, true)
+			}
+		}
+	}
+	return entries
+}
+
+// §4.9.19: M is an automatic station's stale/missing status, not a manual
+// setting. Missing entries flash yellow and bypass the local SSA filter.
+func (s *ssaAirportWeatherState) altimeterStatus(station ssaAirportWeatherStation, now time.Time) (setting string, missing bool) {
+	metar, has := s.metars[station.icao]
+	last := s.lastRead[station.icao]
+	status := "A"
+	if !has || !metar.HasAltimeter || last.IsZero() || now.Sub(last) >= starsAltimeterStaleAfter {
+		status = "M"
+	}
+	if last.IsZero() {
+		last = s.startedAt
+	}
+	missing = status == "M" && !last.IsZero() && now.Sub(last) >= starsAltimeterMissingAfter
+	if !has || !metar.HasAltimeter {
+		return "     " + status, missing
+	}
+	return fmt.Sprintf("%02d.%02d%s", metar.Altimeter/100, metar.Altimeter%100, status), missing
+}
+
+func (p *STARSPane) altimeterStationListLines(now time.Time) []starsListLine {
+	if p == nil || !p.currentPrefs().AltimeterStationList.Visible || len(p.ssaAirportWeather.allStations) == 0 {
+		return nil
+	}
+	lines := []starsListLine{{text: "ALTIMETER", color: p.colors.List}}
+	for i, station := range p.ssaAirportWeather.allStations {
+		setting, missing := p.ssaAirportWeather.altimeterStatus(station, now)
+		color := p.colors.List
+		if missing {
+			color = p.colors.TextWarning
+		}
+		lines = append(lines, starsListLine{text: fmt.Sprintf("%-2d %-3s %s", i, station.display, setting), color: color, blink: missing})
+	}
+	return lines
 }
 
 func (p *STARSPane) ssaFieldEText(now time.Time, showTime, showAltimeter bool) string {

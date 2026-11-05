@@ -698,15 +698,24 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		// Remaining fields between E1 and N are omitted until their corresponding
 		// facility, surveillance, flow-management, or controller state exists.
 
-		// Field N - Airport with Altimeter. Table 2-15 allows up to six airports
-		// when only one pressure unit is displayed. REDS currently receives the
-		// area's adapted SSA airport list from CRC and uses AviationWeather METARs,
-		// so each available value is an automatically updated (A) inHg reading.
-		// Match VICE's presentation of three airports per line.
-		if filter.All || filter.AirportWeather {
-			for _, line := range p.ssaAirportWeatherLines() {
-				addLine(line, p.colors.List)
+		// Field N: normal selection is capped at six airports, three per line.
+		// §4.9.19 forces missing stations adapted here into SSA even when the
+		// airport-weather filter is off. Blink each missing entry independently.
+		now := time.Now()
+		weather := p.ssaAltimeterEntries(now, filter.All || filter.AirportWeather)
+		for i := 0; i < len(weather); i += 3 {
+			var segments []textSegment
+			for j := i; j < min(i+3, len(weather)); j++ {
+				text := weather[j].text
+				if weather[j].blink && (now.UnixMilli()/500)&1 == 0 {
+					text = strings.Repeat(" ", len(text))
+				}
+				if j != i {
+					text = " " + text
+				}
+				segments = append(segments, textSegment{text: text, color: weather[j].color})
 			}
+			addSegments(segments...)
 		}
 
 		// Field O - Mode of Operation.
@@ -1528,10 +1537,31 @@ func (p *STARSPane) drawMCISuppressionList(ctx *panes.Context, zcb *renderer.ZCm
 // Standard list font, color and brightness for both the fixed alert list
 // and the independently movable MCI suppression list (§§7.18-7.19).
 func (p *STARSPane) drawAlertTextList(ctx *panes.Context, zcb *renderer.ZCmdBuffer, text string, position [2]float32) {
+	if p == nil || text == "" {
+		return
+	}
+	lines := []starsListLine{{text: text, color: p.colors.List}}
+	p.drawSystemList(ctx, zcb, lines, position)
+}
+
+type starsListLine struct {
+	text  string
+	color renderer.RGB
+	blink bool
+}
+
+func (p *STARSPane) drawAltimeterStationList(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
+	if p == nil {
+		return
+	}
+	p.drawSystemList(ctx, zcb, p.altimeterStationListLines(time.Now()), p.currentPrefs().AltimeterStationList.Position)
+}
+
+func (p *STARSPane) drawSystemList(ctx *panes.Context, zcb *renderer.ZCmdBuffer, lines []starsListLine, position [2]float32) {
 	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
 		return
 	}
-	if text == "" {
+	if len(lines) == 0 {
 		return
 	}
 	w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
@@ -1550,10 +1580,15 @@ func (p *STARSPane) drawAlertTextList(ctx *panes.Context, zcb *renderer.ZCmdBuff
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
 	td := renderer.GetTextDrawBuilder()
 	td.SetFont(p.systemFont)
-	td.AddText(text, redsmath.Vec2{
-		X: position[0] * w,
-		Y: position[1] * h,
-	}, renderer.TextStyle{Size: fontSize, Color: p.currentPrefs().Brightness.Lists.ScaleRGB(p.colors.List).ToRGBA()})
+	ypos := position[1] * h
+	blinkOff := (time.Now().UnixMilli()/500)&1 == 0
+	for _, line := range lines {
+		if !line.blink || !blinkOff {
+			td.AddText(line.text, redsmath.Vec2{X: position[0] * w, Y: ypos},
+				renderer.TextStyle{Size: fontSize, Color: p.currentPrefs().Brightness.Lists.ScaleRGB(line.color).ToRGBA()})
+		}
+		ypos += float32(fontSize)
+	}
 	td.GenerateCommands(cb, texture)
 	renderer.ReturnTextDrawBuilder(td)
 	cb.DisableScissor()

@@ -744,6 +744,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawCoastSuspendList(ctx, zcb, allTargets)
 	p.drawMSAWAlertList(ctx, zcb, activeTargets)
 	p.drawMCISuppressionList(ctx, zcb, allTargets)
+	p.drawAltimeterStationList(ctx, zcb)
 	p.drawTowerLists(ctx, zcb, activeTargets)
 	p.drawVideoMapsList(ctx, zcb)
 	p.drawRestrictionAreasList(ctx, zcb)
@@ -1278,6 +1279,22 @@ func (p *STARSPane) consumeMouseEvents(
 				ps.SSAListPosition = [2]float32{
 					mouse.Pos.X / w,
 					mouse.Pos.Y / h,
+				}
+			}
+			p.resetCommand()
+		}
+		return
+	}
+
+	// §§4.9.18-19: TL + slew positions and displays the altimeter station
+	// list, independently of the local SSA airport selection/filter.
+	if p.commandMode == CommandModeMultiFunc && strings.EqualFold(p.multiFuncPrefix+p.commandInput, "TL") {
+		if mouse.WasReleased(platform.MouseButtonLeft) {
+			w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+			if w > 0 && h > 0 {
+				if err := p.moveAltimeterStationList([2]float32{mouse.Pos.X / w, mouse.Pos.Y / h}); err != nil {
+					p.commandResponse = err.Error()
+					return
 				}
 			}
 			p.resetCommand()
