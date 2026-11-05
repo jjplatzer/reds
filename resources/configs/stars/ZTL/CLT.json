@@ -1920,14 +1920,14 @@
     },
     {
       "id": "01H8TMEJ6STB4ZCFD9WMZPX4TX",
-      "name": "AKH RNAV (GPS) RWY 03 \u0026 21",
+      "name": "AKH RNAV (GPS) RWY 03 & 21",
       "shortName": "AKH GPS",
       "starsId": 94,
       "brightnessCategory": "B"
     },
     {
       "id": "01H8TMEJ6S53J1548G5KYP2AE0",
-      "name": "EHO RNAV (GPS) RWY 05 \u0026 23",
+      "name": "EHO RNAV (GPS) RWY 05 & 23",
       "shortName": "EHO GPS",
       "starsId": 95,
       "brightnessCategory": "B"
@@ -1941,7 +1941,7 @@
     },
     {
       "id": "01H8TMEJ6R06FKEBMJXX1JB8A1",
-      "name": "HKY RNAV (GPS) RWY 01 \u0026 06",
+      "name": "HKY RNAV (GPS) RWY 01 & 06",
       "shortName": "HKY GPS",
       "starsId": 97,
       "brightnessCategory": "B"
@@ -1955,35 +1955,35 @@
     },
     {
       "id": "01H8TMEJ6R2DVZ97J5X0QQRSQQ",
-      "name": "JQF RNAV (GPS) RWY 02 \u0026 20",
+      "name": "JQF RNAV (GPS) RWY 02 & 20",
       "shortName": "JQF GPS",
       "starsId": 99,
       "brightnessCategory": "B"
     },
     {
       "id": "01H8TPAPAB9ZXA78KVSVTS982P",
-      "name": "RUQ RNAV (GPS) RWY 02 \u0026 20",
+      "name": "RUQ RNAV (GPS) RWY 02 & 20",
       "shortName": "RUQ GPS",
       "starsId": 101,
       "brightnessCategory": "B"
     },
     {
       "id": "01H8TMEJ6QH0GY0WYDBAVJY4CF",
-      "name": "SVH RNAV (GPS) RWY 10 \u0026 28",
+      "name": "SVH RNAV (GPS) RWY 10 & 28",
       "shortName": "SVH GPS",
       "starsId": 102,
       "brightnessCategory": "B"
     },
     {
       "id": "01H8TMEJ6Q0FSN2EHP6Y2F09VX",
-      "name": "UZA RNAV (GPS) RWY 02 \u0026 20",
+      "name": "UZA RNAV (GPS) RWY 02 & 20",
       "shortName": "UZA GPS",
       "starsId": 103,
       "brightnessCategory": "B"
     },
     {
       "id": "01H8TMEJ6PWYYC6D1JTY4VT4N4",
-      "name": "LKR RNAV (GPS) RWY 06 \u0026 24",
+      "name": "LKR RNAV (GPS) RWY 06 & 24",
       "shortName": "LKR GPS",
       "starsId": 104,
       "brightnessCategory": "B"
@@ -1997,42 +1997,42 @@
     },
     {
       "id": "01H8TMEJ6PZFQ4DB1YPZETS6XZ",
-      "name": "35A RNAV (GPS) RWY 05 \u0026 23",
+      "name": "35A RNAV (GPS) RWY 05 & 23",
       "shortName": "35A GPS",
       "starsId": 106,
       "brightnessCategory": "B"
     },
     {
       "id": "01H8TMEJ6NFAJTAM3N95187APG",
-      "name": "VUJ RNAV (GPS) RWY 04R \u0026 22L",
+      "name": "VUJ RNAV (GPS) RWY 04R & 22L",
       "shortName": "VUJ GPS",
       "starsId": 107,
       "brightnessCategory": "B"
     },
     {
       "id": "01H8TMEJ6N1WN21ASAWCGE7J5Q",
-      "name": "DCM RNAV (GPS) RWY 17 \u0026 35",
+      "name": "DCM RNAV (GPS) RWY 17 & 35",
       "shortName": "DCM GPS",
       "starsId": 108,
       "brightnessCategory": "B"
     },
     {
       "id": "01H8TMEJ6N8NEYSF3411RRF2TK",
-      "name": "EXX RNAV (GPS) RWY 06 \u0026 24",
+      "name": "EXX RNAV (GPS) RWY 06 & 24",
       "shortName": "EXX GPS",
       "starsId": 109,
       "brightnessCategory": "B"
     },
     {
       "id": "01H8TMEJ6M97KZ7DEP24B4521T",
-      "name": "AFP RNAV (GPS) RWY 16 \u0026 34",
+      "name": "AFP RNAV (GPS) RWY 16 & 34",
       "shortName": "AFP GPS",
       "starsId": 110,
       "brightnessCategory": "B"
     },
     {
       "id": "01H8TMEJ6K64SN46GMCK577H37",
-      "name": "N52 RNAV (GPS) RWY 04 \u0026 22",
+      "name": "N52 RNAV (GPS) RWY 04 & 22",
       "shortName": "N52 GPS",
       "starsId": 111,
       "brightnessCategory": "B"
@@ -2095,7 +2095,7 @@
     },
     {
       "id": "01H8TMEJ6KTA12D6RY59BWV0XH",
-      "name": "PYG RNAV (GPS) RWY 06 \u0026 24",
+      "name": "PYG RNAV (GPS) RWY 06 & 24",
       "shortName": "PYG GPS",
       "starsId": 123,
       "brightnessCategory": "B"
@@ -2207,5 +2207,23 @@
       "starsId": 17,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "CLTNOCA",
+        "description": "CLT CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 7000,
+        "vertices": [
+          "N035.40.57.861,W080.55.23.748",
+          "N035.40.57.861,W081.02.11.671",
+          "N034.42.27.537,W080.59.16.933",
+          "N034.42.46.598,W080.47.34.467"
+        ]
+      }
+    ],
+    "msaw": []
+  }
 }

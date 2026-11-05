@@ -2891,5 +2891,81 @@
       "starsId": 321,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "PHXNOCA",
+        "description": "PHX CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 4000,
+        "vertices": [
+          "N033.26.38.139,W112.00.53.833",
+          "N033.27.23.252,W111.56.47.409",
+          "N033.27.53.918,W111.32.08.677",
+          "N033.24.52.135,W111.32.07.276",
+          "N033.25.10.784,W111.56.50.925",
+          "N033.25.39.198,W112.00.44.686",
+          "N033.25.16.374,W112.04.09.526",
+          "N033.25.00.155,W112.21.27.268",
+          "N033.27.14.010,W112.21.23.312",
+          "N033.26.55.992,W112.04.24.276",
+          "N033.26.38.139,W112.00.53.833"
+        ]
+      }
+    ],
+    "msaw": [
+      {
+        "id": "FLGMSAW",
+        "description": "FLG MSAW SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 10600,
+        "radius": 5,
+        "center": "KFLG"
+      },
+      {
+        "id": "SDLMSAW",
+        "description": "SDL MSAW SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 5300,
+        "radius": 5,
+        "center": "KSDL"
+      },
+      {
+        "id": "PHXMSAW",
+        "description": "PHX MSAW SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 3000,
+        "radius": 5,
+        "center": "KPHX"
+      },
+      {
+        "id": "IWAMSAW",
+        "description": "IWA MSAW SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 3200,
+        "vertices": [
+          "N033.14.41.748,W111.37.19.453",
+          "N033.19.40.783,W111.43.01.787",
+          "N033.22.48.786,W111.39.12.749",
+          "N033.17.16.161,W111.32.58.088",
+          "N033.14.09.627,W111.35.34.863"
+        ]
+      },
+      {
+        "id": "PRCMSAW",
+        "description": "PRC MSAW SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 9000,
+        "radius": 5,
+        "center": "KPRC"
+      }
+    ]
+  }
 }

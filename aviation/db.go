@@ -8,6 +8,16 @@ type Point struct {
 	Lon float64
 }
 
+// Runway is one landing direction, using the CIFP threshold rather than the
+// airport reference point or the end of a NASR pavement polygon. Its reciprocal
+// threshold defines the true centerline without magnetic-heading conversion.
+type Runway struct {
+	ID           string
+	Threshold    Point
+	Elevation    int // feet MSL
+	HasElevation bool
+}
+
 // Navaid is the subset of an FAA CIFP navaid record that REDS currently needs.
 // The additional DME/declination fields mirror VICE's database representation so
 // the parser can be reused by later STARS navigation functions without rereading
@@ -33,12 +43,12 @@ type Fix struct {
 	Location Point
 }
 
-// StaticDatabase is the portion of VICE's aviation database used by the STARS
-// *T range-bearing-line command. LookupWaypoint deliberately checks navaids
-// before fixes, matching VICE.
+// StaticDatabase supplies STARS navigation lookups and runway geometry.
+// LookupWaypoint deliberately checks navaids before fixes, matching VICE.
 type StaticDatabase struct {
 	Navaids map[string]Navaid
 	Fixes   map[string]Fix
+	Runways map[string][]Runway // ICAO airport -> individual landing directions
 }
 
 func (d StaticDatabase) LookupWaypoint(id string) (Point, bool) {

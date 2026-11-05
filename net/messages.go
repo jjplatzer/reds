@@ -119,9 +119,9 @@ type TaisTrack struct {
 	YPos               int       `json:"yPos,omitempty"`
 	Lat                float64   `json:"lat,omitempty"`
 	Lon                float64   `json:"lon,omitempty"`
-	VerticalRate       int       `json:"verticalRate,omitempty"`
-	VX                 int       `json:"vx,omitempty"`
-	VY                 int       `json:"vy,omitempty"`
+	VerticalRate       int       `json:"verticalRate,omitempty"` // signed ft/min (TAIS vVert)
+	VX                 int       `json:"vx,omitempty"`           // eastward ground velocity, knots
+	VY                 int       `json:"vy,omitempty"`           // northward ground velocity, knots
 	VerticalRateRaw    int       `json:"verticalRateRaw,omitempty"`
 	VXRaw              int       `json:"vxRaw,omitempty"`
 	VYRaw              int       `json:"vyRaw,omitempty"`
@@ -141,6 +141,10 @@ type TaisTrack struct {
 	// decode time rather than serialized or guessed from the numeric value.
 	HasReportedAltitude bool `json:"-"`
 
+	// Presence is needed for prediction: an omitted velocity component is
+	// not a measured zero. Copies of a decoded track retain this metadata.
+	motionDecoded, hasHorizontalVelocity, hasVerticalRate bool
+
 	// Aircraft-transmitted ADS-B Flight ID from a verified source, when available.
 	// Not populated by the current TAIS-only upstream.
 	ADSBFlightID string `json:"adsbFlightId,omitempty"`
@@ -149,9 +153,9 @@ type TaisTrack struct {
 	Registration string `json:"registration,omitempty"`
 }
 
-// UnmarshalJSON remembers whether the TAIS wire message actually carried a
-// reported altitude. The usual int zero value cannot distinguish missing
-// Mode-C data from a real 0-ft altitude. Explicit null is treated as absent.
+// UnmarshalJSON remembers whether the TAIS wire message actually carried
+// altitude and motion. Integer zero values cannot distinguish missing data
+// from a real zero measurement. Explicit null is treated as absent.
 // The shadowed pointer is used only for decoding and does not change the
 // existing int-based interfaces or allocate a map for every aircraft.
 func (t *TaisTrack) UnmarshalJSON(data []byte) error {
@@ -160,16 +164,44 @@ func (t *TaisTrack) UnmarshalJSON(data []byte) error {
 	wire := struct {
 		*trackAlias
 		ReportedAltitude *int `json:"reportedAltitude"`
+		VX               *int `json:"vx"`
+		VY               *int `json:"vy"`
+		VerticalRate     *int `json:"verticalRate"`
 	}{trackAlias: &parsed}
 	if err := json.Unmarshal(data, &wire); err != nil {
 		return err
 	}
 	*t = TaisTrack(parsed)
+	t.motionDecoded = true
+	t.hasHorizontalVelocity = wire.VX != nil && wire.VY != nil
+	t.hasVerticalRate = wire.VerticalRate != nil
+	if wire.VX != nil {
+		t.VX = *wire.VX
+	}
+	if wire.VY != nil {
+		t.VY = *wire.VY
+	}
+	if wire.VerticalRate != nil {
+		t.VerticalRate = *wire.VerticalRate
+	}
 	if wire.ReportedAltitude != nil {
 		t.ReportedAltitude = *wire.ReportedAltitude
 		t.HasReportedAltitude = true
 	}
 	return nil
+}
+
+// HasHorizontalVelocity distinguishes known east/north components from an
+// incomplete wire report. For programmatically constructed tracks, a nonzero
+// vector is evidence of motion; the all-zero default remains unknown.
+func (t *TaisTrack) HasHorizontalVelocity() bool {
+	return t != nil && ((!t.motionDecoded && (t.VX != 0 || t.VY != 0)) || t.hasHorizontalVelocity)
+}
+
+// HasVerticalRate does not treat a missing vertical rate as measured level
+// flight. No rate is inferred from a single altitude observation.
+func (t *TaisTrack) HasVerticalRate() bool {
+	return t != nil && ((!t.motionDecoded && t.VerticalRate != 0) || t.hasVerticalRate)
 }
 
 // UsableReportedAltitude is a conservative proxy for Mode-C availability.

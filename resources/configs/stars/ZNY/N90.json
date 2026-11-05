@@ -5985,7 +5985,7 @@
     },
     {
       "id": "01H5QWFYERA9E97TQKPFTKTA17",
-      "name": "LGA \u0026 VAP",
+      "name": "LGA & VAP",
       "shortName": "L13STAD",
       "starsId": 427,
       "brightnessCategory": "A"
@@ -6251,5 +6251,137 @@
       "starsId": 515,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "JFKNOCA",
+        "description": "JFK CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1500,
+        "radius": 3,
+        "center": "KJFK"
+      },
+      {
+        "id": "EWRNOCA",
+        "description": "EWR CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 3000,
+        "radius": 10,
+        "center": "KEWR"
+      },
+      {
+        "id": "LGANOCA",
+        "description": "LGA CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1200,
+        "radius": 2,
+        "center": "KLGA"
+      },
+      {
+        "id": "FRGNOCA",
+        "description": "FRG CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1200,
+        "radius": 2,
+        "center": "KFRG"
+      },
+      {
+        "id": "ISPNOCA",
+        "description": "ISP CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1500,
+        "radius": 3,
+        "center": "KISP"
+      },
+      {
+        "id": "HVNNOCA",
+        "description": "HVN CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1500,
+        "radius": 3,
+        "center": "KHVN"
+      },
+      {
+        "id": "TEBNOCA",
+        "description": "TEB CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1500,
+        "radius": 3,
+        "center": "KTEB"
+      },
+      {
+        "id": "HPNNOCA",
+        "description": "HPN CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1500,
+        "radius": 3,
+        "center": "KHPN"
+      },
+      {
+        "id": "MMUNOCA",
+        "description": "MMU CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1500,
+        "radius": 3,
+        "center": "KMMU"
+      },
+      {
+        "id": "DXRNOCA",
+        "description": "DXR CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1500,
+        "radius": 3,
+        "center": "KDXR"
+      },
+      {
+        "id": "CDWNOCA",
+        "description": "CDW CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1500,
+        "radius": 3,
+        "center": "KCDW"
+      },
+      {
+        "id": "SWFNOCA",
+        "description": "SWF CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1500,
+        "radius": 3,
+        "center": "KSWF"
+      },
+      {
+        "id": "POUNOCA",
+        "description": "POU CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1500,
+        "radius": 3,
+        "center": "KPOU"
+      }
+    ],
+    "msaw": [
+      {
+        "id": "TEBNOSA",
+        "description": "TEB MSAW SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 2000,
+        "radius": 6,
+        "center": "KTEB"
+      }
+    ]
+  }
 }

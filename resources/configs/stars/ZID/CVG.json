@@ -2532,5 +2532,19 @@
       "starsId": 117,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "CVGNOCA",
+        "description": "CVG CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 3000,
+        "radius": 5,
+        "center": "KCVG"
+      }
+    ],
+    "msaw": []
+  }
 }

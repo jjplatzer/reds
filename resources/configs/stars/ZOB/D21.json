@@ -3622,5 +3622,49 @@
       "starsId": 517,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "S NOCA",
+        "description": "DTW South CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 6000,
+        "vertices": [
+          "N042.13.55.716,W083.24.08.245",
+          "N042.35.57.275,W083.09.27.333",
+          "N042.30.15.902,W083.00.37.078",
+          "N042.13.00.839,W083.17.38.505"
+        ]
+      },
+      {
+        "id": "N NOCA",
+        "description": "DTW North CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 6000,
+        "vertices": [
+          "N042.13.32.013,W083.26.15.027",
+          "N042.11.26.755,W083.18.21.324",
+          "N041.45.06.674,W083.33.50.438",
+          "N041.49.48.940,W083.45.43.533"
+        ]
+      },
+      {
+        "id": "W NOCA",
+        "description": "DTW West CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 6000,
+        "vertices": [
+          "N042.14.04.807,W083.20.09.924",
+          "N042.10.27.635,W083.20.12.396",
+          "N042.16.22.356,W082.43.29.335",
+          "N042.16.22.356,W082.43.29.335"
+        ]
+      }
+    ],
+    "msaw": []
+  }
 }

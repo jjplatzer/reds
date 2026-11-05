@@ -315,11 +315,46 @@ func (p *STARSPane) ssaSystemStatusText() (string, bool) {
 // ssaSystemOffText returns SSA field J (System OFF Indicators).
 //
 // TI 6191.409 Rev. 30, Table 2-18 defines INTRAIL as the system-off indicator
-// when ATPA processing is inhibited site-wide. Other site-wide inhibits can be
-// added here as REDS gains their authoritative state.
+// when ATPA processing is inhibited site-wide. Alert system inhibitors share
+// this field; individual track/pair inhibition is indicated on datablocks.
 func (p *STARSPane) ssaSystemOffText() string {
+	if p == nil {
+		return ""
+	}
+	site := p.caSiteState()
+	site.RLock()
+	var off []string
+	if site.approachDisabled {
+		off = append(off, "APP")
+	}
+	if site.caDisabled {
+		off = append(off, "CA")
+	}
+	if site.mciDisabled {
+		off = append(off, "MCI")
+	}
+	if site.msawDisabled {
+		off = append(off, "MSAW")
+	}
+	site.RUnlock()
 	if p != nil && p.atpaAdapted() && !p.atpaEnabled() {
-		return "INTRAIL"
+		off = append(off, "INTRAIL")
+	}
+	return strings.Join(off, " ")
+}
+
+// §7.13 reports the entering TCP's bulk pair inhibition only at that
+// TCW/TDW, in the SYS OFF field. Individual track/pair inhibits do not go here.
+func (p *STARSPane) ssaCAInhibitText() string {
+	if p == nil {
+		return ""
+	}
+	site := p.caSiteState()
+	site.RLock()
+	inhibited := site.tcpInhibits[p.ownTCP()]
+	site.RUnlock()
+	if inhibited {
+		return "CA INHIB " + p.ownTCP()
 	}
 	return ""
 }
@@ -623,6 +658,7 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		// only and does not change the underlying system state.
 		if filter.All || filter.SysOff {
 			addLine(p.ssaSystemOffText(), p.colors.List)
+			addLine(p.ssaCAInhibitText(), p.colors.List)
 		}
 
 		// Field K - Display Range / PTL value. RANGE and PTL are independently
@@ -1307,5 +1343,218 @@ func (p *STARSPane) drawPreviewArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer
 	td.GenerateCommands(cb, texture)
 	renderer.ReturnTextDrawBuilder(td)
 
+	cb.DisableScissor()
+}
+
+// TI 6191.409 Rev. 30 §2.15.3: LA, CA and MCI share one non-resizable,
+// newest-first list with a maximum of 50 displayed alert entries. Pair alerts
+// appear ONCE per conflict, rather than once for each displayed datablock.
+const msawAlertListCapacity = 50
+
+func defaultAlertListPosition() [2]float32 { return [2]float32{0.80, 0.75} }
+
+type starsAlertListEntry struct {
+	line  string
+	since time.Time
+}
+
+// alertListFullDatablock respects the actual local FDB presentation (including
+// brightness). An unassociated MCI intruder's LDB never qualifies by itself.
+func (p *STARSPane) alertListFullDatablock(t *redsnet.TaisTarget) bool {
+	if t == nil || t.FlightPlan == nil || t.FlightPlan.Deleted || t.FlightPlan.Suspended {
+		return false
+	}
+	kind, _, brightness := p.targetDatablockPresentation(t)
+	return kind == targetDatablockFull && brightness != 0
+}
+
+func starsAlertACID(t *redsnet.TaisTarget) string {
+	if t == nil || t.FlightPlan == nil {
+		return ""
+	}
+	return strings.ToUpper(strings.TrimSpace(t.FlightPlan.ACID))
+}
+
+func (p *STARSPane) starsAlertListEntries(snapshot redsnet.TaisSnapshot) []starsAlertListEntry {
+	if p == nil || !snapshot.Ready {
+		return nil
+	}
+	// Build the track lookup once per frame, even with many simultaneous pairs.
+	byKey := make(map[string]*redsnet.TaisTarget, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		t := &snapshot.Targets[i]
+		if key := targetDisplayStateKey(t); key != "" {
+			byKey[key] = t
+		}
+	}
+	entries := make([]starsAlertListEntry, 0, min(len(p.msawAlerts)+len(p.caAlerts)+len(p.mciAlerts), msawAlertListCapacity))
+	if p.msawAirspace != nil {
+		for i := range snapshot.Targets {
+			t := &snapshot.Targets[i]
+			event, ok := p.msawAlert(t)
+			if !ok || !p.targetOwnedByCurrentTCP(t) || !p.alertListFullDatablock(t) {
+				continue
+			}
+			acid := starsAlertACID(t)
+			if acid == "" {
+				continue
+			}
+			// As in the original LA list, display reported altitude in hundreds.
+			alt := (t.Track.ReportedAltitude + 50) / 100
+			entries = append(entries, starsAlertListEntry{line: fmt.Sprintf("%-13s%4d LA", acid, alt), since: event.Since})
+		}
+	}
+	for pair, event := range p.caAlerts {
+		a, b := byKey[pair.A], byKey[pair.B]
+		if a == nil || b == nil || starsAlertACID(a) == "" || starsAlertACID(b) == "" {
+			continue
+		}
+		site := p.caSiteState()
+		site.RLock()
+		eligible := p.caPairEligible(pair, event, a, b, site)
+		site.RUnlock()
+		if !eligible {
+			continue
+		}
+		// FDB selection queries alert presentation itself. Release the site
+		// lock before calling it, avoiding recursive RWMutex read locking.
+		if !p.alertListFullDatablock(a) && !p.alertListFullDatablock(b) {
+			continue
+		}
+		entries = append(entries, starsAlertListEntry{
+			line: fmt.Sprintf("%s*%s CA", starsAlertACID(a), starsAlertACID(b)), since: event.Since,
+		})
+	}
+	for pair, event := range p.mciAlerts {
+		a, b := byKey[pair.Associated], byKey[pair.Intruder]
+		if a == nil || b == nil || starsAlertACID(a) == "" || b.FlightPlan != nil {
+			continue
+		}
+		if !trackHighlightIdentityMatches(event.AssociatedIdentity, trackHighlightIdentity(a)) ||
+			!trackHighlightIdentityMatches(event.IntruderIdentity, trackHighlightIdentity(b)) ||
+			event.IntruderCode != mciBeaconCode(b.Track.ReportedBeaconCode) {
+			continue
+		}
+		// MCI suppression is specific to a beacon code, not all intruders.
+		if p.mciAlertInhibitedFor(a, event.IntruderCode) {
+			continue
+		}
+		if !p.alertListFullDatablock(a) {
+			continue
+		}
+		entries = append(entries, starsAlertListEntry{
+			line: fmt.Sprintf("%s*%s MCI", starsAlertACID(a), event.IntruderCode), since: event.Since,
+		})
+	}
+	sort.Slice(entries, func(i, j int) bool {
+		if entries[i].since.Equal(entries[j].since) {
+			return entries[i].line < entries[j].line
+		}
+		return entries[i].since.After(entries[j].since)
+	})
+	return entries
+}
+
+// Retain the original method name to keep existing LA tests and pane rendering
+// intact. Its contents now include the CA and MCI event streams as well.
+func (p *STARSPane) msawAlertListText(snapshot redsnet.TaisSnapshot) string {
+	if p == nil || (p.msawAirspace == nil && !p.caZonesValid) {
+		return ""
+	}
+	entries := p.starsAlertListEntries(snapshot)
+	var enabled []string
+	if p.alertSystemEnabled("MSAW") {
+		enabled = append(enabled, "LA")
+	}
+	if p.alertSystemEnabled("CA") {
+		enabled = append(enabled, "CA")
+	}
+	if p.alertSystemEnabled("MCI") {
+		enabled = append(enabled, "MCI")
+	}
+	if len(enabled) == 0 {
+		return ""
+	}
+	var text strings.Builder
+	text.WriteString(strings.Join(enabled, "/"))
+	if len(entries) > msawAlertListCapacity {
+		fmt.Fprintf(&text, "\nMORE: %d/%d", msawAlertListCapacity, len(entries))
+	}
+	for i := 0; i < len(entries) && i < msawAlertListCapacity; i++ {
+		text.WriteByte('\n')
+		text.WriteString(entries[i].line)
+	}
+	return text.String()
+}
+
+func (p *STARSPane) drawMSAWAlertList(ctx *panes.Context, zcb *renderer.ZCmdBuffer, snapshot redsnet.TaisSnapshot) {
+	if p == nil {
+		return
+	}
+	p.drawAlertTextList(ctx, zcb, p.msawAlertListText(snapshot), p.currentPrefs().AlertListPosition)
+}
+
+func (p *STARSPane) mciSuppressionListText(snapshot redsnet.TaisSnapshot) string {
+	if p == nil || !snapshot.Ready || !p.prefs.MCISuppressionList.Visible {
+		return ""
+	}
+	lines := []string{}
+	site := p.caSiteState()
+	site.RLock()
+	for i := range snapshot.Targets {
+		t := &snapshot.Targets[i]
+		o, ok := site.mciSuppress[targetDisplayStateKey(t)]
+		if !ok || !p.targetOwnedByCurrentTCP(t) || !mciOverrideRetainable(p, t, o) {
+			continue
+		}
+		code := mciBeaconCode(t.Track.ReportedBeaconCode)
+		if code == "" {
+			code = mciBeaconCode(t.FlightPlan.AssignedBeaconCode)
+		}
+		lines = append(lines, fmt.Sprintf("%-7s %4s %4s", starsAlertACID(t), code, o.Code))
+	}
+	site.RUnlock()
+	sort.Strings(lines)
+	return strings.Join(append([]string{"MCI SUPPRESSION"}, lines...), "\n")
+}
+
+func (p *STARSPane) drawMCISuppressionList(ctx *panes.Context, zcb *renderer.ZCmdBuffer, snapshot redsnet.TaisSnapshot) {
+	if p == nil {
+		return
+	}
+	p.drawAlertTextList(ctx, zcb, p.mciSuppressionListText(snapshot), p.prefs.MCISuppressionList.Position)
+}
+
+// Standard list font, color and brightness for both the fixed alert list
+// and the independently movable MCI suppression list (§§7.18-7.19).
+func (p *STARSPane) drawAlertTextList(ctx *panes.Context, zcb *renderer.ZCmdBuffer, text string, position [2]float32) {
+	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
+		return
+	}
+	if text == "" {
+		return
+	}
+	w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+	if w <= 0 || h <= 0 {
+		return
+	}
+	fontSize := p.listFontSize()
+	texture := p.systemFontTexture(ctx.Renderer, fontSize)
+	if texture == 0 {
+		return
+	}
+	x, y, width, height := ctx.PaneFramebufferRect()
+	cb := zcb.At(zLists)
+	cb.Viewport(x, y, width, height)
+	cb.Scissor(x, y, width, height)
+	cb.LoadProjectionMatrix(ctx.ScreenProjection())
+	td := renderer.GetTextDrawBuilder()
+	td.SetFont(p.systemFont)
+	td.AddText(text, redsmath.Vec2{
+		X: position[0] * w,
+		Y: position[1] * h,
+	}, renderer.TextStyle{Size: fontSize, Color: p.currentPrefs().Brightness.Lists.ScaleRGB(p.colors.List).ToRGBA()})
+	td.GenerateCommands(cb, texture)
+	renderer.ReturnTextDrawBuilder(td)
 	cb.DisableScissor()
 }

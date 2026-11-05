@@ -4510,7 +4510,7 @@
     },
     {
       "id": "01H4VY5HRPY8S1CF2JPCS75PB2",
-      "name": "TEXAS A\u0026M TFR",
+      "name": "TEXAS A&M TFR",
       "shortName": "TFR CLL",
       "starsId": 334,
       "brightnessCategory": "B"
@@ -4902,5 +4902,54 @@
       "starsId": 4,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "IAHNOCA",
+        "description": "IAH CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 4000,
+        "radius": 8,
+        "center": "KIAH"
+      },
+      {
+        "id": "IAHE CA",
+        "description": "IAH EAST CONFLICT SUPPRESSION",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 6000,
+        "vertices": [
+          "N030.01.32.429,W095.19.31.691",
+          "N030.01.21.834,W094.49.10.433",
+          "N029.57.31.368,W094.49.08.098",
+          "N029.57.34.472,W095.19.25.374"
+        ]
+      },
+      {
+        "id": "IAHW CA",
+        "description": "IAH WEST CONFLICT SUPPRESSION",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 6000,
+        "vertices": [
+          "N030.01.24.333,W095.51.41.055",
+          "N030.01.29.785,W095.22.21.348",
+          "N029.57.31.753,W095.21.31.195",
+          "N029.57.29.954,W095.51.44.406"
+        ]
+      },
+      {
+        "id": "HOUNOCA",
+        "description": "IAH CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 5000,
+        "radius": 8,
+        "center": "KHOU"
+      }
+    ],
+    "msaw": []
+  }
 }

@@ -2195,7 +2195,7 @@
     {
       "id": "01HB1VKE40NXAH7WW82H5A8SNG",
       "name": "CLE-028 (CLASS C D)",
-      "shortName": "C \u0026 D",
+      "shortName": "C & D",
       "starsId": 28,
       "brightnessCategory": "B"
     },
@@ -2376,5 +2376,23 @@
       "starsId": 11,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "CLENOCA",
+        "description": "CLE FINAL CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 3000,
+        "vertices": [
+          "N041.40.41.065,W081.32.08.759",
+          "N041.36.33.461,W081.24.26.152",
+          "N041.08.01.132,W082.07.52.769",
+          "N041.13.37.657,W082.15.06.289"
+        ]
+      }
+    ],
+    "msaw": []
+  }
 }

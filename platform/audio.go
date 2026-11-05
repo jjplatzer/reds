@@ -140,6 +140,18 @@ func DecodeWAV(raw []byte) (PCM, error) {
 	switch {
 	case audioFormat == 1 && channels == audioChannelCount && sampleRate == audioSampleRate && bits == 16:
 		return PCM{Data: data}, nil
+	case audioFormat == 1 && channels == 1 && sampleRate == audioSampleRate && bits == 16:
+		// STARS alarm WAVs are mono. Duplicate each 16-bit sample into both
+		// output channels to match the shared stereo Oto context.
+		if len(data)%2 != 0 {
+			return PCM{}, fmt.Errorf("invalid mono PCM16 sample length")
+		}
+		stereo := make([]byte, 2*len(data))
+		for input, output := 0, 0; input < len(data); input, output = input+2, output+4 {
+			copy(stereo[output:output+2], data[input:input+2])
+			copy(stereo[output+2:output+4], data[input:input+2])
+		}
+		return PCM{Data: stereo}, nil
 	case audioFormat == 3 && channels == audioChannelCount && sampleRate == audioSampleRate && bits == 32:
 		pcm, err := float32PCMToInt16(data)
 		if err != nil {
@@ -147,7 +159,7 @@ func DecodeWAV(raw []byte) (PCM, error) {
 		}
 		return PCM{Data: pcm}, nil
 	default:
-		return PCM{}, fmt.Errorf("unsupported WAV format, expected PCM s16le or IEEE float32 stereo 44100Hz")
+		return PCM{}, fmt.Errorf("unsupported WAV format, expected PCM s16le mono/stereo or IEEE float32 stereo 44100Hz")
 	}
 }
 

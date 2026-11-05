@@ -1253,5 +1253,24 @@
       "starsId": 11,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "AUSNOCA",
+        "description": "AUS CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 7000,
+        "vertices": [
+          "N30.32.34.436,W97.48.10.531",
+          "N29.50.29.042,W97.46.59.802",
+          "N29.50.48.312,W97.31.59.718",
+          "N30.32.53.861,W97.33.04.560",
+          "N30.32.34.436,W97.48.10.531"
+        ]
+      }
+    ],
+    "msaw": []
+  }
 }

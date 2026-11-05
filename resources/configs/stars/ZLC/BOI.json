@@ -932,7 +932,7 @@
     },
     {
       "id": "01HY67ZVBB8EWVERQKFYN3B61N",
-      "name": "BOI_036S - Ontario \u0026 Mountain Home Muni RNAV Approaches",
+      "name": "BOI_036S - Ontario & Mountain Home Muni RNAV Approaches",
       "shortName": "ONO76",
       "starsId": 36,
       "brightnessCategory": "A"
@@ -1233,7 +1233,7 @@
     },
     {
       "id": "01HY67ZVBNGQ5D5KAQ4YY5S3ST",
-      "name": "BZN_525S - BIG TIMBER RNAV RWY 6 \u0026 24",
+      "name": "BZN_525S - BIG TIMBER RNAV RWY 6 & 24",
       "shortName": "BIG-T",
       "starsId": 525,
       "brightnessCategory": "A"
@@ -1415,5 +1415,9 @@
       "starsId": 4,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [],
+    "msaw": []
+  }
 }

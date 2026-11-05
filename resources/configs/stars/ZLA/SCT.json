@@ -9467,5 +9467,123 @@
       "starsId": 562,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "LAXNOCA",
+        "description": "LAX CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 5000,
+        "radius": 10,
+        "center": "N033.56.33.635,W118.24.39.226"
+      },
+      {
+        "id": "SNANOCA",
+        "description": "SNA CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 3000,
+        "radius": 12.4,
+        "center": "KSNA"
+      },
+      {
+        "id": "SANNOCA",
+        "description": "SAN CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 5000,
+        "radius": 12.4,
+        "center": "KSAN"
+      },
+      {
+        "id": "PSPNOCA",
+        "description": "KPSP CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 4000,
+        "radius": 11,
+        "center": "KPSP"
+      },
+      {
+        "id": "ONTNOCA",
+        "description": "ONT CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 4300,
+        "radius": 8,
+        "center": "KONT"
+      },
+      {
+        "id": "VNYNOCA",
+        "description": "VNY CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1200,
+        "radius": 7,
+        "center": "KVNY"
+      },
+      {
+        "id": "BURNOCA",
+        "description": "BUR CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 3000,
+        "radius": 12.4,
+        "center": "KBUR"
+      },
+      {
+        "id": "FINNOCA",
+        "description": "LAX FINAL CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 12000,
+        "vertices": [
+          "N033.58.02.597,W118.25.53.851",
+          "N033.55.24.765,W118.24.52.657",
+          "N033.59.26.313,W117.29.05.755",
+          "N034.04.02.893,W117.31.01.578",
+          "N033.58.02.597,W118.25.53.851"
+        ]
+      },
+      {
+        "id": "W NOCA",
+        "description": "DEL REY WEST CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 5000,
+        "vertices": [
+          "N033.56.03.945,W118.23.19.795",
+          "N033.57.10.233,W118.24.06.597",
+          "N033.57.25.243,W118.30.34.881",
+          "N033.53.15.881,W118.28.48.479"
+        ]
+      },
+      {
+        "id": "E NOCA",
+        "description": "DEL REY EAST CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 5000,
+        "vertices": [
+          "N033.55.49.909,W118.25.03.561",
+          "N033.55.20.658,W118.18.44.642",
+          "N033.59.29.664,W118.20.04.348",
+          "N033.57.02.103,W118.25.47.698",
+          "N033.55.49.909,W118.25.03.561"
+        ]
+      },
+      {
+        "id": "LGBNOCA",
+        "description": "LGB CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 3000,
+        "radius": 11,
+        "center": "KLGB"
+      }
+    ],
+    "msaw": []
+  }
 }

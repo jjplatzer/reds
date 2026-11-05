@@ -687,5 +687,19 @@
       "starsId": 28,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "COSNOCA",
+        "description": "COS CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 9500,
+        "radius": 10,
+        "center": "N038.47.52.142,W104.42.03.065"
+      }
+    ],
+    "msaw": []
+  }
 }

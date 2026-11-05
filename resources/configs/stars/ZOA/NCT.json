@@ -9732,5 +9732,227 @@
       "starsId": 999,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "SFONOCA",
+        "description": "SFO CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 9500,
+        "vertices": [
+          "N037.37.08.892,W122.33.08.745",
+          "N037.22.39.887,W122.09.39.473",
+          "N037.35.58.882,W122.02.09.364",
+          "N037.46.00.246,W122.25.24.023"
+        ]
+      },
+      {
+        "id": "OAKNOCA",
+        "description": "OAK CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 9500,
+        "vertices": [
+          "N037.52.49.775,W122.17.57.264",
+          "N037.40.51.887,W122.21.36.276",
+          "N037.32.51.112,W122.02.56.907",
+          "N037.42.43.769,W121.48.34.590",
+          "N037.53.55.281,W122.20.16.955"
+        ]
+      },
+      {
+        "id": "SJCNOCA",
+        "description": "SJC CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 9500,
+        "vertices": [
+          "N037.23.02.519,W122.01.52.362",
+          "N037.11.55.003,W121.46.33.273",
+          "N037.14.26.313,W121.43.03.242",
+          "N037.26.32.028,W121.52.57.493"
+        ]
+      },
+      {
+        "id": "MRYNOCA",
+        "description": "MRY CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 9500,
+        "vertices": [
+          "N036.38.52.122,W121.54.18.929",
+          "N036.32.57.456,W121.58.21.425",
+          "N036.30.18.827,W121.44.01.442",
+          "N036.37.44.213,W121.43.51.170"
+        ]
+      },
+      {
+        "id": "RNONOCA",
+        "description": "RNO CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 9500,
+        "vertices": [
+          "N039.32.56.316,W119.49.19.716",
+          "N039.27.04.534,W119.51.36.551",
+          "N039.27.06.512,W119.41.00.031",
+          "N039.33.44.780,W119.41.42.575"
+        ]
+      },
+      {
+        "id": "SMFNOCA",
+        "description": "SMF CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 9500,
+        "vertices": [
+          "N038.48.53.569,W121.39.29.531",
+          "N038.38.04.043,W121.38.43.965",
+          "N038.37.10.375,W121.32.06.095",
+          "N038.47.13.071,W121.31.19.486"
+        ]
+      }
+    ],
+    "msaw": [
+      {
+        "id": "SFOMSAW",
+        "description": "SFO MSAW SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 2600,
+        "vertices": [
+          "N037.37.08.892,W122.33.08.745",
+          "N037.22.39.887,W122.09.39.473",
+          "N037.35.58.882,W122.02.09.364",
+          "N037.46.00.246,W122.25.24.023"
+        ]
+      },
+      {
+        "id": "OAKMSAW",
+        "description": "OAK MSAW SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 3000,
+        "vertices": [
+          "N037.52.49.775,W122.17.57.264",
+          "N037.40.51.887,W122.21.36.276",
+          "N037.32.51.112,W122.02.56.907",
+          "N037.42.43.769,W121.48.34.590",
+          "N037.53.55.281,W122.20.16.955"
+        ]
+      },
+      {
+        "id": "SJCMSAW",
+        "description": "SJC MSAW SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 3900,
+        "vertices": [
+          "N037.11.55.264,W121.46.35.498",
+          "N037.23.00.377,W122.01.49.808",
+          "N037.27.50.800,W121.57.13.200",
+          "N037.26.33.017,W121.52.58.234",
+          "N037.14.26.313,W121.43.03.242"
+        ]
+      },
+      {
+        "id": "SLCNMVA",
+        "description": "SILCN STAR SEGMENT MSAW",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 4700,
+        "vertices": [
+          "N037.05.36.689,W121.42.32.838",
+          "N037.07.14.097,W121.41.10.687",
+          "N037.08.41.974,W121.43.34.059"
+        ]
+      },
+      {
+        "id": "SNSMSAW",
+        "description": "SNS MSAW SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 5000,
+        "radius": 5,
+        "center": "KSNS"
+      },
+      {
+        "id": "MRYMSAW",
+        "description": "MRY MSAW SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 5000,
+        "vertices": [
+          "N036.38.52.122,W121.54.18.929",
+          "N036.32.57.456,W121.58.21.425",
+          "N036.30.18.827,W121.44.01.442",
+          "N036.37.44.213,W121.43.51.170"
+        ]
+      },
+      {
+        "id": "BRIXMVA",
+        "description": "BRIXX STAR SEGMENT MSAW",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 4700,
+        "vertices": [
+          "N037.15.06.632,W122.04.44.078",
+          "N037.16.34.908,W121.54.04.564",
+          "N037.13.13.377,W121.49.11.394",
+          "N037.08.51.024,W122.01.31.323"
+        ]
+      },
+      {
+        "id": "FRLNMVA",
+        "description": "FRLON STAR SEGMENT MSAW",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 2000,
+        "vertices": [
+          "N037.24.35.230,W122.07.15.580",
+          "N037.27.39.155,W121.58.20.134",
+          "N037.25.44.183,W121.56.54.550",
+          "N037.23.14.906,W122.06.01.367"
+        ]
+      },
+      {
+        "id": "SMFMSAW",
+        "description": "SMF MSAW SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1700,
+        "center": "KSMF",
+        "radius": 5
+      },
+      {
+        "id": "SACMSAW",
+        "description": "SAC MSAW SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1700,
+        "center": "KSAC",
+        "radius": 5
+      },
+      {
+        "id": "MHRMSAW",
+        "description": "MHR MSAW SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 1700,
+        "center": "KMHR",
+        "radius": 5
+      },
+      {
+        "id": "RNOMSAW",
+        "description": "RNO MSAW SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 8400,
+        "center": "KRNO",
+        "radius": 8
+      }
+    ]
+  }
 }

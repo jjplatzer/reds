@@ -35,6 +35,7 @@ const (
 	CommandModePref
 	CommandModeSavePrefAs
 	CommandModeMin
+	CommandModeCA
 	CommandModeRestrictionArea
 )
 
@@ -47,6 +48,8 @@ func (m CommandMode) PreviewString() string {
 		return "F"
 	case CommandModeRestrictionArea:
 		return "RESTR AREA"
+	case CommandModeCA:
+		return "CA"
 	case CommandModeRange:
 		return "RANGE"
 	case CommandModeRangeRings:
@@ -451,6 +454,13 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 	// repetitive until another function is selected. VICE uses the same mapping.
 	if !keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF2) {
 		p.setCommandMode(CommandModeTrackReposition)
+		return
+	}
+
+	// REDS desktop mapping of the dedicated STARS <CA> key. The operator
+	// manual calls this <CA>; Ctrl+F8 is a REDS keyboard substitute.
+	if keyboard.IsDown(platform.KeyControl) && keyboard.WasPressed(platform.KeyF8) {
+		p.setCommandMode(CommandModeCA)
 		return
 	}
 

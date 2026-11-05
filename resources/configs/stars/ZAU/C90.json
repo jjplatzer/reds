@@ -3272,5 +3272,23 @@
       "starsId": 31,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "ORDNOCA",
+        "description": "ORD FINAL CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 7000,
+        "vertices": [
+          "N041.55.55.513,W087.07.12.174",
+          "N042.04.16.874,W087.07.12.174",
+          "N042.04.16.874,W088.44.03.640",
+          "N041.53.22.624,W088.44.03.640"
+        ]
+      }
+    ],
+    "msaw": []
+  }
 }

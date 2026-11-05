@@ -896,5 +896,19 @@
       "starsId": 20,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "BUFNOCA",
+        "description": "BUF CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 2300,
+        "center": "N042.56.25.162,W078.43.47.297",
+        "radius": 6
+      }
+    ],
+    "msaw": []
+  }
 }

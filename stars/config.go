@@ -31,6 +31,60 @@ type facilityConfig struct {
 	RPCs             []rpcConfig             `json:"rpcs"`
 	MapGroups        []mapGroupConfig        `json:"mapGroups"`
 	VideoMaps        []videoMapConfig        `json:"videoMaps"`
+	InhibitZones     msawInhibitConfig       `json:"inhibitZones"`
+	CA               caConfig                `json:"ca,omitempty"`
+}
+
+type caConfig struct {
+	ParallelApproaches caParallelConfig `json:"parallelApproaches,omitempty"`
+}
+
+// Zero numeric fields select the defaults in settings(); enabled defaults to
+// true. Disable in the existing facility JSON with:
+// "ca": {"parallelApproaches": {"enabled": false}}.
+// These are REDS approximation parameters, not FAA procedural minima.
+type caParallelConfig struct {
+	Enabled                   *bool   `json:"enabled,omitempty"`
+	SeparationFactor          float64 `json:"separationFactor,omitempty"`
+	MaxCourseDifferenceDeg    float64 `json:"maxCourseDifferenceDeg,omitempty"`
+	MaxFinalDistanceNM        float64 `json:"maxFinalDistanceNM,omitempty"`
+	MaxTrackErrorDeg          float64 `json:"maxTrackErrorDeg,omitempty"`
+	MaxCrossTrackNM           float64 `json:"maxCrossTrackNM,omitempty"`
+	CrossTrackSpacingFactor   float64 `json:"crossTrackSpacingFactor,omitempty"`
+	InferredConfirmationCount int     `json:"inferredConfirmationCount,omitempty"`
+	MaxSpacingVariation       float64 `json:"maxSpacingVariation,omitempty"`
+}
+
+func (c caParallelConfig) settings() (caParallelConfig, error) {
+	if c.Enabled != nil && !*c.Enabled {
+		return c, nil
+	}
+	for _, value := range []struct {
+		field                *float64
+		fallback, upperBound float64
+	}{
+		{&c.SeparationFactor, .70, 1},
+		{&c.MaxCourseDifferenceDeg, 5, 5},
+		{&c.MaxFinalDistanceNM, 15, 30},
+		{&c.MaxTrackErrorDeg, 15, 30},
+		{&c.MaxCrossTrackNM, .20, .20},
+		{&c.CrossTrackSpacingFactor, .30, .49},
+		{&c.MaxSpacingVariation, .10, .25},
+	} {
+		if *value.field == 0 {
+			*value.field = value.fallback
+		}
+		if !caFinite(*value.field) || *value.field <= 0 || *value.field > value.upperBound {
+			return c, fmt.Errorf("invalid CA parallel-approach parameter %g", *value.field)
+		}
+	}
+	if c.InferredConfirmationCount == 0 {
+		c.InferredConfirmationCount = 2
+	}
+	if c.InferredConfirmationCount < 2 || c.InferredConfirmationCount > 10 {
+		return c, fmt.Errorf("CA inferredConfirmationCount must be between 2 and 10")
+	}
+	return c, nil
 }
 
 // atpaVolumeConfig is the CRC/vNAS STARS ATPA approach-volume adaptation

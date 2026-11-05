@@ -1121,5 +1121,28 @@
       "starsId": 25,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "CHSNOCA",
+        "description": "CHS CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "radius": 4,
+        "ceiling": 3000,
+        "center": "KCHS"
+      },
+      {
+        "id": "JZINOCA",
+        "description": "JZI CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "radius": 4,
+        "ceiling": 2000,
+        "center": "KJZI"
+      }
+    ],
+    "msaw": []
+  }
 }

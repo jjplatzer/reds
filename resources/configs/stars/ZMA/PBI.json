@@ -3095,5 +3095,19 @@
       "starsId": 452,
       "brightnessCategory": "A"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "PBINOCA",
+        "description": "PBI CONFLICT SUPPRESS",
+        "type": "circle",
+        "floor": 0,
+        "ceiling": 3000,
+        "radius": 5,
+        "center": "PBI"
+      }
+    ],
+    "msaw": []
+  }
 }

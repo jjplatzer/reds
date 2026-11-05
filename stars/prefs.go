@@ -71,12 +71,15 @@ type starsPreferenceSnapshot struct {
 	VideoMapsList       videoMapsListPreferences  `json:"videoMapsList"`
 	RestrictionAreaList basicSTARSListPreferences `json:"restrictionAreaList"`
 
-	PreviewAreaPosition [2]float32                   `json:"previewAreaPosition"`
-	SSAListPosition     [2]float32                   `json:"ssaListPosition"`
-	CoastSuspendList    basicSTARSListPreferences    `json:"coastSuspendList"`
-	TowerLists          [3]basicSTARSListPreferences `json:"towerLists"`
-	SSAFilter           ssaFilterPreferences         `json:"ssaFilter"`
-	CRDAStatusList      crdaStatusListPreferences    `json:"crdaStatusList"`
+	PreviewAreaPosition [2]float32                 `json:"previewAreaPosition"`
+	SSAListPosition     [2]float32                 `json:"ssaListPosition"`
+	CoastSuspendList    basicSTARSListPreferences  `json:"coastSuspendList"`
+	MCISuppressionList  *basicSTARSListPreferences `json:"mciSuppressionList,omitempty"`
+	// The LA/CA/MCI list is not hideable/resizable, only movable (§4.9.6).
+	AlertListPosition *[2]float32                  `json:"alertListPosition,omitempty"`
+	TowerLists        [3]basicSTARSListPreferences `json:"towerLists"`
+	SSAFilter         ssaFilterPreferences         `json:"ssaFilter"`
+	CRDAStatusList    crdaStatusListPreferences    `json:"crdaStatusList"`
 }
 
 type starsSavedPreferenceSet struct {
@@ -135,6 +138,8 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 	// a saved preference set. The pointer also marks the field as present in
 	// version-1 JSON; legacy files have no altitudeFilters member.
 	filters := p.AltitudeFilters
+	alertListPosition := p.AlertListPosition
+	mciSuppressionList := p.MCISuppressionList
 	return starsPreferenceSnapshot{
 		UserCenter:              p.UserCenter,
 		UseUserCenter:           p.UseUserCenter,
@@ -159,6 +164,8 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 		PreviewAreaPosition:     p.PreviewAreaPosition,
 		SSAListPosition:         p.SSAListPosition,
 		CoastSuspendList:        p.CoastSuspendList,
+		MCISuppressionList:      &mciSuppressionList,
+		AlertListPosition:       &alertListPosition,
 		TowerLists:              p.TowerLists,
 		SSAFilter:               p.SSAFilter,
 		CRDAStatusList:          p.CRDAStatusList,
@@ -202,6 +209,14 @@ func (s starsPreferenceSnapshot) apply(p *Preferences) {
 	p.PreviewAreaPosition = s.PreviewAreaPosition
 	p.SSAListPosition = s.SSAListPosition
 	p.CoastSuspendList = s.CoastSuspendList
+	p.MCISuppressionList = basicSTARSListPreferences{Position: [2]float32{.05, .55}}
+	if s.MCISuppressionList != nil {
+		p.MCISuppressionList = *s.MCISuppressionList
+	}
+	p.AlertListPosition = defaultAlertListPosition()
+	if s.AlertListPosition != nil {
+		p.AlertListPosition = *s.AlertListPosition
+	}
 	p.TowerLists = s.TowerLists
 	p.SSAFilter = s.SSAFilter
 	p.CRDAStatusList = s.CRDAStatusList
@@ -769,7 +784,9 @@ type Preferences struct {
 	VideoMapsList           videoMapsListPreferences
 	PreviewAreaPosition     [2]float32
 	SSAListPosition         [2]float32
+	AlertListPosition       [2]float32 // fixed-capacity LA/CA/MCI list, location only
 	CoastSuspendList        basicSTARSListPreferences
+	MCISuppressionList      basicSTARSListPreferences
 	TowerLists              [3]basicSTARSListPreferences
 	SSAFilter               ssaFilterPreferences
 	CRDAStatusList          crdaStatusListPreferences
@@ -881,12 +898,14 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// coordinates. REDS screen coordinates use a top-left origin, so the
 		// equivalent default is (.05, .10). TI 6191.409 4.9.4 allows the
 		// entering keyboard to relocate this position independently.
-		SSAListPosition: [2]float32{ssaDefaultX, ssaDefaultY},
+		SSAListPosition:    [2]float32{ssaDefaultX, ssaDefaultY},
+		MCISuppressionList: basicSTARSListPreferences{Position: [2]float32{.05, .55}},
 		// TI 6191.409 does not prescribe an initial Coast/Suspend-list location,
 		// size, or visibility; these are saved preference-set characteristics.
 		// Match VICE's established fallback: five aircraft lines, hidden, at
 		// (.8,.65) in its bottom-left-origin coordinates. REDS uses top-left
 		// screen coordinates, hence the equivalent y value is .35.
+		AlertListPosition: defaultAlertListPosition(),
 		CoastSuspendList: basicSTARSListPreferences{
 			Position: [2]float32{0.80, 0.35},
 			Lines:    5,

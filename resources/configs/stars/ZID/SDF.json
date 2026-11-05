@@ -2251,5 +2251,23 @@
       "starsId": 901,
       "brightnessCategory": "B"
     }
-  ]
+  ],
+  "inhibitZones": {
+    "ca": [
+      {
+        "id": "SDFNOCA",
+        "description": "SDF CONFLICT SUPPRESS",
+        "type": "polygon",
+        "floor": 0,
+        "ceiling": 4000,
+        "vertices": [
+          "N038.37.17.709,W085.56.13.818",
+          "N038.39.24.518,W085.49.26.143",
+          "N037.43.21.933,W085.31.09.131",
+          "N037.43.08.282,W085.36.38.226"
+        ]
+      }
+    ],
+    "msaw": []
+  }
 }
