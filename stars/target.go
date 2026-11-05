@@ -959,6 +959,11 @@ func (p *STARSPane) targetPositionSymbolUnhighlighted(target *redsnet.TaisTarget
 			}
 			return symbol, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 		}
+		// An alert-forced FDB uses the ordinary unowned FDB illumination.
+		// Keep the jurisdiction symbol and unowned color unchanged.
+		if p.caTrackAlertActive(target) {
+			return symbol, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
+		}
 		// An ordinary associated track owned by another TCP is a Partial
 		// data block. TI 6191.409 Table 4-1 assigns PDBs and their position
 		// symbols to LDB brightness.

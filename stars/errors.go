@@ -14,6 +14,8 @@ var (
 	ErrSTARSIllegalFunction = errors.New("ILL FNCT")
 	ErrSTARSCRDAOff         = errors.New("ILL FNCT - CRDA OFF")
 	ErrSTARSMSAWOff         = errors.New("ILL FNCT - MSAW OFF")
+	ErrSTARSCAOff           = errors.New("ILL FNCT - CA OFF")
+	ErrSTARSIllegalAirport  = errors.New("ILL AIRPORT")
 	ErrSTARSIllegalPrefset  = errors.New("ILL PREFSET")
 	ErrSTARSIllegalVolume   = errors.New("ILL VOL")
 	ErrSTARSNoTrack         = errors.New("NO TRK")

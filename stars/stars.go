@@ -189,14 +189,19 @@ type STARSPane struct {
 	// CA/MCI pairs are current VICE-style detection results; the corresponding
 	// pair events drive datablocks, acknowledgment, the list, and audio.
 	caPairs       []caPair
-	caAlerts      map[caPair]caAlertState // active events / TCW-local acknowledgments
+	caAlerts      map[caPair]caAlertState        // active events / TCW-local acknowledgments
+	caTargets     map[string]*redsnet.TaisTarget // reused event-update index for position-aware presentation
 	caGeneration  uint64
 	caSite        *caSiteRuntimeState // shared inhibits / owned acknowledgments
 	caZones       []msawRegion
 	caZonesLoaded bool
 	caZonesValid  bool
+	caParallel    *caParallelGeometry
+	caFinals      map[string]caFinalState
+	caFinalSweep  uint64
 	mciPairs      []mciPair
 	mciAlerts     map[mciPair]mciAlertState
+	mciTargets    map[string]*redsnet.TaisTarget
 	mciGeneration uint64
 
 	// atpaTracks is rebuilt from the current TAIS snapshot and adapted ATPA
@@ -549,6 +554,7 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	pane.atpaSite = sharedATPASiteRuntimeState(cfg)
 	pane.msawSite = sharedMSAWSite(cfg)
 	pane.crda = newCRDARuntime(cfg.Facility.RPCs)
+	pane.initCAParallelApproaches()
 	// CA/MCI are independent of MSAW airspace availability.
 	pane.caAudio = newSTARSAlertAudioManager(logger, caAudioResource)
 	pane.mciAudio = newSTARSAlertAudioManager(logger, mciAudioResource)
@@ -737,6 +743,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawSSA(ctx, zcb)
 	p.drawCoastSuspendList(ctx, zcb, allTargets)
 	p.drawMSAWAlertList(ctx, zcb, activeTargets)
+	p.drawMCISuppressionList(ctx, zcb, allTargets)
 	p.drawTowerLists(ctx, zcb, activeTargets)
 	p.drawVideoMapsList(ctx, zcb)
 	p.drawRestrictionAreasList(ctx, zcb)
@@ -903,8 +910,20 @@ func (p *STARSPane) consumeMouseEvents(
 				err = p.toggleCATrackInhibit(target)
 			case "":
 				err = p.toggleCAPairInhibit(target)
+			case "P":
+				err = p.inhibitCAPair(target)
 			default:
-				if code, ok := parseMCISlewCode(p.commandInput); ok {
+				fields := strings.Fields(strings.ToUpper(p.commandInput))
+				if len(fields) == 2 && fields[0] == "P" {
+					first, e := p.alertCommandTarget(fields[1])
+					err = e
+					if err == nil {
+						err = p.toggleCAExplicitPair(first, target)
+					}
+				} else if code, ok := parseMCISlewCode(p.commandInput); ok {
+					if strings.TrimSpace(strings.ToUpper(p.commandInput)) == "M" {
+						code = ""
+					}
 					err = p.toggleMCIBeaconInhibit(target, code)
 				} else {
 					err = ErrSTARSCommandFormat
@@ -1266,6 +1285,18 @@ func (p *STARSPane) consumeMouseEvents(
 		return
 	}
 
+	// §7.19: TQ positions and displays the MCI suppression list.
+	if p.commandMode == CommandModeMultiFunc && strings.EqualFold(p.multiFuncPrefix+p.commandInput, "TQ") {
+		if mouse.WasReleased(platform.MouseButtonLeft) {
+			w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+			if w > 0 && h > 0 {
+				ps.MCISuppressionList.Position = [2]float32{mouse.Pos.X / w, mouse.Pos.Y / h}
+				ps.MCISuppressionList.Visible = true
+			}
+			p.resetCommand()
+		}
+		return
+	}
 	// TI 6191.409 Rev. 30, §6.6.11: MULTI FUNC T R A, then
 	// designate the new upper-left list corner. Unlike TRA + ENTER, this
 	// makes the list visible even if it was hidden.
@@ -1403,18 +1434,7 @@ func (p *STARSPane) consumeMouseEvents(
 				return
 			}
 			// CA acknowledgement is pair-scoped, independent of LA and SPC.
-			caAcknowledged := p.acknowledgeCABySlew(target)
-			mciAcknowledged := p.acknowledgeMCIBySlew(target)
-			if caAcknowledged || mciAcknowledged {
-				return
-			}
-			// TI 6191.409 Rev. 30, 7.3: bare slew + left trackball
-			// acknowledges an unacknowledged SPC (among the alert types handled
-			// by the real system) and leaves its abbreviation steady.
-			if p.acknowledgeMSAWBySlew(target) {
-				return
-			}
-			if p.acknowledgeSPCBySlew(target) {
+			if p.acknowledgeTrackAlerts(target) {
 				return
 			}
 			if p.targetSupportsSingleTrackQuickLook(target) {

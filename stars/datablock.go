@@ -385,7 +385,7 @@ func (p *STARSPane) targetAltitudeFilterAllowsDatablock(target *redsnet.TaisTarg
 }
 
 // targetDatablockPresentation maps TAIS association/ownership plus the local
-// quick-look state to the operator-manual data-block categories:
+// quick-look and eligible CA state to the operator-manual data-block categories:
 //
 //	own associated track          -> Full data block, white, FDB brightness
 //	inbound pending handoff       -> Full data block, blinking white, FDB brightness
@@ -393,6 +393,7 @@ func (p *STARSPane) targetAltitudeFilterAllowsDatablock(target *redsnet.TaisTarg
 //	other associated track        -> Partial data block, green, LDB brightness
 //	quick-looked other track      -> Full data block, green, OTH brightness
 //	quick-look-plus other track   -> Full data block, white, OTH brightness
+//	eligible CA on other track    -> Full data block, green, OTH brightness
 //	unassociated track            -> Limited data block, green, LDB brightness
 //
 // TI 6191.409 Table 4-1 explicitly assigns Partial and Limited data blocks to
@@ -445,9 +446,9 @@ func (p *STARSPane) targetDatablockPresentationUnhighlighted(target *redsnet.Tai
 	if _, ok := targetSpecialConditionIndicator(target); ok || targetHasAltitudeFilterAlert(target) {
 		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 	}
-	// Active or explicitly inhibited CA must remain visible in the FDB of
-	// an unowned associated track, without changing its ownership color.
-	if p.caTrackAlertActive(target) || p.caTrackInhibited(target) || p.mciTrackInhibited(target) || p.mciTrackAlertActive(target) {
+	// Eligible unsuppressed CA forces the ordinary unowned FDB. Inhibition
+	// alone is not an FDB reason. Preserve the established MCI modalities.
+	if p.caTrackAlertActive(target) || p.mciTrackInhibited(target) || p.mciTrackAlertActive(target) {
 		return targetDatablockFull, p.colors.UnownedDatablock, ps.Brightness.OtherTracks
 	}
 	// §6.13.12: while Beacon Code Readout is held, unowned associated

@@ -315,11 +315,46 @@ func (p *STARSPane) ssaSystemStatusText() (string, bool) {
 // ssaSystemOffText returns SSA field J (System OFF Indicators).
 //
 // TI 6191.409 Rev. 30, Table 2-18 defines INTRAIL as the system-off indicator
-// when ATPA processing is inhibited site-wide. Other site-wide inhibits can be
-// added here as REDS gains their authoritative state.
+// when ATPA processing is inhibited site-wide. Alert system inhibitors share
+// this field; individual track/pair inhibition is indicated on datablocks.
 func (p *STARSPane) ssaSystemOffText() string {
+	if p == nil {
+		return ""
+	}
+	site := p.caSiteState()
+	site.RLock()
+	var off []string
+	if site.approachDisabled {
+		off = append(off, "APP")
+	}
+	if site.caDisabled {
+		off = append(off, "CA")
+	}
+	if site.mciDisabled {
+		off = append(off, "MCI")
+	}
+	if site.msawDisabled {
+		off = append(off, "MSAW")
+	}
+	site.RUnlock()
 	if p != nil && p.atpaAdapted() && !p.atpaEnabled() {
-		return "INTRAIL"
+		off = append(off, "INTRAIL")
+	}
+	return strings.Join(off, " ")
+}
+
+// §7.13 reports the entering TCP's bulk pair inhibition only at that
+// TCW/TDW, in the SYS OFF field. Individual track/pair inhibits do not go here.
+func (p *STARSPane) ssaCAInhibitText() string {
+	if p == nil {
+		return ""
+	}
+	site := p.caSiteState()
+	site.RLock()
+	inhibited := site.tcpInhibits[p.ownTCP()]
+	site.RUnlock()
+	if inhibited {
+		return "CA INHIB " + p.ownTCP()
 	}
 	return ""
 }
@@ -623,6 +658,7 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		// only and does not change the underlying system state.
 		if filter.All || filter.SysOff {
 			addLine(p.ssaSystemOffText(), p.colors.List)
+			addLine(p.ssaCAInhibitText(), p.colors.List)
 		}
 
 		// Field K - Display Range / PTL value. RANGE and PTL are independently
@@ -1373,14 +1409,15 @@ func (p *STARSPane) starsAlertListEntries(snapshot redsnet.TaisSnapshot) []stars
 		if a == nil || b == nil || starsAlertACID(a) == "" || starsAlertACID(b) == "" {
 			continue
 		}
-		ids, ok := caPairIdentity(pair, byKey)
-		if !ok || !caIdentitiesMatch(ids, caIdentityPair{event.AIdentity, event.BIdentity}) {
+		site := p.caSiteState()
+		site.RLock()
+		eligible := p.caPairEligible(pair, event, a, b, site)
+		site.RUnlock()
+		if !eligible {
 			continue
 		}
-		// Inhibits may be changed by slew *after* pair detection this frame.
-		if p.caTrackInhibited(a) || p.caTrackInhibited(b) {
-			continue
-		}
+		// FDB selection queries alert presentation itself. Release the site
+		// lock before calling it, avoiding recursive RWMutex read locking.
 		if !p.alertListFullDatablock(a) && !p.alertListFullDatablock(b) {
 			continue
 		}
@@ -1425,8 +1462,21 @@ func (p *STARSPane) msawAlertListText(snapshot redsnet.TaisSnapshot) string {
 		return ""
 	}
 	entries := p.starsAlertListEntries(snapshot)
+	var enabled []string
+	if p.alertSystemEnabled("MSAW") {
+		enabled = append(enabled, "LA")
+	}
+	if p.alertSystemEnabled("CA") {
+		enabled = append(enabled, "CA")
+	}
+	if p.alertSystemEnabled("MCI") {
+		enabled = append(enabled, "MCI")
+	}
+	if len(enabled) == 0 {
+		return ""
+	}
 	var text strings.Builder
-	text.WriteString("LA/CA/MCI")
+	text.WriteString(strings.Join(enabled, "/"))
 	if len(entries) > msawAlertListCapacity {
 		fmt.Fprintf(&text, "\nMORE: %d/%d", msawAlertListCapacity, len(entries))
 	}
@@ -1438,10 +1488,49 @@ func (p *STARSPane) msawAlertListText(snapshot redsnet.TaisSnapshot) string {
 }
 
 func (p *STARSPane) drawMSAWAlertList(ctx *panes.Context, zcb *renderer.ZCmdBuffer, snapshot redsnet.TaisSnapshot) {
+	if p == nil {
+		return
+	}
+	p.drawAlertTextList(ctx, zcb, p.msawAlertListText(snapshot), p.currentPrefs().AlertListPosition)
+}
+
+func (p *STARSPane) mciSuppressionListText(snapshot redsnet.TaisSnapshot) string {
+	if p == nil || !snapshot.Ready || !p.prefs.MCISuppressionList.Visible {
+		return ""
+	}
+	lines := []string{}
+	site := p.caSiteState()
+	site.RLock()
+	for i := range snapshot.Targets {
+		t := &snapshot.Targets[i]
+		o, ok := site.mciSuppress[targetDisplayStateKey(t)]
+		if !ok || !p.targetOwnedByCurrentTCP(t) || !mciOverrideRetainable(p, t, o) {
+			continue
+		}
+		code := mciBeaconCode(t.Track.ReportedBeaconCode)
+		if code == "" {
+			code = mciBeaconCode(t.FlightPlan.AssignedBeaconCode)
+		}
+		lines = append(lines, fmt.Sprintf("%-7s %4s %4s", starsAlertACID(t), code, o.Code))
+	}
+	site.RUnlock()
+	sort.Strings(lines)
+	return strings.Join(append([]string{"MCI SUPPRESSION"}, lines...), "\n")
+}
+
+func (p *STARSPane) drawMCISuppressionList(ctx *panes.Context, zcb *renderer.ZCmdBuffer, snapshot redsnet.TaisSnapshot) {
+	if p == nil {
+		return
+	}
+	p.drawAlertTextList(ctx, zcb, p.mciSuppressionListText(snapshot), p.prefs.MCISuppressionList.Position)
+}
+
+// Standard list font, color and brightness for both the fixed alert list
+// and the independently movable MCI suppression list (§§7.18-7.19).
+func (p *STARSPane) drawAlertTextList(ctx *panes.Context, zcb *renderer.ZCmdBuffer, text string, position [2]float32) {
 	if p == nil || ctx == nil || zcb == nil || p.systemFont == nil {
 		return
 	}
-	text := p.msawAlertListText(snapshot)
 	if text == "" {
 		return
 	}
@@ -1462,8 +1551,8 @@ func (p *STARSPane) drawMSAWAlertList(ctx *panes.Context, zcb *renderer.ZCmdBuff
 	td := renderer.GetTextDrawBuilder()
 	td.SetFont(p.systemFont)
 	td.AddText(text, redsmath.Vec2{
-		X: p.currentPrefs().AlertListPosition[0] * w,
-		Y: p.currentPrefs().AlertListPosition[1] * h,
+		X: position[0] * w,
+		Y: position[1] * h,
 	}, renderer.TextStyle{Size: fontSize, Color: p.currentPrefs().Brightness.Lists.ScaleRGB(p.colors.List).ToRGBA()})
 	td.GenerateCommands(cb, texture)
 	renderer.ReturnTextDrawBuilder(td)
