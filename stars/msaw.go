@@ -1,10 +1,12 @@
 package stars
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
+	"log/slog"
 	"math"
 	"os"
 	"path/filepath"
@@ -14,17 +16,19 @@ import (
 	"time"
 
 	"github.com/juliusplatzer/reds/aviation"
+	redslog "github.com/juliusplatzer/reds/log"
 	redsnet "github.com/juliusplatzer/reds/net"
+	"github.com/juliusplatzer/reds/platform"
 	"github.com/juliusplatzer/reds/util"
 	"github.com/klauspost/compress/zstd"
 )
 
 // REDS-computed *current* MSAW, not an FAA-provided alert or the predicted
-// MSAW function described by TI 6191.409 §2.16.3. CA/MCI are deferred.
+// MSAW function described by TI 6191.409 §2.16.3.
 const msawMaximumTrackAge = 30 * time.Second
 
 type msawInhibitConfig struct {
-	CA   []json.RawMessage `json:"ca"` // Reserved for the later CA implementation.
+	CA   []json.RawMessage `json:"ca"` // Parsed separately by the CA implementation.
 	MSAW []msawInhibitZone `json:"msaw"`
 }
 
@@ -240,6 +244,32 @@ func msawParseVertexList(raw json.RawMessage) (msawRing, error) {
 	return points, nil
 }
 
+// Circle centers in the supplied adaptations may name an airport or give a
+// literal latitude/longitude in DMS or decimal degrees, as in VICE locations.
+func msawParseInhibitCenter(center string, airports map[string]configPoint) (msawPoint, error) {
+	center = strings.ToUpper(strings.TrimSpace(center))
+	if strings.Contains(center, ",") {
+		if center[0] == 'N' || center[0] == 'S' {
+			return msawParseDMSCoordinate(center)
+		}
+		parts := strings.Split(center, ",")
+		if len(parts) == 2 {
+			lat, latErr := strconv.ParseFloat(strings.TrimSpace(parts[0]), 64)
+			lon, lonErr := strconv.ParseFloat(strings.TrimSpace(parts[1]), 64)
+			point := msawPoint{lat, lon}
+			if latErr == nil && lonErr == nil && msawValidPoint(point) {
+				return point, nil
+			}
+		}
+		return msawPoint{}, fmt.Errorf("invalid coordinate center %q", center)
+	}
+	airport, ok := airports[center]
+	if !ok {
+		return msawPoint{}, fmt.Errorf("unknown airport center %q", center)
+	}
+	return msawPoint{airport.Lat, airport.Lon}, nil
+}
+
 func msawParseInhibitZones(zones []msawInhibitZone, airports map[string]configPoint) ([]msawRegion, error) {
 	result := make([]msawRegion, 0, len(zones))
 	for _, zone := range zones {
@@ -252,11 +282,11 @@ func msawParseInhibitZones(zones []msawInhibitZone, airports map[string]configPo
 			if zone.Radius <= 0 || zone.Radius > 500 {
 				return nil, fmt.Errorf("MSAW inhibit %s: invalid radius", zone.ID)
 			}
-			center, ok := airports[strings.ToUpper(strings.TrimSpace(zone.Center))]
-			if !ok {
-				return nil, fmt.Errorf("MSAW inhibit %s: unknown airport center %q", zone.ID, zone.Center)
+			center, err := msawParseInhibitCenter(zone.Center, airports)
+			if err != nil {
+				return nil, fmt.Errorf("MSAW inhibit %s: %w", zone.ID, err)
 			}
-			r.center = msawPoint{center.Lat, center.Lon}
+			r.center = center
 			r.radiusNM = zone.Radius
 		case "polygon":
 			ring, err := msawParseVertexList(zone.Vertices)
@@ -394,8 +424,14 @@ type msawTrackOverride struct {
 
 type msawSiteRuntimeState struct {
 	sync.RWMutex
-	tracks     map[string]msawTrackOverride
-	generation uint64
+	tracks       map[string]msawTrackOverride
+	acknowledged map[string]msawSharedAck
+	generation   uint64
+}
+
+type msawSharedAck struct {
+	Identity   starsTrackHighlightIdentity
+	Generation uint64
 }
 
 var sharedMSAWSites = struct {
@@ -527,7 +563,7 @@ func (p *STARSPane) toggleTrackMSAW(t *redsnet.TaisTarget) error {
 	if t.Track.Frozen || t.FlightPlan == nil || !p.targetOwnedByCurrentTCP(t) {
 		return ErrSTARSIllegalTrack
 	}
-	if p.msawAirspace == nil {
+	if p.msawAirspace == nil || !p.alertSystemEnabled("MSAW") {
 		return ErrSTARSMSAWOff
 	}
 	site := p.msawSiteState()
@@ -558,7 +594,7 @@ type msawAlertState struct {
 	Generation   uint64 // sweep stamp; avoids a second per-frame map
 }
 
-// updateMSAW maintains edge-triggered, TCW-local alert/acknowledgment state.
+// updateMSAW maintains edge-triggered local alert state and shared ACK lifetime.
 // Only locally owned tracks can generate new LA indications in this first
 // conservative implementation; TAIS lacks VICE's MVAsApply eligibility flag.
 // Q and V inhibit flags are process-wide per facility, guarded by site lock.
@@ -602,7 +638,8 @@ func (p *STARSPane) updateMSAW(snapshot redsnet.TaisSnapshot, now time.Time) {
 		// underlying warning condition clears, regardless of which TCW
 		// currently observes the flight.
 		override, hasOverride := site.tracks[key]
-		checkMVA := ownedHere || (hasOverride && override.EventSuppressed)
+		ack, hasAck := site.acknowledged[key]
+		checkMVA := ownedHere || (hasOverride && override.EventSuppressed) || hasAck
 		autoVFR := msawAutomaticVFRInhibited(t)
 		natural := false
 		// Automatic VFR inhibition takes precedence over the MVA and avoids
@@ -620,6 +657,14 @@ func (p *STARSPane) updateMSAW(snapshot redsnet.TaisSnapshot, now time.Time) {
 			}
 		}
 		o := site.observe(key, identity, owner, natural, eligible, autoVFR, siteGeneration)
+		if hasAck {
+			if !eligible || !natural || autoVFR || !trackHighlightIdentityMatches(ack.Identity, identity) {
+				delete(site.acknowledged, key)
+			} else {
+				ack.Generation = siteGeneration
+				site.acknowledged[key] = ack
+			}
+		}
 		if !ownedHere || !eligible || !natural || autoVFR || o.Disabled {
 			continue
 		}
@@ -633,6 +678,11 @@ func (p *STARSPane) updateMSAW(snapshot redsnet.TaisSnapshot, now time.Time) {
 	for key, state := range site.tracks {
 		if state.Generation != siteGeneration {
 			delete(site.tracks, key)
+		}
+	}
+	for key, ack := range site.acknowledged {
+		if ack.Generation != siteGeneration {
+			delete(site.acknowledged, key)
 		}
 	}
 	site.Unlock()
@@ -657,25 +707,43 @@ func msawTrackEligible(t *redsnet.TaisTarget, now time.Time) bool {
 }
 
 func (p *STARSPane) msawAlert(t *redsnet.TaisTarget) (msawAlertState, bool) {
-	if p == nil || t == nil {
+	if p == nil || t == nil || !p.alertSystemEnabled("MSAW") {
 		return msawAlertState{}, false
 	}
 	state, ok := p.msawAlerts[targetDisplayStateKey(t)]
 	if !ok || !trackHighlightIdentityMatches(state.Identity, trackHighlightIdentity(t)) || p.msawInhibited(t) {
 		return msawAlertState{}, false
 	}
+	site := p.msawSiteState()
+	site.RLock()
+	if ack, exists := site.acknowledged[targetDisplayStateKey(t)]; exists && trackHighlightIdentityMatches(ack.Identity, state.Identity) {
+		state.Acknowledged = true
+	}
+	site.RUnlock()
 	return state, true
 }
 
-// §7.3: MSAW acknowledgment is local to this TCW and does not suppress
-// computation or remove the alert from the list.
+// §7.3: an owned MSAW acknowledgment is system-wide; it neither suppresses
+// computation nor removes the alert from the list.
 func (p *STARSPane) acknowledgeMSAWBySlew(t *redsnet.TaisTarget) bool {
+	if p == nil || t == nil || taisOwnershipPending(t) {
+		return false
+	}
 	state, ok := p.msawAlert(t)
 	if !ok || state.Acknowledged {
 		return false
 	}
 	state.Acknowledged = true
 	p.msawAlerts[targetDisplayStateKey(t)] = state
+	if p.targetOwnedByCurrentTCP(t) {
+		site := p.msawSiteState()
+		site.Lock()
+		if site.acknowledged == nil {
+			site.acknowledged = make(map[string]msawSharedAck)
+		}
+		site.acknowledged[targetDisplayStateKey(t)] = msawSharedAck{Identity: state.Identity, Generation: site.generation}
+		site.Unlock()
+	}
 	return true
 }
 
@@ -1457,4 +1525,131 @@ func (idx *msawRunwayIndex) nearUnknownDeparture(first, current msawPoint) bool 
 		}
 	}
 	return false
+}
+
+// MSAW audio playback.
+
+// TI 6191.409 Rev. 30 §2.16.3: the adapted audible LA alarm sounds for
+// nominally ten seconds, or until acknowledgment. Unlike VICE's five-second
+// simulation setting, this is the manual's nominal interval. Changing the
+// interval later should be a site adaptation, not a change to detection.
+const msawAudioDuration = 10 * time.Second
+
+const msawAudioResource = "resources/audio/stars/Msaw.wav"
+
+// msawAudioManager owns one repeating MSAW alarm per local TCW/TDW. The
+// half-second resource is repeated on a goroutine, never on the draw thread.
+// Only a short PCM sample is retained; no per-target audio player is created.
+type msawAudioManager struct {
+	player *platform.AudioPlayer
+	pcm    []byte
+	logger *redslog.Logger
+
+	mu       sync.Mutex
+	cancel   context.CancelFunc
+	disabled bool
+}
+
+func newMSAWAudioManager(logger *redslog.Logger) *msawAudioManager {
+	return newSTARSAlertAudioManager(logger, msawAudioResource)
+}
+
+// Every alert tone uses the same short, nonblocking PCM playback mechanism.
+// The Oto context is shared internally by platform.NewAudioPlayer.
+func newSTARSAlertAudioManager(logger *redslog.Logger, resource string) *msawAudioManager {
+	if !util.ResourceExists(resource) {
+		if logger != nil {
+			logger.Warn("STARS alert sound unavailable", slog.String("resource", resource))
+		}
+		return nil
+	}
+	pcm, err := platform.DecodeWAV(util.LoadResourceBytes(resource))
+	if err != nil {
+		if logger != nil {
+			logger.Warn("STARS alert sound cannot be decoded", slog.String("resource", resource), slog.Any("error", err))
+		}
+		return nil
+	}
+	player, err := platform.NewAudioPlayer()
+	if err != nil {
+		if logger != nil {
+			logger.Warn("STARS alert audio output unavailable", slog.Any("error", err))
+		}
+		return nil
+	}
+	return &msawAudioManager{player: player, pcm: pcm.Data, logger: logger}
+}
+
+// SetPlaying is idempotent. Switching off cancels playback promptly (without
+// waiting for the current WAV to finish), including when an LA is acknowledged.
+func (m *msawAudioManager) SetPlaying(wanted bool) {
+	if m == nil {
+		return
+	}
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if !wanted {
+		if m.cancel != nil {
+			m.cancel()
+			m.cancel = nil
+		}
+		return
+	}
+	if m.disabled || m.cancel != nil {
+		return
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	m.cancel = cancel
+	go m.repeat(ctx)
+}
+
+func (m *msawAudioManager) Stop() { m.SetPlaying(false) }
+
+func (m *msawAudioManager) repeat(ctx context.Context) {
+	// Playback must not allocate or hold a goroutine for each active aircraft.
+	// A single repeated sample covers any concurrent unacknowledged LAs.
+	ticker := time.NewTicker(20 * time.Millisecond)
+	defer ticker.Stop()
+	for ctx.Err() == nil {
+		playback, err := m.player.PlayPCM(m.pcm)
+		if err != nil {
+			m.mu.Lock()
+			m.disabled = true // avoid retrying every rendered frame
+			m.mu.Unlock()
+			if m.logger != nil {
+				m.logger.Warn("STARS alert audio playback failed", slog.Any("error", err))
+			}
+			return
+		}
+		for playback.IsPlaying() && ctx.Err() == nil {
+			select {
+			case <-ctx.Done():
+			case <-ticker.C:
+			}
+		}
+		_ = playback.Close()
+	}
+}
+
+// msawAudioWanted checks the effective local LA presentation, not merely the
+// raw below-MVA condition. Q/V inhibits, automatic VFR inhibition and a
+// controller's slew-click acknowledgment therefore immediately silence audio.
+// A later independent LA starts its own nominal ten-second interval.
+func (p *STARSPane) msawAudioWanted(snapshot redsnet.TaisSnapshot, now time.Time) bool {
+	if p == nil || !snapshot.Ready || p.msawAirspace == nil {
+		return false
+	}
+	for i := range snapshot.Targets {
+		state, active := p.msawAlert(&snapshot.Targets[i])
+		if active && !state.Acknowledged && !now.Before(state.Since) && now.Before(state.Since.Add(msawAudioDuration)) {
+			return true
+		}
+	}
+	return false
+}
+
+func (p *STARSPane) updateMSAWAudio(snapshot redsnet.TaisSnapshot, now time.Time) {
+	if p != nil {
+		p.msawAudio.SetPlaying(p.msawAudioWanted(snapshot, now))
+	}
 }
