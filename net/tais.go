@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
-	"net/http"
 	neturl "net/url"
 	"sort"
 	"strings"
@@ -31,7 +30,6 @@ type TaisClient struct {
 	logger   *redslog.Logger
 	url      string
 	facility string
-	token    string
 	state    *taisState
 	dialer   *websocket.Dialer
 
@@ -66,7 +64,6 @@ func NewTaisClient(url, facility string, logger *redslog.Logger) *TaisClient {
 		logger:   logger,
 		url:      url,
 		facility: facility,
-		token:    LiveServerToken(),
 		state:    newTaisState(),
 		dialer:   websocket.DefaultDialer,
 		close:    make(chan struct{}),
@@ -203,17 +200,12 @@ func (c *TaisClient) connectAndServe() (bool, error) {
 		return false, errTaisClientClosed
 	}
 
-	headers := http.Header{}
-	if c.token != "" {
-		headers.Set("Authorization", "Bearer "+c.token)
-	}
 	c.logger.Info(
 		"Connecting to TAIS live server",
 		slog.String("url", c.url),
-		slog.Bool("auth", c.token != ""),
 	)
 
-	conn, response, err := c.dialer.Dial(c.url, headers)
+	conn, response, err := c.dialer.Dial(c.url, nil)
 	if err != nil {
 		if response != nil && response.Body != nil {
 			_, _ = io.Copy(io.Discard, response.Body)

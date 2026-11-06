@@ -60,10 +60,6 @@ func SfdpsWebSocketURL() string {
 	return "ws://localhost:" + port + "/sfdps/ws"
 }
 
-func LiveServerToken() string {
-	return strings.TrimSpace(os.Getenv("REDS_WS_TOKEN"))
-}
-
 func PlaybackBaseURL() string {
 	if override := strings.TrimSpace(os.Getenv("PLAYBACK_BASE_URL")); override != "" {
 		return strings.TrimRight(override, "/")
