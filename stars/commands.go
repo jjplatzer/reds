@@ -196,14 +196,17 @@ func init() {
 	// The selected state remains in effect until the command is reissued.
 	registerCommand(CommandModeMultiFunc, "B", func(p *STARSPane, args []any) (CommandStatus, error) {
 		p.currentPrefs().DisplayLDBBeaconCodes = !p.currentPrefs().DisplayLDBBeaconCodes
+		clear(p.ldbBeaconDisplayOverrides)
 		return CommandStatus{}, nil
 	})
 	registerCommand(CommandModeMultiFunc, "BE", func(p *STARSPane, args []any) (CommandStatus, error) {
 		p.currentPrefs().DisplayLDBBeaconCodes = true
+		clear(p.ldbBeaconDisplayOverrides)
 		return CommandStatus{}, nil
 	})
 	registerCommand(CommandModeMultiFunc, "BI", func(p *STARSPane, args []any) (CommandStatus, error) {
 		p.currentPrefs().DisplayLDBBeaconCodes = false
+		clear(p.ldbBeaconDisplayOverrides)
 		return CommandStatus{}, nil
 	})
 

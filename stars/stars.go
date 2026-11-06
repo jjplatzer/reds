@@ -128,6 +128,9 @@ type STARSPane struct {
 	// beacon readouts. Slew + left trackball on an unassociated track forces
 	// its reported beacon code into LDB field 1 for five seconds.
 	ldbBeaconReadoutUntil map[string]time.Time
+	// §6.13.7 per-track visibility is local and independent of the temporary
+	// five-second readout. Global B/BE/BI commands reset these overrides.
+	ldbBeaconDisplayOverrides map[string]ldbBeaconDisplayOverride
 
 	// SPC acknowledgement is TCW/TDW-local unless the manual calls for
 	// system-wide propagation. The value records the active beacon code and any
@@ -681,6 +684,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.pruneSingleTrackQuickLook(activeTargets)
 	p.pruneSingleTrackLeaderDirections(activeTargets)
 	p.pruneLDBBeaconReadouts(activeTargets, now)
+	p.pruneLDBBeaconDisplayOverrides(activeTargets)
 	// Preserve manual TPA state while a track is in the Coast/Suspend List.
 	// Figure 2-30 removes the J-ring/cone from presentation while listed, but
 	// requires it to redisplay automatically if the flight plan associates to
@@ -961,6 +965,21 @@ func (p *STARSPane) consumeMouseEvents(
 			p.commandResponse = err.Error()
 		}
 		return
+	}
+
+	// §§6.13.7-6.13.8: MULTI FUNC B + slew reads an associated
+	// track's ACID/RBC/ABC or toggles an unassociated track's beacon code.
+	// Consume the click before implied acknowledgements and quick look.
+	if p.commandMode == CommandModeMultiFunc && mouse.WasReleased(platform.MouseButtonLeft) {
+		command := strings.ToUpper(p.multiFuncPrefix + p.commandInput)
+		if strings.HasPrefix(command, "B") {
+			if command != "B" {
+				p.commandResponse = ErrSTARSCommandFormat.Error()
+			} else if err := p.applyBeaconSlew(closestSlewTarget(targets, mouse.Pos, transforms)); err != nil {
+				p.commandResponse = err.Error()
+			}
+			return // Repetitive: retain MULTI FUNC B for the next designation.
+		}
 	}
 
 	// TI 6191.409 Rev. 30, 6.20: slew to a track and release the
@@ -1436,14 +1455,16 @@ func (p *STARSPane) consumeMouseEvents(
 		return
 	}
 
-	// TI 6191.409 Rev. 30, 6.13.2 and 6.13.4 implied commands share the
+	// TI 6191.409 Rev. 30, §§6.13.2-6.13.4 implied commands share the
 	// same slew + left-trackball modality. On an unassociated/LDB track the
 	// click forces its reported beacon code into LDB field 1 for five seconds.
+	// An owned associated track reads ACID/RBC/ABC into the Preview Area.
 	// On an associated track owned by another controller it toggles PDB/FDB
 	// single-track quick look until the track is selected again. VICE uses a
 	// 20-pixel target slew radius for these implied commands; retain that here.
-	if p.commandMode == CommandModeNone && mouse.WasReleased(platform.MouseButtonLeft) {
+	if p.commandMode == CommandModeNone && p.commandInput == "" && mouse.WasReleased(platform.MouseButtonLeft) {
 		if target := closestSlewTarget(targets, mouse.Pos, transforms); target != nil {
+			p.commandResponse = ""
 			// After a handoff is accepted, the former owner's white FDB is
 			// retained until that controller slews/selects the track. Consume
 			// the click here so it cannot also become a single-track quick look.
@@ -1452,6 +1473,9 @@ func (p *STARSPane) consumeMouseEvents(
 			}
 			// CA acknowledgement is pair-scoped, independent of LA and SPC.
 			if p.acknowledgeTrackAlerts(target) {
+				return
+			}
+			if p.readOwnedTrackBeaconBySlew(target) {
 				return
 			}
 			if p.targetSupportsSingleTrackQuickLook(target) {
