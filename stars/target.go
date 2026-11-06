@@ -1870,6 +1870,59 @@ type atpaVolumeMember struct {
 	TargetIndex       int
 	ThresholdDistance float64
 	Ineligible        bool
+	Position          configPoint
+	Synchronized      bool
+}
+
+// Bridge normal surveillance report skew without propagating a stale report
+// indefinitely. This is a REDS timing bound, not an adapted separation limit.
+const atpaMaximumReportSkew = 30 * time.Second
+
+// atpaPositionAt advances only the older measurement to a common report time.
+// Use reported ground velocity, not the landing-speed prediction model: this
+// accounts for elapsed surveillance time rather than predicting a landing.
+func atpaPositionAt(target *redsnet.TaisTarget, when time.Time) (configPoint, bool) {
+	if !taisTargetHasPosition(target) || when.IsZero() || target.Track.Frozen {
+		return configPoint{}, false
+	}
+	position := configPoint{Lat: target.Track.Lat, Lon: target.Track.Lon}
+	age := when.Sub(target.Track.MRTTime)
+	if age < 0 || age > atpaMaximumReportSkew {
+		return configPoint{}, false
+	}
+	if age == 0 {
+		return position, true
+	}
+	if !target.Track.HasHorizontalVelocity() {
+		return configPoint{}, false
+	}
+	seconds := age.Seconds()
+	nmPerLongitude := 60 * radar.LongitudeScaleFactorForLat(position.Lat)
+	position.Lat += float64(target.Track.VY) * seconds / (3600 * 60)
+	position.Lon = normalizeLongitude(position.Lon + float64(target.Track.VX)*seconds/(3600*nmPerLongitude))
+	return position, validTargetLatLon(position.Lat, position.Lon)
+}
+
+// Use one surveillance epoch per approach sequence so ordering, mileage,
+// reduced-separation eligibility, and both prediction models agree. A newer
+// report in another volume must not advance this sequence. Keep unalignable
+// members in the order as barriers rather than silently pairing through them.
+func atpaSynchronizeMembers(snapshot redsnet.TaisSnapshot, members []atpaVolumeMember, threshold configPoint) {
+	var when time.Time
+	for _, member := range members {
+		target := &snapshot.Targets[member.TargetIndex]
+		if !target.Track.Frozen && target.Track.MRTTime.After(when) {
+			when = target.Track.MRTTime
+		}
+	}
+	for i := range members {
+		member := &members[i]
+		position, ok := atpaPositionAt(&snapshot.Targets[member.TargetIndex], when)
+		member.Position, member.Synchronized = position, ok
+		if ok {
+			member.ThresholdDistance = starsRBLNMDistance(position, threshold)
+		}
+	}
 }
 
 // ATPA system/volume state is site-wide supervisor state (TI 6191.409 Rev. 30,
@@ -2264,11 +2317,12 @@ func (p *STARSPane) updateATPAInTrail(snapshot redsnet.TaisSnapshot) {
 		if len(group) == 0 {
 			continue
 		}
+		volume := &p.config.Facility.ATPAVolumes[vi]
+		atpaSynchronizeMembers(snapshot, group, volume.RunwayThreshold)
 		sort.SliceStable(group, func(i, j int) bool {
 			return group[i].ThresholdDistance < group[j].ThresholdDistance
 		})
 
-		volume := &p.config.Facility.ATPAVolumes[vi]
 		volumeID := atpaVolumeID(volume)
 
 		for i := range group {
@@ -2285,22 +2339,26 @@ func (p *STARSPane) updateATPAInTrail(snapshot redsnet.TaisSnapshot) {
 			// vNAS "Ineligible" scratchpads keep the aircraft in the sequence
 			// so it may be the lead for the aircraft behind it, but the
 			// ineligible aircraft itself does not receive an ATPA cone/distance.
-			if i > 0 && !group[i].Ineligible {
-				lead := &snapshot.Targets[group[i-1].TargetIndex]
-				state.LeadKey = targetDisplayStateKey(lead)
+			if i > 0 && !group[i].Ineligible && group[i].Synchronized && group[i-1].Synchronized {
+				// Work on copies: the live snapshot, radar symbols, history,
+				// and other alert detectors retain their actual reports.
+				trailing := *target
+				leading := snapshot.Targets[group[i-1].TargetIndex]
+				trailing.Track.Lat, trailing.Track.Lon = group[i].Position.Lat, group[i].Position.Lon
+				leading.Track.Lat, leading.Track.Lon = group[i-1].Position.Lat, group[i-1].Position.Lon
+				state.LeadKey = targetDisplayStateKey(&leading)
 				state.InTrailDistance = float32(starsRBLNMDistance(
-					configPoint{Lat: target.Track.Lat, Lon: target.Track.Lon},
-					configPoint{Lat: lead.Track.Lat, Lon: lead.Track.Lon},
+					group[i].Position, group[i-1].Position,
 				))
 
-				frontCWT, frontOK := atpaCWTCategory(lead.FlightPlan)
-				backCWT, backOK := atpaCWTCategory(target.FlightPlan)
+				frontCWT, frontOK := atpaCWTCategory(leading.FlightPlan)
+				backCWT, backOK := atpaCWTCategory(trailing.FlightPlan)
 				if frontOK && backOK {
 					state.MinimumSeparation = atpaApproachSeparation(
-						frontCWT, backCWT, p.atpaEligible25NM(volume, target, lead),
+						frontCWT, backCWT, p.atpaEligible25NM(volume, &trailing, &leading),
 					)
 					if state.MinimumSeparation > 0 {
-						state.Status = atpaPredictedStatus(volume, target, lead, state.MinimumSeparation)
+						state.Status = atpaPredictedStatus(volume, &trailing, &leading, state.MinimumSeparation)
 					}
 				}
 			}
@@ -2405,7 +2463,8 @@ type atpaModeledAircraft struct {
 }
 
 func newATPAModeledAircraft(volume *atpaVolumeConfig, target *redsnet.TaisTarget) (atpaModeledAircraft, bool) {
-	if volume == nil || target == nil || !validConfigPoint(volume.RunwayThreshold) || !taisTargetHasPosition(target) {
+	if volume == nil || target == nil || !validConfigPoint(volume.RunwayThreshold) ||
+		!taisTargetHasPosition(target) || !target.Track.HasHorizontalVelocity() {
 		return atpaModeledAircraft{}, false
 	}
 	threshold := volume.RunwayThreshold
