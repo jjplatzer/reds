@@ -46,6 +46,7 @@ type starsAirportDatabase struct {
 	byICAO        map[string]string
 	displayByICAO map[string]string
 	positionByID  map[string]configPoint
+	msawInhibits  *msawAirportInhibitIndex // all CSV rows with position/elevation, including non-ICAO fields
 }
 
 type starsMETAR struct {
@@ -151,6 +152,10 @@ func parseSTARSAirportDatabase(data []byte) (starsAirportDatabase, error) {
 	if !okIATA || !okICAO || !okLat || !okLon {
 		return starsAirportDatabase{}, fmt.Errorf("airport CSV must contain iata_code, icao_code, latitude_deg and longitude_deg columns")
 	}
+	elevationColumn, hasElevation := columns["elevation_ft"]
+	if hasElevation {
+		db.msawInhibits = &msawAirportInhibitIndex{byCell: make(map[msawAirportInhibitCell][]int)}
+	}
 
 	for {
 		record, err := r.Read()
@@ -165,13 +170,21 @@ func parseSTARSAirportDatabase(data []byte) (starsAirportDatabase, error) {
 		}
 		iata := strings.ToUpper(strings.TrimSpace(record[iataColumn]))
 		icao := strings.ToUpper(strings.TrimSpace(record[icaoColumn]))
+		lat, latErr := strconv.ParseFloat(strings.TrimSpace(record[latColumn]), 64)
+		lon, lonErr := strconv.ParseFloat(strings.TrimSpace(record[lonColumn]), 64)
+		validPosition := latErr == nil && lonErr == nil && msawValidPoint(msawPoint{lat, lon}) && (lat != 0 || lon != 0)
+		// The inhibition index must be populated before the ICAO lookup guard:
+		// most small fields/heliports in this CSV have no ICAO identifier.
+		if validPosition && hasElevation && elevationColumn < len(record) {
+			if elevation, err := strconv.Atoi(strings.TrimSpace(record[elevationColumn])); err == nil {
+				db.msawInhibits.add(msawPoint{lat, lon}, elevation)
+			}
+		}
 		if icao == "" {
 			continue
 		}
 		db.byICAO[icao] = icao
-		lat, latErr := strconv.ParseFloat(strings.TrimSpace(record[latColumn]), 64)
-		lon, lonErr := strconv.ParseFloat(strings.TrimSpace(record[lonColumn]), 64)
-		if latErr == nil && lonErr == nil {
+		if validPosition {
 			point := configPoint{Lat: lat, Lon: lon}
 			db.positionByID[icao] = point
 			if iata != "" {

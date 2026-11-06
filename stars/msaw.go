@@ -25,7 +25,15 @@ import (
 
 // REDS-computed *current* MSAW, not an FAA-provided alert or the predicted
 // MSAW function described by TI 6191.409 §2.16.3.
-const msawMaximumTrackAge = 30 * time.Second
+const (
+	msawMaximumTrackAge = 30 * time.Second
+	msawEarthRadiusNM   = 3440.065
+
+	msawAirportInhibitRadiusNM = 5.0
+	msawAirportInhibitHeightFT = 2000
+	msawAirportCellDegrees     = 0.25
+	msawAirportLongitudeCells  = 1440 // 360 / msawAirportCellDegrees
+)
 
 type msawInhibitConfig struct {
 	CA   []json.RawMessage `json:"ca"` // Parsed separately by the CA implementation.
@@ -132,17 +140,86 @@ func (r msawRegion) contains(at msawPoint, altitude int) bool {
 }
 
 func msawDistanceNM(a, b msawPoint) float64 {
-	const earthRadiusNM = 3440.065
 	dlat := (b.lat - a.lat) * math.Pi / 180
 	dlon := (b.lon - a.lon) * math.Pi / 180
 	la1, la2 := a.lat*math.Pi/180, b.lat*math.Pi/180
 	h := math.Pow(math.Sin(dlat/2), 2) + math.Cos(la1)*math.Cos(la2)*math.Pow(math.Sin(dlon/2), 2)
-	return 2 * earthRadiusNM * math.Asin(math.Sqrt(math.Min(1, h)))
+	return 2 * msawEarthRadiusNM * math.Asin(math.Sqrt(math.Min(1, h)))
+}
+
+type msawAirportInhibitVolume struct {
+	center    msawPoint
+	elevation int // feet MSL; the cylinder extends from here to elevation + 2000
+}
+
+type msawAirportInhibitCell struct{ lat, lon int16 }
+
+// Immutable after CSV parsing and shared by every STARS pane. Each quarter-
+// degree cell holds only the cylinders whose bounding boxes touch it. Queries
+// perform one map lookup, then altitude/exact-radius checks on local candidates.
+type msawAirportInhibitIndex struct {
+	volumes []msawAirportInhibitVolume
+	byCell  map[msawAirportInhibitCell][]int
+}
+
+func msawAirportLatitudeCell(latitude float64) int {
+	return min(max(int(math.Floor((latitude+90)/msawAirportCellDegrees)), 0), 719)
+}
+
+func msawAirportLongitudeCell(cell int) int16 {
+	cell %= msawAirportLongitudeCells
+	if cell < 0 {
+		cell += msawAirportLongitudeCells
+	}
+	return int16(cell)
+}
+
+func (idx *msawAirportInhibitIndex) add(center msawPoint, elevation int) {
+	i := len(idx.volumes)
+	idx.volumes = append(idx.volumes, msawAirportInhibitVolume{center, elevation})
+	// Exact spherical-cap bounds avoid missed neighbors at high latitudes.
+	// A tiny bounding-box margin retains candidates exactly on a cell edge;
+	// the final great-circle distance still enforces the requested 5 NM.
+	angle := msawAirportInhibitRadiusNM / msawEarthRadiusNM
+	latitudeRadius := angle * 180 / math.Pi
+	lowLatitude, highLatitude := center.lat-latitudeRadius, center.lat+latitudeRadius
+	longitudeRadius := 180.0
+	if lowLatitude > -90 && highLatitude < 90 {
+		longitudeRadius = math.Asin(math.Min(1, math.Sin(angle)/math.Cos(center.lat*math.Pi/180))) * 180 / math.Pi
+	}
+	const margin = 1e-9
+	lowLat, highLat := msawAirportLatitudeCell(lowLatitude-margin), msawAirportLatitudeCell(highLatitude+margin)
+	lowLon := int(math.Floor((center.lon - longitudeRadius - margin + 180) / msawAirportCellDegrees))
+	highLon := int(math.Floor((center.lon + longitudeRadius + margin + 180) / msawAirportCellDegrees))
+	highLon = min(highLon, lowLon+msawAirportLongitudeCells-1)
+	for lat := lowLat; lat <= highLat; lat++ {
+		for lon := lowLon; lon <= highLon; lon++ {
+			cell := msawAirportInhibitCell{int16(lat), msawAirportLongitudeCell(lon)}
+			idx.byCell[cell] = append(idx.byCell[cell], i)
+		}
+	}
+}
+
+func (idx *msawAirportInhibitIndex) inhibited(at msawPoint, altitude int) bool {
+	if idx == nil || !msawValidPoint(at) {
+		return false
+	}
+	lon := int(math.Floor((at.lon + 180) / msawAirportCellDegrees))
+	cell := msawAirportInhibitCell{int16(msawAirportLatitudeCell(at.lat)), msawAirportLongitudeCell(lon)}
+	for _, i := range idx.byCell[cell] {
+		volume := idx.volumes[i]
+		if altitude >= volume.elevation && altitude <= volume.elevation+msawAirportInhibitHeightFT &&
+			msawDistanceNM(at, volume.center) <= msawAirportInhibitRadiusNM {
+			return true
+		}
+	}
+	return false
 }
 
 type msawAirspace struct {
 	polygons []msawPolygon
 	inhibit  []msawRegion
+	airports *msawAirportInhibitIndex
 }
 
 // Match VICE's *actual* GetMVA behavior: first matching MVA in source order,
@@ -161,6 +238,9 @@ func (a *msawAirspace) mvaAt(at msawPoint) (int, bool) {
 func (a *msawAirspace) inhibited(at msawPoint, altitude int) bool {
 	if a == nil {
 		return false
+	}
+	if a.airports.inhibited(at, altitude) {
+		return true
 	}
 	for _, r := range a.inhibit {
 		if r.contains(at, altitude) {
@@ -394,19 +474,18 @@ func loadMSAWAirspace(cfg selectedConfig) (*msawAirspace, error) {
 	if cfg.Facility.InhibitZones.MSAW == nil {
 		return nil, errors.New("missing inhibitZones.msaw adaptation")
 	}
-	var airports map[string]configPoint
-	if len(cfg.Facility.InhibitZones.MSAW) > 0 {
-		db, e := loadSTARSAirportDatabase()
-		if e != nil {
-			return nil, e
-		}
-		airports = db.positionByID
-	}
-	inhibits, err := msawParseInhibitZones(cfg.Facility.InhibitZones.MSAW, airports)
+	db, err := loadSTARSAirportDatabase()
 	if err != nil {
 		return nil, err
 	}
-	return &msawAirspace{polygons: polygons, inhibit: inhibits}, nil
+	if db.msawInhibits == nil || len(db.msawInhibits.volumes) == 0 {
+		return nil, errors.New("airport CSV has no usable elevation/position data for MSAW inhibition")
+	}
+	inhibits, err := msawParseInhibitZones(cfg.Facility.InhibitZones.MSAW, db.positionByID)
+	if err != nil {
+		return nil, err
+	}
+	return &msawAirspace{polygons: polygons, inhibit: inhibits, airports: db.msawInhibits}, nil
 }
 
 // Q (§7.14) suppresses only the current MSAW event; V (§7.15) toggles
