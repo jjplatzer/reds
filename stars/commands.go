@@ -37,6 +37,7 @@ const (
 	CommandModeMin
 	CommandModeCA
 	CommandModeRestrictionArea
+	CommandModeVolume
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -72,6 +73,8 @@ func (m CommandMode) PreviewString() string {
 		return "HISTORY"
 	case CommandModeDwell:
 		return "DWELL"
+	case CommandModeVolume:
+		return "VOL"
 	case CommandModeSSAFilter:
 		return ""
 	case CommandModeTrackReposition:
@@ -388,6 +391,11 @@ func init() {
 		return CommandStatus{}, nil
 	})
 
+	// §4.13.2: numeric entry is allowed only after selecting AUX VOL.
+	registerCommand(CommandModeVolume, "[AUDIO_VOLUME]", func(p *STARSPane, args []any) (CommandStatus, error) {
+		return CommandStatus{}, p.setAudioVolume(args[0].(int))
+	})
+
 	// TI 6191.409 4.15.5: after selecting AUX <DWELL>, enter 0/1/2.
 	registerCommand(CommandModeDwell, "[DWELL_MODE]", func(p *STARSPane, args []any) (CommandStatus, error) {
 		p.setDwellMode(args[0].(dwellMode))
@@ -690,6 +698,7 @@ func (p *STARSPane) resetCommand() {
 	p.ptlLengthDragAccumY = 0
 	p.historyDragAccumY = 0
 	p.dwellDragAccumY = 0
+	p.volumeDragAccumY = 0
 	p.wipRBL = nil
 	// A completed or cancelled GEO RESTRICTION must not survive into the
 	// next F12 command (e.g. changing from G text to C/P/A geometry).

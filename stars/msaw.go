@@ -1548,6 +1548,8 @@ type msawAudioManager struct {
 	mu       sync.Mutex
 	cancel   context.CancelFunc
 	disabled bool
+	volume   float64
+	playback *platform.AudioPlayback
 }
 
 func newMSAWAudioManager(logger *redslog.Logger) *msawAudioManager {
@@ -1577,7 +1579,54 @@ func newSTARSAlertAudioManager(logger *redslog.Logger, resource string) *msawAud
 		}
 		return nil
 	}
-	return &msawAudioManager{player: player, pcm: pcm.Data, logger: logger}
+	return &msawAudioManager{player: player, pcm: pcm.Data, logger: logger, volume: 1}
+}
+
+func (m *msawAudioManager) SetVolume(volume float64) {
+	if m == nil {
+		return
+	}
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if m.volume == volume {
+		return
+	}
+	m.volume = volume
+	if m.playback != nil {
+		m.playback.SetVolume(volume)
+	}
+}
+
+// PlayFor restarts the short VOL test tone and stops it even if drawing pauses.
+func (m *msawAudioManager) PlayFor(duration time.Duration) {
+	if m == nil {
+		return
+	}
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if m.cancel != nil {
+		m.cancel()
+	}
+	if m.disabled {
+		return
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), duration)
+	m.cancel = cancel
+	go m.repeat(ctx)
+}
+
+func (p *STARSPane) updateSTARSAlertVolume() {
+	gain := starsAudioVolumeGain(p.currentPrefs().AudioVolume)
+	for _, audio := range []*msawAudioManager{p.msawAudio, p.caAudio, p.mciAudio, p.volumeTestAudio} {
+		audio.SetVolume(gain)
+	}
+}
+
+func (p *STARSPane) playAudioVolumeTest() {
+	// Rev. 30 leaves the test alarm/duration adapted. Reuse the local MSAW
+	// alarm sample, with VICE's brief 250-ms volume-test duration.
+	p.updateSTARSAlertVolume()
+	p.volumeTestAudio.PlayFor(250 * time.Millisecond)
 }
 
 // SetPlaying is idempotent. Switching off cancels playback promptly (without
@@ -1611,7 +1660,10 @@ func (m *msawAudioManager) repeat(ctx context.Context) {
 	ticker := time.NewTicker(20 * time.Millisecond)
 	defer ticker.Stop()
 	for ctx.Err() == nil {
-		playback, err := m.player.PlayPCM(m.pcm)
+		m.mu.Lock()
+		volume := m.volume
+		m.mu.Unlock()
+		playback, err := m.player.PlayPCMWithVolume(m.pcm, volume)
 		if err != nil {
 			m.mu.Lock()
 			m.disabled = true // avoid retrying every rendered frame
@@ -1621,12 +1673,26 @@ func (m *msawAudioManager) repeat(ctx context.Context) {
 			}
 			return
 		}
+		m.mu.Lock()
+		if ctx.Err() != nil {
+			m.mu.Unlock()
+			_ = playback.Close()
+			return
+		}
+		m.playback = playback
+		playback.SetVolume(m.volume)
+		m.mu.Unlock()
 		for playback.IsPlaying() && ctx.Err() == nil {
 			select {
 			case <-ctx.Done():
 			case <-ticker.C:
 			}
 		}
+		m.mu.Lock()
+		if m.playback == playback {
+			m.playback = nil
+		}
+		m.mu.Unlock()
 		_ = playback.Close()
 	}
 }

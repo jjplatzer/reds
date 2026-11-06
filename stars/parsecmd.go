@@ -158,6 +158,27 @@ func (leaderLengthCommandParser) Parse(text string) (any, string, bool, error) {
 	return value, "", true, nil
 }
 
+// VOL is numeric entry on the selected AUX DCB control (§4.13.2).
+type audioVolumeCommandParser struct{}
+
+func (audioVolumeCommandParser) Identifier() string { return "AUDIO_VOLUME" }
+
+func (audioVolumeCommandParser) Parse(text string) (any, string, bool, error) {
+	if text == "" {
+		return nil, text, true, ErrSTARSCommandFormat
+	}
+	for _, r := range text {
+		if r < '0' || r > '9' {
+			return nil, text, true, ErrSTARSCommandFormat
+		}
+	}
+	volume, err := strconv.Atoi(text)
+	if err != nil || volume < 1 || volume > 10 {
+		return nil, text, true, ErrSTARSIllegalValue
+	}
+	return volume, "", true, nil
+}
+
 // HISTORY is numeric entry on the selected AUX DCB control, not an
 // independent keyboard command (TI 6191.409 Rev. 30, 4.14.1).
 type historyCountCommandParser struct{}
@@ -542,6 +563,7 @@ var commandTypeParsers = map[string]commandTypeParser{
 	"LEADER_LENGTH":      leaderLengthCommandParser{},
 	"PTL_LENGTH":         ptlLengthCommandParser{},
 	"HISTORY_COUNT":      historyCountCommandParser{},
+	"AUDIO_VOLUME":       audioVolumeCommandParser{},
 	"DWELL_MODE":         dwellModeCommandParser{},
 	"BRIGHTNESS":         brightnessCommandParser{},
 	"CHAR_SIZE":          charSizeCommandParser{},

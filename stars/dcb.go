@@ -115,6 +115,7 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 		p.commandMode != CommandModeCharSizeSpinner &&
 		p.commandMode != CommandModeRangeRings &&
 		p.commandMode != CommandModeDwell &&
+		p.commandMode != CommandModeVolume &&
 		p.commandMode != CommandModeHistory && maxScroll > 0 {
 		if ctx.Mouse.Wheel.Y > 0 {
 			p.dcbScroll += dcbButtonSize
@@ -409,8 +410,16 @@ func (d *dcbDrawer) drawAuxPage(disabled bool) {
 		return flags
 	}
 
-	// <VOL n>.
-	d.button("VOL\n2", auxFlags(buttonFull), false, nil)
+	// §4.13.2: AUX VOL selects a 1-10 trackball/numeric adjustment.
+	volumeSelected := p.commandMode == CommandModeVolume
+	d.button(fmt.Sprintf("VOL\n%d", validSTARSAudioVolume(ps.AudioVolume)), auxFlags(buttonFull), volumeSelected, func() {
+		if volumeSelected {
+			p.resetCommand()
+			p.playAudioVolumeTest()
+		} else {
+			p.setCommandMode(CommandModeVolume)
+		}
+	})
 
 	// TI 6191.409 Rev. 30, 4.14.1: HISTORY is an AUX adjustment button.
 	// The separate H_RATE setting is still fixed at 4.5 seconds.
@@ -487,6 +496,10 @@ func (d *dcbDrawer) drawAuxPage(disabled bool) {
 
 	// <SHIFT> toggles the Main and Auxiliary DCBs (Table 2-6).
 	d.button("SHIFT", auxFlags(buttonFull), false, func() {
+		if p.commandMode == CommandModeVolume {
+			p.resetCommand()
+			p.playAudioVolumeTest()
+		}
 		p.dcbShowAux = false
 		p.dcbSuppressPressUntilRelease = true
 	})
@@ -767,6 +780,54 @@ func (p *STARSPane) adjustHistory(ctx *panes.Context) {
 	for p.historyDragAccumY >= starsHistoryMouseDelta {
 		p.currentPrefs().RadarTrackHistory = stepHistoryCount(p.currentPrefs().RadarTrackHistory, -1)
 		p.historyDragAccumY -= starsHistoryMouseDelta
+	}
+}
+
+func (p *STARSPane) setAudioVolume(volume int) error {
+	if volume < 1 || volume > 10 {
+		return ErrSTARSIllegalValue
+	}
+	p.currentPrefs().AudioVolume = volume
+	p.playAudioVolumeTest()
+	return nil
+}
+
+func (p *STARSPane) stepAudioVolume(delta int) {
+	current := validSTARSAudioVolume(p.currentPrefs().AudioVolume)
+	volume := min(max(current+delta, 1), 10)
+	if volume != current {
+		_ = p.setAudioVolume(volume)
+	}
+}
+
+// VICE uses ten pixels per step. Up/wheel up increases the selected level.
+// Each change previews the tone; completing the adjustment also tests it.
+func (p *STARSPane) adjustAudioVolume(ctx *panes.Context) {
+	if p == nil || ctx == nil || ctx.Mouse == nil || p.commandMode != CommandModeVolume {
+		return
+	}
+	mouse := ctx.Mouse
+	if mouse.WasReleased(platform.MouseButtonLeft) && !p.mouseOverDCB(ctx) {
+		p.resetCommand()
+		p.playAudioVolumeTest()
+		return
+	}
+	if mouse.Wheel.Y != 0 {
+		if mouse.Wheel.Y > 0 {
+			p.stepAudioVolume(1)
+		} else {
+			p.stepAudioVolume(-1)
+		}
+		return
+	}
+	p.volumeDragAccumY += mouse.Delta.Y
+	for p.volumeDragAccumY <= -10 {
+		p.stepAudioVolume(1)
+		p.volumeDragAccumY += 10
+	}
+	for p.volumeDragAccumY >= 10 {
+		p.stepAudioVolume(-1)
+		p.volumeDragAccumY -= 10
 	}
 }
 
