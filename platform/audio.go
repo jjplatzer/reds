@@ -54,6 +54,12 @@ func NewAudioPlayer() (*AudioPlayer, error) {
 }
 
 func (p *AudioPlayer) PlayPCM(data []byte) (*AudioPlayback, error) {
+	return p.PlayPCMWithVolume(data, 1)
+}
+
+// PlayPCMWithVolume sets linear amplitude before playback starts. Volume is
+// local to this playback, so one scope cannot change another scope's alarms.
+func (p *AudioPlayer) PlayPCMWithVolume(data []byte, volume float64) (*AudioPlayback, error) {
 	if p == nil || p.ctx == nil {
 		return nil, fmt.Errorf("audio player is not initialized")
 	}
@@ -65,6 +71,7 @@ func (p *AudioPlayer) PlayPCM(data []byte) (*AudioPlayback, error) {
 	}
 
 	player := p.ctx.NewPlayer(bytes.NewReader(data))
+	player.SetVolume(min(max(volume, 0), 1))
 	player.Play()
 	return &AudioPlayback{player: player}, nil
 }
@@ -79,6 +86,12 @@ func (p *AudioPlayer) PlayWAV(data []byte) (*AudioPlayback, error) {
 
 func (p *AudioPlayback) IsPlaying() bool {
 	return p != nil && p.player != nil && p.player.IsPlaying()
+}
+
+func (p *AudioPlayback) SetVolume(volume float64) {
+	if p != nil && p.player != nil {
+		p.player.SetVolume(min(max(volume, 0), 1))
+	}
 }
 
 func (p *AudioPlayback) Wait() {

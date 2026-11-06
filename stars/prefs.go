@@ -19,6 +19,9 @@ const (
 	defaultSTARSRange = float32(50)
 	minimumSTARSRange = float32(6)
 
+	// VICE defaults to full amplitude; the legal VOL range is 1-10 (§4.13.2).
+	defaultSTARSAudioVolume = 10
+
 	// TI 6191.409 Rev. 30, 4.4.1 Change display range: the keyboard range is
 	// limited to the maximum adapted value, normally 512 nmi for a TCW and
 	// 64 nmi for a TDW. REDS currently instantiates a TCW, so use the normal
@@ -59,6 +62,7 @@ type starsPreferenceSnapshot struct {
 	PTLOwn            bool      `json:"ptlOwn"`
 	PTLAll            bool      `json:"ptlAll"`
 	DwellMode         dwellMode `json:"dwellMode"`
+	AudioVolume       *int      `json:"audioVolume,omitempty"`
 	// A pointer distinguishes legacy preference files, which omitted this
 	// field, from an explicitly saved altitude-filter configuration.
 	AltitudeFilters *altitudeFilterPreferences `json:"altitudeFilters,omitempty"`
@@ -131,6 +135,18 @@ func historyCountPointer(count int) *int {
 	return &count
 }
 
+func validSTARSAudioVolume(volume int) int {
+	if volume == 0 {
+		return defaultSTARSAudioVolume // Legacy preferences omitted VOL.
+	}
+	return min(max(volume, 1), 10)
+}
+
+// VICE scales mixed PCM samples by volume/10, using linear amplitude.
+func starsAudioVolumeGain(volume int) float64 {
+	return float64(validSTARSAudioVolume(volume)) / 10
+}
+
 func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 	if p == nil {
 		return starsPreferenceSnapshot{}
@@ -142,6 +158,7 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 	alertListPosition := p.AlertListPosition
 	mciSuppressionList := p.MCISuppressionList
 	altimeterStationList := p.AltimeterStationList
+	audioVolume := validSTARSAudioVolume(p.AudioVolume)
 	return starsPreferenceSnapshot{
 		UserCenter:              p.UserCenter,
 		UseUserCenter:           p.UseUserCenter,
@@ -156,6 +173,7 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 		PTLOwn:                  p.PTLOwn,
 		PTLAll:                  p.PTLAll,
 		DwellMode:               p.DwellMode,
+		AudioVolume:             &audioVolume,
 		AltitudeFilters:         &filters,
 		Brightness:              p.Brightness,
 		CharSize:                p.CharSize,
@@ -195,6 +213,10 @@ func (s starsPreferenceSnapshot) apply(p *Preferences) {
 	p.PTLOwn = s.PTLOwn
 	p.PTLAll = s.PTLAll
 	p.DwellMode = s.DwellMode
+	p.AudioVolume = defaultSTARSAudioVolume
+	if s.AudioVolume != nil {
+		p.AudioVolume = validSTARSAudioVolume(*s.AudioVolume)
+	}
 	if s.AltitudeFilters != nil {
 		p.AltitudeFilters = *s.AltitudeFilters
 	} else {
@@ -241,6 +263,7 @@ func (p *STARSPane) applyPreferenceSnapshot(snapshot starsPreferenceSnapshot) {
 	}
 
 	snapshot.apply(p.currentPrefs())
+	p.updateSTARSAlertVolume()
 	p.loadVisiblePreferenceVideoMaps()
 }
 
@@ -786,6 +809,7 @@ type Preferences struct {
 	PTLOwn                  bool
 	PTLAll                  bool
 	DwellMode               dwellMode
+	AudioVolume             int
 	Brightness              BrightnessPreferences
 	CharSize                CharacterSizePreferences
 	DisplayWeatherLevel     [6]bool
@@ -859,6 +883,7 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// VICE's established default is five marks; the operator selects 1-10.
 		RadarTrackHistory: starsDefaultTargetHistoryCount,
 		DwellMode:         dwellOn,
+		AudioVolume:       defaultSTARSAudioVolume,
 		Brightness: BrightnessPreferences{
 			// The operator manual defines the allowable ranges but not startup
 			// values. Use VICE's STARS defaults so the initial presentation and

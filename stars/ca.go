@@ -1958,6 +1958,7 @@ func (p *STARSPane) updateSTARSAlertAudio(snapshot redsnet.TaisSnapshot, now tim
 	if p == nil {
 		return
 	}
+	p.updateSTARSAlertVolume()
 	selected := p.desiredSTARSAlarm(snapshot, now)
 	// Cancel non-selected channels before starting the selected tone.
 	if selected != starsAlarmLA {

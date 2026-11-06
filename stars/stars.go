@@ -88,6 +88,7 @@ type STARSPane struct {
 	ptlLengthDragAccumY       float32
 	historyDragAccumY         float32
 	dwellDragAccumY           float32
+	volumeDragAccumY          float32
 
 	// DWELL is a temporary single-track brightness override, not the manual
 	// cyan highlight or an aircraft selection. LOCK retains the target while
@@ -218,6 +219,7 @@ type STARSPane struct {
 	msawAudio               *msawAudioManager
 	caAudio                 *msawAudioManager
 	mciAudio                *msawAudioManager
+	volumeTestAudio         *msawAudioManager
 	msawAirspace            *msawAirspace
 	msawRunways             *msawRunwayIndex
 	msawSite                *msawSiteRuntimeState
@@ -562,6 +564,7 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	// CA/MCI are independent of MSAW airspace availability.
 	pane.caAudio = newSTARSAlertAudioManager(logger, caAudioResource)
 	pane.mciAudio = newSTARSAlertAudioManager(logger, mciAudioResource)
+	pane.volumeTestAudio = newSTARSAlertAudioManager(logger, msawAudioResource)
 	if airspace, err := loadMSAWAirspace(cfg); err != nil {
 		logger.Warn("MSAW unavailable: missing or invalid airspace adaptation", slog.String("facility", cfg.Facility.Facility), slog.Any("error", err))
 	} else {
@@ -800,6 +803,10 @@ func (p *STARSPane) Dispose() {
 		p.mciAudio.Stop()
 		p.mciAudio = nil
 	}
+	if p.volumeTestAudio != nil {
+		p.volumeTestAudio.Stop()
+		p.volumeTestAudio = nil
+	}
 	if p.tais != nil {
 		p.tais.Close()
 		p.tais = nil
@@ -890,6 +897,10 @@ func (p *STARSPane) consumeMouseEvents(
 	}
 	if p.commandMode == CommandModeHistory {
 		p.adjustHistory(ctx)
+		return
+	}
+	if p.commandMode == CommandModeVolume {
+		p.adjustAudioVolume(ctx)
 		return
 	}
 	if p.commandMode == CommandModeDwell {
