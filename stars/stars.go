@@ -3,6 +3,7 @@ package stars
 import (
 	"fmt"
 	"log/slog"
+	"math"
 	"sort"
 	"strings"
 	"time"
@@ -631,10 +632,36 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	return pane, nil
 }
 
+// Match ASDE-X activity reporting: scope input keeps the feed connected;
+// track updates, redraws, held keys and an unmoving cursor do not.
+func (p *STARSPane) reportClientActivity(ctx *panes.Context) {
+	if p == nil || p.tais == nil || ctx == nil {
+		return
+	}
+	if mouse := ctx.Mouse; mouse != nil {
+		if math.Abs(float64(mouse.Delta.X)) > 0.01 || math.Abs(float64(mouse.Delta.Y)) > 0.01 ||
+			mouse.Wheel.X != 0 || mouse.Wheel.Y != 0 {
+			p.tais.ReportActivity()
+			return
+		}
+		for button := platform.MouseButton(0); button < platform.MouseButtonCount; button++ {
+			if mouse.WasPressed(button) || mouse.WasReleased(button) {
+				p.tais.ReportActivity()
+				return
+			}
+		}
+	}
+	if keyboard := ctx.Keyboard; keyboard != nil &&
+		(len(keyboard.Text) > 0 || len(keyboard.Pressed) > 0 || len(keyboard.Released) > 0) {
+		p.tais.ReportActivity()
+	}
+}
+
 func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	if p == nil || ctx == nil || zcb == nil {
 		return
 	}
+	p.reportClientActivity(ctx)
 
 	x, y, width, height := ctx.PaneFramebufferRect()
 	backgroundCB := zcb.At(zBackground)
