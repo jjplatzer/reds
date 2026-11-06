@@ -7,6 +7,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.ServerWebSocket;
+import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonObject;
 import store.TrackStore;
 
@@ -31,6 +32,7 @@ public final class WebSocketPush extends AbstractVerticle {
     private ServerConfig config;
     private HttpServer server;
     private MessageConsumer<JsonObject> eventConsumer;
+    private long inactivityTimerId = -1;
 
     @Override
     public void start(Promise<Void> startPromise) {
@@ -52,9 +54,15 @@ public final class WebSocketPush extends AbstractVerticle {
 
         server.listen(config.port(), config.host())
                 .onSuccess(ignored -> {
+                    if (config.clientInactivitySeconds() > 0) {
+                        long checkMs = Math.min(30_000L,
+                                Math.max(1_000L, config.clientInactivitySeconds() * 500L));
+                        inactivityTimerId = vertx.setPeriodic(checkMs, timer -> closeInactiveClients());
+                    }
                     System.out.println("[TAIS ws] Listening on http://" +
                             config.host() + ":" + config.port() + config.wsPath() +
-                            " health=" + config.healthPath());
+                            " health=" + config.healthPath() +
+                            " clientInactivitySeconds=" + config.clientInactivitySeconds());
                     startPromise.complete();
                 })
                 .onFailure(err -> {
@@ -65,6 +73,10 @@ public final class WebSocketPush extends AbstractVerticle {
 
     @Override
     public void stop(Promise<Void> stopPromise) {
+        if (inactivityTimerId != -1) {
+            vertx.cancelTimer(inactivityTimerId);
+            inactivityTimerId = -1;
+        }
         for (ClientConnection client : new ArrayList<>(clients)) {
             client.close();
         }
@@ -132,6 +144,18 @@ public final class WebSocketPush extends AbstractVerticle {
                 config.outboundMaxFrames(), config.outboundMaxBytes());
         clients.add(client);
 
+        // Only explicit user activity refreshes the timer. Surveillance
+        // updates and WebSocket ping/pong traffic must not keep an idle user on.
+        socket.textMessageHandler(text -> {
+            try {
+                if ("activity".equals(new JsonObject(text).getValue("type"))) {
+                    client.markActivity(System.currentTimeMillis());
+                }
+            } catch (DecodeException ignored) {
+                // Malformed/unknown messages do not count as activity.
+            }
+        });
+
         socket.closeHandler(ignored -> remove(client));
         socket.exceptionHandler(err -> {
             System.err.println("[TAIS ws] Client error: " + err.getMessage());
@@ -160,6 +184,17 @@ public final class WebSocketPush extends AbstractVerticle {
     private void broadcast(JsonObject frame) {
         for (ClientConnection client : new ArrayList<>(clients)) {
             client.onLiveFrame(frame);
+        }
+    }
+
+    private void closeInactiveClients() {
+        long nowMs = System.currentTimeMillis();
+        for (ClientConnection client : new ArrayList<>(clients)) {
+            if (client.inactiveFor(config, nowMs)) {
+                System.out.println("[TAIS ws] Closing inactive client; facility=" + client.facility());
+                client.closeForInactivity();
+                remove(client);
+            }
         }
     }
 

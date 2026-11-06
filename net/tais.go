@@ -21,10 +21,12 @@ const (
 	taisReconnectInitialDelay         = 1 * time.Second
 	taisReconnectMaxDelay             = 30 * time.Second
 	taisReconnectStableDuration       = 30 * time.Second
+	taisActivityMinInterval           = 30 * time.Second
 	taisMaxMessageBytes         int64 = 16 << 20
 )
 
 var errTaisClientClosed = errors.New("TAIS client closed")
+var errTaisClientInactive = errors.New("TAIS client inactive")
 
 type TaisClient struct {
 	logger   *redslog.Logger
@@ -33,7 +35,8 @@ type TaisClient struct {
 	state    *taisState
 	dialer   *websocket.Dialer
 
-	close chan struct{}
+	close    chan struct{}
+	activity chan struct{}
 
 	startOnce sync.Once
 	closeOnce sync.Once
@@ -67,6 +70,7 @@ func NewTaisClient(url, facility string, logger *redslog.Logger) *TaisClient {
 		state:    newTaisState(),
 		dialer:   websocket.DefaultDialer,
 		close:    make(chan struct{}),
+		activity: make(chan struct{}, 1),
 	}
 }
 
@@ -106,6 +110,18 @@ func (c *TaisClient) Close() {
 		c.statusMu.Unlock()
 		c.closeConnection()
 	})
+}
+
+// ReportActivity is driven by mouse/keyboard input, never by incoming tracks.
+// Coalesce frame-by-frame input without blocking the renderer.
+func (c *TaisClient) ReportActivity() {
+	if c == nil {
+		return
+	}
+	select {
+	case c.activity <- struct{}{}:
+	default:
+	}
 }
 
 // Snapshot returns a detached copy of all TAIS state. For a selected STARS
@@ -171,6 +187,17 @@ func (c *TaisClient) run() {
 		if errors.Is(err, errTaisClientClosed) {
 			return
 		}
+		if errors.Is(err, errTaisClientInactive) {
+			c.setDisconnected(err)
+			c.logger.Info("TAIS live server disconnected", slog.String("reason", "inactivity_timeout"))
+			// An intentional idle disconnect must not enter the network retry
+			// loop. Resume with a fresh snapshot once the user interacts again.
+			delay = taisReconnectInitialDelay
+			if !c.waitForActivity() {
+				return
+			}
+			continue
+		}
 		if err != nil {
 			c.setDisconnected(err)
 			c.logger.Warn(
@@ -225,10 +252,46 @@ func (c *TaisClient) connectAndServe() (bool, error) {
 	c.state.markUnsynced()
 	c.setConnected()
 	connectedAt := time.Now()
-	err = c.readFrames(conn)
+	err = c.serve(conn)
 	ready, _, _ := c.state.status()
 	stable := taisSessionStable(ready, time.Since(connectedAt))
 	return stable, err
+}
+
+func (c *TaisClient) serve(conn *websocket.Conn) error {
+	readError := make(chan error, 1)
+	readDone := make(chan struct{})
+	go func() {
+		defer close(readDone)
+		readError <- c.readFrames(conn)
+	}()
+	defer func() {
+		_ = conn.Close()
+		// Do not let a previous connection mutate state after a new
+		// connection starts applying its authoritative snapshot.
+		<-readDone
+	}()
+
+	var lastActivitySent time.Time
+	for {
+		select {
+		case <-c.close:
+			return errTaisClientClosed
+		case err := <-readError:
+			return err
+		case <-c.activity:
+			now := time.Now()
+			if now.Sub(lastActivitySent) >= taisActivityMinInterval {
+				if err := conn.SetWriteDeadline(now.Add(5 * time.Second)); err != nil {
+					return err
+				}
+				if err := conn.WriteJSON(ActivityMessage{Type: "activity"}); err != nil {
+					return err
+				}
+				lastActivitySent = now
+			}
+		}
+	}
 }
 
 // A handshake or an incomplete snapshot is not a healthy connection.
@@ -248,6 +311,11 @@ func (c *TaisClient) readFrames(conn *websocket.Conn) error {
 		if err != nil {
 			if c.closed() {
 				return errTaisClientClosed
+			}
+			var closeErr *websocket.CloseError
+			if errors.As(err, &closeErr) && closeErr.Code == websocket.CloseNormalClosure &&
+				closeErr.Text == "inactivity_timeout" {
+				return errTaisClientInactive
 			}
 			return err
 		}
@@ -327,6 +395,16 @@ func (c *TaisClient) wait(delay time.Duration) bool {
 	defer timer.Stop()
 	select {
 	case <-timer.C:
+		return true
+	case <-c.close:
+		return false
+	}
+}
+
+func (c *TaisClient) waitForActivity() bool {
+	c.logger.Info("Waiting for STARS activity before reconnect")
+	select {
+	case <-c.activity:
 		return true
 	case <-c.close:
 		return false

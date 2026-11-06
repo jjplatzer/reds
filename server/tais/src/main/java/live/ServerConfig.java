@@ -11,7 +11,8 @@ public record ServerConfig(
         int maxClients,
         int pendingMax,
         int outboundMaxFrames,
-        long outboundMaxBytes
+        long outboundMaxBytes,
+        int clientInactivitySeconds
 ) {
     public static ServerConfig fromEnv() {
         return new ServerConfig(
@@ -22,7 +23,8 @@ public record ServerConfig(
                 intValue("TAIS_WS_MAX_CLIENTS", 64, 1, 10_000),
                 intValue("TAIS_WS_PENDING_MAX", 4096, 128, 100_000),
                 intValue("TAIS_WS_OUTBOUND_MAX_FRAMES", 4096, 128, 100_000),
-                intValue("TAIS_WS_OUTBOUND_MAX_BYTES", 16 << 20, 16 << 20, 1 << 30)
+                intValue("TAIS_WS_OUTBOUND_MAX_BYTES", 16 << 20, 16 << 20, 1 << 30),
+                intValue("REDS_CLIENT_INACTIVITY_SECONDS", 600, Integer.MIN_VALUE, Integer.MAX_VALUE)
         );
     }
 

@@ -33,6 +33,7 @@ final class ClientConnection {
     private long outboundBytes;
     private boolean ready;
     private boolean closed;
+    private long lastActivityMs = System.currentTimeMillis();
 
     ClientConnection(ServerWebSocket socket, String facility, int pendingMax,
                      int outboundMaxFrames, long outboundMaxBytes) {
@@ -47,6 +48,21 @@ final class ClientConnection {
 
     String facility() {
         return facility;
+    }
+
+    void markActivity(long nowMs) {
+        if (!closed) lastActivityMs = nowMs;
+    }
+
+    boolean inactiveFor(ServerConfig config, long nowMs) {
+        return !closed && config.clientInactivitySeconds() > 0 &&
+                nowMs - lastActivityMs > config.clientInactivitySeconds() * 1000L;
+    }
+
+    void closeForInactivity() {
+        // Keep inactivity outside the revisioned surveillance stream. The
+        // desktop recognizes this close reason and waits for new user input.
+        close((short) 1000, "inactivity_timeout");
     }
 
     void onLiveFrame(JsonObject frame) {
