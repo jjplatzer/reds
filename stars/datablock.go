@@ -260,7 +260,7 @@ func (p *STARSPane) drawDatablocks(
 					spcText, spcVisible, specialConditionBlinkVisible(now))
 				p.addDatablockLineSegments(td, redAlert, spcSuffix, anchor, direction, -1, 1, lineHeight, msawStyle, spcStyle)
 			}
-			if p.beaconCodeReadoutHeld || mciActive || hasSPC || p.currentPrefs().DisplayLDBBeaconCodes || p.targetLDBBeaconReadoutActive(target, now) {
+			if p.beaconCodeReadoutHeld || mciActive || hasSPC || p.targetLDBBeaconCodeVisible(target) || p.targetLDBBeaconReadoutActive(target, now) {
 				line1 := normalizeBeaconCode(target.Track.ReportedBeaconCode)
 				p.addDatablockLine(td, line1, anchor, direction, 0, 1, lineHeight, style)
 			}
