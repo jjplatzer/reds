@@ -106,6 +106,15 @@ func (towerListIDCommandParser) Parse(text string) (any, string, bool, error) {
 
 var errListIllegalParameter = errors.New("ILL PARAM")
 
+func (p *STARSPane) moveAltimeterStationList(position [2]float32) error {
+	if len(p.ssaAirportWeather.allStations) == 0 {
+		return ErrSTARSIllegalFunction
+	}
+	list := &p.currentPrefs().AltimeterStationList
+	list.Position, list.Visible = position, true
+	return nil
+}
+
 type towerListLinesCommandParser struct{}
 
 func (towerListLinesCommandParser) Identifier() string { return "TOWER_LIST_LINES" }
@@ -184,6 +193,17 @@ func init() {
 	commandTypeParsers["TOWER_LIST_ID"] = towerListIDCommandParser{}
 	commandTypeParsers["TOWER_LIST_LINES"] = towerListLinesCommandParser{}
 	commandTypeParsers["COAST_SUSPEND_LIST_LINES"] = coastSuspendListLinesCommandParser{}
+
+	// §§4.9.18-19: TL + ENTER toggles the altimeter station list; TL +
+	// slew is consumed by the mouse handler and positions/shows the list.
+	registerCommand(CommandModeMultiFunc, "TL", func(p *STARSPane, _ []any) (CommandStatus, error) {
+		if len(p.ssaAirportWeather.allStations) == 0 {
+			return CommandStatus{}, ErrSTARSIllegalFunction
+		}
+		list := &p.currentPrefs().AltimeterStationList
+		list.Visible = !list.Visible
+		return CommandStatus{}, nil
+	})
 
 	// TI 6191.409 Rev. 30, 4.9.15: <MULTI FUNC>, T, C, <SPACE>,
 	// <1..100>, <ENTER> changes the Coast/Suspend-list display capacity and

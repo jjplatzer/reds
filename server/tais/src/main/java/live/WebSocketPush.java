@@ -54,8 +54,7 @@ public final class WebSocketPush extends AbstractVerticle {
                 .onSuccess(ignored -> {
                     System.out.println("[TAIS ws] Listening on http://" +
                             config.host() + ":" + config.port() + config.wsPath() +
-                            " health=" + config.healthPath() +
-                            " auth=" + (config.authEnabled() ? "enabled" : "disabled"));
+                            " health=" + config.healthPath());
                     startPromise.complete();
                 })
                 .onFailure(err -> {
@@ -113,12 +112,6 @@ public final class WebSocketPush extends AbstractVerticle {
     private void handleWebSocket(ServerWebSocket socket) {
         if (!config.wsPath().equals(socket.path())) {
             socket.reject(404);
-            return;
-        }
-
-        if (!config.authorized(socket.headers().get("Authorization"))) {
-            System.err.println("[TAIS ws] Rejected unauthorized client");
-            socket.reject(401);
             return;
         }
 

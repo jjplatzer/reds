@@ -2,9 +2,6 @@ package live;
 
 import config.Env;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-
 /** Configuration for the local TAIS HTTP/WebSocket endpoint. */
 public record ServerConfig(
         String host,
@@ -14,8 +11,7 @@ public record ServerConfig(
         int maxClients,
         int pendingMax,
         int outboundMaxFrames,
-        long outboundMaxBytes,
-        String bearerToken
+        long outboundMaxBytes
 ) {
     public static ServerConfig fromEnv() {
         return new ServerConfig(
@@ -26,26 +22,8 @@ public record ServerConfig(
                 intValue("TAIS_WS_MAX_CLIENTS", 64, 1, 10_000),
                 intValue("TAIS_WS_PENDING_MAX", 4096, 128, 100_000),
                 intValue("TAIS_WS_OUTBOUND_MAX_FRAMES", 4096, 128, 100_000),
-                intValue("TAIS_WS_OUTBOUND_MAX_BYTES", 16 << 20, 16 << 20, 1 << 30),
-                trimToNull(Env.get("REDS_WS_TOKEN"))
+                intValue("TAIS_WS_OUTBOUND_MAX_BYTES", 16 << 20, 16 << 20, 1 << 30)
         );
-    }
-
-    public boolean authEnabled() {
-        return bearerToken != null;
-    }
-
-    /**
-     * REDS already uses REDS_WS_TOKEN for the public SMES feed. Reusing the
-     * same bearer token lets Caddy expose both feeds under the same TLS host.
-     */
-    public boolean authorized(String authorizationHeader) {
-        if (!authEnabled()) return true;
-        if (authorizationHeader == null) return false;
-
-        byte[] expected = ("Bearer " + bearerToken).getBytes(StandardCharsets.UTF_8);
-        byte[] actual = authorizationHeader.getBytes(StandardCharsets.UTF_8);
-        return MessageDigest.isEqual(expected, actual);
     }
 
     private static String value(String key, String def) {
