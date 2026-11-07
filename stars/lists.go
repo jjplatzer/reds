@@ -27,7 +27,9 @@ const (
 	ssaCheckBoxHalfSize  = float32(5)
 	ssaCheckTriangleSize = float32(7)
 
-	zLists renderer.Z = 0
+	// Keep lists beneath history dots, targets, and datablocks at overlaps.
+	zLists       renderer.Z = zTargetHistory - 1
+	zPreviewArea renderer.Z = 0
 )
 
 func (p *STARSPane) toggleVideoMapsList(selection videoMapsListSelection) {
@@ -1338,7 +1340,7 @@ func (p *STARSPane) drawPreviewArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer
 	}
 
 	x, y, width, height := ctx.PaneFramebufferRect()
-	cb := zcb.At(zLists)
+	cb := zcb.At(zPreviewArea)
 	cb.Viewport(x, y, width, height)
 	cb.Scissor(x, y, width, height)
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())
