@@ -178,15 +178,15 @@ type STARSPane struct {
 	// receiving TCP as though it already owned the track.
 	taisOwnership map[string]taisOwnershipState
 
-	// Coast/Suspend tab line numbers are system-provided in real STARS/CRC.
+	// Aircraft-list tab line numbers are system-provided in real STARS/CRC.
 	// TAIS does not carry them yet, so REDS keeps a display-local 0..99
-	// allocator for suspended-list presentation until authoritative line-number
+	// allocator shared by Flight Plan, VFR and Coast/Suspend until line-number
 	// data is added to the feed.
-	coastSuspendLineNumbers   map[string]int
+	aircraftListLineNumbers   map[string]int
 	coastSuspendFirstSeen     map[string]uint64
 	coastSuspendFrozenAtEntry map[string]bool
 	coastSuspendSequence      uint64
-	coastSuspendNextLine      int
+	aircraftListNextLine      int
 
 	// tpaTracks stores manual TPA J-Ring/Cone state local to this TCW/TDW.
 	tpaTracks map[string]tpaTrackState
@@ -776,6 +776,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.drawPreviewArea(ctx, zcb)
 	p.drawSSA(ctx, zcb)
 	p.drawCoastSuspendList(ctx, zcb, allTargets)
+	p.drawAircraftPlanLists(ctx, zcb, allTargets)
 	p.drawMSAWAlertList(ctx, zcb, activeTargets)
 	p.drawMCISuppressionList(ctx, zcb, allTargets)
 	p.drawAltimeterStationList(ctx, zcb)
@@ -1405,6 +1406,25 @@ func (p *STARSPane) consumeMouseEvents(
 			p.resetCommand()
 		}
 		return
+	}
+
+	// §§4.9.6, 4.9.11: T/TV plus slew position and show the aircraft list.
+	if p.commandMode == CommandModeMultiFunc {
+		command := strings.ToUpper(p.multiFuncPrefix + p.commandInput)
+		if command == "T" || command == "TV" {
+			if mouse.WasPressed(platform.MouseButtonLeft) {
+				w, h := ctx.PaneRect.Width(), ctx.PaneRect.Height()
+				if w > 0 && h > 0 {
+					list := &ps.FlightPlanList
+					if command == "TV" {
+						list = &ps.VFRList
+					}
+					list.Position, list.Visible = [2]float32{mouse.Pos.X / w, mouse.Pos.Y / h}, true
+				}
+				p.resetCommand()
+			}
+			return
+		}
 	}
 
 	// §4.9.6: MULTI FUNC T M + slew moves the non-resizable alert list.
