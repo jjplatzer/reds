@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.List;
 
 /**
- * Stable protocol-v1 JSON for the REDS TAIS WebSocket.
+ * Versioned JSON for the REDS TAIS WebSocket.
  *
  * The wire representation stays close to the normalized SimpleXML model. The
  * only derived lifecycle fields are STARS coast phase / Phase-2 entry time,
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public final class TaisWire {
 
-    public static final int PROTOCOL = 1;
+    public static final int PROTOCOL = 2;
     public static final String FEED = "tais";
 
     private TaisWire() {}
@@ -29,6 +29,7 @@ public final class TaisWire {
             Instant generatedAt,
             String facility,
             List<TrackCache.SnapshotTarget> targets,
+            List<TrackCache.SnapshotPlan> plans,
             FaaRegistry registry
     ) {
         JsonArray array = new JsonArray();
@@ -39,7 +40,8 @@ public final class TaisWire {
         return envelope("snapshot", revision)
                 .put("facility", facility)
                 .put("generatedAt", generatedAt.toString())
-                .put("targets", array);
+                .put("targets", array)
+                .put("flightPlans", new JsonArray(plans.stream().map(TaisWire::plan).toList()));
     }
 
     public static JsonObject update(long revision, TrackCache.SnapshotTarget target, FaaRegistry registry) {
@@ -52,6 +54,65 @@ public final class TaisWire {
         return envelope("remove", revision)
                 .put("facility", facility)
                 .put("key", key);
+    }
+
+    public static JsonObject planUpdate(long revision, TrackCache.SnapshotPlan plan) {
+        return envelope("plan_update", revision).put("facility", plan.facility()).put("flightPlanState", plan(plan));
+    }
+
+    public static JsonObject planRemove(long revision, String facility, String key) {
+        return envelope("plan_remove", revision).put("facility", facility).put("key", key);
+    }
+
+    private static JsonObject plan(TrackCache.SnapshotPlan plan) {
+        JsonObject result = new JsonObject().put("key", plan.key()).put("facility", plan.facility())
+                .put("state", plan.state()).put("flightPlan", flightPlan(plan.flightPlan()));
+        putInstant(result, "firstSeen", plan.firstSeen());
+        putInstant(result, "vfrSince", plan.vfrSince());
+        put(result, "trackKey", plan.trackKey());
+        if (plan.enhancedData() != null) result.put("enhancedData", enhancedData(plan.enhancedData()));
+        return result;
+    }
+
+    private static JsonObject flightPlan(TaisObservation.FlightPlan fp) {
+        JsonObject flightPlan = new JsonObject();
+        put(flightPlan, "sfpn", fp.sfpn());
+        put(flightPlan, "ocr", fp.ocr());
+        put(flightPlan, "rnav", fp.rnav());
+        put(flightPlan, "scratchPad1", fp.scratchPad1());
+        put(flightPlan, "scratchPad2", fp.scratchPad2());
+        put(flightPlan, "cps", fp.cps());
+        put(flightPlan, "runway", fp.runway());
+        put(flightPlan, "assignedBeaconCode", fp.assignedBeaconCode());
+        put(flightPlan, "requestedAltitude", fp.requestedAltitude());
+        put(flightPlan, "assignedAltitude", fp.assignedAltitude());
+        put(flightPlan, "category", fp.category());
+        put(flightPlan, "dbi", fp.dbi());
+        put(flightPlan, "acid", fp.acid());
+        put(flightPlan, "acType", fp.acType());
+        put(flightPlan, "entryFix", fp.entryFix());
+        put(flightPlan, "exitFix", fp.exitFix());
+        put(flightPlan, "airport", fp.airport());
+        put(flightPlan, "flightRules", fp.flightRules());
+        put(flightPlan, "rawFlightRules", fp.rawFlightRules());
+        put(flightPlan, "type", fp.type());
+        put(flightPlan, "ptdTime", fp.ptdTime());
+        put(flightPlan, "status", fp.status());
+        put(flightPlan, "deleted", fp.deleted());
+        put(flightPlan, "suspended", fp.suspended());
+        put(flightPlan, "lld", fp.lld());
+        put(flightPlan, "ecid", fp.ecid());
+        put(flightPlan, "eqptSuffix", fp.eqptSuffix());
+        return flightPlan;
+    }
+
+    private static JsonObject enhancedData(TaisObservation.EnhancedData enhanced) {
+        JsonObject enhancedData = new JsonObject();
+        put(enhancedData, "eramGufi", enhanced.eramGufi());
+        put(enhancedData, "sfdpsGufi", enhanced.sfdpsGufi());
+        put(enhancedData, "departureAirport", enhanced.departureAirport());
+        put(enhancedData, "destinationAirport", enhanced.destinationAirport());
+        return enhancedData;
     }
 
     private static JsonObject envelope(String type, long revision) {
@@ -116,48 +177,8 @@ public final class TaisWire {
         }
         out.put("track", trackJson);
 
-        TaisObservation.FlightPlan fp = observation.flightPlan();
-        if (fp != null) {
-            JsonObject flightPlan = new JsonObject();
-            put(flightPlan, "sfpn", fp.sfpn());
-            put(flightPlan, "ocr", fp.ocr());
-            put(flightPlan, "rnav", fp.rnav());
-            put(flightPlan, "scratchPad1", fp.scratchPad1());
-            put(flightPlan, "scratchPad2", fp.scratchPad2());
-            put(flightPlan, "cps", fp.cps());
-            put(flightPlan, "runway", fp.runway());
-            put(flightPlan, "assignedBeaconCode", fp.assignedBeaconCode());
-            put(flightPlan, "requestedAltitude", fp.requestedAltitude());
-            put(flightPlan, "assignedAltitude", fp.assignedAltitude());
-            put(flightPlan, "category", fp.category());
-            put(flightPlan, "dbi", fp.dbi());
-            put(flightPlan, "acid", fp.acid());
-            put(flightPlan, "acType", fp.acType());
-            put(flightPlan, "entryFix", fp.entryFix());
-            put(flightPlan, "exitFix", fp.exitFix());
-            put(flightPlan, "airport", fp.airport());
-            put(flightPlan, "flightRules", fp.flightRules());
-            put(flightPlan, "rawFlightRules", fp.rawFlightRules());
-            put(flightPlan, "type", fp.type());
-            put(flightPlan, "ptdTime", fp.ptdTime());
-            put(flightPlan, "status", fp.status());
-            put(flightPlan, "deleted", fp.deleted());
-            put(flightPlan, "suspended", fp.suspended());
-            put(flightPlan, "lld", fp.lld());
-            put(flightPlan, "ecid", fp.ecid());
-            put(flightPlan, "eqptSuffix", fp.eqptSuffix());
-            out.put("flightPlan", flightPlan);
-        }
-
-        TaisObservation.EnhancedData enhanced = observation.enhancedData();
-        if (enhanced != null) {
-            JsonObject enhancedData = new JsonObject();
-            put(enhancedData, "eramGufi", enhanced.eramGufi());
-            put(enhancedData, "sfdpsGufi", enhanced.sfdpsGufi());
-            put(enhancedData, "departureAirport", enhanced.departureAirport());
-            put(enhancedData, "destinationAirport", enhanced.destinationAirport());
-            out.put("enhancedData", enhancedData);
-        }
+        if (observation.flightPlan() != null) out.put("flightPlan", flightPlan(observation.flightPlan()));
+        if (observation.enhancedData() != null) out.put("enhancedData", enhancedData(observation.enhancedData()));
 
         if (includeHistory) {
             JsonArray positions = new JsonArray();

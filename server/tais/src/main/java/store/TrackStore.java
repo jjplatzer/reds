@@ -68,7 +68,7 @@ public final class TrackStore extends AbstractVerticle {
             String facility = normalizeFacility(message.body());
             var targets = cache.snapshot(facility);
             JsonObject snapshot = TaisWire.snapshot(
-                    facilityRevision(facility), Instant.now(), facility, targets, registry
+                    facilityRevision(facility), Instant.now(), facility, targets, cache.snapshotPlans(facility), registry
             );
             long elapsedMs = (System.nanoTime() - started) / 1_000_000;
             if (elapsedMs >= 250) {
@@ -82,47 +82,18 @@ public final class TrackStore extends AbstractVerticle {
 
         vertx.eventBus().<TaisBatch>consumer(TaisBatch.ADDRESS, message -> {
             for (TaisObservation obs : message.body().observations()) {
-                String key = obs.targetKey();
-
-                // TAIS distinguishes a dropped track from a coasting track.
-                // A source-declared drop is the terminal lifecycle event. Coast
-                // Phase 2 is retained so the client can move the flight from the
-                // radar window into the Coast/Suspend List.
-                if (isDrop(obs.track().status())) {
-                    if (cache.remove(key)) {
-                        removals++;
-                        revision++;
-                        vertx.eventBus().publish(
-                                EVENT_ADDRESS,
-                                TaisWire.remove(
-                                        nextFacilityRevision(obs.facility()),
-                                        obs.facility(),
-                                        key
-                                )
-                        );
-                    }
-                    continue;
-                }
-
-                cache.accept(obs);
-
-                // TrackCache intentionally ignores out-of-order reports. For
-                // accepted reports (including same-MRT flight-plan changes),
-                // current() is the exact observation reference just supplied.
-                // Serialize the cache snapshot so coast-phase state accompanies
-                // ordinary TAIS updates without inventing a second feed.
-                if (cache.current(key) == obs) {
-                    TrackCache.SnapshotTarget target = cache.snapshotTarget(key);
-                    if (target != null) {
-                        revision++;
-                        vertx.eventBus().publish(
-                                EVENT_ADDRESS,
-                                TaisWire.update(
-                                        nextFacilityRevision(target.target().facility()),
-                                        target, registry
-                                )
-                        );
-                    }
+                for (TrackCache.Change change : cache.apply(obs)) {
+                    long next = nextFacilityRevision(obs.facility());
+                    JsonObject frame = switch (change.type()) {
+                        case "update" -> TaisWire.update(next, cache.snapshotTarget(change.key()), registry);
+                        case "remove" -> TaisWire.remove(next, obs.facility(), change.key());
+                        case "plan_update" -> TaisWire.planUpdate(next, cache.snapshotPlan(change.key()));
+                        case "plan_remove" -> TaisWire.planRemove(next, obs.facility(), change.key());
+                        default -> throw new IllegalStateException("Unknown TAIS change");
+                    };
+                    revision++;
+                    if (change.type().equals("remove")) removals++;
+                    vertx.eventBus().publish(EVENT_ADDRESS, frame);
                 }
             }
         });
@@ -145,6 +116,12 @@ public final class TrackStore extends AbstractVerticle {
                             target, registry
                     )
             );
+            TrackCache.SnapshotPlan plan = cache.markPlanCoasting(target.target().targetKey());
+            if (plan != null) {
+                revision++;
+                vertx.eventBus().publish(EVENT_ADDRESS,
+                        TaisWire.planUpdate(nextFacilityRevision(plan.facility()), plan));
+            }
         }
     }
 

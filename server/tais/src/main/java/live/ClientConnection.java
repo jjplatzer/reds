@@ -16,7 +16,7 @@ import java.util.ArrayDeque;
  */
 final class ClientConnection {
 
-    // Match net/tais.go: taisMaxMessageBytes. Protocol-v1 has no snapshot
+    // Match net/tais.go: taisMaxMessageBytes. Neither protocol has snapshot
     // chunking, so fail explicitly if a single message exceeds the reader cap.
     private static final int MAX_FRAME_BYTES = 16 << 20;
 
@@ -27,6 +27,8 @@ final class ClientConnection {
     private final int pendingMax;
     private final int outboundMaxFrames;
     private final long outboundMaxBytes;
+    private final boolean includePlans;
+    private long legacyRevision;
     private final ArrayDeque<JsonObject> pending = new ArrayDeque<>();
     private final ArrayDeque<EncodedFrame> outbound = new ArrayDeque<>();
 
@@ -37,11 +39,17 @@ final class ClientConnection {
 
     ClientConnection(ServerWebSocket socket, String facility, int pendingMax,
                      int outboundMaxFrames, long outboundMaxBytes) {
+        this(socket, facility, pendingMax, outboundMaxFrames, outboundMaxBytes, false);
+    }
+
+    ClientConnection(ServerWebSocket socket, String facility, int pendingMax,
+                     int outboundMaxFrames, long outboundMaxBytes, boolean includePlans) {
         this.socket = socket;
         this.facility = facility;
         this.pendingMax = pendingMax;
         this.outboundMaxFrames = outboundMaxFrames;
         this.outboundMaxBytes = outboundMaxBytes;
+        this.includePlans = includePlans;
         // Vert.x calls this after the underlying write queue becomes writable.
         socket.drainHandler(ignored -> flush());
     }
@@ -149,6 +157,17 @@ final class ClientConnection {
 
     private boolean enqueue(JsonObject frame) {
         if (closed) return false;
+
+        if (!includePlans) {
+            String type = frame.getString("type");
+            if (type.equals("plan_update") || type.equals("plan_remove")) return true;
+            // Preserve v1's contiguous target-only sequence. Snapshot replay still
+            // compares the original source revisions before this per-client encoding.
+            if (type.equals("snapshot")) legacyRevision = frame.getLong("revision", 0L);
+            else legacyRevision++;
+            frame = frame.copy().put("protocol", 1).put("revision", legacyRevision);
+            frame.remove("flightPlans");
+        }
 
         // Retain encoded text rather than JSON trees while waiting for drain.
         // The temporary UTF-8 conversion gives an exact wire-size bound.

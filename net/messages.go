@@ -48,7 +48,7 @@ type ActivityMessage struct {
 }
 
 const (
-	TaisProtocolVersion = 1
+	TaisProtocolVersion = 2
 	TaisFeedName        = "tais"
 )
 
@@ -58,19 +58,35 @@ const (
 	TaisCoastPhase2
 )
 
-// TaisFrame is the protocol-v1 envelope emitted by the REDS TAIS service.
-// Snapshot frames carry Targets, update frames carry Target, and remove frames
-// carry Key. The client validates protocol/feed/revision before mutating state.
+// TaisFrame carries the versioned TAIS stream. Protocol 2 adds independent
+// flight-plan snapshots/events; protocol 1 remains target-only. Both validate
+// feed and contiguous revisions before mutating client state.
 type TaisFrame struct {
-	Type        string       `json:"type"`
-	Protocol    int          `json:"protocol"`
-	Feed        string       `json:"feed"`
-	Facility    string       `json:"facility,omitempty"`
-	Revision    uint64       `json:"revision"`
-	GeneratedAt time.Time    `json:"generatedAt,omitempty"`
-	Targets     []TaisTarget `json:"targets,omitempty"`
-	Target      *TaisTarget  `json:"target,omitempty"`
-	Key         string       `json:"key,omitempty"`
+	Type            string                `json:"type"`
+	Protocol        int                   `json:"protocol"`
+	Feed            string                `json:"feed"`
+	Facility        string                `json:"facility,omitempty"`
+	Revision        uint64                `json:"revision"`
+	GeneratedAt     time.Time             `json:"generatedAt,omitempty"`
+	Targets         []TaisTarget          `json:"targets,omitempty"`
+	Target          *TaisTarget           `json:"target,omitempty"`
+	Key             string                `json:"key,omitempty"`
+	FlightPlans     []TaisFlightPlanState `json:"flightPlans,omitempty"`
+	FlightPlanState *TaisFlightPlanState  `json:"flightPlanState,omitempty"`
+}
+
+// Flight plans have their own identity/lifetime, including pseudo track zero
+// and records with no <track>. State is pending, tracked, coasting, suspended,
+// or inactive; missing track data in an update does not imply disassociation.
+type TaisFlightPlanState struct {
+	Key          string            `json:"key"`
+	Facility     string            `json:"facility"`
+	FirstSeen    time.Time         `json:"firstSeen"`
+	VFRSince     time.Time         `json:"vfrSince,omitempty"`
+	State        string            `json:"state"`
+	TrackKey     string            `json:"trackKey,omitempty"`
+	FlightPlan   TaisFlightPlan    `json:"flightPlan"`
+	EnhancedData *TaisEnhancedData `json:"enhancedData,omitempty"`
 }
 
 type TaisTarget struct {
@@ -275,6 +291,7 @@ type TaisSnapshot struct {
 	Revision    uint64
 	GeneratedAt time.Time
 	Targets     []TaisTarget
+	FlightPlans []TaisFlightPlanState
 }
 
 type TaisClientStatus struct {
