@@ -28,6 +28,14 @@ const (
 	caLookahead           = 60 * time.Second
 	caLateralClearanceNM  = caLateralMinimumNM + 0.1
 	caVerticalClearanceFT = caVerticalMinimumFT + 100
+
+	// Observed level-off prediction, also REDS simulation choices. A trend
+	// needs several fresh radar reports; render frames never add evidence.
+	caLevelOffHistoryWindow = 15 * time.Second
+	caLevelOffSampleSpacing = 3 * time.Second
+	caLevelOffMaxHistoryGap = 6 * time.Second
+	caLevelOffMaxReportAge  = 6 * time.Second
+	caLevelOffImminentTime  = 15.0 // seconds: retain linear imminent alerts
 )
 
 // caPair identifies two associated live TAIS tracks. Identity is by live
@@ -172,6 +180,8 @@ func caFindPairs(snapshot redsnet.TaisSnapshot, now time.Time, inhibit []msawReg
 			if track.hasVerticalRate {
 				track.verticalRate = float64(t.Track.VerticalRate) / 60
 				track.verticalOffset = age * track.verticalRate
+				track.verticalAge = age
+				track.verticalAcceleration = caLevelOffAcceleration(t, now)
 			}
 			eligible = append(eligible, track)
 		}
@@ -670,7 +680,129 @@ type caMotionTrack struct {
 	final                                                  caParallelTrack
 	cosLatitude, eastVelocity, northVelocity, verticalRate float64
 	eastOffset, northOffset, verticalOffset, speed         float64
+	verticalAge, verticalAcceleration                      float64
 	hasVelocity, hasVerticalRate                           bool
+}
+
+// caLevelOffAcceleration fits TAIS vVert (ft/min), not altitude rounding or
+// assigned altitude. Only a sustained reduction toward zero is eligible.
+// VICE's current-proximity CA does not provide a predictive level-off model;
+// this is a REDS approximation, not the FAA's adapted CA algorithm.
+func caLevelOffAcceleration(t *redsnet.TaisTarget, now time.Time) float64 {
+	if t == nil || !t.Track.HasVerticalRate() || t.Track.VerticalRate == 0 || t.Track.NewTrack {
+		return 0
+	}
+	age := now.Sub(t.Track.MRTTime)
+	if age < 0 || age > caLevelOffMaxReportAge {
+		return 0
+	}
+	const minStep = 50.0 / 60 // ft/s per selected sample
+	current := float64(t.Track.VerticalRate) / 60
+	count, sumT, sumTT, sumV, sumTV := 1.0, 0.0, 0.0, current, 0.0
+	previous, selected := t.Track.MRTTime, t.Track.MRTTime
+	oldestRate, oldestAge := current, time.Duration(0)
+	for i := len(t.History) - 1; i >= 0; i-- {
+		h := &t.History[i]
+		if h.Time.Equal(t.Track.MRTTime) {
+			continue // The current report is usually also the newest history point.
+		}
+		if !h.Time.Before(previous) {
+			return 0 // Reject out-of-order/duplicate history instead of fitting it.
+		}
+		if t.Track.MRTTime.Sub(h.Time) > caLevelOffHistoryWindow || previous.Sub(h.Time) > caLevelOffMaxHistoryGap {
+			break
+		}
+		previous = h.Time
+		// History does not retain field-presence bits. Zero may be missing,
+		// so it must never manufacture evidence of a measured reduction.
+		if h.VerticalRate == 0 || float64(h.VerticalRate)*current <= 0 {
+			break
+		}
+		if selected.Sub(h.Time) < caLevelOffSampleSpacing {
+			continue
+		}
+		rate := float64(h.VerticalRate) / 60
+		if math.Abs(rate) < math.Abs(oldestRate)+minStep {
+			return 0 // The recent reduction stopped or reversed.
+		}
+		selected = h.Time
+		oldestRate, oldestAge = rate, t.Track.MRTTime.Sub(h.Time)
+		seconds := -oldestAge.Seconds()
+		count++
+		sumT += seconds
+		sumTT += seconds * seconds
+		sumV += rate
+		sumTV += seconds * rate
+	}
+	drop := math.Abs(oldestRate) - math.Abs(current)
+	if count < 3 || oldestAge < 2*caLevelOffSampleSpacing || drop < 300.0/60 || drop < .2*math.Abs(oldestRate) {
+		return 0
+	}
+	acceleration := (count*sumTV - sumT*sumV) / (count*sumTT - sumT*sumT)
+	if !caFinite(acceleration) || acceleration*current >= 0 {
+		return 0
+	}
+	// Use half the measured acceleration and cap it at 2 ft/s²: predict a
+	// slower capture than the observed trend, rather than an optimistic stop.
+	return math.Copysign(math.Min(math.Abs(acceleration)*.5, 2), acceleration)
+}
+
+// caVerticalState returns displacement from the report altitude, velocity
+// and acceleration at a common future time. Acceleration ends at zero rate;
+// a descent must never turn into an invented climb (or vice versa).
+func caVerticalState(t *caMotionTrack, future float64) (float64, float64, float64) {
+	seconds := t.verticalAge + future
+	rate, acceleration := t.verticalRate, t.verticalAcceleration
+	if acceleration != 0 {
+		stop := -rate / acceleration
+		if future >= stop-t.verticalAge {
+			return rate*stop + .5*acceleration*stop*stop, 0, 0
+		}
+	}
+	return math.FMA(.5*acceleration*seconds, seconds, rate*seconds), rate + acceleration*seconds, acceleration
+}
+
+// caLevelOffConflict intersects the existing horizontal conflict interval
+// with piecewise-quadratic vertical motion. Split at each aircraft's level
+// off; endpoints and the quadratic extremum give the full altitude range
+// in each interval, including crossings/tangencies between radar updates.
+func caLevelOffConflict(a, b *caMotionTrack, rx, ry, vx, vy, radius float64) bool {
+	horizontal, ok := caHorizontalInterval(rx, ry, vx, vy, radius, caLookahead.Seconds())
+	if !ok {
+		return false
+	}
+	bounds := [4]float64{horizontal.start, horizontal.end}
+	n := 2
+	for _, track := range []*caMotionTrack{a, b} {
+		if track.verticalAcceleration != 0 {
+			stop := -track.verticalRate/track.verticalAcceleration - track.verticalAge
+			if stop > horizontal.start && stop < horizontal.end {
+				bounds[n], n = stop, n+1
+			}
+		}
+	}
+	sort.Float64s(bounds[:n])
+	for i := 1; i < n; i++ {
+		za, va, aa := caVerticalState(a, bounds[i-1])
+		zb, vb, ab := caVerticalState(b, bounds[i-1])
+		height := float64(b.target.Track.ReportedAltitude) - float64(a.target.Track.ReportedAltitude) + zb - za
+		rate, acceleration, duration := vb-va, ab-aa, bounds[i]-bounds[i-1]
+		at := func(seconds float64) float64 {
+			return math.FMA(.5*acceleration*seconds, seconds, math.FMA(rate, seconds, height))
+		}
+		end := at(duration)
+		low, high := math.Min(height, end), math.Max(height, end)
+		if acceleration != 0 {
+			if turning := -rate / acceleration; turning > 0 && turning < duration {
+				value := at(turning)
+				low, high = math.Min(low, value), math.Max(high, value)
+			}
+		}
+		if low <= caVerticalMinimumFT && high >= -caVerticalMinimumFT {
+			return true
+		}
+	}
+	return false
 }
 
 // caInterval is an inclusive time interval in seconds. Empty intervals are
@@ -818,6 +950,19 @@ func caEvaluatePair(a, b *caMotionTrack, continuing bool, radius float64) bool {
 		if rx*rx+ry*ry <= clearance*clearance && math.Abs(height) <= caVerticalClearanceFT {
 			return true
 		}
+	}
+	if a.hasVerticalRate && b.hasVerticalRate && (a.verticalAcceleration != 0 || b.verticalAcceleration != 0) {
+		// Retain current-proximity policy and linear imminent warnings even
+		// when a longer-term, observed level off would avoid the prediction.
+		if !continuing && rx*rx+ry*ry <= radius*radius && math.Abs(height) <= caVerticalMinimumFT {
+			return caNewConflict(rx, ry, vx, vy, height, rate, caLookahead.Seconds(), radius)
+		}
+		if interval, ok := caInfringement(rx, ry, vx, vy, height, rate, caLookahead.Seconds(), radius); ok && interval.start <= caLevelOffImminentTime {
+			return true
+		}
+		return caLevelOffConflict(a, b, rx, ry, vx, vy, radius)
+	}
+	if continuing {
 		_, ok := caInfringement(rx, ry, vx, vy, height, rate, caLookahead.Seconds(), radius)
 		return ok
 	}

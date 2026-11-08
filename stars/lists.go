@@ -841,9 +841,106 @@ func aircraftPlanListEntries(snapshot redsnet.TaisSnapshot, vfr bool) []redsnet.
 	return entries
 }
 
+func aircraftPlanListAirport(raw string) string {
+	code := strings.ToUpper(strings.TrimSpace(raw))
+	switch code {
+	case "", "UNASSIGNED", "UNAVAILABLE", "UNDEFINED", "UNKNOWN", "NONE", "PENDING", "NNNN", "ZZZZ", "ZZZ", "----":
+		return ""
+	}
+	// Most TAIS ICAO/FAA pairs differ only by K. Use the cached airport
+	// database for other US ICAO prefixes, for example PHNL/HNL and PANC/ANC.
+	if len(code) == 4 && code[0] != 'K' {
+		if db, err := loadSTARSAirportDatabase(); err == nil {
+			if display, ok := db.displayByICAO[code]; ok {
+				return display
+			}
+		}
+	}
+	return normalizeTaisAirport(code)
+}
+
+func aircraftPlanListMatchesAirports(plan redsnet.TaisFlightPlanState, airports map[string]bool) bool {
+	if len(airports) == 0 {
+		return true // No adapted area airports: retain the TRACON-wide fallback.
+	}
+	fp := &plan.FlightPlan
+	local := aircraftPlanListAirport(fp.Airport)
+	var departure, destination string
+	if plan.EnhancedData != nil {
+		departure = aircraftPlanListAirport(plan.EnhancedData.DepartureAirport)
+		destination = aircraftPlanListAirport(plan.EnhancedData.DestinationAirport)
+	}
+	flightType := strings.ToUpper(strings.TrimSpace(fp.Type))
+	switch flightType {
+	case "O", "OVERFLIGHT", "E", "ENROUTE", "EN ROUTE":
+		return true // Endpoints cannot place an overflight's route in an area.
+	}
+	if strings.EqualFold(fp.RawFlightRules, "V") || strings.EqualFold(fp.FlightRules, "V") || strings.EqualFold(fp.FlightRules, "VFR") {
+		// VFR traffic can be relevant at either end. The TAIS local airport
+		// also places plans that have no enhanced origin/destination fields.
+		return airports[departure] || airports[destination] || airports[local] ||
+			(departure == "" && destination == "" && local == "")
+	}
+	switch flightType {
+	case "A", "ARR", "ARRIVAL":
+		if destination == "" {
+			destination = local
+		}
+		return destination == "" || airports[destination]
+	case "P", "D", "DEP", "DEPARTURE":
+		if departure == "" {
+			departure = local
+		}
+		return departure == "" || airports[departure]
+	default:
+		// A local airport still places an otherwise unclassified plan.
+		// Without one, its external endpoints may belong to an overflight.
+		return local == "" || airports[local]
+	}
+}
+
+func (p *STARSPane) aircraftPlanListEntriesForPosition(snapshot redsnet.TaisSnapshot, vfr bool) []redsnet.TaisFlightPlanState {
+	entries := aircraftPlanListEntries(snapshot, vfr)
+	if p == nil {
+		return entries
+	}
+	own := p.ownTCP()
+	knownTCPs := make(map[string]bool, len(p.config.Facility.ControlPositions)+1)
+	for _, position := range p.config.Facility.ControlPositions {
+		if tcp := strings.ToUpper(strings.TrimSpace(position.TCP)); tcp != "" {
+			knownTCPs[tcp] = true
+		}
+	}
+	if own != "" {
+		knownTCPs[own] = true
+	}
+	airports := make(map[string]bool, len(p.config.Area.UnderlyingAirports))
+	for _, raw := range p.config.Area.UnderlyingAirports {
+		if airport := aircraftPlanListAirport(raw); airport != "" {
+			airports[airport] = true
+		}
+	}
+	filtered := entries[:0]
+	for _, plan := range entries {
+		cps := strings.ToUpper(strings.TrimSpace(plan.FlightPlan.CPS))
+		if own != "" && knownTCPs[cps] {
+			// CPS names the receiver for a pending handoff and the current
+			// position otherwise. Only trust a locally adapted TCP; center IDs
+			// and unavailable/unmapped values fall back to area airports.
+			if cps == own {
+				filtered = append(filtered, plan)
+			}
+		} else if aircraftPlanListMatchesAirports(plan, airports) {
+			filtered = append(filtered, plan)
+		}
+	}
+	return filtered
+}
+
 // §2.15: a flight has the same 0..99 tab number in every aircraft list.
 // Coast/Suspend gets priority when numbers become available. Visibility and
-// row limits do not release identities still eligible for another list.
+// position filters/row limits do not release identities eligible anywhere
+// in the TRACON, so a position change cannot renumber the same flight.
 func (p *STARSPane) prepareAircraftListNumbers(snapshot redsnet.TaisSnapshot) {
 	if p.aircraftListLineNumbers == nil {
 		p.aircraftListLineNumbers = make(map[string]int)
@@ -1022,7 +1119,7 @@ func (p *STARSPane) aircraftPlanListText(snapshot redsnet.TaisSnapshot, vfr bool
 		return ""
 	}
 	p.prepareAircraftListNumbers(snapshot)
-	entries := aircraftPlanListEntries(snapshot, vfr)
+	entries := p.aircraftPlanListEntriesForPosition(snapshot, vfr)
 	targets := make(map[string]*redsnet.TaisTarget, len(snapshot.Targets))
 	for i := range snapshot.Targets {
 		targets[snapshot.Targets[i].Key] = &snapshot.Targets[i]
