@@ -905,6 +905,114 @@ func (p *STARSPane) prepareAircraftListNumbers(snapshot redsnet.TaisSnapshot) {
 	}
 }
 
+func aircraftPlanListAltitude(plan redsnet.TaisFlightPlanState, targets map[string]*redsnet.TaisTarget) string {
+	if plan.TrackKey != "" {
+		if target := targets[plan.TrackKey]; target != nil && target.Track.UsableReportedAltitude() {
+			return targetDatablockAltitude(target.Track.ReportedAltitude)
+		}
+		return "OR "
+	}
+	if plan.ReportedAltitude != nil {
+		return targetDatablockAltitude(*plan.ReportedAltitude)
+	}
+	// REDS uses OR for unavailable Mode C, including pending plans without
+	// surveillance. Assigned/requested altitude is never substituted.
+	return "OR "
+}
+
+func aircraftPlanListFixField(plan redsnet.TaisFlightPlanState) string {
+	fp := &plan.FlightPlan
+	// Figure 2-27 uses VFR for NAS VFR plans. A V flag alone also describes
+	// local VFR flight-following plans; a GUFI supplies positive NAS provenance.
+	if targetDatablockFlightRulesIndicator(fp) == "V" && plan.EnhancedData != nil {
+		for _, gufi := range []string{plan.EnhancedData.ERAMGUFI, plan.EnhancedData.SFDPSGUFI} {
+			switch strings.ToUpper(strings.TrimSpace(gufi)) {
+			case "", "UNASSIGNED", "UNAVAILABLE", "UNDEFINED", "UNKNOWN", "NONE":
+			default:
+				return "VFR"
+			}
+		}
+	}
+	fix := func(value string) string {
+		switch strings.ToUpper(strings.TrimSpace(value)) {
+		case "", "UNASSIGNED", "UNAVAILABLE", "UNDEFINED", "UNKNOWN", "NONE":
+			return ""
+		}
+		// Use the supplied fix's first letter until single-character site
+		// adaptation is available, as requested for the initial REDS format.
+		value = targetDatablockExitFix(value)
+		if value == "" {
+			return ""
+		}
+		return string([]rune(value)[0])
+	}
+	entry, exit := fix(fp.EntryFix), fix(fp.ExitFix)
+	switch strings.ToUpper(strings.TrimSpace(fp.Type)) {
+	case "P", "D", "DEP", "DEPARTURE":
+		entry = ""
+	case "A", "ARR", "ARRIVAL":
+		exit = ""
+	case "O", "OVERFLIGHT", "E", "ENROUTE", "EN ROUTE":
+		// Overflights retain both fix fields.
+	default:
+		if plan.EnhancedData != nil {
+			airport := normalizeTaisAirport(fp.Airport)
+			departure := normalizeTaisAirport(plan.EnhancedData.DepartureAirport)
+			arrival := normalizeTaisAirport(plan.EnhancedData.DestinationAirport)
+			if airport != "" && airport == departure && airport != arrival {
+				entry = ""
+			} else if airport != "" && airport == arrival && airport != departure {
+				exit = ""
+			}
+		}
+	}
+	// Reserve exactly three cells, shared with VFR: entry, exit, trailing blank.
+	return fmt.Sprintf("%-1s%-1s ", entry, exit)
+}
+
+func aircraftPlanListDuplicateCounts(snapshot redsnet.TaisSnapshot) (map[string]int, map[string]int) {
+	acids, codes := make(map[string]int), make(map[string]int)
+	// Independent plans include both pending and acquired flights. Count each
+	// once, even if it is also in Targets or appears in several aircraft lists.
+	for _, plan := range snapshot.FlightPlans {
+		fp := &plan.FlightPlan
+		if fp.Deleted || strings.EqualFold(fp.Status, "terminated") || plan.State == "inactive" {
+			continue
+		}
+		if acid := strings.ToUpper(strings.TrimSpace(fp.ACID)); acid != "" {
+			acids[acid]++
+		}
+		if code := normalizeBeaconCode(fp.AssignedBeaconCode); code != "" && code != "0000" {
+			codes[code]++
+		}
+	}
+	return acids, codes
+}
+
+func (p *STARSPane) aircraftPlanListInhibitIndicator(plan redsnet.TaisFlightPlanState, targets map[string]*redsnet.TaisTarget) string {
+	target := targets[plan.TrackKey]
+	if target == nil {
+		// A pending VFR plan is automatically MSAW-inhibited too. Do not
+		// borrow another track's overrides by matching only an ACID or squawk.
+		if msawAutomaticVFRInhibited(&redsnet.TaisTarget{FlightPlan: &plan.FlightPlan}) {
+			return "*"
+		}
+		return " "
+	}
+	msaw := p.msawInhibited(target)
+	ca := p.caTrackInhibited(target) || p.mciTrackInhibited(target)
+	switch {
+	case msaw && ca:
+		return "+"
+	case msaw:
+		return "*"
+	case ca:
+		return string(rune(0x80)) // The STARS bitmap-font delta glyph.
+	default:
+		return " "
+	}
+}
+
 func (p *STARSPane) aircraftPlanListText(snapshot redsnet.TaisSnapshot, vfr bool) string {
 	list, title := p.currentPrefs().FlightPlanList, "FLIGHT PLAN"
 	if vfr {
@@ -915,6 +1023,11 @@ func (p *STARSPane) aircraftPlanListText(snapshot redsnet.TaisSnapshot, vfr bool
 	}
 	p.prepareAircraftListNumbers(snapshot)
 	entries := aircraftPlanListEntries(snapshot, vfr)
+	targets := make(map[string]*redsnet.TaisTarget, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		targets[snapshot.Targets[i].Key] = &snapshot.Targets[i]
+	}
+	acids, codes := aircraftPlanListDuplicateCounts(snapshot)
 	limit := min(max(list.Lines, 1), 100)
 	var text strings.Builder
 	text.WriteString(title)
@@ -930,8 +1043,24 @@ func (p *STARSPane) aircraftPlanListText(snapshot redsnet.TaisSnapshot, vfr bool
 		if code == "0000" {
 			code = ""
 		}
-		// §2.15's adaptable fields: minimal format is tab, ACID (7), beacon (4).
-		fmt.Fprintf(&text, "\n%s %-7.7s %4s", number, strings.ToUpper(plan.FlightPlan.ACID), code)
+		acid := strings.ToUpper(strings.TrimSpace(plan.FlightPlan.ACID))
+		status, beaconPrefix := " ", " "
+		if acids[acid] > 1 {
+			status = "/"
+		}
+		if code != "" && codes[code] > 1 {
+			beaconPrefix = "/"
+		}
+		// Figure 2-27 has two separate cells before ACID: flight status,
+		// then MSAW/CA inhibition. TAIS does not identify IOI sequences,
+		// DM messages or special departures; leave those status flags unset.
+		fmt.Fprintf(&text, "\n%s%s%s%-7.7s %s%4s", number, status,
+			p.aircraftPlanListInhibitIndicator(plan, targets), acid, beaconPrefix, code)
+		if !vfr {
+			// Figure 2-27: tab, ACID, assigned beacon, Mode C and entry/exit
+			// fix characters (or VFR for NAS VFR). Unavailable Mode C is OR.
+			fmt.Fprintf(&text, " %3s %s", aircraftPlanListAltitude(plan, targets), aircraftPlanListFixField(plan))
+		}
 	}
 	return text.String()
 }

@@ -70,6 +70,7 @@ public final class TaisWire {
         putInstant(result, "firstSeen", plan.firstSeen());
         putInstant(result, "vfrSince", plan.vfrSince());
         put(result, "trackKey", plan.trackKey());
+        put(result, "reportedAltitude", plan.reportedAltitude());
         if (plan.enhancedData() != null) result.put("enhancedData", enhancedData(plan.enhancedData()));
         return result;
     }

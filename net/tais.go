@@ -638,6 +638,10 @@ func (s *taisState) snapshotHistory(facility string, maxHistory int) TaisSnapsho
 			value := *plan.EnhancedData
 			plan.EnhancedData = &value
 		}
+		if plan.ReportedAltitude != nil {
+			value := *plan.ReportedAltitude
+			plan.ReportedAltitude = &value
+		}
 		out.FlightPlans = append(out.FlightPlans, plan)
 	}
 	s.mu.RUnlock()

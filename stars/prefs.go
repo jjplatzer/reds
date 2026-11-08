@@ -606,8 +606,8 @@ func defaultAircraftPlanList(vfr bool) basicSTARSListPreferences {
 	if vfr {
 		y = .80
 	}
-	// §4.9.15 permits 1..100 aircraft rows. Start with the minimum requested.
-	return basicSTARSListPreferences{Visible: true, Position: [2]float32{.05, y}, Lines: 1}
+	// §4.9.15 permits 1..100 aircraft rows. Default both lists to five rows.
+	return basicSTARSListPreferences{Visible: true, Position: [2]float32{.05, y}, Lines: 5}
 }
 
 func defaultAltimeterStationList() basicSTARSListPreferences {

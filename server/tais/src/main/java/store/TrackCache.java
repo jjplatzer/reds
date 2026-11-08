@@ -152,6 +152,11 @@ public final class TrackCache {
                 plan.flightPlan = fp;
                 if (obs.enhancedData() != null) plan.enhancedData = obs.enhancedData();
                 plan.sourceTime = sourceTime;
+                if (!obs.hasRadarTrack() && obs.track() != null) {
+                    // Retain a pseudo report's optional Mode C without giving
+                    // distinct pending plans the shared radar identity T0.
+                    plan.pendingReportedAltitude = obs.track().reportedAltitude();
+                }
                 if (isVFR(fp) && !wasVFR) plan.vfrSince = obs.receivedAt();
                 if (!isVFR(fp)) plan.vfrSince = null;
                 if (plan.trackKey == null && obs.track() != null && Boolean.TRUE.equals(obs.track().pseudo())) {
@@ -296,13 +301,14 @@ public final class TrackCache {
 
     public record Change(String type, String key) {}
     public record SnapshotPlan(String key, String facility, Instant firstSeen, Instant vfrSince,
-                               String state, String trackKey, TaisObservation.FlightPlan flightPlan,
+                               String state, String trackKey, Integer reportedAltitude, TaisObservation.FlightPlan flightPlan,
                                TaisObservation.EnhancedData enhancedData) {}
 
     private static final class PlanState {
         final String key, facility;
         final Instant firstSeen;
         Instant sourceTime, vfrSince;
+        Integer pendingReportedAltitude;
         String state = "pending", trackKey;
         TaisObservation.FlightPlan flightPlan;
         TaisObservation.EnhancedData enhancedData;
@@ -314,7 +320,8 @@ public final class TrackCache {
         }
 
         SnapshotPlan snapshot() {
-            return new SnapshotPlan(key, facility, firstSeen, vfrSince, state, trackKey, flightPlan, enhancedData);
+            return new SnapshotPlan(key, facility, firstSeen, vfrSince, state, trackKey,
+                    "pending".equals(state) ? pendingReportedAltitude : null, flightPlan, enhancedData);
         }
     }
 

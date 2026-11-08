@@ -79,14 +79,17 @@ type TaisFrame struct {
 // and records with no <track>. State is pending, tracked, coasting, suspended,
 // or inactive; missing track data in an update does not imply disassociation.
 type TaisFlightPlanState struct {
-	Key          string            `json:"key"`
-	Facility     string            `json:"facility"`
-	FirstSeen    time.Time         `json:"firstSeen"`
-	VFRSince     time.Time         `json:"vfrSince,omitempty"`
-	State        string            `json:"state"`
-	TrackKey     string            `json:"trackKey,omitempty"`
-	FlightPlan   TaisFlightPlan    `json:"flightPlan"`
-	EnhancedData *TaisEnhancedData `json:"enhancedData,omitempty"`
+	Key       string    `json:"key"`
+	Facility  string    `json:"facility"`
+	FirstSeen time.Time `json:"firstSeen"`
+	VFRSince  time.Time `json:"vfrSince,omitempty"`
+	State     string    `json:"state"`
+	TrackKey  string    `json:"trackKey,omitempty"`
+	// Optional surveillance altitude carried by a pending pseudo-track report.
+	// A nil value is unavailable; a non-nil zero is a reported sea-level altitude.
+	ReportedAltitude *int              `json:"reportedAltitude,omitempty"`
+	FlightPlan       TaisFlightPlan    `json:"flightPlan"`
+	EnhancedData     *TaisEnhancedData `json:"enhancedData,omitempty"`
 }
 
 type TaisTarget struct {
