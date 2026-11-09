@@ -613,6 +613,14 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			)
 		}
 
+		// Field F - Main ATIS/GI text and up to nine auxiliary airport lines.
+		// The GI TEXT FILTER selections are independent of SSA FILTER's ALL.
+		for i, line := range p.giTextLines(time.Now()) {
+			if filter.GIText[i] {
+				addLine(line, p.colors.List)
+			}
+		}
+
 		// Field G - FSL / EFSL / DSF status, Configuration Plan, Sensor Modes.
 		// STATUS, PLAN, and RADAR independently filter portions of this one line.
 		// Match VICE's composition: status first, then plan, then radar. REDS has

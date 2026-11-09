@@ -617,11 +617,13 @@ func defaultAltimeterStationList() basicSTARSListPreferences {
 // ssaFilterPreferences is the per-position state controlled by the Main DCB
 // <SSA FILTER> submenu in TI 6191.409 Rev. 30, 4.7 / Figure 4-7. The ALL
 // bit is intentionally independent of the individual bits: while ALL is on,
-// every SSA field is displayed; turning ALL off restores the individual
+// every SSA field except GI text is displayed; turning ALL off restores the individual
 // selection that was in effect before ALL was selected. This mirrors STARS'
-// documented modality and VICE's implementation.
+// documented modality and VICE's implementation. GIText is controlled separately
+// by <GI TEXT FILTER> (4.8 / Figure 4-8), with MAIN at index 0 and GI 1-9 at 1-9.
 type ssaFilterPreferences struct {
 	All                 bool
+	GIText              [10]bool
 	Wx                  bool
 	Time                bool
 	Altimeter           bool
@@ -649,6 +651,22 @@ type ssaFilterPreferences struct {
 	Flow                bool
 	AMZ                 bool
 	TBFM                bool
+}
+
+func defaultGITextFilter() [10]bool {
+	return [10]bool{true} // MAIN only; auxiliary GI 1-9 start hidden.
+}
+
+// Older saved sets omit GIText. Default to MAIN only while preserving
+// explicitly saved selections, including an all-off selection in newer sets.
+func (f *ssaFilterPreferences) UnmarshalJSON(data []byte) error {
+	type plain ssaFilterPreferences
+	value := plain{GIText: defaultGITextFilter()}
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*f = ssaFilterPreferences(value)
+	return nil
 }
 
 // leaderLineDirection uses the clockwise ordering shown by the LDR DIR
@@ -986,7 +1004,7 @@ func newPreferences(cfg selectedConfig) Preferences {
 		// TI 6191.409 does not prescribe a power-up filter state. VICE starts
 		// with ALL selected, which also preserves REDS' pre-filter behavior of
 		// showing every SSA field it currently knows how to render.
-		SSAFilter: ssaFilterPreferences{All: true},
+		SSAFilter: ssaFilterPreferences{All: true, GIText: defaultGITextFilter()},
 		// VICE uses (.05,.7) with bottom-left origin.
 		CRDAStatusList:  crdaStatusListPreferences{Position: [2]float32{0.05, 0.30}},
 		AltitudeFilters: defaultAltitudeFilterPreferences(),

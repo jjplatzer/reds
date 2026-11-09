@@ -38,6 +38,7 @@ const (
 	CommandModeCA
 	CommandModeRestrictionArea
 	CommandModeVolume
+	CommandModeGITextFilter
 )
 
 // PreviewString returns the command entry prompt shown in the Preview Area.
@@ -75,7 +76,7 @@ func (m CommandMode) PreviewString() string {
 		return "DWELL"
 	case CommandModeVolume:
 		return "VOL"
-	case CommandModeSSAFilter:
+	case CommandModeSSAFilter, CommandModeGITextFilter:
 		return ""
 	case CommandModeTrackReposition:
 		return "RP"
@@ -547,10 +548,10 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 		return
 	}
 
-	// TI 6191.409 Rev. 30, 4.7 explicitly makes SSA FILTER a Main-DCB-only
-	// command; it has no keyboard entry form and no Preview Area response.
+	// TI 6191.409 Rev. 30, 4.7-4.8 make SSA FILTER and GI TEXT FILTER
+	// Main-DCB-only commands, with no keyboard entry or Preview Area response.
 	// Escape is retained as REDS' desktop equivalent of leaving the submenu.
-	if p.commandMode == CommandModeSSAFilter {
+	if p.commandMode == CommandModeSSAFilter || p.commandMode == CommandModeGITextFilter {
 		if keyboard.WasPressed(platform.KeyEscape) {
 			p.resetCommand()
 		}

@@ -33,6 +33,7 @@ const (
 	charSizeDCBColumns          = mainDCBColumns + 1 // six full buttons from column 14 through 19.
 	prefDCBColumns              = 20                 // 32 half-height slots + four two-button control columns.
 	ssaFilterStartColumn        = 2                  // VICE / Figure 4-7: overlay starts after two Main-DCB columns.
+	giTextFilterStartColumn     = mainDCBColumns - 8 // VICE / Figure 4-8: five toggle pairs and DONE, before the final two Main columns.
 	tpaStartColumn              = mainDCBColumns - 5 // VICE: TPA/ATPA submenu occupies the final five Main-DCB columns.
 )
 
@@ -164,8 +165,9 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	charSizeActive := p.commandMode == CommandModeCharSize || p.commandMode == CommandModeCharSizeSpinner
 	prefActive := p.commandMode == CommandModePref || p.commandMode == CommandModeSavePrefAs
 	ssaFilterActive := p.commandMode == CommandModeSSAFilter
+	giTextFilterActive := p.commandMode == CommandModeGITextFilter
 	tpaActive := p.commandMode == CommandModeTPA
-	mainSubmenuActive := mapsActive || briteActive || charSizeActive || prefActive || ssaFilterActive
+	mainSubmenuActive := mapsActive || briteActive || charSizeActive || prefActive || ssaFilterActive || giTextFilterActive
 
 	// Main-page submenus are drawn on top of a disabled Main DCB. TPA/ATPA
 	// follows the same VICE model, but its backing page is the Auxiliary DCB.
@@ -226,6 +228,13 @@ func (p *STARSPane) drawDCB(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			Y: 0,
 		}
 		d.drawSSAFilterPage()
+	}
+	if giTextFilterActive {
+		d.cursor = redsmath.Vec2{
+			X: -p.dcbScroll + float32(giTextFilterStartColumn)*d.buttonSize,
+			Y: 0,
+		}
+		d.drawGITextFilterPage()
 	}
 	if tpaActive {
 		// VICE renders the regular Auxiliary DCB first in the disabled modality,
@@ -388,7 +397,9 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 	d.button("SSA\nFILTER", mainFlags(buttonHalfVertical), false, func() {
 		p.setCommandMode(CommandModeSSAFilter)
 	})
-	d.button("GI TEXT\nFILTER", mainFlags(buttonHalfVertical), false, nil)
+	d.button("GI TEXT\nFILTER", mainFlags(buttonHalfVertical), false, func() {
+		p.setCommandMode(CommandModeGITextFilter)
+	})
 	d.button("SHIFT", mainFlags(buttonFull), false, func() {
 		p.dcbShowAux = true
 		p.dcbSuppressPressUntilRelease = true
@@ -1353,6 +1364,29 @@ func (d *dcbDrawer) drawSSAFilterPage() {
 	fieldButton("FLOW", &f.Flow)
 	fieldButton("AMZ", &f.AMZ)
 	fieldButton("TBFM", &f.TBFM)
+	d.button("DONE", buttonFull, false, func() {
+		p.setCommandMode(CommandModeNone)
+	})
+}
+
+// drawGITextFilterPage follows TI 6191.409 Rev. 30, 4.8 / Figure 4-8.
+// These ten selections are independent of SSA FILTER's ALL setting. Figure
+// 4-8 permits adapted airport labels in addition to the GI numeric label.
+func (d *dcbDrawer) drawGITextFilterPage() {
+	p := d.pane
+	fields := &p.currentPrefs().SSAFilter.GIText
+	for i := range fields {
+		label := "MAIN"
+		if i != 0 {
+			label = fmt.Sprintf("GI %d", i)
+			if airport := p.giText.airports[i].display; airport != "" {
+				label += "\n" + airport
+			}
+		}
+		d.button(label, buttonHalfVertical, fields[i], func() {
+			fields[i] = !fields[i]
+		})
+	}
 	d.button("DONE", buttonFull, false, func() {
 		p.setCommandMode(CommandModeNone)
 	})

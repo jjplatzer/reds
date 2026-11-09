@@ -8,6 +8,7 @@ import (
 const (
 	PublicSmesWebSocketURL  = "wss://reds-stdds-live.jjplatzer.com/ws"
 	PublicTaisWebSocketURL  = "wss://reds-stdds-live.jjplatzer.com/tais/ws"
+	PublicAPTCWebSocketURL  = "wss://reds-stdds-live.jjplatzer.com/aptc/ws"
 	PublicSfdpsWebSocketURL = "wss://reds-stdds-live.jjplatzer.com/sfdps/ws"
 	PublicPlaybackBaseURL   = "https://reds-stdds-live.jjplatzer.com/playback"
 )
@@ -58,6 +59,20 @@ func SfdpsWebSocketURL() string {
 		port = "8082"
 	}
 	return "ws://localhost:" + port + "/sfdps/ws"
+}
+
+func APTCWebSocketURL() string {
+	if override := strings.TrimSpace(os.Getenv("APTC_WS_URL")); override != "" {
+		return override
+	}
+	if UsePublicServer() {
+		return PublicAPTCWebSocketURL
+	}
+	port := strings.TrimSpace(os.Getenv("APTC_WS_PORT"))
+	if port == "" {
+		port = "8083"
+	}
+	return "ws://localhost:" + port + "/aptc/ws"
 }
 
 func PlaybackBaseURL() string {

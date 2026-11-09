@@ -58,7 +58,9 @@ type STARSPane struct {
 	systemOutlineFontTextures    map[int]renderer.TextureID
 	systemAltimeter              systemAltimeterState
 	ssaAirportWeather            ssaAirportWeatherState
+	giText                       giTextState
 	tais                         *redsnet.TaisClient
+	aptc                         *redsnet.APTCClient
 	tfr                          *redsnet.TFRClient
 
 	wxDomain              wx.Domain
@@ -606,6 +608,8 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	}
 	pane.initializeSystemAltimeter(cfg.systemAltimeterAirport())
 	pane.initializeSSAAirportWeather(cfg.Area.SSAAirports)
+	pane.initializeGIText()
+	pane.refreshGIATIS(time.Now())
 	pane.wxDomain = wx.DomainForARTCC(cfg.Facility.ARTCC)
 	pane.wxLogger = logger.With(slog.String("component", "wx"))
 	pane.restartNexradStream(starsInitialNexradRadiusNM)
@@ -622,6 +626,10 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 		logger.With(slog.String("component", "tais")),
 	)
 	pane.tais.Start()
+	if pane.giText.airports[0].display != "" {
+		pane.aptc = redsnet.NewAPTCClient(redsnet.APTCWebSocketURL(), logger.With(slog.String("component", "aptc")))
+		pane.aptc.Start()
+	}
 
 	// The TFR client caches published FAA geometry in the background. Rendering
 	// and user-facing visibility controls are introduced separately.
@@ -638,25 +646,29 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 // Match ASDE-X activity reporting: scope input keeps the feed connected;
 // track updates, redraws, held keys and an unmoving cursor do not.
 func (p *STARSPane) reportClientActivity(ctx *panes.Context) {
-	if p == nil || p.tais == nil || ctx == nil {
+	if p == nil || ctx == nil {
 		return
+	}
+	report := func() {
+		p.tais.ReportActivity()
+		p.aptc.ReportActivity()
 	}
 	if mouse := ctx.Mouse; mouse != nil {
 		if math.Abs(float64(mouse.Delta.X)) > 0.01 || math.Abs(float64(mouse.Delta.Y)) > 0.01 ||
 			mouse.Wheel.X != 0 || mouse.Wheel.Y != 0 {
-			p.tais.ReportActivity()
+			report()
 			return
 		}
 		for button := platform.MouseButton(0); button < platform.MouseButtonCount; button++ {
 			if mouse.WasPressed(button) || mouse.WasReleased(button) {
-				p.tais.ReportActivity()
+				report()
 				return
 			}
 		}
 	}
 	if keyboard := ctx.Keyboard; keyboard != nil &&
 		(len(keyboard.Text) > 0 || len(keyboard.Pressed) > 0 || len(keyboard.Released) > 0) {
-		p.tais.ReportActivity()
+		report()
 	}
 }
 
@@ -677,6 +689,8 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.refreshSystemAltimeter()
 	p.consumeSSAAirportWeatherUpdates()
 	p.refreshSSAAirportWeather()
+	p.consumeGIATISUpdates()
+	p.refreshGIATIS(time.Now())
 	p.consumeNexradUpdates()
 	p.ensureNexradCoverage(ctx)
 	p.rebuildNexradIfNeeded()
@@ -811,6 +825,13 @@ func (p *STARSPane) Dispose() {
 	if p.tais != nil {
 		p.tais.Close()
 		p.tais = nil
+	}
+	if p.aptc != nil {
+		p.aptc.Close()
+		p.aptc = nil
+	}
+	if p.giText.cancel != nil {
+		p.giText.cancel()
 	}
 	if p.tfr != nil {
 		p.tfr.Close()
