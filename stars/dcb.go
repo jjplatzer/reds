@@ -1370,8 +1370,8 @@ func (d *dcbDrawer) drawSSAFilterPage() {
 }
 
 // drawGITextFilterPage follows TI 6191.409 Rev. 30, 4.8 / Figure 4-8.
-// These ten selections are independent of SSA FILTER's ALL setting. Live
-// ATIS/GI text can use them when the corresponding SSA content is available.
+// These ten selections are independent of SSA FILTER's ALL setting. Figure
+// 4-8 permits adapted airport labels in addition to the GI numeric label.
 func (d *dcbDrawer) drawGITextFilterPage() {
 	p := d.pane
 	fields := &p.currentPrefs().SSAFilter.GIText
@@ -1379,6 +1379,9 @@ func (d *dcbDrawer) drawGITextFilterPage() {
 		label := "MAIN"
 		if i != 0 {
 			label = fmt.Sprintf("GI %d", i)
+			if airport := p.giText.airports[i].display; airport != "" {
+				label += "\n" + airport
+			}
 		}
 		d.button(label, buttonHalfVertical, fields[i], func() {
 			fields[i] = !fields[i]

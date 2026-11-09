@@ -653,15 +653,12 @@ type ssaFilterPreferences struct {
 	TBFM                bool
 }
 
-func defaultGITextFilter() (fields [10]bool) {
-	for i := range fields {
-		fields[i] = true
-	}
-	return
+func defaultGITextFilter() [10]bool {
+	return [10]bool{true} // MAIN only; auxiliary GI 1-9 start hidden.
 }
 
-// Older saved sets omit GIText. Match VICE/CRC's initially enabled fields,
-// while preserving an explicitly saved all-off selection in newer sets.
+// Older saved sets omit GIText. Default to MAIN only while preserving
+// explicitly saved selections, including an all-off selection in newer sets.
 func (f *ssaFilterPreferences) UnmarshalJSON(data []byte) error {
 	type plain ssaFilterPreferences
 	value := plain{GIText: defaultGITextFilter()}
