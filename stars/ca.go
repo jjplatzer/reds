@@ -25,7 +25,7 @@ const (
 
 	// REDS simulation choices, not certified FAA STARS parameters. Only
 	// existing events get clearance hysteresis beyond the detection limits.
-	caLookahead           = 60 * time.Second
+	caLookahead           = 15 * time.Second
 	caLateralClearanceNM  = caLateralMinimumNM + 0.1
 	caVerticalClearanceFT = caVerticalMinimumFT + 100
 
