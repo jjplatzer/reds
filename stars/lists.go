@@ -27,7 +27,9 @@ const (
 	ssaCheckBoxHalfSize  = float32(5)
 	ssaCheckTriangleSize = float32(7)
 
-	zLists renderer.Z = 0
+	// Keep lists beneath history dots, targets, and datablocks at overlaps.
+	zLists       renderer.Z = zTargetHistory - 1
+	zPreviewArea renderer.Z = 0
 )
 
 func (p *STARSPane) toggleVideoMapsList(selection videoMapsListSelection) {
@@ -782,6 +784,402 @@ type coastSuspendListEntry struct {
 	frozenBeforeList bool
 }
 
+func aircraftPlanListKey(plan redsnet.TaisFlightPlanState) string {
+	return plan.Key + "@" + plan.FirstSeen.Format(time.RFC3339Nano)
+}
+
+func aircraftListTargetKey(target *redsnet.TaisTarget, snapshot redsnet.TaisSnapshot) string {
+	for _, plan := range snapshot.FlightPlans {
+		if plan.TrackKey == target.Key {
+			return aircraftPlanListKey(plan)
+		}
+	}
+	return targetDisplayStateKey(target) // Protocol-v1 targets have no independent plan state.
+}
+
+func aircraftPlanListEntries(snapshot redsnet.TaisSnapshot, vfr bool) []redsnet.TaisFlightPlanState {
+	if !snapshot.Ready {
+		return nil
+	}
+	entries := make([]redsnet.TaisFlightPlanState, 0)
+	for _, plan := range snapshot.FlightPlans {
+		fp := plan.FlightPlan
+		if fp.Deleted || fp.Suspended || strings.EqualFold(fp.Status, "terminated") {
+			continue
+		}
+		if vfr {
+			// First version: all explicit VFR plans in the TRACON, including
+			// acquired flights. Do not manufacture plans from received 1200 codes.
+			if !strings.EqualFold(fp.RawFlightRules, "V") && !strings.EqualFold(fp.FlightRules, "V") &&
+				!strings.EqualFold(fp.FlightRules, "VFR") {
+				continue
+			}
+		} else if plan.State != "pending" {
+			continue
+		}
+		entries = append(entries, plan)
+	}
+	sort.Slice(entries, func(i, j int) bool {
+		a, b := entries[i], entries[j]
+		if vfr {
+			at, bt := a.VFRSince, b.VFRSince
+			if at.IsZero() {
+				at = a.FirstSeen
+			}
+			if bt.IsZero() {
+				bt = b.FirstSeen
+			}
+			if !at.Equal(bt) {
+				return at.Before(bt)
+			}
+		}
+		if a.FlightPlan.ACID != b.FlightPlan.ACID {
+			return a.FlightPlan.ACID < b.FlightPlan.ACID
+		}
+		return a.Key < b.Key
+	})
+	return entries
+}
+
+func aircraftPlanListAirport(raw string) string {
+	code := strings.ToUpper(strings.TrimSpace(raw))
+	switch code {
+	case "", "UNASSIGNED", "UNAVAILABLE", "UNDEFINED", "UNKNOWN", "NONE", "PENDING", "NNNN", "ZZZZ", "ZZZ", "----":
+		return ""
+	}
+	// Most TAIS ICAO/FAA pairs differ only by K. Use the cached airport
+	// database for other US ICAO prefixes, for example PHNL/HNL and PANC/ANC.
+	if len(code) == 4 && code[0] != 'K' {
+		if db, err := loadSTARSAirportDatabase(); err == nil {
+			if display, ok := db.displayByICAO[code]; ok {
+				return display
+			}
+		}
+	}
+	return normalizeTaisAirport(code)
+}
+
+func aircraftPlanListMatchesAirports(plan redsnet.TaisFlightPlanState, airports map[string]bool) bool {
+	if len(airports) == 0 {
+		return true // No adapted area airports: retain the TRACON-wide fallback.
+	}
+	fp := &plan.FlightPlan
+	local := aircraftPlanListAirport(fp.Airport)
+	var departure, destination string
+	if plan.EnhancedData != nil {
+		departure = aircraftPlanListAirport(plan.EnhancedData.DepartureAirport)
+		destination = aircraftPlanListAirport(plan.EnhancedData.DestinationAirport)
+	}
+	flightType := strings.ToUpper(strings.TrimSpace(fp.Type))
+	switch flightType {
+	case "O", "OVERFLIGHT", "E", "ENROUTE", "EN ROUTE":
+		return true // Endpoints cannot place an overflight's route in an area.
+	}
+	if strings.EqualFold(fp.RawFlightRules, "V") || strings.EqualFold(fp.FlightRules, "V") || strings.EqualFold(fp.FlightRules, "VFR") {
+		// VFR traffic can be relevant at either end. The TAIS local airport
+		// also places plans that have no enhanced origin/destination fields.
+		return airports[departure] || airports[destination] || airports[local] ||
+			(departure == "" && destination == "" && local == "")
+	}
+	switch flightType {
+	case "A", "ARR", "ARRIVAL":
+		if destination == "" {
+			destination = local
+		}
+		return destination == "" || airports[destination]
+	case "P", "D", "DEP", "DEPARTURE":
+		if departure == "" {
+			departure = local
+		}
+		return departure == "" || airports[departure]
+	default:
+		// A local airport still places an otherwise unclassified plan.
+		// Without one, its external endpoints may belong to an overflight.
+		return local == "" || airports[local]
+	}
+}
+
+func (p *STARSPane) aircraftPlanListEntriesForPosition(snapshot redsnet.TaisSnapshot, vfr bool) []redsnet.TaisFlightPlanState {
+	entries := aircraftPlanListEntries(snapshot, vfr)
+	if p == nil {
+		return entries
+	}
+	own := p.ownTCP()
+	knownTCPs := make(map[string]bool, len(p.config.Facility.ControlPositions)+1)
+	for _, position := range p.config.Facility.ControlPositions {
+		if tcp := strings.ToUpper(strings.TrimSpace(position.TCP)); tcp != "" {
+			knownTCPs[tcp] = true
+		}
+	}
+	if own != "" {
+		knownTCPs[own] = true
+	}
+	airports := make(map[string]bool, len(p.config.Area.UnderlyingAirports))
+	for _, raw := range p.config.Area.UnderlyingAirports {
+		if airport := aircraftPlanListAirport(raw); airport != "" {
+			airports[airport] = true
+		}
+	}
+	filtered := entries[:0]
+	for _, plan := range entries {
+		cps := strings.ToUpper(strings.TrimSpace(plan.FlightPlan.CPS))
+		if own != "" && knownTCPs[cps] {
+			// CPS names the receiver for a pending handoff and the current
+			// position otherwise. Only trust a locally adapted TCP; center IDs
+			// and unavailable/unmapped values fall back to area airports.
+			if cps == own {
+				filtered = append(filtered, plan)
+			}
+		} else if aircraftPlanListMatchesAirports(plan, airports) {
+			filtered = append(filtered, plan)
+		}
+	}
+	return filtered
+}
+
+// §2.15: a flight has the same 0..99 tab number in every aircraft list.
+// Coast/Suspend gets priority when numbers become available. Visibility and
+// position filters/row limits do not release identities eligible anywhere
+// in the TRACON, so a position change cannot renumber the same flight.
+func (p *STARSPane) prepareAircraftListNumbers(snapshot redsnet.TaisSnapshot) {
+	if p.aircraftListLineNumbers == nil {
+		p.aircraftListLineNumbers = make(map[string]int)
+	}
+	type candidate struct {
+		when  time.Time
+		coast bool
+	}
+	eligible := make(map[string]candidate)
+	for _, entry := range p.coastSuspendListEntries(snapshot) {
+		t := entry.target
+		when := t.ReceivedAt
+		if !t.CoastPhase2At.IsZero() {
+			when = t.CoastPhase2At
+		}
+		eligible[aircraftListTargetKey(t, snapshot)] = candidate{when, true}
+	}
+	for _, vfr := range []bool{false, true} {
+		for _, plan := range aircraftPlanListEntries(snapshot, vfr) {
+			key := aircraftPlanListKey(plan)
+			if _, exists := eligible[key]; !exists {
+				eligible[key] = candidate{plan.FirstSeen, false}
+			}
+		}
+	}
+	var used [coastSuspendTabLineCapacity]bool
+	for key, number := range p.aircraftListLineNumbers {
+		if _, exists := eligible[key]; !exists || number < 0 || number >= len(used) || used[number] {
+			delete(p.aircraftListLineNumbers, key)
+		} else {
+			used[number] = true
+		}
+	}
+	var waiting []string
+	for key := range eligible {
+		if _, assigned := p.aircraftListLineNumbers[key]; !assigned {
+			waiting = append(waiting, key)
+		}
+	}
+	sort.Slice(waiting, func(i, j int) bool {
+		a, b := eligible[waiting[i]], eligible[waiting[j]]
+		if a.coast != b.coast {
+			return a.coast
+		}
+		if !a.when.Equal(b.when) {
+			return a.when.Before(b.when)
+		}
+		return waiting[i] < waiting[j]
+	})
+	for _, key := range waiting {
+		for step := 0; step < len(used); step++ {
+			number := (p.aircraftListNextLine + step) % len(used)
+			if !used[number] {
+				p.aircraftListLineNumbers[key], used[number] = number, true
+				p.aircraftListNextLine = (number + 1) % len(used)
+				break
+			}
+		}
+	}
+}
+
+func aircraftPlanListAltitude(plan redsnet.TaisFlightPlanState, targets map[string]*redsnet.TaisTarget) string {
+	if plan.TrackKey != "" {
+		if target := targets[plan.TrackKey]; target != nil && target.Track.UsableReportedAltitude() {
+			return targetDatablockAltitude(target.Track.ReportedAltitude)
+		}
+		return "OR "
+	}
+	if plan.ReportedAltitude != nil {
+		return targetDatablockAltitude(*plan.ReportedAltitude)
+	}
+	// REDS uses OR for unavailable Mode C, including pending plans without
+	// surveillance. Assigned/requested altitude is never substituted.
+	return "OR "
+}
+
+func aircraftPlanListFixField(plan redsnet.TaisFlightPlanState) string {
+	fp := &plan.FlightPlan
+	// Figure 2-27 uses VFR for NAS VFR plans. A V flag alone also describes
+	// local VFR flight-following plans; a GUFI supplies positive NAS provenance.
+	if targetDatablockFlightRulesIndicator(fp) == "V" && plan.EnhancedData != nil {
+		for _, gufi := range []string{plan.EnhancedData.ERAMGUFI, plan.EnhancedData.SFDPSGUFI} {
+			switch strings.ToUpper(strings.TrimSpace(gufi)) {
+			case "", "UNASSIGNED", "UNAVAILABLE", "UNDEFINED", "UNKNOWN", "NONE":
+			default:
+				return "VFR"
+			}
+		}
+	}
+	fix := func(value string) string {
+		switch strings.ToUpper(strings.TrimSpace(value)) {
+		case "", "UNASSIGNED", "UNAVAILABLE", "UNDEFINED", "UNKNOWN", "NONE":
+			return ""
+		}
+		// Use the supplied fix's first letter until single-character site
+		// adaptation is available, as requested for the initial REDS format.
+		value = targetDatablockExitFix(value)
+		if value == "" {
+			return ""
+		}
+		return string([]rune(value)[0])
+	}
+	entry, exit := fix(fp.EntryFix), fix(fp.ExitFix)
+	switch strings.ToUpper(strings.TrimSpace(fp.Type)) {
+	case "P", "D", "DEP", "DEPARTURE":
+		entry = ""
+	case "A", "ARR", "ARRIVAL":
+		exit = ""
+	case "O", "OVERFLIGHT", "E", "ENROUTE", "EN ROUTE":
+		// Overflights retain both fix fields.
+	default:
+		if plan.EnhancedData != nil {
+			airport := normalizeTaisAirport(fp.Airport)
+			departure := normalizeTaisAirport(plan.EnhancedData.DepartureAirport)
+			arrival := normalizeTaisAirport(plan.EnhancedData.DestinationAirport)
+			if airport != "" && airport == departure && airport != arrival {
+				entry = ""
+			} else if airport != "" && airport == arrival && airport != departure {
+				exit = ""
+			}
+		}
+	}
+	// Reserve exactly three cells, shared with VFR: entry, exit, trailing blank.
+	return fmt.Sprintf("%-1s%-1s ", entry, exit)
+}
+
+func aircraftPlanListDuplicateCounts(snapshot redsnet.TaisSnapshot) (map[string]int, map[string]int) {
+	acids, codes := make(map[string]int), make(map[string]int)
+	// Independent plans include both pending and acquired flights. Count each
+	// once, even if it is also in Targets or appears in several aircraft lists.
+	for _, plan := range snapshot.FlightPlans {
+		fp := &plan.FlightPlan
+		if fp.Deleted || strings.EqualFold(fp.Status, "terminated") || plan.State == "inactive" {
+			continue
+		}
+		if acid := strings.ToUpper(strings.TrimSpace(fp.ACID)); acid != "" {
+			acids[acid]++
+		}
+		if code := normalizeBeaconCode(fp.AssignedBeaconCode); code != "" && code != "0000" {
+			codes[code]++
+		}
+	}
+	return acids, codes
+}
+
+func (p *STARSPane) aircraftPlanListInhibitIndicator(plan redsnet.TaisFlightPlanState, targets map[string]*redsnet.TaisTarget) string {
+	target := targets[plan.TrackKey]
+	if target == nil {
+		// A pending VFR plan is automatically MSAW-inhibited too. Do not
+		// borrow another track's overrides by matching only an ACID or squawk.
+		if msawAutomaticVFRInhibited(&redsnet.TaisTarget{FlightPlan: &plan.FlightPlan}) {
+			return "*"
+		}
+		return " "
+	}
+	msaw := p.msawInhibited(target)
+	ca := p.caTrackInhibited(target) || p.mciTrackInhibited(target)
+	switch {
+	case msaw && ca:
+		return "+"
+	case msaw:
+		return "*"
+	case ca:
+		return string(rune(0x80)) // The STARS bitmap-font delta glyph.
+	default:
+		return " "
+	}
+}
+
+func (p *STARSPane) aircraftPlanListText(snapshot redsnet.TaisSnapshot, vfr bool) string {
+	list, title := p.currentPrefs().FlightPlanList, "FLIGHT PLAN"
+	if vfr {
+		list, title = p.currentPrefs().VFRList, "VFR LIST"
+	}
+	if !list.Visible {
+		return ""
+	}
+	p.prepareAircraftListNumbers(snapshot)
+	entries := p.aircraftPlanListEntriesForPosition(snapshot, vfr)
+	targets := make(map[string]*redsnet.TaisTarget, len(snapshot.Targets))
+	for i := range snapshot.Targets {
+		targets[snapshot.Targets[i].Key] = &snapshot.Targets[i]
+	}
+	acids, codes := aircraftPlanListDuplicateCounts(snapshot)
+	limit := min(max(list.Lines, 1), 100)
+	var text strings.Builder
+	text.WriteString(title)
+	if len(entries) > limit {
+		fmt.Fprintf(&text, "\nMORE: %d/%d", limit, len(entries))
+	}
+	for _, plan := range entries[:min(limit, len(entries))] {
+		number := "  "
+		if n, assigned := p.aircraftListLineNumbers[aircraftPlanListKey(plan)]; assigned {
+			number = fmt.Sprintf("%2d", n)
+		}
+		code := normalizeBeaconCode(plan.FlightPlan.AssignedBeaconCode)
+		if code == "0000" {
+			code = ""
+		}
+		acid := strings.ToUpper(strings.TrimSpace(plan.FlightPlan.ACID))
+		status, beaconPrefix := " ", " "
+		if acids[acid] > 1 {
+			status = "/"
+		}
+		if code != "" && codes[code] > 1 {
+			beaconPrefix = "/"
+		}
+		// Figure 2-27 has two separate cells before ACID: flight status,
+		// then MSAW/CA inhibition. TAIS does not identify IOI sequences,
+		// DM messages or special departures; leave those status flags unset.
+		fmt.Fprintf(&text, "\n%s%s%s%-7.7s %s%4s", number, status,
+			p.aircraftPlanListInhibitIndicator(plan, targets), acid, beaconPrefix, code)
+		if !vfr {
+			// Figure 2-27: tab, ACID, assigned beacon, Mode C and entry/exit
+			// fix characters (or VFR for NAS VFR). Unavailable Mode C is OR.
+			fmt.Fprintf(&text, " %3s %s", aircraftPlanListAltitude(plan, targets), aircraftPlanListFixField(plan))
+		}
+	}
+	return text.String()
+}
+
+func (p *STARSPane) drawAircraftPlanLists(ctx *panes.Context, zcb *renderer.ZCmdBuffer, snapshot redsnet.TaisSnapshot) {
+	for _, vfr := range []bool{false, true} {
+		text := p.aircraftPlanListText(snapshot, vfr)
+		if text == "" {
+			continue
+		}
+		position := p.currentPrefs().FlightPlanList.Position
+		if vfr {
+			position = p.currentPrefs().VFRList.Position
+		}
+		lines := make([]starsListLine, 0, strings.Count(text, "\n")+1)
+		for _, line := range strings.Split(text, "\n") {
+			lines = append(lines, starsListLine{text: line, color: p.colors.List})
+		}
+		p.drawSystemList(ctx, zcb, lines, position)
+	}
+}
+
 // coastSuspendListEntries implements TI 6191.409 Rev. 30 section 2.15.2:
 // suspended flights owned by the controller, plus Coast Phase 2 tracks owned
 // by the controller. A center-owned coasting track also appears at a pending
@@ -795,9 +1193,6 @@ type coastSuspendListEntry struct {
 func (p *STARSPane) coastSuspendListEntries(snapshot redsnet.TaisSnapshot) []coastSuspendListEntry {
 	if p == nil || !snapshot.Ready {
 		return nil
-	}
-	if p.coastSuspendLineNumbers == nil {
-		p.coastSuspendLineNumbers = make(map[string]int)
 	}
 	if p.coastSuspendFirstSeen == nil {
 		p.coastSuspendFirstSeen = make(map[string]uint64)
@@ -833,7 +1228,7 @@ func (p *STARSPane) coastSuspendListEntries(snapshot redsnet.TaisSnapshot) []coa
 			continue
 		}
 
-		key := targetDisplayStateKey(target)
+		key := aircraftListTargetKey(target, snapshot)
 		if key == "" {
 			// Flight-plan-only records normally retain a TAIS target key. Keep a
 			// deterministic fallback for feeds where that key is absent.
@@ -851,14 +1246,6 @@ func (p *STARSPane) coastSuspendListEntries(snapshot redsnet.TaisSnapshot) []coa
 		statuses[key] = status
 	}
 
-	// List-lifetime state is released as soon as a flight leaves the list. If
-	// it later re-enters, it is a newly added entry and receives a new ordering
-	// token (and potentially a new tab line number).
-	for key := range p.coastSuspendLineNumbers {
-		if _, ok := targets[key]; !ok {
-			delete(p.coastSuspendLineNumbers, key)
-		}
-	}
 	for key := range p.coastSuspendFirstSeen {
 		if _, ok := targets[key]; !ok {
 			delete(p.coastSuspendFirstSeen, key)
@@ -911,15 +1298,6 @@ func (p *STARSPane) coastSuspendListEntries(snapshot redsnet.TaisSnapshot) []coa
 		p.coastSuspendFrozenAtEntry[key] = targets[key].Track.Frozen
 	}
 
-	var used [coastSuspendTabLineCapacity]bool
-	for key, line := range p.coastSuspendLineNumbers {
-		if _, ok := targets[key]; !ok || line < 0 || line >= len(used) || used[line] {
-			delete(p.coastSuspendLineNumbers, key)
-			continue
-		}
-		used[line] = true
-	}
-
 	orderedKeys := make([]string, 0, len(targets))
 	for key := range targets {
 		orderedKeys = append(orderedKeys, key)
@@ -928,30 +1306,10 @@ func (p *STARSPane) coastSuspendListEntries(snapshot redsnet.TaisSnapshot) []coa
 		return p.coastSuspendFirstSeen[orderedKeys[i]] < p.coastSuspendFirstSeen[orderedKeys[j]]
 	})
 
-	// Allocate line numbers in list-addition order. STARS has 100 tab line
-	// numbers. When all are occupied the list row's number field is blank; the
-	// corresponding suspended target-symbol behavior can be added when REDS
-	// implements the suspended position symbol itself.
-	for _, key := range orderedKeys {
-		if _, ok := p.coastSuspendLineNumbers[key]; ok {
-			continue
-		}
-		for step := 0; step < coastSuspendTabLineCapacity; step++ {
-			line := (p.coastSuspendNextLine + step) % coastSuspendTabLineCapacity
-			if used[line] {
-				continue
-			}
-			p.coastSuspendLineNumbers[key] = line
-			used[line] = true
-			p.coastSuspendNextLine = (line + 1) % coastSuspendTabLineCapacity
-			break
-		}
-	}
-
 	entries := make([]coastSuspendListEntry, 0, len(orderedKeys))
 	for _, key := range orderedKeys {
 		line := -1
-		if assigned, ok := p.coastSuspendLineNumbers[key]; ok {
+		if assigned, ok := p.aircraftListLineNumbers[key]; ok {
 			line = assigned
 		}
 		entries = append(entries, coastSuspendListEntry{
@@ -1015,6 +1373,7 @@ func (p *STARSPane) coastSuspendListText(snapshot redsnet.TaisSnapshot) string {
 	if p == nil {
 		return ""
 	}
+	p.prepareAircraftListNumbers(snapshot)
 	entries := p.coastSuspendListEntries(snapshot)
 	list := p.currentPrefs().CoastSuspendList
 	if !list.Visible {
@@ -1338,7 +1697,7 @@ func (p *STARSPane) drawPreviewArea(ctx *panes.Context, zcb *renderer.ZCmdBuffer
 	}
 
 	x, y, width, height := ctx.PaneFramebufferRect()
-	cb := zcb.At(zLists)
+	cb := zcb.At(zPreviewArea)
 	cb.Viewport(x, y, width, height)
 	cb.Scissor(x, y, width, height)
 	cb.LoadProjectionMatrix(ctx.ScreenProjection())

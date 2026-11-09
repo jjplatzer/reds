@@ -108,7 +108,7 @@ public final class WebSocketPush extends AbstractVerticle {
             JsonObject body = new JsonObject()
                     .put("ok", true)
                     .put("feed", "tais")
-                    .put("protocol", 1)
+                    .put("protocol", 2)
                     .put("clients", clients.size());
 
             request.response()
@@ -141,7 +141,7 @@ public final class WebSocketPush extends AbstractVerticle {
         }
 
         ClientConnection client = new ClientConnection(socket, facility, config.pendingMax(),
-                config.outboundMaxFrames(), config.outboundMaxBytes());
+                config.outboundMaxFrames(), config.outboundMaxBytes(), requestsPlans(socket.query()));
         clients.add(client);
 
         // Only explicit user activity refreshes the timer. Surveillance
@@ -221,5 +221,13 @@ public final class WebSocketPush extends AbstractVerticle {
         }
 
         return null;
+    }
+
+    private static boolean requestsPlans(String query) {
+        if (query == null) return false;
+        for (String pair : query.split("&")) {
+            if (pair.equals("plans=1")) return true;
+        }
+        return false;
     }
 }

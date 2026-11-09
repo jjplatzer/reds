@@ -7,8 +7,10 @@ import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * In-memory current-state + raw-position cache for TAIS tracks.
@@ -37,6 +39,9 @@ public final class TrackCache {
 
     private final int historyCapacity;
     private final Map<String, State> tracks = new HashMap<>();
+    private final Map<String, PlanState> plans = new HashMap<>();
+    private final Map<String, String> targetPlans = new HashMap<>();
+    private final Map<String, Instant> deletedPlans = new HashMap<>();
 
     private long positionSamples;
     private long duplicatePositions;
@@ -51,6 +56,7 @@ public final class TrackCache {
     }
 
     public void accept(TaisObservation obs) {
+        if (!obs.hasRadarTrack()) return;
         String key = obs.targetKey();
         State state = tracks.computeIfAbsent(key, ignored -> new State());
         TaisObservation.Track track = obs.track();
@@ -107,6 +113,215 @@ public final class TrackCache {
 
         while (state.history.size() > historyCapacity) {
             state.history.removeFirst();
+        }
+    }
+
+    /** Apply independent flight-plan and radar lifecycles on the store event loop. */
+    public List<Change> apply(TaisObservation obs) {
+        Map<String, SnapshotPlan> before = new LinkedHashMap<>();
+        Map<String, Change> changedTargets = new LinkedHashMap<>();
+        String planKey = planKey(obs);
+        Instant sourceTime = sourceTime(obs);
+        PlanState plan = planKey == null ? null : plans.get(planKey);
+        boolean stalePlan = plan != null && sourceTime.isBefore(plan.sourceTime);
+        Instant deletedAt = planKey == null ? null : deletedPlans.get(planKey);
+        if (deletedAt != null && !sourceTime.isAfter(deletedAt)) stalePlan = true;
+        if (planKey != null && !stalePlan) {
+            remember(before, planKey);
+            var fp = obs.flightPlan();
+            if (Boolean.TRUE.equals(fp.deleted()) || "terminated".equalsIgnoreCase(fp.status())) {
+                if (plan != null) detach(plan, obs, before, changedTargets);
+                plans.remove(planKey);
+                deletedPlans.put(planKey, sourceTime);
+                plan = null;
+            } else {
+                // Require both identities to change before treating an undeleted
+                // SFPN as reused. GUFI enrichment alone may change source center;
+                // an ACID amendment alone retains this plan's lifetime.
+                if (plan != null && !Objects.equals(plan.flightPlan.acid(), fp.acid()) &&
+                        differentGufi(plan.enhancedData, obs.enhancedData())) {
+                    detach(plan, obs, before, changedTargets);
+                    plan = null;
+                }
+                if (plan == null) {
+                    plan = new PlanState(planKey, obs.facility(), obs.receivedAt());
+                    plans.put(planKey, plan);
+                }
+                deletedPlans.remove(planKey);
+                boolean wasVFR = isVFR(plan.flightPlan);
+                plan.flightPlan = fp;
+                if (obs.enhancedData() != null) plan.enhancedData = obs.enhancedData();
+                plan.sourceTime = sourceTime;
+                if (!obs.hasRadarTrack() && obs.track() != null) {
+                    // Retain a pseudo report's optional Mode C without giving
+                    // distinct pending plans the shared radar identity T0.
+                    plan.pendingReportedAltitude = obs.track().reportedAltitude();
+                }
+                if (isVFR(fp) && !wasVFR) plan.vfrSince = obs.receivedAt();
+                if (!isVFR(fp)) plan.vfrSince = null;
+                if (plan.trackKey == null && obs.track() != null && Boolean.TRUE.equals(obs.track().pseudo())) {
+                    plan.state = "pending";
+                }
+                if (Boolean.TRUE.equals(fp.suspended())) plan.state = "suspended";
+                else if (plan.trackKey != null) {
+                    State track = tracks.get(plan.trackKey);
+                    plan.state = track != null && track.coastPhase >= COAST_PHASE_2 ? "coasting" : "tracked";
+                } else if (plan.state.equals("suspended")) plan.state = "inactive";
+                // A missing <track> updates the plan; it does not disassociate a radar target.
+                if (plan.trackKey != null && !obs.hasRadarTrack()) patchTarget(plan.trackKey, plan, obs, changedTargets);
+            }
+        }
+
+        if (obs.hasRadarTrack()) {
+            String key = obs.targetKey();
+            TaisObservation previous = current(key);
+            // A delayed drop must not delete a recycled track number's newer aircraft.
+            boolean staleTrack = "drop".equalsIgnoreCase(obs.track().status()) && previous != null &&
+                    sourceTime.isBefore(sourceTime(previous));
+            if (!staleTrack && "drop".equalsIgnoreCase(obs.track().status())) {
+                unlinkTarget(key, obs, before);
+                if (plan != null && plan.trackKey == null) {
+                    // A first-seen dropped track is not a newly pending flight.
+                    remember(before, plan.key);
+                    plan.state = Boolean.TRUE.equals(plan.flightPlan.suspended()) ? "suspended" : "inactive";
+                }
+                if (remove(key)) changedTargets.put(key, new Change("remove", key));
+            } else if (!staleTrack) {
+                var fp = plan == null ? null : plan.flightPlan;
+                if (stalePlan && plan != null && !key.equals(plan.trackKey)) fp = null;
+                TaisObservation normalized = new TaisObservation(obs.facility(), obs.recordMeta(), obs.track(),
+                        fp, plan == null ? obs.enhancedData() : plan.enhancedData, obs.receivedAt());
+                accept(normalized);
+                if (current(key) == normalized) {
+                    String oldKey = targetPlans.get(key);
+                    if (oldKey != null && (plan == null || !oldKey.equals(plan.key) || fp == null)) {
+                        unlinkTarget(key, obs, before);
+                    }
+                    if (plan != null && fp != null && !stalePlan &&
+                            (obs.track().hasPosition() || key.equals(plan.trackKey))) {
+                        remember(before, plan.key);
+                        if (plan.trackKey != null && !plan.trackKey.equals(key)) {
+                            detach(plan, obs, before, changedTargets);
+                        }
+                        plan.trackKey = key;
+                        targetPlans.put(key, plan.key);
+                        State state = tracks.get(key);
+                        plan.state = Boolean.TRUE.equals(fp.suspended()) ? "suspended" :
+                                state.coastPhase >= COAST_PHASE_2 ? "coasting" : "tracked";
+                    }
+                    changedTargets.put(key, new Change("update", key));
+                } else if (plan != null && !stalePlan && key.equals(plan.trackKey)) {
+                    // A newer plan may accompany an older surveillance sample.
+                    patchTarget(key, plan, obs, changedTargets);
+                }
+            }
+        }
+        List<Change> changes = new ArrayList<>(changedTargets.values());
+        before.forEach((key, old) -> {
+            SnapshotPlan next = snapshotPlan(key);
+            if (!Objects.equals(old, next)) changes.add(new Change(next == null ? "plan_remove" : "plan_update", key));
+        });
+        return changes;
+    }
+
+    private void remember(Map<String, SnapshotPlan> before, String key) {
+        if (!before.containsKey(key)) before.put(key, snapshotPlan(key));
+    }
+
+    private void detach(PlanState plan, TaisObservation obs, Map<String, SnapshotPlan> before,
+                        Map<String, Change> changedTargets) {
+        remember(before, plan.key);
+        if (plan.trackKey != null) {
+            patchTarget(plan.trackKey, null, obs, changedTargets);
+            targetPlans.remove(plan.trackKey);
+            plan.trackKey = null;
+        }
+    }
+
+    private void unlinkTarget(String key, TaisObservation obs, Map<String, SnapshotPlan> before) {
+        String planKey = targetPlans.remove(key);
+        PlanState plan = planKey == null ? null : plans.get(planKey);
+        if (plan != null && key.equals(plan.trackKey)) {
+            remember(before, planKey);
+            plan.trackKey = null;
+            plan.state = Boolean.TRUE.equals(plan.flightPlan.suspended()) ? "suspended" : "inactive";
+            if (sourceTime(obs).isAfter(plan.sourceTime)) plan.sourceTime = sourceTime(obs);
+        }
+    }
+
+    private void patchTarget(String key, PlanState plan, TaisObservation update, Map<String, Change> changes) {
+        TaisObservation previous = current(key);
+        if (previous == null) return;
+        TaisObservation patched = new TaisObservation(previous.facility(), previous.recordMeta(), previous.track(),
+                plan == null ? null : plan.flightPlan, plan == null ? null : plan.enhancedData, update.receivedAt());
+        accept(patched); // Same MRT: updates data without adding a history dot or resetting coast phase.
+        changes.put(key, new Change("update", key));
+    }
+
+    public SnapshotPlan markPlanCoasting(String targetKey) {
+        PlanState plan = plans.get(targetPlans.get(targetKey));
+        if (plan == null || plan.state.equals("coasting") || plan.state.equals("suspended")) return null;
+        plan.state = "coasting";
+        return plan.snapshot();
+    }
+
+    public SnapshotPlan snapshotPlan(String key) {
+        PlanState plan = plans.get(key);
+        return plan == null ? null : plan.snapshot();
+    }
+
+    public List<SnapshotPlan> snapshotPlans(String facility) {
+        return plans.values().stream().filter(p -> facility == null || facility.isBlank() || facility.equalsIgnoreCase(p.facility))
+                .map(PlanState::snapshot).sorted(java.util.Comparator.comparing(SnapshotPlan::key)).toList();
+    }
+
+    private static Instant sourceTime(TaisObservation obs) {
+        return obs.recordMeta() != null && obs.recordMeta().safaReceiptTime() != null
+                ? obs.recordMeta().safaReceiptTime() : obs.receivedAt();
+    }
+
+    private static String planKey(TaisObservation obs) {
+        if (obs.flightPlan() == null) return null;
+        Integer sfpn = obs.flightPlan().sfpn();
+        if (sfpn != null && sfpn >= 0) return obs.facility() + ":FP:" + sfpn;
+        String gufi = obs.enhancedData() == null ? null : obs.enhancedData().sfdpsGufi();
+        return gufi == null || gufi.isBlank() ? null : obs.facility() + ":G:" + gufi;
+    }
+
+    private static boolean differentGufi(TaisObservation.EnhancedData a, TaisObservation.EnhancedData b) {
+        return a != null && b != null && ((nonempty(a.sfdpsGufi()) && nonempty(b.sfdpsGufi()) && !a.sfdpsGufi().equals(b.sfdpsGufi())) ||
+                (nonempty(a.eramGufi()) && nonempty(b.eramGufi()) && !a.eramGufi().equals(b.eramGufi())));
+    }
+
+    private static boolean nonempty(String value) { return value != null && !value.isBlank(); }
+    private static boolean isVFR(TaisObservation.FlightPlan fp) {
+        return fp != null && ("V".equalsIgnoreCase(fp.rawFlightRules()) || "V".equalsIgnoreCase(fp.flightRules()) ||
+                "VFR".equalsIgnoreCase(fp.flightRules()));
+    }
+
+    public record Change(String type, String key) {}
+    public record SnapshotPlan(String key, String facility, Instant firstSeen, Instant vfrSince,
+                               String state, String trackKey, Integer reportedAltitude, TaisObservation.FlightPlan flightPlan,
+                               TaisObservation.EnhancedData enhancedData) {}
+
+    private static final class PlanState {
+        final String key, facility;
+        final Instant firstSeen;
+        Instant sourceTime, vfrSince;
+        Integer pendingReportedAltitude;
+        String state = "pending", trackKey;
+        TaisObservation.FlightPlan flightPlan;
+        TaisObservation.EnhancedData enhancedData;
+
+        PlanState(String key, String facility, Instant firstSeen) {
+            this.key = key;
+            this.facility = facility;
+            this.firstSeen = firstSeen;
+        }
+
+        SnapshotPlan snapshot() {
+            return new SnapshotPlan(key, facility, firstSeen, vfrSince, state, trackKey,
+                    "pending".equals(state) ? pendingReportedAltitude : null, flightPlan, enhancedData);
         }
     }
 

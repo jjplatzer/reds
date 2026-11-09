@@ -182,7 +182,7 @@ type notamLoadResult struct {
 	err   error
 }
 
-// Courier Prime is kept separately from the menu's Inter font. The TTF data
+// Courier Prime is kept separately from the menu font. The TTF data
 // must remain pinned while ImGui builds and retains its font atlas.
 var (
 	notamFontData []byte

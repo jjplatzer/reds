@@ -193,6 +193,29 @@ func init() {
 	commandTypeParsers["TOWER_LIST_ID"] = towerListIDCommandParser{}
 	commandTypeParsers["TOWER_LIST_LINES"] = towerListLinesCommandParser{}
 	commandTypeParsers["COAST_SUSPEND_LIST_LINES"] = coastSuspendListLinesCommandParser{}
+	// §§4.9.11, 4.9.15: T/TV toggle; a literal space introduces 1..100 rows.
+	for _, vfr := range []bool{false, true} {
+		id := "T"
+		if vfr {
+			id = "TV"
+		}
+		registerCommand(CommandModeMultiFunc, id, func(p *STARSPane, _ []any) (CommandStatus, error) {
+			list := &p.currentPrefs().FlightPlanList
+			if vfr {
+				list = &p.currentPrefs().VFRList
+			}
+			list.Visible = !list.Visible
+			return CommandStatus{}, nil
+		})
+		registerCommand(CommandModeMultiFunc, id+" [COAST_SUSPEND_LIST_LINES]", func(p *STARSPane, args []any) (CommandStatus, error) {
+			list := &p.currentPrefs().FlightPlanList
+			if vfr {
+				list = &p.currentPrefs().VFRList
+			}
+			list.Lines, list.Visible = args[0].(int), true
+			return CommandStatus{}, nil
+		})
+	}
 
 	// §§4.9.18-19: TL + ENTER toggles the altimeter station list; TL +
 	// slew is consumed by the mouse handler and positions/shows the list.

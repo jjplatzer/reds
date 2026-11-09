@@ -462,7 +462,11 @@ func starsRBLMagneticBearing(a, b configPoint, nmPerLongitude, magneticVariation
 	for degrees >= 360 {
 		degrees -= 360
 	}
-	return int(degrees + 0.5)
+	bearing := int(degrees + 0.5)
+	if bearing == 0 {
+		return 360 // Display north as 360 on both sides of the rounding boundary.
+	}
+	return bearing
 }
 
 func starsRBLLabel(a, b configPoint, groundSpeed, nmPerLongitude, magneticVariation float64, id int) string {

@@ -25,7 +25,13 @@ public record TaisObservation(
 ) {
     /** STARS track numbers are only unique within their source facility. */
     public String targetKey() {
-        return facility + ":T" + track.trackNum();
+        return hasRadarTrack() ? facility + ":T" + track.trackNum() : null;
+    }
+
+    /** Pseudo track zero is a flight-plan placeholder, never a shared radar target. */
+    public boolean hasRadarTrack() {
+        return track != null && track.trackNum() != null && !track.trackNum().isBlank() &&
+                !track.trackNum().equals("0") && !Boolean.TRUE.equals(track.pseudo());
     }
 
     public record RecordMeta(

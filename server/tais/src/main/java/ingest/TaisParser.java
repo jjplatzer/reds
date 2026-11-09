@@ -51,10 +51,10 @@ public final class TaisParser {
 
     private static TaisObservation parseRecord(String facility, Element record, Instant receivedAt) {
         Element trackEl = child(record, "track");
-        if (trackEl == null) return null;
+        Element fpEl = child(record, "flightPlan");
+        if (trackEl == null && fpEl == null) return null;
 
         String trackNum = blankToNull(text(child(trackEl, "trackNum")));
-        if (trackNum == null) return null;
 
         TaisObservation.RecordMeta meta = new TaisObservation.RecordMeta(
                 parseLong(text(child(record, "recSeqNum"))),
@@ -67,7 +67,7 @@ public final class TaisParser {
                 parseBoolean(text(child(record, "recSAFATimeSync")))
         );
 
-        TaisObservation.Track track = new TaisObservation.Track(
+        TaisObservation.Track track = trackEl == null ? null : new TaisObservation.Track(
                 trackNum,
                 parseInstant(text(child(trackEl, "mrtTime"))),
                 blankToNull(text(child(trackEl, "status"))),
@@ -90,7 +90,6 @@ public final class TaisParser {
                 parseInteger(text(child(trackEl, "reportedAltitude")))
         );
 
-        Element fpEl = child(record, "flightPlan");
         TaisObservation.FlightPlan flightPlan = fpEl == null ? null : new TaisObservation.FlightPlan(
                 parseInteger(text(child(fpEl, "sfpn"))),
                 blankToNull(text(child(fpEl, "ocr"))),

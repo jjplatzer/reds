@@ -82,6 +82,7 @@ func taisFacilityWebSocketURL(rawURL, facility string) string {
 
 	query := parsed.Query()
 	query.Set("facility", strings.ToUpper(strings.TrimSpace(facility)))
+	query.Set("plans", "1")
 	parsed.RawQuery = query.Encode()
 	return parsed.String()
 }
@@ -429,10 +430,11 @@ type taisState struct {
 	revision    uint64
 	generatedAt time.Time
 	targets     map[string]TaisTarget
+	flightPlans map[string]TaisFlightPlanState
 }
 
 func newTaisState() *taisState {
-	return &taisState{targets: make(map[string]TaisTarget)}
+	return &taisState{targets: make(map[string]TaisTarget), flightPlans: make(map[string]TaisFlightPlanState)}
 }
 
 func (s *taisState) markUnsynced() {
@@ -448,7 +450,7 @@ func (s *taisState) apply(frame TaisFrame) error {
 	if s == nil {
 		return fmt.Errorf("TAIS state is unavailable")
 	}
-	if frame.Protocol != TaisProtocolVersion {
+	if frame.Protocol != TaisProtocolVersion && frame.Protocol != 1 {
 		return fmt.Errorf("TAIS protocol %d is unsupported; expected %d", frame.Protocol, TaisProtocolVersion)
 	}
 	if frame.Feed != TaisFeedName {
@@ -460,6 +462,16 @@ func (s *taisState) apply(frame TaisFrame) error {
 
 	switch frame.Type {
 	case "snapshot":
+		plans := make(map[string]TaisFlightPlanState, len(frame.FlightPlans))
+		for _, plan := range frame.FlightPlans {
+			if strings.TrimSpace(plan.Key) == "" {
+				return fmt.Errorf("TAIS snapshot contains plan with empty key")
+			}
+			if _, exists := plans[plan.Key]; exists {
+				return fmt.Errorf("TAIS snapshot contains duplicate plan %q", plan.Key)
+			}
+			plans[plan.Key] = plan
+		}
 		next := make(map[string]TaisTarget, len(frame.Targets))
 		for i := range frame.Targets {
 			target := frame.Targets[i]
@@ -475,9 +487,31 @@ func (s *taisState) apply(frame TaisFrame) error {
 		// A snapshot is authoritative even if the server restarted and its
 		// revision counter is lower than the previous connection's revision.
 		s.targets = next
+		s.flightPlans = plans
 		s.revision = frame.Revision
 		s.generatedAt = frame.GeneratedAt
 		s.ready = true
+		return nil
+
+	case "plan_update", "plan_remove":
+		if !s.ready {
+			return fmt.Errorf("TAIS plan event received before snapshot")
+		}
+		if err := s.requireNextRevision(frame.Revision); err != nil {
+			return err
+		}
+		if frame.Type == "plan_remove" {
+			if strings.TrimSpace(frame.Key) == "" {
+				return fmt.Errorf("TAIS plan removal has empty key")
+			}
+			delete(s.flightPlans, frame.Key)
+		} else {
+			if frame.FlightPlanState == nil || strings.TrimSpace(frame.FlightPlanState.Key) == "" {
+				return fmt.Errorf("TAIS plan update has no plan")
+			}
+			s.flightPlans[frame.FlightPlanState.Key] = *frame.FlightPlanState
+		}
+		s.revision = frame.Revision
 		return nil
 
 	case "update":
@@ -588,6 +622,7 @@ func (s *taisState) snapshotHistory(facility string, maxHistory int) TaisSnapsho
 		Revision:    s.revision,
 		GeneratedAt: s.generatedAt,
 		Targets:     make([]TaisTarget, 0, len(s.targets)),
+		FlightPlans: make([]TaisFlightPlanState, 0, len(s.flightPlans)),
 	}
 	for _, target := range s.targets {
 		if facility != "" && !strings.EqualFold(target.Facility, facility) {
@@ -595,11 +630,26 @@ func (s *taisState) snapshotHistory(facility string, maxHistory int) TaisSnapsho
 		}
 		out.Targets = append(out.Targets, cloneTaisTargetHistory(target, maxHistory))
 	}
+	for _, plan := range s.flightPlans {
+		if facility != "" && !strings.EqualFold(plan.Facility, facility) {
+			continue
+		}
+		if plan.EnhancedData != nil {
+			value := *plan.EnhancedData
+			plan.EnhancedData = &value
+		}
+		if plan.ReportedAltitude != nil {
+			value := *plan.ReportedAltitude
+			plan.ReportedAltitude = &value
+		}
+		out.FlightPlans = append(out.FlightPlans, plan)
+	}
 	s.mu.RUnlock()
 
 	sort.Slice(out.Targets, func(i, j int) bool {
 		return out.Targets[i].Key < out.Targets[j].Key
 	})
+	sort.Slice(out.FlightPlans, func(i, j int) bool { return out.FlightPlans[i].Key < out.FlightPlans[j].Key })
 	return out
 }
 

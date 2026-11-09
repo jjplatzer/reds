@@ -78,6 +78,8 @@ type starsPreferenceSnapshot struct {
 	PreviewAreaPosition  [2]float32                 `json:"previewAreaPosition"`
 	SSAListPosition      [2]float32                 `json:"ssaListPosition"`
 	CoastSuspendList     basicSTARSListPreferences  `json:"coastSuspendList"`
+	FlightPlanList       *basicSTARSListPreferences `json:"flightPlanList,omitempty"`
+	VFRList              *basicSTARSListPreferences `json:"vfrList,omitempty"`
 	MCISuppressionList   *basicSTARSListPreferences `json:"mciSuppressionList,omitempty"`
 	AltimeterStationList *basicSTARSListPreferences `json:"altimeterStationList,omitempty"`
 	// The LA/CA/MCI list is not hideable/resizable, only movable (§4.9.6).
@@ -158,6 +160,7 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 	alertListPosition := p.AlertListPosition
 	mciSuppressionList := p.MCISuppressionList
 	altimeterStationList := p.AltimeterStationList
+	flightPlanList, vfrList := p.FlightPlanList, p.VFRList
 	audioVolume := validSTARSAudioVolume(p.AudioVolume)
 	return starsPreferenceSnapshot{
 		UserCenter:              p.UserCenter,
@@ -184,6 +187,8 @@ func captureStarsPreferenceSnapshot(p *Preferences) starsPreferenceSnapshot {
 		PreviewAreaPosition:     p.PreviewAreaPosition,
 		SSAListPosition:         p.SSAListPosition,
 		CoastSuspendList:        p.CoastSuspendList,
+		FlightPlanList:          &flightPlanList,
+		VFRList:                 &vfrList,
 		MCISuppressionList:      &mciSuppressionList,
 		AltimeterStationList:    &altimeterStationList,
 		AlertListPosition:       &alertListPosition,
@@ -234,6 +239,15 @@ func (s starsPreferenceSnapshot) apply(p *Preferences) {
 	p.PreviewAreaPosition = s.PreviewAreaPosition
 	p.SSAListPosition = s.SSAListPosition
 	p.CoastSuspendList = s.CoastSuspendList
+	p.FlightPlanList, p.VFRList = defaultAircraftPlanList(false), defaultAircraftPlanList(true)
+	if s.FlightPlanList != nil {
+		p.FlightPlanList = *s.FlightPlanList
+	}
+	if s.VFRList != nil {
+		p.VFRList = *s.VFRList
+	}
+	p.FlightPlanList.Lines = min(max(p.FlightPlanList.Lines, 1), 100)
+	p.VFRList.Lines = min(max(p.VFRList.Lines, 1), 100)
 	p.MCISuppressionList = basicSTARSListPreferences{Position: [2]float32{.05, .55}}
 	if s.MCISuppressionList != nil {
 		p.MCISuppressionList = *s.MCISuppressionList
@@ -587,6 +601,15 @@ type basicSTARSListPreferences struct {
 	Lines    int
 }
 
+func defaultAircraftPlanList(vfr bool) basicSTARSListPreferences {
+	y := float32(.35)
+	if vfr {
+		y = .80
+	}
+	// §4.9.15 permits 1..100 aircraft rows. Default both lists to five rows.
+	return basicSTARSListPreferences{Visible: true, Position: [2]float32{.05, y}, Lines: 5}
+}
+
 func defaultAltimeterStationList() basicSTARSListPreferences {
 	return basicSTARSListPreferences{Position: [2]float32{.80, .15}}
 }
@@ -821,6 +844,8 @@ type Preferences struct {
 	SSAListPosition         [2]float32
 	AlertListPosition       [2]float32 // fixed-capacity LA/CA/MCI list, location only
 	CoastSuspendList        basicSTARSListPreferences
+	FlightPlanList          basicSTARSListPreferences
+	VFRList                 basicSTARSListPreferences
 	MCISuppressionList      basicSTARSListPreferences
 	AltimeterStationList    basicSTARSListPreferences
 	TowerLists              [3]basicSTARSListPreferences
@@ -938,6 +963,8 @@ func newPreferences(cfg selectedConfig) Preferences {
 		SSAListPosition:      [2]float32{ssaDefaultX, ssaDefaultY},
 		MCISuppressionList:   basicSTARSListPreferences{Position: [2]float32{.05, .55}},
 		AltimeterStationList: defaultAltimeterStationList(),
+		FlightPlanList:       defaultAircraftPlanList(false),
+		VFRList:              defaultAircraftPlanList(true),
 		// TI 6191.409 does not prescribe an initial Coast/Suspend-list location,
 		// size, or visibility; these are saved preference-set characteristics.
 		// Match VICE's established fallback: five aircraft lines, hidden, at

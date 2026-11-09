@@ -18,10 +18,8 @@ import (
 )
 
 const (
-	// Keep surveillance below lists/preview/DCB but above the video map. This
-	// mirrors the TCW presentation order: maps are background information;
-	// surveillance targets/history remain visible over them; operator UI is
-	// always on top.
+	// Keep surveillance above lists and video maps, with the preview area
+	// and DCB on top.
 	zTargetHistory   renderer.Z = -100
 	zTargetPTL       renderer.Z = -95
 	zTargetGeometry  renderer.Z = -90

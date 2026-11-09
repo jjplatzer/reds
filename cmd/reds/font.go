@@ -10,9 +10,10 @@ import (
 )
 
 const (
-	menuFontPath     = "fonts/Inter-Regular.ttf.zst"
-	menuBoldFontPath = "fonts/Inter-Bold.ttf.zst"
-	symbolsFontPath  = "fonts/Symbols.ttf.zst"
+	menuFontPath         = "fonts/RobotoCondensed-Regular.ttf.zst"
+	menuBoldFontPath     = "fonts/RobotoCondensed-Black.ttf.zst"
+	menuFallbackFontPath = "fonts/Inter-Regular.ttf.zst"
+	symbolsFontPath      = "fonts/Symbols.ttf.zst"
 )
 
 // fontPinner keeps decompressed font bytes pinned so the GC can't move them
@@ -22,6 +23,7 @@ var fontPinner runtime.Pinner
 var (
 	menuFontTTF      []byte
 	menuBoldFontTTF  []byte
+	menuFallbackTTF  []byte
 	menuFontRange    []imgui.Wchar
 	symbolsFontTTF   []byte
 	symbolsFontRange []imgui.Wchar
@@ -37,6 +39,7 @@ func loadFont() {
 		return
 	}
 	menuBoldFontTTF = util.LoadResourceBytes(menuBoldFontPath)
+	menuFallbackTTF = util.LoadResourceBytes(menuFallbackFontPath)
 
 	fonts := imgui.CurrentIO().Fonts()
 	fontPinner.Pin(&menuFontTTF[0])
@@ -45,9 +48,26 @@ func loadFont() {
 		0x21E7, 0x21E7, // ⇧
 		0x2303, 0x2303, // ⌃
 		0x2318, 0x2318, // ⌘
+		0x2325, 0x2325, // ⌥
 		0,
 	}
 	fontPinner.Pin(&menuFontRange[0])
+	fontPinner.Pin(&menuFallbackTTF[0])
+
+	// Keep keyboard shortcut symbols available when the menu face lacks them.
+	// Merged sources only supply glyphs missing from the preceding font.
+	mergeFallback := func() {
+		fallbackCfg := imgui.NewFontConfig()
+		fallbackCfg.SetFontDataOwnedByAtlas(false)
+		fallbackCfg.SetMergeMode(true)
+		fonts.AddFontFromMemoryTTFV(
+			uintptr(unsafe.Pointer(&menuFallbackTTF[0])),
+			int32(len(menuFallbackTTF)),
+			uiFontSize,
+			fallbackCfg,
+			&menuFontRange[0],
+		)
+	}
 
 	cfg := imgui.NewFontConfig()
 	cfg.SetFontDataOwnedByAtlas(false)
@@ -58,6 +78,7 @@ func loadFont() {
 		cfg,
 		&menuFontRange[0],
 	)
+	mergeFallback()
 	if len(menuBoldFontTTF) == 0 {
 		return
 	}
@@ -72,6 +93,7 @@ func loadFont() {
 		boldCfg,
 		&menuFontRange[0],
 	)
+	mergeFallback()
 
 	symbolsFontTTF = util.LoadResourceBytes(symbolsFontPath)
 	if len(symbolsFontTTF) == 0 {
