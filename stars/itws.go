@@ -88,40 +88,38 @@ func (p *STARSPane) releaseITWSCmdBuffers() {
 	p.itwsWeather.generation = 0
 }
 
-// itwsGridProjection implements the supplied PNG convention in metres: row 0
-// is the top row, columns run left to right, and positive rotation is CCW about
-// the ORIGINAL source buffer's centre. No raster resampling or flipping is
-// needed: project the cell edges directly, retaining the server's crop stride.
+// itwsGridProjection places row 0 at the north edge of the declared geographic
+// rectangle. SourceBufferRows/Columns describe RLE storage padding, not map
+// extent. The server has already repacked the cells to Rows x Columns.
 //
-// Georeferencing assumption: x/y offsets locate the unrotated buffer's lower
-// left edge in the TRP tangent plane. Use spherical stereographic with unit
-// scale at the TRP (mean Earth radius). These choices reproduce the supplied
-// PNG, which was not checked against a map. Production ITWS row direction,
-// rotation sign/pivot, datum and offset conventions still need an ICD or a
-// georeferenced reference. Keep these assumptions here, separate from STARS'
-// independently applied scope/magnetic rotation.
+// Offsets locate the lower-left edge in the product's local TRP frame. In the
+// N90/JFK precipitation and SM SEP samples from 2026-11-12, cell (row 225,
+// column 231) is level 5 and its centre is exactly storm 2's (-22460, -15596)m.
+// Convert these coordinates using the supplied SM SEP convention: clockwise
+// rotation about the TRP, including the offsets, rather than image rotation
+// about the raster centre. STARS' scope rotation is applied separately later.
+//
+// Retain spherical stereographic with unit scale at the TRP (mean Earth
+// radius). The sample pair validates the local grid placement; the production
+// projection datum/scale still needs an ICD or independent geographic control.
 type itwsGridProjection struct {
 	grid                                *redsnet.ITWSGrid
-	cx, cy, halfWidth, halfHeight       float64
 	sinRotation, cosRotation            float64
 	sinLatitude, cosLatitude, longitude float64
 }
 
 func newITWSGridProjection(grid *redsnet.ITWSGrid) itwsGridProjection {
-	halfWidth := float64(grid.SourceBufferColumns) * grid.DXMeters / 2
-	halfHeight := float64(grid.SourceBufferRows) * grid.DYMeters / 2
 	sinRotation, cosRotation := math.Sincos(grid.RotationDegrees * math.Pi / 180)
 	sinLatitude, cosLatitude := math.Sincos(grid.TRPLatitude * math.Pi / 180)
-	return itwsGridProjection{grid: grid, cx: grid.XOffsetMeters + halfWidth,
-		cy: grid.YOffsetMeters + halfHeight, halfWidth: halfWidth, halfHeight: halfHeight,
+	return itwsGridProjection{grid: grid,
 		sinRotation: sinRotation, cosRotation: cosRotation,
 		sinLatitude: sinLatitude, cosLatitude: cosLatitude, longitude: grid.TRPLongitude * math.Pi / 180}
 }
 
 func (p itwsGridProjection) meters(column, row float64) (east, north float64) {
-	x := column*p.grid.DXMeters - p.halfWidth
-	y := p.halfHeight - row*p.grid.DYMeters
-	return p.cx + p.cosRotation*x - p.sinRotation*y, p.cy + p.sinRotation*x + p.cosRotation*y
+	x := p.grid.XOffsetMeters + column*p.grid.DXMeters
+	y := p.grid.YOffsetMeters + (float64(p.grid.Rows)-row)*p.grid.DYMeters
+	return p.cosRotation*x + p.sinRotation*y, -p.sinRotation*x + p.cosRotation*y
 }
 
 func (p itwsGridProjection) latLon(column, row float64) (lat, lon float64) {

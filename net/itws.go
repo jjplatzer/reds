@@ -24,8 +24,9 @@ const (
 )
 
 // ITWSGrid is the server's cropped, unrotated product 9850 raster. The source
-// buffer dimensions are retained because cropping must not move its centre.
-// Units and XML precision have already been applied by server/itws.
+// buffer dimensions describe the original RLE storage; Rows/Columns describe
+// the geographic rectangle and the repacked Cells stride. Storage padding must
+// not affect map placement. Units and XML precision are applied by server/itws.
 type ITWSGrid struct {
 	Rows                  int     `json:"rows"`
 	Columns               int     `json:"columns"`
