@@ -342,10 +342,15 @@ func (d *dcbDrawer) drawMainPage(disabled bool) {
 	}
 
 	// <WX 1> ... <WX 6>. AVL is displayed when that level is detected.
+	// Availability follows the selected source, independently of level visibility.
+	weather := p.nexrad
+	if !p.useNexradWeather {
+		weather = p.itwsWeather.buffers
+	}
 	for i := range ps.DisplayWeatherLevel {
 		label := "WX" + strconv.Itoa(i+1)
 		flags := buttonHalfHorizontal
-		if p.nexrad[i].fill != nil {
+		if weather[i].fill != nil {
 			label += "\nAVL"
 			flags |= buttonWXAVL
 		}
