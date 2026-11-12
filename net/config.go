@@ -9,6 +9,7 @@ const (
 	PublicSmesWebSocketURL  = "wss://reds-stdds-live.jjplatzer.com/ws"
 	PublicTaisWebSocketURL  = "wss://reds-stdds-live.jjplatzer.com/tais/ws"
 	PublicAPTCWebSocketURL  = "wss://reds-stdds-live.jjplatzer.com/aptc/ws"
+	PublicITWSWebSocketURL  = "wss://reds-stdds-live.jjplatzer.com/itws/{tracon}/ws"
 	PublicSfdpsWebSocketURL = "wss://reds-stdds-live.jjplatzer.com/sfdps/ws"
 	PublicPlaybackBaseURL   = "https://reds-stdds-live.jjplatzer.com/playback"
 )
@@ -89,6 +90,23 @@ func PlaybackBaseURL() string {
 		port = "8080"
 	}
 	return "http://localhost:" + port + "/playback"
+}
+
+// ITWSWebSocketURL selects the TRACON's precipitation feed. Overrides may
+// contain {tracon}; a shared local server also accepts a site query parameter.
+func ITWSWebSocketURL(tracon string) string {
+	tracon = strings.ToLower(strings.TrimSpace(tracon))
+	if override := strings.TrimSpace(os.Getenv("ITWS_WS_URL")); override != "" {
+		return strings.ReplaceAll(override, "{tracon}", tracon)
+	}
+	if UsePublicServer() {
+		return strings.ReplaceAll(PublicITWSWebSocketURL, "{tracon}", tracon)
+	}
+	port := strings.TrimSpace(os.Getenv("ITWS_WS_PORT"))
+	if port == "" {
+		port = "8084"
+	}
+	return "ws://localhost:" + port + "/itws/ws?site=" + strings.ToUpper(tracon)
 }
 
 func boolEnv(key string, def bool) bool {

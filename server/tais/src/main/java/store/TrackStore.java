@@ -63,10 +63,16 @@ public final class TrackStore extends AbstractVerticle {
         // WebSocketPush asks the store for a point-in-time snapshot on each
         // connection. The revision lets the connection discard buffered live
         // frames that are already represented by the snapshot.
-        vertx.eventBus().<String>localConsumer(SNAPSHOT_ADDRESS, message -> {
+        vertx.eventBus().<Object>localConsumer(SNAPSHOT_ADDRESS, message -> {
             long started = System.nanoTime();
-            String facility = normalizeFacility(message.body());
-            var targets = cache.snapshot(facility);
+            // Retain string requests for legacy in-process callers. The new
+            // desktop opts out of bootstrap history and builds it from live data.
+            Object request = message.body();
+            String facility = normalizeFacility(request instanceof JsonObject options
+                    ? options.getString("facility") : (String) request);
+            boolean includeHistory = !(request instanceof JsonObject options)
+                    || options.getBoolean("includeHistory", true);
+            var targets = cache.snapshot(facility, includeHistory);
             JsonObject snapshot = TaisWire.snapshot(
                     facilityRevision(facility), Instant.now(), facility, targets, cache.snapshotPlans(facility), registry
             );
@@ -85,7 +91,7 @@ public final class TrackStore extends AbstractVerticle {
                 for (TrackCache.Change change : cache.apply(obs)) {
                     long next = nextFacilityRevision(obs.facility());
                     JsonObject frame = switch (change.type()) {
-                        case "update" -> TaisWire.update(next, cache.snapshotTarget(change.key()), registry);
+                        case "update" -> TaisWire.update(next, cache.snapshotTarget(change.key(), false), registry);
                         case "remove" -> TaisWire.remove(next, obs.facility(), change.key());
                         case "plan_update" -> TaisWire.planUpdate(next, cache.snapshotPlan(change.key()));
                         case "plan_remove" -> TaisWire.planRemove(next, obs.facility(), change.key());

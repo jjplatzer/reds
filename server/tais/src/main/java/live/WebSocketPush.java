@@ -165,7 +165,11 @@ public final class WebSocketPush extends AbstractVerticle {
 
         // The TrackStore owns mutable target state. Request its immutable
         // snapshot instead of reaching across Vert.x event-loop ownership.
-        vertx.eventBus().<JsonObject>request(TrackStore.SNAPSHOT_ADDRESS, facility)
+        // Older desktops retain their preloaded trails. New desktops request
+        // history=0 and warm up their local alerts while collecting live reports.
+        JsonObject snapshotRequest = new JsonObject().put("facility", facility)
+                .put("includeHistory", !requestsNoHistory(socket.query()));
+        vertx.eventBus().<JsonObject>request(TrackStore.SNAPSHOT_ADDRESS, snapshotRequest)
                 .onSuccess(reply -> {
                     if (clients.contains(client)) {
                         client.onSnapshot(reply.body());
@@ -227,6 +231,14 @@ public final class WebSocketPush extends AbstractVerticle {
         if (query == null) return false;
         for (String pair : query.split("&")) {
             if (pair.equals("plans=1")) return true;
+        }
+        return false;
+    }
+
+    private static boolean requestsNoHistory(String query) {
+        if (query == null) return false;
+        for (String pair : query.split("&")) {
+            if (pair.equals("history=0")) return true;
         }
         return false;
     }

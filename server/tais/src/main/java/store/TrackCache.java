@@ -414,8 +414,12 @@ public final class TrackCache {
     }
 
     public SnapshotTarget snapshotTarget(String targetKey) {
+        return snapshotTarget(targetKey, true);
+    }
+
+    public SnapshotTarget snapshotTarget(String targetKey, boolean includeHistory) {
         State state = tracks.get(targetKey);
-        return state == null || state.current == null ? null : snapshotTarget(state);
+        return state == null || state.current == null ? null : snapshotTarget(state, includeHistory);
     }
 
     /**
@@ -433,13 +437,18 @@ public final class TrackCache {
      * concrete facility.
      */
     public List<SnapshotTarget> snapshot(String facility) {
+        return snapshot(facility, true);
+    }
+
+    /** Current-only bootstraps avoid copying the raw trail into a snapshot. */
+    public List<SnapshotTarget> snapshot(String facility, boolean includeHistory) {
         boolean scoped = facility != null && !facility.isBlank();
         List<SnapshotTarget> out = new ArrayList<>(tracks.size());
 
         for (State state : tracks.values()) {
             if (state.current == null) continue;
             if (scoped && !facility.equalsIgnoreCase(state.current.facility())) continue;
-            out.add(snapshotTarget(state));
+            out.add(snapshotTarget(state, includeHistory));
         }
 
         out.sort((a, b) -> a.target().targetKey().compareTo(b.target().targetKey()));
@@ -447,9 +456,13 @@ public final class TrackCache {
     }
 
     private SnapshotTarget snapshotTarget(State state) {
+        return snapshotTarget(state, true);
+    }
+
+    private SnapshotTarget snapshotTarget(State state, boolean includeHistory) {
         return new SnapshotTarget(
                 state.current,
-                List.copyOf(new ArrayList<>(state.history)),
+                includeHistory ? List.copyOf(state.history) : List.of(),
                 state.coastPhase,
                 state.coastPhase2At
         );

@@ -83,6 +83,7 @@ func taisFacilityWebSocketURL(rawURL, facility string) string {
 	query := parsed.Query()
 	query.Set("facility", strings.ToUpper(strings.TrimSpace(facility)))
 	query.Set("plans", "1")
+	query.Set("history", "0")
 	parsed.RawQuery = query.Encode()
 	return parsed.String()
 }
@@ -429,6 +430,7 @@ type taisState struct {
 	ready       bool
 	revision    uint64
 	generatedAt time.Time
+	syncedAt    time.Time
 	targets     map[string]TaisTarget
 	flightPlans map[string]TaisFlightPlanState
 }
@@ -481,6 +483,9 @@ func (s *taisState) apply(frame TaisFrame) error {
 			if _, exists := next[target.Key]; exists {
 				return fmt.Errorf("TAIS snapshot contains duplicate target %q", target.Key)
 			}
+			// Older servers may ignore history=0. Always start this connection's
+			// raw trail empty; subsequent live reports rebuild it normally.
+			target.History = nil
 			next[target.Key] = target
 		}
 
@@ -490,6 +495,7 @@ func (s *taisState) apply(frame TaisFrame) error {
 		s.flightPlans = plans
 		s.revision = frame.Revision
 		s.generatedAt = frame.GeneratedAt
+		s.syncedAt = time.Now()
 		s.ready = true
 		return nil
 
@@ -621,6 +627,7 @@ func (s *taisState) snapshotHistory(facility string, maxHistory int) TaisSnapsho
 		Ready:       s.ready,
 		Revision:    s.revision,
 		GeneratedAt: s.generatedAt,
+		SyncedAt:    s.syncedAt,
 		Targets:     make([]TaisTarget, 0, len(s.targets)),
 		FlightPlans: make([]TaisFlightPlanState, 0, len(s.flightPlans)),
 	}
