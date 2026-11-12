@@ -271,6 +271,11 @@ func (p *STARSPane) updateCADetection(snapshot redsnet.TaisSnapshot, now time.Ti
 		return
 	}
 	p.updateCAFinals(snapshot, now)
+	// Keep final-approach establishment running during startup so parallel
+	// approach classification is ready when the alert warm-up finishes.
+	if p.localAlertsWarmingUp {
+		return
+	}
 	p.caPairs = caFindPairs(snapshot, now, p.caZones, func(a, b *redsnet.TaisTarget) bool {
 		return caSameATPAVolume(p, a, b)
 	}, p.caContinuingPairs(), caParallelPolicy{p.caParallel, p.caFinals, now})
@@ -1108,7 +1113,7 @@ func (p *STARSPane) updateCAEvents(snapshot redsnet.TaisSnapshot, now time.Time)
 	if p == nil {
 		return
 	}
-	if !snapshot.Ready || !p.caZonesValid {
+	if !snapshot.Ready || !p.caZonesValid || p.localAlertsWarmingUp {
 		clear(p.caAlerts)
 		clear(p.caTargets)
 		return
@@ -1197,7 +1202,7 @@ func (p *STARSPane) updateCAEvents(snapshot redsnet.TaisSnapshot, now time.Time)
 // eligibility. Global detection and event lifetime remain independent.
 // Caller holds the site's read or write lock; this function never locks it.
 func (p *STARSPane) caPairEligible(pair caPair, event caAlertState, a, b *redsnet.TaisTarget, site *caSiteRuntimeState) bool {
-	if p == nil || !p.caZonesValid || site.caDisabled || a == nil || b == nil || a.FlightPlan == nil || b.FlightPlan == nil ||
+	if p == nil || p.localAlertsWarmingUp || !p.caZonesValid || site.caDisabled || a == nil || b == nil || a.FlightPlan == nil || b.FlightPlan == nil ||
 		a.FlightPlan.Deleted || b.FlightPlan.Deleted || a.FlightPlan.Suspended || b.FlightPlan.Suspended ||
 		a.CoastPhase >= redsnet.TaisCoastPhase2 || b.CoastPhase >= redsnet.TaisCoastPhase2 ||
 		(!p.targetOwnedByCurrentTCP(a) && !p.targetOwnedByCurrentTCP(b)) {
@@ -1694,7 +1699,7 @@ func mciOverrideValid(p *STARSPane, t *redsnet.TaisTarget, o mciOverride) bool {
 
 func (p *STARSPane) updateMCIDetection(snapshot redsnet.TaisSnapshot, now time.Time) {
 	p.mciPairs = nil
-	if !p.caZonesValid {
+	if !p.caZonesValid || p.localAlertsWarmingUp {
 		return // VICE uses the same CA inhibit adaptation for MCI
 	}
 	site := p.caSiteState()
@@ -1745,7 +1750,7 @@ func mciOverrideRetainable(p *STARSPane, t *redsnet.TaisTarget, o mciOverride) b
 }
 
 func (p *STARSPane) updateMCIEvents(snapshot, allTargets redsnet.TaisSnapshot, now time.Time) {
-	if !snapshot.Ready || !p.caZonesValid {
+	if !snapshot.Ready || !p.caZonesValid || p.localAlertsWarmingUp {
 		clear(p.mciAlerts)
 		clear(p.mciTargets)
 		return
@@ -1823,7 +1828,7 @@ func mciPairHas(pair mciPair, key string) bool {
 }
 
 func (p *STARSPane) mciTrackAlertPresentation(target *redsnet.TaisTarget) (active, unacknowledged bool) {
-	if p == nil || target == nil {
+	if p == nil || p.localAlertsWarmingUp || target == nil {
 		return false, false
 	}
 	key := targetDisplayStateKey(target)
@@ -2084,7 +2089,7 @@ func (p *STARSPane) mciAudioWanted(snapshot redsnet.TaisSnapshot, now time.Time)
 // coexist, LA has priority over CA, which has priority over MCI. Neither
 // rendering nor acknowledgment is affected by this audio-only arbitration.
 func (p *STARSPane) desiredSTARSAlarm(snapshot redsnet.TaisSnapshot, now time.Time) starsAlarmKind {
-	if p == nil {
+	if p == nil || p.localAlertsWarmingUp {
 		return starsAlarmNone
 	}
 	if p.msawAudioWanted(snapshot, now) {
