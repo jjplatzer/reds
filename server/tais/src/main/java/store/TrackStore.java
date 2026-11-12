@@ -11,8 +11,10 @@ import wire.TaisWire;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Vert.x owner of mutable TAIS target state.
@@ -37,6 +39,9 @@ public final class TrackStore extends AbstractVerticle {
     private TrackCache cache;
     private Duration totalCoastTime;
     private final Map<String, Long> facilityRevisions = new HashMap<>();
+    private final Map<String, Set<String>> subscribers = new HashMap<>();
+    private long liveFrames;
+    private long skippedLiveFrames;
     private long revision;
     private long removals;
     private long coastPhase2Transitions;
@@ -70,6 +75,22 @@ public final class TrackStore extends AbstractVerticle {
             Object request = message.body();
             String facility = normalizeFacility(request instanceof JsonObject options
                     ? options.getString("facility") : (String) request);
+            // Register interest atomically with the snapshot boundary. Releases
+            // use this same consumer, preserving connect/close ordering even if
+            // a socket disappears before its snapshot reply arrives.
+            String subscriber = request instanceof JsonObject options
+                    ? options.getString("subscriber") : null;
+            if (subscriber != null) {
+                if (((JsonObject) request).getBoolean("unsubscribe", false)) {
+                    Set<String> watching = subscribers.get(facility);
+                    if (watching != null) {
+                        watching.remove(subscriber);
+                        if (watching.isEmpty()) subscribers.remove(facility);
+                    }
+                    return;
+                }
+                subscribers.computeIfAbsent(facility, ignored -> new HashSet<>()).add(subscriber);
+            }
             boolean includeHistory = !(request instanceof JsonObject options)
                     || options.getBoolean("includeHistory", true);
             var targets = cache.snapshot(facility, includeHistory);
@@ -90,6 +111,11 @@ public final class TrackStore extends AbstractVerticle {
             for (TaisObservation obs : message.body().observations()) {
                 for (TrackCache.Change change : cache.apply(obs)) {
                     long next = nextFacilityRevision(obs.facility());
+                    revision++;
+                    if (change.type().equals("remove")) removals++;
+                    // Always maintain cache state and source revisions. Only
+                    // materialize outbound views for facilities being watched.
+                    if (!needsLiveFrame(obs.facility())) continue;
                     JsonObject frame = switch (change.type()) {
                         case "update" -> TaisWire.update(next, cache.snapshotTarget(change.key(), false), registry);
                         case "remove" -> TaisWire.remove(next, obs.facility(), change.key());
@@ -97,8 +123,6 @@ public final class TrackStore extends AbstractVerticle {
                         case "plan_remove" -> TaisWire.planRemove(next, obs.facility(), change.key());
                         default -> throw new IllegalStateException("Unknown TAIS change");
                     };
-                    revision++;
-                    if (change.type().equals("remove")) removals++;
                     vertx.eventBus().publish(EVENT_ADDRESS, frame);
                 }
             }
@@ -115,20 +139,27 @@ public final class TrackStore extends AbstractVerticle {
         for (TrackCache.SnapshotTarget target : cache.advanceCoastPhases(Instant.now(), totalCoastTime)) {
             coastPhase2Transitions++;
             revision++;
-            vertx.eventBus().publish(
-                    EVENT_ADDRESS,
-                    TaisWire.update(
-                            nextFacilityRevision(target.target().facility()),
-                            target, registry
-                    )
-            );
+            String facility = target.target().facility();
+            long next = nextFacilityRevision(facility);
+            if (needsLiveFrame(facility)) {
+                vertx.eventBus().publish(EVENT_ADDRESS, TaisWire.update(next, target, registry));
+            }
             TrackCache.SnapshotPlan plan = cache.markPlanCoasting(target.target().targetKey());
             if (plan != null) {
                 revision++;
-                vertx.eventBus().publish(EVENT_ADDRESS,
-                        TaisWire.planUpdate(nextFacilityRevision(plan.facility()), plan));
+                long planRevision = nextFacilityRevision(plan.facility());
+                if (needsLiveFrame(plan.facility())) {
+                    vertx.eventBus().publish(EVENT_ADDRESS, TaisWire.planUpdate(planRevision, plan));
+                }
             }
         }
+    }
+
+    private boolean needsLiveFrame(String facility) {
+        boolean watched = subscribers.containsKey(normalizeFacility(facility));
+        if (watched) liveFrames++;
+        else skippedLiveFrames++;
+        return watched;
     }
 
     private void printStats() {
@@ -141,6 +172,9 @@ public final class TrackStore extends AbstractVerticle {
                 " resets=" + stats.historyResets() +
                 " removed=" + removals +
                 " coastPhase2=" + coastPhase2Transitions +
+                " watchedFacilities=" + subscribers.size() +
+                " liveFrames=" + liveFrames +
+                " skippedLiveFrames=" + skippedLiveFrames +
                 " revision=" + revision);
     }
 

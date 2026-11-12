@@ -14,9 +14,12 @@ import store.TrackStore;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Public-facing live TAIS transport.
@@ -28,6 +31,7 @@ import java.util.Set;
 public final class WebSocketPush extends AbstractVerticle {
 
     private final Set<ClientConnection> clients = new LinkedHashSet<>();
+    private final Map<ClientConnection, String> subscriptions = new HashMap<>();
 
     private ServerConfig config;
     private HttpServer server;
@@ -79,6 +83,7 @@ public final class WebSocketPush extends AbstractVerticle {
         }
         for (ClientConnection client : new ArrayList<>(clients)) {
             client.close();
+            remove(client);
         }
         clients.clear();
 
@@ -143,6 +148,8 @@ public final class WebSocketPush extends AbstractVerticle {
         ClientConnection client = new ClientConnection(socket, facility, config.pendingMax(),
                 config.outboundMaxFrames(), config.outboundMaxBytes(), requestsPlans(socket.query()));
         clients.add(client);
+        String subscriber = UUID.randomUUID().toString();
+        subscriptions.put(client, subscriber);
 
         // Only explicit user activity refreshes the timer. Surveillance
         // updates and WebSocket ping/pong traffic must not keep an idle user on.
@@ -168,6 +175,7 @@ public final class WebSocketPush extends AbstractVerticle {
         // Older desktops retain their preloaded trails. New desktops request
         // history=0 and warm up their local alerts while collecting live reports.
         JsonObject snapshotRequest = new JsonObject().put("facility", facility)
+                .put("subscriber", subscriber)
                 .put("includeHistory", !requestsNoHistory(socket.query()));
         vertx.eventBus().<JsonObject>request(TrackStore.SNAPSHOT_ADDRESS, snapshotRequest)
                 .onSuccess(reply -> {
@@ -205,6 +213,12 @@ public final class WebSocketPush extends AbstractVerticle {
     private void remove(ClientConnection client) {
         if (!clients.remove(client)) return;
         client.markClosed();
+        // Send from the same event-loop context and to the same consumer as
+        // registration, so early closes cannot leave a stale subscription.
+        vertx.eventBus().send(TrackStore.SNAPSHOT_ADDRESS, new JsonObject()
+                .put("facility", client.facility())
+                .put("subscriber", subscriptions.remove(client))
+                .put("unsubscribe", true));
         System.out.println("[TAIS ws] Client disconnected; facility=" + client.facility() +
                 " clients=" + clients.size());
     }
