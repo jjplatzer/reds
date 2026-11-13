@@ -734,6 +734,13 @@ func (p *STARSPane) drawSSA(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 			addLine("MODE: NORMAL", p.colors.List)
 		}
 
+		// Field P - Weather History Status (Table 2-15 / section 6.2).
+		// drawWeather advances playback before SSA is drawn, keeping this
+		// indication in step with the picture. Filtering only hides the text.
+		if (filter.All || filter.WxHistory) && p.wxHistory.index != 0 {
+			addLine(fmt.Sprintf("WX HIST:%d", p.wxHistory.index), p.colors.List)
+		}
+
 		// Field Q - Quick Look TCPs. Table 2-15 permits up to two lines,
 		// with QL+ positions first and a spaced trailing '+' when more TCPs
 		// are enabled than can be displayed. The SSA FILTER <QL> button only
