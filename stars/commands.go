@@ -3,6 +3,7 @@ package stars
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/platform"
@@ -112,6 +113,16 @@ type CommandStatus struct {
 }
 
 func init() {
+	// TI 6191.409 Rev. 30, 6.2 (p. 6-11): MULTI FUNC W delta ENTER.
+	// VICE and CRC use backtick for the dedicated delta key. Accept pasted
+	// Unicode deltas too; extra characters are rejected by the normal matcher.
+	// REDS currently operates in FSL; DSF/DSA modes are not modeled.
+	for _, delta := range []string{"`", "\u0080", "△", "∆", "Δ"} {
+		registerCommand(CommandModeMultiFunc, "W"+delta, func(p *STARSPane, _ []any) (CommandStatus, error) {
+			return p.startWeatherHistory(time.Now()), nil
+		})
+	}
+
 	// TI 6191.409 Rev. 30, 6.7-6.8 Range Bearing Line (*T).
 	//
 	// Creation is a two-endpoint operation. A stationary start point is entered
@@ -661,6 +672,10 @@ func (p *STARSPane) processKeyboardInput(ctx *panes.Context) {
 			p.commandResponse = ""
 		}
 		s := strings.ToUpper(string(r))
+		if p.commandMode == CommandModeMultiFunc && p.multiFuncPrefix == "W" &&
+			(r == '`' || r == '△' || r == '∆' || r == 'Δ') {
+			s = string(rune(0x80)) // The STARS bitmap-font delta glyph.
+		}
 		if p.commandMode == CommandModeMultiFunc && p.multiFuncPrefix == "" {
 			p.multiFuncPrefix = s
 			continue

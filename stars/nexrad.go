@@ -124,6 +124,7 @@ func (p *STARSPane) ToggleFAAHFSTD010APalette() {
 	p.useFAAHFSTD010APalette = !p.useFAAHFSTD010APalette
 	p.releaseNexradCmdBuffers()
 	p.releaseITWSCmdBuffers()
+	p.releaseWeatherHistoryBuffers()
 }
 
 type starsNexradLevelCmdBuffers struct {
@@ -136,21 +137,31 @@ func (p *STARSPane) consumeNexradUpdates() {
 		return
 	}
 	updates := p.wxStream.Updates()
-	var latest *wx.Grid
 	for {
 		select {
 		case grid := <-updates:
 			if grid != nil {
-				latest = grid
+				p.acceptNexradGrid(grid)
 			}
 		default:
-			if latest != nil {
-				p.wxGrid = latest
-				p.nexradGeneration++
-			}
 			return
 		}
 	}
+}
+
+func (p *STARSPane) acceptNexradGrid(grid *wx.Grid) {
+	previous := p.nexradHistory[0]
+	if previous != nil && grid.ObservedAt.Before(previous.ObservedAt) {
+		return
+	}
+	// Re-cropping the same observation after a pan/zoom replaces that picture
+	// without consuming a history slot. Retained grids are immutable.
+	if previous != nil && grid.ObservedAt.After(previous.ObservedAt) {
+		p.nexradHistory[2], p.nexradHistory[1] = p.nexradHistory[1], previous
+	}
+	p.nexradHistory[0] = grid
+	p.wxGrid = grid
+	p.nexradGeneration++
 }
 
 func (p *STARSPane) ensureNexradCoverage(ctx *panes.Context) {

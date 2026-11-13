@@ -5,6 +5,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/juliusplatzer/reds/cmd/wx"
 	redsnet "github.com/juliusplatzer/reds/net"
 	"github.com/juliusplatzer/reds/panes"
 	"github.com/juliusplatzer/reds/radar"
@@ -15,6 +16,78 @@ type starsITWSWeather struct {
 	client     *redsnet.ITWSClient
 	generation uint64
 	buffers    [6]starsNexradLevelCmdBuffers
+}
+
+const starsWeatherHistoryPeriod = 5 * time.Second
+const starsWeatherHistoryInProgress = "IN PROGRESS"
+
+// History playback belongs to this TCW/TDW, outside saved preferences. Freeze
+// the saved pictures for a run while the normal weather cache keeps updating.
+// index is 2 (oldest), 1 (previous), or 0 (live); section 6.2 calls these the
+// two saved weather pictures followed by the current picture.
+type starsWeatherHistory struct {
+	started time.Time
+	index   int
+	itws    [redsnet.ITWSHistoryPictures][]*redsnet.ITWSProduct
+	nexrad  [3]*wx.Grid
+	built   bool
+	buffers [6]starsNexradLevelCmdBuffers
+}
+
+func (p *STARSPane) startWeatherHistory(now time.Time) CommandStatus {
+	p.updateWeatherHistory(now)
+	if p.wxHistory.index == 0 {
+		p.wxHistory = starsWeatherHistory{started: now, index: 2}
+		if p.useNexradWeather {
+			p.wxHistory.nexrad = p.nexradHistory
+		} else {
+			p.wxHistory.itws, _ = p.itwsWeather.client.SnapshotHistory(0, now)
+		}
+	}
+	return CommandStatus{Output: starsWeatherHistoryInProgress}
+}
+
+func (p *STARSPane) updateWeatherHistory(now time.Time) {
+	state := &p.wxHistory
+	if state.index == 0 {
+		return
+	}
+	// Anchor both steps to local monotonic time, so a delayed redraw neither
+	// extends playback nor skips the return to current weather.
+	index := 2 - int(max(now.Sub(state.started), 0)/starsWeatherHistoryPeriod)
+	if index <= 0 {
+		p.stopWeatherHistory()
+		return
+	}
+	if index != state.index {
+		p.releaseWeatherHistoryBuffers()
+		state.index = index
+	}
+	if !state.built {
+		if p.useNexradWeather {
+			state.buffers = buildStarsNexradCmdBuffers(state.nexrad[index], p.wxPresentation().stipple)
+		} else {
+			state.buffers = buildStarsITWSCmdBuffers(state.itws[index], p.wxPresentation().stipple)
+		}
+		state.built = true
+	}
+}
+
+func (p *STARSPane) releaseWeatherHistoryBuffers() {
+	for i, buffers := range p.wxHistory.buffers {
+		renderer.ReturnCmdBuffer(buffers.fill)
+		renderer.ReturnCmdBuffer(buffers.stipple)
+		p.wxHistory.buffers[i] = starsNexradLevelCmdBuffers{}
+	}
+	p.wxHistory.built = false
+}
+
+func (p *STARSPane) stopWeatherHistory() {
+	p.releaseWeatherHistoryBuffers()
+	p.wxHistory = starsWeatherHistory{}
+	if p.commandResponse == starsWeatherHistoryInProgress {
+		p.commandResponse = ""
+	}
 }
 
 // UseNexradWeather is a per-window REDS source choice, outside STARS preference
@@ -43,6 +116,7 @@ func (p *STARSPane) startWeather() {
 }
 
 func (p *STARSPane) closeWeather() {
+	p.stopWeatherHistory()
 	p.itwsWeather.client.Close()
 	p.itwsWeather.client = nil
 	p.releaseITWSCmdBuffers()
@@ -52,6 +126,7 @@ func (p *STARSPane) closeWeather() {
 	}
 	p.releaseNexradCmdBuffers()
 	p.wxGrid = nil
+	p.nexradHistory = [3]*wx.Grid{}
 }
 
 func (p *STARSPane) updateWeather(ctx *panes.Context) {
@@ -72,6 +147,11 @@ func (p *STARSPane) updateWeather(ctx *panes.Context) {
 }
 
 func (p *STARSPane) drawWeather(ctx *panes.Context, zcb *renderer.ZCmdBuffer, transforms radar.LatLonTransformations) {
+	p.updateWeatherHistory(time.Now())
+	if p.wxHistory.index != 0 {
+		p.drawWeatherBuffers(ctx, zcb, transforms, p.wxHistory.buffers)
+		return
+	}
 	if p.useNexradWeather {
 		p.drawNexrad(ctx, zcb, transforms)
 	} else {

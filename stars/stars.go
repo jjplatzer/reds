@@ -53,6 +53,7 @@ type STARSPane struct {
 	useFAAHFSTD010APalette       bool
 	useNexradWeather             bool
 	itwsWeather                  starsITWSWeather
+	wxHistory                    starsWeatherHistory
 	hideAssignedAltitudes        bool
 	useTAISLeaderDirection       bool // REDS display override, off by default; not a STARS preference set.
 	useYellowRestrictionColor1   bool // REDS display-only override; retains the official palette by default.
@@ -76,6 +77,7 @@ type STARSPane struct {
 	nexradGeneration      uint64
 	nexradBuiltGeneration uint64
 	nexrad                [6]starsNexradLevelCmdBuffers
+	nexradHistory         [3]*wx.Grid
 
 	videoMaps map[int]*starsVideoMap
 	iapChart  iapChartOverlay
