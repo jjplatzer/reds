@@ -17,8 +17,10 @@ import store.ItwsStore;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Locale;
@@ -100,7 +102,8 @@ public final class WebSocketPush extends AbstractVerticle {
         }
         request.response().putHeader("Content-Type", "application/json").putHeader("Cache-Control", "no-store");
         JsonObject query;
-        try { query = query(sites(request.getParam("site"))).put("statsOnly", healthPath.equals(request.path())); }
+        try { query = query(sites(request.getParam("site"))).put("statsOnly", healthPath.equals(request.path()))
+                .put("includeHistory", "1".equals(request.getParam("history"))); }
         catch (IllegalArgumentException e) { request.response().setStatusCode(400).end(new JsonObject().put("error", "Invalid site filter").encode()); return; }
         vertx.eventBus().<JsonObject>request(ItwsStore.SNAPSHOT_ADDRESS, query).onSuccess(reply -> {
             JsonObject snapshot = reply.body();
@@ -116,7 +119,11 @@ public final class WebSocketPush extends AbstractVerticle {
         if (!wsPath.equals(socket.path())) { socket.reject(404); return; }
         if (clients.size() >= maxClients) { socket.reject(503); return; }
         Set<String> sites;
-        try { sites = sites(siteParameter(socket.query())); }
+        boolean includeHistory;
+        try {
+            sites = sites(queryParameter(socket.query(), "site"));
+            includeHistory = "1".equals(queryParameter(socket.query(), "history"));
+        }
         catch (IllegalArgumentException e) { socket.reject(400); return; }
         socket.setWriteQueueMaxSize(queueBytes);
         Client client = new Client(socket, sites);
@@ -128,7 +135,7 @@ public final class WebSocketPush extends AbstractVerticle {
                 if ("activity".equals(new JsonObject(text).getString("type"))) client.lastActivity = System.nanoTime();
             } catch (DecodeException | ClassCastException ignored) {}
         });
-        vertx.eventBus().<JsonObject>request(ItwsStore.SNAPSHOT_ADDRESS, query(sites))
+        vertx.eventBus().<JsonObject>request(ItwsStore.SNAPSHOT_ADDRESS, query(sites).put("includeHistory", includeHistory))
                 .onSuccess(reply -> client.onSnapshot(reply.body()))
                 .onFailure(error -> client.close((short) 1011, "Snapshot unavailable"));
     }
@@ -166,8 +173,9 @@ public final class WebSocketPush extends AbstractVerticle {
 
         void send(JsonObject frame) {
             if (closed) return;
-            String encoded = frame.encode();
-            if (socket.writeQueueFull() || encoded.getBytes(StandardCharsets.UTF_8).length > queueBytes) {
+            int limit = Math.min(queueBytes, 16 << 20); // Also respect net/itws.go's reader cap.
+            String encoded = encodeWithinHistoryLimit(frame, limit);
+            if (socket.writeQueueFull() || encoded.getBytes(StandardCharsets.UTF_8).length > limit) {
                 close((short) 1013, "Client too slow or snapshot too large; select a site");
                 return;
             }
@@ -188,6 +196,34 @@ public final class WebSocketPush extends AbstractVerticle {
         }
     }
 
+    // Bootstrap history is optional. Fit it to the transport budget by dropping
+    // oldest saved pictures, preserving their null slots and all live weather.
+    // This operates on the private snapshot reply, never on store-owned grids.
+    private static String encodeWithinHistoryLimit(JsonObject frame, int limit) {
+        String encoded = frame.encode();
+        int bytes = encoded.getBytes(StandardCharsets.UTF_8).length;
+        JsonArray history = frame.getJsonArray("history");
+        if (bytes <= limit || history == null) return encoded;
+        record Saved(JsonArray pictures, int index, Instant generated, int bytes) {}
+        var saved = new ArrayList<Saved>();
+        for (Object value : history) {
+            JsonArray pictures = ((JsonObject) value).getJsonArray("products");
+            for (int i = 0; i < pictures.size(); i++) {
+                JsonObject picture = pictures.getJsonObject(i);
+                if (picture != null) saved.add(new Saved(pictures, i,
+                        Instant.parse(picture.getString("generationTime")),
+                        picture.encode().getBytes(StandardCharsets.UTF_8).length));
+            }
+        }
+        saved.sort(Comparator.comparing(Saved::generated));
+        for (Saved picture : saved) {
+            if (bytes <= limit) break;
+            picture.pictures.set(picture.index, null);
+            bytes -= picture.bytes - 4; // Replacing one JSON object with null.
+        }
+        return frame.encode();
+    }
+
     private static JsonObject query(Set<String> sites) {
         return new JsonObject().put("sites", new JsonArray(new ArrayList<>(sites)));
     }
@@ -203,11 +239,11 @@ public final class WebSocketPush extends AbstractVerticle {
         return result.contains("ALL") ? Set.of() : result;
     }
 
-    private static String siteParameter(String query) {
+    private static String queryParameter(String query, String key) {
         if (query == null) return null;
         for (String part : query.split("&")) {
             String[] pair = part.split("=", 2);
-            if (URLDecoder.decode(pair[0], StandardCharsets.UTF_8).equals("site"))
+            if (URLDecoder.decode(pair[0], StandardCharsets.UTF_8).equals(key))
                 return URLDecoder.decode(pair.length == 2 ? pair[1] : "", StandardCharsets.UTF_8);
         }
         return null;

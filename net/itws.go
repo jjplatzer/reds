@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log/slog"
 	"math"
+	"net/url"
 	"sort"
 	"strconv"
 	"strings"
@@ -18,10 +19,15 @@ import (
 )
 
 const (
-	itwsMaxCells      = 4_000_000
-	itwsMaxTotalCells = 16_000_000
-	itwsMaxProducts   = 64
+	itwsMaxCells        = 4_000_000
+	itwsMaxTotalCells   = 16_000_000
+	itwsMaxProducts     = 64
+	itwsMaxHistoryCells = 32_000_000
 )
+
+// ITWSHistoryPictures includes current weather and the two saved pictures in
+// TI 6191.409 section 6.2. Playback visits indexes 2, 1, then 0.
+const ITWSHistoryPictures = 3
 
 // ITWSGrid is the server's cropped, unrotated product 9850 raster. The source
 // buffer dimensions describe the original RLE storage; Rows/Columns describe
@@ -70,6 +76,15 @@ type itwsFrame struct {
 	Products []*ITWSProduct `json:"products"`
 	Product  *ITWSProduct   `json:"product"`
 	Key      string         `json:"key"`
+	Reason   string         `json:"reason"`
+	History  []itwsHistory  `json:"history"`
+}
+
+// Current active weather is sent once in Products. History uses fixed slots:
+// [latest if expired, previous, oldest]; missing/evicted slots are null.
+type itwsHistory struct {
+	Key      string         `json:"key"`
+	Products []*ITWSProduct `json:"products"`
 }
 
 func (p *ITWSProduct) decode() error {
@@ -146,6 +161,7 @@ type ITWSClient struct {
 	conn        *websocket.Conn
 	mu          sync.RWMutex
 	products    map[string]*ITWSProduct
+	history     map[string][ITWSHistoryPictures]*ITWSProduct
 	revision    uint64
 	generation  uint64
 	ready       bool
@@ -158,20 +174,43 @@ func NewITWSClient(rawURL, site string, logger *redslog.Logger) *ITWSClient {
 	if strings.TrimSpace(rawURL) == "" {
 		rawURL = ITWSWebSocketURL(site)
 	}
+	// Old servers ignore this opt-in; their live updates still build history.
+	if u, err := url.Parse(rawURL); err == nil {
+		query := u.Query()
+		query.Set("history", "1")
+		u.RawQuery = query.Encode()
+		rawURL = u.String()
+	}
 	if logger == nil {
 		logger = &redslog.Logger{Logger: slog.Default(), Start: time.Now()}
 	}
 	ctx, cancel := context.WithCancel(context.Background())
 	return &ITWSClient{url: rawURL, site: site, logger: logger, ctx: ctx, cancel: cancel,
-		activity: make(chan struct{}, 1), products: make(map[string]*ITWSProduct)}
+		activity: make(chan struct{}, 1), products: make(map[string]*ITWSProduct),
+		history: make(map[string][ITWSHistoryPictures]*ITWSProduct)}
 }
 
 // Snapshot returns immutable products only when the cache has changed. Never
 // mutate the returned products/cell slices. Server time plus local monotonic
 // elapsed time prevents a mis-set desktop wall clock from expiring fresh scans.
 func (c *ITWSClient) Snapshot(since uint64, now time.Time) ([]*ITWSProduct, uint64) {
+	pictures, generation := c.snapshot(since, now, false)
+	return pictures[0], generation
+}
+
+// SnapshotHistory returns immutable pictures indexed current=0, previous=1,
+// oldest=2. Expired weather is never returned as current; saved pictures retain
+// their original generation/expiration times. Missing slots are empty, never
+// substituted with a different age. Each picture may contain several radars.
+// As with Snapshot, an unchanged generation returns nil slices.
+func (c *ITWSClient) SnapshotHistory(since uint64, now time.Time) ([ITWSHistoryPictures][]*ITWSProduct, uint64) {
+	return c.snapshot(since, now, true)
+}
+
+func (c *ITWSClient) snapshot(since uint64, now time.Time, includeHistory bool) ([ITWSHistoryPictures][]*ITWSProduct, uint64) {
+	var pictures [ITWSHistoryPictures][]*ITWSProduct
 	if c == nil {
-		return nil, 0
+		return pictures, 0
 	}
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -182,15 +221,72 @@ func (c *ITWSClient) Snapshot(since uint64, now time.Time) ([]*ITWSProduct, uint
 			c.generation++
 		}
 	}
+	c.trimHistory()
 	if since == c.generation {
-		return nil, since
+		return pictures, since
 	}
-	products := make([]*ITWSProduct, 0, len(c.products))
+	pictures[0] = make([]*ITWSProduct, 0, len(c.products))
 	for _, product := range c.products {
-		products = append(products, product)
+		pictures[0] = append(pictures[0], product)
 	}
-	sort.Slice(products, func(i, j int) bool { return products[i].Key < products[j].Key })
-	return products, c.generation
+	if includeHistory {
+		for _, saved := range c.history {
+			for i := 1; i < ITWSHistoryPictures; i++ {
+				if saved[i] != nil {
+					pictures[i] = append(pictures[i], saved[i])
+				}
+			}
+		}
+	}
+	for _, products := range pictures {
+		sort.Slice(products, func(i, j int) bool { return products[i].Key < products[j].Key })
+	}
+	return pictures, c.generation
+}
+
+// Count only retained history: active current grids already have their own
+// cell budget. Drop oldest pictures first and keep their slot positions.
+func (c *ITWSClient) trimHistory() {
+	type saved struct {
+		key     string
+		index   int
+		product *ITWSProduct
+	}
+	cells := 0
+	for key, pictures := range c.history {
+		for i, p := range pictures {
+			if p != nil && (i != 0 || c.products[key] != p) {
+				cells += len(p.Grid.Cells)
+			}
+		}
+	}
+	if cells <= itwsMaxHistoryCells && len(c.history) <= itwsMaxProducts {
+		return
+	}
+	var candidates []saved
+	for key, pictures := range c.history {
+		for i, p := range pictures {
+			if p != nil && (i != 0 || c.products[key] != p) {
+				candidates = append(candidates, saved{key, i, p})
+			}
+		}
+	}
+	sort.Slice(candidates, func(i, j int) bool {
+		return candidates[i].product.GenerationTime.Before(candidates[j].product.GenerationTime)
+	})
+	for _, item := range candidates {
+		if cells <= itwsMaxHistoryCells && len(c.history) <= itwsMaxProducts {
+			break
+		}
+		pictures := c.history[item.key]
+		pictures[item.index] = nil
+		cells -= len(item.product.Grid.Cells)
+		if pictures == [ITWSHistoryPictures]*ITWSProduct{} {
+			delete(c.history, item.key)
+		} else {
+			c.history[item.key] = pictures
+		}
+	}
 }
 
 func (c *ITWSClient) serverNow(now time.Time) time.Time {
@@ -379,7 +475,11 @@ func (c *ITWSClient) apply(frame itwsFrame, now time.Time) error {
 				products[product.Key] = product
 			}
 		}
-		c.products, c.revision, c.ready = products, frame.Revision, true
+		history, err := c.decodeHistory(frame.History, products)
+		if err != nil {
+			return err
+		}
+		c.products, c.history, c.revision, c.ready = products, history, frame.Revision, true
 		c.serverTime, c.clockReadAt = frame.Time, now
 		c.generation++
 	case "update", "remove":
@@ -391,8 +491,18 @@ func (c *ITWSClient) apply(frame itwsFrame, now time.Time) error {
 		}
 		// Revisions are global: filtering by site legitimately skips revisions.
 		if frame.Type == "remove" {
+			changed := false
 			if _, exists := c.products[frame.Key]; exists {
 				delete(c.products, frame.Key)
+				changed = true
+			}
+			if frame.Reason != "expired" {
+				if _, exists := c.history[frame.Key]; exists {
+					delete(c.history, frame.Key)
+					changed = true
+				}
+			}
+			if changed {
 				c.generation++
 			}
 		} else {
@@ -404,7 +514,8 @@ func (c *ITWSClient) apply(frame itwsFrame, now time.Time) error {
 				if err := product.decode(); err != nil {
 					return err
 				}
-				previous := c.products[product.Key]
+				saved := c.history[product.Key]
+				previous := saved[0]
 				if product.ExpirationTime.After(c.serverNow(now)) &&
 					(previous == nil || !product.GenerationTime.Before(previous.GenerationTime)) {
 					cells := len(product.Grid.Cells)
@@ -413,10 +524,21 @@ func (c *ITWSClient) apply(frame itwsFrame, now time.Time) error {
 							cells += len(cached.Grid.Cells)
 						}
 					}
-					if cells > itwsMaxTotalCells || (previous == nil && len(c.products) >= itwsMaxProducts) {
+					if cells > itwsMaxTotalCells || (c.products[product.Key] == nil && len(c.products) >= itwsMaxProducts) {
 						return errors.New("ITWS cache exceeds limit")
 					}
 					c.products[product.Key] = product
+					if previous != nil && product.GenerationTime.After(previous.GenerationTime) {
+						saved[2], saved[1] = saved[1], previous
+					}
+					// Same-time corrections replace the current scan. Even if the
+					// latest scan was evicted, shift remaining fixed slots by age.
+					if previous == nil {
+						saved[2], saved[1] = saved[1], nil
+					}
+					saved[0] = product
+					c.history[product.Key] = saved
+					c.trimHistory()
 					c.generation++
 				}
 			}
@@ -426,4 +548,61 @@ func (c *ITWSClient) apply(frame itwsFrame, now time.Time) error {
 		return fmt.Errorf("unknown ITWS frame type %q", frame.Type)
 	}
 	return nil
+}
+
+func (c *ITWSClient) decodeHistory(records []itwsHistory, products map[string]*ITWSProduct) (map[string][ITWSHistoryPictures]*ITWSProduct, error) {
+	if len(records) > itwsMaxProducts {
+		return nil, errors.New("ITWS history exceeds source limit")
+	}
+	history := make(map[string][ITWSHistoryPictures]*ITWSProduct)
+	for key, current := range products {
+		history[key] = [ITWSHistoryPictures]*ITWSProduct{current}
+	}
+	seen := make(map[string]bool)
+	cells := 0
+	for _, record := range records {
+		if !strings.HasPrefix(record.Key, "9850:"+c.site+":") {
+			continue
+		}
+		if seen[record.Key] || len(record.Products) != ITWSHistoryPictures {
+			return nil, errors.New("invalid ITWS history slots/source")
+		}
+		seen[record.Key] = true
+		pictures := history[record.Key]
+		var newer time.Time
+		if pictures[0] != nil {
+			newer = pictures[0].GenerationTime
+		}
+		for i, p := range record.Products {
+			if p == nil {
+				continue
+			}
+			if p.Key != record.Key || p.Site != c.site || (i == 0 && pictures[0] != nil) ||
+				p.GenerationTime.IsZero() || !p.ExpirationTime.After(p.GenerationTime) ||
+				(!newer.IsZero() && !p.GenerationTime.Before(newer)) {
+				return nil, errors.New("invalid ITWS history identity/order")
+			}
+			newer = p.GenerationTime
+			g := &p.Grid
+			if g.Rows <= 0 || g.Columns <= 0 || g.Rows > itwsMaxCells/g.Columns {
+				return nil, errors.New("invalid ITWS history dimensions")
+			}
+			// Optional archive data must not exhaust the live cache's budget.
+			if g.Rows*g.Columns > itwsMaxHistoryCells-cells {
+				continue
+			}
+			if err := p.decode(); err != nil {
+				return nil, err
+			}
+			cells += len(g.Cells)
+			pictures[i] = p
+		}
+		if pictures != [ITWSHistoryPictures]*ITWSProduct{} {
+			history[record.Key] = pictures
+		}
+	}
+	if len(history) > itwsMaxProducts {
+		return nil, errors.New("ITWS history exceeds source limit")
+	}
+	return history, nil
 }
