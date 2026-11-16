@@ -296,6 +296,8 @@ func run(logger *redslog.Logger) error {
 				menuOptions.UseStarsFontSetB = starsPane.UseFontSetB()
 				menuOptions.ShowStarsFAAHFSTD010APalette = true
 				menuOptions.UseStarsFAAHFSTD010APalette = starsPane.UseFAAHFSTD010APalette()
+				menuOptions.ShowStarsWeatherSource = true
+				menuOptions.UseStarsNexradWeather = starsPane.UseNexradWeather()
 			}
 
 			titlebarCaptured, titlebarAction := drawScopeTitleBar(
@@ -385,6 +387,10 @@ func run(logger *redslog.Logger) error {
 			case titleBarActionToggleStarsFAAHFSTD010APalette:
 				if starsPane, ok := active.(*stars.STARSPane); ok {
 					starsPane.ToggleFAAHFSTD010APalette()
+				}
+			case titleBarActionToggleStarsNexradWeather:
+				if starsPane, ok := active.(*stars.STARSPane); ok {
+					starsPane.ToggleNexradWeather()
 				}
 			}
 		}

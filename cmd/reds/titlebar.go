@@ -84,6 +84,7 @@ const (
 	titleBarActionToggleStarsYellowRestrictionColor1
 	titleBarActionToggleStarsFontSetB
 	titleBarActionToggleStarsFAAHFSTD010APalette
+	titleBarActionToggleStarsNexradWeather
 )
 
 type titleBarMenuOptions struct {
@@ -99,6 +100,8 @@ type titleBarMenuOptions struct {
 	UseStarsFontSetB                 bool
 	ShowStarsFAAHFSTD010APalette     bool
 	UseStarsFAAHFSTD010APalette      bool
+	ShowStarsWeatherSource           bool
+	UseStarsNexradWeather            bool
 }
 
 type titleBarButtonType int
@@ -268,7 +271,10 @@ func drawTitleBarMenuPopup(
 	if menuOptions.ShowStarsFAAHFSTD010APalette {
 		menuHeight += float32(titleBarMenuItemHeight)
 	}
-	if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsTAISLeaderDirection || menuOptions.ShowStarsYellowRestrictionColor1 || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+	if menuOptions.ShowStarsWeatherSource {
+		menuHeight += float32(titleBarMenuItemHeight)
+	}
+	if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsTAISLeaderDirection || menuOptions.ShowStarsYellowRestrictionColor1 || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette || menuOptions.ShowStarsWeatherSource {
 		popupWidth = titleBarStarsMenuPopupWidth
 	}
 	imgui.SetNextWindowSizeV(
@@ -294,7 +300,7 @@ func drawTitleBarMenuPopup(
 		// Right-align each complete shortcut; modifier glyphs need not share a left edge.
 		shortcutRightX := popupWidth - titleBarMenuShortcutPadRight
 		textPadX := float32(titleBarMenuTextPadX)
-		if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsTAISLeaderDirection || menuOptions.ShowStarsYellowRestrictionColor1 || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette {
+		if menuOptions.ShowStarsIAPChart || menuOptions.ShowStarsAssignedAltitudes || menuOptions.ShowStarsTAISLeaderDirection || menuOptions.ShowStarsYellowRestrictionColor1 || menuOptions.ShowStarsFontSetB || menuOptions.ShowStarsFAAHFSTD010APalette || menuOptions.ShowStarsWeatherSource {
 			// Reserve the same check gutter as the STARS checked rows so all
 			// labels start on the same vertical axis.
 			textPadX = titleBarMenuCheckedTextPadX
@@ -577,6 +583,29 @@ func drawTitleBarMenuPopup(
 
 			if fontClicked {
 				action = titleBarActionToggleStarsFontSetB
+			}
+			rowY += float32(titleBarMenuItemHeight)
+		}
+
+		if menuOptions.ShowStarsWeatherSource {
+			imgui.SetCursorPos(imgui.Vec2{X: 0, Y: rowY})
+			clicked := imgui.InvisibleButtonV(
+				"##stars-nexrad-weather-menu-item",
+				imgui.Vec2{X: popupWidth, Y: titleBarMenuItemHeight},
+				imgui.ButtonFlagsMouseButtonLeft,
+			)
+			rowMin, rowMax := imgui.ItemRectMin(), imgui.ItemRectMax()
+			if imgui.IsItemHovered() {
+				imgui.WindowDrawList().AddRectFilledV(rowMin, rowMax,
+					imgui.ColorU32Vec4(titleBarMenuHover), titleBarMenuPopupRounding, imgui.DrawFlagsRoundCornersAll)
+			}
+			if menuOptions.UseStarsNexradWeather {
+				drawTitleBarMenuCheck(rowMin, titleBarMenuItemHeight)
+			}
+			drawTitleBarMenuItemTextWithPad(rowMin, titleBarMenuItemHeight, shortcutRightX,
+				titleBarMenuCheckedTextPadX, "Use NEXRAD Weather", nil)
+			if clicked {
+				action = titleBarActionToggleStarsNexradWeather
 			}
 			rowY += float32(titleBarMenuItemHeight)
 		}

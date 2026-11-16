@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	menuFontPath         = "fonts/RobotoCondensed-Regular.ttf.zst"
-	menuBoldFontPath     = "fonts/RobotoCondensed-Black.ttf.zst"
+	menuFontPath         = "fonts/Inter-Regular.ttf.zst"
+	menuBoldFontPath     = "fonts/Inter-Black.ttf.zst"
 	menuFallbackFontPath = "fonts/Inter-Regular.ttf.zst"
 	symbolsFontPath      = "fonts/Symbols.ttf.zst"
 )

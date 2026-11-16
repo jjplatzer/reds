@@ -682,7 +682,7 @@ func (p *STARSPane) updateMSAW(snapshot redsnet.TaisSnapshot, now time.Time) {
 	if p == nil {
 		return
 	}
-	if p.msawAirspace == nil || !snapshot.Ready {
+	if p.msawAirspace == nil || !snapshot.Ready || p.localAlertsWarmingUp {
 		clear(p.msawAlerts)
 		clear(p.msawApproachTracks)
 		return
@@ -786,7 +786,7 @@ func msawTrackEligible(t *redsnet.TaisTarget, now time.Time) bool {
 }
 
 func (p *STARSPane) msawAlert(t *redsnet.TaisTarget) (msawAlertState, bool) {
-	if p == nil || t == nil || !p.alertSystemEnabled("MSAW") {
+	if p == nil || p.localAlertsWarmingUp || t == nil || !p.alertSystemEnabled("MSAW") {
 		return msawAlertState{}, false
 	}
 	state, ok := p.msawAlerts[targetDisplayStateKey(t)]

@@ -293,6 +293,10 @@ type TaisSnapshot struct {
 	Ready       bool
 	Revision    uint64
 	GeneratedAt time.Time
+	// SyncedAt is local time when this connection's snapshot was accepted.
+	// Its monotonic clock is used for startup warm-up, independently of server
+	// or aircraft clocks. A new snapshot starts a new warm-up after reconnect.
+	SyncedAt    time.Time
 	Targets     []TaisTarget
 	FlightPlans []TaisFlightPlanState
 }

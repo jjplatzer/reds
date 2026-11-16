@@ -123,6 +123,8 @@ func (p *STARSPane) ToggleFAAHFSTD010APalette() {
 	}
 	p.useFAAHFSTD010APalette = !p.useFAAHFSTD010APalette
 	p.releaseNexradCmdBuffers()
+	p.releaseITWSCmdBuffers()
+	p.releaseWeatherHistoryBuffers()
 }
 
 type starsNexradLevelCmdBuffers struct {
@@ -135,21 +137,31 @@ func (p *STARSPane) consumeNexradUpdates() {
 		return
 	}
 	updates := p.wxStream.Updates()
-	var latest *wx.Grid
 	for {
 		select {
 		case grid := <-updates:
 			if grid != nil {
-				latest = grid
+				p.acceptNexradGrid(grid)
 			}
 		default:
-			if latest != nil {
-				p.wxGrid = latest
-				p.nexradGeneration++
-			}
 			return
 		}
 	}
+}
+
+func (p *STARSPane) acceptNexradGrid(grid *wx.Grid) {
+	previous := p.nexradHistory[0]
+	if previous != nil && grid.ObservedAt.Before(previous.ObservedAt) {
+		return
+	}
+	// Re-cropping the same observation after a pan/zoom replaces that picture
+	// without consuming a history slot. Retained grids are immutable.
+	if previous != nil && grid.ObservedAt.After(previous.ObservedAt) {
+		p.nexradHistory[2], p.nexradHistory[1] = p.nexradHistory[1], previous
+	}
+	p.nexradHistory[0] = grid
+	p.wxGrid = grid
+	p.nexradGeneration++
 }
 
 func (p *STARSPane) ensureNexradCoverage(ctx *panes.Context) {
@@ -295,6 +307,13 @@ func (p *STARSPane) drawNexrad(ctx *panes.Context, zcb *renderer.ZCmdBuffer, tra
 	if p == nil || ctx == nil || zcb == nil || p.wxGrid == nil {
 		return
 	}
+	p.drawWeatherBuffers(ctx, zcb, transforms, p.nexrad)
+}
+
+func (p *STARSPane) drawWeatherBuffers(ctx *panes.Context, zcb *renderer.ZCmdBuffer, transforms radar.LatLonTransformations, levels [6]starsNexradLevelCmdBuffers) {
+	if p == nil || ctx == nil || zcb == nil {
+		return
+	}
 
 	x, y, width, height := ctx.PaneFramebufferRect()
 	cb := zcb.At(zWeather)
@@ -305,15 +324,15 @@ func (p *STARSPane) drawNexrad(ctx *panes.Context, zcb *renderer.ZCmdBuffer, tra
 	ps := p.currentPrefs()
 	presentation := p.wxPresentation()
 	active := ps.DisplayWeatherLevel
-	for i := range p.nexrad {
-		if !active[i] || p.nexrad[i].fill == nil {
+	for i := range levels {
+		if !active[i] || levels[i].fill == nil {
 			continue
 		}
 		cb.SetRGB(ps.Brightness.Weather.ScaleRGB(presentation.colors[i]))
-		cb.Call(p.nexrad[i].fill)
-		if p.nexrad[i].stipple != nil {
+		cb.Call(levels[i].fill)
+		if levels[i].stipple != nil {
 			cb.SetRGB(ps.Brightness.WxContrast.ScaleRGB(presentation.pattern))
-			cb.Call(p.nexrad[i].stipple)
+			cb.Call(levels[i].stipple)
 		}
 	}
 	cb.DisableScissor()

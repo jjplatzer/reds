@@ -20,6 +20,8 @@ import (
 )
 
 const (
+	starsLocalAlertWarmup = 30 * time.Second
+
 	zBackground        renderer.Z = -1000
 	zWeather           renderer.Z = -950
 	zRangeRings        renderer.Z = -925
@@ -49,6 +51,9 @@ type STARSPane struct {
 	dcbSuppressPressUntilRelease bool
 	useFontSetB                  bool
 	useFAAHFSTD010APalette       bool
+	useNexradWeather             bool
+	itwsWeather                  starsITWSWeather
+	wxHistory                    starsWeatherHistory
 	hideAssignedAltitudes        bool
 	useTAISLeaderDirection       bool // REDS display override, off by default; not a STARS preference set.
 	useYellowRestrictionColor1   bool // REDS display-only override; retains the official palette by default.
@@ -72,6 +77,7 @@ type STARSPane struct {
 	nexradGeneration      uint64
 	nexradBuiltGeneration uint64
 	nexrad                [6]starsNexradLevelCmdBuffers
+	nexradHistory         [3]*wx.Grid
 
 	videoMaps map[int]*starsVideoMap
 	iapChart  iapChartOverlay
@@ -210,6 +216,8 @@ type STARSPane struct {
 	mciAlerts     map[mciPair]mciAlertState
 	mciTargets    map[string]*redsnet.TaisTarget
 	mciGeneration uint64
+
+	localAlertsWarmingUp bool // per-connection delay; never changes site inhibits or preferences.
 
 	// atpaTracks is rebuilt from the current TAIS snapshot and adapted ATPA
 	// approach volumes. It holds pairing, minimum separation, and current
@@ -612,7 +620,7 @@ func NewPane(artcc, tracon, positionID string, logger *redslog.Logger) (*STARSPa
 	pane.refreshGIATIS(time.Now())
 	pane.wxDomain = wx.DomainForARTCC(cfg.Facility.ARTCC)
 	pane.wxLogger = logger.With(slog.String("component", "wx"))
-	pane.restartNexradStream(starsInitialNexradRadiusNM)
+	pane.startWeather()
 	if err := pane.loadMainVideoMaps(); err != nil {
 		logger.Warn("Unable to load STARS Main DCB video maps", slog.Any("error", err))
 	}
@@ -652,6 +660,7 @@ func (p *STARSPane) reportClientActivity(ctx *panes.Context) {
 	report := func() {
 		p.tais.ReportActivity()
 		p.aptc.ReportActivity()
+		p.itwsWeather.client.ReportActivity()
 	}
 	if mouse := ctx.Mouse; mouse != nil {
 		if math.Abs(float64(mouse.Delta.X)) > 0.01 || math.Abs(float64(mouse.Delta.Y)) > 0.01 ||
@@ -670,6 +679,13 @@ func (p *STARSPane) reportClientActivity(ctx *panes.Context) {
 		(len(keyboard.Text) > 0 || len(keyboard.Pressed) > 0 || len(keyboard.Released) > 0) {
 		report()
 	}
+}
+
+// An empty bootstrap trail needs live observations before local LA/CA/MCI
+// processing starts. Measure from receipt of the snapshot, not window creation
+// or server timestamps, and repeat after reconnecting with another empty trail.
+func starsLocalAlertsWarmingUp(snapshot redsnet.TaisSnapshot, now time.Time) bool {
+	return !snapshot.Ready || snapshot.SyncedAt.IsZero() || now.Sub(snapshot.SyncedAt) < starsLocalAlertWarmup
 }
 
 func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
@@ -691,9 +707,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.refreshSSAAirportWeather()
 	p.consumeGIATISUpdates()
 	p.refreshGIATIS(time.Now())
-	p.consumeNexradUpdates()
-	p.ensureNexradCoverage(ctx)
-	p.rebuildNexradIfNeeded()
+	p.updateWeather(ctx)
 
 	// Sample before any target filtering/drawing so the FDB/PDB/LDB
 	// presentation and altitude-filter bypass agree for the whole frame.
@@ -703,6 +717,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	transforms := p.scopeTransformations(ctx)
 	allTargets := p.targetSnapshot()
 	now := time.Now()
+	p.localAlertsWarmingUp = starsLocalAlertsWarmingUp(allTargets, now)
 	p.updateTaisOwnership(allTargets, now)
 	// Compute from authoritative live positions, before any local TRK RPOS.
 	p.updateMSAWApproachIndex()
@@ -760,7 +775,7 @@ func (p *STARSPane) Draw(ctx *panes.Context, zcb *renderer.ZCmdBuffer) {
 	p.updateSTARSAlertAudio(allTargets, now)
 	p.updateDwell(ctx, targets, transforms)
 
-	p.drawNexrad(ctx, zcb, transforms)
+	p.drawWeather(ctx, zcb, transforms)
 	p.drawRangeRings(ctx, zcb, transforms)
 	p.drawVideoMaps(ctx, zcb, transforms)
 	p.drawIAPChartOverlay(ctx, zcb, transforms)
@@ -837,11 +852,7 @@ func (p *STARSPane) Dispose() {
 		p.tfr.Close()
 		p.tfr = nil
 	}
-	if p.wxStream != nil {
-		p.wxStream.Close()
-		p.wxStream = nil
-	}
-	p.releaseNexradCmdBuffers()
+	p.closeWeather()
 	p.releaseVideoMaps()
 	p.iapChart.release()
 	p.wxGrid = nil
